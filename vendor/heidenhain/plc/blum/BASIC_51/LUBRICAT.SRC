@@ -1,0 +1,280 @@
+*-----------------------------------------------------------------------------
+*  Lubrication Axes
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+;#define /s    KL_axes                                  K%11111       *;EUMACH Original PLC
+#if LUBE_XYZ = &active                                                *;EUMACH
+#define /s    KL_axes_XYZ                              K%00111        *;EUMACH
+#endif                                                                *;EUMACH
+
+#if LUBE_X = &active                                                  *;EUMACH
+#define /s    KL_axes_X                                K%00001        *;EUMACH
+#endif                                                                *;EUMACH
+
+#define /s    ML_pressure                              M
+
+#define /s    BL_step_lubrication                      B
+
+#define /s    WL_next_lubrication                      W
+#define /s /r WL_next_lubrication_grease               W              *;EUMACH
+
+GLOBAL Lubrication
+
+;----------------------------
+LBL Lubrication
+;----------------------------
+                                                                      *;EUMACH
+#if LUB ! &inactive                                                   *;EUMACH
+  L      NP_M4172_1st_PLC_run_after_power_on
+  ON     MG_control_operational
+  CMT    Lubrication_reset
+
+  L      MG_marker_one
+  S      TS_lubrication
+  S      TS_lubricant_pressure
+
+  CASE   BL_step_lubrication
+    CM     Lubrication_start           ;00
+    CM     Test_pressure_0             ;01
+    CM     Lubrication_on              ;02
+    CM     Lubrication_time            ;03
+    CM     Lubrication_off             ;04
+    CM     Lubrication_time            ;05
+    CM     Test_pressure_0             ;06
+    CM     Lubrication_end             ;07
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_lubrication
+  ENDI
+
+  L      PN_error_lubrication_axes
+  S      MG_start_blocked_lubrication                                 *;I think the purpose of this marker is to prevent using CE key to clear PN_error_lubrication_axes and continue the program.
+
+  L      MG_key_NC_start
+  A      MG_start_blocked_lubrication
+  A      MG_automatic_mode
+  S      PN_error_lubrication_axes
+*;EUMACH
+#if LUBE_XYZ = &active
+  ;No Hxx message
+#endif
+#if LUBE_X = &active
+  S      MG_win_axis_X
+#endif
+*;EUMACH
+
+#if LUBE_level ! &inactive                                            *;EUMACH
+  LN     I_lubricant_level_ok
+;  =      PN_error_lubricant_level_low                                *;EUMACH Original PLC
+  S      PN_error_lubricant_level_low                                 *;EUMACH
+*;EUMACH
+#if LUBE_XYZ = &active
+  ;No Hxx message
+#endif
+#if LUBE_X = &active
+  S      MG_win_axis_X
+#endif
+*;EUMACH
+#endif                                                                *;EUMACH
+
+  L      O_lubrication_on
+  O      MG_test_lamps
+  =      O_lamp_lubrication_on
+
+EM
+
+;----------------------------
+LBL Lubrication_start                  ;00
+
+#if LUBE_type = &Oil                                                  *;EUMACH
+  L      WL_next_lubrication
+  <=     K+0
+#else                                                                 *;EUMACH
+  L      WL_next_lubrication_grease
+  <=     K+0
+#endif                                                                *;EUMACH
+#if LUBE_type = &Oil                                                  *;EUMACH
+  O[
+    L      NP_W1056_lubrication_pulse
+;    A      KL_axes                                                   *;EUMACH Original PLC
+*;EUMACH
+#if LUBE_XYZ = &active
+    A      KL_axes_XYZ
+#endif
+#if LUBE_X = &active
+    A      KL_axes_X
+#endif
+*;EUMACH
+    >      K+0
+  ]
+#endif                                                                *;EUMACH
+  O      I_key_lubrication_axes
+  O      MG_soft_key_lubrication
+  R      PN_error_lubrication_axes
+  R      MG_win_axis_X                                                *;EUMACH
+  S      MG_soft_key_lubrication
+  PSL
+  IFT
+;    L      KL_axes                                                   *;EUMACH Original PLC
+*;EUMACH
+#if LUBE_XYZ = &active
+    L      KL_axes_XYZ
+#endif
+#if LUBE_X = &active
+    L      KL_axes_X
+#endif
+*;EUMACH
+    =      PN_W1058_lubrication_distance_reset
+  ENDI
+
+  LN     MG_pulse_1_min
+#if LUBE_XYZ = &active                                                *;EUMACH
+  ON     MG_axes_in_motion
+#endif                                                                *;EUMACH
+*;EUMACH
+#if LUBE_X = &active
+  ON[
+    L      NP_W1028_axes_in_motion
+    BT     KG_axis_X
+  ]
+#endif
+*;EUMACH
+  EMT
+
+#if LUBE_type = &Oil                                                  *;EUMACH
+  DEC    WL_next_lubrication
+#else                                                                 *;EUMACH
+  DEC    WL_next_lubrication_grease                                   *;EUMACH
+#endif                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL Test_pressure_0                    ;01 ;06
+
+  L      I_lubricant_pressure_ok
+  S      PN_error_lubrication_axes
+*;EUMACH
+#if LUBE_XYZ = &active
+  ;No Hxx message
+#endif
+#if LUBE_X = &active
+  S      MG_win_axis_X
+#endif
+*;EUMACH
+
+  LN     I_lubricant_pressure_ok
+  A      MG_power_delayed_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_on                     ;02
+
+  L      MG_key_NC_start
+  O      I_key_lubrication_axes
+  O      MG_pulse_CE_key
+  =      TS_lubricant_pressure
+
+  L      TR_lubricant_pressure
+  =      O_lubrication_on
+
+  L      I_lubricant_pressure_ok
+  PSL
+
+  LN     TS_lubricant_pressure
+  AN     TR_lubricant_pressure
+  AN     I_lubricant_pressure_ok
+  S      PN_error_lubrication_axes
+*;EUMACH
+#if LUBE_XYZ = &active
+  ;No Hxx message
+#endif
+#if LUBE_X = &active
+  S      MG_win_axis_X
+#endif
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL Lubrication_time                   ;03 ;05
+
+  LN     TR_lubrication
+  =      TS_lubrication
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_off                    ;04
+
+  L      MG_marker_one
+  R      O_lubrication_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_end                    ;07
+
+  PS     MG_marker_zero
+
+  L      MG_marker_one
+  R      MG_start_blocked_lubrication
+  R      PN_error_lubrication_axes
+  R      MG_win_axis_X                                                *;EUMACH
+  R      MG_soft_key_lubrication
+
+  L      K+0
+  =      PN_W1058_lubrication_distance_reset
+
+  L      NP_D928_lubrication_time_min
+  /      K+10000
+  >      NP_W988_lubrication_time
+  IFT
+    L      NP_D928_lubrication_time_min
+    /      K+10000
+#if LUBE_type = &Oil                                                  *;EUMACH
+    =      WL_next_lubrication
+#else                                                                 *;EUMACH
+    =      WL_next_lubrication_grease                                 *;EUMACH
+#endif                                                                *;EUMACH
+  ELSE
+    L      NP_D932_lubrication_time_max
+    /      K+10000
+    <      NP_W988_lubrication_time
+    IFT
+      L      NP_D932_lubrication_time_max
+      /      K+10000
+#if LUBE_type = &Oil                                                  *;EUMACH
+      =      WL_next_lubrication
+#else                                                                 *;EUMACH
+      =      WL_next_lubrication_grease                               *;EUMACH
+#endif                                                                *;EUMACH
+    ELSE
+      L      NP_W988_lubrication_time
+#if LUBE_type = &Oil                                                  *;EUMACH
+      =      WL_next_lubrication
+#else                                                                 *;EUMACH
+      =      WL_next_lubrication_grease                               *;EUMACH
+#endif                                                                *;EUMACH
+    ENDI
+  ENDI
+
+LBL Lubrication_reset
+
+  L      MG_marker_one
+  R      O_lubrication_on
+
+  L      K+0
+  =      BL_step_lubrication
+#endif                                                                *;EUMACH
+
+EM

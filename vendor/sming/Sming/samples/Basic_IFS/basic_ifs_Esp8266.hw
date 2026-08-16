@@ -1,0 +1,10 @@
+{
+    "name": "Basic IFS (ESP8266)",
+    "base_config": "basic_ifs",
+    "arch": "Esp8266",
+    "partitions": {
+        "rom0": {
+            "size": "600K"
+        }
+    }
+}

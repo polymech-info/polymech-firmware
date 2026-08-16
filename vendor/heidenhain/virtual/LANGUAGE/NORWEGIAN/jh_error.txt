@@ -1,0 +1,1289 @@
+N38 Etterslep for stort %.2s
+N39 Nominelt turtall for høyt %.2s
+N41 Stillstandsovervåking %.2s
+N42 Forskyvning for stor %.2s
+N50 Søkepunkt kan ikke nås
+N51 Posisjoneringsfeil
+N52 Nål er alt i berøring
+N53 Skift sensorsystembatteri
+N54 Sensorsystem ikke klart
+N17738 Endebryter %.2s+
+N56 Endebryter %.2s+
+N17739 Endebryter %.2s-
+N58 Endebryter %.2s-
+N59 FN 14: Feilkode %-3u
+N60 To TOOL DEF %-3u ved PGM CALL
+N61 Verktøytabell låst
+N62 Ref.merker %.2s: feil avstand
+N63 Håndratt?
+N109 PLS: For dyp nesting
+N110 PLS: Stack underflow
+N111 PLS: Stack overflow
+N112 PLS: Time out
+N113 PLS: Ugyldig område for CASE
+N115 PLS: Indeksområde feil
+N133 PLS: M4005, M4006, M4007 feil
+N134 PLS: Søkesykl. aktive samtidig
+N151 MP: Linje uten nummer
+N152 MP: Feil nummer
+N153 MP: Ikke skilletegn
+N154 MP: Inntastet verdi feil
+N155 MP: Dobbelt definert
+N156 MP: Ikke definert
+N157 MP: Lagring ikke mulig
+N159 Plass 0 ikke definert
+N160 Feil plassnummer
+N937 Feil plassnummer
+N161 Mating mangler
+N162 Ingen ny akse ved rotering
+N163 Verktøyets levetid utgått
+N164 Skift bufferbatteri
+N165 Spindelorientering inaktiv
+N166 Verktøytabell?
+N167 Nullpunkttabell?
+N168 Feil
+N938 Tast uten funksjon
+N939 Programlager fullt
+N940 Søkekriterium finnes ikke
+N941 Verktøynr. 0 ikke tillatt
+N169 Verktøynummer allerede i bruk
+N170 Hopp til label 0 ikke tillatt
+N942 Inntastet verdi feil
+N943 Inntastet verdi feil
+N171 Inntastet verdi feil
+N172 Inntastet verdi feil
+N173 Inntastet verdi feil
+N174 Inntastet verdi feil
+N175 Inntastet verdi feil
+N176 Inntastet verdi feil
+N177 Syklus 27(G127): Dybde > radius
+N178 Inntastet verdi feil
+N179 Inntastet verdi feil
+N180 Uformatert defin. inneh. feil
+N183 Aktuell blokk ikke valgt
+N184 Programnavn finnes ikke
+N185 Kan ikke taste inn flere data
+N944 Filnavn finnes allerede
+N187 Label-nummer allerede i bruk
+N188 Labelnr %-3u i bruk flere ganger
+N189 Dataoverføring med feil
+N194 Program ikke fullstendig
+N196 Grensesnitt allerede i bruk
+N197 Overføringshastighet ikke mulig
+N945 Programdata med feil
+N946 Programdata med feil
+N200 Ekst. ut-/inndata ikke klare
+N201 NC: Programminne slettet
+N947 Driftsparameter slettet
+N948 Beskyttet fil!
+N202 Endringer i kalt program
+N203 NØDSTOPP defekt
+N205 NØDSTOPP PLS
+N207 PGM mangler
+N212 FK-referanse til aktuell blokk
+N214 Regnefeil
+N215 Regnefeil
+N216 Kalkulert Q-parameter for høy
+N217 Kalkulerte koordinater for høye
+N218 Kalkulert turtall for høyt
+N219 Kalkulert mating for stor
+N220 Kalkulert verktøynr. for høyt
+N221 Kalkulert label-nummer for høyt
+N222 Kalkulert feilnummer for høyt
+N223 Kalkulert skalering for høy
+N224 Inkr. polarvinkel for stor
+N225 Stigning 0 ikke tillatt
+N226 Regnefeil
+N227 Regnefeil ved APPR/DEP
+N228 Regnefeil ved APPR/DEP
+N229 Regnefeil ved APPR/DEP
+N230 Regnefeil ved APPR/DEP
+N231 Regnefeil ved utfresing
+N232 Regnefeil ved CR
+N233 Regnefeil ved CT
+N234 Regnefeil ved RND/CHF
+N235 Feil skjær.p. Sirkel/sirkel
+N236 Feil skjær.p. Sirkel/linje
+N237 Feil skjær.p. Linje/linje
+N238 Regnefeil ved APPR/DEP
+N239 Feil ved radiuskorreksjon
+N240 Feil i konturlomme
+N241 Feil i konturlomme/konturkjede
+N242 Feil i konturlomme
+N243 Feil i konturlomme
+N244 Feil ved radiuskorreksjon
+N245 Feil ved radiuskorreksjon
+N246 Feil i konturlomme
+N247 Feil i konturlomme
+N250 Regnefeil ved M112
+N251 Feil ved parameterberegning
+N252 Feil ved kontroll av endebryter
+N253 Banekorr. feil avsluttet
+N254 Banekorr. feil startet
+N255 Banekorr. feil startet
+N256 Banekorr. feil startet
+N257 Banekorr. feil startet
+N258 Banekorr. feil startet
+N259 Banekorr. feil startet
+N260 CYCL DEF ufullstendig
+N261 CYCL DEF ikke definert
+N263 Stikkdybde 0 ikke tillatt
+N264 Brukersyklus finnes ikke
+N265 Underprogram finnes ikke
+N266 Underprogram finnes ikke
+N272 Feil blokkoppbygning
+N274 Verktøydefinisjon ikke tillatt
+N275 Verktøydef. uten lengde/radius
+N276 CT etter APPR ikke tillatt
+N277 CHF etter APPR ikke tillatt
+N278 RND etter APPR ikke tillatt
+N279 Avrunding = 0 ikke tillatt
+N280 Fas = 0 ikke tillatt
+N281 Andre avrunding ikke tillatt
+N282 Avrunding etter fas ikke tillatt
+N283 Fas etter avrunding ikke tillatt
+N284 Andre fas ikke tillatt
+N285 DEP LCT etter HELIX ikke tillatt
+N286 APPR LCT før HELIX ikke tillatt
+N287 Ikke tillatt NC-blokk
+N288 Avrunding ikke tillatt
+N289 Avrunding ikke tillatt
+N290 Fas ikke tillatt
+N291 DEP ikke siste blokk
+N292 Ikke avrunding som siste blokk
+N293 Ikke fas som siste blokk
+N294 Flere DEP-blokker ikke tillatt
+N295 DEP ikke tillatt
+N296 APPR ikke tillatt
+N297 APPR ikke første blokk
+N299 Syklus 14 (G37) ikke tillatt
+N300 Verktøyanrop ikke tillatt
+N302 M91/M92 ved 3DROT ikke tillatt
+N303 M114 ved 3DROT ikke tillatt
+N305 M114 med korreksjon ikke tillatt
+N307 Akse dobbelt programmert
+N308 Akse dobbelt programmert
+N309 Akse dobbelt programmert
+N310 Akse dobbelt programmert
+N311 Akse dobbelt programmert
+N313 Plan feil definert
+N314 3D-KORR.: Plan feil definert
+N315 Plan feil definert
+N317 Plan feil definert
+N318 Plan feil definert
+N319 Plan feil definert
+N320 Plan feil definert
+N321 Plan feil definert
+N322 Plan feil definert
+N323 Plan feil definert
+N324 Plan feil definert
+N325 Plan feil definert
+N326 Plan feil definert
+N327 Plan feil definert
+N328 Plan feil definert
+N329 Roteringsakse ikke tillatt her
+N950 Feil akse programmert
+N951 Feil akse programmert
+N330 Blokkert akse programmert
+N331 Feil akse programmert
+N332 Feil akse programmert
+N333 Feil akse programmert
+N335 Roteringsakse ikke programmert
+N337 Ingen roteringsakse programmert
+N338 Ingen hovedakse programmert
+N339 Gantry-slave-akse programmert
+N952 Feil turtall
+N340 Feil turtall
+N341 Feil turtall
+N342 Feil turtall
+N343 Feil turtall
+N344 Turtall for syklus for høyt
+N345 Turtall 0 ikke tillatt
+N346 Feil turtall
+N347 Fas ikke tillatt
+N348 Fas ikke tillatt
+N349 Fas ikke tillatt
+N350 Fas ikke tillatt
+N351 Fas ikke tillatt
+N352 Fas ikke tillatt
+N353 Fas ikke tillatt
+N354 Fas for stor
+N355 Fas for stor
+N356 Fas for stor
+N357 Feil sirkelendepunkt
+N358 C-blokk: Feil sirkelendepunkt
+N359 Feil sirkelendepunkt
+N360 Feil sirkelendepunkt
+N361 Feil sirkelendepunkt
+N362 Label-nr. finnes ikke
+N363 Label 0 finnes ikke
+N364 Label-nr. finnes ikke
+N365 Syklus 14: LBL finnes ikke
+N366 Pol mangler
+N367 Sirkelsentrum mangler
+N368 Verktøyradius for liten
+N369 Verktøyradius 0 ikke tillatt
+N370 Radiuskorreksjon udefinert
+N371 Radiuskorreksjon udefinert
+N372 Radiuskorreksjon udefinert
+N373 Radiuskorreksjon udefinert
+N374 Radiuskorreksjon udefinert
+N375 Kjør over referansepunkter
+N376 Avrunding ikke definert
+N377 Avrunding ikke definert
+N378 Avrunding ikke tillatt
+N379 Avrundingsradius for stor
+N380 Avrundingsradius for stor
+N381 Avrundingsradius for stor
+N382 Avrundingsradius for stor
+N383 Avrundingsradius for stor
+N384 Avrundingsradius for stor
+N385 Avrundingsradius for stor
+N386 Avrundingsradius for stor
+N387 Avrundingsradius for stor
+N388 Spindel må rotere
+N389 Verktøyakse speilet
+N390 Verktøyakse speilet
+N391 Verktøyakse mangler
+N392 Verktøyakse mangler
+N393 Verktøyakse mangler
+N394 Verktøyakse mangler
+N395 Verktøyakse mangler
+N396 Verktøyakse mangler
+N397 Verktøyakse mangler
+N398 Verktøydefinisjon mangler
+N400 Verktøydefinisjon mangler
+N401 Verktøynummer mangler
+N402 Verktøyradius for stor
+N403 Verktøyradius for stor
+N404 Verktøyradius for stor
+N405 Verktøyradius for stor
+N406 Verktøyradius for stor
+N407 Verktøyradius for stor
+N408 Verktøyradius for stor
+N409 Verktøyradius for stor
+N410 Verktøyradius for stor
+N411 Verktøyradius for stor
+N412 Verktøyradius for stor
+N413 Udefinert programstart
+N414 Udefinert programstart
+N415 Udefinert programstart
+N416 Udefinert programstart
+N417 Udefinert programstart
+N418 Udefinert programstart
+N419 Udefinert programstart
+N420 Udefinert programstart
+N421 Udefinert programstart
+N422 Udefinert programstart
+N423 Udefinert programstart
+N424 Udefinert programstart
+N425 Opphev radiuskorr. før PLS-pos.
+N426 Udefinert programstart
+N953 Feil blokkoppbygning
+N427 Feil blokkoppbygning
+N429 For dyp nesting
+N430 For dyp nesting
+N432 For dyp nesting
+N433 Sykl.fortegn motsigende
+N434 Feil fortegn
+N435 Vinkelreferanse mangler
+N436 Vinkelreferanse mangler
+N437 Sirkelradius for liten
+N438 Vinkelreferanse mangler
+N439 Vinkelreferanse mangler
+N440 DEP-avbrytelse ikke tillatt
+N441 DEP-avbrytelse ikke tillatt
+N442 Ingen koordinater etter APPR.
+N443 Område overskredet
+N444 Data for område inneh. feil
+N445 Feil startposisjon
+N446 Tidsbegrensning overskredet
+N447 CYCL-parameter inneh. feil
+N448 Ekstra tillegg større enn dybde
+N451 Skaleringer ikke like
+N454 Sensor svingt for langt ut
+N455 For mange delkonturer
+N456 For mange delkonturer
+N457 For mange delkonturer
+N458 For mange delkonturer
+N459 For mange delkonturer
+N460 For mange delkonturer
+N461 For mange delkonturer
+N462 For mange delkonturer
+N463 For mange delkonturer
+N464 For mange delkonturer
+N465 For mange delkonturer
+N466 For mange delkonturer
+N467 For mange delkonturer
+N468 For mange delkonturer
+N469 For mange delkonturer
+N470 For mange delkonturer
+N471 For mange delkonturer
+N472 For mange delkonturer
+N473 For mange delkonturer
+N474 For mange delkonturer
+N475 Konturprogrammeringsfeil
+N477 Konturprogrammeringsfeil
+N478 Konturprogrammeringsfeil
+N479 Konturprogrammeringsfeil
+N480 Konturprogrammeringsfeil
+N481 Konturprogrammeringsfeil
+N482 Konturprogrammeringsfeil
+N483 Konturprogrammeringsfeil
+N484 Kontur for kompleks
+N485 Kontur for kompleks
+N486 Kontur for kompleks
+N487 Kontur for kompleks
+N488 Kontur for kompleks
+N489 Kontur for kompleks
+N490 Kontur for kompleks
+N491 Kontur for kompleks
+N492 Kontur for kompleks
+N493 Kontur for kompleks
+N954 Adressebokstav flere ganger
+N494 Blokk for lang
+N955 G-kodegruppe flere ganger
+N495 Ukjent G-kode
+N496 N-kode mangler
+N497 CMA-fil: ikke aktiv linje
+N500 For mange korreksjonspunkter
+N501 For mange korreksjonsfunksjoner
+N957 Strømbrudd Strøm- brudd
+N958 Styrespenning for relé mangler Styresp. for relé mangler
+N859 FEIL
+N860 Akse kan ikke vises
+N861 Kan ikke forminskes mer
+N862 Kan ikke forstørres mer
+N863 BLK FORM kan ikke vises
+N864 Verktøyakse i BLK-FORM feil
+N865 Verktøyradius kan ikke vises
+N888 Tekst ikke funnet
+N1086 For mange punkter
+N1097 Toleranseverdi for høy
+N1106 Slett hele syklusen: DEL!
+N1107 Blokk ikke tillatt i syklus!
+N1125 Ref. i blokk %.6s : ikke DEL
+N1126 Deaktiver M112
+N1141 Opphev også RL/RR med M120LA=0
+N1142 Radiuskorreksjon mangler
+N1143 Radiuskorreksjon ikke tillatt
+N1144 R+/R- ved M120 ikke tillatt
+N1145 RND ved M120 ikke tillatt
+N1146 Fas ved M120 ikke tillatt
+N1147 Analogspenning ikke definert
+N1148 Analogspenning ikke entydig
+N1149 Feil inntasting i MP%.4u
+N1150 Touch probe ikke klar %.3s
+N1151 Gjentagelse m. M120 ikke tillatt
+N1154 Ugyldig filnavn
+N1170 Målesensorsystem valgt
+N1171 Kontaktsensorsystem valgt
+N1172 Kalibrer sensorsystem
+N1178 3DROT aktiv: Bruk akseknapper
+N1182 Feil inntasting MP%.4u.%u
+N1186 Filformat endret
+N1187 M89 ikke tillatt
+N1192 Vinkel ikke tillatt
+N1193 TOOL.T: Angi antall skjær
+N1266 Feil blokkoppbygning
+N1521 PLS-feiltab. ikke konvertert
+N1523 PLS: Ingen feiltab. valgt
+N1524 PLS: Det finnes ingen feiltab.
+N1525 PLS: Feiltab. ikke .PET
+N1527 PLS: Feiltab. ikke funnet
+N1528 PLS: Feiltab. feil format
+N1568 Feil akser i .PNT-fil
+N1590 Avst.verdi for liten
+N1682 TOOL.T: LCUTS/ANGLE mangler!
+N1745 Ingen tilgang
+N1749 Feil nummer for FN17/FN18
+N1749 Feil nummer for FN17/FN18
+N1750 PLS: Feil ved modulanrop
+N1789 Verktøy låst
+N1790 Feil områdesyklus
+N1791 Punktavstand for stor
+N1792 Feil linjeakse
+N1793 Feil kolonneakse
+N1794 Feil vinkelakse
+N1795 Feil akse i områdesyklus
+N1796 Feil linjeavstand
+N1797 Syklusområde ikke definert
+N1798 Område utenfor endebryter
+N1799 Sikker høyde for liten
+N1807 Ugyldig filnavn
+N1809 M114 med M116 ikke tillatt
+N1810 Systemlager fullt
+N1845 Oppdater systemdata!
+N1848 Katalog er ikke tom
+N1850 Syklus 4(G75/G76): Feil akse
+N1851 M130 ikke tillatt
+N1852 M130 med M114 ikke tillatt
+N1853 M130 ikke tillatt
+N1854 M130 med korreksjon ikke tillatt
+N1855 Ingen bearb.syklus definert
+N1856 Pendlende mating mangler
+N1857 Verktøyradius for stor
+N1892 FN20/D20: Feil betingelse
+N1900 Instrument allerede i bruk
+N1901 Stasjon finnes ikke
+N1914 Verktøybrudd
+N2039 Feil nullpunktnummer
+N2040 Sporbredde for liten
+N2041 Lomme for liten
+N2042 Q202 ikke definert
+N2043 Q205 ikke definert
+N2044 Angi Q218 større enn Q219
+N2045 CYCL 210 ikke tillatt
+N2046 CYCL 211 ikke tillatt
+N2047 Q220 for stor
+N2048 Angi Q222 større enn Q223
+N2049 Angi Q244 større enn 0
+N2050 Angi Q245 ulik Q246
+N2051 Angi vinkelområde < 360°
+N2100 Palett ikke skiftet
+N2101 PLC:\NCMACRO.SYS mangler!
+N2102 'PALETT' i NCMACRO.SYS mangler
+N2103 Palettangivelse mangler
+N2186 Dreiing: Verktøyakse mangler
+N2211 TOOL CALL ved M128 ikke tillatt
+N2212 M91/M92 M128 v/ M128 ikke tillat
+N2213 MP75XX ikke definert
+N312 Høydeakse ikke tillatt her
+N2222 Fil ikke i OEM.SYS
+N2223 Feil filtype
+N2224 Feltnavn ikke funnet
+N2225 Fil tom
+N2226 Materialtab. ikke funnet
+N2227 Skjærematerialtab. ikke funnet
+N2228 Materiale ikke valgt
+N2229 WMAT-TMAT-kombinasjon mangler
+N2230 Skjæredatatab. ikke valgt
+N2231 Blokk ved M112 ikke tillatt
+N2232 Korriger feilblokk
+N2233 FK-blokk kan ikke velges m. GOTO
+N2238 Angi Q223 større enn Q222
+N2243 ANGLE i TOOL.T for liten
+N2253 Koble fra styrespenning!
+N2254 Relé: Hvilekontakt åpen?
+N2255 Kople til styrespenning
+N2273 TS: Pålitelighetsområde overskr.
+N2284 Parallelldrift ikke mulig
+N2285 Akse blokkert
+N2288 Verktøyholder defekt!
+N2300 Kontroller skjæredata
+N2315 Q214: 0 ikke tillatt
+N2316 PLS: Hendelsesfil mangler
+N2317 PLS: For mange hendelser
+N2319 Verktøytypetab. ikke funnet
+N2320 CDT-bane ikke funnet
+N2321 For mange *.CDT-filer
+N2336 S-inngang %d ulik
+N2339 Ingen nettverksforbindelse
+N2342 FN17: Tildelingsverdi ikke till.
+N2344 Angi element!
+N2345 Verktøy ikke definert
+N2375 M112 med M128 ikke tillatt
+N2377 S: Endebryter %.2s+
+N2378 S: Grov pos.feil L %.2s
+N2377 S: Endebryter %.1s-
+N2384 Det finnes ingen elementer
+N2385 Obligatorisk felt slettet
+N2386 Maks. Linjelengde overskredet
+N2387 Feil ved konvertering
+N2500 Bruk KJØR TIL BLOKK N
+N2504 Kjøreretning ikke definert
+N2505 Ingen nullpunkttabell aktiv
+N2506 Posisjonsfeil: Sentrum 1. akse
+N2507 Posisjonsfeil: Sentrum 2. akse
+N2508 Boring for liten
+N2509 Boring for stor
+N2510 Tapp for liten
+N2511 Tapp for stor
+N2512 Lomme for liten: Gjør om 1.A.
+N2513 Lomme for liten: Gjør om. 2.A.
+N2514 Lomme for stor: Kassering 1.A.
+N2515 Lomme for stor: Kassering 2.A.
+N2516 Tapp for liten: Kassering 1.A.
+N2517 Tapp for liten: Kassering 2.A.
+N2518 Tapp for stor: Gjør om 1.A.
+N2519 Tapp for stor: Gjør om 2.A.
+N2520 Målesyklus: Feil størstemål
+N2521 Målesyklus: Feil minstemål
+N2522 TCHPROBE 426: Feil størstemål
+N2523 TCHPROBE 426: Feil minstemål
+N2524 TCHPROBE 430: Dia. for stor
+N2525 TCHPROBE 430: Dia. for liten
+N2609 M128 ved 3DROT ikke tillatt
+N2610 M114 med M128 ikke tillatt
+N2611 M128 med RR/RL ikke tillatt
+N2617 Ingen måleakse definert
+N2618 Formatfeil dato eller tid
+N2621 M128: Ikke tillatt sette NULLPKT
+N2635 Verktøybruddtoleranse overskr.
+N2636 Opphev radiuskorr. før M128
+N2642 Vekselomformer ikke driftsklar
+N2644 M120: Ingen LOOK AHEAD mulig
+N2645 Sikker høyde Q260<målehøyde Q261
+N2646 Maskintast aktivert
+N2647 Relé: Hvilekontakt lukket?
+N2655 Spindelmotorstrøm ulik 0
+N2657 Akse %.2s motorstrøm ulik 0
+N2662 Merking ikke mulig
+N2663 Innsetting ikke mulig
+N2664 Mellomlager tomt
+N2665 Ingenting er merket
+N2668 Korriger feil blokkformat
+N2691 LN: Orientering ikke mulig
+N2692 M128 med LN-blokk ikke tillatt
+N2700 Test utkoplingskanaler inaktiv
+N2711 S-kontrollsum inneh. feil
+N2733 For mange kolonner
+N2734 Ingen aksekolonne valgt
+N2735 M128 ikke tillatt
+N2736 Ingen .TAB-filer åpne?
+N2737 TAB: Feltnavn for langt
+N2738 TAB: Felt ikke numerisk
+N2739 TAB: For mange feltnavn
+N2745 Feil ref.posisjon %.2s
+N2746 Feil inntasting MP%u
+N2747 Linjen er skrivebeskyttet
+N2748 Målesyklus: M114 ikke tillatt
+N2749 Målesyklus: M128 ikke tillatt
+N2750 M114, M128, 3DROT ikke tillatt
+N2752 MP: Angitte verdier motstridende
+N2757 Kommandobufferlager fullt
+N2758 Kommando ulik
+N2760 FS-funksjon ikke utført
+N2768 Bekreftelsestast håndratt aktiv.
+N2769 Ufullstendig syklus slettet
+N2770 Mellomlager tomt
+N2771 Skriving ikke tillatt
+N2772 Slett kontekst komplett: NO ENT
+N2773 Ikke tillatt å endre kontekst
+N2774 Ingen polarkoordinater mulig
+N2775 Endre kontekst: Trykk på ENT
+N2776 Angiv. som kontekst ikke tillatt
+N2777 Kontroller parenteskombinasjon
+N2820 MC posisjonsavvik for stort %.2s
+N2824 TT dreid kalibrering
+N2825 TT ikke dreid kalibrering
+N2826 TT ikke parallell m. verktøyakse
+N2827 Feilaktig bremsing %.2s
+N2828 Tid for pos.kontroll for kort
+N2829 Angi Q247 ulik 0
+N2830 Angi verdi Q247 større enn 5
+N2834 EnDat med feil %X %.2s
+N2837 FK-blokk ikke konvertert
+N2849 Kople til spindel
+N2853 Synkronisert overvåking %.2s
+N2858 Ingen kontrollrettighet
+N2868 TT: Forposisjonere akser
+N2945 M91/M92 ikke tillatt
+N2969 Nødvendig verdi mangler
+N2993 Internettadresse inneh. feil
+N2995 PLS-NPV ikke tillatt
+N2996 Områdeskift ikke tillatt
+N3002 Spesialdrift ikke tillatt
+N3006 Utfør verktøyskift
+N3012 M120 LA ikke tillatt
+N3013 Sirkelinterpolasjon ikke tillatt
+N3025 Palettlinje blokkert!
+N3026 Radiuskorreksjon ikke mulig!
+N3055 Angi type fresing Q351 ulik 0
+N1149 Feil inntasting i MP%.4u
+N958 Styrespenning for relé mangler
+N1182 Feil inntasting MP%.4u.%u
+N3063 3DROT: ingen beskrivelse
+N3065 Tilbakest. M114/M128/CYCL19
+N3081 Reduser gjengedybde
+N3187 Ingen PNT-filer valgt
+N3188 PNT: Sikkerhetshøyde for lav
+N3189 CYCL CALL PAT ikke tillatt
+N3192 Savner kalibreringsdata
+N3193 Toleranse overskredet
+N3199 Spindelskift ikke tillatt
+N3205 Automatisk start ikke aktivert
+N3206 Makro %.20s mngl.
+N2720 MC amplitude for høy %.2s
+N44 MC amplitude for lav %.2s
+N45 MC frekvens for høy %.2s
+N2687 MC NC-temp. utenfor toleranse
+N2612 MC S-inngang %d ulik 0
+N14018 MC stillstandsovervåking %.2s
+N57 CC endebryter %.2s-
+N55 CC endebryter %.2s+
+N3214 Tabellverdier endret
+N3218 PLS-funksjon ikke tillatt
+N3220 Toleranse i MP6510 for lav
+N3221 Kalibreringsradius for stor
+N3231 Feltet PAL/PGM mangler
+N3232 Feil %d ved lasting av språk
+N3234 Forhåndsvalg av verktøy pågår
+N3235 Negativ mating
+N3236 Frakoplingspos. %.2s ulik ENDAT
+N3239 Valgt programvare ikke lastet
+N3243 Ingen verktøyakse programmert
+N3245 M-funksjon ikke tillatt
+N3354 Funksjon ikke tillatt
+N3356 Kinematikktabell med feil
+N3357 MP-delfil med feil
+N3441 M144 ikke tillatt
+N4957 Inntastede verdier motstridende
+N3532 Feil inntasting i MFUNCT.TAB
+N3927 Søking ikke tillatt
+N3928 M112 ved M144 ikke tillatt
+N4175 Palettlinje inneh. ferdigemne
+N4176 Makro oppspenningsskifte mangler
+N4177 Ugyldig geometrikontekst
+N4197 Oppstart mid-program aktiv
+N4276 ORIENTERING ikke tillatt
+N4491 Mid-programstart ikke mulig
+N4492 Bekr.tast verktøyskifter aktiv
+N4571 Kontroller dybde fortegn!
+N4572 Inntastet tegn ikke tillatt
+N4573 Liten bokstav ikke tillatt
+N4574 Bokstav ikke tillatt
+N4575 Tall ikke tillatt
+N4880 For lite systemminne
+N4881 PLS-program ikke funnet
+N4882 M140 ikke tillatt
+N4903 Radius-tillegg ikke tillatt
+N4905 Prosessor 1 temperatur for høy
+N4906 Prosessor 2 temperatur for høy
+N4935 Aktuell posisjon lagret%.2s
+N5073 LSV2: Linje avbrutt
+N5074 LSV2: Overføringsfeil
+N5075 LSV2: Overføringsfeil
+N5076 LSV2: Overføringsfeil
+N5077 LSV2: Timeout-feil
+N5078 LSV2: Overføringsfeil
+N5079 LSV2: Timeout-feil
+N5080 LSV2: Timeout-feil
+N5081 LSV2: Sendefeil
+N5099 MC minne mangler
+N5225 Feil programvareversjon
+N5228 Mating = 0 ikke tillatt
+N5236 Advarsel TNC-temperatur %d°C
+N5242 PLS-program ikke konvertert
+N204 TNC-temperatur for høy %d°C
+N5286 Feil: Profibus-konfigurasjon
+N5287 Profibus: Maskinvarefeil
+N5288 Profibus: Initialiseringsfeil
+N5312 Remanente PLS-data slettet
+N5338 Funk.tastprosj. ikke konvertert
+N5366 Kan ikke legge til linje
+N5367 T %u i linje %u allerede i bruk
+N5368 LBL %u i linje %u i bruk
+N5369 Ingen akseutvalg finnes
+N2612 CC%d S-inngang %d ulik 0
+N2687 CC%d NC-temp. utenfor toleranse
+N2688 CC%d + 5 V utenfor toleranse
+N5434 Funksjon ikke tilgj.
+N5479 Magasinregler ikke konvertert
+N5484 Aksevinkel ulik svingvinkel
+N5566 Ikke bytt referansesystem
+N5567 MC feil antall FS-CC
+N5568 Maks. antall tegn overskredet
+N5569 Verdi utenfor innlesingsområdet
+N5570 For mange desimaler
+N5571 Fortegn ikke tillatt
+N5572 Bare heltallsverdi tillatt
+N5573 Q ikke tillatt: Angi tall
+N5574 Inkrementalinnlesing ikke till.
+N5575 For mange M-funksjoner
+N5576 For mange akser programmert
+N5577 Akse dobbelt programmert
+N5578 Dobbelt element / ikke tillatt
+N5579 Inndataene er ufullstendige
+N5580 DIN/ISO: Blokknummer N mangler
+N5581 Nødvendig element mangler
+N5582 Feil i syntaks
+N5583 Ingen måleverdi lagret %.2s
+N5617 Nøkkelord ikke kjent
+N5618 Syntakselement kan ikke endres
+N5619 PGM-hode kan ikke endres
+N5627 Still MP1356.%d på %.4f
+N5628 For mange akser programmert
+N2652 CC%d omformer spindel RDY=0
+N2653 CC%d omformer akser RDY=0
+N2654 CC%d omformer spindel RDY=1
+N2656 CC%d omformer akser RDY=1
+N2743 CC%d FS-kontrollsumfeil
+N2759 CC%d kommando ikke kvittert
+N2819 Data med feil fra CC%d
+N2821 Ingen plassverdi fra CC%d
+N2822 Ingen MC-plassverdi på CC%d
+N2823 Testede akser MC/CC%d ulike
+N2831 CC%d feil includefilversjon
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 CC%d S-kontrollsumfeil
+N5631 MC kommando %3d ikke kvittert
+N5632 MC og CC passer ikke sammen
+N5635 Kanal %d kan ikke vises
+N5641 Vernedeksler åpne
+N5651 Verktøyakse mangler
+N5655 MC utestet akse %.2s startet opp
+N5671 Kontroller posisjonsgiver %.2s
+N5672 Bruk forh.innst.tabellen.
+N5673 Q303 i målesyklus udefinert
+N5693 Verktøyakse ikke tillatt
+N5699 Kalkulert verdi er feil
+N5700 Selvmotsigende målepunkt
+N5709 Feil på sirkeldata
+N5712 Passord er ikke funnet
+N5713 Passord er ikke angitt
+N5714 Passord for langt
+N5715 Passordet er kodet
+N5757 Angi forh.innst.: Akse sperret
+N5759 Feil angitt sikker høyde
+N5969 Vi du slette NC-blokken? DEL!
+N5970 Aksebokstav ikke tillatt
+N5971 Kan ikke avbryte block skip
+N5972 Streng ikke avsluttet
+N6018 Dobbelt referansemottak aktiv
+N6027 Feil akse programmert
+N6049 PET-tabell: For mange linjer
+N6052 Selvmotsig. nedsenk.måte
+N6055 Bearbeidingssyklus ikke tillatt
+N6066 Roter.aksetoleranse ikke tillatt
+N6069 MC PWM-utgang finnes ikke
+N6072 Kanten av bildet er nådd
+N6079 M128 ikke tillatt
+N6080 M144 ikke tillatt
+N6081 MC SOM_4 ikke mulig
+N6082 MC-driftstype ikke mulig
+N6086 Lagre feil, overv.liste
+N6087 Åpne feil, overv.liste
+N6088 Åpne feil, TEMP.WLT
+N6089 Siste overv.liste mangler
+N6090 Utvalgliste finnes ikke
+N6091 Utvalgsliste tom
+N6094 Feil nøkkeltall
+N6093 Ingen sikre akser/spindler
+N6099 Ugyldig verdi
+N6100 Ugyldig operand
+N6101 MC SOM_4 ikke aktivert
+N6102 Kolonneendring ikke mulig
+N6103 Forh.innst.nummer finnes ikke
+N6105 MC SOM_2 bare én akse tillatt
+N498 Fil %.26s mangler
+N206 PGM %.28s mangler
+N6118 MC SOM_4 Trykk på bekreftelsestast
+N6182 Profibus: Konfigurasjonsfeil
+N6183 Profibus: PCI-maskinvarefeil
+N6184 Profibus: Fil-/lagringsfeil
+N6187 For dyp nesting
+N6188 For dyp nesting
+N6189 5 V for høy
+N6190 5 V for lav
+N6193 Feil på spline-startpunkt
+N6212 Lagring av akt. verdi ikke mulig
+N6236 PLS-programmet ble stoppet
+N6264 Parallellgrafikk ikke mulig
+N6291 Kjør spindel REF
+N6294 SG-MP på PLS endret
+N6307 T%s: Rest. levetid for kort
+N6308 Verktøy %s ikke definert
+N6309 Dataoverf.: Ugyldige tegn
+N6312 MP-delfil mangler
+N6408 MP-delfil med feil
+N6409 PLS-strobe ikke tillatt (%s)
+N6410 PLS-strobe ulovlig syklus %d
+N6411 Ulovlig å koble om endebryter
+N6412 Ikke mulig å lagre forh.innst.
+N6413 Ikke mulig å endre kinematikk
+N6414 Forutg. kjøring inkonsist. %s
+N7222 Linjen er skrivebeskyttet
+N7784 Feil ved skriving i tabell
+N7799 MC bremsetest ikke utført
+N7800 MC lukking +24V på bremseledning
+N7801 MC lukking 0V bremseledning %.2s
+N7803 Sett nullpunkt vha. funksj.tast.
+N7815 Maskin ikke initialisert
+N7922 Mangler nettspenning på X44
+N7923 MC WZM AutoStart ikke mulig
+N7935 Binærfil på ekstern stasjon
+N7936 Målkat. er lik kildekat.
+N7937 Målfil er lik kildefil
+N7938 MP2257.%d feil (ID=$%08X)!
+N7964 TCPM: Retningsvektor selvmots.
+N7969 Anvendelse %s ikke mulig
+N7971 Prosess ikke utførbar
+N7972 Målverktøy finnes ikke
+N7973 Kan ikke gi nytt navn
+N7974 Kan ikke endre filtype
+N7975 Ikke plass på stasjonen
+N7977 Filsystem I/O-feil
+N7978 Filtilgang avbrutt
+N7979 For mange filer åpnet
+N7980 Linje/blokk for lang
+N7981 Fil finnes ikke
+N8001 Ingen sanntidsanvendelse aktiv
+N8002 Feil i sanntidsanvendelse
+N8005 Kontekstendring bare igangsetter
+N8032 LSV-2: For mange forbindelser
+N8043 Kompilering ikke tillatt
+N8044 PLS-binærfil valgt
+N8049 Avhengig fil skrivebeskyttet
+N8071 Ikke mulig å skifte vindu
+N8072 Skrivebesk. klassifiseringsfil
+N8090 Pendling ikke mulig
+N8110 NC-program avbrutt
+N7798 Systemfeil %d
+N8114 0x01 funksjon ikke gjenkjent
+N8115 0x02 funksjon allerede startet
+N8116 0x03 regulator er ikke aktiv
+N8117 0x04 regulator er aktiv
+N8118 0x05 puls er for høy
+N8119 0x06 ukjent parameter
+N8120 0x07 feil v. lesing av DAC-verdi
+N8121 0x08 seriell EEPROM: Ingen bekreftelse
+N8122 0x09 seriell EEPROM: SDA står på 0 eller 1
+N8123 0x0A data mangler
+N8124 0x0C funksjon sperret
+N8125 0x0D feil driftstype for TNC
+N8126 0x10 udefinert feil (se feilbuffer)
+N8128 DSP-kommandostreng for lang
+N8129 Ingen data mottatt
+N8130 Feil på mottatte data
+N8131 Ingen dim.data tilgjengelig
+N8132 Ubestemt feilårsak
+N8133 Maskinparameter drevregulator ikke tilgjengelig
+N8134 Motortype støttes ikke
+N8135 Ingen HEIDENHAIN-kraftdel
+N8136 Feil reguleringsenhet
+N8140 Melding ikke definert
+N8141 Melding ikke forventet
+N8142 Feilmelding fra drevregulator
+N8213 Inntastet verdi feil
+N499 Fil %.26s mangler
+N8231 FUNKSJON TCPM ikke mulig
+N8284 Innfør. el. typeskilt mangler: %s
+N8290 Overskridelse av arbeidsrom
+N8292 Strømforsyning PL 510 mangler
+N8293 Kortslutning på PL 510-utgang
+N8401 Ukjent PLS-modul %d
+N8494 CC%d tidsavbr. versjonssammenl.
+N8495 CC%d tidsavbr. SMP-kontrollsum
+N8591 PLANE-fkt.: TURN ikke tillatt.
+N8643 CYCL CALL POS-blokk ufullstendig
+N8644 Inkrementalprogr. ikke tillatt
+N8658 Still inn nullpkt. i alle akser
+N8757 MC 422B vifte defekt
+N8758 Denne EnDat-OEM-versjonen støttes ikke.
+N8892 Koblingsfunksjon ikke utførbar
+N502 Roteringsretn. mangler
+N503 Avrundingsradius for stor
+N504 Innles. selvmotsigelig
+N505 Konturdefinisjon ikke tilstrekkelig
+N506 FPOL mangler
+N507 TNC-programpost ikke tillatt så lenge konturen ikke er oppløst
+N508 Konturen er oppløst: FSELECT-post er ikke tillatt
+N509 Avslutning lukket kontur – ingen inkr. Koordinater tillatt
+N510 Avrunding eller fasing er ikke tillatt her
+N511 Avrunding/fasing på tangentiell overgang ikke mulig
+N512 Linje før eller etter avrunding/fase har lengden 0
+N513 Fase er mulig bare mellom to linjer
+N514 Fase for stor
+N515 Banekorrig. påbegynt feil: NC-blokk må være en linje
+N516 Banekorrig. avsluttet feil: NC-blokk må være en linje
+N517 Kontur for kompleks. Flere data nødvendig
+N518 FK: Aritmetikkfeil
+N519 FK-blokk ikke tillatt her
+N522 Referanse på angitt post ikke tillatt
+N523 Ref. på CC-blokk ikke tillatt
+N525 For tilleggspunkter angis begge koordinater
+N526 FK-grafikk i parallelldrift ikke mulig
+N527 Emne for stort
+N528 Vindu for stort
+N529 Vindu for lite
+N530 Vinduet kan ikke forskyves ytterligere
+N9785 Ingen bevegelse ble registrert. Dermed er ikke retningsavlesing mulig.
+N10248 NC-funksjon ikke tillatt
+N10521 Starttidspunkt passert
+N10664 Fil for verktøyinnsats sperret
+N10665 Programmeringsgrafikk ikke mulig
+N10672 SPAWN/SUBMIT blokkerer kontaktbytte
+N10710 PROFIBUS-innganger ikke oppdatert
+N10711 PROFIBUS-innganger ikke oppdatert
+N10942 Ufullstendig visning
+N10949 Sidemating for liten
+N10950 Overlappingsfaktor for høy
+N11044 Sylinderradius 0 ikke tillatt
+N11045 Kølisteoverflyt: %s
+N11114 Systemfeil
+N11115 Systemfeil
+N11116 Systemfeil
+N11117 Systemfeil
+N11232 Driftstypev. ikke mulig
+N11275 Filtype mangler/inneh. feil
+N11391 Tast sperret
+N11410 Global Q-parm. ikke definert
+N11411 Global Q-parm. def. to ganger
+N11412 Globale parametere mangler
+N11413 smarT.NC ikke mulig
+N11442 To roteringsplass. ikke tillatt
+N11453 Filnavn finnes allerede
+N11454 Programnavn finnes allerede
+N11559 M120: Ingen LOOK AHEAD mulig
+N11574 M114 uten maskingeometri
+N11575 Aksegeometri ikke fastlagt
+N11576 Dreiebordkoordinater mangler
+N11577 Kinematikk er ikke definert
+N11578 Vinkelberegning ikke mulig
+N11579 Kinematikktabell mangler
+N11580 Aktiver 3DROT
+N11581 PLANE-funksjon ikke mulig.
+N11582 CC%d: program %s starter ikke
+N11585 PLS-strobe ikke tillatt (M%d)
+N11586 Testgrafikk ikke mulig
+N11588 PGM redigeres i smarT.NC
+N11589 PGM redigeres parallelt
+N11593 Valg for regul.enhet mangler
+N11595 Kan ikke slette fil
+N11597 Feil på PL-grensesnitt
+N11598 PLS-partisjon: For lite minne
+N11601 CC%d: TIMEOUT CMD = 0x%02X
+N11750 Fil finnes ikke
+N11751 Velg fil på nytt
+N11752 Etikettnavn allerede i bruk
+N11753 Etikettnavn i bruk flere ganger
+N11754 Etikettnavn finnes ikke
+N11755 Etikettnavn %u i linje %u i bruk
+N12214 USB-enhet kan ikke fjernes
+N12215 USB-enhet fjernet uten å lukkes
+N12283 Ingen spissvinkel definert
+N12284 Data selvmotsigelig
+N12358 AVBRUDD i blokk %u (%u %%)
+N12759 Gen av trevisning avbrutt
+N12760 Vifte i MC-kabinett defekt
+N12767 Reentrance impossible
+N12768 For mange enheter programmert
+N12770 Strømforsyning 3,3 V for høy
+N12771 Strømforsyning 3,3 V for lav
+N181 Uformatert definisjon inneh. feil
+N520 FCT- eller FLT-blokk er ikke tillatt her
+N521 Inkremental vinkelref. ikke tillatt her
+N524 Angi begge koordinatene for FPOL
+N12822 Kan ikke avslutte funksjonen (tidsavbrudd)
+N12823 Angi verktøyradius større enn 0
+N12824 Mer enn 5 akser på PLS-pos.
+N12830 Notposisjon 0 ikke tillatt
+N12837 Kontur-UP: Bare 1 akse program.
+N12857 Tillatt PGM-lengde overskredet
+N6091 Ingen symbolsk programmering
+N13066 Kan ikke lagre forh.innst.
+N13072 Nullpunktstilling ikke tillatt
+N13147 PLS-program kjører ikke
+N4 Feil i databehandling 3
+N9 Feil i databehandling 8
+N11 Feil i databehandling A
+N12 Feil i databehandling A
+N14 Feil i databehandling A
+N16 Feil i databehandling B
+N19 Feil i databehandling E
+N29 Feil i databehandling O
+N33 Kontrollsumfeil A
+N34 Kontrollsumfeil B
+N40 Bevegelsesovervåkingsfeil %.2s A
+N43 Pos.differanse posisjon <> turtall for stort %.2s
+N13741 Linje %d: tegn ; mangler
+N13742 Linje %d: ant. nøkkelord
+N13743 Linje %d: feil nøkkelord
+N13744 Linje %d: ukjent kommando
+N13745 Linje %d: feil formatvalg
+N13746 Linje %d: ufullst. formatvalg
+N13747 Linje %d: for langt nøkkelord
+N13748 Linje %d: indeks mangler
+N13749 Linje %d: ] for indeks mangler
+N13750 Maskefil ikke funnet
+N13751 Utskrifsfil kan ikke opprettes
+N13154
+N13155 Kollisjonsadvarsel kvittert
+N13156 Profibus-fastvare foreldet
+N13302 MPFRAGMENTFIL finnes ikke
+N13340 Inntastet verdi feil
+N13348 DHCP: Inndata ikke tillatt
+N13381 Ikke tillatt tilbakest. kolonne
+N13387 Mating ulik 0 angitt
+N13475 Funksjon ikke tillatt
+N13476 Utklippstavlen er tom!
+N13477 MC bremseaktivering defekt
+N13478 MC bremseaktivering defekt %2s
+N13486 Turtall utenfor områdegrensen %d%%
+N13487 USB: TNC støtter ikke enheten
+N13752 Redigering ikke tillatt
+N13753 TOOL.T: Definert antall tenner=0
+N13758 M118 ikke tillatt
+N13761 Redigering ikke tillatt
+N13769 Uregelmessig akse %.2s: Stillstand
+N13816 Funksjon ikke tillatt
+N13825 Funksjonen er ikke aktivert
+N13827 Feil på DXF-fil
+N13838 Autom. følersperre opphevet
+N13945 Funksjon ikke tillatt
+N13957 Redigering ikke tillatt
+N13958 M136 med FU/FZ ikke tillatt
+N13960 smarT.NC ikke tillatt
+N13961 Inkrementalinngang ikke tillatt
+N14017 Ikke tillatt å bytte til Q399
+N14019 CC%d, tidsavbrudd ved strømmåling
+N14020 MC, feil S-driftsmodus
+N14022 CC, maskintast aktivert
+N14023 MC, bekreftelsestast MB aktivert
+N14024 CC, bekreftelsestast MB aktivert
+N14025 CC, bekreftelsestast håndratt aktivert
+N14026 CC, bekreftelsestast VKTM aktivert
+N14027 CC, beskyttelsesdører åpne
+N14032 Kalkulerte koordinater for høye
+N14156 Ingen verktøyakse definert
+N14253 OBS: Posisjon.høyde definert
+N14254 MC, bekreftelsestast aktivert
+N14255 CC, bekreftelsestast aktivert
+N14299 Ikke mulig å konvertere program
+N14434 Feil områdedefinisjon
+N14479 Ingen nullpunktstabell valgt
+N14486 M140 MB MAX ikke tillatt
+N14487 Maks. tegnlengde overskredet
+N14518 Verktøynummer ikke tillatt
+N14519 Verktøynavn ikke tillatt
+N14520 Ikke tillatt å dele med 0
+N14521 Ikke tillatt å dra ut rot
+N14522 Logaritme ikke tillatt
+N14523 Tangens ikke tillatt
+N14525 Funksjon sperret av FCL
+N14550 Invers cosinus: verdi > 1
+N14551 Invers sinus: verdi > 1
+N15439 M128:Forh.innst.endr. i. tillatt
+N15465 Ingen data tilgjengelig
+N15466 Fil finnes i. eller inneh. feil
+N15491 LSV2: Holdepunkt ikke tillatt
+N15614 Ingen proberetning definert
+N15658 Turt. S st. enn NMAX fra TOOL.T
+N15672 Stasjonsnavnene kan ikke endres.
+N15673 Stasjonen kan ikke kopieres.
+N15674 Stasjonene kan ikke slettes.
+N15675 TNC kan ikke åpne filtypen.
+N15687 MC, bevegelseskontroll %.2s
+N15688 MC, bremsing inneh. feil %.2s
+N15691 GOTO-funksjon ikke tillatt
+N15766 Verktøyakse ikke tillatt
+N15767 Tillatt arbeidsområde overskredet %.2s
+N15923 PLS-minnelayout er endret
+N15967 Ikke mulig å anrope hjelpesystem
+N15973 M141 ikke tillatt
+N16007 Parallelldrift ikke mulig
+N16010 Personvernmodulen støttes ikke
+N16198 PLS-minnelayout ble ikke initialisert
+N16362 MC-vekselomformer RDY=0 %.2s
+N16363 MC-vekselomformer RDY=1 %.2s
+N16407 Dataoverføring ikke mulig
+N16408 Akseskift ikke mulig
+N16409 Akseskift ikke mulig
+N16410 Akseskift ikke mulig
+N16411 Inndatagrensen overskredet
+N16412 Ingen endring tillatt
+N16413 Udefinerbar feil
+N16561 AFC: spindeloverbelastning
+N16563 Posisjonsenkoder %.2s: for høy amplitude
+N16564 Posisjonsenkoder %.2s: for lav amplitude
+N16565 Posisjonsenkoder %.2s: for høy frekvens
+N46 Posisjonsenkoder %.2s defekt
+N16586 PLANE AXIAL ikke tillatt
+N16593 MC-bremsetest ikke aktivert
+N16623 Tabelldefinisjon inneh. feil
+N16718 Spindelturtall utenfor toleranseområde %.2s
+N16798 Globale PGM-innst. deaktivert
+N16800 smarT.NC: filtype ikke tillatt
+N16830 Ingen endr. under programkjøring
+N17063 TNC kan ikke behandle makroen
+N17161 ENDAT, interpolasjon ikke mulig %.2s
+N17162 Forespørsel el. typeskilt ikke mulig
+N17163 Feil TRC-kompensering %.2s
+N17167 AFC i NCMACRO.SYS mangler
+N17207 MC: feil S-driftsstaus
+N17384 For lite hovedminne
+N17386 Palettbearbeiding ikke tillatt
+N17387 M128 ikke tillatt
+N17390 PLANE-funksj.: MOVE i. tillatt
+N17662 Aktivt arbeidsområde inneh. feil
+N17663 DCM: Statusinnst. inneh. feil
+N17735 MC, avvik nom./akt. verdier er for stort %.2s
+N17938 Forbindelsen EnDat er ikke mulig
+N18060 3DROT ikke tillatt
+N18075 MC 1. overskridelse endebryter %.2s+
+N18076 MC 1. overskridelse endebryter %.2s-
+N18145 Anropt PGM er endret
+N18146 Flere merker er ikke tillatt
+N18147 Funk. er ikke mulig for katalog
+N18148 PGM-besk. er ikke satt/kan opph.
+N18149 Filtype beskyttet av MP
+N18150 ÅPNE MED er ikke tillatt
+N18156 Kan ikke fjerne USB-enhet
+N18157 Ingen USB-enhet er merket
+N18220 PL-konfigurasjonen inneh. feil
+N18280 %s
+N59 FN 14: Feilkode %s
+N18303 CC%d akseomformer RDY=0 (sikkerhetsrelé)
+N18304 CC%d akseomformer RDY=1 (sikkerhetsrelé)
+N18325 MC S-programvarefeil %d
+N18371 MC-starttest ikke mulig for utkoblingskanaler
+N18401 Intern feil ved kopiering.
+N18629 Programvarealt. ikke aktivt
+N18630 Kan ikke gjenopprette kinematikk
+N18631 Funksjon ikke tillatt
+N18632 Selvmotsigende råemnemål
+N18861 HSCI: Maskinvarefeil
+N18862 HSCI: Initialiseringsfeil
+N18891 M91 eller M92 ikke mulig
+N18903 Delforstyring ikke tillatt
+N18904 Katalog finnes ikke
+N18912 CC%d akseomformer RDY=1 (sikkerhetsrelé)
+N18913 CC%d akseomformer RDY=0 (sikkerhetsrelé)
+N18914 Feil ved oppretting av syklus
+N18915 HSCI: IOC-fil mangler
+N18928 M128 ikke tillatt.
+N19236 LSV2-overføring avbrutt.
+N19292 AFC: Ingen referanse registrert
+N19293 TOOL.T: for mange skjær
+N19398 Måleposisjon ikke tillatt
+N19411 PLC-programmet kan ikke startes
+N19440 M-funksjonsmakro ikke tillatt
+N19448 DCM: Verktøystatus ukjent
+N13827 Anvendelse 'DXF_CONVERTER' ikke mulig
+N19501 Feil ved utføring av selvtest
+N19502 Tidsoverskridelse ved selvtest
+N19503 Kommunikasjonsfeil ved selvtest
+N19504 Ukjent feil ved selvtest
+N19754 Nødstopp SPLC
+N19755 Alvorlig feil SPLC
+N19764 Sletting av verktøy ikke tillatt
+N20418 Selvtest er deaktivert
+N20457 MC: Systemfeil i SPLC-LZS
+N20458 Feil ved registrering av PL/MB-maskinvare
+N20459 HSCI-PL/MB melder om feil
+N20460 HSCI-PL/MB melder om feil
+N20461 MC: Systemfeil i SPLC-LZS
+N20462 MC: Systemfeil i SPLC-LZS
+N20463 Tidsfeil i SPLC-program
+N20464 SPLC kan ikke laste inn program
+N20465 SPLC-program endret
+N20466 SPLC-program kan ikke kjøres
+N20467 Maskin ikke i sikker drift
+N20469 Konfigurering av SPLC-innganger
+N20471 Konfigurering av SPLC-innganger
+N20473 Konfigurering av SPLC-syklustid
+N20477 Python-skript allerede startet
+N20481 Kinematikktilgang ikke mulig
+N20482 Målep. ikke i kjøreområde
+N20483 Kompens. forh.innst. i. mulig
+N20639 Plasstabell er skrivebeskyttet
+N20650 Gjengivelse av tastef. avsluttet
+N20661 Rotering ikke tillatt
+N20662 Skalering ikke tillatt
+N20663 Speiling ikke tillatt
+N20664 Forskyvning ikke tillatt
+N21084 Sett håndhjul i ladestasjon
+N21096 Forh.innst. med forskyvn. aktiv
+N21097 WZ-radius=0: Ingen DCM mulig
+N21144 Håndhjul: M91/M92 ikke tillatt
+N21219 ACCESSLEVEL: Funksjon sperret
+N21232 Overstyringpotensiometer?
+N21233 Verktøyholderkinematikk mangler
+N21254 Testprogrammet kan ikke åpnes
+N21255 Testprogrammet kan ikke genereres
+N21256 Testprogrammet kan ikke utføres
+N21257 DCM: Oppspenningsutstyr inaktivt
+N21258 Fil finnes ikke
+N21260 SPLC-program ikke konfigurert
+N21261 SPLC tidsoverskridelse MC
+N21426 DCM: Kollisjonsobjekt ikke entydig
+N21675 Usikker styringsprogramvare
+N21701 Sletting av rad ikke tillatt
+N21712 Utkobling ikke mulig
+N21948 MC feil kommando fra MC
+N21949 Hurtiggangoverstyring feil konfigurert
+N21932 MC tidsavbrudd under bremsing %.2s
+N22055 Parallelldrift ikke mulig
+N22060 MC veioverskridelse ved SS2 %.2s
+N22077 MC ikke mulig å bytte fra SOM_2/SOM_3 til SOM_4
+N22077 MC ikke mulig å bytte fra SOM_4 til SOM_2/SOM_3
+N22079 Arbeidsminne for lite
+N22124 MC SPLC krever ugyldig stoppreaksjon
+N22125 MC SPLC krever ugyldig sikkerhetsfunksjon
+N22266 SPLC-program ikke oversatt
+N22330 M94 ikke mulig
+N23611 Pocket table låst
+N2187 Alarm akse %.2s:
+N23636 MC bremse kan ikke deaktiveres %.2s
+N23720 Omlydstegn ikke tillatt!
+N23756 Fkt. bare tillatt for rot.akser
+N23767 Redigering ikke tillatt
+N23768 QR-parametere kan ikke oppr.
+N23784 MC Ugyldig driftstype for SPLC
+N23830 HSCI/Profibus: Konfigurasjonsfeil
+N23832 MC aksegruppe konfigurert feil %d
+N23835 Feil i selvtest
+N7798 CC%d-feil %d %d %d
+N7798 CC-feil %d %d %d
+N23945 MC systemtakt MC ulik SKERN MC
+N23946 MC systemtakt MC ulik SPLC MC
+N23947 MC systemtakt MC ulik SPLC CC
+N23949 Verktøyradius for stor
+N23950 Nedsenk.måte ikke mulig
+N23951 Innstikk.vinkel definert feil
+N23952 Åpningsvinkel ikke definert
+N23953 Notbredde for stor
+N23960 MC feil i kryssammenligning:  %s
+N23961 MC sikker utgang ulik:  %s
+N23967 Betegnelsen finnes ikke
+N23993 Parametriseringsfeil, Python-skript
+N24013 MC +3,3V utenfor toleranse
+N24014 MC +3,3VPIC utenfor toleranse
+N24015 MC +12V utenfor toleranse
+N24016 MC-turtall, vifte 1 for liten
+N24017 MC +5V utenfor toleranse
+N24024 Verktøydata inkonsekvente
+N24074 MC-vifte ikke registrert
+N24075 MC-turtall, vifte 2 for liten
+N24128 MC-feil, reg. av fakt. verdi %d %.2s
+N24130 MC-akse %.2s i regulering
+N24131 MC-spindel %.2s i regulering
+N24188 Endret NC-programvareversjon
+N24189 SPLC-konfigurasjonsdata inneh. feil
+N24191 MC-avvik, norm./fakt. verdi f. turtall for stort %.2s
+N8127 Ukjent LSV2-feil: %x
+N24360 Feil status for sikker utgang %s
+N24394 Nivået kan ikke def.
+N24438 Filinnholdet inneholder feil
+N24484 Tilord. VT/grensesn.nr. inneh. feil
+N24515 Kan ikke starte under nødstopp
+N24585 MOVE ikke mulig
+N24586 Feil blokkoppbygging
+N24592 SPLC-program endret
+N24594 SPLC-program, binærkode MC er endret
+N24596 SPLC-program, binærkode CC er endret
+N24860 MC: Feilaktige data fra SPLC %s
+N24959 Kan ikke angi forh.innstilling.
+N24967 MC endebryter %.2s+
+N24968 MC endebryter %.2s-
+N24972 Safe Torque Off (-STO.B.x) aktiv
+N24973 Ekstern NØDSTOPP
+N24974 MC S-inngang %d ulik
+N24975 MC mating større SLS %.2s
+N24976 CC mating større SLS %.2s
+N24977 MC driftsstatus ulik CC
+N24979 MC turtall større SLS %.2s
+N24980 CC turtall større SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC, feil S-aksegruppe
+N24983 Akse ikke i kontrollposisjon
+N25030 MC S-status, reaksjon aktiv: %s
+N25031 Kabling, SPLC-inngang %d
+N25033 Kabling, nødstopp
+N25160 MC SMC-autotestprog.vare lastet
+N25237 Feil inngang %s for dynamisk test
+N25243 Motstridende gruppering
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

@@ -1,0 +1,1476 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "NETWORK_VALUE_TEST_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "NETWORK_VALUE_TEST_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Component.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<NetworkValue.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<array>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusTypes.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<components/commons.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/NetworkComponent.h>"
+            }
+          ]
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "ModbusTCP"
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "comment",
+          "text": "// Define a type alias for the specific compositions we need.\r"
+        },
+        {
+          "type": "alias_declaration",
+          "children": [
+            {
+              "type": "using",
+              "text": "using"
+            },
+            {
+              "type": "type_identifier",
+              "text": "BoolNetValue"
+            },
+            {
+              "type": "=",
+              "text": "="
+            },
+            {
+              "type": "type_descriptor",
+              "children": [
+                {
+                  "type": "template_type",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "NetworkValue"
+                    },
+                    {
+                      "type": "template_argument_list",
+                      "children": [
+                        {
+                          "type": "<",
+                          "text": "<"
+                        },
+                        {
+                          "type": "type_descriptor",
+                          "children": [
+                            {
+                              "type": "primitive_type",
+                              "text": "bool"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ">",
+                          "text": ">"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            }
+          ]
+        },
+        {
+          "type": "alias_declaration",
+          "children": [
+            {
+              "type": "using",
+              "text": "using"
+            },
+            {
+              "type": "type_identifier",
+              "text": "IntNetValue"
+            },
+            {
+              "type": "=",
+              "text": "="
+            },
+            {
+              "type": "type_descriptor",
+              "children": [
+                {
+                  "type": "template_type",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "NetworkValue"
+                    },
+                    {
+                      "type": "template_argument_list",
+                      "children": [
+                        {
+                          "type": "<",
+                          "text": "<"
+                        },
+                        {
+                          "type": "type_descriptor",
+                          "children": [
+                            {
+                              "type": "primitive_type",
+                              "text": "uint16_t"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ">",
+                          "text": ">"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            }
+          ]
+        },
+        {
+          "type": "alias_declaration",
+          "children": [
+            {
+              "type": "using",
+              "text": "using"
+            },
+            {
+              "type": "type_identifier",
+              "text": "IntArrayNetValue"
+            },
+            {
+              "type": "=",
+              "text": "="
+            },
+            {
+              "type": "type_descriptor",
+              "children": [
+                {
+                  "type": "template_type",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "NetworkValue"
+                    },
+                    {
+                      "type": "template_argument_list",
+                      "children": [
+                        {
+                          "type": "<",
+                          "text": "<"
+                        },
+                        {
+                          "type": "type_descriptor",
+                          "children": [
+                            {
+                              "type": "qualified_identifier",
+                              "children": [
+                                {
+                                  "type": "namespace_identifier",
+                                  "text": "std"
+                                },
+                                {
+                                  "type": "::",
+                                  "text": "::"
+                                },
+                                {
+                                  "type": "template_type",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "array"
+                                    },
+                                    {
+                                      "type": "template_argument_list",
+                                      "children": [
+                                        {
+                                          "type": "<",
+                                          "text": "<"
+                                        },
+                                        {
+                                          "type": "type_descriptor",
+                                          "children": [
+                                            {
+                                              "type": "primitive_type",
+                                              "text": "uint16_t"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "5"
+                                        },
+                                        {
+                                          "type": ">",
+                                          "text": ">"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ">",
+                          "text": ">"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "NUM_NV_TEST_VALUES"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "3\r"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "NETWORK_VALUE_TEST_NC"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "1\r"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "NV_TEST_ARRAY_SIZE"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "5\r"
+            }
+          ]
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "NetworkValueTest"
+            },
+            {
+              "type": "base_class_clause",
+              "children": [
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": "template_type",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "maybe"
+                    },
+                    {
+                      "type": "template_argument_list",
+                      "children": [
+                        {
+                          "type": "<",
+                          "text": "<"
+                        },
+                        {
+                          "type": "type_descriptor",
+                          "children": [
+                            {
+                              "type": "type_identifier",
+                              "text": "NETWORK_VALUE_TEST_NC"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "type_descriptor",
+                          "children": [
+                            {
+                              "type": "template_type",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "NetworkComponent"
+                                },
+                                {
+                                  "type": "template_argument_list",
+                                  "children": [
+                                    {
+                                      "type": "<",
+                                      "text": "<"
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "3"
+                                    },
+                                    {
+                                      "type": ">",
+                                      "text": ">"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ">",
+                          "text": ">"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "declaration",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "NetworkValueTest"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "owner"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ushort"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "id"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ushort"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "modbusBaseAddress"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "virtual",
+                      "text": "virtual"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "destructor_name",
+                          "children": [
+                            {
+                              "type": "~",
+                              "text": "~"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "NetworkValueTest"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "default_method_clause",
+                      "children": [
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "default",
+                          "text": "default"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setup"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "init"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "loop"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Modbus\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusTCP"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "manager"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "pointer_declarator",
+                      "children": [
+                        {
+                          "type": "*",
+                          "text": "*"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_blocks"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "type_qualifier",
+                              "children": [
+                                {
+                                  "type": "const",
+                                  "text": "const"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "value"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_base_address"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "onMessage"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "int"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "id"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "E_CALLS"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "verb"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "E_MessageFlags"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "flags"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "void"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "user"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "src"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "BoolNetValue"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_boolValue"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "IntNetValue"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_intValue"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "IntArrayNetValue"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_arrayValue"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_lastToggleMs"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ushort"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbusBaseAddress"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "mutable",
+                          "text": "mutable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "MB_Registers"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbusBlocks"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "identifier",
+                          "text": "NUM_NV_TEST_VALUES"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "mutable",
+                          "text": "mutable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbusBlockView"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// NETWORK_VALUE_TEST_H "
+    }
+  ]
+}

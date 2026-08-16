@@ -1,0 +1,424 @@
+VERSION 3
+60642x04.mp {
+    OrgValue(60642x04.mp)
+    InsertConfigValue("$VARIANTBASE$,  $VARIANTINDEX$,  CFG_Maschinen_Typ", %s_%s_%s.MP)
+}
+MP 10 {
+    OrgValue(%0010000000000011111111)
+  #if ($VARIANTINDEX$ = 04)  and (CFG_Maschinen_Typ = "PS")
+    SetComment("Maschinenparameter iTNC530 MC 422 D/MC 6xxx
+CC 422/CC 424(B)/CC 61xx
+Id Nr: 606 420-04, 606 422-04, 606 424-04, 606 425-04
+
+Erweiterte Schnittstelle 22 Achsen / 24 Regelkreise
+
+Stand: 04.06.2014
+
+==================================================================
+Schlüsselzahlen:
+==================================================================
+ Maschinen-Parameter editieren  ................ 95148
+ Maschinen-Parameter Kurz-Form ................. 123
+ Offset-Kompensation ........................... 75368
+ unprotect PGM ................................. 86357
+ Digital-Scope 6 Kanäle (I-Control)............. 688379
+ PLC-Zähler rücksetzen ......................... 857282
+ Netz Monitor .................................. NETMONI
+ Netz Einrichten ............................... NET123
+ DSP Monitor ................................... DSP123
+ Logbuch (LSV-2 AUS/EIN) ....................... LOGBOOK
+ Auswahl Maschinenkinematik .................... KINEMATIC
+ NC Software Update durchführen ................ SETUP
+ Systeminformationen TNC:\\version.a ............ VERSION
+ Anzeige der aktiven Optionen .................. SIK
+
+==================================================================
+ Sonder-Tasten und -Funktionen
+==================================================================
+ Eingabe Sonderzeichen über TNC-Tastatur:
+ <Form Feed>   = <Shift> + <Ret>
+ <|>           = <Shift> + <!>
+ <~>           = <Shift> + <^>
+ <Esc>         = <Shift> + <#>
+
+ Umschaltung zwischen GROSS und klein Schreibung:
+ <Shift> + <Space>
+
+==================================================================
+Inhalt
+==================================================================
+MP     0 ..  999   Messysteme und Maschinenachsen
+MP  1000 .. 1399   Positionierung / Regelung
+MP  1400 .. 1699   Betrieb mit Geschwindigkeits-Vorsteuerung
+MP  1700 .. 1899   Betrieb mit Schleppabstand
+MP  2000 .. 2999   Parameter für die PWM-Schnittstelle (DSP)
+MP  3000 .. 3999   Spindel-Steuerung (1. Spindel)
+MP  4000 .. 4999   integrierte PLC
+MP  5000 .. 5999   serielle Schnittstellen
+MP  6000 .. 6199   Tastsystem
+MP  6500 .. 6599   Tischtaster Werkzeugvermessung
+MP  7100 .. 7199   Gewindebohren
+MP  7200 .. 7399   Anzeige und Programmierung
+MP  7400 .. 7599   Bearbeitung und Programmlauf
+MP  7600 .. 7699   Hardware
+MP 13000 ..13999   Spindel-Steuerung (2. Spindel)
+
+==================================================================
+Eingabeformat
+==================================================================
+Vorzeichen % = Eingabe binär
+    z.B.:  MP 10 : % 000111111
+                 :   987654321 Achse
+Vorzeichen $ = Eingabe hexadezimal
+    z.B.:  MP 4310.0  : $800F
+                         1000 0000 0000 1111
+                        -32753
+==================================================================
+MP 10 .. 999
+Messsysteme und Maschinenachsen
+==================================================================
+MP10 Aktive Achsen
+Eingabe: %..987654321 bitcodiert
+2109876543210987654ZYX")
+  #if CFG_Maschinen_Typ = "PS"
+    SetMasked(%0010000000000011111111, $FFFFFFFF)
+}
+MP 110.0 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(1)
+}
+MP 110.1 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(2)
+}
+MP 110.2 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(3)
+}
+MP 110.3 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(4)
+}
+MP 110.4 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(5)
+}
+MP 110.5 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(35)
+}
+MP 110.6 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(36)
+}
+MP 110.7 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(37)
+}
+MP 111.0 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(6)
+}
+MP 111.1 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(38)
+}
+MP 112.0 {
+    OrgValue(15)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 112.1 {
+    OrgValue(16)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 112.2 {
+    OrgValue(17)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 112.3 {
+    OrgValue(18)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 112.4 {
+    OrgValue(19)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 113.0 {
+    OrgValue(20)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 120.0 {
+    OrgValue(51)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(1)
+}
+MP 120.1 {
+    OrgValue(52)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(2)
+}
+MP 120.2 {
+    OrgValue(53)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(3)
+}
+MP 120.3 {
+    OrgValue(54)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(4)
+}
+MP 120.4 {
+    OrgValue(55)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(5)
+}
+MP 120.5 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(7)
+}
+MP 120.6 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(8)
+}
+MP 120.7 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(9)
+}
+MP 121.0 {
+    OrgValue(56)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(6)
+}
+MP 121.1 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 420.7 {
+    OrgValue(0)
+  #if CFG_WZM_1_Index_Achse = 7
+    Set(1)
+}
+MP 430.7 {
+    OrgValue(0)
+  #if CFG_WZM_1_Index_Achse = 7
+    Set(10)
+}
+MP 810.3 {
+    OrgValue(360)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(360)
+}
+MP 810.7 {
+    OrgValue(400)
+  #if CFG_WZM_1_Index_Achse = 7
+    Set(400)
+}
+MP 810.19 {
+    OrgValue(0)
+  #if CFG_S_Achs_Index = 19
+    Set(360)
+}
+MP 910.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 910.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 911.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 911.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 912.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 912.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(+99999)
+}
+MP 920.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 920.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 921.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 921.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 922.7 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 922.19 {
+    OrgValue(+0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(-99999)
+}
+MP 1010.3 {
+    OrgValue(10000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(2000)
+}
+MP 1010.6 {
+    OrgValue(2000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(2000)
+}
+MP 1012.3 {
+    OrgValue(10000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(2000)
+}
+MP 1012.6 {
+    OrgValue(2000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(2000)
+}
+MP 2100.7 {
+    OrgValue()
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+    Set(HEIDENHAIN-UM121)
+}
+MP 3030 {
+    OrgValue(%00)
+    SetBit(0)
+}
+MP 3140 {
+    OrgValue(1)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 3210.0 {
+    OrgValue(1)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(5)
+}
+MP 3210.1 {
+    OrgValue(2)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(10)
+}
+MP 3510.0 {
+    OrgValue(1000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(5000)
+}
+MP 3510.1 {
+    OrgValue(2000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(100000)
+}
+MP 3515.0 {
+    OrgValue(1000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(5000)
+}
+MP 3515.1 {
+    OrgValue(2000)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(100000)
+}
+MP 6160 {
+    OrgValue(-1)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(+0)
+}
+MP 6161 {
+    OrgValue(-1)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(+0)
+}
+MP 6560 {
+    OrgValue(-1)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS") or (CFG_Maschinen_Typ = "SU_530")
+    Set(+0)
+}
+MP 7210 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(1)
+}
+MP 7212 {
+    OrgValue(0)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(1)
+}
+MP 7225 {
+    OrgValue()
+  #if CFG_Maschinen_Typ = "PS"
+    Set(A)
+}
+MP 7296 {
+    OrgValue(%01)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+    Set(%01)
+}
+MP 7392.0 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+    Set(0)
+}
+MP 7392.1 {
+    OrgValue(0)
+  #if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+    Set(0)
+}
+MP 7480.0 {
+    OrgValue(3)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 7480.1 {
+    OrgValue(3)
+  #if CFG_Maschinen_Typ = "PS"
+    Set(0)
+}
+MP 7684 {
+    OrgValue(%01000000000)
+  #if CFG_Maschinen_Typ = "PS"
+    SetBit(9)
+}

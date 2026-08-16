@@ -1,0 +1,27 @@
+*-----------------------------------------------------------------------------
+*  Teilapparat
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+GLOBAL Teilapparat
+
+;----------------------------
+LBL Teilapparat
+;----------------------------
+
+  L      MG_M21_Start_Teilapparat
+  A      MG_Impuls_M_Funktion
+  =      TS_Start_Teilapparat
+
+  L      TR_Start_Teilapparat
+  O      TS_Start_Teilapparat
+  =      O_Start_Teilapparat
+
+  L      I_Teilapparat_in_Position
+  AN     O_Start_Teilapparat
+  A      MG_M21_Start_Teilapparat
+  S      PN_M4092_Quit_M_Funktion
+
+EM

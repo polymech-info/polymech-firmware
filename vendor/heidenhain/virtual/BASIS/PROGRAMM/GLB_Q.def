@@ -1,0 +1,72 @@
+*-----------------------------------------------------------------------------
+*  Definition der Q Parameter in NC-Zyklen
+*-----------------------------------------------------------------------------
+*
+*  Parameterart  Bereich      Bedeutung
+*  Q-Parameter                Parameter wirken auf alle Programme im TNC-
+*                             Speicher
+*                0 - 30       Parameter für HEIDENHAIN-SL-Zyklen
+*                31 - 99      Parameter für den Anwender
+*                100 - 199    Parameter für Sonderfunktionen der TNC
+*                200 - 1199   Parameter für HEIDENHAIN-Zyklen
+*                1200 - 1399  Parameter für Zyklen des Maschinenherstellers
+*                             oder eines Drittanbieters
+*                1400 - 1499  Parameter für CALL-aktive Zyklen des Maschinen-
+*                             herstellers oder eines Drittanbieters
+*                1500 - 1599  Parameter für DEF-aktive Zyklen des Maschinen-
+*                             herstellers oder eines Drittanbieters
+*                1600 - 1999  Parameter für den Anwender
+*  QL-Parameter               Parameter wirken nur lokal innerhalb eines
+*                             Programms
+*                0 - 499      Parameter für den Anwender
+*  QR-Parameter               Parameter wirken dauerhaft (remanent) auf alle
+*                             Programme im TNC-Speicher, auch über eine Strom-
+*                             unterbrechung hinaus
+*                0 - 499      Parameter für den Anwender
+*  QS-Parameter               Parameter wirken auf alle Programme im TNC-
+*                             Speicher
+*                0 - 99       Parameter für den Anwender
+*                100 - 199    Parameter für Systeminformationen der TNC, die
+*                             von NC-Programmen des Anwenders oder von Zyklen
+*                             gelesen werden
+*                200 - 1199   Parameter für HEIDENHAIN-Zyklen
+*                1200 - 1399  Parameter, die bei Zyklen des Maschinenher-
+*                             stellers oder eines Drittanbieters für Rück-
+*                             meldungen an das NC-Programm des Anwenders
+*                             dienen
+*                1400 - 1599  Parameter für Zyklen des Maschinenherstellers
+*                             oder eines Drittanbieters
+*                1600 - 1999  Parameter für den Anwender
+*
+*-----------------------------------------------------------------------------
+
+#type M
+
+*-----------------------------------------------------------------------------
+*  TOOLCALL
+*-----------------------------------------------------------------------------
+
+/c Q1                                       &MG_Eins_Merker  ;;WZ-Nummer
+/c Q2                                       &MG_Eins_Merker  ;;WZ-Achse
+/c Q3                                       &MG_Eins_Merker  ;;Spindel-Drehzahl
+/c Q4                                       &MG_Eins_Merker  ;;Aufmass Laenge DL
+/c Q5                                       &MG_Eins_Merker  ;;Aufmass Radius DR
+/c Q6                                       &MG_Eins_Merker  ;;Platznummer für Werkzeug aus Q1
+/c Q7                                       &MG_Eins_Merker  ;;Platznummer für Werkzeug T0
+/c Q18                                      &MG_Eins_Merker  ;;
+/c Q20                                      &MG_Eins_Merker  ;;Satzvorlauf aktiv
+/c Q23                                      &MG_Eins_Merker  ;;automatischer TOOL CALL (M101):  1 = Ja, 0 = Nein
+/c Q26                                      &MG_Eins_Merker  ;;Aufmass Radius DR2
+/c Q27                                      &MG_Eins_Merker  ;;Werkzeug-Index
+/c Q37                                      &MG_Eins_Merker  ;;Festplatzcodierung für die Magazine 1 bis 8
+/c Q40                                      &MG_Eins_Merker  ;;Werkzeug-Länge L
+/c Q41                                      &MG_Eins_Merker  ;;Aufmaß Werkzeug-Länge DL
+
+
+/c Q44                                      &MG_Eins_Merker  ;;Aufmaß Werkzeug-Länge DL
+/c Q45                                      &MG_Eins_Merker  ;;Sicherheitsabstand für M140
+
+/c Q81                                      &MG_Eins_Merker  ;;3D-ROT A
+/c Q82                                      &MG_Eins_Merker  ;;3D-ROT B
+/c Q83                                      &MG_Eins_Merker  ;;3D-ROT C
+

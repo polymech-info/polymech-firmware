@@ -1,0 +1,7 @@
+PLC:\MP\MPFragment\Tuning\Standard.a
+PLC:\MP\MPFragment\Tuning\Exact.a
+PLC:\MP\MPFragment\Tuning\Smooth.a
+PLC:\MP\MPFragment\Tuning\Rough.a
+
+
+Call: FN 17: SYSWRITE ID 1020 NR1 = <line number>

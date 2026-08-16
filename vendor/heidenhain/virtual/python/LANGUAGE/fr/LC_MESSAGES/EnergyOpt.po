@@ -1,0 +1,141 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Broche"
+
+msgid "AXIS"
+msgstr "Axe"
+
+msgid "SCREEN"
+msgstr "Ecran"
+
+msgid "MACHINE"
+msgstr "Machine"
+
+msgid "CONTROL"
+msgstr "Commande"
+
+msgid "LIGHT"
+msgstr "Lumière"
+
+msgid "LIGHT_1"
+msgstr "Lumière 1"
+
+msgid "LIGHT_2"
+msgstr "Lumière 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Accessoire air"
+
+msgid "OEL_AGGREGATE"
+msgstr "Accessoire huile"
+
+msgid "DRIVES"
+msgstr "Entrainements"
+
+msgid "MONDAY_SHORT"
+msgstr "Lu"
+
+msgid "TUESDAY_SHORT"
+msgstr "Ma"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Me"
+
+msgid "THURSDAY_SHORT"
+msgstr "Je"
+
+msgid "FRIDAY_SHORT"
+msgstr "Ve"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Sa"
+
+msgid "SUNDAY_SHORT"
+msgstr "Di"
+
+msgid "SETUP"
+msgstr "Config"
+
+msgid "ADVANCED"
+msgstr "Avancé"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Programme préchauffe"
+
+msgid "STANDBY"
+msgstr "Attente"
+
+msgid "SWITCH_OFF"
+msgstr "Coupure"
+
+msgid "TIME"
+msgstr "Temps"
+
+msgid "AXIS_FILTER"
+msgstr "Filtre axe"
+
+msgid "SPINDLE_FILTER"
+msgstr "Filtre broche"
+
+msgid "SWITCH_ON"
+msgstr "Mise en service"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Avec EnergyOpt, vous pouvez\n"
+"optimiser la performance\n"
+"en energie de votre machine\n"
+"outil.\n"
+"Des appareils électroniques non\n"
+"utilisées peuvent être commutés\n"
+"en mode veille ou coupés\n"
+"complétement.\n"
+"- Appuyer sur la Softkey EDIT\n"
+"- Activer les appareils appro-\n"
+"priés et sélectionner un temps.\n"
+"- Sortir du mode édition avec\n"
+"la softkey EDIT.\n"
+"- Valider ou dévalider toutes\n"
+"les options avec la softkey\n"
+"ON/OFF"
+
+msgid "MILLISECOND"
+msgstr "milliseconde"
+
+msgid "MILLISECONDS"
+msgstr "milliseconde"
+
+msgid "SECOND"
+msgstr "seconde"
+
+msgid "SECONDS"
+msgstr "secondes"
+
+msgid "MINUTE"
+msgstr "minute"
+
+msgid "MINUTES"
+msgstr "minutes"
+
+msgid "HOUR"
+msgstr "heure"
+
+msgid "HOURS"
+msgstr "heures"
+
+msgid "DAY"
+msgstr "jour"
+
+msgid "DAYS"
+msgstr "jours"
+
+msgid "WEEK"
+msgstr "semaine"
+
+msgid "WEEKS"
+msgstr "semaines"
+

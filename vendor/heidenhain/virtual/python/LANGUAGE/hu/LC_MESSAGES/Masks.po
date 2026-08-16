@@ -1,0 +1,11 @@
+msgid "ERR_SUBSCRIBE__DIALOG"
+msgstr "Fehler bei \"jh.Subscribe\""
+
+msgid "ERR_SUBSCRIBE__REASON"
+msgstr "Ein Pythonskript hat versucht sich auf Änderung eines ungültigen PLC Symbols anzumelden."
+
+msgid "ERR_SUBSCRIBE__FIX"
+msgstr "- Softkey \"Interne Info\"\n"
+"- PLC Symbol in \"Text1\" überprüfen\n"
+" "
+

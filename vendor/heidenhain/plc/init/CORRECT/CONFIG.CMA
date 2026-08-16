@@ -1,0 +1,4 @@
+BEGIN CONFIG .CMA ACT:0
+NR      1                2                3                4                5
+0       X                Y                Z                                                  
+[END]

@@ -1,0 +1,144 @@
+*-----------------------------------------------------------------------------
+*  3D Tastsystem
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*  - Ein 3D-Taster wird mit einem TOOL CALL Aufruf aktiviert. In der Tool-
+*    Table muss das #Bit 0 des PLC-Status gesetzt sein (%00000001).
+*  - Unterstützung des batterielosen Tastsystemes TS444
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_TS640                                 K +2
+#define /s    KL_TS444                                 K +3
+
+#define /s    ML_TSxxx_Druckluft_gesperrt              M
+#define /s    ML_TS444_initialisieren                  M
+
+#include Mac_Lib.inc
+
+GLOBAL Tastsystem
+
+;----------------------------
+LBL Tastsystem
+
+#if CFG_UTI240 = "aktiv"
+  L      NP_M4060_Werkzeug_vermessen
+  A      MG_Steuerung_betriebsbereit
+  =      O_TT449_UTI240_aktivieren
+
+  L      I_TT449_UTI240_Batterie_Warnung
+  A      NP_M4060_Werkzeug_vermessen
+  S      PN_Fehler_TT449_Batterie_Warnung
+#endif
+
+  L      NP_M4060_Werkzeug_vermessen
+  R      NP_M4055_Tast_Zyklus_Start_0_aktiv
+
+  L      NP_M4062_Werkzeug_Verschleiss_Toleranz
+  O      NP_M4063_Werkzeug_Bruch_Toleranz
+  S      PN_Fehler_WZ_Toleranz
+  IFT
+    R      NP_M4062_Werkzeug_Verschleiss_Toleranz
+    R      NP_M4063_Werkzeug_Bruch_Toleranz
+  ENDI
+
+  L      PN_Fehler_kein_3D_Tastsystem_in_Spindel
+  R      NP_M4055_Tast_Zyklus_Start_0_aktiv
+
+  L      NP_M4055_Tast_Zyklus_Start_0_aktiv
+  AN     MG_3D_Tastsystem_aktiv
+  S      PN_Fehler_kein_3D_Tastsystem_in_Spindel
+
+  L      MG_M16_TSxxx_abblasen
+  AN     MG_3D_Tastsystem_aktiv
+  S      PN_Fehler_M_Befehl_ohne_Funktion
+
+  LN     MG_3D_Tastsystem_aktiv
+  R      PN_M4056_NC_STOP_Taster_ausgelenkt
+  EMT
+
+; Aufladen TS444 mit Druckluft, Abblasen Späne
+
+  L      BG_MP6010_Tastsystem_Typ
+  ==     KL_TS444
+  IFT
+    L      NP_M4050_Tast_System_nicht_bereit
+    A      MG_Impuls_CE_Taste
+    O      PN_M4093_Quit_TOOL_CALL
+    ON     MG_Steuerung_betriebsbereit
+    S      ML_TS444_initialisieren
+  ENDI
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  IFT
+    L      MG_M16_TSxxx_abblasen
+    S      PN_M4092_Quit_M_Funktion
+
+    LN     TR_TSxxx_abblasen
+    A      MG_Sn_O_Spindel_ausblasen
+    ON     MG_Steuerung_betriebsbereit
+    R      MG_SK_TSxxx_abblasen
+    R      MG_Sn_O_Spindel_ausblasen
+
+    L      BG_MP6010_Tastsystem_Typ
+    ==     KL_TS444
+    A      NP_M4054_Taster_DC_Versorgung_zu_gering
+    O      ML_TS444_initialisieren
+    O      MG_M16_TSxxx_abblasen
+    O[
+      L      MG_SK_TSxxx_abblasen
+      AN     MG_Sn_O_Spindel_ausblasen
+    ]
+    AN     ML_TSxxx_Druckluft_gesperrt
+    =      TS_TSxxx_abblasen
+    R      ML_TS444_initialisieren
+    S      MG_SK_TSxxx_abblasen
+    S      MG_Sn_O_Spindel_ausblasen
+
+    L      NP_M4055_Tast_Zyklus_Start_0_aktiv
+    AN     MG_Sn_O_Spindel_ausblasen
+    R      NP_M4055_Tast_Zyklus_Start_0_aktiv
+    S      ML_TSxxx_Druckluft_gesperrt
+
+    L      NP_M4053_Tast_Zyklus_Ende_Stop
+    ON     MG_Steuerung_betriebsbereit
+    R      ML_TSxxx_Druckluft_gesperrt
+  ENDI
+
+; Einschalten von Infrarot Tastsystemen außer TS640
+
+  L      MG_Impuls_CE_Taste
+  O      NP_M4073_Strobe_TOOL_CALL
+  A      NP_M4050_Tast_System_nicht_bereit
+  IFT
+    L      BG_MP6010_Tastsystem_Typ
+    <>     KL_TS640
+    IFT
+      CM     9135                      ;Einschalten des Infrarottasters
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  AN     NP_M4520_TOOL_CALL_2_Strobe
+  =      PN_M4056_NC_STOP_Taster_ausgelenkt
+
+; Freifahren Tastsystem mit NC Start Taste falls keine Bereitschaft
+
+  L      NP_M4050_Tast_System_nicht_bereit
+  A      MG_BA_Manuell
+  A      MG_Taste_NC_Start
+  R      PN_M4056_NC_STOP_Taster_ausgelenkt
+
+; Fehler nicht erlaubten Funktionen
+
+  L      MG_M03_Spindel_rechts_ein
+  O      MG_M04_Spindel_links_ein
+  O      MG_M13_Spindel_rechts_Kuehlmittel_ein
+  O      MG_M14_Spindel_links_Kuehlmittel_ein
+  O      MG_Taste_S_M3
+  O      MG_Taste_S_M4
+  S      PN_Fehler_3D_Tastsystem_in_Spindel
+
+EM

@@ -1,0 +1,27 @@
+﻿************************************
+         !!! attention !!!
+        only for supervisor
+      X, Y, Z can be moved by
+      X+, X-, Y+, Y-, Z+, Z- key
+           or handwheel
+        service tool changer
+           (double arm)
+************************************
+#201  S to toolchange position
+#202  Z to toolchange position
+#203  Y to toolchange position
+#204  X to toolchange position
+#205  Tool lock open
+#206  Tool lock close
+#207  Tool pliers close
+#208  Tool pliers open
+#209  Tool unclamping
+#210  Tool clamping
+#211  Tool arm put out
+#212  Tool arm put in
+#213  Tool arm turn cw (right)
+#214  Tool arm turn ccw (left)
+#215  Magazine turn cw (right)
+#216  Magazine turn ccw (left)
+#217  Magazine reference
+#218  Delete spindle status (T0)

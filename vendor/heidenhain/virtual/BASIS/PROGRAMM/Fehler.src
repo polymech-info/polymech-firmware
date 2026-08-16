@@ -1,0 +1,73 @@
+*-----------------------------------------------------------------------------
+*  Fehlermeldungen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Zur Anzeige kommen Fehler ab der Nummer, die in Konstante
+*      KL_Start_Adresse_PET     K+xxx
+*    definiert ist.
+*    Die Zuweisung erfolgt über ein Merker Array von Fehlermeldungen in
+*    GLB_TCMB.def.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Start_Adresse_PET                     K +200
+#define /s    KL_Nummer_angezeigte_Fehlermeldung       K -2
+
+#define /s    ML_Fehlerstatus                          M[8]
+#define /c    ML_Fehler_in_Anzeige                     M &ML_Fehlerstatus + 0
+#define /c    ML_Fehler_in_Queue                       M &ML_Fehlerstatus + 1
+
+#define /s    WL_Fehlernummer                          W
+
+#include Mac_Lib.inc
+
+GLOBAL Fehler
+
+;----------------------------
+LBL Fehler
+
+  L      KL_Start_Adresse_PET
+  =      WL_Fehlernummer
+
+  L      K+0
+  =X
+
+  REPEAT
+    PS     WL_Fehlernummer
+    CM     9087                        ;Status PLC-Fehlermeldung abfragen
+    PLW
+    B=     ML_Fehlerstatus
+    M_Modul_Fehler_anzeigen
+
+    L      MG_Fehler_alt[X]            ;(1) Fehler mit CE gelöscht
+    AN     ML_Fehler_in_Queue
+    R      MG_Fehler[X]
+
+    L      MG_Fehler[X]
+    =      MG_Fehler_alt[X]
+
+    L      MG_Fehler[X]                ;(2) MG_Fehler Merker gesetzt
+    AN     ML_Fehler_in_Queue
+    IFT
+      PS     WL_Fehlernummer
+      CM     9085                      ;PLC-Fehlermeldung anzeigen
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    LN     MG_Fehler[X]                ;(3) MG_Fehler Merker rückgesetzt
+    A      ML_Fehler_in_Queue
+    IFT
+      PS     WL_Fehlernummer
+      CM     9086                      ;PLC-Fehlermeldung löschen
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    INC    WL_Fehlernummer
+    INCX
+
+    LX
+    >      K &MG_Fehler_Ende - &MG_Fehler
+  UNTILT
+
+EM
+

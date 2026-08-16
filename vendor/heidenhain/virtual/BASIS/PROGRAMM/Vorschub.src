@@ -1,0 +1,421 @@
+*-----------------------------------------------------------------------------
+*  Vorschubfreigabe
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Sonderfunktion F99999:
+*    Der programmierte Vorschub F99999 wird vom PLC Programm als modal
+*    wirkender Eilgang interpretiert (Fmax - ist nicht modal, satzweise). Es
+*    wird keine Überwachungen der Spindel-Drehzahl oder Spindel-Rampe
+*    durchgeführt.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_10_Prozent                            K +1000
+#define /s    KL_100_Prozent                           K +10000
+#define /s    KL_maximaler_Vorschub                    K -1
+
+#define /s    ML_M31_Bearbeitung_ohne_M3_M4            M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Vorschubfreigabe_Achsen               M
+#define /s    ML_Fehler_Override_0                     M
+#define /s    ML_T_Moment_Ueberwachung_war_aktiv       M
+#define /s    ML_M4180_bug_behoben_NC_08               M
+#define /s    ML_Vorschub_init                         M
+
+#define /s    ML_SLS_Betriebsart                       M [8]
+#define /c    ML_SLS_Betriebsart_2                     M &ML_SLS_Betriebsart + 0
+#define /c    ML_SLS_Betriebsart_3                     M &ML_SLS_Betriebsart + 1
+#define /c    ML_SLS_Betriebsart_4                     M &ML_SLS_Betriebsart + 2
+
+#define /s    BL_SLS_Betriebsart                       B
+
+#define /s    WL_S_max_Moment                          W
+#define /s    WL_Faktor_Vorschub_Override_NC           W
+#define /s    WL_F0_Vorschub_Override_NC               W
+#define /s    WL_F0_Eilgang_Override_PLC               W
+
+#define /s    DL_Stack_synchronisieren                 D
+#define /s    DL_Vorschub_max                          D [&KG_max_Achs_Anzahl]
+
+#include Mac_Lib.inc
+
+EXTERN Absolut
+
+GLOBAL Vorschubfreigabe
+
+;----------------------------
+LBL Vorschubfreigabe
+;----------------------------
+
+  LN     ML_Vorschub_init
+  IFT
+    L      K+0
+    =X
+
+    REPEAT
+      L      KL_maximaler_Vorschub
+      =      DL_Vorschub_max[X]
+
+      INCX
+
+      LX
+      >=     KG_max_Achs_Anzahl
+      S      ML_Vorschub_init
+    UNTILT
+  ENDI
+
+  L      MG_M31_Bearbeitung_ohne_M3_M4
+  S      PN_M4092_Quit_M_Funktion
+  S      ML_M31_Bearbeitung_ohne_M3_M4
+
+  L      MG_Impuls_End_PGM_M02_M30
+  O      MG_BA_Wechsel_Auto_Manu
+  ON     PN_M4007_S_M05_Sollwert_0_und_Status
+  ON     MG_Steuerung_betriebsbereit
+  R      ML_M31_Bearbeitung_ohne_M3_M4
+
+  L      MG_Taste_Override_F_100
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_Override_F_100
+  =      MG_SK_Override_F_100
+  IFT
+    L      KL_100_Prozent
+    =      PN_W766_Faktor_Vorschub_Override_PLC
+
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    -      WL_Faktor_Vorschub_Override_NC
+    PSW
+    CM     Absolut
+    PLW
+    >=     KL_10_Prozent
+    R      MG_SK_Override_F_100
+  ELSE
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    =      WL_Faktor_Vorschub_Override_NC
+  ENDI
+
+  L      MG_Taste_Override_F_100
+  =      ML_Taste_betaetigt
+
+  L      DG_Hirth_Achsen
+  O      DG_Achsen_mit_C_Achs_Betrieb
+  AN     NP_D1104_Achsen_in_Position
+  <>     K+0
+  O      MG_Spindel_C_Achs_Freigabe_aktiv
+  O[
+    L      NP_D360_Programmierter_Vorschub_NC
+    ==     K+99999
+  ]
+  O      MG_Achsen_PLC_Posit_aktiv
+#if CFG_Freies_Drehen              = "inaktiv"
+  O      MG_Spindel_Drehzahl_N_ok
+  O      TR_S_Override_bewegt
+  ON     PN_M4012_S_Regelkreis_oeffnen
+#else
+  O[
+    L      MG_Spindel_Drehzahl_N_ok
+    O      TR_S_Override_bewegt
+    ON     PN_M4012_S_Regelkreis_oeffnen
+    AN     MG_Freies_Drehen_aktiv
+  ]
+  O[
+    L      MG_Freies_Drehen_Drehzahl_N_ok
+    A      MG_Freies_Drehen_aktiv
+  ]
+#endif
+  O      MG_3D_Tastsystem_aktiv
+  O      ML_M31_Bearbeitung_ohne_M3_M4
+  O      MG_Vorschub_UBW_M3_M4_inaktiv
+  O      MG_BA_Manuell
+  O      NP_M4060_Werkzeug_vermessen
+  =      ML_Vorschubfreigabe_Achsen
+  IFF
+    L      K+0
+    =      PN_W766_Faktor_Vorschub_Override_PLC
+  ENDI
+
+  L      NP_D388_aktueller_Bahnvorschub
+  ==     K+0
+  AN     MG_NC_Achsen_in_Position
+  AN     ML_Vorschubfreigabe_Achsen
+  =      MG_Anzeige_Vorschubfreigabe_in_PLC_window
+
+  L      DG_geregelte_Achsen
+  AN     DG_Vorschub_Stop_Achsen
+  AN     DG_Vorschub_Stop_Hilfsachsen
+  AN     DG_Bremsen_Test_laeuft
+  =      PN_D1172_Vorschubfreigabe_achsspezifisch
+
+#if CFG_WZ_spezifische_Momenten_Ueberwachung  = "aktiv"
+  L      MG_M82_WZ_Moment_aus
+  O      MG_M83_WZ_Moment_ein
+  S      MG_Bildschirm_loeschen
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M83_WZ_Moment_ein
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Impuls_End_PGM_M02_M30
+  ON     MG_Steuerung_betriebsbereit
+  S      MG_SK_T_Moment_Ueberwachung
+
+  L      MG_M82_WZ_Moment_aus
+  R      MG_SK_T_Moment_Ueberwachung
+
+  L      MG_SK_T_Moment_Ueberwachung
+  XO     ML_T_Moment_Ueberwachung_war_aktiv
+  S      MG_Bildschirm_loeschen
+
+  L      MG_SK_T_Moment_Ueberwachung
+  =      ML_T_Moment_Ueberwachung_war_aktiv
+
+  L      MG_SK_T_Moment_Ueberwachung
+  IFT
+    L      WG_S_max_Moment_WZ_Tabelle
+    =      WL_S_max_Moment
+  ELSE
+    L      STG_Spindel[BG_Index_Sn].DG_max_Moment
+    =      WL_S_max_Moment
+  ENDI
+
+  L      NP_M4002_S_Sollwert_0
+  ON     NP_M4001_S_Sollwert_nicht_in_Rampe
+  =      TS_S_Sollwert_in_Rampe
+
+*$$WS
+; 2. Schwelle einführen MP_Data.tab
+;
+;  LN     MG_Spindel_Drehzahl_N_ok
+;  AN     TR_S_Sollwert_in_Rampe
+;  AN     PN_M4007_S_M05_Sollwert_0_und_Status
+;  AN     PN_M4008_S_Sollwert_aus_Status_invers
+;  A      MG_BA_Automatik
+;  S      PN_Fehler_Spindel_Ueberlast
+
+  L      WG_Motor_Auslastung_S
+  >      WL_S_max_Moment
+  A      ML_Vorschubfreigabe_Achsen
+  AN     TR_S_Sollwert_in_Rampe
+  =      PN_Fehler_Spindel_Moment_max
+  IFT
+    L      WL_S_max_Moment
+    -      WG_Motor_Auslastung_S
+    X      STG_Spindel[BG_Index_Sn].DG_Faktor_Vorschubreduzierung
+    /      K+10
+    +      K+100
+    X      NP_W494_Faktor_Vorschub_Override_NC
+    /      K+100
+    =      PN_W766_Faktor_Vorschub_Override_PLC
+
+    L      PN_W766_Faktor_Vorschub_Override_PLC
+    <      K+1000
+    A[
+      L      NP_W494_Faktor_Vorschub_Override_NC
+      >      K+1000
+    ]
+    IFT
+      L      K+1000
+      =      PN_W766_Faktor_Vorschub_Override_PLC
+    ENDI
+  ENDI
+#endif
+
+#if CFG_FS = "aktiv"
+  PS     K&DL_Vorschub_max
+
+  L      MG_WZW_Help
+  O      MG_PW_Help
+  AN     MG_Taste_Eilgang
+  O      MG_Achsen_Not_Halt_Endlage
+  O      MG_manuelles_Verfahren_BA_Referenz
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     K&DG_Vorschub_BA_2
+  ENDI
+
+  PS     KG_max_Achs_Anzahl
+  CM     9140                          ;Achsspezifische Vorschubbegrenzung setzen
+  M_Modul_Fehler_anzeigen
+#else
+  PS     K&DL_Vorschub_max
+
+  L      MG_SLS_Betriebsart_4
+  =      ML_SLS_Betriebsart_4
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     K&DG_Vorschub_BA_4
+  ENDI
+
+  L      MG_SLS_Betriebsart_3
+  =      ML_SLS_Betriebsart_3
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     K&DG_Vorschub_BA_3
+  ENDI
+
+  L      MG_SLS_Betriebsart_2_Einrichten
+  =      ML_SLS_Betriebsart_2
+
+  L      MG_WZW_Help
+  O      MG_PW_Help
+  AN     MG_Taste_Eilgang
+  O      MG_Achsen_Not_Halt_Endlage
+  O      MG_manuelles_Verfahren_BA_Referenz
+  O      MG_Arbeitsraum_war_offen
+  O      ML_SLS_Betriebsart_2
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     K&DG_Vorschub_BA_2
+  ENDI
+
+  PS     KG_max_Achs_Anzahl
+  CM     9140                          ;Achsspezifische Vorschubbegrenzung setzen
+  M_Modul_Fehler_anzeigen
+
+  LB     ML_SLS_Betriebsart
+  <>     BL_SLS_Betriebsart
+  IFT
+    L      ML_SLS_Betriebsart_2
+    =      PN_Fehler_Betriebsart_2
+
+    L      ML_SLS_Betriebsart_3
+    =      PN_Fehler_Betriebsart_3
+
+    L      ML_SLS_Betriebsart_4
+    =      PN_Fehler_Betriebsart_4
+
+    LB     ML_SLS_Betriebsart
+    =      BL_SLS_Betriebsart
+  ENDI
+#endif
+
+  LN     MG_NC_Achsen_in_Position
+  A      PN_M4007_S_M05_Sollwert_0_und_Status
+  =      PN_Fehler_M3_M4_fehlt
+  IFT
+    L      ML_M31_Bearbeitung_ohne_M3_M4
+    O      MG_Vorschub_UBW_M3_M4_inaktiv
+    A      PN_M4007_S_M05_Sollwert_0_und_Status
+    R      PN_Fehler_M3_M4_fehlt
+
+*$WS Call 71246 - Abarbeitung bleibt bei Fmax Sätzen stehen
+#if ($VARIANTINDEX$ = 1) or ($VARIANTINDEX$ = 2) or ($VARIANTINDEX$ = 6) or ($VARIANTINDEX$ = 7)
+    L      NP_D388_aktueller_Bahnvorschub
+    >      K+0
+    A[
+      L      NP_W496_Faktor_Eilgang_Override_NC
+      >      K+0
+    ]
+    A      NP_M4180_F_Max_programmiert
+    AN     ML_Vorschubfreigabe_Achsen
+    S      ML_M4180_bug_behoben_NC_08
+
+    L      NP_D388_aktueller_Bahnvorschub
+    ==     K+0
+    A      ML_M4180_bug_behoben_NC_08
+    R      ML_M4180_bug_behoben_NC_08
+    IFT
+      L      K+1
+      =      PN_W766_Faktor_Vorschub_Override_PLC
+    ENDI
+#endif
+
+    L      ML_Vorschubfreigabe_Achsen
+    O      NP_M4180_F_Max_programmiert
+    O      MG_WZM_n_Start_aktiv
+    O      NP_M4070_Strobe_G_Code
+    O      NP_M4072_Strobe_M_Funktion
+    O      NP_M4073_Strobe_TOOL_CALL
+    O      NP_M4175_Stern_blinkt
+    ON     NP_M4176_Stern_ein_oder_blinkt
+    O      PN_M4005_S_M03_Sollwert_und_Status
+    O      PN_M4006_S_M04_Sollwert_und_Status
+    O      NP_M4030_Gewindebohren_aktiv
+    O      NP_M4031_Gewindebohren_gesteuert
+    R      PN_Fehler_M3_M4_fehlt
+  ENDI
+
+  L      MG_MP7620_TE_mit_Fmax_Override
+  IFT
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    ==     K +0
+    O[
+      L      PN_W752_Faktor_Eilgang_Override_PLC
+      ==     K +0
+      A      NP_M4180_F_Max_programmiert
+    ]
+    PSL
+  ELSE
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    ==     K +0
+    PSL
+  ENDI
+
+  L      DG_F_Fmax_Override_Kopplung
+  >      K +10000
+  IFT
+    L      K +10000
+    =      DG_F_Fmax_Override_Kopplung
+  ENDI
+
+  L      NP_W494_Faktor_Vorschub_Override_NC
+  <=     DG_F_Fmax_Override_Kopplung
+  A[
+    L      DG_F_Fmax_Override_Kopplung
+    >      K +0
+  ]
+  IFT
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    X      NP_W496_Faktor_Eilgang_Override_NC
+    /      DG_F_Fmax_Override_Kopplung
+    =      PN_W752_Faktor_Eilgang_Override_PLC
+  ENDI
+
+  PLL
+  RN     PN_Fehler_Override_0
+  RN     ML_Fehler_Override_0
+  IFT
+    L      NP_M4158_BA_Satz_Vorlauf_aktiv
+    O      MG_WZW_Help
+    O      MG_PW_Help
+    EMT
+
+    L      PN_D1144_Manuelles_Verfahren_plus
+    O      PN_D1148_Manuelles_Verfahren_minus
+    <>     K+0
+    S      PN_Fehler_Override_0
+
+    L      MG_Taste_NC_Start
+    S      ML_Fehler_Override_0
+
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    ==     K +0
+    A[
+      L      WL_F0_Vorschub_Override_NC
+      >      K +0
+    ]
+    S      ML_Fehler_Override_0
+
+    L      NP_W496_Faktor_Eilgang_Override_NC
+    ==     K +0
+    A[
+      L      WL_F0_Eilgang_Override_PLC
+      >      K +0
+    ]
+    S      ML_Fehler_Override_0
+
+    LN     NP_D1104_Achsen_in_Position
+    AN     DG_Slave_Achsen
+    AN     DG_Handrad_Achsen
+    <>     K +0
+    A      ML_Fehler_Override_0
+    R      ML_Fehler_Override_0
+    S      PN_Fehler_Override_0
+  ENDI
+
+  L      NP_W494_Faktor_Vorschub_Override_NC
+  =      WL_F0_Vorschub_Override_NC
+
+  L      NP_W496_Faktor_Eilgang_Override_NC
+  =      WL_F0_Eilgang_Override_PLC
+
+EM

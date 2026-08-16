@@ -1,0 +1,103 @@
+/* Temperatur Kompensation
+   -----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"SET T-COMPENSATION";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"Compensation        :  %s\n",
+$MG_T_Kompensation_aktiv$?"active         ":"inactive       "/c;
+CURSOR=OFF;
+
+COLOR= 9;
+"                                   set\n";
+"Compensation active  0/1:          %d\n",$MG_T_Kompensation_aktiv$/e;
+COLOR=11;
+
+"Temperature spindle : %+6.1F°  ",
+$WG_Temperatur_Spindel$/n=1/c;
+COLOR= 9;
+"%+6.1F°\n",
+$WG_Temperatur_Spindel_Pt100$/n=1/e;
+
+COLOR=11;
+
+"Temperature machine : %+6.1F°  ",
+$WG_Temperatur_Maschine$/n=1/c;
+COLOR= 9;
+"%+6.1F°\n",
+$WG_Temperatur_Maschine_Pt100$/n=1/e;
+
+COLOR= 11;
+
+"Offset machine      : %+6.1F°  ",
+$WG_Temperatur_Maschine_Offset$/n=1/c;
+COLOR= 9;
+"%+6.1F°\n",
+$WG_Temperatur_Maschine_Offset$/n=1/e;
+
+COLOR=11;
+
+"Temperature table   : %+6.1F°\n\n",
+$WG_Temperatur_Tabelle$/n=1/c;
+
+CURSOR=ON;
+"Compensation table  : %s  X   Y   Z  \n",
+$MG_T_Kompensation_ein$?"on ":"off"/c;
+CURSOR=OFF;
+
+COLOR= 9;
+"inactive/active -0/1:      %d   %d   %d\n",
+$MG_T_Kompensation_X_aktiv$/e,
+$MG_T_Kompensation_Y_aktiv$/e,
+$MG_T_Kompensation_Z_aktiv$/e;
+COLOR=11;
+
+"Warming up          :      %d   %d   %d\n",
+$MG_Erwaermung$/c,$MG_Erwaermung$/c,$MG_Erwaermung$/c;
+
+"Cooling down        :      %d   %d   %d\n",
+$MG_Abkuehlung$/c,$MG_Abkuehlung$/c,$MG_Abkuehlung$/c;
+
+"Hysteresis warm up      :  %d   %d   %d\n",
+$MG_Hyst_Erwaermung_X$/c,
+$MG_Hyst_Erwaermung_Y$/c,
+$MG_Hyst_Erwaermung_Z$/c;
+
+"Hysteresis cool down    :  %d   %d   %d\n",
+$MG_Hyst_Abkuehlung_X$/c,
+$MG_Hyst_Abkuehlung_Y$/c,
+$MG_Hyst_Abkuehlung_Z$/c;
+
+"Curve without hysteresis:  %d   %d   %d\n\n",
+$MG_Kennlinie_ohne_Hyst_X$/c,
+$MG_Kennlinie_ohne_Hyst_Y$/c,
+$MG_Kennlinie_ohne_Hyst_Z$/c;
+
+COLOR= 9;
+"Compensation test         [0/1]:   %d\n",$MG_T_Kompensation_Test$/e;
+"Compensation test auto    [0/1]:   %d\n",$MG_T_Kompensation_Test_auto$/e;
+"PLC Cycles simulation  [1..100]: %3.0F \n\n",$BG_PLC_Zyklen_T_Simulation$/n=0/e;
+COLOR= 11;
+
+CURSOR=ON;
+"Compensation values (error vectors)   \n";
+"   PLC         TempComp    KinComp    \n";
+CURSOR=OFF;
+
+"\n";
+"X: %+7.4F mm  %+7.4F mm  %+7.4F mm\n",
+$WG_Temp_Kompensation_X$/n=4/c,$DG_Temp_Komp_Kinematik[0]$/n=4/c,$DG_Comp_Tab_Kinematik[0]$/n=4/c;
+"Y: %+7.4F mm  %+7.4F mm  %+7.4F mm\n",
+$WG_Temp_Kompensation_Y$/n=4/c,$DG_Temp_Komp_Kinematik[1]$/n=4/c,$DG_Comp_Tab_Kinematik[1]$/n=4/c;
+"Z: %+7.4F mm  %+7.4F mm  %+7.4F mm\n\n",
+$WG_Temp_Kompensation_Z$/n=4/c,$DG_Temp_Komp_Kinematik[2]$/n=4/c,$DG_Comp_Tab_Kinematik[2]$/n=4/c;
+
+/*
+"Z-Differenz (Probe) : %+5.4F mm\n",
+$NP_D280_FN19_Zahlenwert_1$/n=4/c;
+*/

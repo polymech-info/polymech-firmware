@@ -1,0 +1,60 @@
+{
+  "master": "cassandra-master",
+  "slaves": [
+    "cassandra-24"
+  ],
+  "partitions": [
+    {
+      "name": "Cassandra Bank Alpha2",
+      "controllers": [
+        {
+          "slaveid": 10,
+          "name": "Katrina",
+          "enabled": true
+        },
+        {
+          "slaveid": 11,
+          "name": "Castor",
+          "enabled": true
+        },
+        {
+          "slaveid": 12,
+          "name": "Cetus",
+          "enabled": true
+        },
+        {
+          "slaveid": 13,
+          "name": "Corona",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "Cassandra Bank Beta",
+      "controllers": [
+        {
+          "slaveid": 14,
+          "name": "Coma B",
+          "enabled": true
+        },
+        {
+          "slaveid": 15,
+          "name": "Corvus",
+          "enabled": true
+        },
+        {
+          "slaveid": 16,
+          "name": "Crater",
+          "enabled": true
+        },
+        {
+          "slaveid": 17,
+          "name": "Crux",
+          "enabled": true
+        }
+      ],
+      "startslaveid": 14,
+      "numcontrollers": 4
+    }
+  ]
+} 

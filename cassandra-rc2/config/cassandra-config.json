@@ -1,0 +1,25 @@
+{
+  "features": {
+    "ENABLE_FEEDBACK_BUZZER": true,
+    "ENABLE_FEEDBACK_3C": true,
+    "ENABLE_OPERATOR_SWITCH": true,
+    "ENABLE_LOADCELL_0": true,
+    "ENABLE_LOADCELL_1": true,
+    "ENABLE_SOLENOID_0": true,
+    "ENABLE_SOLENOID_1": true,
+    "ENABLE_PRESS_CYLINDER": true,
+    "ENABLE_OMRON_E5": true,
+    "ENABLE_JOYSTICK": true,
+    "ENABLE_AMPERAGE_BUDGET_MANAGER": true,
+    "ENABLE_PROFILE_TEMPERATURE": true,
+    "ENABLE_PROFILE_PRESSURE": true,
+    "ENABLE_PROFILE_SIGNAL_PLOT": true,
+    "ENABLE_INFLUXDB": false,
+    "NUM_OMRON_DEVICES": 8,
+    "PROFILE_PRESSURE_COUNT": 1,
+    "PROFILE_TEMPERATURE_COUNT": 4,
+    "PROFILE_SIGNAL_PLOT_COUNT": 4,
+    "HMI_NAME": "cassandra"
+  },
+  "settings": {}
+} 

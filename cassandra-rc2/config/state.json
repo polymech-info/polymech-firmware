@@ -1,0 +1,90 @@
+{
+    "tempProfiles": [
+        {
+            "elapsedSec": 0,
+            "enabled": true,
+            "running": false
+        },
+        {
+            "elapsedSec": 0,
+            "enabled": false,
+            "running": false
+        },
+        {
+            "elapsedSec": 0,
+            "enabled": false,
+            "running": false
+        },
+        {
+            "elapsedSec": 0,
+            "enabled": false,
+            "running": false
+        }
+    ],
+    "omronPids": [
+        {
+            "slaveId": 10,
+            "enabled": true
+        },
+        {
+            "slaveId": 11,
+            "enabled": true
+        },
+        {
+            "slaveId": 12,
+            "enabled": true
+        },
+        {
+            "slaveId": 13,
+            "enabled": true
+        },
+        {
+            "slaveId": 14,
+            "enabled": true
+        },
+        {
+            "slaveId": 15,
+            "enabled": true
+        },
+        {
+            "slaveId": 16,
+            "enabled": true
+        },
+        {
+            "slaveId": 17,
+            "enabled": true
+        }
+    ],
+    "totalKwh": 0,
+    "totalCents": 0,
+    "totalRuntimeHours": 0,
+    "totalHeatingTimeS": 0,
+    "totalHeatingTimePidS": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ],
+    "totalCycleCount": 0,
+    "isSlave": false,
+    "allOmronStop": false,
+    "allOmronComWrite": true,
+    "managedComponents": [
+        {
+            "id": 701,
+            "enabled": true
+        },
+        {
+            "id": 730,
+            "enabled": true
+        },
+        {
+            "id": 850,
+            "enabled": true
+        }
+    ]
+}

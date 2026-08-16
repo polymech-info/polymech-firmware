@@ -1,0 +1,9 @@
+{
+    "minHeatingDurationMs": 3000,
+    "maxHeatingDurationMs": 5000,
+    "maxSimultaneousHeating": 1,
+    "windowOffset": 1,
+    "enabled": false,
+    "startIndex": 0,
+    "endIndex": 7
+} 

@@ -1,0 +1,187 @@
+*-----------------------------------------------------------------------------
+*  Schmierung Achsen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Achsen                                K %011111
+
+#define /s    ML_Druck                                 M
+
+#define /s    BL_Schritt_Schmierung                    B
+
+#define /s    WL_naechste_Schmierung                   W
+
+GLOBAL Schmierung
+
+;----------------------------
+LBL Schmierung
+;----------------------------
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Schmierung_Reset
+
+  L      MG_Eins_Merker
+  S      TS_Schmierung
+  S      TS_Schmierung_Druck
+
+  CASE   BL_Schritt_Schmierung
+    CM     Schmierung_Start            ;00
+    CM     Test_Druck_0                ;01
+    CM     Schmierung_ein              ;02
+    CM     Schmierung_Time             ;03
+    CM     Schmierung_aus              ;04
+    CM     Schmierung_Time             ;05
+    CM     Test_Druck_0                ;06
+    CM     Schmierung_Ende             ;07
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_Schmierung
+  ENDI
+
+  L      PN_Fehler_Schmierung_Achsen
+  S      MG_Start_Sperre_Schmierung
+
+  L      MG_Taste_NC_Start
+  A      MG_Start_Sperre_Schmierung
+  A      MG_BA_Automatik
+  S      PN_Fehler_Schmierung_Achsen
+
+  LN     I_Schmierung_Oelstand_ok
+  =      PN_Fehler_Schmierung_Oelstand
+
+  L      O_Schmierung_ein
+  O      MG_LED_Test
+  =      O_LED_Schmierung_ein
+
+EM
+
+;----------------------------
+LBL Schmierung_Start                   ;00
+
+  L      WL_naechste_Schmierung
+  <=     K+0
+  O[
+    L      NP_D1164_Schmier_Impuls
+    A      KL_Achsen
+    >      K+0
+  ]
+  O      MG_Taste_Schmierung_Achsen
+  O      MG_SK_Schmierung
+  R      PN_Fehler_Schmierung_Achsen
+  PSL
+  IFT
+    S      MG_SK_Schmierung
+
+    L      KL_Achsen
+    =      PN_D1168_Schmierweg_Reset
+  ENDI
+
+  LN     MG_Impuls_1_min
+  ON     MG_Achsen_in_Bewegung
+  ON     MG_Steuerung_betriebsbereit
+  EMT
+
+  DEC    WL_naechste_Schmierung
+
+EM
+
+;----------------------------
+LBL Test_Druck_0                       ;01 ;06
+
+  L      I_Schmierung_Druck_ok
+  S      PN_Fehler_Schmierung_Achsen
+
+  LN     I_Schmierung_Druck_ok
+  A      MG_Steuer_Spannung_verzoegert_ein
+  PSL
+
+EM
+
+;----------------------------
+LBL Schmierung_ein                     ;02
+
+  L      MG_SK_Schmierung
+  A      PN_Fehler_Schmierung_Achsen
+  O      MG_Taste_NC_Start
+  O      MG_Taste_Schmierung_Achsen
+  O      MG_Impuls_CE_Taste
+  R      PN_Fehler_Schmierung_Achsen
+  =      TS_Schmierung_Druck
+
+  L      TR_Schmierung_Druck
+  =      MG_SK_Schmierung
+  =      O_Schmierung_ein
+
+  L      O_Schmierung_ein
+  A      I_Schmierung_Druck_ok
+  PSL
+
+  LN     TS_Schmierung_Druck
+  AN     TR_Schmierung_Druck
+  S      PN_Fehler_Schmierung_Achsen
+
+EM
+
+;----------------------------
+LBL Schmierung_Time                    ;03 ;05
+
+  LN     TR_Schmierung
+  =      TS_Schmierung
+  PSL
+
+EM
+
+;----------------------------
+LBL Schmierung_aus                     ;04
+
+  L      MG_Eins_Merker
+  R      MG_SK_Schmierung
+  R      O_Schmierung_ein
+  PSL
+
+EM
+
+;----------------------------
+LBL Schmierung_Ende                    ;07
+
+  PS     MG_Null_Merker
+
+  L      MG_Eins_Merker
+  R      MG_Start_Sperre_Schmierung
+  R      PN_Fehler_Schmierung_Achsen
+  R      MG_SK_Schmierung
+
+  L      K+0
+  =      PN_D1168_Schmierweg_Reset
+
+  L      DG_Schmier_Pause_min
+  >      NP_W988_Schmier_Zeit
+  IFT
+    L      DG_Schmier_Pause_min
+    =      WL_naechste_Schmierung
+  ELSE
+    L      DG_Schmier_Pause_max
+    <      NP_W988_Schmier_Zeit
+    IFT
+      L      DG_Schmier_Pause_max
+      =      WL_naechste_Schmierung
+    ELSE
+      L      NP_W988_Schmier_Zeit
+      =      WL_naechste_Schmierung
+    ENDI
+  ENDI
+
+LBL Schmierung_Reset
+
+  L      MG_Eins_Merker
+  R      O_Schmierung_ein
+
+  L      K+0
+  =      BL_Schritt_Schmierung
+
+EM

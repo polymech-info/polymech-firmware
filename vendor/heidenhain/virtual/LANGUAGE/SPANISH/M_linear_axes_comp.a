@@ -1,0 +1,42 @@
+/* Lineare Achsfehler Kompensation +/- 50[µm/m]
+   --------------------------------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"COMPENSACION LINEAL EJES";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+
+CURSOR=ON;
+"\n";
+"Factor              : -50...+50 µm/m \n";
+CURSOR=OFF;
+
+"\n";
+"X-Factor            : %+5.1F µm/m\n",
+$WG_Achs_Komp_X_Faktor$/n=1/c;
+
+"Y-Factor            : %+5.1F µm/m\n",
+$WG_Achs_Komp_Y_Faktor$/n=1/c;
+
+"Z-Factor            : %+5.1F µm/m\n\n",
+$WG_Achs_Komp_Z_Faktor$/n=1/c;
+
+CURSOR=ON;
+"\n";
+"Compensacion        :  %s\n",
+$MG_Achs_Kompensation_aktiv$?"active         ":"inactive       "/c;
+CURSOR=OFF;
+
+"\n";
+"X-Compensation      :  %+7.4F mm\n",
+$WG_Achs_Kompensation_X$/n=4/c;
+"Y-Compensation      :  %+7.4F mm\n",
+$WG_Achs_Kompensation_Y$/n=4/c;
+"Z-Compensation      :  %+7.4F mm\n\n",
+$WG_Achs_Kompensation_Z$/n=4/c;
+
+
+
+

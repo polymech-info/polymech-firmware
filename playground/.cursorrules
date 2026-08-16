@@ -1,0 +1,25 @@
+# LLM Development Workflow Commands
+
+
+## Directory & File structure
+
+- application code resides in ./src
+- application's core code resides in ./lib/polymech-base/src
+
+## Environment
+
+- ESP32 / Platform.io
+
+## Commands
+
+- build : npm run build
+- update device : npm run update (build & upload)
+
+## Code
+
+- dont comment code at all,  unless really needed, assume expert C++ level
+- Vector needs an array as storage
+- Mermaid diagrams :dont use braces in node names
+- never do more than asked, do baby-steps
+- be silent, keep your thoughts
+

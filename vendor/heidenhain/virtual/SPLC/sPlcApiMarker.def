@@ -1,0 +1,166 @@
+
+#type
+* ================================================================
+*  constant values
+
+                                                             * Version number of SPLC API, must be increased after every
+                                                             * incompatible change
+   SPLC_API_VERSION                         K60              * SPLC-Api-Version
+
+                                                             *
+                                                             * Maximal numbers and sizes for SKERN
+   S_T_AX_NO                                K22              * maximum number of axes (must be equal MAXAXIS)
+
+   S_S_AX_NO                                K6               * maximum number of spindles (for NCK only)
+
+   S_AG_MAX                                 K8               * maximum number of axes Groups
+
+   S_BOARD_NO                               K5               * maximum number of controller boards
+
+   S_DRIVE_NO                               K8               * maximum number of drives on board
+
+   S_DRIVE_MAX                              K40              * maximum number of drives
+
+   S_AXES_MAX                               K24              * maximum number of axes
+
+   FIRST_SPINDLE                            K22              * offset for 1. spindle (for iTNC only)
+
+   S_MAX_BRAKES_AXIS                        K5               * maximum number of brakes connected to one motor
+
+                                                             *
+                                                             * Maximum number of markers and maximum number of words that are transferred from PLC MC
+                                                             * to SPLC CC
+   SPLC_TRANSFER_M_SIZE                     K2               * number of unsigned for marker transfer
+
+   SPLC_TRANSFER_D_COUNT                    K32              * maximum number of dwords transferred
+
+   SPLC_TRANSFER_M_COUNT                    K64              *
+                                                             * maximum number of markers transferred
+
+                                                             *
+                                                             * The SPLC program for the CC is transferred in blocks. The following constant defines
+                                                             * how many lines of data each of theses blocks contains
+   SPLC_NO_OF_LINES_PER_BLOCK               K99              * Definition for axis group type
+
+   S_AG_NO                                  K-1              * axis group is not used
+
+   S_AG_NC                                  K0               * axis group type feed axes
+
+   S_AG_SP                                  K1               * axis group type spindle
+
+   S_AG_TCH                                 K2               * axis group type tool axes
+
+                                                             *
+                                                             * Maximal sizes and numbers for SPLC
+   SPLC_TIMER_COUNT                         K16              * number of SPLC timers
+
+   SPLC_INV_I_LIMIT                         K8               * maximum number of inputs with inverse logic
+
+   SPLC_TEST_I_LIMIT                        K16              * maximum number of inputs supplied by test output
+
+   SPLC_TESTSUPPLY_LIMIT                    K10              * maximum number of test outputs
+
+   SPLC_OEM_INT_MAX                         K16              * maximal number of arithmetical OEM configuration
+                                                             *                                              data mapped to SPLC ApiFromSafety structure
+
+                                                             * Possible safety states of axes groups (used for  pp_AxGrpStateReq, nn_AxGrpState, nn_AxState)
+                                                             * The numerical values are subject to change without notice!
+   S_STATE_STO                              K0               * Axis/spindle stopped and shut down
+
+   S_STATE_STO_O                            K1               * Spindle stopped and shut down (switch on without pp_AxGrpPermitDrvOn[])
+
+   S_STATE_SOS                              K2               * Axis stopped
+
+   S_STATE_SLS_2                            K3               * Reduced feed rate / power (SOM 2)
+
+   S_STATE_SLS_3                            K4               * Reduced feed rate / power (SOM 3)
+
+   S_STATE_SLS_4                            K5               * Reduced feed rate / power (SOM 4)
+
+   S_STATE_SLI_2                            K6               * Reduced feed rate increment / power (SOM 2)
+
+   S_STATE_SLI_3                            K7               * Reduced feed rate increment / power (SOM 3)
+
+   S_STATE_SLI_4                            K8               * Reduced feed rate increment / power (SOM 4)
+
+   S_STATE_SLI_S                            K9               * Reduced spindle operation increment
+
+   S_STATE_AUTO                             K10              * Axis/spindle is active
+
+   S_STATE_MAX                              K11              * maximum number of states
+
+                                                             * Possible safety states of axis groups used to identify safety operation modes (pp_GenSOM)
+                                                             * The numerical values are subject to change without notice!
+   S_MODE_SOM_1                             K1               * for pp_GenSOM only: SOM 1
+
+   S_MODE_SOM_2                             K2               * Reduced feed rate / power (SOM 2)
+
+   S_MODE_SOM_3                             K3               * Reduced feed rate / power (SOM 3)
+
+   S_MODE_SOM_4                             K4               * Reduced feed rate / power (SOM 4)
+
+   S_MODE_MAX                               K5               * maximum number of modes
+
+                                                             * Possible stop reactions (used for pp_AxGrpStopReq, nn_AxGrpStop, nn_AxStop, nn_GenStop)
+                                                             * The numerical values are subject to change without notice!
+   S_STOP_NONE                              K0               * no stop reaction active
+
+   S_STOP_SS2                               K1               * stop on contour
+
+   S_STOP_SS1D                              K2               * brake with maximum current and delay
+
+   S_STOP_SS1                               K3               * brake with maximum current
+
+   S_STOP_SS1F                              K4               * brake with maximum current because of error
+
+
+*  Entity SPlcApiFromSafety describes the interface from SKERN
+*  to the SPLC-program
+
+* ================================================================
+#typedef SPlcApiFromSafety
+* ================================================================
+
+   internal                                 D
+   NN_AxBrkReleaseReq                       M[24]            * Safety requests brake for axes (valid for 1-brake axes; for multibrake use nn_BrkReleaseReq)
+   NN_AxGrpInMotion                         M[8]             * Axes in motion of axes group
+   NN_AxGrpState                            D[8]             * Safety state of axes group
+   NN_AxPosition                            D[24]            * Safety axes position [0,0001mm/0,0001degree]
+                                                             *                                                                           (Spindle position is in the last position)
+   NN_GenSafe                               M                * Selftest of functional safety was completed
+   NN_AxSafe                                M[24]            * The axis is active, referenced and checked
+   NN_BrkActivationTest                     M                * Break activation test is active
+   NN_GenOutputEnable                       M                * output enable from SKERN to SPlc-RTS
+   NN_AxState                               D[24]            * Safety state of axes
+   NN_AxGrpStop                             D[8]             * Safety stop of axes group
+   NN_AxStop                                D[24]            * Safety stop of axes
+   NN_GenStop                               D                * Global safety stop
+   NN_MultiBrkOnAxisReleaseReq              D[24]            * Safety requests brake for individual brakes
+   NN_OemInt                                D[16]            * Numeric configuration data of OEM
+   NN_ActiveConfig                          D                * Number of active configuration
+*  Entity SPlcApiToSafety describes the interface from
+*  the SPLC program to SKERN
+
+* ================================================================
+#typedef SPlcApiToSafety
+* ================================================================
+
+   internal                                 D
+   PP_AxGrpStateReq                         D[8]             * Requested safety state of axis group
+   PP_AxGrpActivate                         M[8]             * Activate axis group
+   PP_AxFeedEnable                          M[24]            * Permit axes movement
+   PP_AxGrpStopReq                          D[8]             * Requested stop reaction
+   PP_AxGrpPB                               M[8]             * State of permissive button for axis group
+   PP_GenFB_NCC                             M                * State of normally closed contact chain
+   PP_GenCVO                                M                * State of key 'control voltage on' for machine OR 'machine is on'
+   PP_AxGrpPermitDrvOn                      M[8]             * State of permit axis group specific drive release / drive on
+   PP_GenMKG                                M                * At least one machine key is pressed
+   PP_GenTBRK                               M                * State of safety input test brake (TBRK)
+   PP_GenSOM                                D                * Active safety operation mode
+   PP_AxFeedMax                             D[24]            * Specific limited feed [mm/min]
+
+
+#type
+   ApiFromSafety                            SPlcApiFromSafety
+   ApiToSafety                              SPlcApiToSafety
+

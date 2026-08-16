@@ -1,0 +1,35 @@
+*-----------------------------------------------------------------------------
+*  PLC Preset
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+GLOBAL PLC_Preset
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL PLC_Preset
+;----------------------------
+
+  L      MG_M70_PLC_preset_off
+  IFT
+    S      PN_M4092_quit_M_function
+
+    L      K+0
+    =      BG_PLC_preset_number
+  ENDI
+
+  L      MG_M79_PLC_preset_on
+  IFT
+    L      BG_FN19_PLC_preset
+    >      K+0
+    S      PN_M4092_quit_M_function
+    SN     PN_error_value_not_permissible
+
+    L      BG_FN19_PLC_preset
+    =      BG_PLC_preset_number
+  ENDI
+
+EM

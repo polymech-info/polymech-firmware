@@ -1,0 +1,21 @@
+{
+  "features": {
+    "ENABLE_FEEDBACK_BUZZER": true,
+    "ENABLE_FEEDBACK_3C": true,
+    "ENABLE_LOADCELL": true,
+    "ENABLE_SOLENOID_0": true,
+    "ENABLE_SOLENOID_1": false,
+    "ENABLE_PRESS_CYLINDER": true,
+    "ENABLE_OMRON_E5": true,
+    "ENABLE_JOYSTICK": true,
+    "ENABLE_AMPERAGE_BUDGET_MANAGER": true,
+    "ENABLE_PROFILE_TEMPERATURE": true,
+    "ENABLE_PROFILE_PRESSURE": true,
+    "ENABLE_PROFILE_SIGNAL_PLOT": true,
+    "ENABLE_PROFILE_PRESSURE_PROFILE": true,    
+    "ENABLE_INFLUXDB": false
+  },
+  "settings": {
+    
+  }
+} 

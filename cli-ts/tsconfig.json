@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "outDir": "dist-in",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "allowJs": true,   
+    "rootDir": "src",
+		"baseUrl": ".",
+    "typeRoots": ["./src/types"],
+    "skipLibCheck": true,
+    "paths": {
+			"@/*": [
+				"src/*"
+			]
+		}
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "node_modules/@types/webpack"]
+}

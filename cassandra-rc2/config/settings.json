@@ -1,0 +1,168 @@
+{
+  "master": "plc",
+  "slaves": [
+    "cassandra-1"
+  ],
+  "partitions": [
+    {
+      "name": "Cassandra Left",
+      "controllers": [
+        {
+          "slaveid": 10,
+          "name": "Carina",
+          "enabled": true
+        },
+        {
+          "slaveid": 11,
+          "name": "Castor",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "Cassandra Right",
+      "controllers": [
+        {
+          "slaveid": 12,
+          "name": "Coma B",
+          "enabled": true
+        },
+        {
+          "slaveid": 13,
+          "name": "Corvus",
+          "enabled": true
+        }
+      ],
+      "startslaveid": 14,
+      "numcontrollers": 4
+    }
+  ],
+  "settings": [
+    {
+      "enabled": true,
+      "name": "ALWAYS_WARMUP",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": true
+    },
+    {
+      "enabled": true,
+      "name": "PID_LAG_COMPENSATION",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": false
+    },
+    {
+      "enabled": true,
+      "name": "ALWAYS_STOP_PIDS_ON_PROFILE_FINISHED",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": true
+    },
+    {
+      "enabled": true,
+      "name": "MAX_TEMPERATURE",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 280
+    },
+    {
+      "enabled": true,
+      "name": "MIN_TEMPERATURE",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 10
+    },
+    {
+      "enabled": true,
+      "name": "SP_DEADBAND",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 10
+    },
+    {
+      "enabled": true,
+      "name": "SEQUENTIAL_HEATING_EXCLUSIVE",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": true
+    },
+    {
+      "enabled": true,
+      "name": "LOADCELL_SLAVE_ID_0",
+      "group": "press",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 20
+    },
+    {
+      "enabled": true,
+      "name": "LOADCELL_SLAVE_ID_1",
+      "group": "press",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 21
+    },
+    {
+      "enabled": true,
+      "name": "SOLENOID_0_MB_ADDR",
+      "group": "press",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 0
+    },
+    {
+      "enabled": true,
+      "name": "OPERATION_TIMEOUT",
+      "group": "Modbus RTU",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 100
+    },
+    {
+      "enabled": true,
+      "name": "OMRON_E5_READ_BLOCK_INTERVAL",
+      "group": "Modbus RTU",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 80
+    },
+    {
+      "enabled": true,
+      "name": "ALWAYS_USE_SEQUENTIAL_HEATING",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": false
+    },
+    {
+      "enabled": true,
+      "name": "SOLENOID_1_MB_ADDR",
+      "group": "press",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 0
+    }
+  ]
+}

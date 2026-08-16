@@ -1,0 +1,12 @@
+diff --git a/src/spiffs_nucleus.c b/src/spiffs_nucleus.c
+index ab5cde1..69af230 100644
+--- a/src/spiffs_nucleus.c
++++ b/src/spiffs_nucleus.c
+@@ -949,6 +949,7 @@ s32_t spiffs_object_create(
+   fs->stats_p_allocated++;
+ 
+   // write empty object index page
++  memset(&oix_hdr, 0xff, sizeof(oix_hdr));
+   oix_hdr.p_hdr.obj_id = obj_id;
+   oix_hdr.p_hdr.span_ix = 0;
+   oix_hdr.p_hdr.flags = 0xff & ~(SPIFFS_PH_FLAG_FINAL | SPIFFS_PH_FLAG_INDEX | SPIFFS_PH_FLAG_USED);

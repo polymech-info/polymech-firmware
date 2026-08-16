@@ -1,0 +1,6 @@
+/* Anzeige Maschinen Grafik
+   ------------------------
+GRAPHICS=PLC:\PICTURE\%GraphicsResolution%\MASCHINE.BMP;
+*/
+POS=0,0;
+GRAPHICS=PLC:\PICTURE\MASCHINE.BMP;

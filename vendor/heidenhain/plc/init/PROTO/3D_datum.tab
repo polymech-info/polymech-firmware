@@ -1,0 +1,122 @@
+BEGIN 3D_datum.tab 
+#STRUCTBEGIN
+   NAME = COMMENT
+     TYPE = C
+     WIDTH = 9
+     DEC = 0
+     DIA-ENGLISH = Kommentar ?
+     DIA-GERMAN = Comment ?
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿ NOMBRE ?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NEVE ?
+     DIA-RUSSIAN = Nazwanie ?
+   NAME = AXIS_B
+     TYPE = N
+     WIDTH = 9
+     DEC = 0
+     DIA-ENGLISH = Head position axis B ?
+     DIA-GERMAN = Kopf Position B-Achse ?
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿ NOMBRE ?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NEVE ?
+     DIA-RUSSIAN = Nazwanie ?
+   NAME = AXIS_C
+     TYPE = N
+     WIDTH = 9
+     DEC = 0
+     DIA-ENGLISH = Head position axis C ?
+     DIA-GERMAN = Kopf Position C-Achse ?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = ¿ COMENTARIO ?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = MEGJEGYZES ?
+     DIA-RUSSIAN = Kommentarij ?
+   NAME = DATUM_X
+     TYPE = N
+     WIDTH = 9
+     DEC = 4
+     DIA-ENGLISH = Datum axis X ?
+     DIA-GERMAN = Nullpunkt X-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+   NAME = DATUM_Y
+     TYPE = N
+     WIDTH = 9
+     DEC = 4
+     DIA-ENGLISH = Datum axis Y ?
+     DIA-GERMAN = Nullpunkt Y-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+   NAME = DATUM_Z
+     TYPE = N
+     WIDTH = 9
+     DEC = 4
+     DIA-ENGLISH = Datum axis Z ?
+     DIA-GERMAN = Nullpunkt Z-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+#STRUCTEND
+NR      COMMENT   AXIS_B    AXIS_C    DATUM_X   DATUM_Y   DATUM_Z
+0       ACTUAL DA                      0,0000    0,0000    0,0000   
+1       3D POSITI  -90         0       0,0000    0,0000    0,0000   
+2       3D POSITI   90         0       0,0000    0,0000    0,0000   
+3       3D POSITI  180         0       0,0000    0,0000    0,0000   
+4       3D POSITI    0       180       0,0000    0,0000    0,0000   
+5       3D POSITI  -90       180       0,0000    0,0000    0,0000   
+6       3D POSITI   90       180       0,0000    0,0000    0,0000   
+7       3D POSITI  180       180       0,0000    0,0000    0,0000   
+8       END (9999 9999                                              
+[END]

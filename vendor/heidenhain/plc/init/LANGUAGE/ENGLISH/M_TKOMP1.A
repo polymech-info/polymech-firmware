@@ -1,0 +1,24 @@
+/* Temperature Compensation
+   ------------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"TEMP COMPENSATION";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"                                      \n";
+CURSOR=OFF;
+"Temperature machine   : %+5.1F Degree\n",
+$WG_temperature_machine$/n=1/c;
+"Temperature spindle   : %+5.1F Degree\n\n",
+$WG_temperature_spindle$/n=1/c;
+"Temperature difference: %+5.1F Degree\n\n",
+$WG_temperature_difference$/n=1/c;
+"Z-Compensation        :  %+5.4F mm\n\n",
+$PN_W580_lag_error_compensation_Z$/n=4/c;
+"Z-Difference (Probe)  :  %+5.4F mm\n",
+$NP_D280_FN19_1st_value$/n=4/c;
+

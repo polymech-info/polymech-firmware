@@ -1,0 +1,1289 @@
+N38 Excessive servo lag in %.2s
+N39 Nominal speed value too high %.2s
+N41 Standstill monitoring err. in %.2s
+N42 Excessive offset in %.2s
+N50 Touch point inaccessible
+N51 Positioning error
+N52 Stylus already in contact
+N53 Exchange touch probe battery
+N54 Probe system not ready
+N17738 Limit switch %.2s+
+N56 Limit switch %.2s+
+N17739 Limit switch %.2s-
+N58 Limit switch %.2s-
+N59 FN 14: error code %-3u
+N60 Two TOOL DEF %-3u with PGM CALL
+N61 Tool table locked
+N62 Ref mark %.2s: incorrect spacing
+N63 Handwheel?
+N109 PLC: excessive nesting
+N110 PLC: stack underflow
+N111 PLC: stack overflow
+N112 PLC: timeout
+N113 PLC: CASE out of range
+N115 PLC: index range incorrect
+N133 PLC: M4005/M4006/M4006 incorrect
+N134 PLC: more than one strobe active
+N151 MP: line w/o number
+N152 MP: incorrect number
+N153 MP: separator missing
+N154 MP: input value incorrect
+N155 MP: defined twice
+N156 MP: not defined
+N157 MP: saving not possible
+N159 Pocket 0 undefined
+N160 Wrong pocket number
+N937 Wrong pocket number
+N161 Feed rate is missing
+N162 No new axis during rotatn
+N163 Max. tool age expired
+N164 Exchange buffer battery
+N165 Oriented spindle stop inactive
+N166 Tool file?
+N167 Datum table?
+N168 Error
+N938 Key non-functional
+N939 Program memory exceeded
+N940 Search address missing
+N941 Tool number 0 not permitted
+N169 Tool number already assigned
+N170 Jump to label 0 not permitted
+N942 Entry value incorrect
+N943 Entry value incorrect
+N171 Entry value incorrect
+N172 Entry value incorrect
+N173 Entry value incorrect
+N174 Entry value incorrect
+N175 Entry value incorrect
+N176 Entry value incorrect
+N177 Cycle 27(G127): depth > radius
+N178 Entry value incorrect
+N179 Entry value incorrect
+N180 Blank form definition incorrect
+N183 Selected block not addressed
+N184 Program not found
+N185 Further file entry impossible
+N944 Program name already exists
+N187 Label number already assigned
+N188 Label number %-3u already assigned
+N189 Data transfer erroneous
+N194 Program incomplete
+N196 Interface already assigned
+N197 Baud rate not possible
+N945 Program data erroneous
+N946 Program data erroneous
+N200 Ext. in-/output not ready
+N201 NC program memory erased
+N947 Operating parameters erased
+N948 Protected File!
+N202 The calling program was changed
+N203 Emergency stop defective
+N205 Emergency stop PLC
+N207 PGM not found
+N212 FK reference to current block
+N214 Arithmetical error
+N215 Arithmetical error
+N216 Calculated Q parameter too large
+N217 Calculated coordinate too large
+N218 Calculated rpm too large
+N219 Calculated feed rate too large
+N220 Calculated tool number too large
+N221 Calculated label no. too large
+N222 Calculated error no. too large
+N223 Calc. scaling factor too large
+N224 Incr. polar angle too large
+N225 0 pitch not permitted
+N226 Arithmetical error
+N227 Arithmetical error in APPR/DEP
+N228 Arithmetical error in APPR/DEP
+N229 Arithmetical error in APPR/DEP
+N230 Arithmetical error in APPR/DEP
+N231 Arithmetical error in rough-out
+N232 Arithmetical error in CR
+N233 Arithmetical error in CT
+N234 Arithmetical error in RND/CHF
+N235 Incorrect arc/arc intersection
+N236 Incorrect arc/line intersection
+N237 Incorrect line/line intersection
+N238 Arithmetical error in APPR/DEP
+N239 Error in radius compensation
+N240 Error in contour pocket
+N241 Error in contour pocket/train
+N242 Error in contour pocket
+N243 Error in contour pocket
+N244 Error in radius compensation
+N245 Error in radius compensation
+N246 Error in contour pocket
+N247 Error in contour pocket
+N250 Arithmetical error during M112
+N251 Parameter calculation error
+N252 Error while testing limit switch
+N253 Path comp wrongly ended
+N254 Path comp wrongly started
+N255 Path comp wrongly started
+N256 Path comp wrongly started
+N257 Path comp wrongly started
+N258 Path comp wrongly started
+N259 Path comp wrongly started
+N260 CYCL DEF incomplete
+N261 CYCL DEF not defined
+N263 0 plunging depth not permitted
+N264 User cycle does not exist
+N265 Subprogram does not exist
+N266 Subprogram does not exist
+N272 Incorrect block syntax
+N274 Tool definition not permitted
+N275 TOOL DEF w/o length or radius
+N276 CT after APPR not permitted
+N277 CHF after APPR not permitted
+N278 RND after APPR not permitted
+N279 RND radius = 0 not permitted
+N280 Chamfer length = 0 not permitted
+N281 2nd rounding arc not permitted
+N282 RND after CHF not permitted
+N283 CHF after RND not permitted
+N284 2nd chamfer not permitted
+N285 DEP LCT after HELIX not permittd
+N286 APPR LCT before HELIX not permtd
+N287 Illegal NC block
+N288 Rounding arc not permitted
+N289 Rounding arc not permitted
+N290 Chamfer not permitted
+N291 DEP not last block
+N292 No rounding arc as last block
+N293 No chamfer as last block
+N294 Only one DEP block permitted
+N295 DEP not permitted
+N296 APPR not permitted
+N297 APPR not first block
+N299 Cycle 14 (G37) not permitted
+N300 Tool call not permitted
+N302 M91/M92 with 3DROT not permitted
+N303 M114 with 3DROT not permitted
+N305 No M114 with radius compensation
+N307 Axis double programmed
+N308 Axis double programmed
+N309 Axis double programmed
+N310 Axis double programmed
+N311 Axis double programmed
+N313 Plane wrongly defined
+N314 3-D comp.: plane def incorrect
+N315 Plane wrongly defined
+N317 Plane wrongly defined
+N318 Plane wrongly defined
+N319 Plane wrongly defined
+N320 Plane wrongly defined
+N321 Plane wrongly defined
+N322 Plane wrongly defined
+N323 Plane wrongly defined
+N324 Plane wrongly defined
+N325 Plane wrongly defined
+N326 Plane wrongly defined
+N327 Plane wrongly defined
+N328 Plane wrongly defined
+N329 Rotary axis not permitted here
+N950 Wrong axis programmed
+N951 Wrong axis programmed
+N330 Locked axis was programmed
+N331 Wrong axis programmed
+N332 Wrong axis programmed
+N333 Wrong axis programmed
+N335 Rotary axis not programmed
+N337 No rotary axis was programmed
+N338 No principal axis was programmed
+N339 Slave axis of gantry programmed
+N952 Wrong rpm
+N340 Wrong rpm
+N341 Wrong rpm
+N342 Wrong rpm
+N343 Wrong rpm
+N344 Rpm too high for this cycle
+N345 0 rpm not permitted
+N346 Wrong rpm
+N347 Chamfer not permitted
+N348 Chamfer not permitted
+N349 Chamfer not permitted
+N350 Chamfer not permitted
+N351 Chamfer not permitted
+N352 Chamfer not permitted
+N353 Chamfer not permitted
+N354 Chamfer too large
+N355 Chamfer too large
+N356 Chamfer too large
+N357 Circle end pos. incorrect
+N358 C-block: arc end pos. incorrect
+N359 Circle end pos. incorrect
+N360 Circle end pos. incorrect
+N361 Circle end pos. incorrect
+N362 Label number not found
+N363 Label 0 is missing
+N364 Label number not found
+N365 Cycle 14: LBL not found
+N366 Pole is missing
+N367 Circle center missing
+N368 Tool radius too small
+N369 Tool radius 0 not permitted
+N370 Radius comp. undefined
+N371 Radius comp. undefined
+N372 Radius comp. undefined
+N373 Radius comp. undefined
+N374 Radius comp. undefined
+N375 Traverse reference points
+N376 Rounding-off undefined
+N377 Rounding-off undefined
+N378 Rounding-off not permitted
+N379 Rounding radius too large
+N380 Rounding radius too large
+N381 Rounding radius too large
+N382 Rounding radius too large
+N383 Rounding radius too large
+N384 Rounding radius too large
+N385 Rounding radius too large
+N386 Rounding radius too large
+N387 Rounding radius too large
+N388 Spindle must be turning
+N389 Mirror image on tool axis
+N390 Mirror image on tool axis
+N391 Tool axis is missing
+N392 Tool axis is missing
+N393 Tool axis is missing
+N394 Tool axis is missing
+N395 Tool axis is missing
+N396 Tool axis is missing
+N397 Tool axis is missing
+N398 Tool definition is missing
+N400 Tool definition is missing
+N401 Tool number is missing
+N402 Tool radius too large
+N403 Tool radius too large
+N404 Tool radius too large
+N405 Tool radius too large
+N406 Tool radius too large
+N407 Tool radius too large
+N408 Tool radius too large
+N409 Tool radius too large
+N410 Tool radius too large
+N411 Tool radius too large
+N412 Tool radius too large
+N413 Program start undefined
+N414 Program start undefined
+N415 Program start undefined
+N416 Program start undefined
+N417 Program start undefined
+N418 Program start undefined
+N419 Program start undefined
+N420 Program start undefined
+N421 Program start undefined
+N422 Program start undefined
+N423 Program start undefined
+N424 Program start undefined
+N425 Cancel comp. before PLC positng
+N426 Program start undefined
+N953 Block format incorrect
+N427 Block format incorrect
+N429 Excessive subprogramming
+N430 Excessive subprogramming
+N432 Excessive subprogramming
+N433 Contradictory signs in cycle
+N434 Wrong sign programmed
+N435 Angle reference missing
+N436 Angle reference missing
+N437 Radius too small
+N438 Angle reference missing
+N439 Angle reference missing
+N440 DEP interruption not permitted
+N441 DEP interruption not permitted
+N442 Coordinates after APPR missing
+N443 Range exceeded
+N444 Faulty range data
+N445 Start position incorrect
+N446 Time limit exceeded
+N447 CYCL parameter incorrect
+N448 Oversize greater than depth
+N451 Scaling factors not equal
+N454 Stylus deflection exceeds max.
+N455 Too many subcontours
+N456 Too many subcontours
+N457 Too many subcontours
+N458 Too many subcontours
+N459 Too many subcontours
+N460 Too many subcontours
+N461 Too many subcontours
+N462 Too many subcontours
+N463 Too many subcontours
+N464 Too many subcontours
+N465 Too many subcontours
+N466 Too many subcontours
+N467 Too many subcontours
+N468 Too many subcontours
+N469 Too many subcontours
+N470 Too many subcontours
+N471 Too many subcontours
+N472 Too many subcontours
+N473 Too many subcontours
+N474 Too many subcontours
+N475 Contour programming error
+N477 Contour programming error
+N478 Contour programming error
+N479 Contour programming error
+N480 Contour programming error
+N481 Contour programming error
+N482 Contour programming error
+N483 Contour programming error
+N484 Contour too complex
+N485 Contour too complex
+N486 Contour too complex
+N487 Contour too complex
+N488 Contour too complex
+N489 Contour too complex
+N490 Contour too complex
+N491 Contour too complex
+N492 Contour too complex
+N493 Contour too complex
+N954 Address letter already assigned
+N494 Block too long
+N955 G-code group already assigned
+N495 Unknown G-code
+N496 N-code missing
+N497 CMA file: no active line
+N500 Too many compensation points
+N501 Too many compensation functions
+N957 Power interrupted Power interrupted
+N958 Relay ext. dc voltage missing Relay ext. dc volt. missing
+N859 ERROR
+N860 Axis cannot be shown
+N861 Further reduction not possible
+N862 Further enlargement not possible
+N863 BLK FORM cannot be shown
+N864 Wrong tool axis in BLK FORM
+N865 Tool radius cannot be shown
+N888 Text not found
+N1086 Too many points
+N1097 Tolerance value too great
+N1106 Delete entire cycle: DEL!
+N1107 Block in cycle not allowed !
+N1125 Reference to block %.6s:no DEL
+N1126 Deactivate M112
+N1141 RL/RR not permitted if M120 = 0
+N1142 Radius comp. entry is missing
+N1143 Impermissible radius comp.
+N1144 R+/R- not permitted with M120
+N1145 RND not permitted with M120
+N1146 Chamfer not permitted with M120
+N1147 Analog voltage not defined
+N1148 Analog voltage ambiguous
+N1149 Incorrect entry in MP%.4u
+N1150 Touch probe not ready %.3s
+N1151 Resumption with M120 not allowed
+N1154 Illegal name for file or path
+N1170 Measuring touch probe selected
+N1171 Triggering touch probe selected
+N1172 Calibrate touch probe
+N1178 3DROT active: use axis buttons
+N1182 Incorrect entry in MP%.4u.%u
+N1186 File format has changed
+N1187 M89 not permitted
+N1192 Entered angle not permitted
+N1193 TOOL.T: enter number of teeth
+N1266 Block format incorrect
+N1521 PLC error table not yet compiled
+N1523 PLC: no error table selected
+N1524 PLC: error table missing
+N1525 PLC: error table not .PET
+N1527 PLC: error table not found
+N1528 PLC: err. table format incorrect
+N1568 Wrong axes in .PNT file
+N1590 Dist value too small
+N1682 TOOL.T: LCUTS or ANGLE missing!
+N1745 Access denied
+N1749 Incorrect number for FN17/FN18
+N1749 Incorrect number for FN17/FN18
+N1750 PLC: error in module call
+N1789 Tool locked
+N1790 Wrong range cycle
+N1791 Point spacing too large
+N1792 Wrong axis for line
+N1793 Wrong axis for column
+N1794 Wrong angular axis
+N1795 Incorrect axis in range cycle
+N1796 Incorrect line spacing
+N1797 Range cycle not yet defined
+N1798 Range beyond limit switch
+N1799 Clearance height too small
+N1807 Illegal file name
+N1809 M114 not permitted with M116
+N1810 System memory overflow
+N1845 Update the system data!
+N1848 Directory not empty
+N1850 Cycle 4(G75/G76): incorrect axis
+N1851 M130 not permitted
+N1852 M130 not permitted with M114
+N1853 M130 not permitted
+N1854 M130 not permitted with comp.
+N1855 No fixed cycle defined
+N1856 Reciprocation feed rate missing
+N1857 Tool radius too large
+N1892 FN20/D20: incorrect condition
+N1900 Device busy
+N1901 Drive not found
+N1914 Tool broken
+N2039 Incorrect datum number
+N2040 Insufficient slot width
+N2041 Pocket too small
+N2042 Q202 not defined
+N2043 Q205 not defined
+N2044 Q218 must be greater than Q219
+N2045 CYCL 210 not permitted
+N2046 CYCL 211 not permitted
+N2047 Q220 too large
+N2048 Q222 must be greater than Q223
+N2049 Q244 must be greater than 0
+N2050 Q245 must not equal Q246
+N2051 Angle range must be under 360°
+N2100 Wrong pallet
+N2101 PLC:\NCMACRO.SYS missing!
+N2102 'PALETT' in NCMACRO.SYS missing
+N2103 Pallet data missing
+N2186 Tilt plane: tool axis missing
+N2211 No TOOL CALL permitted with M128
+N2212 M91/M92 not permitted with M128
+N2213 MP75XX not defined
+N312 Height axis not permitted here
+N2222 File not found in OEM.SYS
+N2223 Incorrect file type
+N2224 Field name not found
+N2225 File empty
+N2226 Material table not found
+N2227 Cutting-material table not found
+N2228 No material selected
+N2229 WMAT-TMAT combination missing
+N2230 No cutting data table selected
+N2231 Block not permitted with M112
+N2232 Correct the error block
+N2233 FK blk not selectable with GOTO
+N2238 Q223 must be greater than Q222
+N2243 ANGLE in TOOL.T too small
+N2253 Switch off external dc voltage
+N2254 Normally closed relay open?
+N2255 Switch on external dc voltage
+N2273 TS: inadequate consistency
+N2284 Parallel operation not possible
+N2285 Axis locked
+N2288 Tool holder defective!
+N2300 Check the cutting data !
+N2315 Q214: 0 not permitted
+N2316 PLC: Event file not found
+N2317 PLC: Too many events
+N2319 TOOL TYPE table not found
+N2320 CDT path not found
+N2321 Too many *.CDT files
+N2336 Safe input %d contradictory
+N2339 No connection to network
+N2342 FN17: Assignment value illegal
+N2344 Enter the element.
+N2345 Tool not defined
+N2375 M112 not permitted with M128
+N2377 S: Limit switch %.2s+ traversed
+N2378 S: Gross positioning error L %.2s
+N2377 S: Limit switch %.1s- traversed
+N2384 All elements deleted!
+N2385 Mandatory field deleted!
+N2386 Max. line length exceeded!
+N2387 Error during conversion!
+N2500 Use RESTORE POS. AT N
+N2504 Traverse direction not defined
+N2505 No datum table active
+N2506 Position error: center in axis 1
+N2507 Position error: center in axis 2
+N2508 Hole diameter too small
+N2509 Hole diameter too large
+N2510 Stud diameter too small
+N2511 Stud diameter too large
+N2512 Pocket too small: rework axis 1
+N2513 Pocket too small: rework axis 2
+N2514 Pocket too large: scrap axis 1
+N2515 Pocket too large: scrap axis 2
+N2516 Stud too small: scrap axis 1
+N2517 Stud too small: scrap axis 2
+N2518 Stud too large: rework axis 1
+N2519 Stud too large: rework axis 2
+N2520 Meas. cycle: length exceeds max
+N2521 Meas. cycle: length below min
+N2522 TCHPROBE 426: length exceeds max
+N2523 TCHPROBE 426: length below min
+N2524 TCHPROBE 430: diameter too large
+N2525 TCHPROBE 430: diameter too small
+N2609 M128 not permitted with 3DROT
+N2610 M114 not permitted with M128
+N2611 M128 not permitted with RR/RL
+N2617 No measuring axis defined
+N2618 Format error in date or time
+N2621 M128: DATUM setting not allowed
+N2635 Tool breakage tolerance exceeded
+N2636 Cancel radius comp. before M128
+N2642 Inverter not ready
+N2644 M120: LOOK AHEAD not possible
+N2645 Clear.hgt. Q260 < Meas.hgt. Q261
+N2646 MC machine key depressed
+N2647 Relay: n.c. contact closed?
+N2655 Current to spindle not equal 0
+N2657 Current to axis %.2s not equal 0
+N2662 Begin/end block not markable
+N2663 Insertion not possible here
+N2664 Intermediate memory empty
+N2665 Nothing is marked
+N2668 Correct the block format
+N2691 LN: Oriented stop not possible
+N2692 M128 with LN block not possible
+N2700 Test of cutout channels inactive
+N2711 Safe checksum erroneous
+N2733 To many columns
+N2734 No axis column selected
+N2735 M128 not permitted
+N2736 No .TAB file open?
+N2737 TAB: Field name too long
+N2738 TAB: Field not numerical
+N2739 TAB: Too many field names
+N2745 Incorrect reference position %.2s
+N2746 Incorrect entry in MP%u
+N2747 Line is write-protected
+N2748 Meas. cycle: M114 not permitted
+N2749 Meas. cycle: M128 not permitted
+N2750 M114, M128, 3DROT not permitted
+N2752 MP: contradictory input
+N2757 Command buffer overflow
+N2758 Commands do not agree
+N2760 FS function not performed
+N2768 MC handwheel permissive key pressed
+N2769 Incomplete cycle was deleted
+N2770 Intermediate memory empty
+N2771 No permission to write
+N2772 To delete entire context: NO ENT
+N2773 Impermissible change of context
+N2774 No polar coordinates possible
+N2775 To change context: press ENT
+N2776 Input as context not permitted
+N2777 Check parentheses for pairs
+N2820 MC pos. deviation too large %.2s
+N2824 Calibrate TT in tilted plane
+N2825 Calibrate TT in non-tilted plane
+N2826 TT not parallel to tool axis
+N2827 Faulty braking process %.2s
+N2828 Position control time too short
+N2829 Enter Q247 unequal 0
+N2830 Enter Q247 greater than 5
+N2834 EnDat defective %X %.2s
+N2837 FK block was not converted
+N2849 Switch on spindle
+N2853 Synchronization monitoring %.2s
+N2858 No testing rights
+N2868 TT: Pre-position the axes
+N2945 M91/M92 not permitted
+N2969 Required value missing
+N2993 Internet address error
+N2995 Illegal PLC datum shift
+N2996 Trav. range shift not permitted
+N3002 Special spindle mode not allowed
+N3006 Perform a tool change!
+N3012 M120 LA not permitted
+N3013 Circular interpolation illegal
+N3025 Pallet line locked!
+N3026 Radius compensation not possible
+N3055 Enter direction Q351 unequal 0
+N1149 Incorrect entry in MP%.4u
+N958 Relay ext. dc voltage missing
+N1182 Incorrect entry in MP%.4u.%u
+N3063 3DROT: No description found
+N3065 Reset M114, M128 or CYCL19
+N3081 Thread depth too large
+N3187 No PNT file selected
+N3188 PNT: Clearance height too low
+N3189 CYCL CALL PAT not permitted
+N3192 Missing calibration data
+N3193 Tolerance exceeded
+N3199 Spindle switching not permitted
+N3205 Autostart not enabled
+N3206 No macro %.20s
+N2720 MC amplitude too high %.2s
+N44 MC amplitude too low %.2s
+N45 MC frequency too high %.2s
+N2687 MC NC temperature out of tol.
+N2612 MC S input %d not equal 0
+N14018 MC standstill monitoring %.2s
+N57 CC limit switch %.2s-
+N55 CC limit switch %.2s+
+N3214 Table values were changed
+N3218 PLC function not permitted
+N3220 Tolerance in MP6510 too small
+N3221 Calibration radius too large
+N3231 PAL/PGM field is missing
+N3232 Language load error %d
+N3234 Tool preselection is running
+N3235 Negative feed rate
+N3236 Switch-off pos. %.2s unequal ENDAT
+N3239 Selected software not loaded
+N3243 No tool axis programmed
+N3245 M function not permitted
+N3354 Function not permitted
+N3356 Kinematic table defective
+N3357 MP subfile incorrect
+N3441 M144 not permitted
+N4957 Contradictory entry
+N3532 Incorrect entry in MFUNCT.TAB
+N3927 Probing not permitted
+N3928 M112 not permitted with M144
+N4175 Pallet line with completed part
+N4176 Fixture change macro missing
+N4177 Invalid geometry context
+N4197 Mid-program startup active
+N4276 ORIENTATION not permitted
+N4491 Mid-program startup not possible
+N4492 MC: Machine permissive button depressed
+N4571 Check the depth sign
+N4572 Entry character not allowed
+N4573 Lowercase letter not allowed
+N4574 Letter not allowed
+N4575 Numeral not allowed
+N4880 Insufficient system memory
+N4881 PLC program not found
+N4882 M140 not permitted
+N4903 Radius oversize not allowed
+N4905 Processor 1 temperature too high
+N4906 Processor 2 temperature too high
+N4935 Actual position saved %.2s
+N5073 LSV2: Line interrupted
+N5074 LSV2: Transmission error
+N5075 LSV2: Transmission error
+N5076 LSV2: Transmission error
+N5077 LSV2: Timeout error
+N5078 LSV2: Transmission error
+N5079 LSV2: Timeout error
+N5080 LSV2: Timeout error
+N5081 LSV2: Outgoing transmiss. error
+N5099 MC no memory available
+N5225 Incorrect software version
+N5228 Feed rate = 0 not allowed
+N5236 TNC temperature warning %d°C
+N5242 PLC program not compiled
+N204 TNC temperature too high %d°C
+N5286 Error: Profibus configuration
+N5287 Profibus: Hardware error
+N5288 Profibus: Error initialization
+N5312 Nonvolatile PLC data deleted
+N5338 Soft-key project not translated
+N5366 Line insertion not allowed
+N5367 T %u in line %u already assigned
+N5368 LBL %u in line %u already assigned
+N5369 No axes selected
+N2612 CC%d S input %d not equal 0
+N2687 CC%d NC temperature out of tol.
+N2688 CC%d +5V out of tolerance
+N5434 Function not available
+N5479 Magazine rules not translated
+N5484 Axis angle not equal tilt angle
+N5566 No reference system change!
+N5567 MC wrong quantity FS-CC
+N5568 Too many characters
+N5569 Value out of input range
+N5570 Too many decimal places
+N5571 Algebraic sign not allowed
+N5572 Only integers permitted
+N5573 Q not allowed: enter a number
+N5574 Incremental input not allowed
+N5575 Too many M functions
+N5576 Too many axes programmed
+N5577 Axis double programmed
+N5578 Element double / not allowed
+N5579 Incomplete data input
+N5580 ISO: Block number N missing
+N5581 Required element missing
+N5582 Syntax incorrect
+N5583 No measured value saved %.2s
+N5617 Keyword unknown
+N5618 Syntax element not editable
+N5619 PGM header not editable
+N5627 Set MP1356.%d to %.4f
+N5628 Too many axes programmed
+N2652 CC%d inverter for spindle RDY=0
+N2653 CC%d inverter for axis RDY=0
+N2654 CC%d inverter for spindle RDY=1
+N2656 CC%d inverter for axis RDY=1
+N2743 CC%d FS checksum error
+N2759 CC%d command not acknowledged
+N2819 Faulty data from CC%d
+N2821 No pos. values from the CC%d
+N2822 CC%d no pos. values from the MC
+N2823 MC/CC%d checked axes unequal
+N2831 CC%d wrong include-file version
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC S checksum error
+N5631 MC command %3d not acknowledged
+N5632 MC and CC mismatch
+N5635 Channel %d cannot be displayed
+N5641 MC safety doors are open
+N5651 Tool axis is missing
+N5655 Axis %.2s started w/o test by MC
+N5671 Check the position encoder %.2s
+N5672 Use preset table!
+N5673 Q303 in meas. cycle undefined!
+N5693 Tool axis not allowed
+N5699 Calculated values incorrect
+N5700 Contradictory measuring points
+N5709 Circle data error
+N5712 Password not found
+N5713 No password supplied
+N5714 Password too long
+N5715 Password already encrypted
+N5757 Preset setting: Axis locked!
+N5759 Incorrect clearance height!
+N5969 Really delete NC block? DEL!
+N5970 Axis letter not permitted
+N5971 Cannot cancel Block Skip
+N5972 String incomplete
+N6018 Double referencing is active
+N6027 Wrong axis programmed
+N6049 PET table: Too many lines
+N6052 Contradictory plunge type!
+N6055 This fixed cycle not allowed
+N6066 Rotary axis tolerance illegal
+N6069 MC PWM output is not present
+N6072 Cannot go past edge of screen
+N6079 M128 not allowed
+N6080 M144 not allowed
+N6081 MC SOM 4 not possible
+N6082 MC operating mode not possible
+N6086 Error while saving monitor list
+N6087 Error while opening monitor list
+N6088 Error while opening TEMP.WLT
+N6089 Last monitor list is missing
+N6090 Selection list not found
+N6091 Selection list is empty
+N6094 Incorrect code number
+N6093 No safe axes/spindle
+N6099 Value invalid
+N6100 Operand invalid
+N6101 MC SOM 4 not released
+N6102 Column must not be changed
+N6103 Preset number does not exist
+N6105 MC SOM 2 only one axis allowed
+N498 File %.27s is missing
+N206 PGM %.28s not found
+N6118 MC SOM 4 Press the permissive key
+N6182 Profibus: Configuration error
+N6183 Profibus: PCI hardware error
+N6184 Profibus: file/memory error
+N6187 Excessive subprogramming
+N6188 Excessive subprogramming
+N6189 5-V power supply too high
+N6190 5-V power supply too low
+N6193 Spline starting point incorrect
+N6212 Actual pos. capture not possible
+N6236 The PLC program has been stopped
+N6264 Program-run graphics impossible!
+N6291 Reference the spindle!
+N6294 Safe MP changed by PLC
+N6307 T%s: Remaining tool life too short
+N6308 Tool %s not defined
+N6309 Data trans.: illegal characters
+N6312 MP subfile missing
+N6408 MP subfile incorrect
+N6409 PLC strobe not allowed (%s)
+N6410 PLC strobe illegal in cycle %d
+N6411 Limit switching not allowed
+N6412 Preset saving not possible
+N6413 Kinematic change not possible
+N6414 block scan inconsistent %s
+N7222 Line is write-protected
+N7784 Error while writing to table
+N7799 MC brake test not completed
+N7800 +24 V MC short on brake line
+N7801 0 V MC short on brake line %.2s
+N7803 Set the datum by soft key!
+N7815 Machine not initialized
+N7922 Supply voltage missing at X44
+N7923 MC tool mag AutoStart impossible
+N7935 Binary file on external drive
+N7936 Target directory is source dir.
+N7937 Target file is source file
+N7938 MP2257.%d incorrect (ID=$%08X)!
+N7964 TCPM: Contradictory vector!
+N7969 Application %s cannot be started
+N7971 Process cannot be run
+N7972 Target device does not exist
+N7973 File cannot be renamed
+N7974 File type cannot be changed
+N7975 No space left on drive
+N7977 File system I/O error
+N7978 File access canceled
+N7979 Too many files open
+N7980 Line/block too long
+N7981 File does not exist
+N8001 No real-time application active
+N8002 Error in real-time application
+N8005 Context change only on initiat.!
+N8032 LSV-2: Too many connections
+N8043 Compilation not allowed
+N8044 PLC binary file selected
+N8049 Dependent file write-protected
+N8071 Cannot switch window!
+N8072 Read-only section file!
+N8090 Reciprocating not possible!
+N8110 NC program aborted
+N7798 System error %d
+N8114 0x01 Function not recognized
+N8115 0x02 Function already started
+N8116 0x03 Controller is not active
+N8117 0x04 Controller is active
+N8118 0x05 Pulse is too large
+N8119 0x06 Unknown parameter
+N8120 0x07 Error reading DAC values
+N8121 0x08 Serial EEPROM: No acknowledgment
+N8122 0x09 Serial EEPROM: SDA hanging on 0 or 1
+N8123 0x0A Data missing
+N8124 0x0C Function locked
+N8125 0x0D Wrong operating mode of TNC
+N8126 0x10 Undefined error (see error buffer)
+N8128 DSP command string too long
+N8129 No data received
+N8130 Faulty data received
+N8131 No measurement data available
+N8132 Undetermined cause of error
+N8133 Mach. param. for drive controller not available
+N8134 Unsupported motor type
+N8135 No HEIDENHAIN power module
+N8136 Incorrect controller unit
+N8140 Message not defined
+N8141 Message unexpected
+N8142 Error message from drive contrlr
+N8213 Entry value incorrect
+N499 File %.27s is missing
+N8231 FUNCTION TCPM is not possible
+N8284 Entry for elec. ID label missing: %s
+N8290 Working space limit exceeded
+N8292 PL 510 supply voltage missing
+N8293 Short circuit at PL 510 output
+N8401 PLC module %d unknown
+N8494 CC%d timeout version comparison
+N8495 CC%d timeout SMP check sum
+N8591 PLANE fct.: TURN not allowed!
+N8643 CYCL CALL POS block incomplete
+N8644 Increm. programming not allowed
+N8658 Set datum in all axes
+N8757 MC 422B fan defective
+N8758 This EnDat OEM version is not supported.
+N8892 Coupling function not possible
+N502 Direction of rotation missing
+N503 Rounding arc radius too large
+N504 Contradictory entry
+N505 Insufficient contour definition
+N506 FPOL missing
+N507 TNC program block not permitted until contour is resolved
+N508 The contour is resolved: select block is not permitted
+N509 End of closed contour: no incr. coordinates permitted
+N510 Rounding arc or chamfer not permitted at this point
+N511 Rounding/chamfer with tangential transition is not permitted
+N512 Straight line before or after rounding/chamfer has 0 length
+N513 Chamfer is possible only between two straight lines
+N514 Chamfer too large
+N515 Path comp incorrectly begun: NC block must be a straight line
+N516 Path comp incorrectly ended: NC block must be a straight line
+N517 Contour too complex. More data needed
+N518 FK: arithmetical error
+N519 FK block not permitted at this point
+N522 Reference to specified block not permitted
+N523 Reference to CC block not permitted
+N525 Auxiliary point requires both coordinates
+N526 Parallel operation of FK graphics not possible
+N527 Blank form too large
+N528 Window too large
+N529 Window too small
+N530 Window cannot be shifted farther
+N9785 Direction cannot be distinguished because no movement could be detected.
+N10248 NC function not allowed
+N10521 Starting time has passed
+N10664 Tool usage file locked
+N10665 Programming graphics impossible
+N10672 SPAWN/SUBMIT is blocking a context switch
+N10710 PROFIBUS inputs were not updated.
+N10711 PROFIBUS inputs were not updated.
+N10942 Incomplete display
+N10949 Stepover is too small
+N10950 Overlap factor too large
+N11044 Cylinder radius 0 not permitted!
+N11045 Queue overflow: %s
+N11114 System error
+N11115 System error
+N11116 System error
+N11117 System error
+N11232 Cannot switch modes of operation
+N11275 File type missing or incorrect
+N11391 Key is locked
+N11410 Global Q parameter not defined
+N11411 Global Q param. doubly defined
+N11412 Global parameters missing
+N11413 smarT.NC not possible
+N11442 Two rotary positions not allowed
+N11453 File name already exists
+N11454 Program header already exists
+N11559 M120: LOOK AHEAD not possible
+N11574 M114 without machine geometry
+N11575 Axis geometry not defined
+N11576 Rotary-table coordinates missing
+N11577 No kinematics defined
+N11578 Angle cannot be calculated
+N11579 Kinematic table missing
+N11580 Activate 3DROT
+N11581 PLANE function not possible!
+N11582 CC%d : Program %s cannot start
+N11585 PLC strobe not allowed (M%d)
+N11586 Test graphic not possible
+N11588 PGM being edited in smarT.NC
+N11589 PGM being edited in parallel
+N11593 No option for controller unit
+N11595 File deletion impossible
+N11597 Interference on PL interface
+N11598 PLC partition: Not enough memory
+N11601 CC%d: TIMEOUT CMD=0x%02X
+N11750 File does not exist
+N11751 Select file again!
+N11752 Label name already assigned
+N11753 Label name already assigned
+N11754 Label name not found
+N11755 Label name in line %u is taken
+N12214 USB device cannot be removed
+N12215 USB device removed w/o being closed
+N12283 Point angle not defined
+N12284 Contradictory data
+N12358 CANCELLATION in block %u (%u %%)
+N12759 Tree view buildup canceled
+N12760 MC housing fan defective
+N12767 Reentrance impossible
+N12768 Too many units programmed
+N12770 3,3-V power supply too high
+N12771 3,3-V power supply too low
+N181 Blank form definition incorrect
+N520 FCT or FLT block not permitted at this point
+N521 Incremental angle reference not permitted here
+N524 For FPOL give both coordinates
+N12822 Function could not be concluded (timeout).
+N12823 Enter tool radius greater than 0
+N12824 More than 5 axes in PLC positng.
+N12830 Slot position 0 not allowed!
+N12837 Contour subp.: Only 1 axis pgmd.
+N12857 Permiss. program length exceeded
+N6091 No symbolic programming
+N13066 Preset saving not possible
+N13072 Datum setting not allowed
+N13147 PLC program is not running
+N4 Processor check error 3
+N9 Processor check error 8
+N11 Processor check error A
+N12 Processor check error A
+N14 Processor check error A
+N16 Processor check error B
+N19 Processor check error E
+N29 Processor check error O
+N33 Checksum error A
+N34 Checksum error B
+N40 Movement monitoring error in %.2s A
+N43 Dif. in position <> shaft speed too high in %.2s
+N13741 Line %d: Semicolon (;) missing
+N13742 Line %d: Too many keywords
+N13743 Line %d: Incorrect keyword
+N13744 Line %d: Command unknown
+N13745 Line %d: Format statement incorrect
+N13746 Line %d: Format statement incomplete
+N13747 Line %d: Keyword too long
+N13748 Line %d: Index missing
+N13749 Line %d: Closing bracket (]) is missing after index
+N13750 Mask file not found
+N13751 Control cannot make output file
+N13154
+N13155 Collision warning acknowledged
+N13156 Profibus firmware obsolete
+N13302 MPFRAGMENTFILE does not exist
+N13340 Entry value incorrect
+N13348 DHCP: Input not allowed
+N13381 Column reset not allowed
+N13387 Enter an infeed not equal to 0.
+N13475 Function not permitted!
+N13476 Clipboard is empty!
+N13477 MC braking control defective
+N13478 MC braking control defective %.2s
+N13486 Shaft speed outside range limits %d%%
+N13487 USB: TNC does not support device
+N13752 Editing not allowed
+N13753 TOOL.T: Number teeth defined=0
+N13758 M118 not allowed
+N13761 No editing allowed
+N13769 Open-loop axis %.2s: Standstill
+N13816 Function not permitted
+N13825 Function not enabled
+N13827 Erroneous DXF file
+N13838 Auto. keyboard lock was opened
+N13945 Function not permitted
+N13957 No editing allowed
+N13958 M136 not allowed with FU/FZ
+N13960 smarT.NC not allowed
+N13961 Incremental input not allowed
+N14017 Switchover of Q399 not allowed
+N14019 CC%d current measurement timeout
+N14020 MC: Incorrect safe op. mode
+N14022 CC: Machine key depressed
+N14023 MC: Mach. permiss. button depr.
+N14024 CC: Mach. permiss. button depr.
+N14025 CC: Handwheel permissive button depressed
+N14026 CC: Machine permissive button depressed
+N14027 CC: Protective doors are open
+N14032 Calculated coordinate too large
+N14156 No tool axis defined
+N14253 Caution: Prepos. height defined!
+N14254 MC permissive button depressed
+N14255 CC permissive button depressed
+N14299 Program conversion not possible
+N14434 Faulty range definition!
+N14479 No datum table selected
+N14486 M140 MB MAX not allowed
+N14487 Max. string length exceeded
+N14518 Tool number not allowed
+N14519 Tool name not allowed
+N14520 Division by 0 not allowed
+N14521 Root extraction not allowed
+N14522 Logarithm not allowed
+N14523 Tangent not allowed
+N14525 Function locked by FCL
+N14550 Arc cos: Abs.val. greater than 1
+N14551 Arcsine: Abs.val. greater than 1
+N15439 M128: Preset editing not allowed
+N15465 No data available!
+N15466 File missing or incorrect
+N15491 LSV2: Breakpoint not allowed!
+N15614 No probing direction defined
+N15658 Speed S > than NMAX of TOOL.T
+N15672 Drive cannot be renamed!
+N15673 Drive cannot be copied!
+N15674 Drive cannot be deleted
+N15675 TNC cannot open the file type!
+N15687 MC movement monitoring %.2s
+N15688 MC error in braking process %.2s
+N15691 GOTO function not allowed!
+N15766 Tool axis not allowed
+N15767 Traverse was outside of permissible range %.2s
+N15923 PLC memory layout has changed
+N15967 The help system cannot be called
+N15973 M141 not allowed
+N16007 Parallel operation not possible
+N16010 Operator safety module not supported
+N16198 PLC memory layout could not be initialized
+N16362 MC inverter RDY=0 %.2s
+N16363 MC inverter RDY=1 %.2s
+N16407 Data transfer not possible
+N16408 Axes cannot be swapped.
+N16409 Axes cannot be swapped.
+N16410 Axes cannot be swapped.
+N16411 Input limit exceeded
+N16412 No editing allowed
+N16413 Undefinable error
+N16561 AFC: Spindle overload
+N16563 Position encoder %.2s: Amplitude too high
+N16564 Position encoder %.2s: Amplitude too low
+N16565 Position encoder %.2s :Frequency too high
+N46 Position encoder %.2s defective
+N16586 PLANE AXIAL not allowed
+N16593 MC braking test not activated
+N16623 Table definition incorrect
+N16718 Spindle speed out of tolerance range %.2s
+N16798 Global PGM settings deactivated
+N16800 smarT.NC: File type not allowed
+N16830 No editing while PGM is running
+N17063 TNC cannot process the macro!
+N17161 ENDAT interpolation not possible %.2s
+N17162 Request for electronic ID label not possible
+N17163 Error in TRC compensation %.2s
+N17167 'AFC' in NCMACRO.SYS missing
+N17207 MC: Incorrect S operating state
+N17384 Not enough main memory
+N17386 Pallet operation not allowed
+N17387 M128 not allowed
+N17390 PLANE funct.: MOVE not possible
+N17662 Active traverse range incorrect
+N17663 DCM: Status settings incorrect
+N17735 MC nominal-to-actual position error too large %.2s
+N17938 EnDat connection not possible
+N18060 3DROT not permitted
+N18075 MC 1st violation of limit switch %.2s+
+N18076 MC 1st violation of limit switch %.2s-
+N18145 Called PGM was changed
+N18146 Multiple marking not allowed
+N18147 Function for file, not directory
+N18148 PGM protectn. not set/cancelable
+N18149 File type protected by MP
+N18150 OPEN WITH not allowed
+N18156 USB device cannot be removed
+N18157 No USB device marked
+N18220 PL configuration incorrect
+N18280 %s
+N59 FN 14: error code %s
+N18303 CC%d inverter for axis RDY=0 (safety relay)
+N18304 CC%d inverter for axis RDY=1 (safety relay)
+N18325 MC S software error %d
+N18371 MC start test of the cutoff channels not possible
+N18401 Internal error while copying!
+N18629 Software option not active
+N18630 Kinematics cannot be restored
+N18631 Function not permitted
+N18632 Contradictory workpc. blank dim.
+N18861 HSCI: Hardware error
+N18862 HSCI: Error initialization
+N18891 M91 or M92 not possible
+N18903 Semifeedforward not permitted
+N18904 Directory does not exist
+N18912 CC%d inverter for spindle RDY=1 (safety relay)
+N18913 CC%d inverter for spindle RDY=0 (safety relay)
+N18914 Cycle generation is defective
+N18915 HSCI: IOC file not found
+N18928 M128 not allowed!
+N19236 LSV2 transfer interrupted!
+N19292 No reference power recorded
+N19293 TOOL.T: too many teeth
+N19398 Measuring position not allowed
+N19411 PLC program could not be started
+N19440 M function macro not allowed
+N19448 DCM: Tool status unknown
+N13827 Application 'DXF_CONVERTER' cannot be started
+N19501 Error during self test
+N19502 Timeout during self test
+N19503 Communications error during self test
+N19504 Unknown error during self test
+N19754 Emergency stop from SPLC
+N19755 Fatal error from SPLC
+N19764 Tool deletion is not allowed
+N20418 Self test is deactivated
+N20457 MC: System error in SPLC-RTS
+N20458 Faulty recognition of PL/MB hardware
+N20459 HSCI-PL/MB reports error
+N20460 HSCI-PL/MB reports error
+N20461 MC: System error in SPLC-RTS
+N20462 MC: System error in SPLC-RTS
+N20463 Run-time error in SPLC program
+N20464 SPLC cannot load program
+N20465 SPLC program has changed
+N20466 SPLC program cannot run
+N20467 Machine not in safe operation
+N20469 Configuration of SPLC inputs
+N20471 Configuration of SPLC inputs
+N20473 Configuration of SPLC cycle time
+N20477 Python script already started
+N20481 Kinematic access not possible
+N20482 Meas. pos. not in traverse range
+N20483 Preset compensation not possible
+N20639 Pocket table is write-protected
+N20650 Keystroke sequence rerun ended
+N20661 Rotation not permitted
+N20662 Scaling factor not permitted
+N20663 Mirroring not permitted
+N20664 Datum shift not permitted
+N21084 Place handwheel in charger
+N21096 Preset with offset active
+N21097 Tool radius=0: DCM not possible
+N21144 Handwheel: M91/M92 not allowed
+N21219 ACCESSLEVEL: Function locked
+N21232 Override potentiometer?
+N21233 Tool-carrier kinematics missing
+N21254 Test program cannot be opened
+N21255 Test program cannot be generated
+N21256 Test program cannot be run
+N21257 DCM: Clamping fixtures inactive
+N21258 File does not exist
+N21260 SPLC program not configured
+N21261 SPLC time-out in MC
+N21426 DCM: Ambiguous collision objects
+N21675 Unsafe control software
+N21701 Line deletion not allowed
+N21712 Switch-off process not possible
+N21948 MC Incorrect command from the MC
+N21949 Rapid traverse configured incorrectly
+N21932 MC timeout during braking %.2s
+N22055 Parallel operation not possible
+N22060 MC traverse range exceeded at SS2 %.2s
+N22077 MC change from SOM_2/SOM_3 to SOM_4 not possible
+N22077 MC change from SOM_4 to SOM_2/SOM_3 not possible
+N22079 Insufficient RAM
+N22124 MC SPLC requests invalid stop reaction
+N22125 MC SPLC requests invalid safety function
+N22266 SPLC program not translated
+N22330 M94 not possible
+N23611 Pocket table locked
+N2187 Axis alarm %.2s
+N23636 MC brake cannot be deactivated %.2s
+N23720 No umlauts allowed!
+N23756 Fct. only allowed for rotary axes
+N23767 No editing allowed
+N23768 QR parameters not restorable
+N23784 MC Invalid SPLC operating mode
+N23830 HSCI/Profibus: Configuration error
+N23832 MC axis group configured incorrectly %d
+N23835 Error in self test
+N7798 CC%d error %d %d %d
+N7798 CC error %d %d %d
+N23945 MC System clock MC is not equal to SKERN MC
+N23946 MC System clock MC is not equal to SPLC MC
+N23947 MC System clock MC is not equal to SPLC CC
+N23949 Tool radius too large
+N23950 Plunging type is not possible
+N23951 Plunge angle incorrectly defined
+N23952 Angular length is undefined
+N23953 Slot width is too large
+N23960 MC error during cross comparison:  %s
+N23961 MC Safe output is not equal:  %s
+N23967 Designation not found
+N23993 Parameterization error in Python script
+N24013 MC +3.3V out of tolerance
+N24014 MC +3.3VPIC out of tolerance
+N24015 MC +12V out of tolerance
+N24016 MC speed of fan 1 too slow
+N24017 MC +5V out of tolerance
+N24024 Tool data inconsistent
+N24074 MC fan not recognized
+N24075 MC speed of fan 2 too slow
+N24128 MC actual-value measuring error %d %.2s
+N24130 MC axis %.2s in servo control
+N24131 MC spindle %.2s in servo control
+N24188 Changed NC software version
+N24189 Error in SPLC configuration data
+N24191 MC excessive deviation of actual/nominal speed %.2s
+N8127 Unknown LSV2 error: %x
+N24360 Incorrect condition of safe output %s
+N24394 Level undefinable
+N24438 File content is faulty
+N24484 Faulty assignment of tool/cut no.
+N24515 No start allowed in emergency stop
+N24585 MOVE not possible
+N24586 Block format incorrect
+N24592 SPLC program has changed
+N24594 SPLC program binary code of MC has changed
+N24596 SPLC program binary code of CC has changed
+N24860 MC: Erroneous data from SPLC %s
+N24959 Presetting not allowed!
+N24967 MC limit switch %.2s+
+N24968 MC limit switch %.2s-
+N24972 Safe Torque Off (-STO.B.x) is active
+N24973 External emergency stop
+N24974 MC S input signals %d not equal
+N24975 MC feed rate greater SLS %.2s
+N24976 CC feed rate greater SLS %.2s
+N24977 Op. state of MC not equal CC
+N24979 MC speed greater than SLS %.2s
+N24980 CC speed greater than SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC: Incorrect safe axis group
+N24983 Axis not at test position
+N25030 MC S status reaction is active: %s
+N25031 Wiring of SPLC input %d
+N25033 Wiring of emergency stop
+N25160 MC SMC Autotest software loaded
+N25237 Wrong input %s for dynamic test
+N25243 Gliederung widersprüchlich
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

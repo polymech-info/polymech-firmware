@@ -1,0 +1,1289 @@
+N38 YLISUURI PAIKOITUSVIRHE %.2s
+N39 YLISUURI KIERROSLUKUVIRHE %.2s
+N41 PYSÄYTYSTILAN VALVONTA %.2s
+N42 KORJAUS LIIAN SUURI %.2s
+N50 KOSKETUSPISTETTÄ EI SAAVUTETTU
+N51 PAIKOITUSVIRHE
+N52 MITTAKÄRKI POIKKEUTUNUT
+N53 VAIHDA KOSKETUSANTURIN PARISTO
+N54 KOSKETUSANTURI EI KÄYTTÖVALMIS
+N17738 RAJAKYTKIN %.2s+
+N56 RAJAKYTKIN %.2s+
+N17739 RAJAKYTKIN %.2s-
+N58 RAJAKYTKIN %.2s-
+N59 FN 14: VIRHENUMERO %-3u
+N60 KAKSI TOOL DEF %-3u PGM KUTSULLA
+N61 TYÖKALUTAULUKKO SULJETTU
+N62 VIRHEELLINEN REFERENSSIPISTE %.2s
+N63 KÄSIPYÖRÄ ?
+N109 PLC: LIIAN MONTA KETJUTUSTA
+N110 PLC: PINON ALITUS
+N111 PLC: PINON YLITYS
+N112 PLC: AIKA UMMESSA
+N113 PLC: SOPIMATON ALUE CASE:LLE
+N115 PLC: INDEKSIALUE VÄÄRÄ
+N133 PLC: M4005, M4006, M4007 VÄÄRIN
+N134 PLC: MERKIT AKTIVOITU SAMANAIK.
+N151 MP: RIVI ILMAN NUMEROA
+N152 MP: VÄÄRÄ NUMERO
+N153 MP: EI KAKSOISPISTETTÄ
+N154 MP: SISÄÄNSYÖTTÖARVO VÄÄRIN
+N155 MP: KAKSOISMÄÄRITTELY
+N156 MP: EI MÄÄRITTELYÄ
+N157 MP: TALLENNUS EI MAHDOLLINEN
+N159 PAIKKAA 0 EI MÄÄRITELTY
+N160 VIRHEELLINEN PAIKKA-NRO
+N937 VIRHEELLINEN PAIKKA-NRO
+N161 SYÖTTÖARVO PUUTTUU
+N162 KÄÄNNÖSSÄ EI UUTTA AKSELIA
+N163 TYÖKALUN ASEMA-AIKA LOPPU
+N164 VAIHDA PUSKURIPARISTO !
+N165 KARAN PAIKOITUS EI AKTIIVINEN
+N166 TYÖKALUTAULUKKO ?
+N167 NOLLAPISTETAULUKKO ?
+N168 VIRHE
+N938 NÄPPÄIN ILMAN TOIMINTOA
+N939 MUISTI TÄYSI
+N940 ETSINTÄMERKKI PUUTTUU
+N941 TYÖK. NUMERO EI MÄÄRITELTÄVISSÄ
+N169 TYÖKALUN NUMERO VARATTU
+N170 HYPPY LABEL NRO 0 KIELLETTY
+N942 SYÖTTÖARVO VIRHEELLINEN
+N943 SYÖTTÖARVO VIRHEELLINEN
+N171 SYÖTTÖARVO VIRHEELLINEN
+N172 SYÖTTÖARVO VIRHEELLINEN
+N173 SYÖTTÖARVO VIRHEELLINEN
+N174 SYÖTTÖARVO VIRHEELLINEN
+N175 SYÖTTÖARVO VIRHEELLINEN
+N176 SYÖTTÖARVO VIRHEELLINEN
+N177 TYÖKIERTO 27(G127): SYVYYS>SÄDE
+N178 SYÖTTÖARVO VIRHEELLINEN
+N179 SYÖTTÖARVO VIRHEELLINEN
+N180 BLK FORM MÄÄRITELTY VÄÄRIN
+N183 LAUSE-NUMERO VALITSEMATTA
+N184 OHJELMAN NUMERO PUUTTUU
+N185 EI USEAMPIA TIEDOSTOJA
+N944 OHJELMAN NUMERO VARATTU
+N187 LABEL-NUMERO VARATTU
+N188 LABEL NRO. %-3u VARATTU
+N189 SIIRRETTY ARVO VIRHEELLINEN
+N194 OHJELMA EPÄTÄYDELLINEN
+N196 TIETOLIITÄNTÄ VARATTU
+N197 BAUD-LUKU EI MAHDOLLINEN
+N945 VIRHEELLISET OHJELMATIEDOT
+N946 VIRHEELLISET OHJELMATIEDOT
+N200 ULKOINEN TIETOLIITÄNTÄ EI VALMIS
+N201 NC: OHJELMAN MUISTI TYHJENNETTY
+N947 KÄYTTÖPARAMETRI TYHJENNETTY
+N948 SUOJATTU TIEDOSTO!
+N202 MUUTOKSIA KUTSUTUSSA OHJELMISSA
+N203 HÄTÄ-SEIS VIALLINEN
+N205 HÄTÄ-SEIS PLC
+N207 PGM PUUTTUU
+N212 FK-PISTE LAUSEESSA
+N214 LASKUVIRHE
+N215 LASKUVIRHE
+N216 LASKETTU Q-PARAMETRI LIIAN SUURI
+N217 LASKETTU KOORDIN. LIIAN SUURI
+N218 LASKETTU KIERROSLUKU LIIAN SUURI
+N219 LASKETTU SYÖTTÖARVO LIIAN SUURI
+N220 LASKETTU TYÖK. NO. LIIAN SUURI
+N221 LASKETTU LABEL-NUMERO LIIAN ISO
+N222 LASKETTU VIRHENUMERO LIIAN SUURI
+N223 LASKETTU MITTAKERROIN LIIAN ISO
+N224 INKR. NAPAKULMA LIIAN SUURI
+N225 NOUSU 0 EI SALLITTU
+N226 LASKUVIRHE
+N227 ARITM. VIRHE APPR/DEP-LIIKKESSÄ
+N228 ARITM. VIRHE APPR/DEP-LIIKKESSÄ
+N229 ARITM. VIRHE APPR/DEP-LIIKKESSÄ
+N230 ARITM. VIRHE APPR/DEP-LIIKKESSÄ
+N231 ARITM. VIRHE ROUHINNASSA
+N232 ARITM. VIRHE CR-LAUSEESSA
+N233 ARITM. VIRHE CT-LAUSEESSA
+N234 ARITM. VIRHE RND/CHF-LAUSEESSA
+N235 VÄÄRÄ LEIKKAUSPISTE KAARI/KAARI
+N236 VÄÄRÄ LEIKKAUSPISTE KAARI/SUORA
+N237 VÄÄRÄ LEIKKAUSPISTE SUORA/SUORA
+N238 ARITM. VIRHE APPR/DEP-LIIKKESSÄ
+N239 VIRHE SÄDEKORJAUKSESSA
+N240 VIRHE MUOTOTASKUSSA
+N241 VIRHE MUOTOTASKUSSA/MUOTOAJOSSA
+N242 VIRHE MUOTOTASKUSSA
+N243 VIRHE MUOTOTASKUSSA
+N244 VIRHE SÄDEKORJAUKSESSA
+N245 VIRHE SÄDEKORJAUKSESSA
+N246 VIRHE MUOTOTASKUSSA
+N247 VIRHE MUOTOTASKUSSA
+N250 ARITM. VIRHE M112-KÄSKYSSÄ
+N251 VIRHE PARAMETRILASKENNASSA
+N252 VIRHE RAJAKYTKINTESTISSÄ
+N253 RATAKORJ. VÄÄRIN LOPETETTU
+N254 RATAKORJ. VÄÄRIN ALOITETTU
+N255 RATAKORJ. VÄÄRIN ALOITETTU
+N256 RATAKORJ. VÄÄRIN ALOITETTU
+N257 RATAKORJ. VÄÄRIN ALOITETTU
+N258 RATAKORJ. VÄÄRIN ALOITETTU
+N259 RATAKORJ. VÄÄRIN ALOITETTU
+N260 TYÖKIERTO EPÄTÄYDELLINEN
+N261 TYÖKIERTOA EI MÄÄRITELTY
+N263 ASETUSSYVYYS 0 EI SALLITTU
+N264 KÄYTTÄJÄTYÖKIERTO EI MAHDOLLINEN
+N265 ALIOHJELMA EI MAHDOLLINEN
+N266 ALIOHJELMA EI MAHDOLLINEN
+N272 VÄÄRÄ LAUSERAKENNE
+N274 TYÖK. MÄÄRITTELY EI SALLITTU
+N275 TYÖK. MÄÄR. ILMAN PITUUS/SÄDE
+N276 CT EI SALLITTU APPR:N JÄLKEEN
+N277 CHF EI SALLITTU APPR:N JÄLKEEN
+N278 RND EI SALLITTU APPR:N JÄLKEEN
+N279 PYÖRISTYS 0 EI SALLITTU
+N280 VIISTE 0 EI SALLITTU
+N281 TOINEN PYÖRISTYS EI SALLITTU
+N282 PYÖRIST. VIISTEEN JÄLK. EI SALL.
+N283 VIISTE PYÖRIST. JÄLKEEN EI SALL.
+N284 TOINEN VIISTE EI SALLITTU
+N285 DEP LCT EI SALL. HELIX:N JÄLKEEN
+N286 APPR LCT EI SALL. ENNEN HELIX:Ä
+N287 KIELLETTY NC-LAUSE
+N288 PYÖRISTYS EI SALLITTU
+N289 PYÖRISTYS EI SALLITTU
+N290 VIISTE EI SALLITTU
+N291 DEP EI VIIMEINEN LAUSE
+N292 EI PYÖRIST. VIIMEISENÄ LAUSEENA
+N293 EI VIISTETTÄ VIIMEISENÄ LAUSEENA
+N294 USEITA DEP-LAUSEITA EI SALLITTU
+N295 DEP EI SALLITTU
+N296 APPR EI SALLITTU
+N297 APPR EI OLE ENSIMM. LAUSE
+N299 TYÖKIERTO 14 (G37) EI SALLITTU
+N300 TYÖKALUKUTSU EI SALLITTU
+N302 M91/M92 EI SALLITTU 3DROT:LLA
+N303 M114 EI SALLITTU 3DROT:LLA
+N305 M114 KORJAUKSELLA EI SALLITTU
+N307 AKSELIN KAKSOISOHJELMOINTI
+N308 AKSELIN KAKSOISOHJELMOINTI
+N309 AKSELIN KAKSOISOHJELMOINTI
+N310 AKSELIN KAKSOISOHJELMOINTI
+N311 AKSELIN KAKSOISOHJELMOINTI
+N313 TASO VÄÄRIN MÄÄRITELTY
+N314 3D-KORJ.: TASO VÄÄRIN MÄÄRITELTY
+N315 TASO VÄÄRIN MÄÄRITELTY
+N317 TASO VÄÄRIN MÄÄRITELTY
+N318 TASO VÄÄRIN MÄÄRITELTY
+N319 TASO VÄÄRIN MÄÄRITELTY
+N320 TASO VÄÄRIN MÄÄRITELTY
+N321 TASO VÄÄRIN MÄÄRITELTY
+N322 TASO VÄÄRIN MÄÄRITELTY
+N323 TASO VÄÄRIN MÄÄRITELTY
+N324 TASO VÄÄRIN MÄÄRITELTY
+N325 TASO VÄÄRIN MÄÄRITELTY
+N326 TASO VÄÄRIN MÄÄRITELTY
+N327 TASO VÄÄRIN MÄÄRITELTY
+N328 TASO VÄÄRIN MÄÄRITELTY
+N329 KIERTOAKSELI TÄSSÄ EI SALLITTU
+N950 VÄÄRÄ AKSELI OHJELMOITU
+N951 VÄÄRÄ AKSELI OHJELMOITU
+N330 ESTETTY AKSELI OHJELMOITU
+N331 VÄÄRÄ AKSELI OHJELMOITU
+N332 VÄÄRÄ AKSELI OHJELMOITU
+N333 VÄÄRÄ AKSELI OHJELMOITU
+N335 KIERTOAKSELIA EI OHJELMOITU
+N337 KIERTOAKSELIA EI OHJELMOITU
+N338 PÄÄAKSELIA EI OHJELMOITU
+N339 PORTAALI-SIVU-AKSELI OHJELMOITU
+N952 VÄÄRÄ KIERROSLUKU
+N340 VÄÄRÄ KIERROSLUKU
+N341 VÄÄRÄ KIERROSLUKU
+N342 VÄÄRÄ KIERROSLUKU
+N343 VÄÄRÄ KIERROSLUKU
+N344 YLISUURI TYÖKIERRON KIERROSLUKU
+N345 KIERROSLUKU 0 EI SALLITTU
+N346 VÄÄRÄ KIERROSLUKU
+N347 VIISTE KIELLETTY
+N348 VIISTE KIELLETTY
+N349 VIISTE KIELLETTY
+N350 VIISTE KIELLETTY
+N351 VIISTE KIELLETTY
+N352 VIISTE KIELLETTY
+N353 VIISTE KIELLETTY
+N354 VIISTE LIIAN ISO
+N355 VIISTE LIIAN ISO
+N356 VIISTE LIIAN ISO
+N357 YMPYRÄN KESKIPISTE VÄÄRIN
+N358 C-LAUSE: KAARILOPPUPISTE VÄÄRIN
+N359 YMPYRÄN KESKIPISTE VÄÄRIN
+N360 YMPYRÄN KESKIPISTE VÄÄRIN
+N361 YMPYRÄN KESKIPISTE VÄÄRIN
+N362 LABEL-NUMERO PUUTTUU
+N363 LABEL-NUMERO PUUTTUU
+N364 LABEL-NUMERO PUUTTUU
+N365 TYÖKIERTO 14: LBL EI MAHDOLLINEN
+N366 POL PUUTTUU
+N367 YMPYRÄN KESKIPISTE PUUTTUU
+N368 TYÖKALUN SÄDE LIIAN PIENI
+N369 SÄDEKORJAUS 0 EI SALLITTU
+N370 SÄTEEN KOMP. MÄÄRITTELEMÄTTÄ
+N371 SÄTEEN KOMP. MÄÄRITTELEMÄTTÄ
+N372 SÄTEEN KOMP. MÄÄRITTELEMÄTTÄ
+N373 SÄTEEN KOMP. MÄÄRITTELEMÄTTÄ
+N374 SÄTEEN KOMP. MÄÄRITTELEMÄTTÄ
+N375 AJA REF.PISTEEN YLI
+N376 PYÖRISTYSTÄ EI MÄÄRITELTY
+N377 PYÖRISTYSTÄ EI MÄÄRITELTY
+N378 PYÖRISTYS EI SALLITTU
+N379 PYÖRISTYSSÄDE LIIAN ISO
+N380 PYÖRISTYSSÄDE LIIAN ISO
+N381 PYÖRISTYSSÄDE LIIAN ISO
+N382 PYÖRISTYSSÄDE LIIAN ISO
+N383 PYÖRISTYSSÄDE LIIAN ISO
+N384 PYÖRISTYSSÄDE LIIAN ISO
+N385 PYÖRISTYSSÄDE LIIAN ISO
+N386 PYÖRISTYSSÄDE LIIAN ISO
+N387 PYÖRISTYSSÄDE LIIAN ISO
+N388 KARA ?
+N389 TYÖKALUN AKSELI PEILATTU
+N390 TYÖKALUN AKSELI PEILATTU
+N391 TYÖKALU-AKSELI PUUTTUU
+N392 TYÖKALU-AKSELI PUUTTUU
+N393 TYÖKALU-AKSELI PUUTTUU
+N394 TYÖKALU-AKSELI PUUTTUU
+N395 TYÖKALU-AKSELI PUUTTUU
+N396 TYÖKALU-AKSELI PUUTTUU
+N397 TYÖKALU-AKSELI PUUTTUU
+N398 TYÖK. MÄÄRITTELY PUUTTUU
+N400 TYÖK. MÄÄRITTELY PUUTTUU
+N401 TYÖKALU-NUMERO PUUTTUU
+N402 TYÖKALUN SÄDE LIIAN ISO
+N403 TYÖKALUN SÄDE LIIAN ISO
+N404 TYÖKALUN SÄDE LIIAN ISO
+N405 TYÖKALUN SÄDE LIIAN ISO
+N406 TYÖKALUN SÄDE LIIAN ISO
+N407 TYÖKALUN SÄDE LIIAN ISO
+N408 TYÖKALUN SÄDE LIIAN ISO
+N409 TYÖKALUN SÄDE LIIAN ISO
+N410 TYÖKALUN SÄDE LIIAN ISO
+N411 TYÖKALUN SÄDE LIIAN ISO
+N412 TYÖKALUN SÄDE LIIAN ISO
+N413 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N414 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N415 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N416 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N417 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N418 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N419 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N420 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N421 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N422 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N423 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N424 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N425 POISTA RL/RR ENNEN PLC-PAIKOIT.
+N426 OHJELMAN ALKU MÄÄRITTELEMÄTÖN
+N953 LAUSEEN MUODOSTUS VAARIN
+N427 LAUSEEN MUODOSTUS VAARIN
+N429 LIIKAA SISÄISIÄ ALIOHJELM.
+N430 LIIKAA SISÄISIÄ ALIOHJELM.
+N432 LIIKAA SISÄISIÄ ALIOHJELM.
+N433 TYÖKIERRON ETUMERKIT VASTAKKAIN
+N434 OHJELMOITU VÄÄRÄ ETUMERKKI
+N435 KULMAN PERUSPISTE PUUTTUU
+N436 KULMAN PERUSPISTE PUUTTUU
+N437 KAAREN SÄDE LIIAN PIENI
+N438 KULMAN PERUSPISTE PUUTTUU
+N439 KULMAN PERUSPISTE PUUTTUU
+N440 DEP-TOTEUTUS EI SALLITTU
+N441 DEP-TOTEUTUS EI SALLITTU
+N442 APPR:N JÄLKEEN EI KOORDINAATTEJA
+N443 ALUE YLITETTY
+N444 ALUETIEDOT VIRHEELLISET
+N445 ALKUPISTE VIRHEELLINEN
+N446 AIKARAJOITUS YLITETTY
+N447 CYCL-PARAMETRI VIRHEELLINEN
+N448 TYÖVARA SUUREMPI KUIN SYVYYS
+N451 MITTAKERROIN EI SAMA
+N454 KOSKETUSPOIKKEAMA LIIAN SUURI
+N455 LIIAN PALJON MUOTOELEMENTTEJÄ
+N456 LIIAN PALJON MUOTOELEMENTTEJÄ
+N457 LIIAN PALJON MUOTOELEMENTTEJÄ
+N458 LIIAN PALJON MUOTOELEMENTTEJÄ
+N459 LIIAN PALJON MUOTOELEMENTTEJÄ
+N460 LIIAN PALJON MUOTOELEMENTTEJÄ
+N461 LIIAN PALJON MUOTOELEMENTTEJÄ
+N462 LIIAN PALJON MUOTOELEMENTTEJÄ
+N463 LIIAN PALJON MUOTOELEMENTTEJÄ
+N464 LIIAN PALJON MUOTOELEMENTTEJÄ
+N465 LIIAN PALJON MUOTOELEMENTTEJÄ
+N466 LIIAN PALJON MUOTOELEMENTTEJÄ
+N467 LIIAN PALJON MUOTOELEMENTTEJÄ
+N468 LIIAN PALJON MUOTOELEMENTTEJÄ
+N469 LIIAN PALJON MUOTOELEMENTTEJÄ
+N470 LIIAN PALJON MUOTOELEMENTTEJÄ
+N471 LIIAN PALJON MUOTOELEMENTTEJÄ
+N472 LIIAN PALJON MUOTOELEMENTTEJÄ
+N473 LIIAN PALJON MUOTOELEMENTTEJÄ
+N474 LIIAN PALJON MUOTOELEMENTTEJÄ
+N475 MUODON OHJELMOINTIVIRHE
+N477 MUODON OHJELMOINTIVIRHE
+N478 MUODON OHJELMOINTIVIRHE
+N479 MUODON OHJELMOINTIVIRHE
+N480 MUODON OHJELMOINTIVIRHE
+N481 MUODON OHJELMOINTIVIRHE
+N482 MUODON OHJELMOINTIVIRHE
+N483 MUODON OHJELMOINTIVIRHE
+N484 MUOTO LIIAN MUTKIKAS
+N485 MUOTO LIIAN MUTKIKAS
+N486 MUOTO LIIAN MUTKIKAS
+N487 MUOTO LIIAN MUTKIKAS
+N488 MUOTO LIIAN MUTKIKAS
+N489 MUOTO LIIAN MUTKIKAS
+N490 MUOTO LIIAN MUTKIKAS
+N491 MUOTO LIIAN MUTKIKAS
+N492 MUOTO LIIAN MUTKIKAS
+N493 MUOTO LIIAN MUTKIKAS
+N954 OSOITEKIRJAIN VARATTU
+N494 LAUSE LIIAN PITKÄ
+N955 G-KOODIRYHMÄ VARATTU
+N495 TUNTEMATON G-TOIMINTO
+N496 N-KOODI PUUTTUU
+N497 CMA-TIEDOSTO: EI AKTIIVIRIVEJÄ
+N500 LIIAN PALJON KORJAUSPISTEITÄ
+N501 LIIAN PALJON KORJAUSTOIMINTOJA
+N957 SÄHKÖKATKOS SÄHKÖ- KATKOS
+N958 RELEJÄNNITE PUUTTUU RELEJÄNNITE PUUTTUU
+N859 VIRHE
+N860 AKSELI EI ESITETTÄVISSÄ
+N861 EI LISÄÄ SUURENNOKSIA
+N862 EI LISÄÄ PIENENNÖKSIÄ
+N863 BLK FORM EI ESITETTÄVISSÄ
+N864 VÄÄRÄ TYÖKALUAKSELI AIHIOSSA
+N865 TYÖKALUN SÄDE EI ESITETTÄVISSÄ
+N888 TEKSTI EI LOYDY
+N1086 LIIAN MONTA PISTETTÄ
+N1097 TOLERANSSIARVO LIIAN SUURI
+N1106 POISTA TYÖKIERTO KOKONAAN: DEL !
+N1107 LAUSE TYÖKIERROSSA EI SALLITTU !
+N1125 TARKISTA LAUSE %.6s: EI DEL
+N1126 PERUUTA M112
+N1141 MÄÄR. M120LA=0 POISTA MYÖS RL/RR
+N1142 SÄTEEN KOMPENSOINTI PUUTUU
+N1143 SÄDEKORJAUS EI SALLITTU
+N1144 R+/R- EI SALLITTU M120:LLA
+N1145 RND EI SALLITTU M120:LLA
+N1146 VIISTE M120:LLA EI SALLITTU
+N1147 ANALOGIAJÄNNITE EI MÄÄRITELTY
+N1148 ANALOGIAJÄNNITE EI YKSISELITT.
+N1149 VÄÄRÄ TIETO MP%.4u
+N1150 KOSKETUSANTURI EI VALMIS %.3s
+N1151 UUSI LÄHESTYM. M120:LLA VÄÄRIN
+N1154 TIEDOSTOMERKINTÄ EI SALLITTU
+N1170 VALITTU MITTAAVA KOSKETUSANTURI
+N1171 VALITTU TS-KOSKETUSANTURI
+N1172 KOSKETUSANTURIN KALIBROINTI
+N1178 3DROT AKTIIVINEN: KAYTÄ AKS.NAP.
+N1182 VÄÄRÄ TIETO MP%.4u.%u
+N1186 TIEDOSTOMUOTO MUUTTUNUT
+N1187 M89 EI SALLITTU
+N1192 KULMA EI SALLITTU
+N1193 TOOL.T: LEIKKAUSKULMIEN MÄÄRÄ
+N1266 LAUSEEN MUODOSTUS VAARIN
+N1521 PLC VIRHETAULUKKOA EI KÄÄNNETTY
+N1523 PLC-VIRHETAULUKKOA EI VALITTU
+N1524 PLC: VIRHETAULUKKO EI SAATAVILLA
+N1525 PLC: VIRHETAULUKKO EI .PET
+N1527 PLC: VIRHETAULUKKO EI LÖYDY
+N1528 PLC: VIRHETAUL. VÄÄRÄ MUOTO
+N1568 VÄÄRÄT AKSELIT .PNT-TIEDOSTOSSA
+N1590 ETÄISYYDEN ARVO LIIAN PIENI
+N1682 TOOL.T: LCUTS TAI ANGLE PUUTTUU!
+N1745 PÄÄSY ESTETTY
+N1749 NUMERO FN17/FN18 VÄÄRIN
+N1749 NUMERO FN17/FN18 VÄÄRIN
+N1750 PLC: VIRHE MODULIKUTSULLA
+N1789 TYÖKALU ESTO
+N1790 VÄÄRÄ ALUEJAKSO
+N1791 PISTE-ETÄISYYS LIIAN SUURI
+N1792 VÄÄRÄ AKSELI RIVILLE
+N1793 VÄÄRÄ AKSELI RIVISTÖLLE
+N1794 VÄÄRÄ KULMA-AKSELI
+N1795 VÄÄRÄ AKSELI TYÖKIERTOALUEELLA
+N1796 VÄÄRÄ RIVIN-ETÄISYYS
+N1797 ALUEJAKSO PUUTTUU
+N1798 RAJAKYTKIN DIGITOINTIALUEELLA
+N1799 TURVAKORKEUS LIIAN PIENI
+N1807 LUVATON TIEDOSTONIMI
+N1809 M114 EI SALLITTU M116 KANSSA
+N1810 JÄRJESTELMÄMUISTI TÄYNNÄ
+N1845 PÄIVITÄ JÄRJESTELMÄTIEDOSTOT!
+N1848 MERKKI EI VAPAA
+N1850 TYÖK. 4(G75/G76): VÄÄRÄ AKSELI
+N1851 M130 EI SALLITTU
+N1852 M130 EI SALLITTU M114:LLÄ
+N1853 M130 EI SALLITTU
+N1854 M130 KORJAUKSELLA EI SALLITTU
+N1855 YHTÄÄN TYÖKIERTOA EI MÄÄRITELTY
+N1856 EDESTAK. SYÖTTÖ PUUTTUU
+N1857 TYÖKALUN SÄDE LIIAN ISO
+N1892 FN20/D20: VÄÄRÄ EHTO
+N1900 LAITTEEN SIJAINTI
+N1901 VERKKOPALVELIN EI LÖYDY
+N1914 TYÖKALU-RIKKO
+N2039 VÄÄRÄ NOLLAPISTE-NUMERO
+N2040 URAN LEVEYS LIIAN PIENI
+N2041 TASKU LIIAN PIENI
+N2042 Q202 EI MÄÄRITELTY
+N2043 Q205 EI MÄÄRITELTY
+N2044 Q218 OLTAVA SUUREMPI KUIN Q219
+N2045 CYCL 210 EI SALLITTU
+N2046 CYCL 211 EI SALLITTU
+N2047 Q220 LIIAN ISO
+N2048 Q222 OLTAVA SUUREMPI KUIN Q223
+N2049 Q244 OLTAVA SUUREMPI KUIN 0
+N2050 Q245 OLTAVA YHTÄ SUURI KUIN Q246
+N2051 KULMAN OLTAVA < 360 ASTETTA
+N2100 PALETTIA EI OLE VAIHDETTU
+N2101 PLC:\NCMACRO.SYS PUUTTUU!
+N2102 'PALETT' NCMACRO.SYS PUUTTUU
+N2103 PALETTIMÄÄRITTELY PUUTTUU
+N2186 KÄÄNTÖ: TYÖKALUAKSELI PUUTTUU
+N2211 TOOL CALL KIELLETTY M128:LLA
+N2212 M91/M92 KIELLETTY M128:LLA
+N2213 MP75XX EI MÄÄRITELTY
+N312 RIVIAKSELI EI TÄSSÄ SALLITTU
+N2222 TIEDOSTO OEM.SYS TYHJÄ
+N2223 VÄÄRÄ TIEDOSTOTYYPPI
+N2224 KENTÄN NIMEÄ EI LÖYDETTY
+N2225 TIEDOSTO TYHJÄ
+N2226 MATERIAALITAULUKKO EI LÖYDY
+N2227 LAST.MATER. TAULUKKO EI LÖYDY
+N2228 MATERIAALIA EI OLE VALITTU
+N2229 WMAT-TMAT-YHDISTELMÄ PUUTTUU
+N2230 LAST.ARVOTAULUKKOA EI VALITTU
+N2231 LAUSE EI SALLITTU M112:N KANSSA
+N2232 KORJAA VIRHELAUSE
+N2233 FK-LAUSE EI MAHDOLLINEN GOTO:LLA
+N2238 Q223 OLTAVA SUUREMPI KUIN Q222
+N2243 KULMA TOOL.T:SSÄ LIIAN PIENI
+N2253 OHJAUSJÄNNITTEEN KATKAISU
+N2254 RELE: LEPOKONTAKTI AUKI ?
+N2255 OHJAUSJÄNNITTEEN KYTKENTÄ
+N2273 TS: PUUTTEELL. KUVAUS
+N2284 RINNAKKAISKÄYTTÖ EI MAHDOLLISTA
+N2285 AKS. LUKITTU
+N2288 TYÖKALUN KIINNITIN RIKKI
+N2300 Tarkista lastuamisarvot !
+N2315 Q214: 0 Ei sallittu
+N2316 PLC: Tulostiedosto puuttuu
+N2317 PLC: Liian monta tulosta
+N2319 Työkalutyyppitaulukkoa ei löydy
+N2320 CDT-polku ei löydy
+N2321 Liian monta *.CDT-tiedostoa
+N2336 S-SISÄÄNSYÖTTÖ %d RISTIRIITAINEN
+N2339 Ei yhteyttä verkkoon
+N2342 FN17: Kielletty määrittelyarvo
+N2344 Syötä elementti!
+N2345 Työkalu ei määritely
+N2375 M112 ei mahdoll. M128:n kanssa
+N2377 S: Rajakatkaisija %.2s+ siirtynyt
+N2378 S: Karkea paikoitusvirhe L %.2s
+N2377 S: Rajakatkaisija %.1s- siirtynyt
+N2384 Kaikki elementit poistettu!
+N2385 Pakollinen kenttä poistettu!
+N2386 Maksimi rivipituus ylitetty!
+N2387 Virhe muunnoksen aikana!
+N2500 Käytä PALAUTA LAUSEES. N
+N2504 Liikesuuntaa ei määritelty
+N2505 Nollapistetaulukko ei aktiivinen
+N2506 Paikoitusvirhe: 1. aks. keskip.
+N2507 Paikoitusvirhe: 2. aks. keskip.
+N2508 Reijän halkaisija liian pieni
+N2509 Reijän halkaisija liian suuri
+N2510 Tapin halkaisija liian pieni
+N2511 Tapin halkaisija liian suuri
+N2512 Tasku liian pieni: uusi 1. aks.
+N2513 Tasku liian pieni: uusi 2. aks.
+N2514 Tasku liian suuri: Peru 1. aks.
+N2515 Tasku liian suuri: Peru 2. aks.
+N2516 Tappi liian pieni: Peru 1. aks.
+N2517 Tappi liian pieni: Peru 2. aks.
+N2518 Tappi liian suuri: Uusi 1. aks.
+N2519 Tappi liian suuri: Uusi 2. aks.
+N2520 Mitt.työkierto: Maks.pit. ylitys
+N2521 Mitt.työkierto: Min.pit. alitus
+N2522 TCHPROBE 426: Maks.pit. ylitys
+N2523 TCHPROBE 426: Min.pit. alitus
+N2524 TCHPROBE 430: Halk. liian suuri
+N2525 TCHPROBE 430: Halk. liian pieni
+N2609 M128 ei sallittu 3D-kierrolla
+N2610 M114 ei sallittu M128:n kanssa
+N2611 M128 ei sallittu RR/RL:n kanssa
+N2617 Mittausakselia ei määritelty
+N2618 Päivän tai ajan muotovirhe
+N2621 M128: Perusp. asetus ei sallittu
+N2635 Tyokalun rikkotoleranssin ylitys
+N2636 Peruuta sädekorjaus ennen M128
+N2642 Invertteri ei käyttövalmis
+N2644 M120: LOOK AHEAD ei mahdollinen
+N2645 Turvakork.Q260 < Mitt.kork.Q261
+N2646 MC koneen näppäintä painettu
+N2647 Rele: Lepokontakti suljettu?
+N2655 Karamoottorin virta ei ole 0
+N2657 Akselin %.2s virta ei ole 0
+N2662 Alku/loppulause ei merkittävissä
+N2663 Lisäys tähän ei mahdollista
+N2664 Välimuisti tyhjä
+N2665 Lauseen alkua ei ole merkitty
+N2668 Korjaa väärä lausemuoto
+N2691 LN: Suuntaus ei mahdollinen
+N2692 M128 ei sallittu LN-lauseella
+N2700 Poiskytk.kanavatesti ei voimassa
+N2711 Turvatarkistussumma virheellinen
+N2733 Liian monta saraketta
+N2734 Ei akselisaraketta valittu
+N2735 M128 ei sallittu
+N2736 Ei avattua tiedostoa .TAB?
+N2737 TAB: Kentän nimi liian pitkä
+N2738 TAB: Kenttä ei numerokenttä
+N2739 TAB: Liian monta kentän nimeä
+N2745 Virheellinen referenssiasema %.2s
+N2746 VÄÄRÄ TIETO MP%u
+N2747 Rivi on kirjoitussuojattu
+N2748 Mitt.työkierto: M114 ei sallittu
+N2749 Mitt.työkierto: M128 ei sallittu
+N2750 M114, M128, 3DROT ei sallittuja
+N2752 MP: SISÄÄNSYÖTÖT VASTAKKAISIA
+N2757 Käskypuskurin ylivuoto
+N2758 Käskyt eivät täsmää
+N2760 FS-toimintoa ei suoritettu
+N2768 MC käsip. valtuuspainike painettu
+N2769 Epätäyd. työkierto poistettu
+N2770 Välimuisti tyhjä
+N2771 Ei kirjoitusoikeutta
+N2772 Koko sisällön poisto: NO ENT
+N2773 Luvatun sisällön muutos
+N2774 Napakoordinaatit ei mahdollisia
+N2775 Sisällön muutos: paina ENT
+N2776 Sis.syöttö ei sallittu sisältöön
+N2777 Tarkista sulkeiden parillisuus
+N2820 Asemavirhe ylisuuri akselilla %.2s
+N2824 Kalibroi TT käännetyssä tasossa
+N2825 Kalibroi TT kääntämätt. tasossa
+N2826 TT ei työkaluakselin suuntainen
+N2827 Virheellinen jarrutuskäyttö %.2s
+N2828 Asemansäätöaika liian lyhyt
+N2829 Syötä Q247 erisuuri kuin 0
+N2830 Syötä Q247 suurempi kuin 5
+N2834 EnDat virheellinen %X %.2s
+N2837 FK-lausetta ei ole muunnettu
+N2849 Kytke kara päälle
+N2853 Synkronoinnin valvonta %.2s
+N2858 Ei testausoikeuksia
+N2868 TT: Esiapaikoita akselit
+N2945 M91/M92 ei sallittu
+N2969 Pakollinen arvo puuttuu
+N2993 Internet-osoitevirhe
+N2995 Kielletty PLC-nollapistesiirto
+N2996 Liikealueen siirto ei sallittu
+N3002 Karan erikoiskäyttö ei sallittu
+N3006 Suorita työkalun vaihto!
+N3012 M120 LA ei sallittu
+N3013 Ymp.kaari-interpol. ei sallittu
+N3025 Palettilinja lukittu!
+N3026 Sädekorjaus ei mahdollinen!
+N3055 Syötä muu jyrs.men. Q351 kuin 0
+N1149 VÄÄRÄ TIETO MP%.4u
+N958 RELEJÄNNITE PUUTTUU
+N1182 VÄÄRÄ TIETO MP%.4u.%u
+N3063 3DROT: Kuvausta ei löydy
+N3065 Nollaa M114, M128 tai CYCL19
+N3081 Kierteen syvyys liian suuri
+N3187 PNT-tiedostoa ei valittu
+N3188 PNT: varmuuskorkeus liian pieni
+N3189 CYCL CALL PAT ei sallittu
+N3192 Puuttuvat kalibrointitiedot
+N3193 Toleranssi ylitetty
+N3199 Karan kytkentä ei sallittu
+N3205 Automaattikäynnistys ei sallittu
+N3206 Ei makroa %.20s
+N2720 MC amplitudi liian suuri %.2s
+N44 MC amplitudi liian pieni %.2s
+N45 MC frekvenssi liian suuri %.2s
+N2687 MC NC-lampotila toler. ulkona
+N2612 MC S-sisaantulo %d eri kuin 0
+N14018 MC-pys.tilan valvonta %.2s
+N57 CC-rajakytkin %.2s-
+N55 CC-rajakytkin %.2s+
+N3214 Taulukkoarvoja on muutettu
+N3218 PLC-toiminto ei sallittu
+N3220 MP6510:n toleranssi liian pieni
+N3221 Kalibrointisäde liian suuri
+N3231 PAL/PGM-kenttä puuttuu
+N3232 Language load error %d
+N3234 Työkalun esivalinta käynnissä
+N3235 Negatiivinen sisäänsyöttöarvo
+N3236 Poiskytk.asema %.2s eri kuin ENDAT
+N3239 Valittu ohjelmisto ei ladattu
+N3243 Työkaluakselia ei ole ohjelmoitu
+N3245 M-toiminto kielletty
+N3354 Toiminto ei sallittu
+N3356 Kinemat.taulukko virheellinen
+N3357 MP-alatiedosto virheellinen
+N3441 M144 ei sallittu
+N4957 TOISTA ANNETUT TIEDOT
+N3532 Tiedoston MFUNCT.TAB virhesyöttö
+N3927 Kosketus ei sallittu
+N3928 M112 ei sallittu M144:n kanssa
+N4175 Palettilinjalla valmis kappale
+N4176 Kiinnitt. vaihdon makro puuttuu
+N4177 Mitätön geometrinen tieto
+N4197 Lauseajon käynnistys voimassa
+N4276 SUUNTAUS ei sallittu
+N4491 Aloit.ohjel.keskeltä ei mahdoll.
+N4492 MC: Koneen valtuuspainiketta painettu
+N4571 Tarkista syvyyden etumerkki
+N4572 Syötetty merkki ei sallittu
+N4573 Pieni kirjain ei sallittu
+N4574 Kirjain ei sallittu
+N4575 Numero ei sallittu
+N4880 Riittämätön systeemimuisti
+N4881 PLC-ohjelmaa ei löydy
+N4882 M140 ei sallitu
+N4903 Sädearvon ylikoko ei sallittu
+N4905 Prosessorin 1 ylikuumeneminen
+N4906 Prosessrin 2 ylikuumeneminen
+N4935 Oloarvo tallennettu %.2s
+N5073 LSV2: Yhteys keskeytynyt
+N5074 LSV2: Siirtovirhe
+N5075 LSV2: Siirtovirhe
+N5076 LSV2: Siirtovirhe
+N5077 LSV2: Aikakatkaisu virhe
+N5078 LSV2: Siirtovirhe
+N5079 LSV2: Aikakatkaisu virhe
+N5080 LSV2: Aikakatkaisu virhe
+N5081 LSV2: Lähetysvirhe
+N5099 MC ei muistia saatavilla
+N5225 Väärä software-versio
+N5228 Syöttöarvo = 0 ei sallittu
+N5236 TNC lämpötila varoitus %d°C
+N5242 PLC-OHJELMAA EI KÄÄNNETTY
+N204 Lämpötila liian korkea %d°C
+N5286 Virhe: Profibus-konfigurointi
+N5287 Profibus: Laitteistovirhe
+N5288 Profibus: Alustusvirhe
+N5312 Muisti-PLC tietoja poistettu
+N5338 Soft-key projekti ei käännetty
+N5366 Rivin lisäys ei sallittu
+N5367 T %u rivillä %u jo määritelty
+N5368 LBL %u rivillä %u jo määritelty
+N5369 Akselia ei valittu
+N2612 CC%d S-sisaantulo %d eri kuin 0
+N2687 CC%d NC-lampotila toler. ulkona
+N2688 CC%d +5V toleranssin ulkona
+N5434 Toiminto ei käytössä
+N5479 Makasiinin ohjetta ei käännetty
+N5484 Akselin kulma ei ole kääntökulma
+N5566 Ei referenssin muutosta!
+N5567 MC väärä lukumäärä FS-CC
+N5568 Liian monta merkkiä
+N5569 Arvo alueen ulkopuolella
+N5570 Liian monta desimaalia
+N5571 Etumerkki ei sallittu
+N5572 Vain kokonaisluku sallittu
+N5573 Q ei sallittu: anna lukuarvo
+N5574 Inkrementaaliarvo ei sallittu
+N5575 Liian monta M toimintoa
+N5576 Liian monta akselia ohjelmoitu
+N5577 AKSELIN KAKSOISOHJELMOINTI
+N5578 Elementti kahdesti / ei sallittu
+N5579 Epätäydellinen sisäänsyöttö
+N5580 ISO: Lausenumero N puuttuu
+N5581 Vaadittu elementti puuttuu
+N5582 Syntaksi väärin
+N5583 Ei tallennettuja mitta-arvoja %.2s
+N5617 Avainluku tuntematon
+N5618 Syntaksi elementti ei editoitava
+N5619 PGM otsikko ei editoitava
+N5627 Aseta MP1356.%d   %.4f
+N5628 Liian monta akselia ohjelmoitu
+N2652 CC%d invertteri karalle RDY=0
+N2653 CC%d invertteri akselille RDY=0
+N2654 CC%d invertteri karalle RDY=1
+N2656 CC%d invertteri akselille RDY=1
+N2743 CC%d turvatarkistussummavirhe
+N2759 CC%d käskyä ei kuitattu
+N2819 Virhetietoja CC%d:lta
+N2821 Ei aseman arvoja CC%d:lta
+N2822 CC%d ei aseman arvoja MC:lta
+N2823 MC/CC%d tarkist.aks. ei samat
+N2831 CC%d väärä sisällystiedost. vers.
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC turvatarkistussummavirhe
+N5631 MC-käskyä %3d ei kuitattu
+N5632 MC ja CC eivät sovi yhteen
+N5635 Kanavaa %d ei voi näyttää
+N5641 MC turvaovet auki
+N5651 TYÖKALU-AKSELI PUUTTUU
+N5655 Akselia %.2s ei ole MC-testannut
+N5671 Tarkasta mitta-anturi %.2s
+N5672 Käytä esiasetustaulukkoa!
+N5673 Q303 ei ole määritetty!
+N5693 Työkaluakaseli ei sallittu
+N5699 Lasketut arvot eivät oikeita
+N5700 Ristiriitaiset mittapisteet
+N5709 Virheelliset piiritiedot
+N5712 Salasanaa ei löydy
+N5713 Salasanaa ei annettu
+N5714 Salasana liian pitkä
+N5715 Salasana on jo koodattu
+N5757 Esiaset.-asetus: Akselit lukit.!
+N5759 Turvakorkeus syötetty väärin!
+N5969 Todellako poist. NC-lause? DEL!
+N5970 Akseli-kirjain ei sallittu
+N5971 Ei voi peruuttaa lauseenylitystä
+N5972 Jono epätäydellinen
+N6018 Kaksoisreferenssi käytössä
+N6027 VÄÄRÄ AKSELI OHJELMOITU
+N6049 PET-taulukko: Liikaa rivejä
+N6052 Ristiriitainen upotustapa!
+N6055 Tämä kiint. työkier. ei sallittu
+N6066 Pyörintäaks. toleran. ei sallit.
+N6069 MC PWM-ulostulo ei saatavilla
+N6072 Kuvaruudun reuna saavutettu
+N6079 M128 ei sallittu
+N6080 M144 ei sallittu
+N6081 MC SOM 4 ei mahdollinen
+N6082 MC käyttötapa ei mahdollinen
+N6086 Virhe tallennett. valvontalista
+N6087 Virhe avattaessa valvotalista
+N6088 Virhe avattaessa TEMP.WLT
+N6089 Viimeinen valvontalista puuttuu
+N6090 Valintalistaa ei saatavilla
+N6091 Valintalista tyhjä
+N6094 Väärä avainluku
+N6093 Ei varmistettua akselia/karaa
+N6099 Kelpaamaton arvo
+N6100 Kelpaamaton kohdemuuttuja
+N6101 MC SOM 4 ei sallittu
+N6102 Saraketta ei saa muuttaa
+N6103 Esiasetusnumero ei saatavilla
+N6105 MC SOM 2 vain yhdelle aksel. sall.
+N498 TIEDOT %.25s PUUTTUU
+N206 PGM %.28s PUUTTUU
+N6118 Paina MC SOM 4 sallintanäppäintä
+N6182 Profibus: Konfigurointivirhe
+N6183 Profibus: PCI-laitteistovirhe
+N6184 Profibus: Tiedosto-/muistivirhe
+N6187 LIIKAA SISÄISIÄ ALIOHJELM.
+N6188 LIIKAA SISÄISIÄ ALIOHJELM.
+N6189 Syöttöjännite 5V liian suuri
+N6190 Syöttöjännite 5v liian pieni
+N6193 Spline-aloituspiste virheell.
+N6212 Oloarvon vastaanotto ei mahdoll.
+N6236 PLC-ohjelma on pysähtynyt
+N6264 Grafiikka-ajo ei mahdollinen!
+N6291 Aja kara REF-pisteeseen!
+N6294 PLC on muuttanut: SG-MP
+N6307 T%s:Työkalun kestoaika liian lyhyt
+N6308 Työkalua %s ei määritetty
+N6309 Tiedonsiir.:Ei sallitt.merkkejä
+N6312 MP-alatiedosto puuttuu
+N6408 MP-alatiedosto virheellinen
+N6409 PLC-Strobe ei sallittu (%s)
+N6410 PLC-Strobe ei sall. työkier. %d
+N6411 Rajakytkeminen ei sallittua
+N6412 Esiasetuksen tallen. ei mahdoll.
+N6413 Kinematiikan muutt. ei mahdoll.
+N6414 Lohkoskannaus ristiriitainen %s
+N7222 Rivi on kirjoitussuojattu
+N7784 Virhe kirjoitettaessa taulukkoon
+N7799 MC jarrutestiä ei suoritettu
+N7800 MC katkos +24V jarrukanavassa 1
+N7801 MC katkos 0V jarrukanavassa 1 %.2s
+N7803 Aseta peruspiste Softkey-näpp.
+N7815 Kone ei alkuasetettu
+N7922 X44 puuttuu syöttöjännite
+N7923 MC Tk.makas. AutoStart ei mahd.
+N7935 Ulkoisen kovalevyn Bin.tiedosto
+N7936 Kohdehakemisto on lähdehakemisto
+N7937 Kohdetiedosto on lähdetiedosto
+N7938 MP2257.%d virheellinen (ID=$%08X)!
+N7964 TCPM: Ristiriitainen vektori!
+N7969 Sovellusta %s ei voi käynnistää
+N7971 Prosessia ei voi suorittaa
+N7972 Kohdelaite ei ole saatavilla
+N7973 Tiedostoa ei nimetä uudelleen
+N7974 Tiedostotyyppiä ei voi muuttaa
+N7975 Levyasemassa ei ole enää tilaa
+N7977 Tiedostojärjestelmän I/O-virhe
+N7978 Tiedoston saanti keskeytynyt
+N7979 Liian monta tiedostoa auki
+N7980 Rivi/lause liian pitkä
+N7981 Tiedostoa ei ole olemassa
+N8001 Ei aktiivista tosiaikaista sovellusta
+N8002 Virhe tosiaikaisessa sovelluksessa
+N8005 Sisällön vaihto vain alustajalla!
+N8032 LSV-2: Liian monta yhteyttä
+N8043 Poiminta ei sallittu
+N8044 PLC-binääritiedosto valittu
+N8049 Liittyvä tiedosto kirj.suojattu
+N8071 Ikkunaa ei voi vaihtaa!
+N8072 Kirj.suojattu selitystiedosto!
+N8090 Heilurisyöttö ei mahdollinen!
+N8110 NC-ohjelma keskeytetty
+N7798 SYSTEM VIRHE %d
+N8114 0x01 Toiminto ei tunnettu
+N8115 0x02 Toiminto ja käynnistetty
+N8116 0x03 Ohjain ei ole aktiivinen
+N8117 0x04 Ohjain on aktiivinen
+N8118 0x05 Pulssi on liian suuri
+N8119 0x06 Tuntematon parametri
+N8120 0x07 Virhe luettaessa DAC-arvoja
+N8121 0x08 Sarja-EEPROM: Ei hyväksytty
+N8122 0x09 Sarja-EEPROM: SDA riippuu arvosta 0 tai 1
+N8123 0x0A Tietoja puuttuu
+N8124 0x0C Toiminto lukittu
+N8125 0x0D TNC:n väärä käyttötapa
+N8126 0x10 Määrittelemätön virhe (katso virhepuskuria)
+N8128 DSP-käskyjono liian pitkä
+N8129 Tietoja ei vastaanotettu
+N8130 Väärät tiedot vastaanotettu
+N8131 Ei mittatietoja saatavilla
+N8132 Määrittelemätön virheen syy
+N8133 Käyttöohjaimen koneparametri ei käytettävissä
+N8134 Ei tuettu moottorin tyyppi
+N8135 Ei HEIDENHAIN-virtalähde
+N8136 Virheellinen ohjainyksikkö
+N8140 Viestiä ei määritelty
+N8141 Viestiä ei odotettu
+N8142 Virheilmoitus käyttöohjaimelta
+N8213 SYÖTTÖARVO VIRHEELLINEN
+N499 TIEDOT %.25s PUUTTUU
+N8231 TOIMINTO TCPM ei ole mahdollinen
+N8284 Tyyppikilven määrittely puuttuu: %s
+N8290 Työsk.alueen raja ylitetty
+N8292 Syöttöjännite PL 510 puuttuu
+N8293 Oikosulku PL 510 -ulostulossa
+N8401 PLC-moduli %d tuntematon
+N8494 CC%d aikaylitys versiovertailussa
+N8495 CC%d aikaylit. SMP-tark.summassa
+N8591 PLANE-toimi.: TURN ei sallittu!
+N8643 CYCL CALL POS -lause puutteell.
+N8644 Inkerement. ohjelm. ei sallittu
+N8658 Aseta peruspiste kaikille aksel.
+N8757 MC 422B tuuletinvika
+N8758 Tämä EnDat OEM -versio ei ole tuettu.
+N8892 Kytkentätoiminto ei mahdollinen
+N502 KIERTOSUUNTA PUUTTUU
+N503 PYÖRISTYSSÄDE LIIAN ISO
+N504 TOISTA ANNETUT TIEDOT
+N505 RIITTÄMÄTÖN MUODON MÄÄRITTELY
+N506 FPOL PUUTTUU
+N507 LAUSE EI SALLITTU
+N508 MUOTO ON POISTETTU : FSELECT-LAUSE EI SALLITTU
+N509 INKERMENTAALIKOORDIN. EI SALLITTU
+N510 RND TAI CHF EI SALLITTU TÄSSÄ KOHDASSA
+N511 RND/CHF EI MAHDOLLINEN TANGENTIAALISIIRROSSA
+N512 SUORAN PITUUS ENNEN TAI JÄLKEEN RND/CHF ON 0
+N513 CHF ON VAIN KAHDEN SUORAN VÄLILLÄ MAHDOLLINEN
+N514 VIISTE LIIAN ISO
+N515 RATAKORJAUS VÄÄRIN ALOITETTU: NC-LAUSEESSA ON OLTAVA SUORA
+N516 RATAKORJAUS VÄÄRIN LOPETETTU: NC-LAUSEESSA ON OLTAVA SUORA
+N517 MUOTO LIIAN MONIMUTKAINEN. ANNA LISÄÄ TIETOJA
+N518 FK: ARITMEETTINEN VIRHE
+N519 FK-LAUSE EI SALLITTU
+N522 VIITE EI SALLITTU
+N523 VIITE CC-LAUSEESEEN EI SALLITTU
+N525 APUPISTE VAATII MOLEMMAT KOORD.
+N526 RINNAKKAISGRAF. EI MAHDOLLINEN
+N527 AIHIO LIIAN ISO
+N528 IKKUNA-LEIKKAUS LIIAN ISO
+N529 IKKUNA-LEIKKAUS LIIAN PIENI
+N530 LEIKKAUS EI SIIRRETTÄVISSÄ
+N9785 Suuntaa ei voi päätellä, koska liikettä ei havaittu.
+N10248 NC-toiminto ei salittu
+N10521 Aloitusaika umpeutunut
+N10664 Työkalun käyttötiedosto lukittu
+N10665 Ohjelmointigrafiikka mahdoton
+N10672 SPAWN/SUBMIT estää sisällön vaihdon
+N10710 PROFIBUS-sisääntuloja ei ole päivitetty
+N10711 PROFIBUS-sisääntuloja ei ole päivitetty
+N10942 Puutteellinen näyttö
+N10949 Sivuasetus liian pieni
+N10950 Limityskerroin liian suuri
+N11044 Lieriön säde 0 ei sallittu!
+N11045 Jonon ylivuoto: %s
+N11114 Järjestelmävirhe
+N11115 Järjestelmävirhe
+N11116 Järjestelmävirhe
+N11117 Järjestelmävirhe
+N11232 Ei voi vaihtaa käyttötapaa
+N11275 Tiedostotyyppi puuttuu tai väärä
+N11391 Näppäin lukittu
+N11410 Globaalia Q-param. ei määritelty
+N11411 Globaali Q-par. määrit. kahdesti
+N11412 Globaalit parametrit puuttuvat
+N11413 smarT.NC ei mahdollinen
+N11442 Kaksi kiertoasemaa ei sallittu
+N11453 Tiedostonimi jo olemassa
+N11454 Ohjelman alku jo olemassa
+N11559 M120: LOOK AHEAD ei mahdollinen
+N11574 M114 ILMAN KONEGEOMETRIAA
+N11575 AKSELIGEOMETRIAA EI MÄÄRITELTY
+N11576 KÄÄNTÖPÖYDÄN KOORDIN. PUUTTUVAT
+N11577 Kinematiikkaa ei määritelty
+N11578 Kulmaa ei voi laskea
+N11579 Kinematiikkataulukko puuttuu
+N11580 Aktivoi 3D-kääntö
+N11581 TASO-toiminto ei mahdollinen!
+N11582 CC%d : Ohjelma %s ei voi käynnistyä
+N11585 PLC-mittaus ei sallittu (M%d)
+N11586 Testigrafiikka ei mahdollinen
+N11588 Ohjelmaa muokataan smarT.NC:ssä
+N11589 Ohjelmaa muokataan rinnakkain
+N11593 Ei optiota ohjainyksikölle
+N11595 Tiedoston poisto ei mahdollinen
+N11597 PL-liitännän häiriö
+N11598 PLC-ositus: Muisti ei riitä
+N11601 CC%d: AIKAYLITYS CMD=0x%02X
+N11750 Tiedosto ei olemassa
+N11751 Valitse tiedosto uudelleen!
+N11752 Label-nimi jo valittu
+N11753 Label-nimi jo varattu
+N11754 Label-nimeä ei löydy
+N11755 Label-nimi rivillä %u on varattu
+N12214 USB-laitetta ei voi poistaa
+N12215 USB-laite poistettu sulkematta
+N12283 Kärkikulmaa ei määritelty
+N12284 Ristiriitaiset tiedot
+N12358 PERUUTUS lauseessa %u (%u %%)
+N12759 Hakemistopuun luonti keskeytyi
+N12760 MC Tuulettimen vika
+N12767 Reentrance impossible
+N12768 Liian monta yksikköä ohjelmoitu
+N12770 Syöttöjännite 3,3V liian suuri
+N12771 Syöttöjännite 3,3v liian pieni
+N181 BLK FORM MÄÄRITELTY VÄÄRIN
+N520 FCT TAI FLT -LAUSE EI SALLITTU
+N521 INKERMENTAALINEN KULMAPERUSTEPISTE EI SALLITTU
+N524 ANNA FPOL MOLEMMAT KOORDINAATIT
+N12822 Toimintoa ei pystytty päättämään (timeout).
+N12823 Syötä työkalun säteeksi > 0
+N12824 Yli 5 akselia PLC-paikoituksessa
+N12830 Uran sijainti 0 ei ole sallittu!
+N12837 Muotoaliohj. vain 1 aks. ohjelm.
+N12857 Sallittu ohjelmapituus ylitetty
+N6091 Ei symbolista ohjelmointia
+N13066 Esiasetuksen tallennus mahdoton
+N13072 Peruspisteen asetus ei sallittu
+N13147 PLC-ohjelma ei toimi
+N4 VÄÄRÄ TIETOJENKÄSITTELY 3
+N9 VÄÄRÄ TIETOJENKÄSITTELY 8
+N11 VÄÄRÄ TIETOJENKÄSITTELY A
+N12 VÄÄRÄ TIETOJENKÄSITTELY A
+N14 VÄÄRÄ TIETOJENKÄSITTELY A
+N16 VÄÄRÄ TIETOJENKÄSITTELY B
+N19 VÄÄRÄ TIETOJENKÄSITTELY E
+N29 VÄÄRÄ TIETOJENKÄSITTELY O
+N33 TARKISTA SUMMA-VIRHE A
+N34 TARKISTA SUMMA-VIRHE B
+N40 LIIKKEEN VALVONTA %.2s A
+N43 Asemanpoikkeama <> Kierrosluku liian suuri %.2s
+N13741 Rivi %d: Puolipiste (;) puuttuu
+N13742 Rivi %d: Liian monta salasanaa
+N13743 Rivi %d: Virheellinen salasana
+N13744 Rivi %d: Tuntematon käsky
+N13745 Rivi %d: Formaatin osoitus väärin
+N13746 Rivi %d: Formaatin osoitus vajaa
+N13747 Rivi %d: Salasana liian pitkä
+N13748 Rivi %d: Indeksi puuttuu
+N13749 Rivi %d: ] puuttuu indeksin jälk.
+N13750 Maskitiedostoa ei löydy
+N13751 Tulostustiedostoa ei voi tehdä
+N13154
+N13155 Hälytysvaroitus kuitattu
+N13156 Profibus-ohjelm. ei ajankoht.
+N13302 MPFRAGMENTFILE ei ole olemassa
+N13340 SYÖTTÖARVO VIRHEELLINEN
+N13348 DHCP: Sisäänsyöttö ei sallittu
+N13381 Sarakkeen uud.asetus ei sallittu
+N13387 Anna asetussyötöksi muu kuin 0
+N13475 Toiminto ei sallittu!
+N13476 Välimuisti tyhjä!
+N13477 MC-jarruohjausvika
+N13478 MC-jarruohjausvika %.2s
+N13486 Pyörintänopeus ulkopuolella rajojen %d%%
+N13487 USB: TNC ei tue laitetta
+N13752 Muokkaus ei sallittu
+N13753 TOOL.T: Määritelty hammasluku=0
+N13758 M118 ei sallittu
+N13761 Muokkaus ei sallittu
+N13769 Ohjaamaton akseli %.2s: pysäytä
+N13816 Toiminto ei sallittu
+N13825 Toimintoa ei ole vapautettu
+N13827 Virheellinen DXF-tiedosto
+N13838 Autom. näppäinlukitus on avattu
+N13945 Toiminto ei sallittu
+N13957 Muokkaus ei sallittu
+N13958 M136 ei sallittu FU/FZ:n kanssa
+N13960 smarT.NC ei sallittu
+N13961 Inkr. sisäänsyöttö ei sallittu
+N14017 Q399:n vaihto ei ole sallittu
+N14019 CC%d virranmittauksen aikaylitys
+N14020 MC: Väärä turvakäyttötapa
+N14022 CC: Koneen näppäintä painettu
+N14023 MC: Koneen valtuuspain. painettu
+N14024 CC: Koneen valtuuspain. painettu
+N14025 CC: Käsipyörän valtuuspainiketta painettu
+N14026 CC: Koneen valtuuspainiketta painettu
+N14027 CC: Turvaovet ovat auki
+N14032 LASKETTU KOORDIN. LIIAN SUURI
+N14156 Ei työkaluakselia määritelty
+N14253 Huomio: Paik.korkeus määritelty!
+N14254 Koneen valtuusnäppäintä painettu
+N14255 Ohj. valtuusnäppäintä painettu
+N14299 Ohjelman muunnos ei mahdollinen
+N14434 Virheellinen alueen määrittely!
+N14479 Nollapistetaulukkoa ei valittu
+N14486 M140 MB MAX ei sallittu
+N14487 Maks. merkkijonopituus ylitetty
+N14518 Työkalun numero ei ole sallittu
+N14519 Työkalun nimi ei ole sallittu
+N14520 Jako nollalla ei ole sallittu
+N14521 Neliöjuuri ei ole sallittu
+N14522 Logaritmi ei ole sallittu
+N14523 Tangentti ei ole sallittu
+N14525 Toiminto lukittu FCL:llä
+N14550 Arccos: Abs.arvo suurempi kuin 1
+N14551 Arcsin: Abs.arvo suurempi kuin 1
+N15439 M128: Esiasetusta ei saa muuttaa
+N15465 Ei tietoja saatavilla!
+N15466 Tiedosto puuttuu tai on väärä
+N15491 LSV2: Pysäytyspiste ei sallittu!
+N15614 Kosketussuuntaa ei määritelty
+N15658 Nopeus S > kuin NMAX TOOL.T:ssä
+N15672 Levyasemaa ei voi nimetä uudelleen!
+N15673 Levyasemaa ei voi kopioida!
+N15674 Levyasemaa ei voi poistaa
+N15675 TNC ei voi avata tied.tyyppiä!
+N15687 MC-liikevalvonta %.2s
+N15688 MC-virhe jarrutuksessa %.2s
+N15691 GOTO-toiminto ei sallittu!
+N15766 Työkaluakselia ei ole sallittu
+N15767 Sallittu liikealue on ylitetty %.2s
+N15923 PLC-muistin layout on muuttunut
+N15967 Ohjejärjestelmää ei voi luoda
+N15973 M141 ei sallittu
+N16007 RINNAKKAISKÄYTTÖ EI MAHDOLLISTA
+N16010 Käyttäjän turvamoduuli ei tuettu
+N16198 PLC-muistin layoutia ei voitu alustaa
+N16362 MC-invertteri RDY=0 %.2s
+N16363 MC-invertteri RDY=1 %.2s
+N16407 Tiedon vastaanotto mahdotonta
+N16408 Akselin vaihto ei mahdollista
+N16409 Akselin vaihto ei mahdollista
+N16410 Akselin vaihto ei mahdollista
+N16411 Sisäänsyöttöraja ylitetty
+N16412 Muutokset eivät mahdollisia
+N16413 Määrittelemätön virhe
+N16561 AFC: Karan ylikuormitus
+N16563 Asemankoodaaja %.2s: vahvistus liian korkea
+N16564 Asemankoodaaja %.2s: vahvistus liian pieni
+N16565 Asemankoodaaja %.2s : taajuus liian suuri
+N46 Asemankoodaaja %.2s viallinen
+N16586 AKSIAALITASO ei sallittu
+N16593 MC-jarrutestiä ei aktivoitu
+N16623 Pöydän määrittely virheellinen
+N16718 Karanopeus toleranssialueen %.2s ulkopuolella
+N16798 Globaalit PGM-aset. deaktivoitu
+N16800 smarT.NC:tied.tyyppi ei sallittu
+N16830 Ei muutoksia ohjelman edetessä
+N17063 TNC ei voi prosessoida makroa!
+N17161 ENDAT-interpolointi ei mahdollinen %.2s
+N17162 Elektr. ID-tunnuksen pyyntö ei mahdollinen
+N17163 Virhe TRC-kompensaatiossa %.2s
+N17167 'AFC' ei tiedostossa NCMACRO.SYS
+N17207 MC: Virheellinen S-käyttötila
+N17384 Ei riittävästi päämuistia
+N17386 Palettikäyttö ei ole sallittu
+N17387 M128 ei sallittu
+N17390 PLANE-toiminto: LIIKE mahdoton
+N17662 Nykyinen liikealue väärä
+N17663 DCM: Tila-asetukset väärin
+N17735 MC-asetus/hetkellisarvon ero on liian suuri %.2s
+N17938 EnDat-yhteys ei ole mahdollinen
+N18060 3DROT ei sallittu
+N18075 MC 1. rajakytkimen %.2s+ ylitys
+N18076 MC 1. rajakytkimen %.2s- ylitys
+N18145 Kutsuttua ohjelmaa on muutettu
+N18146 Moninkertainen merkintä ei sallittu
+N18147 Toiminto hakemistolla ei mahdollinen
+N18148 Ohjelmasuojaus ei asetettu/peruutettavissa
+N18149 Tiedostotyyppi suojattu koneparametrilla
+N18150 AVAA SOVELLUKSESSA ei sallittu
+N18156 USB-laitetta ei voi poistaa
+N18157 USB-laitetta ei ole merkitty
+N18220 PL-konfiguraatio virheellinen
+N18280 %s
+N59 FN 14: Virhenumero %s
+N18303 CC%d Vaihtosuuntaaja akselille RDY=0 (turvarele)
+N18304 CC%d Vaihtosuuntaaja akselille RDY=1 (turvarele)
+N18325 MC S-ohjelmavirhe %d
+N18371 Katkaisukanavien MC-käynnistystesti ei mahdollinen
+N18401 Sisäinen virhe kopioinnissa!
+N18629 Ohjelmaoptio ei aktiivinen
+N18630 Palautuskinematiikka ei mahdollinen
+N18631 Toiminto ei sallittu
+N18632 Aihion mitat ristiriitaiset
+N18861 HSCI: Laitteistovirhe
+N18862 HSCI: Alustusvirhe
+N18891 M91 tai M92 ei mahdollinen
+N18903 Osaohjaus ei sallittu
+N18904 Hakemistoa ei ole olemassa
+N18912 CC%d Vaihtosuuntaaja karalla RDY=1 (turvarele)
+N18913 CC%d Vaihtosuuntaaja karalla RDY=0 (turvarele)
+N18914 Työkierron muodostus on väärin
+N18915 HSCI: IOC-tiedosto puuttuu
+N18928 M128 ei ole sallittu!
+N19236 LSV2-tiedonsiirto keskeytynyt!
+N19292 AFC: Referenssitehoa ei määritetty
+N19293 TOOL.T: Liian monta hammasta
+N19398 Mittausasema ei ole sallittu
+N19411 PLC-ohjelmaa ei voitu käynnistää
+N19440 M-toimintomakro ei sallittu
+N19448 DCM: Työkalun tila tuntematon
+N13827 Sovellusta 'DXF_CONVERTER' ei voi käynnistää
+N19501 Virhe itsetestauksen aikana
+N19502 Virhe itsetestauksen aikana
+N19503 Yhteysvirhe itsetestauksen aikana
+N19504 Tuntematon virhe itsetestauksen aikana
+N19754 Hätäpysäytys SPLC:stä
+N19755 Kohtalokas virhe SPLC:stä
+N19764 Työkalun poisto ei sallittu
+N20418 Itsetestaus on deaktivoitu
+N20457 MC: Järjestelmävirhe SPLC-RTS
+N20458 PL/MB-laitteen vikatunnistus
+N20459 HSCI-PL/MB raportoi virheen
+N20460 HSCI-PL/MB raportoi virheen
+N20461 MC: Järjestelmävirhe SPLC-RTS
+N20462 MC: Järjestelmävirhe SPLC-RTS
+N20463 Suoritusaikavirhe SPLC-ohjelmassa
+N20464 SPLC ei pysty lataamaan ohjelmaa
+N20465 SPLC-ohjelma muuttunut
+N20466 SPLC-ohjelmaa ei voi ajaa
+N20467 Kone ei ole turvakäytöllä
+N20469 SPLC-sisääntulojen konfiguraatio
+N20471 SPLC-sisääntulojen konfiguraatio
+N20473 SPLC-työkiertoajan konfiguraatio
+N20477 Python-kirjoitus jo aloitettu
+N20481 Kinematiikan saanti ei mahdollista
+N20482 Mittausasema ei liikealueella
+N20483 Preset-kompensaatio ei mahdollista
+N20639 Paikkataulukko on kirjoitussuojattu
+N20650 Näppäilyjärjestyksen uudelleenajo päättynyt
+N20661 KÄÄNTÖ EI SALLITTU
+N20662 MITTAKERROIN EI SALLITTU
+N20663 PEILAUS EI SALLITTU
+N20664 NOLLAPISTEEN SIIRTO EI SALLITTU
+N21084 Sijoita käsipyörä laturiin
+N21096 Esiasetus siirrolla aktiivine
+N21097 TK-säde=0: DCM ei mahdollinen
+N21144 Käsipyörä: M91/M92 ei sallittu
+N21219 SAANTITASO: Toiminto lukittu
+N21232 Muunnospotentiometri?
+N21233 Työkalunpitimen kinematiikka puuttuu
+N21254 Testiohjelmaa ei voi avata
+N21255 Testiohjelmaa ei voi muodostaa
+N21256 Testiohjelmaa ei voi suorittaa
+N21257 DCM: Kiinnittimet eivät ole aktiivisia
+N21258 Tiedosto ei ole olemassa
+N21260 SPLC-ohjelmistoa ei ole konfiguroitu
+N21261 SPLC-aikakatkaisu MC:ssä
+N21426 DCM: Epämääräisiä törmäysobjekteja
+N21675 Ei-turvallinen ohjausohjelmisto
+N21701 Rivin poisto ei sallittu
+N21712 Poiskytkentäprosessi ei mahdollinen
+N21948 MC-virhekäsky MC:ltä
+N21949 Pikaliike konfiguroitu virheellisesti
+N21932 MC-aikakatkaisu jarrutuksen aikana %.2s
+N22055 RINNAKKAISKÄYTTÖ EI MAHDOLLISTA
+N22060 Koneen liikealue ylitetty kohteessa SS2 %.2s
+N22077 Konevaihto SOM_2/SOM_3:sta SOM_4:ään ei mahdollinen
+N22077 Konevaihto SOM_4:sta SOM_2/SOM_3:een ei mahdollinen
+N22079 Riittämätön RAM
+N22124 MC SPLC pyytää kelvottoman pysäytyksen reaktiota
+N22125 MC SPLC pyytää kelvottoman turvallisuuden toimintoa
+N22266 SPLC-ohjelmaa ei käännetä
+N22330 M94 ei mahdollinen
+N23611 Paikkataulukko lukittu
+N2187 Akselihälytys %.2s
+N23636 Konejarrua ei voi deaktivoida %.2s
+N23720 Umlautit ei sallittu!
+N23756 Toiminto ei sallittu kiertoakselille
+N23767 Muokkaus ei sallittu
+N23768 QR-parametrit ei palautettavia
+N23784 Koneen kelvoton SPLC-käyttötapa
+N23830 HSCI/Profibus: konfiguraatiovirhe
+N23832 MC-akseliryhmä konfiguroitu väärin %d
+N23835 Virhe itsetestauksessa
+N7798 CC%d-virhe %d %d %d
+N7798 CC-virhe %d %d %d
+N23945 MC-järjestelmäkello MC ei sama kuin SKERN MC
+N23946 MC-järjestelmäkello MC ei sama kuin SPLC MC
+N23947 MC-järjestelmäkello MC ei sama kuin SPLC CC
+N23949 Työkalun säde liian suuri
+N23950 Sisäänpistotyyppi ei mahdollinen
+N23951 Sisäänp.kulma väärin määritelty
+N23952 Aukkokulma määrittelemättä
+N23953 Uran leveys liian suuri
+N23960 MC-virhe ristiinvertailun aikana:  %s
+N23961 MC Turvaulostulo ei sama:  %s
+N23967 Määrittelyä ei löydy
+N23993 Parametrisointivirhe Python-kirjoituksessa
+N24013 MC +3.3V toleranssin ulkona
+N24014 MC +3.3VPIC toleranssin ulkona
+N24015 MC +12V toleranssin ulkona
+N24016 MC Tuulett. 1 nopeus liian hidas
+N24017 MC +5V toleranssi ulkona
+N24024 Työkalutiedot ristiriitaisia
+N24074 MC tuuletinta ei tunnistettu
+N24075 MC Tuulett. 2 nopeus liian hidas
+N24128 MC todellisarvon mittausvirhe %d %.2s
+N24130 MC akseli %.2s servo-ohjauksessa
+N24131 MC kara %.2s servo-ohjauksessa
+N24188 Muuttunut NC-ohjelmaversio
+N24189 Virhe SPLC-konfiguraatiotiedoissa
+N24191 Asetus-/todellisnopeuden %.2s MC-liikapoikkeama
+N8127 Tuntematon LSV2-virhe: %x
+N24360 Turvallisen ulostulon virhetila %s
+N24394 Taso ei määritettävissä
+N24438 Tiedostosisältö viallinen
+N24484 Työkalun/terän no. virhejärjestely
+N24515 Käynnistys ei sallittu hätäpysäytyksessä
+N24585 MOVE not possible
+N24586 Block format incorrect
+N24592 SPLC program has changed
+N24594 SPLC program binary code of MC has changed
+N24596 SPLC program binary code of CC has changed
+N24860 MC: Erroneous data from SPLC %s
+N24959 Presetting not allowed!
+N24967 MC-rajakytkin %.2s+
+N24968 MC-rajakytkin %.2s-
+N24972 Safe Torque Off (-STO.B.x) is active
+N24973 HÄTÄ-SEIS
+N24974 MC S-sis.s.signaalit %d erisuuret
+N24975 MC-syotto suurempi kuin SLS %.2s
+N24976 CC-syotto suurempi kuin SLS %.2s
+N24977 MC:n kayttotila eri kuin CC:n
+N24979 MC-nopeus suurempi kuin SLS %.2s
+N24980 CC-nopeus suurempi kuin SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC: Väärä turva-akseliryhmä
+N24983 Akseli ei ole testiasemassa
+N25030 MC S status reaction is active: %s
+N25031 Wiring of SPLC input %d
+N25033 Wiring of emergency stop
+N25160 MC SMC Autotest software loaded
+N25237 Wrong input %s for dynamic test
+N25243 Gliederung widersprüchlich
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

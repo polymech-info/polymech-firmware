@@ -1,0 +1,418 @@
+*-----------------------------------------------------------------------------
+*  Getriebe-Schaltung Spindel YD - Stern Dreieck Umschaltung
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*  - YD Umschaltung bei Spindel Stillstand
+*       MP3010  : 6 - mit Getriebeschaltsignal
+*       MP3210.0: n - Y-Bereich Motor Drehzahl
+*       MP3510.0: n - Y-Bereich Drehzahl
+*       MP3515.0: n - Y-Bereich max Drehzahl
+*       MP3210.1: n - D-Bereich Motor Drehzahl
+*       MP3510.1: n - D-Bereich Drehzahl
+*       MP3515.1: n - D-Bereich max Drehzahl
+*
+*  - YD Umschaltung bei laufender Spindel (ab 34049x 03)
+*       MP3010  : 8 - ohne Getriebeschaltsignal
+*       MP3210.0: n - D-Bereich Motor Drehzahl
+*       MP3510.0: n - D-Bereich Drehzahl
+*       MP3515.0: n - D-Bereich max Drehzahl
+*       MP3210.1: 0 - inaktiv
+*       MP3510.1: 0 - inaktiv
+*       MP3515.1: 0 - inaktiv
+*       MP_Data.tab:
+*         S1 Umschalt-Drehzahl Y->D Betrieb  [1/min]: n(Y->D)
+*         S2 Umschalt-Drehzahl Y->D Betrieb [1/min]: n(Y->D)
+*         S1 Umschalt-Drehzahl D->Y Betrieb  [1/min]: n(D->Y)
+*         S2 Umschalt-Drehzahl D->Y Betrieb [1/min]: n(D->Y)
+*         Beachte: n(Y->D) > n(D->Y) - etwa 200 1/min Hysterese (Differenz)
+*
+*  - einzelne Schritte benutzen das Modul Getriebe.src
+*
+*  - Eingang-/Ausgangsschnittstelle
+*      I_S1_Getriebe_Stufe_1 - (S1 Y-Bereich)
+*      I_S1_Getriebe_Stufe_2 - (S1 D-Bereich)
+*      I_S2_Getriebe_Stufe_1 - (S2 Y-Bereich)
+*      I_S2_Getriebe_Stufe_2 - (S2 D-Bereich)
+*      O_S1_Stern_Dreieck_Umschaltung - (Stromstoß-Relais)
+*      O_S2_Stern_Dreieck_Umschaltung - (Stromstoß-Relais)
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Spindel_Y_Mode                        K +0
+#define /s    KL_Spindel_D_Mode                        K +1
+#define /s    KL_S_YD_Ueberwachung_inaktiv             K %000
+#define /s    KL_S_YD_schnell_Ueberwachung_aktiv       K %111
+#define /s    KL_aus_Verzoegerung_YD_Umschaltung       K +0
+#define /s    KL_ein_Verzoegerung_YD_Umschaltung       K +0
+#define /s    KL_aus_Verzoegerung_DY_Umschaltung       K +0
+#define /s    KL_ein_Verzoegerung_DY_Umschaltung       K +0
+
+#define /s    ML_Sn_O_Regler_Freigabe                  M
+
+#define /s    ML_Spindel_YD_Status                     M [8]
+#define /c    ML_Spindel_in_Y_Mode                     M &ML_Spindel_YD_Status + 0
+#define /c    ML_Spindel_YD_Umschaltung                M &ML_Spindel_YD_Status + 1
+#define /c    ML_Spindel_in_D_Mode                     M &ML_Spindel_YD_Status + 2
+#define /c    ML_Spindel_DY_Umschaltung                M &ML_Spindel_YD_Status + 3
+
+#define /s    BL_Spindel_YD_Status                     B
+#define /s    BL_Schritt_Getriebe_YD                   B
+#define /s    BL_aus_Verzoegerung_Relais               B
+#define /s    BL_ein_Verzoegerung_Relais               B
+
+#include Mac_Lib.inc
+
+EXTERN Getriebe_initialisieren
+EXTERN Backup_G_S
+EXTERN Sn_Input_lesen
+EXTERN Sn_Output_schreiben
+EXTERN Getriebe_ein
+EXTERN Test_Getriebe_Sensoren
+EXTERN Spindel_steht
+EXTERN Quittung
+
+GLOBAL Spindel_YD_Getriebe
+
+;----------------------------
+LBL Spindel_YD_Getriebe
+;----------------------------
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  S      MG_Getriebe_initialisieren
+
+  LN     MG_Spindel_aktiv
+  EMT
+
+  CM     Sn_Input_lesen
+
+  LN     NP_M4176_Stern_ein_oder_blinkt
+  O      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+  O      MG_M52_AC_Tisch_1_aktivieren
+  O      MG_M53_AC_Tisch_2_aktivieren
+  O      MG_M54_AB_Kopf_aktivieren
+  O      MG_M55_AB_Kopf_C_Tisch_aktivieren
+  O      MG_M56_B_Kopf_C_Tisch_aktivieren
+  O      MG_M57_AC_Gabelkopf_aktivieren
+  O      MG_M58_Kinematik_inaktiv
+  A      MG_Maschinenparameter_gelesen
+  A      MG_Steuer_Spannung_verzoegert_ein
+  A      MG_Getriebe_initialisieren
+  A[
+    LN     DG_Feldwinkel_Ermittlung_aktiv
+    BT     KG_Spindel
+  ]
+  CMT    Getriebe_initialisieren
+  CMT    Getriebe_YD_initialisieren
+
+  L      PN_D756_S_Drehzahlvorgabe_PLC
+  <>     DG_S_Drehzahlvorgabe_PLC
+  CMT    Backup_G_S
+
+  L      PN_D756_S_Drehzahlvorgabe_PLC
+  =      DG_S_Drehzahlvorgabe_PLC
+
+  LN     NP_M4070_Strobe_G_Code
+  R      PN_M4090_Quit_G_Code
+
+  L      MG_Spindel_mit_Getriebe
+  IFT
+    CASE   BL_Schritt_Getriebe_YD
+      CM     Getriebe_ein              ;00
+      CM     Spindel_steht             ;01
+      CM     Kuppeln                   ;02
+      CM     Quittung                  ;03
+      CM     Getriebe_Ende             ;04
+    ENDC
+  ELSE
+    L      K+0
+    B=     ML_Spindel_YD_Status
+
+    CM     9174                        ;Spindelstatus bzgl. Stern-/Dreieck-Umschaltung
+    PL     BL_Spindel_YD_Status
+  M_Modul_Fehler_anzeigen
+
+    L      MG_Eins_Merker
+    =      ML_Spindel_YD_Status[BL_Spindel_YD_Status]
+
+    CASE   BL_Schritt_Getriebe_YD
+      CM     YD_Parameter              ;00
+      CM     YD_Relais                 ;01
+      CM     YD_Relais_ok              ;02
+      CM     Getriebe_Ende             ;03
+    ENDC
+  ENDI
+
+  PLL
+  IFT
+    INC    BL_Schritt_Getriebe_YD
+  ENDI
+
+  LN     MG_Getriebe_Wechsel_aktiv
+  AN     MG_YD_Umschaltung_drehzahlabhaengig
+  =      TS_Getriebe_Timeout
+
+  L      PN_Fehler_Getriebe_Schaltung
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Getriebe_Reset
+
+  CM     Sn_Output_schreiben
+
+  L      MG_Spindel_mit_Getriebe
+  CMT    Test_Getriebe_Sensoren
+  CMF    Test_Getriebe_YD_Sensoren
+
+EM
+
+;----------------------------
+LBL YD_Parameter
+
+  L      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  A      ML_Spindel_YD_Umschaltung
+  O[
+    LN     MG_Sn_I_Getriebe_Stufe_1
+    A      MG_Sn_I_Getriebe_Stufe_2
+    A      ML_Spindel_DY_Umschaltung
+  ]
+  A      MG_Steuerung_betriebsbereit
+  AN     NP_M4030_Gewindebohren_aktiv
+  PSL
+  EMF
+
+  L      ML_Spindel_YD_Umschaltung
+  IFT
+; Verzögerungen nur für Debug-Zwecke
+    L      KL_aus_Verzoegerung_YD_Umschaltung
+    =      BL_aus_Verzoegerung_Relais
+
+    L      KL_ein_Verzoegerung_YD_Umschaltung
+    =      BL_ein_Verzoegerung_Relais
+
+    PS     KG_Spindel
+    PS     KL_Spindel_D_Mode
+    CM     9163                        ;Antriebsparameter für Stern- und Dreieck-Umschaltung
+      M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      ML_Spindel_DY_Umschaltung
+  IFT
+; Verzögerungen nur für Debug-Zwecke
+    L      KL_aus_Verzoegerung_DY_Umschaltung
+    =      BL_aus_Verzoegerung_Relais
+
+    L      KL_ein_Verzoegerung_DY_Umschaltung
+    =      BL_ein_Verzoegerung_Relais
+
+    PS     KG_Spindel
+    PS     KL_Spindel_Y_Mode
+    CM     9163                        ;Antriebsparameter für Stern- und Dreieck-Umschaltung
+      M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL YD_Relais
+
+  L      MG_Eins_Merker
+  S      MG_YD_Umschaltung_drehzahlabhaengig
+
+  LN     MG_Antrieb_bereit[KG_Spindel]
+  IFT
+    DEC    BL_aus_Verzoegerung_Relais
+
+    L      BL_aus_Verzoegerung_Relais
+    <      K+0
+    S      MG_Sn_O_Stern_Dreieck_Umschaltung
+  ENDI
+
+  L      MG_Sn_O_Stern_Dreieck_Umschaltung
+  PSL
+
+EM
+
+;----------------------------
+LBL YD_Relais_ok
+
+  LN     MG_Sn_I_Getriebe_Stufe_1
+  A      MG_Sn_I_Getriebe_Stufe_2
+  A      ML_Spindel_YD_Umschaltung
+  R      MG_Sn_O_Stern_Dreieck_Umschaltung
+
+  L      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  A      ML_Spindel_DY_Umschaltung
+  R      MG_Sn_O_Stern_Dreieck_Umschaltung
+
+  LN     MG_Sn_O_Stern_Dreieck_Umschaltung
+  IFT
+    DEC    BL_ein_Verzoegerung_Relais
+
+    L      BL_ein_Verzoegerung_Relais
+    <      K+0
+    R      MG_YD_Umschaltung_drehzahlabhaengig
+    S      ML_Sn_O_Regler_Freigabe
+  ENDI
+
+  L      MG_Spindel_1_aktiv
+  IFT
+    L      ML_Sn_O_Regler_Freigabe
+    =      O_Regler_Freigabe_S1
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  IFT
+    L      ML_Sn_O_Regler_Freigabe
+    =      O_Regler_Freigabe_S2
+  ENDI
+
+  L      ML_Sn_O_Regler_Freigabe
+  PSL
+
+EM
+
+;----------------------------
+LBL Kuppeln                            ;02
+
+  PS     KG_Spindel
+  L      MG_Getriebe_Stufe_1_von_3D_Kopf
+  IFT
+    PS     KL_Spindel_Y_Mode
+  ELSE
+    PS     NP_W256_G_Code_Spindel
+  ENDI
+  CM     9163                          ;Antriebsparameter für Stern- und Dreieck-Umschaltung
+  M_Modul_Fehler_anzeigen
+
+  LN     MG_Antrieb_bereit[KG_Spindel]
+  S      MG_Sn_O_Stern_Dreieck_Umschaltung
+
+  L      NP_W256_G_Code_Spindel
+  ==     K+0
+  O      MG_Getriebe_Stufe_1_von_3D_Kopf
+  A      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  O[
+    L      NP_W256_G_Code_Spindel
+    ==     K+1
+    AN     MG_Getriebe_Stufe_1_von_3D_Kopf
+    AN     MG_Sn_I_Getriebe_Stufe_1
+    A      MG_Sn_I_Getriebe_Stufe_2
+  ]
+  R      MG_Sn_O_Stern_Dreieck_Umschaltung
+  PSL
+
+EM
+
+;----------------------------
+LBL Getriebe_Ende                      ;04
+
+  PS     MG_Null_Merker
+
+LBL Getriebe_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Getriebe_Wechsel_aktiv
+  R      MG_Spindel_ein_Getriebe
+  R      MG_Getriebe_Stufe_1_von_3D_Kopf
+  R      MG_Getriebe_Stufe_von_3D_Kopf
+  R      ML_Sn_O_Regler_Freigabe
+  R      PN_M4010_S_pendeln_rechts
+  R      PN_M4009_S_pendeln_links
+  R      MG_YD_Umschaltung_drehzahlabhaengig
+  R      O_S1_Stern_Dreieck_Umschaltung
+  R      O_S1_Getriebe_Stufe_1
+  R      O_S1_Getriebe_Stufe_2
+  R      O_S2_Stern_Dreieck_Umschaltung
+  R      O_S2_Getriebe_Stufe_1
+  R      O_S2_Getriebe_Stufe_2
+
+  L      K+0
+  =      BL_Schritt_Getriebe_YD
+
+EM
+
+;----------------------------
+LBL Test_Getriebe_YD_Sensoren
+
+  L      MG_Spindel_aus
+  AN     MG_Getriebe_Stufe_ok
+  IFT
+    L      MG_P_Impuls_Steuerung_betriebsbereit
+    O      MG_Impuls_CE_Taste
+    IFT
+      LN     MG_Sn_I_Getriebe_Stufe_1
+      O      MG_Sn_I_Getriebe_Stufe_2
+      S      MG_Sn_O_Stern_Dreieck_Umschaltung
+
+      PS     KG_Spindel
+      PS     KL_Spindel_Y_Mode
+      CM     9163                      ;Antriebsparameter für Stern- und Dreieck-Umschaltung
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      MG_Sn_I_Getriebe_Stufe_1
+    AN     MG_Sn_I_Getriebe_Stufe_2
+    R      MG_Sn_O_Stern_Dreieck_Umschaltung
+
+    L      MG_Sn_I_Getriebe_Stufe_1
+    AN     MG_Sn_I_Getriebe_Stufe_2
+    A      ML_Spindel_in_Y_Mode
+    R      PN_Fehler_Getriebe_Schaltung
+  ENDI
+
+  L      ML_Spindel_in_Y_Mode
+  O      ML_Spindel_in_D_Mode
+  R      MG_Getriebe_Stufe_ok
+
+  L      ML_Spindel_in_Y_Mode
+  A      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  S      MG_Getriebe_Stufe_ok
+
+  L      ML_Spindel_in_D_Mode
+  AN     MG_Sn_I_Getriebe_Stufe_1
+  A      MG_Sn_I_Getriebe_Stufe_2
+  S      MG_Getriebe_Stufe_ok
+
+  LN     PN_M4007_S_M05_Sollwert_0_und_Status
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  AN     MG_Getriebe_Stufe_ok
+  AN     MG_YD_Umschaltung_drehzahlabhaengig
+  AN     MG_Getriebe_initialisieren
+  O[
+    AN     TS_Getriebe_Timeout
+    AN     TR_Getriebe_Timeout
+  ]
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_Getriebe_Schaltung
+  R      MG_Getriebe_Stufe_ok
+
+EM
+
+;----------------------------
+LBL Getriebe_YD_initialisieren
+
+  L      MG_Spindel_mit_Getriebe
+  IFT
+    PS     KG_Spindel
+    PS     NP_W256_G_Code_Spindel
+    CM     9163                        ;Antriebsparameter für Stern- und Dreieck-Umschaltung
+        M_Modul_Fehler_anzeigen
+    PS     KL_S_YD_Ueberwachung_inaktiv
+    PS     STG_Spindel[BG_Index_Sn].DG_Drehzahl_YD_Umschaltung
+    PS     STG_Spindel[BG_Index_Sn].DG_Drehzahl_DY_Umschaltung
+    CM     9173                        ;Drehzahlabhängige Stern-/Dreieck-Umschaltung
+        M_Modul_Fehler_anzeigen
+  ELSE
+    PS     KL_S_YD_schnell_Ueberwachung_aktiv
+    PS     STG_Spindel[BG_Index_Sn].DG_Drehzahl_YD_Umschaltung
+    PS     STG_Spindel[BG_Index_Sn].DG_Drehzahl_DY_Umschaltung
+    CM     9173                        ;Drehzahlabhängige Stern-/Dreieck-Umschaltung
+        M_Modul_Fehler_anzeigen
+  ENDI
+
+EM

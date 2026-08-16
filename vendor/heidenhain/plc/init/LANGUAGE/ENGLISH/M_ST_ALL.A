@@ -1,0 +1,23 @@
+/* STATUS GENERAL
+   --------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"STATUS GENERAL";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"F programmed  : %10D  OVR: %3.0F%%\n",D360/c,W766/n=2/c;
+"S programmed  : %10.3F  OVR: %3.0F%%\n",D356/n=3/c,W764/n=2/c;
+"Tool number   : %3D\n",W264/c;
+"Tool pocket   : %3D\n",W262/c;
+"G code        : %3D\n",W256/c;
+"S code        : %3D\n",W258/c;
+"M function    : %3D\n",W260/c;
+"Key code      : $%-8X\n",W274/c;
+CPOS=0,15;
+"Date          : %S\n",TIME[8]/c;
+"Time          : %S",TIME[13]/c;

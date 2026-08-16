@@ -1,0 +1,4425 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "STATUS_LIGHT_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "STATUS_LIGHT_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Arduino.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ArduinoLog.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Component.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<macros.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<xmath.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Bridge.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<enums.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config-modbus.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusTCP.h>"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "text": "// class ModbusTCP; // Removed forward declaration"
+        },
+        {
+          "type": "enum_specifier",
+          "children": [
+            {
+              "type": "enum",
+              "text": "enum"
+            },
+            {
+              "type": "type_identifier",
+              "text": "STATUS_LIGHT_STATE"
+            },
+            {
+              "type": "enumerator_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "enumerator",
+                  "children": [
+                    {
+                      "type": "identifier",
+                      "text": "OFF"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    }
+                  ]
+                },
+                {
+                  "type": ",",
+                  "text": ","
+                },
+                {
+                  "type": "enumerator",
+                  "children": [
+                    {
+                      "type": "identifier",
+                      "text": "ON"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "1"
+                    }
+                  ]
+                },
+                {
+                  "type": ",",
+                  "text": ","
+                },
+                {
+                  "type": "enumerator",
+                  "children": [
+                    {
+                      "type": "identifier",
+                      "text": "BLINK"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "2"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "StatusLight"
+            },
+            {
+              "type": "base_class_clause",
+              "children": [
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "Component"
+                }
+              ]
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "modbusAddress"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "comment",
+                  "text": "// --- Moved Member Variables Here ---"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "pin"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "millis_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "status_blink_TS"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "doBlink"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "last_blink"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "millis_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "blink_start_ts"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "millis_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "max_blink_time"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "STATUS_LIGHT_STATE"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "state"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// --- End Moved Member Variables ---"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "StatusLight"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "owner"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_ledPin"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_key"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_addr"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_initializer_list",
+                      "children": [
+                        {
+                          "type": ":",
+                          "text": ":"
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "last_blink"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "status_blink_TS"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "doBlink"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "false",
+                                  "text": "false"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "pin"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_ledPin"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "modbusAddress"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_addr"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "Component"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "String"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "string_literal",
+                                              "children": [
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                },
+                                                {
+                                                  "type": "string_content",
+                                                  "text": "STATUS_LIGHT_"
+                                                },
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "+",
+                                      "text": "+"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "_key"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_key"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "COMPONENT_DEFAULT"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "owner"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "state"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "STATUS_LIGHT_STATE"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "OFF"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "doBlink"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "false",
+                                  "text": "false"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "status_blink_TS"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "last_blink"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "unary_expression",
+                                  "children": [
+                                    {
+                                      "type": "!",
+                                      "text": "!"
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "digitalRead"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "pin"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// Determine address based on key and set capability"
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "sized_type_specifier",
+                              "children": [
+                                {
+                                  "type": "short",
+                                  "text": "short"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "init_declarator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "determinedAddress"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "-1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "switch_statement",
+                          "children": [
+                            {
+                              "type": "switch",
+                              "text": "switch"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_key"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "case_statement",
+                                  "children": [
+                                    {
+                                      "type": "case",
+                                      "text": "case"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "COMPONENT_KEY_FEEDBACK_0"
+                                    },
+                                    {
+                                      "type": ":",
+                                      "text": ":"
+                                    },
+                                    {
+                                      "type": "expression_statement",
+                                      "children": [
+                                        {
+                                          "type": "assignment_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "determinedAddress"
+                                            },
+                                            {
+                                              "type": "=",
+                                              "text": "="
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "MB_MONITORING_STATUS_FEEDBACK_0"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ";",
+                                          "text": ";"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "break_statement",
+                                      "children": [
+                                        {
+                                          "type": "break",
+                                          "text": "break"
+                                        },
+                                        {
+                                          "type": ";",
+                                          "text": ";"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "case_statement",
+                                  "children": [
+                                    {
+                                      "type": "case",
+                                      "text": "case"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "COMPONENT_KEY_FEEDBACK_1"
+                                    },
+                                    {
+                                      "type": ":",
+                                      "text": ":"
+                                    },
+                                    {
+                                      "type": "expression_statement",
+                                      "children": [
+                                        {
+                                          "type": "assignment_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "determinedAddress"
+                                            },
+                                            {
+                                              "type": "=",
+                                              "text": "="
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "MB_MONITORING_STATUS_FEEDBACK_1"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ";",
+                                          "text": ";"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "break_statement",
+                                      "children": [
+                                        {
+                                          "type": "break",
+                                          "text": "break"
+                                        },
+                                        {
+                                          "type": ";",
+                                          "text": ";"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Add other cases if needed"
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "determinedAddress"
+                                    },
+                                    {
+                                      "type": "!=",
+                                      "text": "!="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "-1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "assignment_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "modbusAddress"
+                                        },
+                                        {
+                                          "type": "=",
+                                          "text": "="
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "determinedAddress"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Assign determined address"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "setNetCapability"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "qualified_identifier",
+                                              "children": [
+                                                {
+                                                  "type": "namespace_identifier",
+                                                  "text": "OBJECT_NET_CAPS"
+                                                },
+                                                {
+                                                  "type": "::",
+                                                  "text": "::"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "E_NCAPS_MODBUS"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "else_clause",
+                              "children": [
+                                {
+                                  "type": "else",
+                                  "text": "else"
+                                },
+                                {
+                                  "type": "compound_statement",
+                                  "children": [
+                                    {
+                                      "type": "{",
+                                      "text": "{"
+                                    },
+                                    {
+                                      "type": "expression_statement",
+                                      "children": [
+                                        {
+                                          "type": "call_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "L_ERROR"
+                                            },
+                                            {
+                                              "type": "argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "(",
+                                                  "text": "("
+                                                },
+                                                {
+                                                  "type": "string_literal",
+                                                  "children": [
+                                                    {
+                                                      "type": "\"",
+                                                      "text": "\""
+                                                    },
+                                                    {
+                                                      "type": "string_content",
+                                                      "text": "StatusLight Constructor: Cannot determine Modbus address for unknown key: %d"
+                                                    },
+                                                    {
+                                                      "type": "\"",
+                                                      "text": "\""
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": ",",
+                                                  "text": ","
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "_key"
+                                                },
+                                                {
+                                                  "type": ")",
+                                                  "text": ")"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ";",
+                                          "text": ";"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "}",
+                                      "text": "}"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setBlink"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "bool"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "blink"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// Uses the current 'state' as the base for blinking or steady state."
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "status_blink"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "blink"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "on"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "set"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "1"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "off"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "set"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "loop"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "doBlink"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "declaration",
+                                  "children": [
+                                    {
+                                      "type": "sized_type_specifier",
+                                      "children": [
+                                        {
+                                          "type": "unsigned",
+                                          "text": "unsigned"
+                                        },
+                                        {
+                                          "type": "long",
+                                          "text": "long"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "init_declarator",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "currentMillis"
+                                        },
+                                        {
+                                          "type": "=",
+                                          "text": "="
+                                        },
+                                        {
+                                          "type": "call_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "millis"
+                                            },
+                                            {
+                                              "type": "argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "(",
+                                                  "text": "("
+                                                },
+                                                {
+                                                  "type": ")",
+                                                  "text": ")"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "if_statement",
+                                  "children": [
+                                    {
+                                      "type": "if",
+                                      "text": "if"
+                                    },
+                                    {
+                                      "type": "condition_clause",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "binary_expression",
+                                          "children": [
+                                            {
+                                              "type": "binary_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "currentMillis"
+                                                },
+                                                {
+                                                  "type": "-",
+                                                  "text": "-"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "status_blink_TS"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ">=",
+                                              "text": ">="
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "STATUS_BLINK_INTERVAL"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "compound_statement",
+                                      "children": [
+                                        {
+                                          "type": "{",
+                                          "text": "{"
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "assignment_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "last_blink"
+                                                },
+                                                {
+                                                  "type": "=",
+                                                  "text": "="
+                                                },
+                                                {
+                                                  "type": "unary_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "!",
+                                                      "text": "!"
+                                                    },
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "last_blink"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "call_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "digitalWrite"
+                                                },
+                                                {
+                                                  "type": "argument_list",
+                                                  "children": [
+                                                    {
+                                                      "type": "(",
+                                                      "text": "("
+                                                    },
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "pin"
+                                                    },
+                                                    {
+                                                      "type": ",",
+                                                      "text": ","
+                                                    },
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "last_blink"
+                                                    },
+                                                    {
+                                                      "type": ")",
+                                                      "text": ")"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "assignment_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "status_blink_TS"
+                                                },
+                                                {
+                                                  "type": "=",
+                                                  "text": "="
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "currentMillis"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "}",
+                                          "text": "}"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "else_clause",
+                              "children": [
+                                {
+                                  "type": "else",
+                                  "text": "else"
+                                },
+                                {
+                                  "type": "compound_statement",
+                                  "children": [
+                                    {
+                                      "type": "{",
+                                      "text": "{"
+                                    },
+                                    {
+                                      "type": "comment",
+                                      "text": "// Maybe set pin based on 'state' if not blinking?"
+                                    },
+                                    {
+                                      "type": "comment",
+                                      "text": "// digitalWrite(pin, (state == ON) ? HIGH : LOW); // Example"
+                                    },
+                                    {
+                                      "type": "}",
+                                      "text": "}"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "set"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "val0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "val1"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// val0: base state (0=OFF, 1=ON), val1: blink control (0=disable, 1=enable)"
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// 1. Update the internal base state based on val0"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "state"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "conditional_expression",
+                                  "children": [
+                                    {
+                                      "type": "parenthesized_expression",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "binary_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "val0"
+                                            },
+                                            {
+                                              "type": "!=",
+                                              "text": "!="
+                                            },
+                                            {
+                                              "type": "number_literal",
+                                              "text": "0"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "?",
+                                      "text": "?"
+                                    },
+                                    {
+                                      "type": "qualified_identifier",
+                                      "children": [
+                                        {
+                                          "type": "namespace_identifier",
+                                          "text": "STATUS_LIGHT_STATE"
+                                        },
+                                        {
+                                          "type": "::",
+                                          "text": "::"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "ON"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ":",
+                                      "text": ":"
+                                    },
+                                    {
+                                      "type": "qualified_identifier",
+                                      "children": [
+                                        {
+                                          "type": "namespace_identifier",
+                                          "text": "STATUS_LIGHT_STATE"
+                                        },
+                                        {
+                                          "type": "::",
+                                          "text": "::"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "OFF"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// 2. Set blinking status based on val1"
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// status_blink will handle setting the pin if blinking is stopped."
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "status_blink"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "val1"
+                                        },
+                                        {
+                                          "type": "!=",
+                                          "text": "!="
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// 3. If not blinking, ensure the pin reflects the 'state' and notify."
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "unary_expression",
+                                  "children": [
+                                    {
+                                      "type": "!",
+                                      "text": "!"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "doBlink"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// This explicit digitalWrite is necessary if blinking was already off "
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// and val1 keeps it off, as status_blink might not have transitioned."
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "digitalWrite"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "pin"
+                                            },
+                                            {
+                                              "type": ",",
+                                              "text": ","
+                                            },
+                                            {
+                                              "type": "conditional_expression",
+                                              "children": [
+                                                {
+                                                  "type": "parenthesized_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "(",
+                                                      "text": "("
+                                                    },
+                                                    {
+                                                      "type": "binary_expression",
+                                                      "children": [
+                                                        {
+                                                          "type": "identifier",
+                                                          "text": "state"
+                                                        },
+                                                        {
+                                                          "type": "==",
+                                                          "text": "=="
+                                                        },
+                                                        {
+                                                          "type": "qualified_identifier",
+                                                          "children": [
+                                                            {
+                                                              "type": "namespace_identifier",
+                                                              "text": "STATUS_LIGHT_STATE"
+                                                            },
+                                                            {
+                                                              "type": "::",
+                                                              "text": "::"
+                                                            },
+                                                            {
+                                                              "type": "identifier",
+                                                              "text": "ON"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": ")",
+                                                      "text": ")"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "?",
+                                                  "text": "?"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "HIGH"
+                                                },
+                                                {
+                                                  "type": ":",
+                                                  "text": ":"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "LOW"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "if_statement",
+                                  "children": [
+                                    {
+                                      "type": "if",
+                                      "text": "if"
+                                    },
+                                    {
+                                      "type": "condition_clause",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "call_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "hasNetCapability"
+                                            },
+                                            {
+                                              "type": "argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "(",
+                                                  "text": "("
+                                                },
+                                                {
+                                                  "type": "qualified_identifier",
+                                                  "children": [
+                                                    {
+                                                      "type": "namespace_identifier",
+                                                      "text": "OBJECT_NET_CAPS"
+                                                    },
+                                                    {
+                                                      "type": "::",
+                                                      "text": "::"
+                                                    },
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "E_NCAPS_MODBUS"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": ")",
+                                                  "text": ")"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "compound_statement",
+                                      "children": [
+                                        {
+                                          "type": "{",
+                                          "text": "{"
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "call_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "notifyStateChange"
+                                                },
+                                                {
+                                                  "type": "argument_list",
+                                                  "children": [
+                                                    {
+                                                      "type": "(",
+                                                      "text": "("
+                                                    },
+                                                    {
+                                                      "type": ")",
+                                                      "text": ")"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "}",
+                                          "text": "}"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setup"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "debug"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "info"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "info"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "Log"
+                                    },
+                                    {
+                                      "type": ".",
+                                      "text": "."
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "verboseln"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "string_literal",
+                                      "children": [
+                                        {
+                                          "type": "\"",
+                                          "text": "\""
+                                        },
+                                        {
+                                          "type": "string_content",
+                                          "text": "StatusLight::info - Key=%d | Pin=%d | State=%d | Value=%d"
+                                        },
+                                        {
+                                          "type": "\"",
+                                          "text": "\""
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "id"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "pin"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "cast_expression",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "type_descriptor",
+                                          "children": [
+                                            {
+                                              "type": "primitive_type",
+                                              "text": "int"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "state"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "digitalRead"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "pin"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "status_blink"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "bool"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "newBlinkState"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "primitive_type",
+                              "text": "bool"
+                            },
+                            {
+                              "type": "init_declarator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "oldBlinkState"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "doBlink"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "unary_expression",
+                                      "children": [
+                                        {
+                                          "type": "!",
+                                          "text": "!"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "oldBlinkState"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "&&",
+                                      "text": "&&"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "newBlinkState"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Transition: OFF -> ON (Starting to blink)"
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "assignment_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "blink_start_ts"
+                                        },
+                                        {
+                                          "type": "=",
+                                          "text": "="
+                                        },
+                                        {
+                                          "type": "call_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "millis"
+                                            },
+                                            {
+                                              "type": "argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "(",
+                                                  "text": "("
+                                                },
+                                                {
+                                                  "type": ")",
+                                                  "text": ")"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Record when blinking period starts"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// status_blink_TS for individual blinks is handled by loop()"
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "doBlink"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "newBlinkState"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// Apply the new blink state"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "oldBlinkState"
+                                    },
+                                    {
+                                      "type": "&&",
+                                      "text": "&&"
+                                    },
+                                    {
+                                      "type": "unary_expression",
+                                      "children": [
+                                        {
+                                          "type": "!",
+                                          "text": "!"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "newBlinkState"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Transition: ON -> OFF (Stopping blinking)"
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Set the pin to reflect the current underlying 'state'"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "digitalWrite"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "pin"
+                                            },
+                                            {
+                                              "type": ",",
+                                              "text": ","
+                                            },
+                                            {
+                                              "type": "conditional_expression",
+                                              "children": [
+                                                {
+                                                  "type": "parenthesized_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "(",
+                                                      "text": "("
+                                                    },
+                                                    {
+                                                      "type": "binary_expression",
+                                                      "children": [
+                                                        {
+                                                          "type": "identifier",
+                                                          "text": "state"
+                                                        },
+                                                        {
+                                                          "type": "==",
+                                                          "text": "=="
+                                                        },
+                                                        {
+                                                          "type": "qualified_identifier",
+                                                          "children": [
+                                                            {
+                                                              "type": "namespace_identifier",
+                                                              "text": "STATUS_LIGHT_STATE"
+                                                            },
+                                                            {
+                                                              "type": "::",
+                                                              "text": "::"
+                                                            },
+                                                            {
+                                                              "type": "identifier",
+                                                              "text": "ON"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": ")",
+                                                      "text": ")"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "?",
+                                                  "text": "?"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "HIGH"
+                                                },
+                                                {
+                                                  "type": ":",
+                                                  "text": ":"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "LOW"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "serial_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Bridge"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    },
+                                    {
+                                      "type": "->",
+                                      "text": "->"
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "registerMemberFunction"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "id"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "this",
+                                      "text": "this"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "C_STR"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "string_literal",
+                                              "children": [
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                },
+                                                {
+                                                  "type": "string_content",
+                                                  "text": "set"
+                                                },
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "parenthesized_expression",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "ComponentFnPtr"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "&",
+                                          "text": "&"
+                                        },
+                                        {
+                                          "type": "qualified_identifier",
+                                          "children": [
+                                            {
+                                              "type": "namespace_identifier",
+                                              "text": "StatusLight"
+                                            },
+                                            {
+                                              "type": "::",
+                                              "text": "::"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "set"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    },
+                                    {
+                                      "type": "->",
+                                      "text": "->"
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "registerMemberFunction"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "id"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "this",
+                                      "text": "this"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "C_STR"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "string_literal",
+                                              "children": [
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                },
+                                                {
+                                                  "type": "string_content",
+                                                  "text": "info"
+                                                },
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "parenthesized_expression",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "ComponentFnPtr"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "&",
+                                          "text": "&"
+                                        },
+                                        {
+                                          "type": "qualified_identifier",
+                                          "children": [
+                                            {
+                                              "type": "namespace_identifier",
+                                              "text": "StatusLight"
+                                            },
+                                            {
+                                              "type": "::",
+                                              "text": "::"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "info"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// --- Network Interface --- "
+                },
+                {
+                  "type": "comment",
+                  "text": "// StatusLight likely only needs read access via Modbus?"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "hasNetCapability"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "qualified_identifier",
+                                              "children": [
+                                                {
+                                                  "type": "namespace_identifier",
+                                                  "text": "OBJECT_NET_CAPS"
+                                                },
+                                                {
+                                                  "type": "::",
+                                                  "text": "::"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "E_NCAPS_MODBUS"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "&&",
+                                      "text": "&&"
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "address"
+                                        },
+                                        {
+                                          "type": "==",
+                                          "text": "=="
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "modbusAddress"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Return 1 if ON or BLINKING, 0 if OFF?"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Or return state enum value?"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Let's return 1 if pin is currently HIGH (covers ON and blinking phases)"
+                                },
+                                {
+                                  "type": "return_statement",
+                                  "children": [
+                                    {
+                                      "type": "return",
+                                      "text": "return"
+                                    },
+                                    {
+                                      "type": "conditional_expression",
+                                      "children": [
+                                        {
+                                          "type": "binary_expression",
+                                          "children": [
+                                            {
+                                              "type": "call_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "digitalRead"
+                                                },
+                                                {
+                                                  "type": "argument_list",
+                                                  "children": [
+                                                    {
+                                                      "type": "(",
+                                                      "text": "("
+                                                    },
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "pin"
+                                                    },
+                                                    {
+                                                      "type": ")",
+                                                      "text": ")"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": "==",
+                                              "text": "=="
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "HIGH"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "?",
+                                          "text": "?"
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "1"
+                                        },
+                                        {
+                                          "type": ":",
+                                          "text": ":"
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "number_literal",
+                              "text": "0"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// Default for wrong address or capability disabled"
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// mb_tcp_write might not be needed, or could control state/blink?"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "value"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "hasNetCapability"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "qualified_identifier",
+                                              "children": [
+                                                {
+                                                  "type": "namespace_identifier",
+                                                  "text": "OBJECT_NET_CAPS"
+                                                },
+                                                {
+                                                  "type": "::",
+                                                  "text": "::"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "E_NCAPS_MODBUS"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "&&",
+                                      "text": "&&"
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "address"
+                                        },
+                                        {
+                                          "type": "==",
+                                          "text": "=="
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "modbusAddress"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "status_blink"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "false",
+                                              "text": "false"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Stop blinking if written externally"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "set"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "value"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Use internal set method"
+                                },
+                                {
+                                  "type": "return_statement",
+                                  "children": [
+                                    {
+                                      "type": "return",
+                                      "text": "return"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "E_OK"
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_INVALID_PARAMETER"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "comment",
+                          "text": "// Wrong address or capability disabled"
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// --- Member variables were moved above ---"
+                },
+                {
+                  "type": "comment",
+                  "text": "// short pin; "
+                },
+                {
+                  "type": "comment",
+                  "text": "// millis_t status_blink_TS;"
+                },
+                {
+                  "type": "comment",
+                  "text": "// bool doBlink;"
+                },
+                {
+                  "type": "comment",
+                  "text": "// bool last_blink;"
+                },
+                {
+                  "type": "comment",
+                  "text": "// millis_t blink_start_ts;"
+                },
+                {
+                  "type": "comment",
+                  "text": "// millis_t max_blink_time;"
+                },
+                {
+                  "type": "comment",
+                  "text": "// STATUS_LIGHT_STATE state;"
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    }
+  ]
+}

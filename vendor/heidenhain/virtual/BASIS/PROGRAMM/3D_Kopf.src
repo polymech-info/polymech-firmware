@@ -1,0 +1,911 @@
+*-----------------------------------------------------------------------------
+*  3D Kopf
+*-----------------------------------------------------------------------------
+*  Modul Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Istwerte_einfrieren                   K +0
+#define /s    KL_Getriebe_Stufe_1                      K +0
+#define /s    KL_Mode_Prozent_Nennstrom                K +0
+#define /s    KL_Momenten_Begrenzung_aus               K -1
+#define /s    KL_Handradachse_bitcodiert               K +10
+#define /s    KL_inaktiv                               K -1
+
+#define /s    KL_aktuelles_Edit_Feld                   K +4
+#define /s    KL_3D_Kopf                               K +16
+#define /s    KL_3D_Kopf_Edit                          K +17
+
+#define /s    ML_3D_Kopf_Edit                          M
+#define /s    ML_Stack_synchronisieren                 M
+#define /s    ML_Timer_aus                             M
+#define /s    ML_3D_Kopf_Anzeige_war_aktiv             M
+#define /s    ML_3D_Kopf_Eingabe_war_aktiv             M
+#define /s    ML_3D_Kopf_init                          M
+#define /s    ML_Vorwahl_Kopf_Position                 M
+
+#define /s    ML_Kopf_Pos                              M[16]
+#define /c    ML_Kopf_Pos_Achse_1_ausgewaehlt          M &ML_Kopf_Pos + 0
+#define /c    ML_Kopf_Pos_Achse_2_ausgewaehlt          M &ML_Kopf_Pos + 1
+#define /c    ML_S_Pos_Achse_1_ausgewaehlt             M &ML_Kopf_Pos + 2
+#define /c    ML_S_Pos_Achse_2_ausgewaehlt             M &ML_Kopf_Pos + 3
+#define /c    ML_Achse_1_min_Torsionsmoment            M &ML_Kopf_Pos + 4
+#define /c    ML_Achse_2_min_Torsionsmoment            M &ML_Kopf_Pos + 5
+#define /c    ML_Achse_1_loesen                        M &ML_Kopf_Pos + 6
+#define /c    ML_Achse_2_loesen                        M &ML_Kopf_Pos + 7
+
+#define /s    BL_aktive_3D_Kopf_Achse                  B
+
+#define /s    WL_aktuelles_Edit_Feld                   W
+#define /s    WL_letztes_Edit_Feld                     W
+#define /s    WL_Stack_synchronisieren                 W
+#define /s    WL_Adr_O_Klemmung_loesen                 W
+#define /s    WL_Adr_I_geloest_Achse                   W
+#define /s    WL_Adr_I_geklemmt_Achse                  W
+
+#define /s    DL_aktive_Handradachse                   D
+
+#define /c    M_0                                      M 0
+#define /c    O_0                                      O 0
+#define /c    I_0                                      I 0
+
+#include Mac_Lib.inc
+
+EXTERN S_in_Posit
+
+GLOBAL Kopf_3D
+
+;----------------------------
+LBL Kopf_3D
+;----------------------------
+
+  CM     Achs_Zuordnung
+
+#if CFG_Referenz_Vorwahl = "aktiv"
+
+  L      DG_geregelte_Achsen
+  A      DG_Achsen_mit_C_Achs_Betrieb
+  >      K+0
+  IFT
+    LN     MG_3D_Kopf_Setup_ok
+    S      PN_Fehler_3D_Kopf_Setup
+  ENDI
+
+  L      MG_M36_Referenz_3D_Kopf_Achsen
+  A      MG_Impuls_M_Funktion
+  O      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  S      ML_3D_Kopf_init
+
+  L      MG_M36_Referenz_3D_Kopf_Achsen
+  A      MG_Maschinenparameter_gelesen
+  AN     PN_M4134_Strobe_G_Stufe_Drehzahl
+  S      PN_M4092_Quit_M_Funktion
+
+#if KG_3D_Kopf_Achse_1 >= 0
+
+  L      ML_Vorwahl_Kopf_Position
+  CMT    Spindel_Position_speichern
+
+  L      MG_Maschinenparameter_gelesen
+  A      ML_3D_Kopf_init
+  O      ML_Kopf_Pos_Achse_1_ausgewaehlt
+  IFT
+    R      ML_Kopf_Pos_Achse_1_ausgewaehlt
+    S      ML_Vorwahl_Kopf_Position
+
+    PS     KG_3D_Kopf_Achse_1
+
+    L      DG_Hirth_Achsen
+    BT     KG_3D_Kopf_Achse_1
+    IFT
+      L      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_1]
+      /      K+2
+      +      DG_3D_Kopf_Achse_1_Position
+      /      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_1]
+      X      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_1]
+      PSW
+
+      L      DG_3D_Kopf_Achse_1_Position
+      <      K+0
+      IFT
+        PLW
+        -      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_1]
+        PSW
+      ENDI
+
+    ELSE
+      PS     DG_3D_Kopf_Achse_1_Position
+    ENDI
+
+    CM     9147                        ;Refwert-Vorgabe für programmierte Achse
+    M_Modul_Fehler_anzeigen
+
+*$WS
+*    CM     Spindel_Position_speichern
+  ENDI
+#endif
+
+#if KG_3D_Kopf_Achse_2 >= 0
+
+  L      MG_Maschinenparameter_gelesen
+  A      ML_3D_Kopf_init
+  O      ML_Kopf_Pos_Achse_2_ausgewaehlt
+  IFT
+    R      ML_Kopf_Pos_Achse_2_ausgewaehlt
+    S      ML_Vorwahl_Kopf_Position
+
+    PS     KG_3D_Kopf_Achse_2
+
+    L      DG_Hirth_Achsen
+    BT     KG_3D_Kopf_Achse_2
+    IFT
+      L      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_2]
+      /      K+2
+      +      DG_3D_Kopf_Achse_2_Position
+      /      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_2]
+      X      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_2]
+      PSW
+
+      L      DG_3D_Kopf_Achse_2_Position
+      <      K+0
+      IFT
+        PLW
+        -      DG_MP430_Hirth_Raster[KG_3D_Kopf_Achse_2]
+        PSW
+      ENDI
+    ELSE
+      PS     DG_3D_Kopf_Achse_2_Position
+    ENDI
+
+    CM     9147                        ;Refwert-Vorgabe für programmierte Achse
+    M_Modul_Fehler_anzeigen
+
+*    CM     Spindel_Position_speichern
+
+  ENDI
+#endif
+#endif
+
+  L      MG_Maschinenparameter_gelesen
+  R      ML_3D_Kopf_init
+
+  L      MG_3D_Kopf_Anzeige
+  O      MG_3D_Kopf_Eingabe
+  IFT
+*$WS Problem noch in NC Software 340 422 04 vorhanden
+* (Softkeytype Radio)
+    L      MG_3D_Kopf_Anzeige
+    AN     ML_3D_Kopf_Anzeige_war_aktiv
+    ON     MG_Spindel_aus
+    R      MG_3D_Kopf_Eingabe
+
+    L      MG_3D_Kopf_Anzeige
+    =      ML_3D_Kopf_Anzeige_war_aktiv
+
+    L      MG_3D_Kopf_Eingabe
+    AN     ML_3D_Kopf_Eingabe_war_aktiv
+    R      MG_3D_Kopf_Anzeige
+
+    L      MG_3D_Kopf_Eingabe
+    =      ML_3D_Kopf_Eingabe_war_aktiv
+
+    L      PN_Fehler_3D_Kopf_Setup
+    R      PN_Fehler_3D_Kopf_Setup
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Taste_ENTER
+    A      MG_3D_Kopf_Eingabe
+    IFT
+      S      MG_3D_Kopf_Setup_ok
+
+      L      WL_aktuelles_Edit_Feld
+      W=     ML_Kopf_Pos
+
+      L      MG_3D_Kopf_Eingabe
+      R      MG_3D_Kopf_Eingabe
+      S      MG_3D_Kopf_Anzeige
+    ENDI
+
+    PS     KL_aktuelles_Edit_Feld
+    CM     9211                        ;Zustand des PLC-Fensters abfragen
+    PL     WL_aktuelles_Edit_Feld
+    M_Modul_Fehler_anzeigen
+
+  ENDI
+
+  L      MG_Eins_Merker
+  R      TS_3D_Kopf_Timeout
+  S      TS_3D_Kopf_Timer_allgemein
+
+  L      NP_M4151_BA_Elektronisches_Handrad
+  O      NP_M4156_BA_Softkey_Manual_Operation
+  O      NP_M4660_HR5x0_aktiv
+  IFT
+    PS     KL_Handradachse_bitcodiert
+    CM     9035                        ;NC-Statusinformationen lesen
+    PL     DL_aktive_Handradachse
+    M_Modul_Fehler_anzeigen
+
+    L      DL_aktive_Handradachse
+    BT     KG_3D_Kopf_Achse_1
+    S      PN_M4576_Handrad_Impulse_ausblenden
+
+#if KG_3D_Kopf_Achse_2 >= 0
+    L      DL_aktive_Handradachse
+    BT     KG_3D_Kopf_Achse_2
+    S      PN_M4576_Handrad_Impulse_ausblenden
+#endif
+  ENDI
+
+  CASE   BG_Schritt_3D_Kopf
+    CM     Aktivierung                 ;00
+    CM     G_Bereich_1                 ;01
+    CM     G_Bereich_1_ok              ;02
+    CM     S_Start_3D_Pos              ;03
+    CM     S_Posit_ok                  ;04
+    CM     Kopf_Time                   ;05
+    CM     Kopf_Freigabe_ein           ;06
+    CM     Kopf_in_Position            ;07
+    CM     Kopf_Time                   ;08
+    CM     Kopf_Moment_reduzieren      ;09
+    CM     Kopf_Time                   ;10
+    CM     Kopf_Freigabe_aus           ;11
+    CM     Kopf_inaktiv                ;12
+    CM     G_Bereich_alt               ;13
+    CM     G_Bereich_alt_ok            ;14
+    CM     Kopf_Ende                   ;15
+  ENDC
+
+  PLL
+  S      TS_3D_Kopf_Timeout
+  IFT
+    INC    BG_Schritt_3D_Kopf
+  ENDI
+
+  LN     MG_3D_Kopf_aktiv
+  EMT
+
+  L      MG_Taste_NC_Start_P_Impuls
+  R      MG_3D_Kopf_Unterbrechung
+
+  L      MG_Taste_NC_Start
+  O      MG_Impuls_CE_Taste
+  S      TS_3D_Kopf_Timeout
+
+  LN     TR_3D_Kopf_Timeout
+  AN     TS_3D_Kopf_Timeout
+  =      PN_Fehler_3D_Kopf_Timeout
+  S      MG_3D_Kopf_Unterbrechung
+
+  L      MG_Taste_NC_Stop
+  O      MG_Impuls_External_STOP
+  S      MG_3D_Kopf_Unterbrechung
+
+  LN     MG_Steuerung_betriebsbereit
+  O      PN_Fehler_Arbeitsraum_Schutz
+  CMT    Kopf_Reset
+
+EM
+
+;----------------------------
+LBL Aktivierung                        ;00
+
+  L      MG_Eins_Merker
+  S      TS_3D_Kopf_Timeout
+
+  PS     MG_Null_Merker
+
+  L      DG_S_Achs_Aktivierung
+  BT     KG_3D_Kopf_Achse_1
+  S      MG_3D_Kopf_aktiv
+  IFT
+    S      MG_3D_Kopf_Achse_1_aktiv
+
+    PL     ML_Stack_synchronisieren
+    PS     MG_Eins_Merker
+
+    L      KG_3D_Kopf_Achse_1
+    =      BL_aktive_3D_Kopf_Achse
+
+    L      DG_3D_Kopf_Achse_1_S_Position
+    =      DG_3D_Kopf_S_Position
+  ELSE
+    L      DG_S_Achs_Aktivierung
+    BT     KG_3D_Kopf_Achse_2
+    S      MG_3D_Kopf_aktiv
+    IFT
+      S      MG_3D_Kopf_Achse_2_aktiv
+
+      PL     ML_Stack_synchronisieren
+      PS     MG_Eins_Merker
+
+      L      KG_3D_Kopf_Achse_2
+      =      BL_aktive_3D_Kopf_Achse
+
+      L      DG_3D_Kopf_Achse_2_S_Position
+      =      DG_3D_Kopf_S_Position
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL G_Bereich_1                        ;01
+
+  PS     MG_Eins_Merker
+
+  L      NP_W256_G_Code_Spindel
+  <>     KL_Getriebe_Stufe_1
+  S      MG_Getriebe_Stufe_1_von_3D_Kopf
+
+EM
+
+;----------------------------
+LBL G_Bereich_1_ok                     ;02
+
+  L      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  AN     MG_Getriebe_Stufe_1_von_3D_Kopf
+  ON     MG_Spindel_mit_Getriebe
+  AN     MG_3D_Kopf_Unterbrechung
+  PSL
+
+  L      MG_3D_Kopf_Unterbrechung
+  =      MG_Win_3D_Kopf_G_Stufe
+
+EM
+
+;----------------------------
+LBL S_Start_3D_Pos                     ;03
+
+  LN     MG_3D_Kopf_Achse_1_loesen_Service
+  AN     MG_3D_Kopf_Achse_2_loesen_Service
+  S      MG_3D_Kopf_Spindel_Richten_ein
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL S_Posit_ok                         ;04
+
+  L      MG_3D_Kopf_Unterbrechung
+  =      MG_Win_3D_Kopf_Spindel_Position
+
+  PS     DG_3D_Kopf_S_Position
+  CM     S_in_Posit
+  PLL
+  AN     MG_3D_Kopf_Spindel_Richten_ein
+  AN     MG_3D_Kopf_Unterbrechung
+  O      MG_3D_Kopf_Achse_1_loesen_Service
+  O      MG_3D_Kopf_Achse_2_loesen_Service
+  S      MG_Spindel_Richten_aus
+  PSL
+  EMF
+
+  L      DG_S_Achs_Aktivierung
+  BT     KG_3D_Kopf_Achse_1
+  IFT
+    L      DG_max_Moment_Achse_1
+    >      K+0
+    IFT
+      PS     KL_Mode_Prozent_Nennstrom
+      PS     KG_3D_Kopf_Achse_1
+      PS     DG_max_Moment_Achse_1
+      CM     9128                      ;Drehmomentbegrenzung durch PLC
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ELSE
+    L      DG_max_Moment_Achse_2
+    >      K+0
+    IFT
+      PS     KL_Mode_Prozent_Nennstrom
+      PS     KG_3D_Kopf_Achse_2
+      PS     DG_max_Moment_Achse_2
+      CM     9128                      ;Drehmomentbegrenzung durch PLC
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Kopf_Freigabe_ein                  ;06
+
+  L      MG_Spindel_aus
+  IFT
+    L      DG_S_Achs_Freigabe
+    BS     BL_aktive_3D_Kopf_Achse
+    =      DG_S_Achs_Freigabe
+
+    PS     MG_Eins_Merker
+  ELSE
+    PS     MG_Null_Merker
+  ENDI
+
+EM
+
+;----------------------------
+LBL Kopf_in_Position                   ;07
+
+  L      MG_Eins_Merker
+  R      MG_3D_Kopf_Unterbrechung
+  S      TS_3D_Kopf_Timeout
+
+  L      NP_D1100_Achsfreigaben
+  BT     BL_aktive_3D_Kopf_Achse
+  R      PN_M4576_Handrad_Impulse_ausblenden
+
+  LD     MG_Achse_in_Hirth_Posit
+  ON     DG_Hirth_Achsen
+  A      DG_Regelkreis_oeffnen_Aktivierung
+  A      NP_D1104_Achsen_in_Position
+  AN     DG_Klemmbetrieb_Aus
+  AN     DG_PLC_Posit_Hirth_noetig
+  BT     BL_aktive_3D_Kopf_Achse
+  AN     MG_Taste_NC_Stop
+  PSL
+  EMF
+
+  L      BL_aktive_3D_Kopf_Achse
+  =X
+
+  L      DG_Tasten_sperren
+  BSX
+  =      DG_Tasten_sperren
+
+  L      BG_Schritt_Achse[X]
+  <>     K+4
+  IFT
+    PL     ML_Stack_synchronisieren
+    PS     MG_Null_Merker
+  ENDI
+
+EM
+
+;----------------------------
+LBL Kopf_Time                          ;05 ;08 ;10
+
+  LN     TR_3D_Kopf_Timer_allgemein
+  O      ML_Timer_aus
+  =      TS_3D_Kopf_Timer_allgemein
+  PSL
+
+EM
+
+;----------------------------
+LBL Kopf_Moment_reduzieren             ;09
+
+* Abhängig von der 3D-Kopf Mechanik kann es auch notwendig sein, Spindel-
+* und Achs-Position nach dem Klemmen der 3D-Kopf Achse zu speichern
+* (Schritt 12)
+
+  CM     Achs_Position_speichern
+  CM     Spindel_Position_speichern
+
+  PS     MG_Eins_Merker
+
+  L      MG_3D_Kopf_Unterbrechung
+  =      MG_Win_3D_Kopf_Torsionsmoment
+
+  L      BL_aktive_3D_Kopf_Achse
+  ==     KG_3D_Kopf_Achse_1
+  IFT
+    L      DG_3D_Kopf_Achse_1_min_Torsionsmoment
+    >      K+0
+    SN     ML_Timer_aus
+    IFT
+      PS     KL_Mode_Prozent_Nennstrom
+      PS     KG_3D_Kopf_Achse_1
+      PS     DG_3D_Kopf_Achse_1_min_Torsionsmoment
+      CM     9128                      ;Drehmomentbegrenzung durch PLC
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ELSE
+    L      DG_3D_Kopf_Achse_2_min_Torsionsmoment
+    >      K+0
+    SN     ML_Timer_aus
+    IFT
+      PS     KL_Mode_Prozent_Nennstrom
+      PS     KG_3D_Kopf_Achse_2
+      PS     DG_3D_Kopf_Achse_2_min_Torsionsmoment
+      CM     9128                      ;Drehmomentbegrenzung durch PLC
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Kopf_Freigabe_aus                  ;11
+
+  PS     MG_Eins_Merker
+
+  L      DG_S_Achs_Freigabe
+  BC     BL_aktive_3D_Kopf_Achse
+  =      DG_S_Achs_Freigabe
+
+EM
+
+;----------------------------
+LBL Kopf_inaktiv                       ;12
+
+  LN     DG_S_Achs_Aktivierung
+  BT     BL_aktive_3D_Kopf_Achse
+  PSL
+  EMF
+
+* Abhängig von der 3D-Kopf Mechanik kann es auch notwendig sein, Spindel-
+* und Achs-Position vor dem Klemmen der 3D-Kopf Achse zu speichern
+* (Schritt 9)
+
+*  CM     Achs_Position_speichern
+*  CM     Spindel_Position_speichern
+
+EM
+
+;----------------------------
+LBL G_Bereich_alt                      ;13
+
+  PS     MG_Eins_Merker
+
+  L      NP_W256_G_Code_Spindel
+  <>     KL_Getriebe_Stufe_1
+*$WS
+*  A      MG_Spindel_mit_Getriebe
+  S      MG_Getriebe_Stufe_von_3D_Kopf
+
+EM
+
+;----------------------------
+LBL G_Bereich_alt_ok                   ;14
+
+  LN     MG_Getriebe_Stufe_von_3D_Kopf
+  AN     MG_3D_Kopf_Unterbrechung
+  PSL
+
+  L      MG_3D_Kopf_Unterbrechung
+  =      MG_Win_3D_Kopf_G_Stufe
+
+EM
+
+;----------------------------
+LBL Kopf_Ende                          ;15
+
+  PS     MG_Null_Merker
+
+LBL Kopf_Reset
+
+  L      DG_max_Moment_Achse_1
+  +      DG_3D_Kopf_Achse_1_min_Torsionsmoment
+  >      K+0
+  IFT
+    PS     KL_Mode_Prozent_Nennstrom
+    PS     KG_3D_Kopf_Achse_1
+    PS     KL_Momenten_Begrenzung_aus
+    CM     9128                        ;Drehmomentbegrenzung durch PLC
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      DG_max_Moment_Achse_2
+  +      DG_3D_Kopf_Achse_2_min_Torsionsmoment
+  >      K+0
+  IFT
+    PS     KL_Mode_Prozent_Nennstrom
+    PS     KG_3D_Kopf_Achse_2
+    PS     KL_Momenten_Begrenzung_aus
+    CM     9128                        ;Drehmomentbegrenzung durch PLC
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_Eins_Merker
+  R      MG_3D_Kopf_Unterbrechung
+  R      MG_3D_Kopf_aktiv
+  R      MG_3D_Kopf_Achse_1_aktiv
+  R      MG_3D_Kopf_Achse_2_aktiv
+  R      ML_Timer_aus
+
+  L      K+0
+  =      BG_Schritt_3D_Kopf
+
+  L      DG_S_Achs_Freigabe
+  BC     KG_3D_Kopf_Achse_1
+  BC     KG_3D_Kopf_Achse_2
+  =      DG_S_Achs_Freigabe
+
+  L      DG_S_Achs_Aktivierung
+  BC     KG_3D_Kopf_Achse_1
+  BC     KG_3D_Kopf_Achse_2
+  =      DG_S_Achs_Aktivierung
+
+EM
+
+;----------------------------
+LBL Achs_Zuordnung
+
+  LN     PN_M4007_S_M05_Sollwert_0_und_Status
+  R      MG_3D_Kopf_Achse_1_loesen_Service
+  R      MG_3D_Kopf_Achse_2_loesen_Service
+
+#if KG_3D_Kopf_Achse_1 >= +0
+  L      KG_3D_Kopf_Achse_1
+  =X
+
+  L      KF Adr_O_Klemmung_loesen[X]
+  =      WL_Adr_O_Klemmung_loesen
+
+  L      WL_Adr_O_Klemmung_loesen
+  >=     KG_Output_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_O_Klemmung_loesen]
+    =      MG_3D_Kopf_Achse_1_Klemmung_loesen
+  ELSE
+    L      O_0[WL_Adr_O_Klemmung_loesen]
+    =      MG_3D_Kopf_Achse_1_Klemmung_loesen
+  ENDI
+
+  L      KF Adr_I_geloest_Achse[X]
+  =      WL_Adr_I_geloest_Achse
+
+  L      WL_Adr_I_geloest_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geloest_Achse]
+    =      MG_3D_Kopf_Achse_1_geloest
+  ELSE
+    L      I_0[WL_Adr_I_geloest_Achse]
+    =      MG_3D_Kopf_Achse_1_geloest
+  ENDI
+
+  L      KF Adr_I_geklemmt_Achse[X]
+  =      WL_Adr_I_geklemmt_Achse
+
+  L      WL_Adr_I_geklemmt_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geklemmt_Achse]
+    =      MG_3D_Kopf_Achse_1_geklemmt
+  ELSE
+    L      I_0[WL_Adr_I_geklemmt_Achse]
+    =      MG_3D_Kopf_Achse_1_geklemmt
+  ENDI
+
+  L      BG_Schritt_Achse[X]
+  =      BG_Schritt_Achse_1_3D_Kopf
+#endif
+
+#if KG_3D_Kopf_Achse_2 >= +0
+  L      KG_3D_Kopf_Achse_2
+  =X
+
+  L      KF Adr_O_Klemmung_loesen[X]
+  =      WL_Adr_O_Klemmung_loesen
+
+  L      WL_Adr_O_Klemmung_loesen
+  >=     KG_Output_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_O_Klemmung_loesen]
+    =      MG_3D_Kopf_Achse_2_Klemmung_loesen
+  ELSE
+    L      O_0[WL_Adr_O_Klemmung_loesen]
+    =      MG_3D_Kopf_Achse_2_Klemmung_loesen
+  ENDI
+
+  L      KF Adr_I_geloest_Achse[X]
+  =      WL_Adr_I_geloest_Achse
+
+  L      WL_Adr_I_geloest_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geloest_Achse]
+    =      MG_3D_Kopf_Achse_2_geloest
+  ELSE
+    L      I_0[WL_Adr_I_geloest_Achse]
+    =      MG_3D_Kopf_Achse_2_geloest
+  ENDI
+
+  L      KF Adr_I_geklemmt_Achse[X]
+  =      WL_Adr_I_geklemmt_Achse
+
+  L      WL_Adr_I_geklemmt_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geklemmt_Achse]
+    =      MG_3D_Kopf_Achse_2_geklemmt
+  ELSE
+    L      I_0[WL_Adr_I_geklemmt_Achse]
+    =      MG_3D_Kopf_Achse_2_geklemmt
+  ENDI
+
+  L      BG_Schritt_Achse[X]
+  =      BG_Schritt_Achse_2_3D_Kopf
+#endif
+
+EM
+
+;----------------------------
+LBL Achs_Position_speichern
+
+  L      BL_aktive_3D_Kopf_Achse
+  =X
+  ==     KG_3D_Kopf_Achse_1
+  IFT
+    L      DG_Ref_Pos_Achse[X]
+    =      DG_3D_Kopf_Achse_1_Position
+  ELSE
+    L      DG_Ref_Pos_Achse[X]
+    =      DG_3D_Kopf_Achse_2_Position
+  ENDI
+
+#if KG_3D_Kopf_Achse_2 >= 0
+  LN     DG_geregelte_Achsen
+  BT     KG_3D_Kopf_Achse_2
+  IFT
+    L      K+0
+    =      DG_3D_Kopf_Achse_2_Position
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL Spindel_Position_speichern
+
+  L      MG_Eins_Merker
+  R      ML_Vorwahl_Kopf_Position
+
+  L      KG_3D_Kopf_Achse_1
+  =X
+
+  L      DG_Hirth_Achsen
+  BTX
+  IFT
+    L      DG_MP430_Hirth_Raster[X]
+    /      K+2
+    +      K+3600000
+    +      DG_Ref_Pos_Achse[X]
+    /      DG_MP430_Hirth_Raster[X]
+    X      DG_MP430_Hirth_Raster[X]
+    MOD    K+3600000
+    =      DG_3D_Kopf_Achse_1_S_Position
+  ELSE
+    L      DG_Position_Achse_S_Ist
+    =      DG_3D_Kopf_Achse_1_S_Position
+    =      DG_3D_Kopf_Achse_2_S_Position
+  ENDI
+
+#if KG_3D_Kopf_Achse_2 >= 0
+  L      KG_3D_Kopf_Achse_2
+  =X
+
+  L      DG_Hirth_Achsen
+  BTX
+  IFT
+    L      DG_MP430_Hirth_Raster[X]
+    /      K+2
+    +      K+3600000
+    +      DG_Ref_Pos_Achse[X]
+    /      DG_MP430_Hirth_Raster[X]
+    X      DG_MP430_Hirth_Raster[X]
+    MOD    K+3600000
+    =      DG_3D_Kopf_Achse_2_S_Position
+  ELSE
+    L      DG_Position_Achse_S_Ist
+    =      DG_3D_Kopf_Achse_1_S_Position
+    =      DG_3D_Kopf_Achse_2_S_Position
+  ENDI
+
+#endif
+
+#if KG_3D_Kopf_Achse_2 >= 0
+  LN     DG_geregelte_Achsen
+  BT     KG_3D_Kopf_Achse_2
+  IFT
+    L      K+0
+    =      DG_3D_Kopf_Achse_2_S_Position
+  ENDI
+#endif
+
+* Falls Zählrichtung der Spindel und Kopf Achse nicht übereinstimmt
+* negatives Vorzeichen für DG_3D_Kopf_Achse_x_S_Position verwenden
+
+  L      K+7200000
+  +      DG_3D_Kopf_Achse_1_S_Position
+  +      DG_3D_Kopf_Achse_2_S_Position
+  MOD    K+3600000
+  PSW
+  +      DG_3D_Kopf_Achse_1_Offset_S_Pos
+  =      DG_3D_Kopf_Achse_1_S_Position
+
+#if KG_3D_Kopf_Achse_2 >= 0
+  PLW
+  +      DG_3D_Kopf_Achse_2_Offset_S_Pos
+  =      DG_3D_Kopf_Achse_2_S_Position
+
+  LN     DG_geregelte_Achsen
+  BT     KG_3D_Kopf_Achse_2
+  IFT
+    L      K+0
+    =      DG_3D_Kopf_Achse_2_S_Position
+  ENDI
+#else
+  PL     WL_Stack_synchronisieren
+#endif
+
+EM
+
+;----------------------------
+KFIELD Adr_O_Klemmung_loesen
+  K &O_Ax01_loesen
+  K &O_Ax02_loesen
+  K &O_Ax03_loesen
+  K &O_Ax04_loesen
+  K &O_Ax05_loesen
+  K &O_Ax06_loesen
+  K &O_Ax07_loesen
+  K &O_Ax08_loesen
+  K &O_Ax09_loesen
+  K &O_Ax10_loesen
+  K &O_Ax11_loesen
+  K &O_Ax12_loesen
+  K &O_Ax13_loesen
+  K &O_Ax14_loesen
+  K &O_Ax15_loesen
+  K &O_Ax16_loesen
+  K &O_Ax17_loesen
+  K &O_Ax18_loesen
+  K &O_Ax19_loesen
+  K &O_Ax20_loesen
+  K &O_Ax21_loesen
+  K &O_Ax22_loesen
+ENDK
+
+KFIELD Adr_I_geloest_Achse
+  K &I_geloest_Achse_X
+  K &I_geloest_Achse_Y
+  K &I_geloest_Achse_Z
+  K &I_geloest_Achse_4
+  K &I_geloest_Achse_5
+  K &I_geloest_Achse_6
+  K &I_geloest_Achse_7
+  K &I_geloest_Achse_8
+  K &I_geloest_Achse_9
+  K &I_geloest_Achse_10
+  K &I_geloest_Achse_11
+  K &I_geloest_Achse_12
+  K &I_geloest_Achse_13
+  K &I_geloest_Achse_14
+  K &I_geloest_Achse_15
+  K &I_geloest_Achse_16
+  K &I_geloest_Achse_17
+  K &I_geloest_Achse_18
+  K &I_geloest_Achse_19
+  K &I_geloest_Achse_20
+  K &I_geloest_Achse_21
+  K &I_geloest_Achse_22
+ENDK
+
+KFIELD Adr_I_geklemmt_Achse
+  K &I_geklemmt_Achse_X
+  K &I_geklemmt_Achse_Y
+  K &I_geklemmt_Achse_Z
+  K &I_geklemmt_Achse_4
+  K &I_geklemmt_Achse_5
+  K &I_geklemmt_Achse_6
+  K &I_geklemmt_Achse_7
+  K &I_geklemmt_Achse_8
+  K &I_geklemmt_Achse_9
+  K &I_geklemmt_Achse_10
+  K &I_geklemmt_Achse_11
+  K &I_geklemmt_Achse_12
+  K &I_geklemmt_Achse_13
+  K &I_geklemmt_Achse_14
+  K &I_geklemmt_Achse_15
+  K &I_geklemmt_Achse_16
+  K &I_geklemmt_Achse_17
+  K &I_geklemmt_Achse_18
+  K &I_geklemmt_Achse_19
+  K &I_geklemmt_Achse_20
+  K &I_geklemmt_Achse_21
+  K &I_geklemmt_Achse_22
+ENDK

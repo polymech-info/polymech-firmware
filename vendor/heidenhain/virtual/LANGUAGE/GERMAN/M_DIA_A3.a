@@ -1,0 +1,74 @@
+/* DIAGNOSE ANTRIEBE
+   -----------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"DIAGNOSE ANTRIEBE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+
+"          1    2    3    4    5    6   \n";
+"Achse     %s    %s    %s    %s    %s    %s   \n",
+$SG_Kennung_Achse_01$/c,$SG_Kennung_Achse_02$/c,
+$SG_Kennung_Achse_03$/c,$SG_Kennung_Achse_04$/c,
+$SG_Kennung_Achse_05$/c,$SG_Kennung_Achse_06$/c;
+
+CURSOR=OFF;
+"Schritt   %1D    %1D    %1D    %1D    %1D    %1D \n\n",
+$BG_Schritt_Achse[0]$/c,$BG_Schritt_Achse[1]$/c,
+$BG_Schritt_Achse[2]$/c,$BG_Schritt_Achse[3]$/c,
+$BG_Schritt_Achse[4]$/c,$BG_Schritt_Achse[5]$/c;
+
+CURSOR=ON;
+
+"          7    8    9   10   11   12   \n";
+"Achse     %s    %s    %s    %s    %s    %s   \n",
+$SG_Kennung_Achse_07$/c,$SG_Kennung_Achse_08$/c,
+$SG_Kennung_Achse_09$/c,$SG_Kennung_Achse_10$/c,
+$SG_Kennung_Achse_11$/c,$SG_Kennung_Achse_12$/c;
+
+CURSOR=OFF;
+"Schritt   %1D    %1D    %1D    %1D    %1D    %1D  \n\n",
+$BG_Schritt_Achse[6]$/c,$BG_Schritt_Achse[7]$/c,
+$BG_Schritt_Achse[8]$/c,$BG_Schritt_Achse[9]$/c,
+$BG_Schritt_Achse[10]$/c,$BG_Schritt_Achse[11]$/c;
+
+CURSOR=ON;
+
+"         13   14   15   16   17   18   \n";
+"Achse     %s    %s    %s    %s    %s    %s   \n",
+$SG_Kennung_Achse_13$/c,$SG_Kennung_Achse_14$/c,
+$SG_Kennung_Achse_15$/c,$SG_Kennung_Achse_16$/c,
+$SG_Kennung_Achse_17$/c,$SG_Kennung_Achse_18$/c;
+
+CURSOR=OFF;
+"Schritt   %1D    %1D    %1D    %1D    %1D    %1D  \n\n",
+$BG_Schritt_Achse[12]$/c,$BG_Schritt_Achse[13]$/c,
+$BG_Schritt_Achse[14]$/c,$BG_Schritt_Achse[15]$/c,
+$BG_Schritt_Achse[16]$/c,$BG_Schritt_Achse[17]$/c;
+
+CURSOR=ON;
+
+"         19   20   21   22             \n";
+"Achse     %s    %s    %s    %s             \n",
+$SG_Kennung_Achse_19$/c,$SG_Kennung_Achse_20$/c,
+$SG_Kennung_Achse_21$/c,$SG_Kennung_Achse_22$/c;
+
+CURSOR=OFF;
+"Schritt   %1D    %1D    %1D    %1D    \n\n",
+$BG_Schritt_Achse[18]$/c,$BG_Schritt_Achse[19]$/c,
+$BG_Schritt_Achse[20]$/c,$BG_Schritt_Achse[21]$/c;
+
+"Legende\n";
+"  0 = Initialisierung \n";
+"  1 = in Position warten \n";
+"  2 = Strom/Drehzahl/Lageregler ein\n";
+"  3 = Klemmung auf   \n";
+"  4 = Positionieren   \n";
+"  5 = Strom/Drehzahlregler aus \n";
+"  6 = Klemmung zu     \n";
+"  7 = Lageregelkreis aus\n";
+"  8 = Schrittkette Ende\n";

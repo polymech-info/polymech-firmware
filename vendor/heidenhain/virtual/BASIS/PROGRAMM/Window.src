@@ -1,0 +1,1201 @@
+*-----------------------------------------------------------------------------
+*  PLC-Fenster
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Farbe_schwarz                         K +1
+#define /s    KL_Farbe_grau_10                         K +2
+#define /s    KL_Farbe_grau_20                         K +3
+#define /s    KL_Farbe_grau_40                         K +4
+#define /s    KL_Farbe_grau_60                         K +5
+#define /s    KL_Farbe_grau_80                         K +6
+#define /s    KL_Farbe_giftgruen                       K +7
+#define /s    KL_Farbe_gelb                            K +8
+#define /s    KL_Farbe_rot                             K +9
+#define /s    KL_Farbe_gruen                           K +10
+#define /s    KL_Farbe_dunkelblau                      K +11
+#define /s    KL_Farbe_tuerkis                         K +12
+#define /s    KL_Farbe_blau                            K +13
+#define /s    KL_Farbe_violett                         K +14
+#define /s    KL_Farbe_weiss                           K +15
+
+#define /s    KL_Zeile_0                               K +0
+#define /s    KL_Zeile_1                               K +1
+#define /s    KL_Spalte_0                              K +0
+#define /s    KL_Spalte_9                              K +9
+#define /s    KL_Spalte_11                             K +11
+#define /s    KL_Spalte_17                             K +17
+#define /s    KL_Spalte_15                             K +15
+#define /s    KL_Spalte_19                             K +19
+
+#define /s    KL_max_Balkenlaenge                      K +150
+#define /s    KL_Mode_ohne_Vorzeichen_links            K +0
+#define /s    KL_Mode_rechts_Vorzeichen                K +2
+#define /s    KL_nach_Komma_0                          K +0
+#define /s    KL_vor_Komma_3                           K +3
+#define /s    KL_vor_Komma_5                           K +5
+#define /s    KL_Format_Zeit_H_M_S                     K +13
+#define /s    KL_Fehler_gesamt                         K -1
+#define /s    KL_Fehler_in_Anzeige                     K %01
+#define /s    KL_Fehler_in_Queue                       K %10
+#define /s    KL_inaktiv                               K +0
+#define /s    KL_3_Sekunden_Verzoegerung               K +12
+#define /s    KL_15_Sekunden_Verzoegerung              K +30
+#define /s    KL_100_Prozent                           K +10000
+#define /s    KL_Platz_leer                            K -1
+#define /s    KL_max_Achs_Anzahl                       K +14
+#define /s    KL_ein_WZ_Magazin_vorhanden              K +1
+
+#define /s    ML_Hinweis_im_PLC_Win                    M
+#define /s    ML_Anzeige_Z0_Z1_gleich                  M
+#define /s    ML_Achsen_in_Position                    M
+#define /s    ML_Spindel_M5                            M
+#define /s    ML_Hinweis_im_PLC_Win_alt                M
+#define /s /r ML_Initialisierung_ok                    M
+
+#define /s    BL_Identifier                            B
+#define /s    BL_Zeilen_Nummer                         B
+#define /s    BL_nicht_benutzt                         B
+#define /s    BL_Axis_Limit                            B
+#define /s    BL_Anzeige_Vorschubfreigabe_blinkend     B
+#define /s    BL_Anzeige_Hinweis_blinkend              B
+
+#define /s /r BL_Anzeige_Zeile                         B[2]
+#define /c    BL_Anzeige_Z0                            B &BL_Anzeige_Zeile + 0
+#define /c    BL_Anzeige_Z1                            B &BL_Anzeige_Zeile + 1
+
+#define /s    WL_S_Ist_Prozent                         W
+#define /s    WL_Motor_Auslastung_S_absolut            W
+#define /s    WL_Motor_Auslastung_absolut              W
+#define /s    WL_Motor_Auslastung_S_alt                W
+#define /s    WL_WZM_Platz_Anzeige              W
+#define /s    WL_S_Override_alt                        W
+#define /s    WL_F_Override                            W
+#define /s    WL_F_Override_alt                        W
+#define /s    WL_Fmax_Override_alt                     W
+#define /s    WL_Hinweis_Index                         W
+#define /s    WL_Hinweis_Index_alt                     W
+
+#define /s    WL_Motor_Auslastung                      W[2]
+#define /c    WL_Motor_Auslastung_0_alt                W &WL_Motor_Auslastung + 0
+#define /c    WL_Motor_Auslastung_1_alt                W &WL_Motor_Auslastung + 2
+
+#define /s    DL_Spindel_Ist_Drehzahl                  D
+
+#include Mac_Lib.inc
+
+EXTERN Absolut
+
+GLOBAL PLC_Window
+
+;----------------------------
+LBL PLC_Window
+
+  L      MG_SK_Mode_Zeile_0
+  IFT
+    S      MG_Bildschirm_loeschen
+    INC    BL_Anzeige_Z0
+  ENDI
+
+  L      MG_SK_Mode_Zeile_1
+  IFT
+    S      MG_Bildschirm_loeschen
+    INC    BL_Anzeige_Z1
+  ENDI
+
+  LN     MG_Impuls_250_ms
+  EMT
+
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   SubWindow
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL SubWindow
+
+  L      MG_M80_Stueckzaehler_Reset
+  AN     NP_M4157_BA_Restore_Position_aktiv
+  IFT
+    S      MG_Bildschirm_loeschen
+    S      PN_M4092_Quit_M_Funktion
+
+    L      K+0
+    =      WG_Werkstueck_Zaehler
+  ENDI
+
+  L      MG_M81_Stueckzaehler_plus_1
+  IFT
+    S      MG_Bildschirm_loeschen
+    S      PN_M4092_Quit_M_Funktion
+
+    LN     NP_M4158_BA_Satz_Vorlauf_aktiv
+    IFT
+      INC    WG_Werkstueck_Zaehler
+
+      L      WG_Werkstueck_Zaehler
+      >      K+9999
+      IFT
+        L      K+1
+        =      WG_Werkstueck_Zaehler
+      ENDI
+    ENDI
+  ENDI
+
+  CM     Hinweis_in_PLC_Window
+
+  L      MG_Bildschirm_loeschen
+  IFT
+    R      MG_Bildschirm_loeschen
+    CM     9080                        ;PLC-Fenster löschen
+    M_Modul_Fehler_anzeigen
+
+    L      K-1
+    =      BL_Axis_Limit
+    =      WL_Motor_Auslastung_0_alt
+    =      WL_Motor_Auslastung_1_alt
+    =      WL_Motor_Auslastung_S_alt
+    =      WL_F_Override_alt
+    =      WL_Fmax_Override_alt
+    =      WL_S_Override_alt
+    =      DL_Spindel_Ist_Drehzahl
+  ENDI
+
+  L      ML_Hinweis_im_PLC_Win
+  IFT
+    CM     DisplayError
+  ELSE
+
+    L      BL_Anzeige_Z0
+    ==     BL_Anzeige_Z1
+    =      ML_Anzeige_Z0_Z1_gleich
+
+    L      K -1
+    =      BL_Zeilen_Nummer
+
+    REPEAT
+      INC    BL_Zeilen_Nummer
+
+      L      BL_Anzeige_Z0[BL_Zeilen_Nummer]
+      >      K +18
+      IFT
+        L      K +0
+        =      BL_Anzeige_Z0[BL_Zeilen_Nummer]
+      ENDI
+
+      CASE   BL_Anzeige_Z0[BL_Zeilen_Nummer]
+        CM     Achsen_Auslastung       ;00  X
+        CM     Achsen_Auslastung       ;01  Y
+        CM     Achsen_Auslastung       ;02  Z
+        CM     Achsen_Auslastung       ;03  4
+        CM     Achsen_Auslastung       ;04  5
+        CM     Achsen_Auslastung       ;05  6
+        CM     Achsen_Auslastung       ;06  7
+        CM     Achsen_Auslastung       ;07  8
+        CM     Achsen_Auslastung       ;08  9
+        CM     Achsen_Auslastung       ;09  10
+        CM     Achsen_Auslastung       ;10  11
+        CM     Achsen_Auslastung       ;11  12
+        CM     Achsen_Auslastung       ;12  13
+        CM     Achsen_Auslastung       ;13  14
+        CM     Nist_soll               ;14
+        CM     S_Moment                ;15
+        CM     S_Override              ;16
+        CM     F_Override              ;17
+        CM     Fmax_Override           ;18
+      ENDC
+
+      L      BL_Zeilen_Nummer
+      >=     KL_Zeile_1
+    UNTILT
+
+    CM     Probe_Count_Feed_T_P
+    CM     AxisLimit_Time
+  ENDI
+
+  L      MG_Submit_CE_Taste
+  A      MG_Maschinenparameter_gelesen
+  CMT    LoeschenErrorMerker
+
+  L      MG_Submit_CE_Taste
+  S      MG_Bildschirm_loeschen
+  R      MG_Submit_CE_Taste
+
+  L      MG_Eins_Merker
+  R      MG_Fehler_Modul_9xxx_Submit
+
+  LN     MG_Inbetriebnahme
+  A      ML_Initialisierung_ok
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+  L      ML_Initialisierung_ok
+  EMT
+
+  LN     ML_Initialisierung_ok
+  S      ML_Initialisierung_ok
+
+  L      K+14
+  =      BL_Anzeige_Z0
+
+  L      K+15
+  =      BL_Anzeige_Z1
+
+EM
+
+;----------------------------
+LBL Hinweis_in_PLC_Window
+
+  L      K-1
+  =      WL_Hinweis_Index
+
+  REPEAT
+    INC    WL_Hinweis_Index
+
+    L      MG_PLC_Window_Begin[WL_Hinweis_Index]
+    =      ML_Hinweis_im_PLC_Win
+
+    L      WL_Hinweis_Index
+    >=     K &MG_PLC_Window_Ende - &MG_PLC_Window_Begin
+    O      ML_Hinweis_im_PLC_Win
+  UNTILT
+
+  L      BL_Anzeige_Hinweis_blinkend
+  >      K+0
+  A      ML_Hinweis_im_PLC_Win
+  AN     MG_Takt_3_s
+  IFT
+    DEC    BL_Anzeige_Hinweis_blinkend
+  ENDI
+
+  L      BL_Anzeige_Hinweis_blinkend
+  <=     K+0
+  A      MG_Takt_3_s
+  R      ML_Hinweis_im_PLC_Win
+
+  PS     KL_Fehler_gesamt
+  CM     9087                          ;Status PLC-Fehlermeldung abfragen
+  PLW
+  <>     KL_Fehler_in_Queue
+  A      ML_Hinweis_im_PLC_Win
+  A      MG_Steuerung_betriebsbereit
+  S      PN_Fehler_in_PLC_Window
+  M_Modul_Fehler_anzeigen
+
+  LN     ML_Hinweis_im_PLC_Win
+  R      PN_Fehler_in_PLC_Window
+
+  L      ML_Hinweis_im_PLC_Win
+  XO     ML_Hinweis_im_PLC_Win_alt
+  S      MG_Bildschirm_loeschen
+
+  L      ML_Hinweis_im_PLC_Win
+  =      ML_Hinweis_im_PLC_Win_alt
+
+  L      WL_Hinweis_Index
+  <>     WL_Hinweis_Index_alt
+  IFT
+    S      MG_Bildschirm_loeschen
+
+    L      KL_15_Sekunden_Verzoegerung
+    =      BL_Anzeige_Hinweis_blinkend
+  ENDI
+
+  L      WL_Hinweis_Index
+  =      WL_Hinweis_Index_alt
+
+EM
+
+;----------------------------
+LBL DisplayError
+
+  L      WL_Hinweis_Index
+  X      K+2
+  =X
+
+  L      S#D100[X]
+  =      SG_Hinweis_Zeile_0
+
+  PS     KL_Zeile_0
+  PS     KL_Spalte_0
+  PS     KL_Farbe_rot
+  PS     K &SG_Hinweis_Zeile_0
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+  INCX
+
+  L      S#D100[X]
+  =      SG_Hinweis_Zeile_1
+
+  PS     KL_Zeile_1
+  PS     KL_Spalte_0
+  PS     KL_Farbe_rot
+  PS     K &SG_Hinweis_Zeile_1
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL LoeschenErrorMerker
+
+  L      K-1
+  =X
+
+  REPEAT
+    INCX
+    LX
+    >=     K &MG_PLC_Window_Ende - &MG_PLC_Window_Begin
+    O      MG_PLC_Window_Begin[X]
+  UNTILT
+
+  L      MG_Eins_Merker
+  R      MG_PLC_Window_Begin[X]
+
+EM
+
+;----------------------------
+LBL Achsen_Auslastung
+
+  REPEAT
+    LN     DG_geregelte_Achsen
+    BT     BL_Anzeige_Z0[BL_Zeilen_Nummer]
+    IFT
+      INC    BL_Anzeige_Z0[BL_Zeilen_Nummer]
+    ENDI
+
+    L      DG_geregelte_Achsen
+    BT     BL_Anzeige_Z0[BL_Zeilen_Nummer]
+    O[
+      L      BL_Anzeige_Z0[BL_Zeilen_Nummer]
+      >=     KL_max_Achs_Anzahl
+    ]
+  UNTILT
+
+  L      BL_Anzeige_Z0[BL_Zeilen_Nummer]
+  =X
+
+  PS     WG_Motor_Auslastung[X]
+  CM     Absolut
+  PL     WL_Motor_Auslastung_absolut
+
+  L      WL_Motor_Auslastung_absolut
+  ==     WL_Motor_Auslastung_0_alt[BL_Zeilen_Nummer]
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+
+  L      WL_Motor_Auslastung_absolut
+  =      WL_Motor_Auslastung_0_alt[BL_Zeilen_Nummer]
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Farbe_giftgruen
+
+  L      MG_Getriebe_Wechsel_aktiv
+  IFT
+    L      K+0
+    =      WL_Motor_Auslastung_absolut
+  ENDI
+
+  L      WL_Motor_Auslastung_absolut
+  >=     K+50
+  IFT
+    PL     BL_nicht_benutzt
+    PS     KL_Farbe_gelb
+  ENDI
+
+  L      WL_Motor_Auslastung_absolut
+  >=     K+80
+  IFT
+    PL     BL_nicht_benutzt
+    PS     KL_Farbe_rot
+  ENDI
+
+  PS     KL_Farbe_grau_20
+  PS     WL_Motor_Auslastung_absolut
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  PS     WL_Motor_Auslastung_absolut
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_Auslastung
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_Auslastung
+  +      S"% "
+  +      SG_Kennung_Achse[X]
+  +      S"[Nm]"
+  =      SG_Diagramm_Auslastung
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  PS     KL_Farbe_schwarz
+  PS     K &SG_Diagramm_Auslastung
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL S_Moment
+
+  PS     WG_Motor_Auslastung_S
+  CM     Absolut
+  PL     WL_Motor_Auslastung_S_absolut
+
+  L      WL_Motor_Auslastung_S_absolut
+  ==     WL_Motor_Auslastung_S_alt
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+
+  L      WL_Motor_Auslastung_S_absolut
+  =      WL_Motor_Auslastung_S_alt
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Farbe_giftgruen
+
+  L      MG_Getriebe_Wechsel_aktiv
+  IFT
+    L      K+0
+    =      WL_Motor_Auslastung_S_absolut
+  ENDI
+
+  L      WL_Motor_Auslastung_S_absolut
+  >=     K+50
+  IFT
+    PLX
+    PS     KL_Farbe_gelb
+  ENDI
+
+  L      WL_Motor_Auslastung_S_absolut
+  >=     K+80
+  IFT
+    PLX
+    PS     KL_Farbe_rot
+  ENDI
+
+  L      MG_Spindel_steht
+  IFT
+    PLX
+    PS     KL_Farbe_grau_10
+  ENDI
+
+  PS     KL_Farbe_grau_20
+  PS     WL_Motor_Auslastung_S_absolut
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  PS     WL_Motor_Auslastung_S_absolut
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_Moment
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_Moment
+  +      S"% S[Nm]"
+  =      SG_Diagramm_Moment
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  L      MG_SK_T_Moment_Ueberwachung
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    PS     KL_Farbe_schwarz
+  ENDI
+  PS     K &SG_Diagramm_Moment
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Nist_soll
+
+  L      DG_Spindel_Ist_Drehzahl
+  ==     DL_Spindel_Ist_Drehzahl
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+  L      MG_3D_Kopf_aktiv
+  IFT
+    L      K+0
+    =      DG_Spindel_Ist_Drehzahl
+  ENDI
+
+  L      DG_Spindel_Ist_Drehzahl
+  =      DL_Spindel_Ist_Drehzahl
+
+  L      DG_Spindel_Ist_Drehzahl
+  X      K+10000
+  +[
+    L      NP_D356_S_Programmierte_Drehzahl_NC
+    /      K+20
+  ]
+  /[
+    L      NP_D356_S_Programmierte_Drehzahl_NC
+    /      K+10
+  ]
+  =      WL_S_Ist_Prozent
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Farbe_rot
+
+  L      WL_S_Ist_Prozent
+  >=     K+60
+  A[
+    L      WL_S_Ist_Prozent
+    <=     K+120
+  ]
+  IFT
+    PLX
+    PS     KL_Farbe_gelb
+  ENDI
+
+  L      WL_S_Ist_Prozent
+  >=     K+80
+  A[
+    L      WL_S_Ist_Prozent
+    <=     K+110
+  ]
+  IFT
+    PLX
+    PS     KL_Farbe_giftgruen
+  ENDI
+
+  L      MG_Spindel_steht
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  IFT
+    PLX
+    PS     KL_Farbe_grau_10
+  ENDI
+
+  PS     KL_Farbe_grau_20
+
+  L      WL_S_Ist_Prozent
+  PSW
+  <      K+0
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  O      MG_Getriebe_Wechsel_aktiv
+  O      PN_M4011_S_Drehzahl_aus_MP3520_0
+  IFT
+    PLX
+    PS     K+0
+  ENDI
+
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  L      WL_S_Ist_Prozent
+  PSW
+  >      K+150
+  IFT
+    PLX
+    PS     K+150
+  ENDI
+  PLW
+  PSW
+  <      K+0
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  IFT
+    PLX
+    PS     K+0
+  ENDI
+
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_S_Istdrehzahl
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_S_Istdrehzahl
+  +      S"% S-IST"
+  =      SG_Diagramm_S_Istdrehzahl
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  PS     KL_Farbe_schwarz
+  PS     K &SG_Diagramm_S_Istdrehzahl
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL F_Override
+
+  L      PN_W766_Faktor_Vorschub_Override_PLC
+  ==     K+0
+  IFT
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    =      WL_F_Override
+  ELSE
+    L      PN_W766_Faktor_Vorschub_Override_PLC
+    =      WL_F_Override
+  ENDI
+
+  L      MG_SK_Override_F_100
+  IFT
+    L      KL_100_Prozent
+    =      WL_F_Override
+  ENDI
+
+  L      WL_F_Override
+  ==     WL_F_Override_alt
+  A[
+    LN     MG_Achsen_in_Position
+    XO     ML_Achsen_in_Position
+  ]
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+
+  L      WL_F_Override
+  =      WL_F_Override_alt
+
+  L      MG_Achsen_in_Position
+  =      ML_Achsen_in_Position
+
+  PS     BL_Zeilen_Nummer
+
+  L      WL_F_Override
+  <      K+5000
+  O[
+    L      WL_F_Override
+    >=     K+12000
+  ]
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    L      WL_F_Override
+    <      K+8000
+    O[
+      L      WL_F_Override
+      >=     K+11000
+    ]
+    IFT
+      PS     KL_Farbe_gelb
+    ELSE
+      PS     KL_Farbe_giftgruen
+    ENDI
+  ENDI
+
+  L      MG_Achsen_in_Position
+  IFT
+    PLX
+    PS     KL_Farbe_grau_10
+  ENDI
+
+  PS     KL_Farbe_grau_20
+
+  L      WL_F_Override
+  /      K+100
+  PSW
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  L      WL_F_Override
+  /      K+100
+  PSW
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_F_Override
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_F_Override
+  +      S"% F-OVR"
+  =      SG_Diagramm_F_Override
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  PS     KL_Farbe_schwarz
+  PS     K &SG_Diagramm_F_Override
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Fmax_Override
+
+  L      PN_W752_Faktor_Eilgang_Override_PLC
+  ==     WL_Fmax_Override_alt
+  A[
+    LN     MG_Achsen_in_Position
+    XO     ML_Achsen_in_Position
+  ]
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+
+  L      PN_W752_Faktor_Eilgang_Override_PLC
+  =      WL_Fmax_Override_alt
+
+  L      MG_Achsen_in_Position
+  =      ML_Achsen_in_Position
+
+  PS     BL_Zeilen_Nummer
+
+  L      PN_W752_Faktor_Eilgang_Override_PLC
+  <      K+5000
+  O[
+    L      PN_W752_Faktor_Eilgang_Override_PLC
+    >=     K+12000
+  ]
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    L      PN_W752_Faktor_Eilgang_Override_PLC
+    <      K+8000
+    O[
+      L      PN_W752_Faktor_Eilgang_Override_PLC
+      >=     K+11000
+    ]
+    IFT
+      PS     KL_Farbe_gelb
+    ELSE
+      PS     KL_Farbe_giftgruen
+    ENDI
+  ENDI
+
+  L      MG_Achsen_in_Position
+  IFT
+    PLX
+    PS     KL_Farbe_grau_10
+  ENDI
+
+  PS     KL_Farbe_grau_20
+
+  L      PN_W752_Faktor_Eilgang_Override_PLC
+  /      K+100
+  PSW
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  L      PN_W752_Faktor_Eilgang_Override_PLC
+  /      K+100
+  PSW
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_Fmax_Override
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_Fmax_Override
+  +      S"% F-MAX"
+  =      SG_Diagramm_Fmax_Override
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  PS     KL_Farbe_schwarz
+  PS     K &SG_Diagramm_Fmax_Override
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL S_Override
+
+  L      PN_W764_S_Override_PLC
+  ==     WL_S_Override_alt
+  A[
+    LN     MG_Spindel_steht
+    A      PN_M4012_S_Regelkreis_oeffnen
+    XO     ML_Spindel_M5
+  ]
+  AN     ML_Anzeige_Z0_Z1_gleich
+  EMT
+
+  L      PN_W764_S_Override_PLC
+  =      WL_S_Override_alt
+
+  PS     BL_Zeilen_Nummer
+
+  L      PN_W764_S_Override_PLC
+  <      K+8000
+  O[
+    L      PN_W764_S_Override_PLC
+    >=     K+11000
+  ]
+  IFT
+    L      PN_W764_S_Override_PLC
+    <      K+6000
+    O[
+      L      PN_W764_S_Override_PLC
+      >=     K+12000
+    ]
+    IFT
+      PS     KL_Farbe_rot
+    ELSE
+      PS     KL_Farbe_gelb
+    ENDI
+  ELSE
+    L      PN_W764_S_Override_PLC
+    <      K+6000
+    O[
+      L      PN_W764_S_Override_PLC
+      >=     K+12000
+    ]
+    IFT
+      PS     KL_Farbe_rot
+    ELSE
+      PS     KL_Farbe_giftgruen
+    ENDI
+  ENDI
+
+  L      MG_Spindel_steht
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  =      ML_Spindel_M5
+  IFT
+    PLX
+    PS     KL_Farbe_grau_10
+  ENDI
+
+  PS     KL_Farbe_grau_20
+  L      PN_W764_S_Override_PLC
+  /      K+100
+  PSW
+  PS     KL_max_Balkenlaenge
+  CM     9083                          ;PLC Fenster Balken-Diagramm anzeigen
+  M_Modul_Fehler_anzeigen
+
+  L      PN_W764_S_Override_PLC
+  /      K+100
+  PSW
+  PS     KL_Mode_rechts_Vorzeichen
+  PS     KL_nach_Komma_0
+  PS     KL_vor_Komma_3
+  PS     K &SG_Diagramm_S_Override
+  CM     9051                          ;Binärzahl in Dezimalstring wandeln (Format)
+  M_Modul_Fehler_anzeigen
+
+  L      SG_Diagramm_S_Override
+  +      S"% S-OVR"
+  =      SG_Diagramm_S_Override
+
+  PS     BL_Zeilen_Nummer
+  PS     KL_Spalte_0
+  PS     KL_Farbe_schwarz
+  PS     K &SG_Diagramm_S_Override
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Probe_Count_Feed_T_P
+
+;Zeile 0, Spalte 11..16
+
+  L      S"      "
+  =      SG_Z0_FEED_WZW_Standby_Platz
+
+#if CFG_WZW_System  ! "WZW_type_04"
+  L      MG_WZW_Auto_aktiv
+  IFT
+    L      NP_W268_Werkzeug_Magazin_Nummer
+    >      KL_ein_WZ_Magazin_vorhanden
+    IFT
+      PS     NP_W268_Werkzeug_Magazin_Nummer
+      PS     KL_Mode_ohne_Vorzeichen_links
+      PS     KL_nach_Komma_0
+      PS     KL_vor_Komma_3
+      PS     K &SG_WZM_Nummer
+      CM     9051                      ;Binärzahl in Dezimalstring wandeln (Format)
+      M_Modul_Fehler_anzeigen
+
+      L      SG_WZM_Nummer
+      +      S"."
+      =      SG_WZM_Nummer
+    ENDI
+
+    L      MG_WZM_Beladen_aktiv
+    IFT
+      L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+      +      STG_WZM[BG_WZM_Index_Tool_Call].DG_WZM_Offset_Beladeplatz
+      -      K+1
+      MOD    STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+      +      K+1
+      =      WL_WZM_Platz_Anzeige
+    ELSE
+      L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+      =      WL_WZM_Platz_Anzeige
+    ENDI
+
+    PS     WL_WZM_Platz_Anzeige
+    PS     KL_Mode_ohne_Vorzeichen_links
+    PS     KL_nach_Komma_0
+    PS     KL_vor_Komma_3
+    PS     K &SG_Zahlenwert
+    CM     9051                        ;Binärzahl in Dezimalstring wandeln (Format)
+    M_Modul_Fehler_anzeigen
+
+    L      S"P"
+    +      SG_WZM_Nummer
+    +      SG_Zahlenwert
+    OVWR   SG_Z0_FEED_WZW_Standby_Platz
+  ENDI
+#endif
+
+  L      MG_Anzeige_Vorschubfreigabe_in_PLC_window
+  IFT
+    L      BL_Anzeige_Vorschubfreigabe_blinkend
+    <=     K+0
+    IFT
+      L      MG_Takt_1_s
+      R      MG_Anzeige_Vorschubfreigabe_in_PLC_window
+    ELSE
+      DEC    BL_Anzeige_Vorschubfreigabe_blinkend
+    ENDI
+  ELSE
+    L      KL_3_Sekunden_Verzoegerung
+    =      BL_Anzeige_Vorschubfreigabe_blinkend
+  ENDI
+
+  L      MG_Anzeige_Vorschubfreigabe_in_PLC_window
+  IFT
+    L      S"FEED"
+    =      SG_Z0_FEED_WZW_Standby_Platz
+  ENDI
+
+  PS     KL_Zeile_0
+  PS     KL_Spalte_11
+
+  L      MG_Anzeige_Vorschubfreigabe_in_PLC_window
+  O      MG_WZM_n_Start_aktiv
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    PS     KL_Farbe_schwarz
+  ENDI
+
+  PS     K &SG_Z0_FEED_WZW_Standby_Platz
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+;Zeile 0, Spalte 17..23
+
+  L      S"         "
+  =      SG_Z0_Count_Probe_End_off_T_Standby
+
+#if CFG_WZW_System  ! "WZW_type_04"
+  L      MG_WZW_Auto_aktiv
+  IFT
+    PS     WG_T_Nummer_Standby_Werkzeug
+    PS     KL_Mode_ohne_Vorzeichen_links
+    PS     KL_nach_Komma_0
+    PS     KL_vor_Komma_5
+    PS     K &SG_Zahlenwert
+    CM     9051                        ;Binärzahl in Dezimalstring wandeln (Format)
+    M_Modul_Fehler_anzeigen
+
+    L      WG_T_Nummer_Standby_Werkzeug
+    ==     KL_Platz_leer
+    IFT
+      L      S"       "
+      =      SG_Zahlenwert
+    ENDI
+
+    L      S"-T"
+    +      SG_Zahlenwert
+    OVWR   SG_Z0_Count_Probe_End_off_T_Standby
+  ENDI
+#endif
+
+  L      WG_Werkstueck_Zaehler
+  >      K+0
+  IFT
+    PS     WG_Werkstueck_Zaehler
+    PS     KL_Mode_ohne_Vorzeichen_links
+    PS     KL_nach_Komma_0
+    PS     KL_vor_Komma_5
+    PS     K &SG_Zahlenwert
+    CM     9051                        ;Binärzahl in Dezimalstring wandeln (Format)
+    M_Modul_Fehler_anzeigen
+
+    L      S"         "
+    =      SG_Z0_Count_Probe_End_off_T_Standby
+
+    L      S" ST:"
+    +      SG_Zahlenwert
+    OVWR   SG_Z0_Count_Probe_End_off_T_Standby
+  ENDI
+
+  L      MG_3D_Tastsystem_aktiv
+  A      MG_Takt_1_s
+  IFT
+    L      S"  PROBE  "
+    =      SG_Z0_Count_Probe_End_off_T_Standby
+  ENDI
+
+  L      MG_auto_HS_aus_nach_END_PGM
+  AN     MG_Takt_1_s
+  IFT
+    L      S"END OFF  "
+    =      SG_Z0_Count_Probe_End_off_T_Standby
+  ENDI
+
+  PS     KL_Zeile_0
+  PS     KL_Spalte_17
+
+  L      MG_3D_Tastsystem_aktiv
+  A      MG_Takt_1_s
+  O[
+    L      MG_auto_HS_aus_nach_END_PGM
+    AN     MG_Takt_1_s
+  ]
+  O      MG_WZM_n_Start_aktiv
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    PS     KL_Farbe_schwarz
+  ENDI
+
+  PS     K &SG_Z0_Count_Probe_End_off_T_Standby
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL AxisLimit_Time
+
+;Zeile 1, Spalte 11..18
+
+  LB     MG_Axis_Limit_1
+  ==     BL_Axis_Limit
+  EMT
+
+  L      MG_Pendeln_ein
+  IFT
+    L      S"TABLE"
+    =      SG_Limit_Table
+  ELSE
+    L      S"LIMIT"
+    =      SG_Limit_Table
+  ENDI
+
+  LN     MG_Axis_Limit_1
+  AN     MG_Axis_Limit_2
+  AN     MG_Axis_Limit_3
+  IFT
+    L      SG_Limit_Table
+    +      S"???"
+    =      SG_Limit_Table
+  ENDI
+
+  L      MG_Axis_Limit_1
+  IFT
+    L      SG_Limit_Table
+    +      S" 1 "
+    =      SG_Limit_Table
+  ENDI
+
+  L      MG_Axis_Limit_2
+  IFT
+    L      SG_Limit_Table
+    +      S" 2 "
+    =      SG_Limit_Table
+  ENDI
+
+  L      MG_Axis_Limit_3
+  IFT
+    L      SG_Limit_Table
+    +      S" 3 "
+    =      SG_Limit_Table
+  ENDI
+
+  PS     KL_Zeile_1
+  PS     KL_Spalte_11
+
+  L      MG_SK_Arbeitsraum_Ueberwachung_aus
+  A      MG_Takt_1_s
+  IFT
+    PS     KL_Farbe_rot
+  ELSE
+    PS     KL_Farbe_gelb
+  ENDI
+
+  PS     K &SG_Limit_Table
+  CM     9082                          ;PLC Fenster String darstellen
+  M_Modul_Fehler_anzeigen
+
+;Zeile 1, Spalte 19..23
+
+  L      BG_PLC_Preset_Nr
+  >      KL_inaktiv
+  IFT
+    PS     BG_PLC_Preset_Nr
+    PS     KL_Mode_ohne_Vorzeichen_links
+    PS     KL_nach_Komma_0
+    PS     KL_vor_Komma_3
+    PS     K &SG_Zahlenwert
+    CM     9051                        ;Binärzahl in Dezimalstring wandeln (Format)
+
+    M_Modul_Fehler_anzeigen
+
+    L      S"     "
+    =      SG_Uhrzeit_PLC_Preset
+
+    L      S"DAT"
+    +      SG_Zahlenwert
+    OVWR   SG_Uhrzeit_PLC_Preset
+
+    PS     KL_Zeile_1
+    PS     KL_Spalte_19
+    PS     KL_Farbe_gelb
+    PS     K &SG_Uhrzeit_PLC_Preset
+    CM     9082                        ;PLC Fenster String darstellen
+
+    M_Modul_Fehler_anzeigen
+  ELSE
+    PS     DG_Echtzeituhr
+    PS     K &SG_Uhrzeit_PLC_Preset
+    PS     KL_Format_Zeit_H_M_S
+    CM     9055                        ;Uhrzeit (binär) in formatierten String wandeln
+
+    M_Modul_Fehler_anzeigen
+
+    L      K+5
+    =X
+
+    L      S""
+    =      SG_Uhrzeit_PLC_Preset^X
+
+    PS     KL_Zeile_1
+    PS     KL_Spalte_19
+    PS     KL_Farbe_schwarz
+    PS     K &SG_Uhrzeit_PLC_Preset
+    CM     9082                        ;PLC Fenster String darstellen
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM

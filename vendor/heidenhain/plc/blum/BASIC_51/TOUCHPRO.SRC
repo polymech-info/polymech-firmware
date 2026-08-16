@@ -1,0 +1,105 @@
+*-----------------------------------------------------------------------------
+*  Touch Probe
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*    Touch Probe will be activated by TOOL CALL. In this case the #Bit 0
+*    of the PLC status (tool table) must be set (%00000001).
+*-----------------------------------------------------------------------------
+
+#define /s    KL_TS640                                 K+2
+#define /s    KL_TS2x0                                 K+0            *;EUMACH
+
+#include Mac_Lib.inc
+
+GLOBAL Touch_probe
+
+;----------------------------
+LBL Touch_probe
+
+  L      NP_M4060_tool_measurement_active
+  AN     MG_touch_probe_active                                        *;EUMACH TS air blow & BLUM
+  R      NP_M4055_touch_probe_start_0_active
+
+  L      NP_M4062_tool_wear_tolerance_exceeded
+  O      NP_M4063_tool_breakage_tolerance_exceeded
+  S      PN_error_tool_tolerance
+*$WS
+  IFT
+    R      NP_M4062_tool_wear_tolerance_exceeded
+    R      NP_M4063_tool_breakage_tolerance_exceeded
+  ENDI
+
+  L      PN_error_touch_probe_not_in_spindle
+  R      NP_M4055_touch_probe_start_0_active
+
+  L      NP_M4055_touch_probe_start_0_active
+  AN     MG_touch_probe_active
+  S      PN_error_touch_probe_not_in_spindle
+
+*;EUMACH TS air blow
+  LN     MG_touch_probe_active
+  ON     NP_M4055_touch_probe_start_0_active
+  =      TS_TSxxx_air_blow
+
+  L      NP_M4055_touch_probe_start_0_active
+  S      MG_S_blow_clean_after_CTS
+
+  L      DG_MP4110_30_TS_probe_air_blow
+  ==     K+0
+  ON     NP_M4055_touch_probe_start_0_active
+  R      MG_S_blow_clean_after_CTS
+*;EUMACH TS air blow
+
+  LN     MG_touch_probe_active
+  R      PN_M4056_NC_stop_stylus_deflected							  *;EUMACH BASIC 53
+  EMT
+
+  L      NP_M4055_touch_probe_start_0_active
+  AN     TR_TSxxx_air_blow                                            *;EUMACH TS air blow
+  R      NP_M4055_touch_probe_start_0_active
+
+;  L      BG_MP6010_touch_probe_type                                   *;EUMACH
+;  ==     KL_TS2x0                                                     *;EUMACH
+;  A      NP_M4018_S_no_reference                                      *;EUMACH
+;  AN     NP_M4073_strobe_TOOL_CALL                                    *;EUMACH
+;  =      PN_error_S_not_referenced                                    *;EUMACH
+  L      BG_MP6010_touch_probe_type                                   *;EUMACH
+  ==     KL_TS2x0                                                     *;EUMACH
+  A      NP_M4057_touch_probe_cycle_active                            *;EUMACH
+  A      NP_M4018_S_no_reference                                      *;EUMACH
+  S      PN_error_S_not_referenced                                    *;EUMACH
+
+ ; L      NP_M4050_touch_probe_not_ready							  *;EUMACH Original PLC
+ ; A      NP_M4073_strobe_TOOL_CALL									  *;EUMACH Original PLC
+  L      MG_pulse_CE_key											  *;EUMACH BASIC 53
+  O      NP_M4073_strobe_TOOL_CALL									  *;EUMACH BASIC 53
+  A      NP_M4050_touch_probe_not_ready								  *;EUMACH BASIC 53
+  IFT
+    L      BG_MP6010_touch_probe_type
+    <>     KL_TS640
+    IFT
+      CM     9135
+      M_display_module_error(KG_error_module_9135)
+    ENDI
+  ENDI
+
+  LN     NP_M4073_strobe_TOOL_CALL
+  =      PN_M4056_NC_stop_stylus_deflected
+
+  L      NP_M4050_touch_probe_not_ready
+  A      MG_manual_mode
+  A      MG_key_NC_start
+  R      PN_M4056_NC_stop_stylus_deflected
+
+  L      MG_M03_spindle_right_cw_on
+  O      MG_M04_spindle_left_ccw_on
+  O      MG_M13_Spindle_right_coolant_on
+  O      MG_M14_Spindle_left_coolant_on
+  O      NP_M4070_strobe_G_code
+  S      PN_error_touch_probe_in_spindle
+
+  L      MG_M05_spindle_off
+  S      PN_M4092_quit_M_function
+
+EM

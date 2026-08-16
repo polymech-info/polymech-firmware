@@ -1,0 +1,43 @@
+/* STATUS STROBE
+   -------------
+*/
+CHARSIZE=AUTO; ;
+"\n";
+CHARSIZE=MEDIUM;
+"STROBES ";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+
+CURSOR=ON;
+"NC -> PLC                              \n";
+"Name                Strobe Quit        \n";
+CURSOR=OFF;
+
+"G-CODE                %d      %d\n",M4070/c,M4090/c;
+"S-CODE                %d      %d\n",M4071/c,M4091/c;
+"M-CODE                %d      %d\n",M4072/c,M4092/c;
+"T-CODE                %d      %d\n",M4073/c,M4093/c;
+"TDEF-CODE             %d      %d\n",M4074/c,M4094/c;
+"FN19-CODE             %d      %d\n",M4075/c,M4095/c;
+
+CURSOR=ON;
+"PLC -> NC                              \n";
+"Name                Strobe             \n";
+CURSOR=OFF;
+
+"PLC Posit Axis X      %d\n",M4120/c;
+"PLC Posit Axis Y      %d\n",M4121/c;
+"PLC Posit Axis Z      %d\n",M4122/c;
+"PLC Posit Axis 4      %d\n",M4123/c;
+"PLC Posit Axis 5      %d\n",M4124/c;
+"PLC Posit Axis 6      %d\n",M4125/c;
+"PLC Posit Axis 7      %d\n",M4126/c;
+"PLC Posit Axis 8      %d\n",M4127/c;
+"PLC Posit Axis 9      %d\n",M4128/c;
+"PLC Posit Spindle     %d\n",M4130/c;
+"Q Parameter 100-107   %d\n",M4131/c;
+"Datum Correction      %d\n",M4132/c;
+"Free Rotation         %d\n",M4133/c;
+"G Range S Speed       %d\n",M4134/c;
+"Axes Limit            %d\n",M4135/c;

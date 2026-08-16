@@ -1,0 +1,9 @@
+\n  M70 - PLC Preset aus
+\n  M71 - Axis Limit 1
+\n  M72 - Axis Limit 2
+\n  M73 - Axis Limit 3
+\n  M79 - PLC Preset ein
+\n  M80 - Stückzähler Reset
+\n  M81 - Stückzähler plus 1
+\n  M82 - WZ Moment Überwachung aus
+\n  M83 - WZ Moment Überwachung ein

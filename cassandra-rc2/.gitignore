@@ -1,0 +1,39 @@
+# PlatformIO
+.pio
+.cache/
+
+# Build artifacts
+*.elf
+*.bin
+*.map
+
+# Secrets
+src/config_secrets.h
+
+# Doxygen Output
+docs/doxygen/
+firmware-docs
+
+# Python build artifacts
+scripts/__pycache__/
+*.pyc
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+tests/reports/
+src/firmware.ino.cpp
+data/
+dist
+build

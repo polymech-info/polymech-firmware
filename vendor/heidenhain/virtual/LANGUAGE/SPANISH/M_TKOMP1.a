@@ -1,0 +1,24 @@
+/* Temperature Compensation
+   ------------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"COMPENSACION DE TEMPERATURA";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"                                      \n";
+CURSOR=OFF;
+"Temperatura maquina   : %+6.1F°\n",
+$WG_Temperatur_Maschine_Pt100$/n=1/c;
+"Temperatura spindle   : %+6.1F°\n\n",
+$WG_Temperatur_Spindel_Pt100$/n=1/c;
+"Temperatura diferencia: %+6.1F°\n\n",
+$WG_Temperatur_Differenz$/n=1/c;
+"Z-Compensacion        :   %+7.4F mm\n\n",
+$WG_Temp_Kompensation_Z$/n=4/c;
+"Z-Diferencia (Probe)  :   %+7.4F mm\n",
+$NP_D280_FN19_Zahlenwert_1$/n=4/c;
+

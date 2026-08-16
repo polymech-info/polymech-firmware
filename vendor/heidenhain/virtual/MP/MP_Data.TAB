@@ -1,0 +1,378 @@
+BEGIN MP_Data.TAB 
+#STRUCTBEGIN
+   NAME = Symbol
+     TYPE = C
+     WIDTH = 46
+     DEC = 0
+     DIA-ENGLISH = Symbol name ?
+     DIA-GERMAN = Symbolname ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 46
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = Value
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Parameter value ?
+     DIA-GERMAN = Parameter Wert ?
+     DIA-CZECH = Parameter value ?
+     DIA-FRENCH = Parameter value ?
+     DIA-ITALIAN = Parameter value ?
+     DIA-SPANISH = Parameter value ?
+     DIA-PORTUGUE = Parameter value ?
+     DIA-SWEDISH = Parameter value ?
+     DIA-DANISH = Parameter value ?
+     DIA-FINNISH = Parameter value ?
+     DIA-DUTCH = Parameter value ?
+     DIA-POLISH = Parameter value ?
+     DIA-HUNGARIA = Parameter value ?
+   NAME = Unit
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Parameter unit ?
+     DIA-GERMAN = Parameter Einheit ?
+     DIA-CZECH = Parameter unit ?
+     DIA-FRENCH = Parameter unit ?
+     DIA-ITALIAN = Parameter unit ?
+     DIA-SPANISH = Parameter unit ?
+     DIA-PORTUGUE = Parameter unit ?
+     DIA-SWEDISH = Parameter unit ?
+     DIA-DANISH = Parameter unit ?
+     DIA-FINNISH = Parameter unit ?
+     DIA-DUTCH = Parameter unit ?
+     DIA-POLISH = Parameter unit ?
+     DIA-HUNGARIA = Parameter unit ?
+   NAME = Default
+     TYPE = N
+     WIDTH = 48
+     DEC = 4
+     DIA-ENGLISH = Parameter default ?
+     DIA-GERMAN = Standardwert ?
+     DIA-CZECH = Parameter default ?
+     DIA-FRENCH = Parameter default ?
+     DIA-ITALIAN = Parameter default ?
+     DIA-SPANISH = Parameter default ?
+     DIA-PORTUGUE = Parameter default ?
+     DIA-SWEDISH = Parameter default ?
+     DIA-DANISH = Parameter default ?
+     DIA-FINNISH = Parameter default ?
+     DIA-DUTCH = Parameter default ?
+     DIA-POLISH = Parameter default ?
+     DIA-HUNGARIA = Parameter default ?
+   NAME = Min
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Parameter value min ?
+     DIA-GERMAN = Parameter Minimalwert ?
+     DIA-CZECH = Parameter value min ?
+     DIA-FRENCH = Parameter value min ?
+     DIA-ITALIAN = Parameter value min ?
+     DIA-SPANISH = Parameter value min ?
+     DIA-PORTUGUE = Parameter value min ?
+     DIA-SWEDISH = Parameter value min ?
+     DIA-DANISH = Parameter value min ?
+     DIA-FINNISH = Parameter value min ?
+     DIA-DUTCH = Parameter value min ?
+     DIA-POLISH = Parameter value min ?
+     DIA-HUNGARIA = Parameter value min ?
+   NAME = Max
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Parameter value max ?
+     DIA-GERMAN = Parameter Maximalwert ?
+     DIA-CZECH = Parameter value max ?
+     DIA-FRENCH = Parameter value max ?
+     DIA-ITALIAN = Parameter value max ?
+     DIA-SPANISH = Parameter value max ?
+     DIA-PORTUGUE = Parameter value max ?
+     DIA-SWEDISH = Parameter value max ?
+     DIA-DANISH = Parameter value max ?
+     DIA-FINNISH = Parameter value max ?
+     DIA-DUTCH = Parameter value max ?
+     DIA-POLISH = Parameter value max ?
+     DIA-HUNGARIA = Parameter value max ?
+#STRUCTEND
+NR      Symbol                                         Comment                                        Value        Unit         Default                                          Min          Max
+0                                                                                                     +0           +0           +0                                               +0           +0           
+1                                                      --- Spindel 1/2                                +0           -1           +0                                               +0           +0           
+2                                                                                                     +0           +0           +0                                               +0           +0           
+3       STG_Spindel[0].DG_max_Temperatur               S1 Temperatur max (Pt 100)                 [°] +60          +0.1         +60                                              +30          +150         
+4       STG_Spindel[1].DG_max_Temperatur               S2 Temperatur max (Pt 100)                 [°] +60          +0.1         +60                                              +30          +150         
+5       STG_Spindel[0].DG_Luefter_ein_Temperatur       S1 Temperatur Spindel Lüfter ein           [°] +40          +1           +40                                              +0           +150         
+6       STG_Spindel[1].DG_Luefter_ein_Temperatur       S2 Temperatur Spindel Lüfter ein           [°] +40          +1           +40                                              +0           +150         
+7       STG_Spindel[0].DG_Luefter_aus_Temperatur       S1 Temperatur Spindel Lüfter aus           [°] +32          +1           +32                                              +0           +150         
+8       STG_Spindel[1].DG_Luefter_aus_Temperatur       S2 Temperatur Spindel Lüfter aus           [°] +32          +1           +32                                              +0           +150         
+9       STG_Spindel[0].DG_Referenz_Drehzahl            S1 Drehzahl Referenz                   [1/min] +10          +0.001       +10                                              +1           +500         
+10      STG_Spindel[1].DG_Referenz_Drehzahl            S2 Drehzahl Referenz                   [1/min] +10          +0.001       +10                                              +1           +500         
+11      STG_Spindel[0].DG_Betriebsart_2_Drehzahl       S1 Drehzahl Betriebsart 2              [1/min] +60          +0.001       +800                                             +100         +2000        
+12      STG_Spindel[1].DG_Betriebsart_2_Drehzahl       S2 Drehzahl Betriebsart 2              [1/min] +0           +0.001       +800                                             +100         +2000        
+13      STG_Spindel[0].DG_Betriebsart_3_Drehzahl       S1 Drehzahl Betriebsart 3              [1/min] +950         +0.001       +5000                                            +100         +2000        
+14      STG_Spindel[1].DG_Betriebsart_3_Drehzahl       S2 Drehzahl Betriebsart 3              [1/min] +0           +0.001       +5000                                            +100         +2000        
+15      STG_Spindel[0].DG_Betriebsart_4_Drehzahl       S1 Drehzahl Betriebsart 4              [1/min] +1500        +0.001       +5000                                            +100         +2000        
+16      STG_Spindel[1].DG_Betriebsart_4_Drehzahl       S2 Drehzahl Betriebsart 4              [1/min] +0           +0.001       +5000                                            +100         +2000        
+17      STG_Spindel[0].DG_n_min                        S1 n min                               [1/min] +6           +1           +6                                               +1           +20          
+18      STG_Spindel[1].DG_n_min                        S2 n min                               [1/min] +6           +1           +6                                               +1           +20          
+19      STG_Spindel[0].DG_n_Diff_100                   S1 n ist=soll                 [1/min; n < 100] +10          +1           +10                                              +1           +20          
+20      STG_Spindel[1].DG_n_Diff_100                   S2 n ist=soll                 [1/min; n < 100] +10          +1           +10                                              +1           +20          
+21      STG_Spindel[0].DG_n_soll                       S1 n ist=soll                     [%; n > 100] +80          +1           +80                                              +50          +95          
+22      STG_Spindel[1].DG_n_soll                       S2 n ist=soll                     [%; n > 100] +80          +1           +80                                              +50          +95          
+23      STG_Spindel[0].DG_n_max_S_leer                 S1 n max wenn kein WZ in Spindel       [1/min] +12          +1           +10                                               +1           +20         
+24      STG_Spindel[1].DG_n_max_S_leer                 S2 n max wenn kein WZ in Spindel       [1/min] +12          +1           +10                                               +1           +20         
+25      STG_Spindel[0].DG_min_Moment                   S1 Moment min                              [%] +10          +1           +10                                              +1           +50          
+26      STG_Spindel[1].DG_min_Moment                   S2 Moment min                              [%] +10          +1           +10                                              +1           +50          
+27      STG_Spindel[0].DG_max_Moment                   S1 Moment max 0=aus 1..150                 [%] +150         +1           +150                                             +50          +150         
+28      STG_Spindel[1].DG_max_Moment                   S2 Moment max 0=aus 1..150                 [%] +150         +1           +150                                             +50          +150         
+29      STG_Spindel[0].DG_Faktor_Vorschubreduzierung   S1 Faktor Vorschubred bei S Moment max      [] +1.5         +0.1         +1.5                                             +0.1         +10          
+30      STG_Spindel[1].DG_Faktor_Vorschubreduzierung   S2 Faktor Vorschubred bei S Moment max      [] +1.5         +0.1         +1.5                                             +0.1         +10          
+31      STG_Spindel[0].DG_Faktor_Auslastungsanzeige    S1 Faktor Auslastungsanzeige (S analog)     [] +1           +0.1         +1                                               +0.1         +10          
+32      STG_Spindel[1].DG_Faktor_Auslastungsanzeige    S2 Faktor Auslastungsanzeige (S analog)     [] +1           +0.1         +1                                               +0.1         +10          
+33      STG_Spindel[0].DG_Drehzahl_YD_Umschaltung      S1 Umschalt-Drehzahl Y->D Betrieb      [1/min] +1200        +0.001       +1200                                            +100         +100000      
+34      STG_Spindel[1].DG_Drehzahl_YD_Umschaltung      S2 Umschalt-Drehzahl Y->D Betrieb      [1/min] +1200        +0.001       +1200                                            +100         +100000      
+35      STG_Spindel[0].DG_Drehzahl_DY_Umschaltung      S1 Umschalt-Drehzahl D->Y Betrieb      [1/min] +1000        +0.001       +1000                                            +100         +100000      
+36      STG_Spindel[1].DG_Drehzahl_DY_Umschaltung      S2 Umschalt-Drehzahl D->Y Betrieb      [1/min] +1000        +0.001       +1000                                            +100         +100000      
+37                                                                                                    +0           +0           +0                                               +0           +0           
+38                                                     --- Vorschub PLC Positionierung                +0           -1           +0                                               +0           +0           
+39                                                                                                    +0           +0           +0                                               +0           +0           
+40      DG_Vorschub_PLC_Pos[0]                         Vorschub PLC Posit Achse X            [mm/min] +5000        +1           +2000                                            +100         +200000      
+41      DG_Vorschub_PLC_Pos[1]                         Vorschub PLC Posit Achse Y            [mm/min] +5000        +1           +2000                                            +100         +200000      
+42      DG_Vorschub_PLC_Pos[2]                         Vorschub PLC Posit Achse Z            [mm/min] +5000        +1           +2000                                            +100         +200000      
+43      DG_Vorschub_PLC_Pos[3]                         Vorschub PLC Posit Achse 4            [mm/min] +2000        +1           +2000                                            +100         +200000      
+44      DG_Vorschub_PLC_Pos[4]                         Vorschub PLC Posit Achse 5            [mm/min] +2000        +1           +2000                                            +100         +200000      
+45      DG_Vorschub_PLC_Pos[5]                         Vorschub PLC Posit Achse 6            [mm/min] +2000        +1           +2000                                            +100         +200000      
+46      DG_Vorschub_PLC_Pos[6]                         Vorschub PLC Posit Achse 7            [mm/min] +2000        +1           +2000                                            +100         +200000      
+47      DG_Vorschub_PLC_Pos[7]                         Vorschub PLC Posit Achse 8            [mm/min] +2000        +1           +2000                                            +100         +200000      
+48      DG_Vorschub_PLC_Pos[8]                         Vorschub PLC Posit Achse 9            [mm/min] +2000        +1           +2000                                            +100         +200000      
+49      DG_Vorschub_PLC_Pos[9]                         Vorschub PLC Posit Achse 10           [mm/min] +2000        +1           +2000                                            +100         +200000      
+50      DG_Vorschub_PLC_Pos[10]                        Vorschub PLC Posit Achse 11           [mm/min] +2000        +1           +2000                                            +100         +200000      
+51      DG_Vorschub_PLC_Pos[11]                        Vorschub PLC Posit Achse 12           [mm/min] +2000        +1           +2000                                            +100         +200000      
+52      DG_Vorschub_PLC_Pos[12]                        Vorschub PLC Posit Achse 13           [mm/min] +2000        +1           +2000                                            +100         +200000      
+53      DG_Vorschub_PLC_Pos[13]                        Vorschub PLC Posit Achse 14           [mm/min] +2000        +1           +2000                                            +100         +200000      
+54      DG_Vorschub_PLC_Pos[14]                        Vorschub PLC Posit Achse 15           [mm/min] +2000        +1           +2000                                            +100         +200000      
+55      DG_Vorschub_PLC_Pos[15]                        Vorschub PLC Posit Achse 16           [mm/min] +2000        +1           +2000                                            +100         +200000      
+56      DG_Vorschub_PLC_Pos[16]                        Vorschub PLC Posit Achse 17           [mm/min] +2000        +1           +2000                                            +100         +200000      
+57      DG_Vorschub_PLC_Pos[17]                        Vorschub PLC Posit Achse 18           [mm/min] +2000        +1           +2000                                            +100         +200000      
+58      DG_Vorschub_PLC_Pos[18]                        Vorschub PLC Posit Achse 19           [mm/min] +2000        +1           +2000                                            +100         +200000      
+59      DG_Vorschub_PLC_Pos[19]                        Vorschub PLC Posit Achse 20           [mm/min] +2000        +1           +2000                                            +100         +200000      
+60      DG_Vorschub_PLC_Pos[20]                        Vorschub PLC Posit Achse 21           [mm/min] +2000        +1           +2000                                            +100         +200000      
+61      DG_Vorschub_PLC_Pos[21]                        Vorschub PLC Posit Achse 22           [mm/min] +2000        +1           +2000                                            +100         +200000      
+62      DG_Vorschub_BA_2[0]                            Vorschub BA 2 Achse X                 [mm/min] +2000        +1           +2000                                            +100         +200000      
+63      DG_Vorschub_BA_2[1]                            Vorschub BA 2 Achse Y                 [mm/min] +2000        +1           +2000                                            +100         +200000      
+64      DG_Vorschub_BA_2[2]                            Vorschub BA 2 Achse Z                 [mm/min] +2000        +1           +2000                                            +100         +200000      
+65      DG_Vorschub_BA_2[3]                            Vorschub BA 2 Achse 4                 [mm/min] +200         +1           +2000                                            +100         +200000      
+66      DG_Vorschub_BA_2[4]                            Vorschub BA 2 Achse 5                 [mm/min] +200         +1           +2000                                            +100         +200000      
+67      DG_Vorschub_BA_2[5]                            Vorschub BA 2 Achse 6                 [mm/min] +200         +1           +2000                                            +100         +200000      
+68      DG_Vorschub_BA_2[6]                            Vorschub BA 2 Achse 7                 [mm/min] +200         +1           +2000                                            +100         +200000      
+69      DG_Vorschub_BA_2[7]                            Vorschub BA 2 Achse 8                 [mm/min] +200         +1           +2000                                            +100         +200000      
+70      DG_Vorschub_BA_2[8]                            Vorschub BA 2 Achse 9                 [mm/min] +200         +1           +2000                                            +100         +200000      
+71      DG_Vorschub_BA_2[9]                            Vorschub BA 2 Achse 10                [mm/min] +200         +1           +2000                                            +100         +200000      
+72      DG_Vorschub_BA_2[10]                           Vorschub BA 2 Achse 11                [mm/min] +200         +1           +2000                                            +100         +200000      
+73      DG_Vorschub_BA_2[11]                           Vorschub BA 2 Achse 12                [mm/min] +200         +1           +2000                                            +100         +200000      
+74      DG_Vorschub_BA_2[12]                           Vorschub BA 2 Achse 13                [mm/min] +200         +1           +2000                                            +100         +200000      
+75      DG_Vorschub_BA_2[13]                           Vorschub BA 2 Achse 14                [mm/min] +200         +1           +2000                                            +100         +200000      
+76      DG_Vorschub_BA_2[14]                           Vorschub BA 2 Achse 15                [mm/min] +200         +1           +2000                                            +100         +200000      
+77      DG_Vorschub_BA_2[15]                           Vorschub BA 2 Achse 16                [mm/min] +200         +1           +2000                                            +100         +200000      
+78      DG_Vorschub_BA_2[16]                           Vorschub BA 2 Achse 17                [mm/min] +200         +1           +2000                                            +100         +200000      
+79      DG_Vorschub_BA_2[17]                           Vorschub BA 2 Achse 18                [mm/min] +200         +1           +2000                                            +100         +200000      
+80      DG_Vorschub_BA_2[18]                           Vorschub BA 2 Achse 19                [mm/min] +200         +1           +2000                                            +100         +200000      
+81      DG_Vorschub_BA_2[19]                           Vorschub BA 2 Achse 20                [mm/min] +200         +1           +2000                                            +100         +200000      
+82      DG_Vorschub_BA_2[20]                           Vorschub BA 2 Achse 21                [mm/min] +200         +1           +2000                                            +100         +200000      
+83      DG_Vorschub_BA_2[21]                           Vorschub BA 2 Achse 22                [mm/min] +200         +1           +2000                                            +100         +200000      
+84      DG_Vorschub_BA_3[0]                            Vorschub BA 3 Achse X                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+85      DG_Vorschub_BA_3[1]                            Vorschub BA 3 Achse Y                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+86      DG_Vorschub_BA_3[2]                            Vorschub BA 3 Achse Z                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+87      DG_Vorschub_BA_3[3]                            Vorschub BA 3 Achse 4                 [mm/min] +300         +1           +2000                                            +100         +200000      
+88      DG_Vorschub_BA_3[4]                            Vorschub BA 3 Achse 5                 [mm/min] +300         +1           +2000                                            +100         +200000      
+89      DG_Vorschub_BA_3[5]                            Vorschub BA 3 Achse 6                 [mm/min] +300         +1           +2000                                            +100         +200000      
+90      DG_Vorschub_BA_3[6]                            Vorschub BA 3 Achse 7                 [mm/min] +300         +1           +2000                                            +100         +200000      
+91      DG_Vorschub_BA_3[7]                            Vorschub BA 3 Achse 8                 [mm/min] +300         +1           +2000                                            +100         +200000      
+92      DG_Vorschub_BA_3[8]                            Vorschub BA 3 Achse 9                 [mm/min] +300         +1           +2000                                            +100         +200000      
+93      DG_Vorschub_BA_3[9]                            Vorschub BA 3 Achse 10                [mm/min] +300         +1           +2000                                            +100         +200000      
+94      DG_Vorschub_BA_3[10]                           Vorschub BA 3 Achse 11                [mm/min] +300         +1           +2000                                            +100         +200000      
+95      DG_Vorschub_BA_3[11]                           Vorschub BA 3 Achse 12                [mm/min] +300         +1           +2000                                            +100         +200000      
+96      DG_Vorschub_BA_3[12]                           Vorschub BA 3 Achse 13                [mm/min] +300         +1           +2000                                            +100         +200000      
+97      DG_Vorschub_BA_3[13]                           Vorschub BA 3 Achse 14                [mm/min] +300         +1           +2000                                            +100         +200000      
+98      DG_Vorschub_BA_3[14]                           Vorschub BA 3 Achse 15                [mm/min] +300         +1           +2000                                            +100         +200000      
+99      DG_Vorschub_BA_3[15]                           Vorschub BA 3 Achse 16                [mm/min] +300         +1           +2000                                            +100         +200000      
+100     DG_Vorschub_BA_3[16]                           Vorschub BA 3 Achse 17                [mm/min] +300         +1           +2000                                            +100         +200000      
+101     DG_Vorschub_BA_3[17]                           Vorschub BA 3 Achse 18                [mm/min] +300         +1           +2000                                            +100         +200000      
+102     DG_Vorschub_BA_3[18]                           Vorschub BA 3 Achse 19                [mm/min] +300         +1           +2000                                            +100         +200000      
+103     DG_Vorschub_BA_3[19]                           Vorschub BA 3 Achse 20                [mm/min] +300         +1           +2000                                            +100         +200000      
+104     DG_Vorschub_BA_3[20]                           Vorschub BA 3 Achse 21                [mm/min] +300         +1           +2000                                            +100         +200000      
+105     DG_Vorschub_BA_3[21]                           Vorschub BA 3 Achse 22                [mm/min] +300         +1           +2000                                            +100         +200000      
+106     DG_Vorschub_BA_4[0]                            Vorschub BA 4 Achse X                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+107     DG_Vorschub_BA_4[1]                            Vorschub BA 4 Achse Y                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+108     DG_Vorschub_BA_4[2]                            Vorschub BA 4 Achse Z                 [mm/min] +5000        +1           +2000                                            +100         +200000      
+109     DG_Vorschub_BA_4[3]                            Vorschub BA 4 Achse 4                 [mm/min] +400         +1           +2000                                            +100         +200000      
+110     DG_Vorschub_BA_4[4]                            Vorschub BA 4 Achse 5                 [mm/min] +400         +1           +2000                                            +100         +200000      
+111     DG_Vorschub_BA_4[5]                            Vorschub BA 4 Achse 6                 [mm/min] +400         +1           +2000                                            +100         +200000      
+112     DG_Vorschub_BA_4[6]                            Vorschub BA 4 Achse 7                 [mm/min] +400         +1           +2000                                            +100         +200000      
+113     DG_Vorschub_BA_4[7]                            Vorschub BA 4 Achse 8                 [mm/min] +400         +1           +2000                                            +100         +200000      
+114     DG_Vorschub_BA_4[8]                            Vorschub BA 4 Achse 9                 [mm/min] +400         +1           +2000                                            +100         +200000      
+115     DG_Vorschub_BA_4[9]                            Vorschub BA 4 Achse 10                [mm/min] +400         +1           +2000                                            +100         +200000      
+116     DG_Vorschub_BA_4[10]                           Vorschub BA 4 Achse 11                [mm/min] +400         +1           +2000                                            +100         +200000      
+117     DG_Vorschub_BA_4[11]                           Vorschub BA 4 Achse 12                [mm/min] +400         +1           +2000                                            +100         +200000      
+118     DG_Vorschub_BA_4[12]                           Vorschub BA 4 Achse 13                [mm/min] +400         +1           +2000                                            +100         +200000      
+119     DG_Vorschub_BA_4[13]                           Vorschub BA 4 Achse 14                [mm/min] +400         +1           +2000                                            +100         +200000      
+120     DG_Vorschub_BA_4[14]                           Vorschub BA 4 Achse 15                [mm/min] +400         +1           +2000                                            +100         +200000      
+121     DG_Vorschub_BA_4[15]                           Vorschub BA 4 Achse 16                [mm/min] +400         +1           +2000                                            +100         +200000      
+122     DG_Vorschub_BA_4[16]                           Vorschub BA 4 Achse 17                [mm/min] +400         +1           +2000                                            +100         +200000      
+123     DG_Vorschub_BA_4[17]                           Vorschub BA 4 Achse 18                [mm/min] +400         +1           +2000                                            +100         +200000      
+124     DG_Vorschub_BA_4[18]                           Vorschub BA 4 Achse 19                [mm/min] +400         +1           +2000                                            +100         +200000      
+125     DG_Vorschub_BA_4[19]                           Vorschub BA 4 Achse 20                [mm/min] +400         +1           +2000                                            +100         +200000      
+126     DG_Vorschub_BA_4[20]                           Vorschub BA 4 Achse 21                [mm/min] +400         +1           +2000                                            +100         +200000      
+127     DG_Vorschub_BA_4[21]                           Vorschub BA 4 Achse 22                [mm/min] +400         +1           +2000                                            +100         +200000      
+128                                                                                                   +0           +0           +0                                               +0           +0           
+129                                                    --- Position WZW                               +0           -1           +0                                               +0           +0           
+130                                                                                                   +0           +0           +0                                               +0           +0           
+131     DG_WZW_Pos_X                                   Position WZW Achse X                      [mm] +200         +0.0001      +0                                               -99999.9999  +99999.9999  
+132     DG_WZW_Pos_X_vor                               Position WZW Achse X Vorposition          [mm] +100         +0.0001      +0                                               -99999.9999  +99999.9999  
+133     DG_WZW_Pos_Y                                   Position WZW Achse Y                      [mm] +200         +0.0001      +0                                               -99999.9999  +99999.9999  
+134     DG_WZW_Pos_Y_vor                               Position WZW Achse Y Vorposition          [mm] +100         +0.0001      +0                                               -99999.9999  +99999.9999  
+135     DG_WZW_Pos_Z_ausheben                          Position WZW Achse Z ausheben             [mm] +950         +0.0001      +0                                               -99999.9999  +99999.9999  
+136     DG_WZW_Pos_Z_einsetzen                         Position WZW Achse Z                      [mm] +900         +0.0001      +0                                               -99999.9999  +99999.9999  
+137     DG_WZW_Pos_X_manuell                           Position WZW Achse X manuell              [mm] -100         +0.0001      +0                                               -99999.9999  +99999.9999  
+138     DG_WZW_Pos_Y_manuell                           Position WZW Achse Y manuell              [mm] -100         +0.0001      +0                                               -99999.9999  +99999.9999  
+139     DG_WZW_Pos_Z_manuell                           Position WZW Achse Z manuell              [mm] +800         +0.0001      +0                                               -99999.9999  +99999.9999  
+140     DG_WZW_Pos_Z_sicher                            Position WZW Achse Z sicher               [mm] +950         +0.0001      +0                                               -99999.9999  +99999.9999  
+141     DG_WZW_Pos_Spindel                             Position WZW Spindel                       [°] +90          +0.0001      +0                                               -99999.9999  +99999.9999  
+142     STG_WZM[0].DG_WZM_Offset_Beladeplatz           WZ Magazin 1 Offset Beladeplatz             [] +10          +1           +0                                               +0           +32000       
+143     STG_WZM[1].DG_WZM_Offset_Beladeplatz           WZ Magazin 2 Offset Beladeplatz             [] +10          +1           +0                                               +0           +32000       
+144                                                                                                   +0           +0           +0                                               +0           +0           
+145                                                    --- PLC Position nach Referenz                 +0           -1           +0                                               +0           +0           
+146                                                                                                   +0           +0           +0                                               +0           +0           
+147     DG_Pos_nach_Referenz[0]                        Position nach Referenz Achse X            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+148     DG_Pos_nach_Referenz[1]                        Position nach Referenz Achse Y            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+149     DG_Pos_nach_Referenz[2]                        Position nach Referenz Achse Z            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+150     DG_Pos_nach_Referenz[3]                        Position nach Referenz Achse 4            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+151     DG_Pos_nach_Referenz[4]                        Position nach Referenz Achse 5            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+152     DG_Pos_nach_Referenz[5]                        Position nach Referenz Achse 6            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+153     DG_Pos_nach_Referenz[6]                        Position nach Referenz Achse 7            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+154     DG_Pos_nach_Referenz[7]                        Position nach Referenz Achse 8            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+155     DG_Pos_nach_Referenz[8]                        Position nach Referenz Achse 9            [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+156     DG_Pos_nach_Referenz[9]                        Position nach Referenz Achse 10           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+157     DG_Pos_nach_Referenz[10]                       Position nach Referenz Achse 11           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+158     DG_Pos_nach_Referenz[11]                       Position nach Referenz Achse 12           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+159     DG_Pos_nach_Referenz[12]                       Position nach Referenz Achse 13           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+160     DG_Pos_nach_Referenz[13]                       Position nach Referenz Achse 14           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+161     DG_Pos_nach_Referenz[14]                       Position nach Referenz Achse 15           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+162     DG_Pos_nach_Referenz[15]                       Position nach Referenz Achse 16           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+163     DG_Pos_nach_Referenz[16]                       Position nach Referenz Achse 17           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+164     DG_Pos_nach_Referenz[17]                       Position nach Referenz Achse 18           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+165     DG_Pos_nach_Referenz[18]                       Position nach Referenz Achse 19           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+166     DG_Pos_nach_Referenz[19]                       Position nach Referenz Achse 20           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+167     DG_Pos_nach_Referenz[20]                       Position nach Referenz Achse 21           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+168     DG_Pos_nach_Referenz[21]                       Position nach Referenz Achse 22           [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+169                                                                                                   +0           +0           +0                                               +0           +0           
+170                                                    --- Position Softwaren Referenz-Nocken         +0           +0           +0                                               +0           +0           
+171                                                                                                   +0           +0           +0                                               +0           +0           
+172     DG_Pos_SW_Referenz_Nocken[0]                   Position Software Referenz-Nocken X       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+173     DG_Pos_SW_Referenz_Nocken[1]                   Position Software Referenz-Nocken Y       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+174     DG_Pos_SW_Referenz_Nocken[2]                   Position Software Referenz-Nocken Z       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+175     DG_Pos_SW_Referenz_Nocken[3]                   Position Software Referenz-Nocken 4       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+176     DG_Pos_SW_Referenz_Nocken[4]                   Position Software Referenz-Nocken 5       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+177     DG_Pos_SW_Referenz_Nocken[5]                   Position Software Referenz-Nocken 6       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+178     DG_Pos_SW_Referenz_Nocken[6]                   Position Software Referenz-Nocken 7       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+179     DG_Pos_SW_Referenz_Nocken[7]                   Position Software Referenz-Nocken 8       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+180     DG_Pos_SW_Referenz_Nocken[8]                   Position Software Referenz-Nocken 9       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+181     DG_Pos_SW_Referenz_Nocken[9]                   Position Software Referenz-Nocken 10      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+182     DG_Pos_SW_Referenz_Nocken[10]                  Position Software Referenz-Nocken 11      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+183     DG_Pos_SW_Referenz_Nocken[11]                  Position Software Referenz-Nocken 12      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+184     DG_Pos_SW_Referenz_Nocken[12]                  Position Software Referenz-Nocken 13      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+185     DG_Pos_SW_Referenz_Nocken[13]                  Position Software Referenz-Nocken 14      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+186     DG_Pos_SW_Referenz_Nocken[14]                  Position Software Referenz-Nocken 15      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+187     DG_Pos_SW_Referenz_Nocken[15]                  Position Software Referenz-Nocken 16      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+188     DG_Pos_SW_Referenz_Nocken[16]                  Position Software Referenz-Nocken 17      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+189     DG_Pos_SW_Referenz_Nocken[17]                  Position Software Referenz-Nocken 18      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+190     DG_Pos_SW_Referenz_Nocken[18]                  Position Software Referenz-Nocken 19      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+191     DG_Pos_SW_Referenz_Nocken[19]                  Position Software Referenz-Nocken 20      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+192     DG_Pos_SW_Referenz_Nocken[20]                  Position Software Referenz-Nocken 21      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+193     DG_Pos_SW_Referenz_Nocken[21]                  Position Software Referenz-Nocken 22      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+194                                                                                                   +0           +0           +0                                               +0           +0           
+195                                                    --- Temperatur-Kompensation                    +0           -1           +0                                               +0           +0           
+196                                                                                                   +0           +0           +0                                               +0           +0           
+197     DG_Faktor_10_Grad_Bereich                      T-Faktor bei T(diff) 00..10 Grad     [um/Grad] +0           +0.0001      +0                                               +0.0001      +10          
+198     DG_Faktor_20_Grad_Bereich                      T-Faktor bei T(diff) 10..20 Grad     [um/Grad] +0           +0.0001      +0                                               +0.0001      +10          
+199     DG_Faktor_30_Grad_Bereich                      T-Faktor bei T(diff) 20..30 Grad     [um/Grad] +0           +0.0001      +0                                               +0.0001      +10          
+200     DG_Faktor_40_Grad_Bereich                      T-Faktor bei T(diff) 30..40 Grad     [um/Grad] +0           +0.0001      +0                                               +0.0001      +10          
+201     DG_Faktor_50_Grad_Bereich                      T-Faktor bei T(diff) 40..50 Grad     [um/Grad] +0           +0.0001      +0                                               +0.0001      +10          
+202                                                                                                   +0           +0           +0                                               +0           +0           
+203                                                    --- Pendel Betrieb                             +0           -1           +0                                               +0           +0           
+204                                                                                                   +0           +0           +0                                               +0           +0           
+205     DG_Pendel_Grenze_X                             Pendeln Grenze X, Position Trennwand      [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+206     DG_Pendel_Pos_1_X                              Pendeln Position X, Tisch 1               [mm] -100         +0.0001      -100                                             -99999.9999  +99999.9999  
+207     DG_Pendel_Pos_2_X                              Pendeln Position X, Tisch 2               [mm] +100         +0.0001      +100                                             -99999.9999  +99999.9999  
+208     DG_Pendel_Pos_Y                                Pendeln Position Y                        [mm] +200         +0.0001      +200                                             -99999.9999  +99999.9999  
+209     DG_Pendel_Pos_Z                                Pendeln Position Z                        [mm] +200         +0.0001      +200                                             -99999.9999  +99999.9999  
+210                                                                                                   +0           +0           +0                                               +0           +0           
+211                                                    --- Palettenwechsel                            +0           +0           +0                                               +0           +0           
+212                                                                                                   +0           +0           +0                                               +0           +0           
+213     DG_PW_Anzahl_Plaetze                           PW Anzahl der Plätze                        [] +40          +1           +40                                              +2           +32000       
+214     DG_PW_Posit_X                                  Paletten Position X                       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+215     DG_PW_Posit_Y                                  Paletten Position Y                       [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+216     DG_PW_Posit_Z                                  Paletten Position Z                       [mm] +1000        +0.0001      +1000                                            -99999.9999  +99999.9999  
+217                                                                                                   +0           +0           +0                                               +0           +0           
+218                                                    --- 3D Kopf                                    +0           -1           +0                                               +0           +0           
+219                                                                                                   +0           +0           +0                                               +0           +0           
+220     DG_max_Moment_Achse_1                          max Moment 3D Kopf Achse 1, +0: inaktiv [0.1%] +0           +0           +1000                                            +0           +1000        
+221     DG_max_Moment_Achse_2                          max Moment 3D Kopf Achse 2, +0: inaktiv [0.1%] +0           +0           +1000                                            +0           +1000        
+222     DG_3D_Kopf_Achse_1_Offset_S_Pos                3D-Kopf Achse 1 Offset Spindel Position    [°] +0           +0.0001      +0                                               +0           +359.9999    
+223     DG_3D_Kopf_Achse_2_Offset_S_Pos                3D-Kopf Achse 2 Offset Spindel Position    [°] +0           +0.0001      +0                                               +0           +359.9999    
+224                                                                                                   +0           +0           +0                                               +0           +0           
+225                                                    --- Schmierung Achsen Zeit                     +0           -1           +0                                               +0           +0           
+226                                                                                                   +0           +0           +0                                               +0           +0           
+227     DG_Schmier_Pause_min                           Schmierung Achsen Pause minimal          [min] +30          +1           +30                                              +1           +32000       
+228     DG_Schmier_Pause_max                           Schmierung Achsen Pause maximal          [min] +120         +1           +120                                             +1           +32000       
+229                                                                                                   +0           +0           +0                                               +0           +0           
+230                                                    --- NOT AUS Test                               +0           +0           +0                                               +0           +0           
+231                                                                                                   +0           +0           +0                                               +0           +0           
+232     DG_Zeit_Not_Halt_Test                          nicht FS: Not Halt/BremsTest +0: inaktiv [min] +10080       +1           +10080                                           +0           +32000       
+233     DG_FS_Zeit_Bremsentest_Vorwarnung              FS: Bremsen Test Vorwarnung              [min] +120         +1           +120                                             +0           +1073741823  
+234     DG_FS_Zeit_Selbsttest_Vorwarnung               FS: Selbst Test Vorwarnung               [min] +120         +1           +480                                             +0           +1073741823  
+235                                                                                                   +0           +0           +0                                               +0           +0           
+236                                                    --- Override F/Fmax                            +0           +0           +0                                               +0           +0           
+237                                                                                                   +0           +0           +0                                               +0           +0           
+238     DG_F_Fmax_Override_Kopplung                    Kopplung F-/Fmax-Override    +0: inaktiv   [%] +10          +0.01        +0                                               +0           +100         
+239                                                                                                   +0           +0           +0                                               +0           +0           
+240                                                    --- Arbeitsraum Ueberwachung                   +0           +0           +0                                               +0           +0           
+241                                                                                                   +0           +0           +0                                               +0           +0           
+242     DG_Arbeitsraum_manu_Y                          Arbeitsraum Überwachung Manuell Achse Y   [mm] -99999       +0.0001      -99999                                           -99999.9999  +99999.9999  
+243     DG_Arbeitsraum_manu_Z                          Arbeitsraum Überwachung Manuell Achse Z   [mm] -99999       +0.0001      -99999                                           -99999.9999  +99999.9999  
+244     DG_Arbeitsraum_auto_Y                          Arbeitsraum Überwachung Automatik Achse Y [mm] -99999       +0.0001      -99999                                           -99999.9999  +99999.9999  
+245     DG_Arbeitsraum_auto_Z                          Arbeitsraum Überwachung Automatik Achse Z [mm] -99999       +0.0001      -99999                                           -99999.9999  +99999.9999  
+246     DG_Arbeitsraum_manu_B                          Arbeitsraum Überwachung Manuell Achse B   [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+247     DG_Arbeitsraum_manu_C                          Arbeitsraum Überwachung Manuell Achse C   [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+248     DG_Arbeitsraum_auto_B                          Arbeitsraum Überwachung Automatik Achse B [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+249     DG_Arbeitsraum_auto_C                          Arbeitsraum Überwachung Automatik Achse C [mm] +0           +0.0001      +0                                               -99999.9999  +99999.9999  
+250                                                                                                   +0           +0           +0                                               +0           +0           
+251                                                                                                   +0           -1           +0                                               +0           +0           
+252                                                                                                   +0           +0           +0                                               +0           +0           
+253     DG_MP_Data_Tab_Ende                            Kennung Tabellen Ende, nicht verändern !       +80766.7123  +0.0001      +80766.7123                                      +80766.7123  +80766.7123  
+[END]

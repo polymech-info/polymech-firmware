@@ -1,0 +1,12 @@
+{
+    "minHeatingDurationS": 3,
+    "maxHeatingDurationS": 60,
+    "maxHeatingDurationOscillatingS": 15,
+    "maxSimultaneousHeating": 2,
+    "windowOffset": 1,
+    "startIndex": 0,
+    "endIndex": 3,
+    "mode": 3,
+    "postHeatupMode": 0,
+    "opFlags": 0
+}

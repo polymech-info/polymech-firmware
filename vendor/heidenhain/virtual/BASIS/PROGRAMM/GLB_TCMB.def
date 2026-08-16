@@ -1,0 +1,2122 @@
+*-----------------------------------------------------------------------------
+*  Globale Operanden
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Legende:
+*
+*    S_      = Spindel
+*    MG      = Merker global
+*    A_      = Array
+*    SK_     = Softkey
+*    SK_FG   = Softkey Freigabe (enable)
+*
+*    WZW     = Werkzeugwechsel
+*    WZM     = Werkzeugmagazin
+*    PW      = Palettenwechsel
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Merker
+*-----------------------------------------------------------------------------
+
+#type M
+
+   MG_Eins_Merker
+   MG_Null_Merker
+
+   MG_Takt_250_ms
+   MG_Takt_500_ms
+   MG_Takt_1_s
+   MG_Takt_3_s
+   MG_Impuls_125_ms
+   MG_Impuls_250_ms
+   MG_Impuls_500_ms
+   MG_Impuls_1_s
+   MG_Impuls_1_min
+   MG_Impuls_1_h
+   MG_Steuerung_betriebsbereit
+   MG_Not_Halt_Kreis_geschlossen
+   MG_Steuer_Spannung_verzoegert_ein
+   MG_P_Impuls_Steuerung_betriebsbereit
+   MG_N_Impuls_Steuerung_betriebsbereit
+   MG_TNC_initialisiert
+
+   MG_BA_Manuell
+   MG_BA_Automatik
+   MG_BA_Wechsel_Manu_Auto
+   MG_BA_Wechsel_Auto_Manu
+   MG_BA_Editieren
+   MG_BA_Testlauf
+   MG_WZ_Tabelle_angewaehlt
+   MG_Platz_Tabelle_angewaehlt
+   MG_Edit_Platz_Tabelle
+   MG_Edit_WZ_Tabelle
+   MG_Tabellen_Editor_aktiv
+   MG_Satzvorlauf_war_aktiv
+   MG_Satzvorlauf_Wiederherstellen_MSTQ
+   MG_auto_HS_aus_nach_END_PGM
+   MG_MP_Einspeichern
+   MG_PLC_Programmierung
+   MG_DCM_aktiv
+   MG_Not_Halt_entriegelt
+   MG_Test_aktiv
+   MG_Bremsen_Test
+   MG_Achsen_Not_Halt_Endlage
+   MG_M118_aktiv
+
+; FS
+
+   MG_v_limitiert
+   MG_Bremsentest_TOOL_CALL
+
+   MG_Taste_NC_Start
+   MG_Taste_NC_Stop
+   MG_Taste_S_Stop
+   MG_Taste_S_M3
+   MG_Taste_S_M4
+   MG_Taste_S_M5
+   MG_Taste_S_M3_tippen
+   MG_Taste_S_M4_tippen
+   MG_Taste_WZW_Anwahl
+   MG_Taste_WZ_entspannen
+   MG_Taste_WZ_entspannen_Fussschalter
+   MG_Taste_WZM_Tuer_entriegeln
+   MG_Taste_Arbeitsraum_entriegeln
+   MG_Taste_Eilgang
+   MG_Taste_Achsen_Freifahren
+   MG_Taste_Steuerspannung_ein
+   MG_Taste_Kuehlmittel_M07
+   MG_Taste_Kuehlmittel_M08
+   MG_Taste_Kuehlmittel_M17
+   MG_Taste_Trocken_Bearbeitung
+   MG_Taste_Schmierung_Achsen
+   MG_Taste_Spaenefoerderer
+   MG_Taste_Spaene_zurueck
+   MG_Taste_Pendeln_Seite_1
+   MG_Taste_Pendeln_Seite_2
+   MG_Taste_Anwahl_Rohteil
+   MG_Taste_Arbeitsraum_Licht
+   MG_Taste_WZM_Beladen_aktiv
+   MG_Taste_WZM_plus
+   MG_Taste_WZM_minus
+   MG_Taste_WZM_n_Anwahl
+   MG_SLS_Betriebsart_1
+   MG_SLS_Betriebsart_2_Einrichten
+   MG_SLS_Betriebsart_3
+   MG_SLS_Betriebsart_4
+   MG_Taste_Override_F_100
+   MG_Taste_Override_S_100
+   MG_Taste_Override_S_plus
+   MG_Taste_Override_S_minus
+   MG_Taste_MB_Zustimmbetrieb
+   MG_Taste_Werkstueck_Spannung_ein_aus
+   MG_Taste_PW_Kabine_oeffnen
+
+   MG_Steuerspannung_AUTOSTART_ein
+   MG_Taste_NC_Start_P_Impuls
+   MG_Taste_NC_Start_N_Impuls
+   MG_Taste_NC_Stop_P_Impuls
+   MG_Achs_Tasten_speichern
+
+   MG_NC_Stop_aktiv
+   MG_NC_Stop_in_BA_Manuell
+   MG_Impuls_NC_Start
+   MG_Impuls_M_Funktion
+   MG_Impuls_End_PGM_M02_M30
+   MG_Impuls_Internal_STOP
+   MG_Impuls_External_STOP
+   MG_Impuls_CE_Taste
+   MG_Submit_CE_Taste
+   MG_Taste_CE
+   MG_Stern_ein
+   MG_Freigabe_PLC_Strobe
+   MG_NC_Achsen_in_Position
+   MG_Achsen_in_Position
+   MG_Achsen_in_Bewegung
+   MG_Anzeige_Vorschubfreigabe_in_PLC_Window
+   MG_Achsen_PLC_Posit_aktiv
+   MG_Referenz_Achsen_aufgenommen
+   MG_Referenz_aktiv
+   MG_Referenz_auto_NC_Start_gesperrt
+   MG_Vorschubfreigabe
+   MG_Maschinenparameter_gelesen
+   MG_Maschinenparameter_synchron
+   MG_TNC_Programmierplatz_mit_PLC
+   MG_iTNC530_PC_Programmierplatz
+   MG_TNC_digital
+   MG_MP7620_TE_mit_Fmax_Override
+   MG_LED_Test
+   MG_Error_PLC_Window
+   MG_Fehler_ausblenden
+   MG_Start_Sperre_Schmierung
+   MG_Start_Sperre_Referenz
+   MG_Start_Sperre_Not_Halt_Test
+   MG_NC_Satz_Einlese_Sperre
+   MG_NC_Start_von_Referenz
+   MG_NC_Start_von_AUTOSTART
+   MG_programmierter_Halt_M00_aktiv
+   MG_bedingter_Halt_M01_aktiv
+   MG_Fehler_Modul_9xxx_Submit
+   MG_Fehler_Merker_loeschen
+   MG_Bildschirm_loeschen
+   MG_FN19_Daten_neu
+   MG_manuelles_Verfahren_BA_Referenz
+   MG_Antriebs_Freigabe_Achsgruppen_aktiv
+   MG_Freigabe_M07_Kuehlmittel_innen
+   MG_Reset_Init_Macro_ausgefuehrt
+/r MG_Power_Fail_inaktiv_remanent
+
+   MG_Vxx_Daten_senden_ein
+   MG_Vxx_Daten_empfangen_ein
+
+   MG_Inbetriebnahme_WZW
+   MG_WZW_Tab_lesen
+   MG_WZW_Tab_gelesen
+
+   MG_WZW_Help
+*$WS
+   MG_WZW_Service
+   MG_WZW_Unterbrechung
+   MG_WZW_manu_Unterbrechung
+
+   MG_Impuls_WZW_Help
+   MG_Impuls_WZW_Service
+   MG_WZW_Diagnose
+   MG_WZW_manuell
+   MG_WZW_manuell_aktiv
+   MG_WZW_automatisch
+   MG_WZW_Spindel_Richten_ein
+   MG_WZ_Status_lesen
+   MG_WZ_Vorwahl_Status_lesen
+   MG_WZW_Auto_aktiv
+   MG_WZ_Tabelle_aktiv
+   MG_WZ_Beladen_Entladen
+   MG_WZM_Beladen_aktiv
+   MG_WZM_Tool_Def_aktiv
+   MG_P_Tab_gesperrt
+
+   MG_Event_P_Tab_sperren
+   MG_Event_P_Tab_freigeben
+   MG_Event_Tab_aktive_Zeile
+   MG_Event_WZ_Nr_in_P_Tab_lesen
+   MG_Event_WZ_Nr_in_T_Tab_lesen
+   MG_Event_leer_in_P_Tab_suchen
+   MG_Event_WZ_in_P_Tab_suchen
+   MG_Event_WZ_Name_in_P_Tab_suchen
+
+   MG_WZM_Diagnose
+/r MG_WZ_Greifer_drehen_cw_rechts
+
+/r MG_WZW_ohne_Tool_Call
+   MG_WZW_Grund_Stellung
+
+/r MG_Platz_Tabelle_pruefen
+
+/r MG_WZ_Ueberlaenge
+   MG_WZ_Spindel_Vorwahl
+   MG_Sn_I_WZ_gespannt
+   MG_Sn_I_WZ_entspannt
+   MG_Sn_I_WZ_ist_in_Spindel
+   MG_Sn_O_WZ_spannen
+   MG_Sn_O_WZ_entspannen
+   MG_Sn_O_Spindel_ausblasen
+
+   MG_PW_aktiv
+   MG_PW_Help
+   MG_PW_Unterbrechung
+   MG_PW_Grund_Stellung
+   MG_PW_Antriebe_in_Grund_Stellung
+   MG_PW_Tischaufnahme_leer
+   MG_PW_pruefen
+
+   MG_S_Nist_gleich_Nsoll
+   MG_Spindel_Drehzahl_N_ok
+   MG_Spindel_steht
+   MG_Spindel_aus
+   MG_Spindel_in_WZW_Position
+   MG_Spindel_Richten_aktiv
+   MG_Spindel_Referenz_aktiv
+   MG_Spindel_mit_Uf_Steller_Betrieb
+   MG_Spindel_mit_Getriebe
+   MG_Spindel_mit_Messgeraet
+   MG_Spindel_Referenz_mit_Sensor
+   MG_Spindel_aktiv
+   MG_Spindel_digital
+   MG_Spindel_ein_Achsen
+   MG_Spindel_ein_Getriebe
+   MG_Spindel_Richten_aus
+   MG_Spindel_C_Achs_Betrieb_aktiv
+   MG_Spindel_C_Achs_Freigabe_aktiv
+   MG_2_Spindel_Betrieb_aktiv
+/r MG_Spindel_1_aktiv
+/r MG_Spindel_2_aktiv
+   MG_Spindel_Wechsel_aktiv
+   MG_Spindel_mit_Stern_Dreieck_Umschaltung
+   MG_Sn_I_Getriebe_Stufe_1
+   MG_Sn_I_Getriebe_Stufe_2
+   MG_Sn_O_Stern_Dreieck_Umschaltung
+   MG_Sn_O_Getriebe_Stufe_1
+   MG_Sn_O_Getriebe_Stufe_2
+   MG_M04_war_aktiv
+   MG_MP549_Achsgruppe_SS2_Reaktion_SOS     [&KG_max_Spindel_Anzahl]
+   MG_S_Aktivierung_fehlt
+   MG_Taste_S_M3_M4_gesperrt
+
+   MG_Freies_Drehen_aktiv
+   MG_Freies_Drehen_Drehzahl_N_ok
+
+   MG_C_Achs_Spindel_Richten_ein
+   MG_C_Achs_Unterbrechung
+
+   MG_Getriebe_Wechsel_aktiv
+   MG_Getriebe_initialisieren
+   MG_Getriebe_Stufe_ok
+   MG_Getriebe_Stufe_von_3D_Kopf
+   MG_Getriebe_Stufe_1_von_3D_Kopf
+   MG_YD_Umschaltung_drehzahlabhaengig
+   MG_Getriebe_Stufe_0_vorhanden
+
+   MG_3D_Tastsystem_aktiv
+/r MG_3D_Kopf_Setup_ok
+   MG_3D_Kopf_Unterbrechung
+   MG_3D_Kopf_aktiv
+   MG_3D_Kopf_Spindel_Richten_ein
+   MG_3D_Kopf_Anzeige
+   MG_3D_Kopf_Eingabe
+   MG_3D_Kopf_Achse_1_aktiv
+   MG_3D_Kopf_Achse_2_aktiv
+   MG_3D_Kopf_Achse_1_loesen_Service
+   MG_3D_Kopf_Achse_2_loesen_Service
+   MG_3D_Kopf_Achse_1_Klemmung_loesen
+   MG_3D_Kopf_Achse_2_Klemmung_loesen
+   MG_3D_Kopf_Achse_1_geloest
+   MG_3D_Kopf_Achse_2_geloest
+   MG_3D_Kopf_Achse_1_geklemmt
+   MG_3D_Kopf_Achse_2_geklemmt
+   MG_3D_Kopf_Strom_Regler_S_ein
+   MG_3D_Kopf_Wechsel_aktiv
+   MG_3D_Kopf_loesen                        [&KG_max_Achs_Anzahl]
+
+#if CFG_FS = "aktiv"
+   MG_SS1_aus_Achsgruppe                    [32]
+#endif
+
+   MG_Achs_Kompensation_aktiv
+
+   MG_SK_Energy_Opt_anzeigen
+/r MG_Energy_Opt_Ein
+   MG_Energy_Opt_Edit_Ein
+   MG_Energy_Opt_Maschine_ein
+   MG_Energy_Opt_Antriebe_ein
+   MG_Energy_Opt_Licht_ein
+   MG_Energy_Opt_Warmlaufpgm_ein
+
+/r MG_TNC_Mail_Ein
+   MG_SK_TNC_Mail_anzeigen
+
+   MG_SK_Kamera_anzeigen
+   MG_SK_Kamera_stateWin
+   MG_SK_Kamera_mediumWin
+   MG_SK_Kamera_largeWin
+   MG_SK_Kamera_onTopWin
+   MG_SK_Kamera_Aus
+   MG_SK_Kamera_ausblenden
+
+   MG_SK_OEM_Maschine_anzeigen
+
+   MG_PYM_Mask_Example
+   MG_PYM_OEMmachine
+
+   Kompensation                             [3]
+/c MG_T_Kompensation_X_aktiv                &Kompensation + 0
+/c MG_T_Kompensation_Y_aktiv                &Kompensation + 1
+/c MG_T_Kompensation_Z_aktiv                &Kompensation + 2
+
+/r MG_T_Kompensation_aktiv
+   MG_T_Kompensation_Test
+   MG_T_Kompensation_Test_auto
+   MG_T_Kompensation_ein
+   MG_Erwaermung
+   MG_Abkuehlung
+
+   Hysterese                                [9]
+/c MG_Hyst_Erwaermung_X                     &Hysterese + 0
+/c MG_Hyst_Erwaermung_Y                     &Hysterese + 1
+/c MG_Hyst_Erwaermung_Z                     &Hysterese + 2
+/c MG_Hyst_Abkuehlung_X                     &Hysterese + 3
+/c MG_Hyst_Abkuehlung_Y                     &Hysterese + 4
+/c MG_Hyst_Abkuehlung_Z                     &Hysterese + 5
+/c MG_Kennlinie_ohne_Hyst_X                 &Hysterese + 6
+/c MG_Kennlinie_ohne_Hyst_Y                 &Hysterese + 7
+/c MG_Kennlinie_ohne_Hyst_Z                 &Hysterese + 8
+
+/r Anzeige                                  [8]
+/c MG_Axis_Limit_1                          &Anzeige + 0
+/c MG_Axis_Limit_2                          &Anzeige + 1
+/c MG_Axis_Limit_3                          &Anzeige + 2
+/c MG_Pendeln_ein                           &Anzeige + 3
+
+   MG_Pendeln_aktiv
+   MG_Pendeln_Unterbrechung
+   MG_Rohteil_Seite_1
+   MG_Rohteil_Seite_2
+
+   MG_Arbeitsraum_offen
+   MG_Arbeitsraum_war_offen
+   MG_Arbeitsraum_1_zu_verriegelt
+   MG_Arbeitsraum_2_zu_verriegelt
+
+   MG_Antriebs_Freigabe_AG_MC               [8]
+/c MG_Antriebs_Freigabe_1_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 0
+/c MG_Antriebs_Freigabe_2_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 1
+/c MG_Antriebs_Freigabe_3_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 2
+/c MG_Antriebs_Freigabe_4_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 3
+/c MG_Antriebs_Freigabe_5_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 4
+/c MG_Antriebs_Freigabe_6_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 5
+/c MG_Antriebs_Freigabe_7_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 6
+/c MG_Antriebs_Freigabe_8_Achsgruppe_MC     &MG_Antriebs_Freigabe_AG_MC + 7
+
+   MG_Antriebs_Freigabe_Spindel
+
+/r Pos_WZ_Greifer                           [8]
+/c MG_WZ_Greifer_in_Grundstellung           &Pos_WZ_Greifer + 0
+/c MG_WZ_Greifer_zu_Entspannen              &Pos_WZ_Greifer + 1
+/c MG_WZ_Greifer_in_Entspannen              &Pos_WZ_Greifer + 2
+/c MG_WZ_Greifer_Wechseln                   &Pos_WZ_Greifer + 3
+/c MG_WZ_Greifer_in_Spannen                 &Pos_WZ_Greifer + 4
+/c MG_WZ_Greifer_zu_Grundstellung           &Pos_WZ_Greifer + 5
+
+   MG_BIS_Unterbrechung
+   MG_BIS_Kommunikation_aktiv
+
+   MG_Spaenefoerderer_Reset_Intervall
+   MG_Spaenefoerderer_Pause_Intervall
+
+   MG_M00_programmierter_Halt               1000
+   MG_M01_bedingter_Halt                    1001
+   MG_M02_Programm_ENDE                     1002
+   MG_M03_Spindel_rechts_ein                1003
+   MG_M04_Spindel_links_ein                 1004
+   MG_M05_Spindel_aus                       1005
+   MG_M07_Kuehlmittel_innen_ein             1007
+   MG_M08_Kuehlmittel_aussen_ein            1008
+   MG_M09_Kuehlmittel_aus                   1009
+   MG_M10_Klemmen_Achsen                    1010
+   MG_M11_Loesen_Achsen                     1011
+   MG_M13_Spindel_rechts_Kuehlmittel_ein    1013
+   MG_M14_Spindel_links_Kuehlmittel_ein     1014
+   MG_M16_TSxxx_abblasen                    1016
+   MG_M17_Kuehlmittel_zusaetzlich           1017
+   MG_M18_Spindel_Referenz                  1018
+   MG_M19_Spindel_Richten_0_Grad            1019
+   MG_M20_Spindel_Richten_CYCL_13           1020
+   MG_M21_Start_Teilapparat                 1021
+   MG_M23_Drehen_rechts_ein                 1023
+   MG_M24_Drehen_links_ein                  1024
+   MG_M25_Drehen_aus                        1025
+   MG_M26_Interpolations_Drehen_ein         1026
+   MG_M27_Interpolations_Drehen_aus         1027
+   MG_M29_Test                              1029
+   MG_M30_Programm_Ende                     1030
+   MG_M31_Bearbeitung_ohne_M3_M4            1031
+   MG_M32_Arbeitsraum_Ueberwachung_aus      1032
+   MG_M33_AFC_und_Spindel_rechts_ein        1033
+   MG_M34_AFC_und_Spindel_links_ein         1034
+   MG_M35_AFC_und_Spindel_aus               1035
+   MG_M36_Referenz_3D_Kopf_Achsen           1036
+
+   MG_M41_Spindel_1                         1041
+   MG_M42_Spindel_2                         1042
+
+   MG_M44_Loesen_Achse_4                    1044
+   MG_M45_Loesen_Achse_5                    1045
+   MG_M46_Loesen_Achse_6                    1046
+
+   MG_M50_Spaenefoerderer_aus               1050
+   MG_M51_Spaenefoerderer_ein               1051
+
+   MG_M52_AC_Tisch_1_aktivieren             1052
+   MG_M53_AC_Tisch_2_aktivieren             1053
+   MG_M54_AB_Kopf_aktivieren                1054
+   MG_M55_AB_Kopf_C_Tisch_aktivieren        1055
+   MG_M56_B_Kopf_C_Tisch_aktivieren         1056
+   MG_M57_AC_Gabelkopf_aktivieren           1057
+   MG_M58_Kinematik_inaktiv                 1058
+
+   MG_M59_Palettenaufnahme_leeren           1059
+   MG_M60_Paletten_Wechsel                  1060
+   MG_M61_Pendeln_Seite_1                   1061
+   MG_M62_Pendeln_Seite_2                   1062
+/c MG_M61_Palette_1_einwechseln             1061
+/c MG_M62_Palette_2_einwechseln             1062
+;   MG_M63_3D_Kopf_Wechsel                   1063
+
+   MG_M64_Klemmen_Achse_4                   1064
+   MG_M65_Klemmen_Achse_5                   1065
+   MG_M66_Klemmen_Achse_6                   1066
+
+   MG_M70_PLC_Preset_aus                    1070
+   MG_M71_Axis_Limit_1                      1071
+   MG_M72_Axis_Limit_2                      1072
+   MG_M73_Axis_Limit_3                      1073
+   MG_M79_PLC_Preset_ein                    1079
+   MG_M80_Stueckzaehler_Reset               1080
+   MG_M81_Stueckzaehler_plus_1              1081
+   MG_M82_WZ_Moment_aus                     1082
+   MG_M83_WZ_Moment_ein                     1083
+
+   MG_SK_horizontal_betaetigt
+   MG_SK_vertikal_betaetigt
+
+   MG_SK_Status_NC_Stop
+   MG_SK_Status_NC_Start
+   MG_SK_S_M3_M4
+   MG_SK_S_M3
+   MG_SK_S_M4
+   MG_SK_S_M5
+   MG_SK_S_M3_tippen
+   MG_SK_S_M4_tippen
+   MG_SK_S_M19
+   MG_SK_WZ_entspannen
+   MG_SK_FG_WZ_entspannen
+   MG_SK_WZW_Anwahl
+   MG_SK_FG_WZW_Anwahl
+
+   MG_SK_WZM_Beladen_zurueck
+   MG_SK_WZM_Beladen_aktiv
+   MG_SK_FG_WZM_Beladen_aktiv
+   MG_SK_WZ_Beladen
+   MG_SK_FG_WZ_Beladen
+   MG_SK_WZ_Entladen
+   MG_SK_FG_WZ_Entladen
+   MG_SK_Spaenefoerderer
+   MG_SK_Spaene_zurueck
+/r MG_SK_Intervall_Spaenefoerderer
+   MG_SK_Setup_Spaenefoerderer
+   MG_SK_Achsen_plus
+   MG_SK_Achsen_minus
+   MG_SK_WZM_plus
+   MG_SK_WZM_minus
+   MG_SK_WZM_1_plus
+   MG_SK_WZM_1_minus
+   MG_SK_WZM_2_plus
+   MG_SK_WZM_2_minus
+   MG_SK_WZW_Service
+   MG_SK_Schmierung
+   MG_SK_T_Moment_Ueberwachung
+   MG_SK_Achsen_Freifahren
+   MG_SK_Arbeitsraum_Ueberwachung_aus
+   MG_SK_Mode_Zeile_0
+   MG_SK_Mode_Zeile_1
+   MG_SK_MP_Daten_speichern
+   MG_SK_MP_Daten_verwerfen
+   MG_SK_Taste_Eilgang
+   MG_SK_back
+   MG_SK_TSxxx_abblasen
+   MG_SK_Python_calc
+   MG_SK_Python_Pos_Emb
+   MG_SK_Python_Pos_Ovl
+   MG_SK_Override_F_100
+   MG_SK_Override_S_100
+   MG_SK_Override_S_plus
+   MG_SK_Override_S_minus
+   MG_SK_Achs_Komp_Anzeige
+   MG_SK_Achs_Komp_Eingabe
+   MG_SK_M17_MK_zusaetzlich
+   MG_SK_Trocken_Bearbeitung
+   MG_SK_S_Over_Drehen_zugeordnet
+   MG_SK_FG_S_Over_Drehen
+   MG_SK_Freies_Drehen_rechts
+   MG_SK_Freies_Drehen_links
+   MG_SK_FG_Freies_Drehen
+   MG_SK_IPC_aktiv
+   MG_SK_Override_S_F_IPC
+   MG_SK_Override_S_IPC
+   MG_SK_Override_FMAX_IPC
+   MG_SK_Override_F_IPC
+   MG_SK_WZW_Tab_Editor
+   MG_SK_FG_WZW_Tab_Editor
+
+   MG_SK_back_WZW_Service
+   MG_SK_WZW_XYZ_Pos
+   MG_SK_FG_WZW_Service
+   MG_SK_FG_WZW_Home_auto
+   MG_SK_FG_WZW_XYZ_Pos
+   MG_SK_FG_WZW_Pos_S
+   MG_SK_FG_WZW_Pos_X
+   MG_SK_FG_WZW_Pos_Y
+   MG_SK_FG_WZW_Pos_Z
+   MG_SK_FG_WZW_Pos_AC
+   MG_SK_FG_WZ_Schleuse_auf_zu
+   MG_SK_FG_WZ_Zange_Spi_auf_zu
+   MG_SK_FG_WZ_Zange_Mag_auf_zu
+   MG_SK_FG_WZ_Greifer_zu_Spi
+   MG_SK_FG_WZ_Greifer_zu_Mag
+   MG_SK_FG_WZ_Greifer_zu_Grund
+   MG_SK_FG_WZ_Greifer_aus_ein
+   MG_SK_FG_WZ_Greifer_cw_ccw
+   MG_SK_FG_WZW_S_spannen_entspannen
+   MG_SK_FG_WZM_plus
+   MG_SK_FG_WZM_minus
+   MG_SK_FG_WZM_ent_verriegeln
+   MG_SK_FG_WZW_XYZS_pos
+   MG_SK_FG_WZ_Greifer
+
+   MG_SK_WZW_XYZS_pos
+   MG_SK_WZ_Greifer
+
+   MG_SK_Steuerspannung_ein
+   MG_SK_Arbeitsraum_entriegeln
+
+   MG_SK_Selbsttest_starten
+   MG_SK_Selbsttest_sperren
+   MG_SK_Bremsentest_starten
+
+#type
+
+   KG_WZW_Service_Fehler                    K +24
+
+   WG_WZW_Service_Fehler                    W[&KG_WZW_Service_Fehler]
+
+#type M
+
+*$WS
+   MG_Fehler_WZW_Grund_Stellung
+
+   A_WZW_Service                            [&KG_WZW_Service_Fehler]
+/c MG_WZ_Schleuse_auf_notwendig             &A_WZW_Service + 00
+/c MG_WZ_Schleuse_zu_notwendig              &A_WZW_Service + 01
+/c MG_WZW_S_entspannen_notwendig            &A_WZW_Service + 02
+/c MG_WZW_S_spannen_notwendig               &A_WZW_Service + 03
+/c MG_WZ_Zange_Spi_auf_notwendig            &A_WZW_Service + 04
+/c MG_WZ_Zange_Spi_zu_notwendig             &A_WZW_Service + 05
+/c MG_WZ_Zange_Mag_auf_notwendig            &A_WZW_Service + 06
+/c MG_WZ_Zange_Mag_zu_notwendig             &A_WZW_Service + 07
+/c MG_WZ_Greifer_ausheben_notwendig         &A_WZW_Service + 08
+/c MG_WZ_Greifer_einsetzen_notwendig        &A_WZW_Service + 09
+/c MG_WZ_Greifer_cw_rechts_notwendig        &A_WZW_Service + 10
+/c MG_WZ_Greifer_ccw_links_notwendig        &A_WZW_Service + 11
+/c MG_WZ_Greifer_zu_Spindel_notwendig       &A_WZW_Service + 12
+/c MG_WZ_Greifer_zu_Magazin_notwendig       &A_WZW_Service + 13
+/c MG_WZ_Greifer_zu_Grund_notwendig         &A_WZW_Service + 14
+/c MG_WZW_Pos_X_notwendig                   &A_WZW_Service + 15
+/c MG_WZW_Pos_Y_notwendig                   &A_WZW_Service + 16
+/c MG_WZW_Pos_Z_notwendig                   &A_WZW_Service + 17
+/c MG_WZW_Pos_AC_notwendig                  &A_WZW_Service + 18
+/c MG_WZW_Pos_S_notwendig                   &A_WZW_Service + 19
+/c MG_WZW_Pos_WZM_plus_notwendig            &A_WZW_Service + 20
+/c MG_WZW_Pos_WZM_minus_notwendig           &A_WZW_Service + 21
+/c MG_WZM_entriegeln_notwendig              &A_WZW_Service + 22
+/c MG_WZM_verriegeln_notwendig              &A_WZW_Service + 23
+
+#type B
+   BG_SK_WZW_Home_auto
+   BG_SK_WZ_Schleuse_auf_zu
+   BG_SK_WZW_S_spannen_entspannen
+;   BG_SK_WZW_XYZS_pos
+;   BG_SK_WZ_Greifer
+   BG_SK_WZW_Pos_X
+   BG_SK_WZW_Pos_Y
+   BG_SK_WZW_Pos_Z
+   BG_SK_WZW_Pos_AC
+   BG_SK_WZW_Pos_S
+   BG_SK_WZM_plus
+   BG_SK_WZM_minus
+   BG_SK_WZ_Zange_Spi_auf_zu
+   BG_SK_WZ_Zange_Mag_auf_zu
+   BG_SK_WZ_Greifer_aus_ein
+   BG_SK_WZ_Greifer_cw_ccw
+   BG_SK_WZ_Greifer_zu_Spi
+   BG_SK_WZ_Greifer_zu_Mag
+   BG_SK_WZ_Greifer_zu_Grund
+   BG_SK_WZM_ent_verriegeln
+
+#type M
+
+   MG_Achse_in_Hirth_Posit                  [32]
+   MG_I2t_Vorwarnung                        [32]
+   MG_I2t_Begrenzung                        [32]
+   MG_Antrieb_bereit                        [32]
+   MG_Referenz_notwendig_bit                [32]
+   MG_Achsfreigabe_bit                      [32]
+   MG_Achse_in_Bewegung_bit                 [32]
+   MG_Achse_in_Position_bit                 [32]
+/r MG_Ref_Endlage                           [32]
+   MG_PLC_Posit_aktiv                       [32]
+   MG_Fehler_Klemmung                       [32]
+   MG_geregelte_Achsen                      [32]
+
+   MG_JH_Umrichter_Diagnose                 [8]
+/c MG_nicht_benutzt                         &MG_JH_Umrichter_Diagnose + 0
+/c MG_Zwischenkreis_Spannung_Uz_max         &MG_JH_Umrichter_Diagnose + 1
+/c MG_Kuehlkoerper_Temperatur_max           &MG_JH_Umrichter_Diagnose + 2
+/c MG_Kurzschluss_Motorphase_mit_Uz         &MG_JH_Umrichter_Diagnose + 3
+/c MG_Zwischenkreisstrom_max                &MG_JH_Umrichter_Diagnose + 4
+/c MG_UV_Modul_nicht_betriebsbereit         &MG_JH_Umrichter_Diagnose + 5
+/c MG_Leckstrom_max                         &MG_JH_Umrichter_Diagnose + 6
+
+*-----------------------------------------------------------------------------
+*  Byte
+*-----------------------------------------------------------------------------
+
+#type B
+
+   BG_Paletten_Nr
+
+   BG_Index_Sn                                               ;;Index aktive Spindel
+   BG_MP600_Achsgruppe_FS_Achsen            [&KG_max_Achs_Anzahl]
+   BG_MP601_Achsgruppe_FS_Spindeln          [&KG_max_Spindel_Anzahl]
+
+   BG_MP1350_Ref_Mode_X
+
+/r BG_MP4030_x_Zuordnung_logische_PL        [4]
+/c BG_MP4030_0_Zuordnung_logische_PL_1      &BG_MP4030_x_Zuordnung_logische_PL + 0
+/c BG_MP4030_1_Zuordnung_logische_PL_2      &BG_MP4030_x_Zuordnung_logische_PL + 1
+/c BG_MP4030_2_Zuordnung_logische_PL_3      &BG_MP4030_x_Zuordnung_logische_PL + 2
+/c BG_MP4030_3_Zuordnung_logische_PL_4      &BG_MP4030_x_Zuordnung_logische_PL + 3
+
+/r BG_MP4031_Anzahl_angeschlossene_PL
+   BG_MP6010_Tastsystem_Typ
+   BG_MP7640_HR_Typ
+   BG_MP7645_HR_Tastatur
+
+   BG_WZ_neu_Status
+   BG_WZ_Vorwahl_Status
+   BG_aktive_WZ_Achse
+   BG_WZM_Index_Tool_Call
+   BG_Masken_Nummer
+   BG_Bytes_auf_Stack
+   BG_Schritt_WZW
+
+   A_Schritt_WZM                            [2]
+/c BG_Schritt_WZM_1                         &A_Schritt_WZM + 0
+/c BG_Schritt_WZM_2                         &A_Schritt_WZM + 1
+
+   BG_Schritt_PW
+   BG_Schritt_Achse_1_3D_Kopf
+   BG_Schritt_Achse_2_3D_Kopf
+   BG_Schritt_3D_Kopf
+   BG_PLC_Zyklen_T_Simulation
+   BG_Modul_Fehler_Queue
+
+   BG_Tuning_Mode
+
+   BG_FN19_PLC_Preset_Nr
+/r BG_PLC_Preset_Nr
+
+   BG_aktive_Achsgruppen
+
+   BG_Schritt_Achse                         [&KG_max_Achs_Anzahl]
+   BG_MP420_Hirth_Achse                     [&KG_max_Achs_Anzahl]
+   BG_Status_PLC_Posit                      [&KG_max_Achs_Anzahl]
+
+   A_Achse_Index                            [3]
+/c BG_Achse_Index_A                         &A_Achse_Index + 0
+/c BG_Achse_Index_B                         &A_Achse_Index + 1
+/c BG_Achse_Index_C                         &A_Achse_Index + 2
+
+*-----------------------------------------------------------------------------
+*  Wort
+*-----------------------------------------------------------------------------
+
+#type W
+
+   WG_Softkey_WZM_n_Anwahl
+/r WG_S_max_Moment_WZ_Tabelle
+/r WG_Werkzeug_in_Spindel
+/r WG_WZW_Platz_Nummer
+/r WG_T_Nummer_Standby_Werkzeug
+   WG_WZW_auto_neue_Werkzeug_Nummer
+   WG_WZW_auto_Werkzeug_Nummer
+   WG_WZW_manu_Werkzeug_Nummer
+   WG_Tab_Editor_aktive_Zeile
+   WG_MP7260_WZ_Anzahl_in_Tabelle
+
+/r WG_Werkstueck_Zaehler
+   WG_Softkey_MP_Daten
+   WG_Nummer_aktives_NC_Macro
+   WG_Nummer_letztes_aktives_NC_Macro
+   WG_Fehlernummer_angezeigt
+
+   WG_MP4130_Ixx_Ueberwachungsfunktion_aus
+
+   WG_Temperatur_Spindel_Pt100
+   WG_Temperatur_Spindel
+/r WG_Temperatur_Maschine_Pt100
+/r WG_Temperatur_Maschine
+/r WG_Temperatur_Maschine_Offset
+   WG_Temperatur_Tabelle
+   WG_Temperatur_Differenz
+   WG_Temperatur_Spindel_min
+   WG_Temperatur_Spindel_max
+
+/r WG_Intervall_Pause_setup
+/r WG_Intervall_ein_setup
+   WG_Intervall_Pause
+   WG_Intervall_ein
+
+   WG_NC_PGM_Ende_Ursache_PGM_Ende
+   WG_NC_PGM_Ende_Fehlerklasse
+   WG_NC_PGM_Ende_Hilfenummer
+   WG_NC_PGM_Ende_Satznummer
+   WG_NC_PGM_Ende_Zusatzinformation
+
+   A_S_Override                             [4]
+/c WG_MP3310_0_S_Override_max               &A_S_Override + 0
+/c WG_MP13310_0_S_Override_max              &A_S_Override + 2
+/c WG_MP3310_1_S_Override_min               &A_S_Override + 4
+/c WG_MP13310_1_S_Override_min              &A_S_Override + 6
+
+/r A_Achs_Komp_Faktor                       [3]
+/c WG_Achs_Komp_X_Faktor                    &A_Achs_Komp_Faktor + 0
+/c WG_Achs_Komp_Y_Faktor                    &A_Achs_Komp_Faktor + 2
+/c WG_Achs_Komp_Z_Faktor                    &A_Achs_Komp_Faktor + 4
+
+   A_Achs_Kompensation                      [3]
+/c WG_Achs_Kompensation_X                   &A_Achs_Kompensation + 0
+/c WG_Achs_Kompensation_Y                   &A_Achs_Kompensation + 2
+/c WG_Achs_Kompensation_Z                   &A_Achs_Kompensation + 4
+
+   A_Temp_Kompensation                      [3]
+/c WG_Temp_Kompensation_X                   &A_Temp_Kompensation + 0
+/c WG_Temp_Kompensation_Y                   &A_Temp_Kompensation + 2
+/c WG_Temp_Kompensation_Z                   &A_Temp_Kompensation + 4
+
+   WG_Motor_Temp_max                        [&KG_max_Achs_Anzahl]
+   WG_Motor_Temp_max_S
+   WG_Motor_Temperatur                      [&KG_max_Achs_Anzahl]
+   WG_Motor_Temperatur_S
+   WG_Motor_Auslastung                      [&KG_max_Achs_Anzahl]
+   WG_Motor_Auslastung_S
+   WG_MP1330_Vorschub_Referenz              [&KG_max_Achs_Anzahl]
+
+*-----------------------------------------------------------------------------
+*  Doppelwort
+*-----------------------------------------------------------------------------
+
+#type D
+
+   DG_WZM_Achsen
+   DG_Tasten_sperren
+   DG_geregelte_Achsen
+   DG_geregelte_NC_Achsen
+   DG_Modulo_Achse
+   DG_Slave_Achsen
+   DG_Achsen_mit_C_Achs_Betrieb
+   DG_Strom_Drehzahl_Regler_ein
+   DG_MP12_simulierte_Achsen
+   DG_sichere_Achsen
+   DG_sichere_Spindeln
+   DG_Klemmbetrieb_Aus
+   DG_Klemmbetrieb_Ein_extern
+   DG_Klemmbetrieb_Aus_extern
+   DG_Regelkreis_oeffnen_Aktivierung
+   DG_Achsen_Positionierung
+   DG_PLC_Hilfs_Achsen
+   DG_Vorschub_Stop_Achsen
+   DG_Vorschub_Stop_Hilfsachsen
+   DG_Hirth_Achsen
+   DG_digitale_Antriebe
+   DG_Freigabe_Achsen_MC_X15x_PL6xxx
+   DG_Antriebs_Freigabe_Regler_UM
+   DG_Reset_Achsen
+   DG_Achsen_Istwerte_eingefroren
+   DG_Handrad_Achsen
+   DG_Achsen_Moment_Begrenzung_PLC
+   DG_Feldwinkel_Ermittlung_aktiv
+   DG_Abschaltung_CCU                                        * SPLC_0011
+
+   DG_Referenzaufnahme_aktiv
+   DG_Achsen_Referenz_Pos_sicher
+   DG_Achs_Messgeraet_abstandscodiert
+   DG_Achs_Messgeraet_eine_Refmarke
+   DG_Achs_Messgeraet_EnDat
+/r DG_Achs_Feldwinkel_gueltig
+   DG_Achs_Feldwinkel_speichern
+
+   DG_aktive_Handrad_Achse
+   DG_PLC_Posit_Hirth_noetig
+   DG_MP1320_Richtung_Referenzaufnahme_negativ
+   DG_MP2230_Bremsen_Test_aktiv
+   DG_Bremsen_Test_laeuft
+   DG_MP2254_Feldwinkel_Achse_ein_PLC
+
+   DG_S_Achs_Aktivierung
+   DG_S_Achs_Freigabe
+   DG_3D_Kopf_Klemmung_loesen
+   DG_3D_Kopf_Achsen
+
+   DG_Antriebe_bereit_MC
+   DG_Antriebe_bereit_CC
+   DG_Echtzeituhr
+   DG_Wochentag
+
+   DG_Zeit_Not_Halt_Test                                     ;;Zeit [min] NOT AUS Test (Risikoanalyse, konfigurierbar)
+/r DG_Zeit_naechster_Not_Halt_Test                           ;;aktuelle Restzeit [min] bis nächsten NOT AUS Test
+   DG_FS_Zeit_Bremsentest_Vorwarnung                         ;;Vorwarn-Zeit [min] Bremsen Test, wird auch während WZW gestartet
+   DG_FS_Zeit_Selbsttest_Vorwarnung                          ;;Vorwarn-Zeit [min] Selbst Test, Ausführung nächster Stillstand
+   DG_Zeit_naechster_Selbsttest                              ;;FS Modul 9037
+   DG_Zeit_naechster_Bremsentest            [&KG_max_Achs_Anzahl]      ;;FS Modul 9037
+
+   DG_aktuelle_Satz_Nr_NC_PGM
+
+   DG_F_Fmax_Override_Kopplung
+
+   DG_Spindel_Ist_Drehzahl
+   DG_S_Drehzahlvorgabe_PLC
+/r DG_Drehen_Rund_Achs_Vorschub
+
+   DG_C_Achs_S_Position
+   DG_MP1010_Eilgang_Drehen_Rund_Achse
+   DG_MP1054_Weg_bei_Motor_Drehen_Rund_Achse
+
+   A_Achsgruppe                             [8]
+/c DG_MP2040_0_Achsgruppe_1                 &A_Achsgruppe + 0
+/c DG_MP2040_1_Achsgruppe_2                 &A_Achsgruppe + 4
+/c DG_MP2040_2_Achsgruppe_3                 &A_Achsgruppe + 8
+/c DG_MP2040_3_Achsgruppe_4                 &A_Achsgruppe + 12
+/c DG_MP2040_4_Achsgruppe_5                 &A_Achsgruppe + 16
+/c DG_MP2040_5_Achsgruppe_6                 &A_Achsgruppe + 20
+/c DG_MP2040_6_Achsgruppe_7                 &A_Achsgruppe + 24
+/c DG_MP2040_7_Achsgruppe_8                 &A_Achsgruppe + 28
+
+   A_S_orientieren                          [2]
+/c DG_MP3520_1_Drehzahl_S_orientieren       &A_S_orientieren + 0
+/c DG_MP13520_1_Drehzahl_S_orientieren      &A_S_orientieren + 4
+
+/r DG_3D_Kopf_Achse_1_Position
+/r DG_3D_Kopf_Achse_2_Position
+/r DG_3D_Kopf_Achse_1_min_Torsionsmoment
+/r DG_3D_Kopf_Achse_2_min_Torsionsmoment
+/r DG_3D_Kopf_Achse_1_S_Position
+/r DG_3D_Kopf_Achse_2_S_Position
+/r DG_3D_Kopf_S_Position
+
+   A_SPos                                   [5]
+/c DG_Position_Achse_S_Ist                  &A_SPos + 0
+/c DG_Position_Achse_S_Soll                 &A_SPos + 4
+/c DG_Position_Achse_S_Ref                  &A_SPos + 8
+/c DG_Position_Achse_S_Slp                  &A_SPos + 12
+/c DG_Position_Achse_S_Rest                 &A_SPos + 16
+
+   DG_Ref_Pos_Achse                         [&KG_max_Achs_Anzahl]
+   DG_Ist_Pos_Achse                         [&KG_max_Achs_Anzahl]
+   DG_Restweg_Achse                         [&KG_max_Achs_Anzahl]
+   DG_MP960_Ref_Preset                      [&KG_max_Achs_Anzahl]
+   DG_MP1030_Pos_Fenster                    [&KG_max_Achs_Anzahl]
+
+   DG_Pos_Fenster_S
+
+   DG_MP810_Modulo_Wert                     [&KG_max_Achs_Anzahl]
+   DG_MP430_Hirth_Raster                    [&KG_max_Achs_Anzahl]
+   DG_Motor_Ist_Drehzahl                    [&KG_max_Achs_Anzahl]
+
+   DG_Motor_Ist_Drehzahl_S
+
+   DG_Feldwinkel                            [&KG_max_Achs_Anzahl]
+   DG_Ziel_Pos_Achse                        [&KG_max_Achs_Anzahl]
+   DG_Temp_Komp_Kinematik                   [&KG_max_Achs_Anzahl]
+   DG_Comp_Tab_Kinematik                    [&KG_max_Achs_Anzahl]
+
+   A_Vxx_Sende_Daten                        [8]
+/c DG_Vxx_Sende_Daten_Begin                 &A_Vxx_Sende_Daten + 00
+/c DG_Vxx_Sende_Daten_00                    &A_Vxx_Sende_Daten + 00
+/c DG_Vxx_Sende_Daten_01                    &A_Vxx_Sende_Daten + 04
+/c DG_Vxx_Sende_Daten_02                    &A_Vxx_Sende_Daten + 08
+/c DG_Vxx_Sende_Daten_03                    &A_Vxx_Sende_Daten + 12
+/c DG_Vxx_Sende_Daten_04                    &A_Vxx_Sende_Daten + 16
+/c DG_Vxx_Sende_Daten_05                    &A_Vxx_Sende_Daten + 20
+/c DG_Vxx_Sende_Daten_06                    &A_Vxx_Sende_Daten + 24
+/c DG_Vxx_Sende_Daten_07                    &A_Vxx_Sende_Daten + 28
+/c DG_Vxx_Sende_Daten_End                   &A_Vxx_Sende_Daten + 28
+
+   A_Vxx_Empfangs_Daten                     [8]
+/c DG_Vxx_Empfangs_Daten_Begin              &A_Vxx_Empfangs_Daten + 00
+/c DG_Vxx_Empfangs_Daten_00                 &A_Vxx_Empfangs_Daten + 00
+/c DG_Vxx_Empfangs_Daten_01                 &A_Vxx_Empfangs_Daten + 04
+/c DG_Vxx_Empfangs_Daten_02                 &A_Vxx_Empfangs_Daten + 08
+/c DG_Vxx_Empfangs_Daten_03                 &A_Vxx_Empfangs_Daten + 12
+/c DG_Vxx_Empfangs_Daten_04                 &A_Vxx_Empfangs_Daten + 16
+/c DG_Vxx_Empfangs_Daten_05                 &A_Vxx_Empfangs_Daten + 20
+/c DG_Vxx_Empfangs_Daten_06                 &A_Vxx_Empfangs_Daten + 24
+/c DG_Vxx_Empfangs_Daten_07                 &A_Vxx_Empfangs_Daten + 28
+/c DG_Vxx_Empfangs_Daten_End                &A_Vxx_Empfangs_Daten + 28
+
+   A_WZ_Platz_Tabelle                       [5]
+/c DG_WZ_Platz_Tabelle_P1                   &A_WZ_Platz_Tabelle + 0
+/c DG_WZ_Platz_Tabelle_P2                   &A_WZ_Platz_Tabelle + 4
+/c DG_WZ_Platz_Tabelle_P3                   &A_WZ_Platz_Tabelle + 8
+/c DG_WZ_Platz_Tabelle_P4                   &A_WZ_Platz_Tabelle + 12
+/c DG_WZ_Platz_Tabelle_P5                   &A_WZ_Platz_Tabelle + 16
+
+   DG_PYM_example_plcCheckButtons
+   DG_PYM_example_plcRadioButtons
+
+*-----------------------------------------------------------------------------
+*  Konstanten-Definitionen (intern genutzt, nicht zur Maschinenanpassung)
+*-----------------------------------------------------------------------------
+
+#type K
+
+   KG_Achse_X                               0
+   KG_Achse_Y                               1
+   KG_Achse_Z                               2
+   KG_Achse_4                               3
+   KG_Achse_5                               4
+   KG_Achse_6                               5
+   KG_Achse_7                               6
+   KG_Achse_8                               7
+   KG_Achse_9                               8
+   KG_Achse_10                              9
+   KG_Achse_11                              10
+   KG_Achse_12                              11
+   KG_Achse_13                              12
+   KG_Achse_14                              13
+   KG_Achse_15                              14
+   KG_Achse_16                              15
+   KG_Achse_17                              16
+   KG_Achse_18                              17
+   KG_Achse_19                              19
+   KG_Achse_20                              20
+   KG_Achse_21                              21
+   KG_Achse_22                              22
+
+   KG_Achse_A                               3
+   KG_Achse_B                               4
+   KG_Achse_C                               5
+
+   KG_Spindel                               31
+
+   KG_S1                                    0
+   KG_S2                                    1
+
+   KG_Betriebsstunden_S1                    %00000001
+   KG_Betriebsstunden_S2                    %00000010
+   KG_Betriebsstunden_Achsen                %00000100
+   KG_Betriebsstunden_Hydraulik             %00001000
+
+;Dialoge für Diagnose Schrittketten (ab Zeile 499)
+
+   KG_Dia_leer                              +499
+   KG_Dia_WZ_Magazin_PLC_Achse              +500
+   KG_Dia_WZ_Magazin_Zaehlimpuls            +501
+   KG_Dia_WZW_Auto_Einzelarm                +502
+   KG_Dia_WZW_Auto_Doppelarm                +503
+   KG_Dia_WZW_Auto_Kurvenscheibe            +504
+   KG_Dia_WZW_Automatik_Pickup              +505
+   506
+   507
+   508
+   KG_Dia_WZ_Magazin_Start                  +509
+   KG_Dia_WZ_Magazin_Ende                   +510
+   KG_Dia_Tool_Def_Quit                     +511
+   KG_Dia_Mag_Platz_ein                     +512
+   KG_Dia_Mag_Platz_Pos_ein                 +513
+   KG_Dia_Mag_Platz_ein_aus                 +514
+   KG_Dia_Mag_Platz_Posit                   +515
+   KG_Dia_WZ_Mag_Start                      +516
+   KG_Dia_WZ_Mag_in_Position                +517
+   KG_Dia_Decodieren_P_Nr                   +518
+   KG_Dia_T_Vorwahl_Status                  +519
+   KG_Dia_Magazin_Richtung                  +520
+   KG_Dia_Mag_Index_aus                     +521
+   KG_Dia_Mag_Index_Pos_aus                 +522
+   KG_Dia_Magazin_SOLL_Pos                  +523
+   KG_Dia_Time_genau_Halt                   +524
+   KG_Dia_Mag_Index_Pos_ein                 +525
+   KG_Dia_Mag_genau_Halt                    +526
+   KG_Dia_WZM_cw_rechts                     +527
+   KG_Dia_WZM_ccw_links                     +528
+   529
+   KG_Dia_WZW_auto_Start                    +530
+   KG_Dia_WZW_auto_Ende                     +531
+   KG_Dia_WZ_in_Spindel_OK                  +532
+   KG_Dia_WZW_Magazin_Start                 +533
+   KG_Dia_Magazin_in_Pos                    +534
+   KG_Dia_Mag_voll_leer                     +535
+   KG_Dia_Spi_voll_leer                     +536
+   KG_Dia_Mag_voll                          +537
+   KG_Dia_Mag_leer                          +538
+   KG_Dia_Spi_leer_voll                     +539
+   KG_Dia_T_Schleuse_auf                    +540
+   KG_Dia_T_Schleuse_ist_auf                +541
+   KG_Dia_T_Schleuse_zu                     +542
+   KG_Dia_T_Schleuse_ist_zu                 +543
+   KG_Dia_S_Start                           +544
+   KG_Dia_S_in_WZW_Pos                      +545
+   KG_Dia_XY_Start                          +546
+   KG_Dia_X_Start                           +547
+   KG_Dia_X_in_WZW_Pos                      +548
+   KG_Dia_X_Start_vor                       +549
+   KG_Dia_X_in_vor_Pos                      +550
+   KG_Dia_Y_Start                           +551
+   KG_Dia_Y_in_WZW_Pos                      +552
+   KG_Dia_Y_vor_Start                       +553
+   KG_Dia_Y_in_vor_Pos                      +554
+   KG_Dia_Z_Start                           +555
+   KG_Dia_Z_in_WZW_Pos                      +556
+   KG_Dia_Z_Start_sicher                    +557
+   KG_Dia_Z_in_Pos_sicher                   +558
+   KG_Dia_Z1_ein_aus_Start                  +559
+   KG_Dia_Z1_in_Pos_e_a                     +560
+   KG_Dia_Z2_ein_aus_Start                  +561
+   KG_Dia_Z2_in_Pos_e_a                     +562
+   KG_Dia_Z3_ein_Start                      +563
+   KG_Dia_Z3_in_Pos_ein                     +564
+   KG_Dia_WZ_Platz_aus                      +565
+   KG_Dia_WZ_Platz_Pos_aus                  +566
+   KG_Dia_WZ_Platz_Time                     +567
+   KG_Dia_Pickup_Werte_lesen                +568
+   KG_Dia_Pickup_ausfahren                  +569
+   KG_Dia_Pickup_ausgefahren                +570
+   KG_Dia_Pickup_einfahren                  +571
+   KG_Dia_Pickup_eingefahren                +572
+   KG_Dia_Greifer_ausheben                  +573
+   KG_Dia_Greifer_ausgehoben                +574
+   KG_Dia_Greifer_einsetzen                 +575
+   KG_Dia_Greifer_eingesetzt                +576
+   KG_Dia_Greifer_zu_Spindel                +577
+   KG_Dia_Greifer_an_Spindel                +578
+   KG_Dia_Greifer_zu_Magazin                +579
+   KG_Dia_Greifer_an_Magazin                +580
+   KG_Dia_Greifer_zu_Mittelstellung         +581
+   KG_Dia_Greifer_in_Mittelstellung         +582
+   KG_Dia_Greifer_zu_Grundstellung          +583
+   KG_Dia_Greifer_in_Grundstellung          +584
+   KG_Dia_Greifer_zu_cw_ccw                 +585
+   KG_Dia_Greifer_in_cw_ccw                 +586
+   KG_Dia_WZ_Greifer_Mitte_stop             +587
+   KG_Dia_WZ_Greifer_verzoegern             +588
+   KG_Dia_Sprung_Greifer                    +589
+   KG_Dia_WZ_Platz_ein_aus                  +590
+   KG_Dia_WZ_Platz_Pos_ok                   +591
+   KG_Dia_Zange_zu                          +592
+   KG_Dia_Zange_ist_zu                      +593
+   KG_Dia_Zange_auf                         +594
+   KG_Dia_Zange_ist_auf                     +595
+   KG_Dia_Zange_Mag_auf                     +596
+   KG_Dia_Zange_Mag_ist_auf                 +597
+   KG_Dia_Zange_Mag_zu                      +598
+   KG_Dia_Zange_Mag_ist_zu                  +599
+   KG_Dia_Zange_Spi_auf                     +600
+   KG_Dia_Zange_Spi_ist_auf                 +601
+   KG_Dia_Zange_Spi_zu                      +602
+   KG_Dia_Zange_Spi_ist_zu                  +603
+   KG_Dia_WZ_in_Mag_lesen                   +604
+   KG_Dia_WZW_auto_Time                     +605
+   KG_Dia_Mag_zu_Spindel                    +606
+   KG_Dia_Mag_in_Spindel                    +607
+   KG_Dia_WZ_entspannen                     +608
+   KG_Dia_WZ_entspannt                      +609
+   KG_Dia_WZ_spannen                        +610
+   KG_Dia_WZ_gespannt                       +611
+   KG_Dia_Time_ausheben                     +612
+   KG_Dia_Tneu_merken                       +613
+   KG_Dia_T0_in_Status                      +614
+   KG_Dia_T0_Tneu_Status                    +615
+   KG_Dia_Tneu_in_Status                    +616
+   KG_Dia_T_Status_ok                       +617
+   KG_Dia_Tool_Call_2nd                     +618
+   KG_Dia_Tool_Call_Wait                    +619
+   KG_Dia_WZ_Status_lesen                   +620
+   KG_Dia_Sprung_spannen                    +621
+   KG_Dia_Mag_zu_Grund_Stellung             +622
+   KG_Dia_Mag_in_Grund_Stellung             +623
+   KG_Dia_Tool_Call_quitt                   +624
+   KG_Dia_Sprung_T0_programmiert            +625
+   KG_Dia_Sprung_Spindel_war_leer           +626
+   KG_Dia_AC_in_WZW_Pos                     +627
+   KG_Dia_Greifer_zu_cw_rechts              +628
+   KG_Dia_Greifer_zu_ccw_links              +629
+   KG_Dia_WZM_entriegeln                    +630
+   KG_Dia_WZM_entriegelt                    +631
+   KG_Dia_WZM_verriegeln                    +632
+   KG_Dia_WZM_verriegelt                    +633
+   KG_Dia_WZW_Manu                          +634
+   KG_Dia_WZW_manu_Start                    +635
+   KG_Dia_Sprung_BA_manu                    +636
+   KG_Dia_X_Start_manu                      +637
+   KG_Dia_X_in_Pos_manu                     +638
+   KG_Dia_Y_Start_manu                      +639
+   KG_Dia_Y_in_Pos_manu                     +640
+   KG_Dia_Z_Start_manu                      +641
+   KG_Dia_Z_in_Pos_manu                     +642
+   KG_Dia_WZ_manu_entspan                   +643
+   KG_Dia_WZ_manu_spannen                   +644
+   KG_Dia_WZW_Abwahl                        +645
+   KG_Dia_WZW_Quittung                      +646
+   KG_Dia_Wiederanf_notwendig               +647
+   KG_Dia_Wiederanfahren_ok                 +648
+
+   KG_nicht_definiert                       +890
+   KG_Zwischenkreis_Spannung_max            +891
+   KG_Kuehlkoerper_Temperatur_max           +892
+   KG_Kurzschluss_Motorphase_mit_Uz         +893
+   KG_Zwischenkreisstrom_max                +894
+   KG_Versorgungsmodul_nicht_bereit         +895
+   KG_Leckstrom_zu_hoch                     +896
+
+   KG_Py_Mode_synchron                      +0
+   KG_Py_Mode_asynchron                     +1
+   KG_Py_Python_Prozess_aktiv               +0
+   KG_Py_Python_Prozess_nicht_aktiv         +2
+   KG_Py_Terminate_Python_Prozess           +0
+   KG_Py_Kill_Python_Prozess                +1
+   KG_Py_LesenDurchPlc                      +0
+   KG_Py_SchreibenDurchPLC                  +1
+   KG_Py_Lese_Schreibstatus                 +0
+   KG_Py_Anzahl_angemeldete_Clients         +1
+   KG_Py_ohne_Warten_Daten_nicht_ueberschreiben %000
+   KG_Py_ohne_Warten                        +0
+   KG_Py_mit_Warten                         +1
+   KG_Py_neue_Daten                         +0
+
+   KG_Py_Speicher_2_MB                      +2
+   KG_Py_Speicher_5_MB                      +5
+   KG_Py_Speicher_8_MB                      +8
+   KG_Py_Speicher_10_MB                     +10
+   KG_Py_Speicher_15_MB                     +15
+   KG_Py_Speicher_20_MB                     +20
+   KG_Py_Speicher_25_MB                     +25
+   KG_Py_Speicher_30_MB                     +30
+   KG_Py_Speicher_35_MB                     +35
+   KG_Py_Speicher_40_MB                     +40
+   KG_Py_Speicher_45_MB                     +45
+   KG_Py_Speicher_50_MB                     +50
+   KG_Py_Speicher_60_MB                     +60
+   KG_Py_Speicher_70_MB                     +70
+   KG_Py_Speicher_80_MB                     +80
+   KG_Py_Speicher_90_MB                     +90
+   KG_Py_Speicher_100_MB                    +100
+
+*-----------------------------------------------------------------------------
+*  Fehler-Meldungen
+*    200 (M4800..M4999)
+*-----------------------------------------------------------------------------
+
+#type M
+
+   PN_Fehler_Motor_Schutz_Schalter          4800             ;;Fehler 0
+   PN_Fehler_Temperatur_Regler_Motoren      4801             ;;Fehler 1
+   PN_Fehler_Hydraulik_Druck                4802             ;;Fehler 2
+   PN_Fehler_Pneumatik_Druck                4803             ;;Fehler 3
+   PN_Fehler_PW_210_Temperatur_max          4804             ;;Fehler 4
+   PN_Fehler_DA400_Druck                    4805             ;;Fehler 5
+   PN_Fehler_Versorgungsmodul_Antriebe      4806             ;;Fehler 6
+   PN_Fehler_Freigabe_M07_WZ_inaktiv        4807             ;;Fehler 7
+   PN_Fehler_Klemmbetrieb_nicht_erlaubt     4808             ;;Fehler 8
+   PN_Fehler_Arbeitsraum_geschlossen        4809             ;;Fehler 9
+   PN_Fehler_Arbeitsraum_offen              4810             ;;Fehler 10
+   PN_Fehler_Kuehlmittel_fehlt              4811             ;;Fehler 11
+   PN_Fehler_Schmierung_Achsen              4812             ;;Fehler 12
+   PN_Fehler_Schmierung_Oelstand            4813             ;;Fehler 13
+   PN_Fehler_Not_Halt_ESA_ESB               4814             ;;Fehler 14
+   PN_Fehler_X15x_Antriebs_Freigabe         4815             ;;Fehler 15
+   PN_Fehler_Antriebs_Freigabe_Regler_UM    4816             ;;Fehler 16
+   PN_Fehler_Zentralantrieb                 4817             ;;Fehler 17
+   PN_Fehler_Posit_WZM                      4818             ;;Fehler 18
+   PN_Fehler_Freifahren                     4819             ;;Fehler 19
+   PN_Fehler_Klemmung                       4820             ;;Fehler 20
+   PN_Fehler_Hirth_Position                 4821             ;;Fehler 21
+   PN_Fehler_Hirth_Soll_Position            4822             ;;Fehler 22
+   PN_Fehler_Antriebe_betriebsbereit        4823             ;;Fehler 23
+   PN_Fehler_Leistungteil_Tmax              4824             ;;Fehler 24
+   PN_Fehler_Motor_Tmax                     4825             ;;Fehler 25
+   PN_Fehler_I2t_Vorwarnung                 4826             ;;Fehler 26
+   PN_Fehler_I2t_Begrenzung                 4827             ;;Fehler 27
+   PN_Fehler_Spindel_betriebsbereit         4828             ;;Fehler 28
+   PN_Fehler_Spindel_Nsoll                  4829             ;;Fehler 29
+   PN_Fehler_Spindel_Nnull                  4830             ;;Fehler 30
+   PN_Fehler_Spindel_I_max                  4831             ;;Fehler 31
+   PN_Fehler_Spindel_T_max                  4832             ;;Fehler 32
+   PN_Fehler_Spindel_Moment_max             4833             ;;Fehler 33
+   PN_Fehler_3D_Tastsystem_in_Spindel       4834             ;;Fehler 34
+   PN_Fehler_kein_3D_Tastsystem_in_Spindel  4835             ;;Fehler 35
+   PN_Fehler_Spindel_1_2_Aktivierung        4836             ;;Fehler 36
+   PN_Fehler_Getriebe_Schaltung             4837             ;;Fehler 37
+   PN_Fehler_Werkzeug_nicht_gespannt        4838             ;;Fehler 38
+   PN_Fehler_Werkzeug_entspannen            4839             ;;Fehler 39
+   PN_Fehler_Werkzeug_spannen               4840             ;;Fehler 40
+   PN_Fehler_WZW_quittieren                 4841             ;;Fehler 41
+   PN_Fehler_Tuer_zu_WZW_quittieren         4842             ;;Fehler 42
+   PN_Fehler_WZW_manu_Ende_NC_Start         4843             ;;Fehler 43
+   PN_Fehler_Platz_Tabelle_pruefen          4844             ;;Fehler 44
+   PN_Fehler_WZ_Spindel_ok                  4845             ;;Fehler 45
+   PN_Fehler_Spindel_leer                   4846             ;;Fehler 46
+   PN_Fehler_Spindel_nicht_leer             4847             ;;Fehler 47
+   PN_Fehler_TOOL_CALL_T0                   4848             ;;Fehler 48
+   PN_Fehler_WZ_Toleranz                    4849             ;;Fehler 49
+   PN_Fehler_WZ_Standzeit_max               4850             ;;Fehler 50
+   PN_Fehler_WZW_Grund_Stellung             4851             ;;Fehler 51
+   PN_Fehler_WZW_Timeout                    4852             ;;Fehler 52
+   PN_Fehler_WZM_Tuer_offen                 4853             ;;Fehler 53
+;;$WS WZM 1/2
+   PN_Fehler_WZM_Referenz                   4854             ;;Fehler 54
+   PN_Fehler_WZM_Timeout                    4855             ;;Fehler 55
+   PN_Fehler_WZM_Beladen_aktiv              4856             ;;Fehler 56
+   PN_Fehler_WZM_Platz_belegt               4857             ;;Fehler 57
+   PN_Fehler_WZM_Werkzeug_fehlt             4858             ;;Fehler 58
+   PN_Fehler_WZ_in_Spindel_falsch           4859             ;;Fehler 59
+   PN_Fehler_Pendeln_Timeout                4860             ;;Fehler 60
+   PN_Fehler_Anwahl_Table_1                 4861             ;;Fehler 61
+   PN_Fehler_Anwahl_Table_2                 4862             ;;Fehler 62
+   PN_Fehler_Pendeln_nicht_aktiv            4863             ;;Fehler 63
+   PN_Fehler_Pendelbereich                  4864             ;;Fehler 64
+   PN_Fehler_PW_Grund_Stellung              4865             ;;Fehler 65
+   PN_Fehler_PW_Timeout                     4866             ;;Fehler 66
+   PN_Fehler_PW_Beladetuer_offen            4867             ;;Fehler 67
+   PN_Fehler_Werkstueck_nicht_gespannt      4868             ;;Fehler 68
+   PN_Fehler_3D_Kopf_Timeout                4869             ;;Fehler 69
+   PN_Fehler_3D_Kopf_Setup                  4870             ;;Fehler 70
+   PN_Fehler_3D_Kopf_G_Stufe_1              4871             ;;Fehler 71
+   PN_Fehler_S2_Spindel_einsetzen           4872             ;;Fehler 72
+   PN_Fehler_S2_Spindel_ablegen             4873             ;;Fehler 73
+   PN_Fehler_WZ_aus_falschem_Magazin        4874             ;;Fehler 74
+   PN_Fehler_CHM_Test                       4875             ;;Fehler 75
+   PN_Fehler_Modul_9255_Tab                 4876             ;;Fehler 76
+   PN_Fehler_Inbetriebnahme_aktiv           4877             ;;Fehler 77
+   PN_Fehler_Funktion_nicht_aktiv           4878             ;;Fehler 78
+   PN_Fehler_eins_null_Merker_modifiziert   4879             ;;Fehler 79
+   PN_Fehler_Wert_unzulaessig               4880             ;;Fehler 80
+   PN_Fehler_Arbeitsraum_Ueberwachung_aus   4881             ;;Fehler 81
+   PN_Fehler_Arbeitsraum_Schutz             4882             ;;Fehler 82
+   PN_Fehler_HS_aus_nach_END_PGM            4883             ;;Fehler 83
+   PN_Fehler_Referenz_notwendig             4884             ;;Fehler 84
+   PN_Fehler_Hirth_Achsen_initialisieren    4885             ;;Fehler 85
+   PN_Fehler_Temperatur_Kompensation        4886             ;;Fehler 86
+   PN_Fehler_Stack_nicht_leer               4887             ;;Fehler 87
+   PN_Fehler_lesen_Maschinenparameter       4888             ;;Fehler 88
+   PN_Fehler_M0_Programm_Halt               4889             ;;Fehler 89
+   PN_Fehler_M1_wahlweise_Halt              4890             ;;Fehler 90
+   PN_Fehler_M3_M4_fehlt                    4891             ;;Fehler 91
+   PN_Fehler_M_Befehl_ohne_Funktion         4892             ;;Fehler 92
+   PN_Fehler_Override_0                     4893             ;;Fehler 93
+   PN_Fehler_Funktion_OK                    4894             ;;Fehler 94
+   PN_Fehler_Maschinenparameter_pruefen     4895             ;;Fehler 95
+   PN_Fehler_Maschinen_Simulation_aktiv     4896             ;;Fehler 96
+   PN_Fehler_Submit_Spawn_Queue_voll        4897             ;;Fehler 97
+   PN_Fehler_TNC_Programmierplatz_aktiv     4898             ;;Fehler 98
+   PN_Fehler_in_PLC_Window                  4899             ;;Fehler 99
+   PN_Fehler_Logbuch_schreiben              4900             ;;Fehler 100
+   PN_Fehler_Modul_9xxx_1                   4901             ;;Fehler 101
+   PN_Fehler_Modul_9xxx_2                   4902             ;;Fehler 102
+   PN_Fehler_Modul_9xxx_3                   4903             ;;Fehler 103
+   PN_Fehler_Modul_9xxx_4                   4904             ;;Fehler 104
+   PN_Fehler_MP_Daten_Tabelle_pruefen       4905             ;;Fehler 105
+   PN_Fehler_MP_Config_Tabelle_pruefen      4906             ;;Fehler 106
+   PN_Fehler_Vxx_Daten_Transfer_PLC         4907             ;;Fehler 107
+   PN_Fehler_Vxx_Puffer_Ueberlauf           4908             ;;Fehler 108
+   PN_Fehler_Vxx_beim_Senden                4909             ;;Fehler 109
+   PN_Fehler_Vxx_beim_Empfangen             4910             ;;Fehler 110
+   PN_Fehler_Vxx_betriebsbereit             4911             ;;Fehler 111
+   PN_Fehler_Tabellen_Editor_aktiv          4912             ;;Fehler 112
+   PN_Fehler_DCM_noch_inaktiv               4913             ;;Fehler 113
+   PN_Fehler_Referenz_NC_Start_gesperrt     4914             ;;Fehler 114
+   PN_Fehler_Referenz_Timeout               4915             ;;Fehler 115
+   PN_Fehler_Anwahl_Zusatz_Achse            4916             ;;Fehler 116
+   PN_Fehler_Achskompensation_geaendert     4917             ;;Fehler 117
+   PN_Fehler_IPC_61x0_Takt_Ueberwachung     4918             ;;Fehler 118
+   PN_Fehler_Betriebsart_2                  4919             ;;Fehler 119
+   PN_Fehler_Betriebsart_3                  4920             ;;Fehler 120
+   PN_Fehler_Betriebsart_4                  4921             ;;Fehler 121
+   PN_Fehler_Not_Halt_Test                  4922             ;;Fehler 122
+   PN_Fehler_Taste_ohne_Funktion            4923             ;;Fehler 123
+   PN_Fehler_Energy_Opt_Standby_Maschine    4924             ;;Fehler 124
+   PN_Fehler_Energy_Opt_Autostart           4925             ;;Fehler 125
+   PN_Fehler_TCP_Client_Verbindungsfehler   4926             ;;Fehler 126
+   PN_Fehler_TCP_Server_Verbindungsfehler   4927             ;;Fehler 127
+   PN_Fehler_Python_Masken                  4928             ;;Fehler 128
+   PN_Fehler_SoftkeyMenuLeft_Masken         4929             ;;Fehler 129
+   PN_Fehler_TT449_Batterie_Warnung         4930             ;;Fehler 130
+   PN_Fehler_CC_Abschaltung                 4931             ;;Fehler 131
+   PN_Fehler_JH_Hardware                    4932             ;;Fehler 132
+   PN_Fehler_Interpolations_Drehen_aktiv    4933             ;;Fehler 133
+   PN_Fehler_kein_Interpolations_Drehen     4934             ;;Fehler 134
+   PN_Fehler_kein_freier_Platz_in_P_Tab     4935             ;;Fehler 135
+   PN_Fehler_WZW_BA1_anwaehlen              4936             ;;Fehler 136
+   PN_Fehler_Not_Halt_Bremsen_Test          4937             ;;Fehler 137
+   PN_Fehler_Maschine_aus                   4938             ;;Fehler 138
+   PN_Fehler_StSpg_aus_Shut_down            4939             ;;Fehler 139
+
+#if CFG_FS = "aktiv"                                         * SPLC_0018
+   PN_Fehler_SOM_X_Anwahl                   4950             ;;Fehler 150 * SPLC_0028
+   PN_Fehler_STO_aktiv                      4951             ;;Fehler 151 * SPLC_0022
+   PN_Fehler_SOS_aktiv                      4952             ;;Fehler 152 * SPLC_0023
+   PN_Fehler_S_Aktivierung_fehlt            4953             ;;Fehler 153 * SPLC_0012
+   PN_Fehler_Aktivierung_Achsgruppe         4954             ;;Fehler 154
+   PN_Fehler_Tasten_MB_gesperrt             4955             ;;Fehler 155
+   PN_Fehler_Tasten_HR_gesperrt             4956             ;;Fehler 156
+   PN_Fehler_Tasten_WZM_gesperrt            4957             ;;Fehler 157
+   PN_Fehler_SPLC_Konfiguration_pruefen     4958             ;;Fehler 158 * SPLC_0021
+   PN_Fehler_Trennwand_Schutz               4959             ;;Fehler 159
+
+   PN_Fehler_PLC_Modul_9143                 4976             ;;Fehler 176
+   PN_Fehler_Selbsttest_W1                  4977             ;;Fehler 177
+   PN_Fehler_Selbsttest_W2                  4978             ;;Fehler 178
+   PN_Fehler_Selbsttest_E                   4979             ;;Fehler 179
+#endif
+
+*-----------------------------------------------------------------------------
+*  PLC-Fehlermeldungen zusätzlich über PLC Modul (PET ab Zeile 200)
+*-----------------------------------------------------------------------------
+
+#type M
+
+   MG_Fehler                                [200]
+   MG_Fehler_alt                            [200]
+/c MG_Fehler_200                            &MG_Fehler + 00
+/c MG_Fehler_201                            &MG_Fehler + 01
+/c MG_Fehler_202                            &MG_Fehler + 02
+/c MG_Fehler_203                            &MG_Fehler + 03
+/c MG_Fehler_204                            &MG_Fehler + 04
+/c MG_Fehler_205                            &MG_Fehler + 05
+/c MG_Fehler_206                            &MG_Fehler + 06
+/c MG_Fehler_207                            &MG_Fehler + 07
+/c MG_Fehler_208                            &MG_Fehler + 08
+/c MG_Fehler_209                            &MG_Fehler + 09
+
+/c MG_Fehler_Ende                           &MG_Fehler + 199
+
+*-----------------------------------------------------------------------------
+*  Hinweise PLC-Window, Dialoge ab Zeile 100
+*-----------------------------------------------------------------------------
+
+   A_PLC_Win                                [110]
+
+/c MG_PLC_Window_Begin                      &A_PLC_Win + 00
+
+/c MG_Win_Not_Halt_Taster                   &A_PLC_Win + 00
+/c MG_Win_Endlage_Xp                        &A_PLC_Win + 01
+/c MG_Win_Endlage_Yp                        &A_PLC_Win + 02
+/c MG_Win_Endlage_Zp                        &A_PLC_Win + 03
+/c MG_Win_Endlage_4p                        &A_PLC_Win + 04
+/c MG_Win_Endlage_5p                        &A_PLC_Win + 05
+/c MG_Win_Endlage_Xn                        &A_PLC_Win + 06
+/c MG_Win_Endlage_Yn                        &A_PLC_Win + 07
+/c MG_Win_Endlage_Zn                        &A_PLC_Win + 08
+/c MG_Win_Endlage_4n                        &A_PLC_Win + 09
+/c MG_Win_Endlage_5n                        &A_PLC_Win + 10
+/c MG_Win_WZW_Pos_X                         &A_PLC_Win + 11
+/c MG_Win_WZW_Pos_Y                         &A_PLC_Win + 12
+/c MG_Win_WZW_Pos_Y_vor                     &A_PLC_Win + 13
+/c MG_Win_WZW_Pos_Y_manuell                 &A_PLC_Win + 14
+/c MG_Win_WZW_Pos_Z_ausheben                &A_PLC_Win + 15
+/c MG_Win_WZW_Pos_Z_einsetzen               &A_PLC_Win + 16
+/c MG_Win_WZW_Pos_Z_manuell                 &A_PLC_Win + 17
+/c MG_Win_WZW_Pos_Z_sicher                  &A_PLC_Win + 18
+/c MG_Win_WZW_Position_S                    &A_PLC_Win + 19
+/c MG_Win_WZ_entspannen                     &A_PLC_Win + 20
+/c MG_Win_WZ_spannen                        &A_PLC_Win + 21
+/c MG_Win_WZ_Greifer_ausheben               &A_PLC_Win + 22
+/c MG_Win_WZ_Greifer_einsetzen              &A_PLC_Win + 23
+/c MG_Win_WZ_Greifer_drehen                 &A_PLC_Win + 24
+/c MG_Win_WZ_Zangen_zu                      &A_PLC_Win + 25
+/c MG_Win_WZ_Zangen_auf                     &A_PLC_Win + 26
+/c MG_Win_WZ_Zange_Spi_zu                   &A_PLC_Win + 27
+/c MG_Win_WZ_Zange_Spi_auf                  &A_PLC_Win + 28
+/c MG_Win_WZ_Zange_Mag_zu                   &A_PLC_Win + 29
+/c MG_Win_WZ_Zange_Mag_auf                  &A_PLC_Win + 30
+/c MG_Win_WZM_Wechsel_Position              &A_PLC_Win + 31
+/c MG_Win_Magazin_Tuer_schliessen           &A_PLC_Win + 32
+/c MG_Win_WZ_in_Spindel_falsch              &A_PLC_Win + 33
+/c MG_Win_WZM_zu_Spindel                    &A_PLC_Win + 34
+/c MG_Win_WZM_zu_Grund_Stellung             &A_PLC_Win + 35
+/c MG_Win_WZ_Platz_ausklappen               &A_PLC_Win + 36
+/c MG_Win_WZ_Platz_einklappen               &A_PLC_Win + 37
+/c MG_Win_WZ_Mag_Index_ausheben             &A_PLC_Win + 38
+/c MG_Win_WZ_Mag_Index_einsetzen            &A_PLC_Win + 39
+/c MG_Win_WZ_Greifer_Grundstellung          &A_PLC_Win + 40
+/c MG_Win_WZ_Greifer_Funktion_gesperrt      &A_PLC_Win + 41
+/c MG_Win_WZ_Greifer_zu_Spindel             &A_PLC_Win + 42
+/c MG_Win_WZ_Greifer_zu_Magazin             &A_PLC_Win + 43
+/c MG_Win_WZ_Greifer_zu_Grundstellung       &A_PLC_Win + 44
+/c MG_Win_WZ_Greifer_zu_Mittelstellung      &A_PLC_Win + 45
+/c MG_Win_HR410_MP7645                      &A_PLC_Win + 46
+/c MG_Win_MSTG_Strobe_Satzvorlauf           &A_PLC_Win + 47
+/c MG_Win_WZM_PLC_Achse                     &A_PLC_Win + 48
+/c MG_Win_MP7640_HR_Typ_nicht_unterstuetzt  &A_PLC_Win + 49
+/c MG_Win_Satzvorlauf_PLC_aktiv             &A_PLC_Win + 50
+/c MG_Win_PGM_Stop_M_Strobe                 &A_PLC_Win + 51
+/c MG_Win_Datei_oeffnen                     &A_PLC_Win + 52
+/c MG_Win_lesen_Tabelle                     &A_PLC_Win + 53
+/c MG_Win_schreiben_Tabelle                 &A_PLC_Win + 54
+/c MG_Win_Wert_nicht_gefunden               &A_PLC_Win + 55
+/c MG_Win_Temperatur_Sensoren               &A_PLC_Win + 56
+/c MG_Win_Pt100_nicht_gefunden              &A_PLC_Win + 57
+/c MG_Win_PW_Posit_X                        &A_PLC_Win + 58
+/c MG_Win_PW_Posit_Y                        &A_PLC_Win + 59
+/c MG_Win_PW_Posit_Z                        &A_PLC_Win + 60
+/c MG_Win_PW_Automatik                      &A_PLC_Win + 61
+/c MG_Win_PW_Start                          &A_PLC_Win + 62
+/c MG_Win_PW_beenden                        &A_PLC_Win + 63
+/c MG_Win_PW_Schleuse_auf                   &A_PLC_Win + 64
+/c MG_Win_PW_Schleuse_zu                    &A_PLC_Win + 65
+/c MG_Win_PW_Pal_Nr_nicht_zulaessig         &A_PLC_Win + 66
+/c MG_Win_Pal_in_Maschine_entspannen        &A_PLC_Win + 67
+/c MG_Win_Pal_in_Maschine_spannen           &A_PLC_Win + 68
+/c MG_Win_Achsen_MP10_nicht_zugeordnet      &A_PLC_Win + 69
+/c MG_Win_PW_zu_Halt_Position               &A_PLC_Win + 70
+/c MG_Win_PW_1_Pos_X                        &A_PLC_Win + 71
+/c MG_Win_PW_2_Pos_X                        &A_PLC_Win + 72
+/c MG_Win_PW_keine_Ausgangsstellung         &A_PLC_Win + 73
+/c MG_Win_PW_1_in_Grundstellung             &A_PLC_Win + 74
+/c MG_Win_PW_2_in_Grundstellung             &A_PLC_Win + 75
+/c MG_Win_PW_zum_Beladen                    &A_PLC_Win + 76
+/c MG_Win_PW_zu_Maschine                    &A_PLC_Win + 77
+/c MG_Win_Fehler_Platz_Sensoren             &A_PLC_Win + 78
+/c MG_Win_PW_Posit_4                        &A_PLC_Win + 79
+/c MG_Win_3D_Kopf_G_Stufe                   &A_PLC_Win + 80
+/c MG_Win_3D_Kopf_Spindel_Position          &A_PLC_Win + 81
+/c MG_Win_3D_Kopf_Torsionsmoment            &A_PLC_Win + 82
+/c MG_Win_WZ_Schleuse_auf                   &A_PLC_Win + 83
+/c MG_Win_WZ_Schleuse_zu                    &A_PLC_Win + 84
+/c MG_Win_WZ_Pickup_ausfahren               &A_PLC_Win + 85
+/c MG_Win_WZ_Pickup_einfahren               &A_PLC_Win + 86
+/c MG_Win_WZW_Pos_X_vor                     &A_PLC_Win + 87
+/c MG_Win_PW_Alarm                          &A_PLC_Win + 88
+/c MG_Win_PW_pruefen                        &A_PLC_Win + 89
+/c MG_Win_C_Achs_Spindel_Position           &A_PLC_Win + 90
+/c MG_Win_erweiterte_Achs_Schnittstelle     &A_PLC_Win + 91
+/c MG_Win_Standard_Achs_Schnittstelle       &A_PLC_Win + 92
+/c MG_Win_Energy_Opt_Autostart              &A_PLC_Win + 93
+/c MG_Win_MP7620_Fmax_Override_aktivieren   &A_PLC_Win + 94
+/c MG_Win_WZM_Hirth_Achse                   &A_PLC_Win + 95
+
+*/c frei                                    &A_PLC_Win + 96
+*...
+*/c frei                                    &A_PLC_Win + 97
+
+/c MG_Win_Window_JA_Nein                    &A_PLC_Win + 98
+/c MG_Win_Window_NC_Start                   &A_PLC_Win + 99
+
+/c MG_PLC_Window_Ende                       &A_PLC_Win + 99
+
+*-----------------------------------------------------------------------------
+*  Timer T0..T47 (Werte in MP4110.0 ... MP4110.47)
+*
+*    /ts:TS_impuls_250_ms  TR_impuls_250_ms     0 + 48
+*    /ts:TS_Achs_          TR_Achs_             [&KG_max_Achs_Anzahl]
+*-----------------------------------------------------------------------------
+
+#type T
+
+   TS_Impuls_125_ms                         0
+   TR_Impuls_125_ms                         48
+
+   TS_Tasten_Impuls_Kennung                 2
+   TR_Tasten_Impuls_Kennung                 50
+   TS_Referenz_Timeout                      3
+   TR_Referenz_Timeout                      51
+   TS_S_Sollwert_in_Rampe                   4
+   TR_S_Sollwert_in_Rampe                   52
+   TS_Spindel_verzoegert_Stop               5
+   TR_Spindel_verzoegert_Stop               53
+   TS_Antriebs_Freigabe                     6
+   TR_Antriebs_Freigabe                     54
+   TS_Antriebe_bereit                       7
+   TR_Antriebe_bereit                       55
+   TS_Spindel_N_Aenderung                   8
+   TR_Spindel_N_Aenderung                   56
+   TS_Regler_Freigabe_S                     9
+   TR_Regler_Freigabe_S                     57
+   TS_Getriebe_Timeout                      10
+   TR_Getriebe_Timeout                      58
+   TS_Getriebe_pendeln_Pause                11
+   TR_Getriebe_pendeln_Pause                59
+   TS_Getriebe_pendeln_rechts               12
+   TR_Getriebe_pendeln_rechts               60
+   TS_Getriebe_pendeln_links                13
+   TR_Getriebe_pendeln_links                61
+   TS_Getriebe_verzoegert_aus               14
+   TR_Getriebe_verzoegert_aus               62
+   TS_S_Override_bewegt                     15
+   TR_S_Override_bewegt                     63
+   TS_Not_Halt_Test_2_Kanaele               16
+   TR_Not_Halt_Test_2_Kanaele               64
+   TS_Not_Halt_Kreis_aus                    17
+   TR_Not_Halt_Kreis_aus                    65
+   TS_WZW_Timeout                           18
+   TR_WZW_Timeout                           66
+   TS_WZW_Timer_allgemein                   19
+   TR_WZW_Timer_allgemein                   67
+   TS_Schmierung                            20
+   TR_Schmierung                            68
+   TS_Schmierung_Druck                      21
+   TR_Schmierung_Druck                      69
+   TS_Hydraulik_Druck_ok                    22
+   TR_Hydraulik_Druck_ok                    70
+   TS_Start_Teilapparat                     23
+   TR_Start_Teilapparat                     71
+   TS_WZ_Greifer_Mittelpos_verzoegert_Stop  24
+   TR_WZ_Greifer_Mittelpos_verzoegert_Stop  72
+   TS_PW_Timeout                            25
+   TR_PW_Timeout                            73
+   TS_PW_Timer_allgemein                    26
+   TR_PW_Timer_allgemein                    74
+   TS_3D_Kopf_Timeout                       27
+   TR_3D_Kopf_Timeout                       75
+   TS_3D_Kopf_Timer_allgemein               28
+   TR_3D_Kopf_Timer_allgemein               76
+   TS_TSxxx_abblasen                        29
+   TR_TSxxx_abblasen                        77
+   TS_WZM_Timeout                           30
+   TR_WZM_Timeout                           78
+   TS_WZM_1_Genauhalt                       31
+   TR_WZM_1_Genauhalt                       79
+   TS_WZM_2_Genauhalt                       32
+   TR_WZM_2_Genauhalt                       80
+   TS_WZM_1_verzoegert_Stop                 33
+   TR_WZM_1_verzoegert_Stop                 81
+   TS_WZM_2_verzoegert_Stop                 34
+   TR_WZM_2_verzoegert_Stop                 82
+   TS_TCP_IP_Client_Timeout                 35
+   TR_TCP_IP_Client_Timeout                 83
+   TS_Achsen_in_Bewegung                    36
+   TR_Achsen_in_Bewegung                    84
+
+#if CFG_FS = "aktiv"                                         * SPLC_0017
+   TS_Fehler_SOS_aktiv                      44               * SPLC_0023
+   TR_Fehler_SOS_aktiv                      92
+   TS_Spindel_Aktivierung_fehlt             45               * SPLC_0012
+   TR_Spindel_Aktivierung_fehlt             93
+#endif
+
+   TS_Steuer_Spannung_ein_aus               46
+   TR_Steuer_Spannung_ein_aus               94
+   TS_Steuer_Spannung_aus_ein               47
+   TR_Steuer_Spannung_aus_ein               95
+
+*-----------------------------------------------------------------------------
+*  Timer T96..T999 (Werte über Modul 9006, nur TR_ keine TS_)
+*        T96..T159 - Timer für Achsen
+*    Anzahl der zusätzlichen Timer in OEM.SYS definieren
+*        z.B. NUMBERMP4111 = 100
+*-----------------------------------------------------------------------------
+
+#type T
+
+   TR_Achse_loesen                          [&KG_max_Achs_Anzahl]
+   TR_Achse_klemmen                         [&KG_max_Achs_Anzahl]
+   TR_Achse_Timeout                         [&KG_max_Achs_Anzahl]
+   TR_Achse_warten_in_Position              [&KG_max_Achs_Anzahl]
+
+   TR_Achsgruppe_01_in_Bewegung
+   TR_Achsgruppe_02_in_Bewegung
+   TR_Achsgruppe_03_in_Bewegung
+   TR_Achsgruppe_04_in_Bewegung
+   TR_Achsgruppe_05_in_Bewegung
+   TR_Achsgruppe_06_in_Bewegung
+   TR_Achsgruppe_07_in_Bewegung
+   TR_Achsgruppe_08_in_Bewegung
+
+   TR_Energy_Opt_Spindel
+   TR_Energy_Opt_Achsen
+   TR_Energy_Opt_Bildschirm
+   TR_Energy_Opt_Maschine
+   TR_Energy_Opt_Steuerung
+   TR_Energy_Opt_Licht
+   TR_Energy_Opt_Luft
+   TR_Energy_Opt_Oel
+   TR_Energy_Opt_Aux
+
+#type M
+
+   TS_Achse_loesen                          [&KG_max_Achs_Anzahl]
+   TS_Achse_klemmen                         [&KG_max_Achs_Anzahl]
+   TS_Achse_Timeout                         [&KG_max_Achs_Anzahl]
+   TS_Achse_warten_in_Position              [&KG_max_Achs_Anzahl]
+
+*-----------------------------------------------------------------------------
+*  Timer T96..T999 (Werte über Modul 9006, nur TR_ keine TS_)
+*        T159..T999 - Timer OEM frei verfügbar
+*    Anzahl der zusätzlichen Timer in OEM.SYS definieren
+*        z.B. NUMBERMP4111 = 100
+*    Aktivierung in Konfigurations-Datei
+*        DEFINE CFG_Timer_MP4111_zusaetzlich = "aktiv"
+*-----------------------------------------------------------------------------
+
+#type T
+
+   TR_Timer                                 [10]
+/c TR_xxx                                   &TR_Timer + 0
+
+#type M
+   TS_Timer                                 [10]
+/c TS_xxx                                   &TS_Timer + 0
+/c TS_Timer_Ende                            &TS_Timer + 9
+
+*-----------------------------------------------------------------------------
+*  Counter
+*-----------------------------------------------------------------------------
+
+#type C
+
+*-----------------------------------------------------------------------------
+*  Maschinen-Parameter
+*-----------------------------------------------------------------------------
+
+#type W
+
+   NP_W986_Farb_Einstellung                 986
+   NP_W988_Schmier_Zeit                     988
+
+#type D
+
+   DG_Data_Tab_Ende
+   DG_Config_Tab_Ende
+; Daten aus MP_Data.tab
+
+*
+*  Spindel 1/2
+*
+*$WS siehe Struktur_Spindel
+
+*
+* Vorschub PLC Positionierung
+*
+   DG_Vorschub_PLC_Pos                      [&KG_max_Achs_Anzahl]
+   DG_Vorschub_BA_2                         [&KG_max_Achs_Anzahl]
+   DG_Vorschub_BA_3                         [&KG_max_Achs_Anzahl]
+   DG_Vorschub_BA_4                         [&KG_max_Achs_Anzahl]
+*
+* Position WZW
+*
+   DG_WZW_Pos_X
+   DG_WZW_Pos_X_vor
+   DG_WZW_Pos_Y
+   DG_WZW_Pos_Y_vor
+   DG_WZW_Pos_Z_ausheben
+   DG_WZW_Pos_Z_einsetzen
+   DG_WZW_Pos_X_manuell
+   DG_WZW_Pos_Y_manuell
+   DG_WZW_Pos_Z_manuell
+   DG_WZW_Pos_Z_sicher
+   DG_WZW_Pos_Spindel
+*
+* PLC Position nach Referenz
+*
+   DG_Pos_nach_Referenz                     [&KG_max_Achs_Anzahl]
+*
+* PLC Position Software Referenz-Nocken
+*
+   DG_Pos_SW_Referenz_Nocken                [&KG_max_Achs_Anzahl]
+*
+* Temperatur-Kompensation
+*
+   DG_Faktor_10_Grad_Bereich
+   DG_Faktor_20_Grad_Bereich
+   DG_Faktor_30_Grad_Bereich
+   DG_Faktor_40_Grad_Bereich
+   DG_Faktor_50_Grad_Bereich
+*
+* Pendel Betrieb
+*
+   DG_Pendel_Grenze_X
+   DG_Pendel_Pos_1_X
+   DG_Pendel_Pos_2_X
+   DG_Pendel_Pos_Y
+   DG_Pendel_Pos_Z
+*
+* Palettenwechsel
+*
+   DG_PW_Anzahl_Plaetze
+   DG_PW_Posit_X
+   DG_PW_Posit_Y
+   DG_PW_Posit_Z
+*
+* 3D Kopf
+*
+   DG_max_Moment_Achse_1
+   DG_max_Moment_Achse_2
+   DG_3D_Kopf_Achse_1_Offset_S_Pos
+   DG_3D_Kopf_Achse_2_Offset_S_Pos
+*
+* Schmierung Achsen Zeit
+*
+   DG_Schmier_Pause_min
+   DG_Schmier_Pause_max
+*
+* Arbeitsraum Ueberwachung
+*
+   DG_Arbeitsraum_manu_Y
+   DG_Arbeitsraum_manu_Z
+   DG_Arbeitsraum_auto_Y
+   DG_Arbeitsraum_auto_Z
+   DG_Arbeitsraum_manu_B
+   DG_Arbeitsraum_manu_C
+   DG_Arbeitsraum_auto_B
+   DG_Arbeitsraum_auto_C
+
+   DG_MP_Data_Tab_Ende
+
+#type M
+
+; Daten aus MP_Config.tab
+*
+* Spindel/Achsen
+*
+   MG_Ref_Autostart_inaktiv
+   MG_kein_Spindel_Stop_mit_Taste_NC_Stop
+   MG_Kuehlmittel_ohne_Spindel_M3_M4
+   MG_S_Override_kein_F_Stop
+*
+* Werkzeugwechsel
+*
+   MG_TOOL_CALL_Quittung_ohne_WZ_entspannen
+   MG_WZW_T0_auto_manu_notwendig
+   MG_WZ_Mag_vor_beladen_T0_notwendig
+   MG_WZW_Position_Manuell_inaktiv
+   MG_WZ_in_Spindel_BA_auto_inaktiv
+*$WS siehe Struktur_Spindel
+*
+* Sonderfunktionen
+*
+   MG_auto_Tueren_entriegeln_bei_END_PGM
+   MG_PLC_Preset_Tabelle_aktiv
+*
+* Palettenwechsler
+*
+   MG_Paletten_Wechsel_Pendeln_inaktiv
+   MG_Taste_Anwahl_Rohteil_inaktiv
+*
+* Diagnose
+*
+   MG_zusaetzliche_Logbuch_Eintraege_aktiv
+*
+* Inbetriebnahme
+*
+   MG_Inbetriebnahme
+   MG_Tueren_inaktiv
+   MG_Vorschub_UBW_M3_M4_inaktiv
+   MG_Power_Fail_inaktiv
+*  reserviert
+*  reserviert
+*  reserviert
+
+   MG_MP_Daten_Tabelle_pruefen
+   MG_MP_Config_Tabelle_pruefen
+
+*$WS Call PLC Modul 9075
+   MG_S1_Freigabe_M07_mit_WZ_Status_Bit2
+   MG_S2_Freigabe_M07_mit_WZ_Status_Bit2
+   MG_S1_WZ_Ueberwachung_inaktiv
+   MG_S2_WZ_Ueberwachung_inaktiv
+   MG_S1_WZM_Ueberwachung_inaktiv
+   MG_S2_WZM_Ueberwachung_inaktiv
+
+#type D
+
+   DG_MP_Config_Tab_Ende
+
+*-----------------------------------------------------------------------------
+*  Strings
+*-----------------------------------------------------------------------------
+
+#type S
+
+   SG_Zahlenwert
+   SG_Z0_FEED_WZW_Standby_Platz
+   SG_Z0_Count_Probe_End_off_T_Standby
+   SG_Hinweis_Zeile_0
+   SG_Hinweis_Zeile_1
+   SG_Diagramm_Auslastung
+   SG_Diagramm_Moment
+   SG_Diagramm_S_Istdrehzahl
+   SG_Diagramm_S_Override
+   SG_Diagramm_F_Override
+   SG_Diagramm_Fmax_Override
+   SG_Limit_Table
+   SG_Uhrzeit_PLC_Preset
+   SG_Modul_Fehler_Status
+   SG_Logbuch
+   SG_WZW_Diagnose_Zeile_1
+   SG_WZW_Diagnose_Zeile_2
+   SG_WZW_Diagnose_Zeile_3
+   SG_WZM_Diagnose_Zeile_1
+   SG_WZM_Diagnose_Zeile_2
+   SG_WZM_Diagnose_Zeile_3
+   SG_MP_Teildatei
+   SG_Feld_Name
+   SG_Titel_Ueberblendfenster
+   SG_Kennung_Achsen_Limitx
+   SG_Kennung_Achsen_Limit1
+   SG_Kennung_Achsen_Limit2
+   SG_Kennung_Achsen_Limit3
+   SG_Kennung_Achse_n
+   SG_Kennung_Achse                         [32]
+/c SG_Kennung_Achse_01                      &SG_Kennung_Achse + 00
+/c SG_Kennung_Achse_02                      &SG_Kennung_Achse + 01
+/c SG_Kennung_Achse_03                      &SG_Kennung_Achse + 02
+/c SG_Kennung_Achse_04                      &SG_Kennung_Achse + 03
+/c SG_Kennung_Achse_05                      &SG_Kennung_Achse + 04
+/c SG_Kennung_Achse_06                      &SG_Kennung_Achse + 05
+/c SG_Kennung_Achse_07                      &SG_Kennung_Achse + 06
+/c SG_Kennung_Achse_08                      &SG_Kennung_Achse + 07
+/c SG_Kennung_Achse_09                      &SG_Kennung_Achse + 08
+/c SG_Kennung_Achse_10                      &SG_Kennung_Achse + 09
+/c SG_Kennung_Achse_11                      &SG_Kennung_Achse + 10
+/c SG_Kennung_Achse_12                      &SG_Kennung_Achse + 11
+/c SG_Kennung_Achse_13                      &SG_Kennung_Achse + 12
+/c SG_Kennung_Achse_14                      &SG_Kennung_Achse + 13
+/c SG_Kennung_Achse_15                      &SG_Kennung_Achse + 14
+/c SG_Kennung_Achse_16                      &SG_Kennung_Achse + 15
+/c SG_Kennung_Achse_17                      &SG_Kennung_Achse + 16
+/c SG_Kennung_Achse_18                      &SG_Kennung_Achse + 17
+/c SG_Kennung_Achse_19                      &SG_Kennung_Achse + 18
+/c SG_Kennung_Achse_20                      &SG_Kennung_Achse + 19
+/c SG_Kennung_Achse_21                      &SG_Kennung_Achse + 20
+/c SG_Kennung_Achse_22                      &SG_Kennung_Achse + 21
+/c SG_Kennung_Achse_23                      &SG_Kennung_Achse + 22
+/c SG_Kennung_Achse_24                      &SG_Kennung_Achse + 23
+/c SG_Kennung_Achse_25                      &SG_Kennung_Achse + 24
+/c SG_Kennung_Achse_26                      &SG_Kennung_Achse + 25
+/c SG_Kennung_Achse_27                      &SG_Kennung_Achse + 26
+/c SG_Kennung_Achse_28                      &SG_Kennung_Achse + 27
+/c SG_Kennung_Achse_29                      &SG_Kennung_Achse + 28
+/c SG_Kennung_Achse_30                      &SG_Kennung_Achse + 29
+/c SG_Kennung_Achse_31                      &SG_Kennung_Achse + 30
+/c SG_Kennung_Achse_32                      &SG_Kennung_Achse + 31
+   SG_Kennung_3D_Achse_1
+   SG_Kennung_3D_Achse_2
+   SG_WZM_Nummer
+   SG_WZ_Name
+   SG_Zeit_Not_Halt_Test
+   SG_Energy_Opt_Zeit_Ein
+   SG_Time_H_M
+   SG_Energy_Opt_Programm
+   SG_Name_aktuelles_NC_PGM
+   SG_MP_Wert
+   SG_Symbol_Name_Tab_Operand
+   SG_WZ_Name_Bel
+   SG_WZ_Name_Bel_zuvor
+   SG_WZ_Name_Bel_gefunden
+   SG_SQL_String
+   SG_JH_Umrichter_Diagnose
+
+*-----------------------------------------------------------------------------
+*  Stukturen
+*-----------------------------------------------------------------------------
+
+#typedef Struktur_Spindel
+   DG_max_Temperatur                        D
+   DG_Luefter_ein_Temperatur                D
+   DG_Luefter_aus_Temperatur                D
+   DG_Referenz_Drehzahl                     D
+   DG_Service_Drehzahl                      D
+   DG_Betriebsart_2_Drehzahl                D
+   DG_Betriebsart_3_Drehzahl                D
+   DG_Betriebsart_4_Drehzahl                D
+   DG_n_min                                 D
+   DG_n_Diff_100                            D
+   DG_n_soll                                D
+   DG_n_max_S_leer                          D
+   DG_min_Moment                            D
+   DG_max_Moment                            D
+   DG_Faktor_Vorschubreduzierung            D
+   DG_Faktor_Auslastungsanzeige             D
+   DG_Drehzahl_YD_Umschaltung               D
+   DG_Drehzahl_DY_Umschaltung               D
+   MG_Freigabe_M07_mit_WZ_Status_Bit2       M
+   MG_WZ_Ueberwachung_inaktiv               M
+
+#type
+   STG_Spindel                              Struktur_Spindel[&KG_max_Spindel_Anzahl]
+
+#typedef Struktur_WZ_Magazin
+   MG_WZM_Start                             M                ;;Status Positionierung WZ Magazin gestartet
+   MG_WZM_Tool_Call                         M                ;;WZ-Magazin Bewegung von Tool Call
+   MG_WZM_Tool_Def                          M                ;;WZ-Magazin Bewegung von Tool Def
+   MG_WZM_Referenz_notwendig                M
+   MG_Posit_0_Grad                          M                ;;$WS besser auf letzten Platz positionieren
+   MG_WZM_Beladen_Entladen_Start            M
+   MG_WZM_Unterbrechung                     M
+   MG_WZM_Platz_gesperrt                    M
+   MG_Status                                M[8]
+   MG_O_WZM_Platz_ausklappen                M
+   MG_O_WZM_Platz_einklappen                M
+   MG_O_WZM_Linkslauf                       M
+   MG_O_WZM_Rechtslauf                      M
+   MG_O_WZM_Eilgang                         M
+   MG_O_WZM_Schleichgang                    M
+   MG_O_WZM_Index_ausheben                  M
+   MG_O_WZM_Index_einsetzen                 M
+   MG_I_WZM_Platz_ausgeklappt               M
+   MG_I_WZM_Platz_eingeklappt               M
+   MG_I_WZM_Zaehler                         M
+   MG_I_WZM_Genauhalt                       M
+   MG_I_WZM_Referenz                        M
+   MG_I_WZM_Index_eingesetzt                M
+   MG_I_WZM_Index_ausgehoben                M
+   MG_I_WZM_Platz_belegt                    M
+   BG_WZM_Achs_Index                        B
+   BG_Schritt_WZM                           B
+   WG_WZM_Soll_Platz                        W
+   WG_WZM_Ist_Platz                         W
+   WG_WZM_Ist_2_Platz_Zaehler               W
+   WG_WZM_Ist_Soll_Platz_Differenz          W
+   WG_WZM_Beladen_Soll_Platz                W
+   WG_WZM_Beladen_Ist_Platz                 W
+   WG_MP7261_WZM_max_Platz                  W
+   DG_MP810_Modulo_Wert                     D
+   DG_WZM_Platz_Pos_Differenz               D
+   DG_WZM_Soll_Position                     D
+   DG_WZM_Offset_Beladeplatz                D
+   MG_WZM_Ueberwachung_inaktiv              M
+
+*$WS später als lokale Struktur
+   ML_WZM_Start_manuell                     M
+   ML_WZM_Taste_manuell_betaetigt           M
+   ML_WZM_manuell_rechts                    M
+   ML_WZM_manuell_links                     M
+   ML_WZM_Referenz                          M
+   ML_WZM_Richtung_rechts                   M
+   ML_WZM_Zaehler                           M
+   ML_WZM_Genauhalt                         M
+   ML_Diff_kleiner_gleich_Mag_halbe         M
+   ML_Ist_Pos_groesser_Soll_Pos             M
+   ML_Schritt_Start                         M
+   BL_Schritt_WZM                           B
+   WL_Tool_Def_Platz_Nummer                 W
+   WL_Tool_Def_Werkzeug_Nummer              W
+   WL_WZM_Simulation_Zaehler                W
+   WL_WZM_Ist_Platz                         W
+*$WS separate Timer und Fehler über Makro vorsehen
+#type
+   STG_WZM                                  Struktur_WZ_Magazin[CFG_WZM_max_Anzahl]
+
+   MG_WZM_n_Start_aktiv                     M                ;;Bewegung eines WZ-Magazines gestartet
+
+   WG_WZM_Anzahl                            W                ;;Anzahl der Magazine aktiviert in MP7261
+
+   KG_WZM_1_Index                           K +0
+   KG_WZM_2_Index                           K +1
+
+   KG_asynchrone_Achse                      K +0
+   KG_Referenz_OK                           K +1
+   KG_Posit_aktiv                           K +2
+   KG_Posit_negativ                         K +3
+   KG_Posit_Fehler                          K +4
+   KG_Achse_ungeregelt                      K +5
+   KG_Achse_Ziel_erreicht                   K +6
+
+#typedef ST_PLC_PYTHON_STATUS
+   Event                                    W
+   Handle                                   D
+   LogOnReturn                              W
+   AccessReturn                             W
+   Status                                   W
+
+#typedef ST_PLC_PYTHON
+   Funktion                                 B
+   Client                                   D
+
+   M_1                                      M
+   M_2                                      M
+   M_3                                      M
+   M_4                                      M
+   M_5                                      M
+
+   D_1                                      D
+   D_2                                      D
+   D_3                                      D
+   D_4                                      D
+   D_5                                      D
+   D_6                                      D
+   D_7                                      D
+   D_8                                      D
+
+#typedef Struktur_Test
+   MG_Test_Merker_1                         M
+   MG_Test_Merker_2                         M
+   BG_Test_Byte                             B
+   BG_Test_Byte_Array                       B[4]
+
+#typedef ST_PLC_PY_TIMER_DIALOG
+   M_Ein                                    M
+   M_Aktiv                                  M
+   M_Aktiv_Temp                             M
+   D_Zeit                                   D
+   D_Filter                                 D
+
+#typedef ST_Energy_Opt_Autostart
+   Maschine                                 M
+   Antriebe                                 M
+   Licht                                    M
+   Warmlaufprogramm                         M
+   Wochentage                               B
+
+#type
+
+   STG_PLC_Server_Senden                    ST_PLC_PYTHON
+   STG_PLC_Server_Status_Senden             ST_PLC_PYTHON_STATUS
+;Call 62573 - Modul 9370 kann Strukturen mit max 23 Zeichen anmelden
+   STG_PLC_Server_Empfang                   ST_PLC_PYTHON
+   STG_PLC_Server_Status_Empfangen          ST_PLC_PYTHON_STATUS
+
+   STG_PLC_Client_Senden                    ST_PLC_PYTHON
+   STG_PLC_Client_Status_Senden             ST_PLC_PYTHON_STATUS
+;Call 62573 - Modul 9370 kann Strukturen mit max 23 Zeichen anmelden
+   STG_PLC_Client_Empfang                   ST_PLC_PYTHON
+   STG_PLC_Client_Status_Empfangen          ST_PLC_PYTHON_STATUS
+
+   STG_Test                                 Struktur_Test[2]
+
+   STG_Energy_Opt_Spindel                   ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Achsen                    ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Monitor                   ST_PLC_PY_TIMER_DIALOG
+
+   STG_Energy_Opt_Maschine                  ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Steuerung                 ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Licht                     ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Luft                      ST_PLC_PY_TIMER_DIALOG
+   STG_Energy_Opt_Oel                       ST_PLC_PY_TIMER_DIALOG
+
+   STG_Energy_Opt_Autostart                 ST_Energy_Opt_Autostart
+
+#if CFG_FS = "aktiv"
+; Daten-Austausch mit SPlc (splc\sTransferPlcSplc.def)
+; Plc -> sPlc
+
+#type M
+
+   MG_Anforderung_SOM_S
+   MG_3D_ROT_aktiv
+   MG_Abnahmetest_aktiv
+   MG_SOM_4_freigegeben                                      * SPLC_0008
+
+; sPlc -> Plc
+
+   MG_Fehler_SOM_X_Anwahl
+   MG_Fehler_Aktivierung
+   MG_Fehler_Tasten_MB_gesperrt
+   MG_Fehler_Tasten_HR_gesperrt
+   MG_Fehler_Tasten_WZM_gesperrt
+   MG_Fehler_Trennwand_Schutz
+
+; Plc -> sPlc
+
+#type B
+   BG_HR_Typ
+
+#type D
+   DG_Position_Ax01_Ref
+   DG_Position_Ax02_Ref
+   DG_Position_Ax03_Ref
+   DG_MP560_FS_Zusatzfunktionen                              * SPLC_0007
+
+; sPlc -> Plc
+
+   DG_Fehler_SOM_X_Anwahl
+   DG_Fehler_Aktivierung
+
+   DG_CFG_Achsgruppen_Typ                   [3]
+/c DG_CFG_Achsgruppen_Typ_NC                &DG_CFG_Achsgruppen_Typ + 0
+/c DG_CFG_Achsgruppen_Typ_S                 &DG_CFG_Achsgruppen_Typ + 4
+/c DG_CFG_Achsgruppen_Typ_T                 &DG_CFG_Achsgruppen_Typ + 8
+
+   DG_CFG_Achsen_Typ                        [3]
+/c DG_CFG_Achsen_Typ_NC                     &DG_CFG_Achsen_Typ + 0
+/c DG_CFG_Achsen_Typ_S                      &DG_CFG_Achsen_Typ + 4
+/c DG_CFG_Achsen_Typ_T                      &DG_CFG_Achsen_Typ + 8
+
+
+#endif

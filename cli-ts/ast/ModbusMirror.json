@@ -1,0 +1,928 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "MODBUS_MIRROR_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "MODBUS_MIRROR_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifdef",
+              "text": "#ifdef"
+            },
+            {
+              "type": "identifier",
+              "text": "ENABLE_MODBUS_MIRROR"
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<Component.h>"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<ModbusClientTCPasync.h>"
+                }
+              ]
+            },
+            {
+              "type": "class_specifier",
+              "children": [
+                {
+                  "type": "class",
+                  "text": "class"
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "PHApp"
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            },
+            {
+              "type": "class_specifier",
+              "children": [
+                {
+                  "type": "class",
+                  "text": "class"
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "ModbusMirror"
+                },
+                {
+                  "type": "base_class_clause",
+                  "children": [
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "public",
+                          "text": "public"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "Component"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration_list",
+                  "children": [
+                    {
+                      "type": "{",
+                      "text": "{"
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "public",
+                          "text": "public"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "declaration",
+                      "children": [
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "identifier",
+                              "text": "ModbusMirror"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "PHApp"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "owner"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "primitive_type",
+                                      "text": "uint16_t"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "id"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "declaration",
+                      "children": [
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "destructor_name",
+                              "children": [
+                                {
+                                  "type": "~",
+                                  "text": "~"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "ModbusMirror"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "setup"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "loop"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ModbusClientTCPasync"
+                        },
+                        {
+                          "type": "pointer_declarator",
+                          "children": [
+                            {
+                              "type": "*",
+                              "text": "*"
+                            },
+                            {
+                              "type": "function_declarator",
+                              "children": [
+                                {
+                                  "type": "field_identifier",
+                                  "text": "getClient"
+                                },
+                                {
+                                  "type": "parameter_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "private",
+                          "text": "private"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "friend_declaration",
+                      "children": [
+                        {
+                          "type": "friend",
+                          "text": "friend"
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "primitive_type",
+                              "text": "void"
+                            },
+                            {
+                              "type": "function_declarator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "onData"
+                                },
+                                {
+                                  "type": "parameter_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "parameter_declaration",
+                                      "children": [
+                                        {
+                                          "type": "type_identifier",
+                                          "text": "ModbusMessage"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "response"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "parameter_declaration",
+                                      "children": [
+                                        {
+                                          "type": "primitive_type",
+                                          "text": "uint32_t"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "token"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "friend_declaration",
+                      "children": [
+                        {
+                          "type": "friend",
+                          "text": "friend"
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "primitive_type",
+                              "text": "void"
+                            },
+                            {
+                              "type": "function_declarator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "onError"
+                                },
+                                {
+                                  "type": "parameter_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "parameter_declaration",
+                                      "children": [
+                                        {
+                                          "type": "type_identifier",
+                                          "text": "Error"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "error"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "parameter_declaration",
+                                      "children": [
+                                        {
+                                          "type": "primitive_type",
+                                          "text": "uint32_t"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "token"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "connect"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "storage_class_specifier",
+                          "children": [
+                            {
+                              "type": "static",
+                              "text": "static"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "onData"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ModbusMessage"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "response"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "primitive_type",
+                                      "text": "uint32_t"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "token"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "storage_class_specifier",
+                          "children": [
+                            {
+                              "type": "static",
+                              "text": "static"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "onError"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "Error"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "error"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "primitive_type",
+                                      "text": "uint32_t"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "token"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "IPAddress"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "_serverIP"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "uint16_t"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "_serverPort"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ModbusClientTCPasync"
+                        },
+                        {
+                          "type": "pointer_declarator",
+                          "children": [
+                            {
+                              "type": "*",
+                              "text": "*"
+                            },
+                            {
+                              "type": "field_identifier",
+                              "text": "_mbClient"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "bool"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "_isConnected"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "unsigned",
+                              "text": "unsigned"
+                            },
+                            {
+                              "type": "long",
+                              "text": "long"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "_lastConnectionAttempt"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "unsigned",
+                              "text": "unsigned"
+                            },
+                            {
+                              "type": "long",
+                              "text": "long"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "_initialConnectionAttempt"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "}",
+                      "text": "}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "text": "// ENABLE_MODBUS_MIRROR\r"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// MODBUS_MIRROR_H "
+    }
+  ]
+}

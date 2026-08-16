@@ -1,0 +1,21 @@
+NAME = BL_Q300
+CAPTION = Q300 Auswahl Tastsystem
+CAPTION-EN = Q300 Select Probe System
+PARA-NR = 300
+TYPE = NUMBER
+RANGE = 1...3
+DEFAULT = 2
+Q-ALLOWED = YES
+GLOBAL-ALLOWED = NO
+INCH-CONVERT = NO
+FEED-PARA = NO
+
+DIA-ENGLISH = Select System: 1=S-Probe/2=Z-Probe/3=Cleaning
+DIA-GERMAN = Systemauswahl: 1=Taster/2=Messdose/3=Reinigung
+DIA-FRENCH = Selectionner Systeme: 1=Palpeur 3D/2=Z-Probe
+DIA-ITALIAN = Selezione Sistema: 1=Tastatore 3D/2=Z-Probe
+
+COM-ENGLISH = SELECT SYSTEM 
+COM-GERMAN = SYSTEMAUSWAHL 
+COM-FRENCH = SELECTIONNER SYSTEME 
+COM-ITALIAN = SELEZIONE SISTEMA 

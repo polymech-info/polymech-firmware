@@ -1,0 +1,23 @@
+﻿************************************
+!!! ATENCION !!!
+solo para personal cualificado
+X, Y, Z  pueden ser movidos por
+teclas   X+, X-, Y+, Y-, Z+, Z-
+o volante electronico
+Servicio para el cambiador htas
+de brazo simple
+Confirmar tecla "NC start" en MANUAL
+************************************
+#101  Orienta cabezal para cambio hta.
+#102  Z a pos. seguridad cambio hta.
+#103  Z a posicion cambio coger hta.
+#104  Desbloquear herramienta
+#105  Bloquear herramienta
+#106  Almacen al cabezal
+#107  Almacen a posicion basica
+#108  Soltar herramienta
+#109  Atar herramienta
+#110  Almacen giro a dchas.
+#111  Almacen giro a izdas.
+#112  Referenciar almacen
+#113  Borrar datos de Hta. (T0)

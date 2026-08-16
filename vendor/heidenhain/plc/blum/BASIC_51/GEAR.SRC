@@ -1,0 +1,439 @@
+*-----------------------------------------------------------------------------
+*  Gear shift spindle
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_gear_range_1                          K+0
+#define /s    KL_gear_range_2                          K+1
+#define /s    KL_S_nominal_rpm_min                     K+100000
+
+#define /s    ML_gear_initial                          M
+#define /s    ML_S_0_volt_status_inverse               M
+
+#define /s    BL_step_gear                             B
+#define /s /r BL_G_code                                B
+
+#define /s    DL_S_nominal_rpm_PLC                     D
+#define /s /r DL_S_programmed_rpm                      D
+
+#include Mac_Lib.inc
+
+GLOBAL Spindle_gear
+
+;----------------------------
+LBL Spindle_gear
+;----------------------------
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4173_1st_PLC_run_after_compile
+  S      ML_gear_initial
+
+  LN     MG_spindle_active
+  EMT
+
+  L      ML_gear_initial
+  IFT
+    L      MG_power_delayed_on
+    R      ML_gear_initial
+    S      PN_M4134_strobe_G_range_S_speed
+    IFT
+      L      BL_G_code
+      =      NP_W256_G_code_spindle
+
+      L      DL_S_programmed_rpm
+      ==     K+0
+      IFT
+        L      KL_S_nominal_rpm_min
+        =      PN_D756_S_nominal_rpm_PLC
+      ELSE
+        L      DL_S_programmed_rpm
+        =      PN_D756_S_nominal_rpm_PLC
+      ENDI
+
+#if Spindle_wye_delta_connection = &active
+      L      MG_spindle_with_gear
+      IFT
+
+        PS     KG_spindle
+        PS     NP_W256_G_code_spindle
+        CM     9163
+  M_display_module_error(KG_error_module_9163)
+      ENDI
+#endif
+
+    ENDI
+  ENDI
+
+  L      PN_D756_S_nominal_rpm_PLC
+  <>     DL_S_nominal_rpm_PLC
+  AN     PN_M4134_strobe_G_range_S_speed
+  CMT    Backup_G_S
+
+  L      PN_D756_S_nominal_rpm_PLC
+  =      DL_S_nominal_rpm_PLC
+
+  LN     NP_M4070_strobe_G_code
+  R      PN_M4090_quit_G_code
+
+  L      BL_step_gear
+  ==     K+0
+  =      TS_gear_timeout
+
+  L      MG_marker_one                                                *;EUMACH
+  S      TS_gear_dwell                                                *;EUMACH
+
+  CASE   BL_step_gear
+    CM     Gear_on                     ;00
+    CM     Spindle_off                 ;01
+    CM     Coupling                    ;02
+    CM     Gear_dwell                  ;03                            *;EUMACH
+    CM     Reference_test              ;04
+    CM     Quit                        ;05
+    CM     Gear_end                    ;06
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_gear
+  ENDI
+
+  L      PN_error_gear_change
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  ON     MG_V_H_head_clamped_and_in_pos                               *;EUMACH
+#endif                                                                *;EUMACH
+  ON     MG_control_operational
+  CMT    Gear_reset
+
+  LN     MG_spindle_with_gear
+  S      MG_gear_range_ok
+  EMT
+
+  L      MG_marker_one
+  R      MG_gear_range_ok
+
+  L      NP_W256_G_code_spindle
+  ==     KL_gear_range_1
+  A      I_gear_range_1
+  AN     I_gear_range_2
+  S      MG_gear_range_ok
+
+  L      NP_W256_G_code_spindle
+  ==     KL_gear_range_2
+  AN     I_gear_range_1
+  A      I_gear_range_2
+  S      MG_gear_range_ok
+
+  LN     MG_gear_range_ok
+  AN     MG_gear_change_active
+  AN     ML_gear_initial
+  AN     PN_M4007_S_M05_nominal_0_and_status
+#if (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B) *;EUMACH
+  AN     MG_spindle_C_axis_mode_active                                *;EUMACH
+#endif                                                                *;EUMACH
+  O[
+    AN     TS_gear_timeout
+    AN     TR_gear_timeout
+  ]
+  A      MG_power_delayed_on
+  S      PN_error_gear_change
+
+EM
+
+;----------------------------
+LBL Gear_on                            ;00
+
+  L      NP_M4070_strobe_G_code
+  AN     MG_touch_probe_active
+  AN     MG_3D_head_active
+  AN     MG_spindle_C_axis_mode_active
+  O      MG_strobe_G_code_rpm
+  O      MG_gear_range_1_from_3D_head
+  O      MG_gear_range_from_3D_head
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  O      MG_gear_range_1_from_HELP                                    *;EUMACH
+  O      MG_gear_range_1_from_V_H_head                                *;EUMACH
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_05                                            *;EUMACH
+  A[                                                                  *;EUMACH
+    L      MG_soft_key_S_man_head                                     *;EUMACH
+    AN     O_S_head_coupling_unclamping                               *;EUMACH
+    ON     MG_soft_key_S_man_head                                     *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  AN     MG_3D_head_axis_not_clamped                                  *;EUMACH
+  AN     I_tool_unclamped                                             *;EUMACH
+  A      I_tool_clamped                                               *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  A      I_tool_clamp_line_hydraulic_pressure_0                       *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+  AN     NP_M4158_mode_block_scan
+  AN     PN_error_gear_change
+  PSL
+  S      MG_gear_change_active
+  EMF
+
+  L      PN_M4008_S_nominal_off_status_inverse
+  =      ML_S_0_volt_status_inverse
+
+EM
+
+;----------------------------
+LBL Spindle_off                        ;01
+
+  LN     TR_gear_timeout
+  S      PN_error_S_actual_lower_nominal_rpm
+
+;  PS     MG_spindle_stand_still                                      *;EUMACH Original PLC
+*;EUMACH
+*;Without the following PLC
+*;PLC RAM clear (code number = 531210) -> power on S in high gear range -> S2000 (high gear range S code)
+*;-> error 37
+  L      MG_spindle_stand_still
+  PSL
+  EMF
+
+  L      MG_gear_range_ok
+  IFT
+    L      BL_step_gear
+    +      K+2
+    =      BL_step_gear
+
+    L      MG_spindle_reference_using_sensor
+    A      NP_M4018_S_no_reference
+    S      PN_M4134_strobe_G_range_S_speed
+    S      MG_spindle_reference_active
+  ENDI
+*;EUMACH
+
+EM
+
+#if Spindle_wye_delta_connection = &active
+;----------------------------
+LBL Coupling                           ;02
+
+  L      MG_spindle_with_gear
+  IFT
+    S      O_wye_delta_connection
+
+    PS     KG_spindle
+    PS     NP_W256_G_code_spindle
+    CM     9163
+  M_display_module_error(KG_error_module_9163)
+
+    L      NP_W256_G_code_spindle
+    ==     K+0
+    O      MG_gear_range_1_from_3D_head
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+    O      MG_gear_range_1_from_HELP                                  *;EUMACH
+    O      MG_gear_range_1_from_V_H_head                              *;EUMACH
+#endif                                                                *;EUMACH
+    A      I_gear_range_1
+    AN     I_gear_range_2
+    O[
+      L      NP_W256_G_code_spindle
+      ==     K+1
+      AN     MG_gear_range_1_from_3D_head
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+      AN     MG_gear_range_1_from_HELP                                *;EUMACH
+      AN     MG_gear_range_1_from_V_H_head                            *;EUMACH
+#endif                                                                *;EUMACH
+      AN     I_gear_range_1
+      A      I_gear_range_2
+    ]
+    R      O_wye_delta_connection
+    PSL
+    EMF
+
+    L      MG_spindle_reference_using_sensor
+    S      PN_M4134_strobe_G_range_S_speed
+    S      MG_spindle_reference_active
+  ELSE
+    PS     MG_marker_one
+    L      MG_spindle_reference_using_sensor
+    S      PN_M4134_strobe_G_range_S_speed
+    S      MG_spindle_reference_active
+  ENDI
+
+EM
+
+#else
+
+;----------------------------
+LBL Coupling                           ;02
+
+  CM     gear_range
+
+  LN     PN_M4010_S_rotation_right
+  AN     PN_M4009_S_rotation_left
+  A      NP_M4002_S_nominal_0
+  PSL
+  EMF
+
+  L      MG_spindle_reference_using_sensor
+  S      PN_M4134_strobe_G_range_S_speed
+  S      MG_spindle_reference_active
+
+EM
+
+#endif
+
+;----------------------------                                         *;EUMACH
+LBL Gear_dwell                         ;03
+
+  LN     TR_gear_dwell
+  =      TS_gear_dwell
+  PSL
+
+EM
+
+;----------------------------
+LBL Reference_test                     ;04
+
+  LN     MG_spindle_reference_active
+  PSL
+
+EM
+
+;----------------------------
+LBL Quit                               ;05
+
+  L      NP_M4070_strobe_G_code
+  S      PN_M4090_quit_G_code
+
+  LN     NP_M4070_strobe_G_code
+  PSL
+  EMF
+
+  LN     ML_S_0_volt_status_inverse
+  S      MG_spindle_on_after_gear_change
+
+  CM     Backup_G_S
+
+EM
+
+;----------------------------
+LBL Gear_end                           ;06
+
+  PS     MG_marker_zero
+
+LBL Gear_reset
+
+  L      MG_marker_one
+  R      MG_strobe_G_code_rpm
+  R      MG_gear_change_active
+  R      MG_spindle_reference_active
+  R      MG_spindle_on_after_gear_change
+  R      MG_gear_range_1_from_3D_head
+  R      MG_gear_range_from_3D_head
+  R      PN_M4010_S_rotation_right
+  R      PN_M4009_S_rotation_left
+#if Spindle_wye_delta_connection = &active
+  R      O_wye_delta_connection
+#else
+  R      O_gear_range_1
+  R      O_gear_range_2
+#endif
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  R      MG_gear_range_1_from_HELP                                    *;EUMACH
+  R      MG_gear_range_1_from_V_H_head                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      K+0
+  =      BL_step_gear
+
+EM
+
+#if Spindle_wye_delta_connection = &inactive
+
+;----------------------------
+LBL gear_range
+
+  LN     MG_spindle_with_gear
+  EMT
+
+  LN     TR_S_rotation_total_gear_change
+  =      TS_S_rotation_total_gear_change
+  =      TS_S_rotation_cw_gear_change
+
+  L      TS_S_rotation_cw_gear_change
+  O      TR_S_rotation_cw_gear_change
+  =      PN_M4010_S_rotation_right
+  =N     PN_M4009_S_rotation_left
+
+  LN     O_servo_drive_release_S
+  EMT
+
+  L      MG_gear_range_1_from_3D_head
+  IFT
+    CM     Gear_range_1                ;+00
+  ELSE
+    CASE   NP_W256_G_code_spindle
+      CM     Gear_range_1              ;+00
+      CM     Gear_range_2              ;+01
+    ENDC
+  ENDI
+
+  LN     O_gear_range_1
+  AN     O_gear_range_2
+  R      PN_M4010_S_rotation_right
+  R      PN_M4009_S_rotation_left
+
+EM
+
+;----------------------------
+LBL Gear_range_1                       ;+00
+
+*;EUMACH Original PLC
+;  LN     I_gear_range_1
+;  O      I_gear_range_2
+;  =      O_gear_range_1
+*;EUMACH Original PLC
+
+*;EUMACH
+  LN     I_gear_range_1
+  O      I_gear_range_2
+  =      TS_gear_range_output_delay
+  S      O_gear_range_1
+
+  LN     TS_gear_range_output_delay
+  AN     TR_gear_range_output_delay
+  R      O_gear_range_1
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL Gear_range_2                       ;+01
+
+*;EUMACH Original PLC
+;  L      I_gear_range_1
+;  ON     I_gear_range_2
+;  =      O_gear_range_2
+*;EUMACH Original PLC
+
+*;EUMACH
+  L      I_gear_range_1
+  ON     I_gear_range_2
+  =      TS_gear_range_output_delay
+  S      O_gear_range_2
+
+  LN     TS_gear_range_output_delay
+  AN     TR_gear_range_output_delay
+  R      O_gear_range_2
+*;EUMACH
+
+EM
+#endif
+
+;----------------------------
+LBL Backup_G_S
+
+  L      NP_W256_G_code_spindle
+  =      BL_G_code
+
+  L      PN_D756_S_nominal_rpm_PLC
+  =      DL_S_programmed_rpm
+
+EM

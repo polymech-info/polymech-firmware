@@ -1,0 +1,28 @@
+/* STATUS AXES
+   -----------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS AXES";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"AXES RELEASED     :  %04X\n",W1024/c;
+"IN POSITION       :  %04X\n",W1026/c;
+"IN MOTION         :  %04X\n",W1028/c;
+"NOT PASS OVER REF :  %04X\n",W1032/c;
+"END POSITION +    :  %04X\n",W1034/c;
+"END POSITION -    :  %04X\n",W1036/c;
+"ACTIVATE OPEN LOOP:  %04X\n",W1038/c;
+"OPEN LOOP         :  %04X\n",W1040/c;
+"NO AXES MONITORING:  %04X\n",W1042/c;
+"ACTL/NOML TRANSFER:  %04X\n",W1044/c;
+"REF END POSITION  :  %04X\n",W1054/c;
+"FEED RELEASED     :  %04X\n",W1060/c;
+"MANUAL/JOG +      :  %04X / %04X\n",W1046/c,W1050/c;
+"MANUAL/JOG -      :  %04X / %04X\n",W1048/c,W1052/c;
+
+

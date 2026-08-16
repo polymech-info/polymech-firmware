@@ -1,0 +1,187 @@
+BEGIN KINELIST.TAB 
+#STRUCTBEGIN
+  NAME = DOC
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Comment?
+    DIA-GERMAN = Kommentar?
+    DIA-CZECH = KOMENTAR ?
+    DIA-FRENCH = Commentaire?
+    DIA-ITALIAN = Commento?
+    DIA-SPANISH = ¿Comentario?
+    DIA-PORTUGUE = Comentario?
+    DIA-SWEDISH = KOMMENTAR ?
+    DIA-DANISH = KOMMENTAR ?
+    DIA-FINNISH = TULKKI ?
+    DIA-DUTCH = Commentaar?
+    DIA-POLISH = Komentarz ?
+    DIA-HUNGARIA = Megjegyzés ?
+  NAME = MP7500
+    TYPE = N
+    WIDTH = 12
+    DEC = 0
+    DIA-ENGLISH = Value of MP7500?
+    DIA-GERMAN = Wert von MP7500?
+    DIA-CZECH = HODNOTA Z MP7500?
+    DIA-FRENCH = Value of MP7500?
+    DIA-ITALIAN = Value of MP7500?
+    DIA-SPANISH = Valor de MP7500?
+    DIA-PORTUGUE = Value of MP7500?
+    DIA-SWEDISH = Value of MP7500?
+    DIA-DANISH = Value of MP7500?
+    DIA-FINNISH = MP7500:n arvo?
+    DIA-DUTCH = Waarde van MP7500?
+    DIA-POLISH = Value of MP7500?
+    DIA-HUNGARIA = Az MP7500 erteke ?
+  NAME = FILE
+    TYPE = C
+    WIDTH = 40
+    DEC = 0
+    DIA-ENGLISH = File with kinematic description?
+    DIA-GERMAN = Datei mit Kinematikbeschreibung?
+    DIA-CZECH = SOUBOR S POPISEM KINEMATIKY?
+    DIA-FRENCH = File with kinematic description?
+    DIA-ITALIAN = File with kinematic description?
+    DIA-SPANISH = Fich. con descrip. cinematica?
+    DIA-PORTUGUE = File with kinematic description?
+    DIA-SWEDISH = File with kinematic description?
+    DIA-DANISH = File with kinematic description?
+    DIA-FINNISH = Kinematiikkakuvauksen tiedosto?
+    DIA-DUTCH = Bestand met kinematica beschr.?
+    DIA-POLISH = File with kinematic description?
+    DIA-HUNGARIA = Fajl a kinematikai leirassal ?
+  NAME = SUBFILE1
+    TYPE = C
+    WIDTH = 34
+    DEC = 0
+    DIA-ENGLISH = File with kinematic description?
+    DIA-GERMAN = Datei mit Kinematikbeschreibung?
+    DIA-CZECH = SOUBOR S POPISEM KINEMATIKY?
+    DIA-FRENCH = File with kinematic description?
+    DIA-ITALIAN = File with kinematic description?
+    DIA-SPANISH = Fich. con descrip. cinematica?
+    DIA-PORTUGUE = File with kinematic description?
+    DIA-SWEDISH = File with kinematic description?
+    DIA-DANISH = File with kinematic description?
+    DIA-FINNISH = Kinematiikkakuvauksen tiedosto?
+    DIA-DUTCH = Bestand met kinematica beschr.?
+    DIA-POLISH = File with kinematic description?
+    DIA-HUNGARIA = Fajl a kinematikai leirassal ?
+  NAME = SUBFILE2
+    TYPE = C
+    WIDTH = 34
+    DEC = 0
+    DIA-ENGLISH = File with kinematic description?
+    DIA-GERMAN = Datei mit Kinematikbeschreibung?
+    DIA-CZECH = SOUBOR S POPISEM KINEMATIKY?
+    DIA-FRENCH = File with kinematic description?
+    DIA-ITALIAN = File with kinematic description?
+    DIA-SPANISH = Fich. con descrip. cinematica?
+    DIA-PORTUGUE = File with kinematic description?
+    DIA-SWEDISH = File with kinematic description?
+    DIA-DANISH = File with kinematic description?
+    DIA-FINNISH = Kinematiikkakuvauksen tiedosto?
+    DIA-DUTCH = Bestand met kinematica beschr.?
+    DIA-POLISH = File with kinematic description?
+    DIA-HUNGARIA = Fajl a kinematikai leirassal ?
+  NAME = MPFILE
+    TYPE = C
+    WIDTH = 40
+    DEC = 0
+    DIA-ENGLISH = File with MPs?
+    DIA-GERMAN = Maschinenparameter-Teildatei?
+    DIA-CZECH = File with MPs?
+    DIA-FRENCH = File with MPs?
+    DIA-ITALIAN = File with MPs?
+    DIA-SPANISH = File with MPs?
+    DIA-PORTUGUE = File with MPs?
+    DIA-SWEDISH = File with MPs?
+    DIA-DANISH = File with MPs?
+    DIA-FINNISH = File with MPs?
+    DIA-DUTCH = File with MPs?
+    DIA-POLISH = File with MPs?
+    DIA-HUNGARIA = File with MPs?
+  NAME = UPW
+    TYPE = C
+    WIDTH = 2
+    DEC = 0
+    DIA-ENGLISH = Axis?
+    DIA-GERMAN = Achse?
+    DIA-CZECH = OSA?
+    DIA-FRENCH = Axe?
+    DIA-ITALIAN = Asse?
+    DIA-SPANISH = ¿Eje?
+    DIA-PORTUGUE = Eixo?
+    DIA-SWEDISH = AXEL?
+    DIA-DANISH = AKSE?
+    DIA-FINNISH = Akseli ?
+    DIA-DUTCH = As?
+    DIA-POLISH = Osie?
+    DIA-HUNGARIA = Tengely ?
+  NAME = RIGHTW
+    TYPE = C
+    WIDTH = 2
+    DEC = 0
+    DIA-ENGLISH = Axis?
+    DIA-GERMAN = Achse?
+    DIA-CZECH = OSA?
+    DIA-FRENCH = Axe?
+    DIA-SPANISH = ¿Eje?
+    DIA-PORTUGUE = Eixo?
+    DIA-SWEDISH = AXEL?
+    DIA-DANISH = AKSE?
+    DIA-FINNISH = Akseli ?
+    DIA-DUTCH = As?
+    DIA-POLISH = Osie?
+    DIA-HUNGARIA = Tengely ?
+#STRUCTEND
+NR      DOC                             MP7500       FILE                                     SUBFILE1                           SUBFILE2                           MPFILE                                   UPW RIGHTW
+0       B-Head C-Table                  %11          00_B-Head_C-Table.tab                                                                                          MP\00_B-Head_C-Table_MP.a                           
+1       B-Head C-Table KinComp          %11          01_B-Head_C-Table_KinComp.tab                                                                                  MP\00_B-Head_C-Table_MP.a                           
+2       A-Head                          %1           02_A-Head.tab                                                                                                  MP\02_A-Head_MP.A                                   
+3       B-Head                          %1           03_B-Head.tab                                                                                                  MP\03_B-Head_MP.A                                   
+4       3-axes XYZ                      %0           04_3-axesXYZ.tab                                                                                               MP\04_3-axesXYZ_MP.A                                
+5       A-Table                         %1           05_A-Table.tab                                                                                                 MP\05_A-Table_MP.A                                  
+6       B-Table                         %1           06_B-Table.tab                                                                                                 MP\06_B-Table_MP.A                                  
+7       C-Table                         %1           07_C-Table.tab                                                                                                 MP\07_C-Table_MP.A                                  
+8       B-Head C-Table CYCL 290         %11          00_B-Head_C-Table.tab                                                                                          MP\08_B-Head_C-Table_290_MP.a                       
+9       3-axes XYZ                      %0           04_3-axesXYZ.tab                                                                                               MP\04_3-axesXYZ_MP.A                                
+10      AC-Fork Head                    %11          10_AC-Fork_Head.tab                                                                                            MP\10_AC-ForkHead_MP.A                              
+11      BC-Fork Head                    %11          11_BC-Fork_Head.tab                                                                                            MP\11_BC-ForkHead_MP.A                              
+12      AB Double Swiveling Head        %1000000011  12_AB-DoubleSwivelingHead.tab                                                                                  MP\12_AB-SwivelingHead_MP.A                         
+13      3-axes XYZ                      %0           04_3-axesXYZ.tab                                                                                               MP\04_3-axesXYZ_MP.A                                
+14      3-axes XYZ                      %0           04_3-axesXYZ.tab                                                                                               MP\04_3-axesXYZ_MP.A                                
+15      AB 45 Double Swiveling Head     %11          15_AB_45_DoubleSwivelingHead.tab                                                                               MP\15_AB_45_SwivelingHead_MP.A                      
+16      AC 45 Double Swiveling Head     %1000000011  16_AC_45_DoubleSwivelingHead.tab                                                                               MP\16_AC_45_SwivelingHead_MP.A                      
+17      AB 45 Double S. Head C-Table    %11          17_AB_45_Head_C-Table.tab                                                                                      MP\17_AB_45_Head_C-Table_MP.A                       
+18      3-axes XYZ                      %0           04_3-axesXYZ.tab                                                                                               MP\04_3-axesXYZ_MP.A                                
+19      BA-SwivelingTable               %11          19_BA-SwivelingTable.tab                                                                                       MP\19_BA-SwivelingTable_MP.a                        
+20      AB Swiveling Table              %11          20_AB-SwivelingTable.tab                                                                                       MP\20_AB-SwivelingTable_MP.a                        
+21      AC Swiveling Table              %11          21_AC-SwivelingTable.tab                                                                                       MP\21_AC-SwivelingTable_MP.A                        
+22      BC Swiveling Table              %11          22_BC-SwivelingTable.tab                                                                                       MP\22_BC_SwivelingTable_MP.a                        
+23      3-axes XYZ                      %0           04_3-axesXYZ.TAB                                                                                               MP\04_3-axesXYZ_MP.A                                
+24      A-Head C-Table                  %11          24_A-Head_C-Table.tab                                                                                          MP\24_A-Head_C-Table_MP.A                           
+25      BC 50/45 Swiveling Table        %11          25_BC_50_45_Swiveling-Table.tab                                                                                MP\25_BC-50_45_Table_MP.A                           
+26      BC 135/35 Swiveling Table       %11          26_BC_135_35_Swiveling_Table.tab                                                                               MP\26_BC-135_35_Table_MP.A                          
+27      B-Head A-Table                  %11          27_B-Head_A-Table.tab                                                                                          MP\27_B-Head_A-Table_MP.A                           
+28      3-axes KinematicsComp           %0           28_3-axes_KinematicsComp.tab                                                                                   MP\04_3-axesXYZ_MP.A                                
+29      3-axes XYZ                      %0           04_3-axesXYZ.TAB                                                                                               MP\04_3-axesXYZ_MP.A                                
+30      BC-Head A-Table with AxisAngle  %1           30_BC-Head_A-Table.tab                                                                                         MP\30_BC-Head_A-Table_MP.A                          
+31      BC-Head A-Table with SpatAngle  %11          30_BC-Head_A-Table.tab                                                                                         MP\30_BC-Head_A-Table_MP.A                          
+32      3-axes XYZ                      %0           04_3-axesXYZ.TAB                                                                                               MP\04_3-axesXYZ_MP.A                                
+33      3-axes XYZ                      %0           04_3-axesXYZ.TAB                                                                                               MP\04_3-axesXYZ_MP.A                                
+34      AB SwivTab horizontal           %11          34_AB-SwivelingTable.tab                                                                                       MP\34_AB-SwivelingTable_MP.a             +Y  +Z     
+35      B-Table W-Axis horizontal       %1           35_B-Table_W-Axis.tab                                                                                          MP\35_B-Table_W-Axis_MP.A                +Y  +Z     
+36      B 45-Head C-Table V-Axis        %11          36_45-Head_C-Table_V-Axis.tab                                                                                  MP\36_B_45-Head_C-Table_V_MP.A                      
+37      C 45-Head B-Table horizontal    %11          37_C_45-Head_B-Table.tab                                                                                       MP\37_C_45-Head_B-Table_MP.A             +Y  +Z     
+38      A_116_37-Head C-Table           %11          38_A_116_37-Head_C-Table.tab                                                                                   MP\38_A_116_37-Head_C-Table_MP.A                    
+39      Portal_ZXY_Basic                %1           39_Portal_Basic.tab                                                                                            MP\04_3-axesXYZ_MP.A                                
+40      Portal_ZXY_StraightL_200        0            39_Portal_Basic.tab                      SUB_Head_StraightL_200.tab                                            MP\04_3-axesXYZ_MP.A                                
+41      Portal_ZXY_BC_Fork              %11          39_Portal_Basic.tab                      SUB_Head_BC_Fork.tab                                                  MP\41_BC-ForkHead_MP.A                              
+42      Portal_ZXY_Head_90Angle_BC      %100011      39_Portal_Basic.tab                      SUB_Head_90Angle_1_BC.tab                                             MP\42_Head_90Angle_1_BC_MP.A                        
+43      Portal_ZXY_Head_AC_45           %1000000011  39_Portal_Basic.tab                      SUB_Head_AC_45_small.tab                                              MP\43_Head_AC_45_MP.A                               
+44      Portal_ZXY_Table_AC             %11          39_Portal_Basic.tab                      SUB_Head_StraightL_200.tab         SUB_Table_Swiv_AC.tab              MP\44_Table_Swiv_AC_MP.A                            
+45      Portal_ZXY_C_Head_90fixAngle    %1           39_Portal_Basic.tab                      SUB_Head_90Angle_2fix.tab                                             MP\45_C_Head_90Angle_fix_MP.A                       
+46      Portal_ZXY_ABC_Head             %11          39_Portal_Basic.tab                      SUB_Head_ABC.tab                                                      MP\46_ABC_Head_MP.A                                 
+[END]

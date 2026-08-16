@@ -1,0 +1,763 @@
+*-----------------------------------------------------------------------------
+*  WZW Manuell
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_WZ_ohne_Platz                         K -1
+#define /s    KL_String_Anzahl                         K +3
+
+#define /s    ML_TOOL_CALL_alt                         M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Fussschalter_betaetigt                M
+#define /s    ML_WZW_Position_X_notwendig              M
+#define /s    ML_WZW_Position_Y_notwendig              M
+#define /s    ML_Fehler_in_BA_Einzelsatz_unterdruecken M
+
+#define /s    BL_Schritt_WZW                           B
+#define /s    BL_Schritt_WZW_Diag                      B
+#define /s    BL_String_Index                          B
+
+#define /s    WL_Zeile_Dialog_Datei                    W
+
+#include Mac_Lib.inc
+
+EXTERN In_Posit
+EXTERN Start_Posit
+
+GLOBAL WZW_manu
+
+;----------------------------
+LBL WZW_manu
+;----------------------------
+
+  CM     Sn_Input_lesen
+
+  L      PN_M4543_Standzeit_abgelaufen_TIME1
+  R      PN_M4543_Standzeit_abgelaufen_TIME1
+  S      PN_Fehler_WZ_Standzeit_max
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  R      PN_M4093_Quit_TOOL_CALL
+
+  L      MG_WZW_manuell
+  O      MG_WZW_automatisch
+  =      PN_M4539_T_Status_invers
+
+  L      MG_SLS_Betriebsart_2_Einrichten
+  O      MG_SLS_Betriebsart_3
+  O      MG_SLS_Betriebsart_4
+  A      PN_M4539_T_Status_invers
+  S      PN_Fehler_WZW_BA1_anwaehlen
+
+  L      MG_Sn_I_WZ_entspannt
+  ON     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_O_WZ_entspannen
+  S      PN_Fehler_Werkzeug_nicht_gespannt
+
+  L      PN_M4539_T_Status_invers
+  A      MG_BA_Automatik
+  R      PN_Fehler_Werkzeug_nicht_gespannt
+
+  L      PN_M4007_S_M05_Sollwert_0_und_Status
+  O      PN_M4008_S_Sollwert_aus_Status_invers
+  A      MG_BA_Manuell
+  R      PN_Fehler_Werkzeug_nicht_gespannt
+
+  LN      MG_WZ_in_Spindel_BA_auto_inaktiv
+  IFT
+    L      MG_Taste_NC_Start_P_Impuls
+    A      MG_WZW_ohne_Tool_Call
+    A      MG_BA_Automatik
+    AN     ML_Fehler_in_BA_Einzelsatz_unterdruecken
+    S      PN_Fehler_WZ_Spindel_ok
+
+    L      MG_Taste_NC_Start_P_Impuls
+    A      PN_Fehler_WZ_Spindel_ok
+    A      MG_Win_Window_JA_Nein
+    O      MG_Taste_NC_Stop_P_Impuls
+    O      MG_Impuls_Internal_STOP
+    ON     MG_BA_Automatik
+    ON     MG_WZW_ohne_Tool_Call
+    R      PN_Fehler_WZ_Spindel_ok
+    R      ML_Fehler_in_BA_Einzelsatz_unterdruecken
+
+    L      MG_BA_Automatik
+    AN     NP_M4154_BA_Programmlauf_Satzfolge
+    A      MG_Taste_NC_Start_P_Impuls
+    S      ML_Fehler_in_BA_Einzelsatz_unterdruecken
+
+    L      PN_Fehler_WZ_Spindel_ok
+    =      MG_Win_Window_JA_Nein
+  ENDI
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  A      NP_M4520_TOOL_CALL_2_Strobe
+  A      NP_M4073_Strobe_TOOL_CALL
+  A      MG_WZW_T0_auto_manu_notwendig
+  S      PN_Fehler_TOOL_CALL_T0
+  EMT
+
+  L      MG_Taste_WZW_Anwahl
+  O      MG_SK_WZW_Anwahl
+  A      MG_SK_FG_WZW_Anwahl
+  AN     ML_Taste_betaetigt
+  S      MG_WZW_manuell
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  IFT
+    L      NP_W262_Werkzeug_Platz_Nummer
+    ==     KL_WZ_ohne_Platz
+    ON     MG_WZW_Auto_aktiv
+    AN     NP_M4175_Stern_blinkt
+    AN     MG_WZW_automatisch
+    S      MG_WZW_manuell
+    IFT
+      L      NP_W262_Werkzeug_Platz_Nummer
+      =      WG_WZW_Platz_Nummer
+      L      NP_W264_Werkzeug_Nummer
+      =      WG_WZW_manu_Werkzeug_Nummer
+    ENDI
+  ENDI
+
+  L      MG_Eins_Merker
+  R      O_LED_WZW_Anwahl
+
+  L      MG_Sn_I_WZ_entspannt
+  ON     MG_Sn_I_WZ_gespannt
+  =      O_LED_WZ_entspannt
+
+  LN     MG_Sn_O_WZ_entspannen
+  =      MG_Sn_O_WZ_spannen
+
+  CASE   BL_Schritt_WZW
+    CM     WZW_manu_Start              ;00
+    CM     Sprung_BA_manu              ;01  ---> (1)
+    CM     Z_Start_sicher              ;02
+    CM     Z_in_Pos_sicher             ;03
+    CM     X_Start_manu                ;04
+    CM     X_in_Pos_manu               ;05
+    CM     Y_Start_manu                ;06
+    CM     Y_in_Pos_manu               ;07
+    CM     Z_Start_manu                ;08
+    CM     Z_in_Pos_manu               ;09
+    CM     WZ_manu_entspan             ;10  <--- (1)
+    CM     WZ_manu_spannen             ;11
+    CM     WZW_Abwahl                  ;12
+    CM     WZW_Quittung                ;13
+    CM     Wiederanf_notwendig         ;14
+    CM     Wiederanfahren_ok           ;15
+    CM     Tool_Call_quitt             ;16
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_WZW
+  ENDI
+
+  L      MG_Taste_WZW_Anwahl
+  O      MG_Taste_WZ_entspannen
+  =      ML_Taste_betaetigt
+
+  L      MG_Taste_WZ_entspannen_Fussschalter
+  =      ML_Fussschalter_betaetigt
+  CM     Sn_Output_schreiben
+
+  LN     MG_WZW_manuell
+  EMT
+
+  L      MG_Impuls_NC_Start
+  R      MG_WZW_manu_Unterbrechung
+
+  L      MG_Taste_NC_Stop
+  S      MG_WZW_manu_Unterbrechung
+  S      PN_Fehler_WZW_Timeout
+
+  L      MG_Taste_NC_Start
+  R      PN_Fehler_WZW_Timeout
+
+  L      MG_Impuls_Internal_STOP
+;  O      MG_BA_Wechsel_Manu_Auto
+  O      MG_BA_Wechsel_Auto_Manu
+  ON     MG_Steuerung_betriebsbereit
+  CMT    WZW_manu_Reset
+
+  L      PN_Fehler_WZW_Timeout
+  IFT
+    CM     Diagnose_String
+
+    PS     K &PN_Fehler_WZW_Timeout - 4800
+    PS     K &SG_WZW_Diagnose_Zeile_2
+    PS     BL_Schritt_WZW
+    PS     BL_Schritt_WZW
+    CM     9084                        ;PLC-Fehlermeldung anzeigen
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Diagnose_String
+
+  L      K +0
+  =      BL_String_Index
+
+  L      BL_Schritt_WZW
+  =      BL_Schritt_WZW_Diag
+  REPEAT
+    L      BL_Schritt_WZW_Diag
+    =X
+
+    L      KF Diagnose[X]
+    =      WL_Zeile_Dialog_Datei
+    =X
+
+    L      S#D0[X]
+    =      SG_WZW_Diagnose_Zeile_1[BL_String_Index]
+
+    INC    BL_Schritt_WZW_Diag
+    INC    BL_String_Index
+    INCX
+
+    L      BL_String_Index
+    >=     KL_String_Anzahl
+  UNTILT
+
+  L      BL_Schritt_WZW
+  =      BL_Schritt_WZW_Diag
+
+EM
+
+;----------------------------
+LBL WZW_manu_Start                     ;00
+
+  L      MG_Spindel_steht
+  ON     MG_Spindel_aktiv
+  AN     MG_Achsen_in_Bewegung
+  A[
+    L      MG_BA_Automatik
+    AN     NP_M4176_Stern_ein_oder_blinkt
+    O      MG_BA_Manuell
+  ]
+  AN     MG_WZW_Help
+  AN     MG_WZW_Service
+  =      MG_SK_FG_WZW_Anwahl
+  RN     MG_SK_WZW_Anwahl
+
+  L      MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  S      MG_Spindel_Richten_aus
+
+  L      MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  A      MG_Spindel_aus
+  R      MG_SK_FG_WZW_Anwahl
+  S      MG_SK_WZW_Anwahl
+  S      MG_WZW_manuell_aktiv
+  PSL
+  EMF
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  S      MG_WZ_Status_lesen
+  =N     MG_WZW_ohne_Tool_Call
+
+EM
+
+;----------------------------
+LBL Sprung_BA_manu                     ;01
+
+  PS     MG_Eins_Merker
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  O      MG_WZW_Position_Manuell_inaktiv
+  IFT
+    L      BL_Schritt_WZW
+    +      K+8
+    =      BL_Schritt_WZW
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_Start_sicher                     ;02
+
+  L      MG_WZW_manu_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_sicher
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+
+#if CFG_Pos_X_manuell = "aktiv"
+    PS     KG_Achse_X
+    PS     DG_WZW_Pos_X_manuell
+    CM     In_Posit
+    PLL
+    =N     ML_WZW_Position_X_notwendig
+#endif
+
+#if CFG_Pos_Y_manuell = "aktiv"
+    PS     KG_Achse_Y
+    PS     DG_WZW_Pos_Y_manuell
+    CM     In_Posit
+    PLL
+    =N     ML_WZW_Position_Y_notwendig
+#endif
+
+    LN     ML_WZW_Position_X_notwendig
+    AN     ML_WZW_Position_Y_notwendig
+    IFT
+      PS     MG_Eins_Merker
+    ELSE
+      PS     KG_Achse_Z
+      PS     DG_WZW_Pos_Z_sicher
+      CM     Start_Posit
+      PLL
+      SN     MG_WZW_manu_Unterbrechung
+
+      LN     MG_WZW_manu_Unterbrechung
+      PSL
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_Pos_sicher                    ;03
+
+  LN     ML_WZW_Position_X_notwendig
+  AN     ML_WZW_Position_Y_notwendig
+  IFT
+    PS     MG_Eins_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_sicher
+    CM     In_Posit
+    PLL
+    AN     MG_WZW_manu_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_Start_manu                       ;04
+
+#if CFG_Pos_X_manuell = "aktiv"
+  L      MG_WZW_manu_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_WZW_Pos_X_manuell
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_manu_Unterbrechung
+    PSL
+  ENDI
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL X_in_Pos_manu                      ;05
+
+#if CFG_Pos_X_manuell = "aktiv"
+  PS     KG_Achse_X
+  PS     DG_WZW_Pos_X_manuell
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_manu_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Y_Start_manu                       ;06
+
+#if CFG_Pos_Y_manuell = "aktiv"
+  L      MG_WZW_manu_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Y
+    PS     DG_WZW_Pos_Y_manuell
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_manu_Unterbrechung
+    PSL
+  ENDI
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Y_in_Pos_manu                      ;07
+
+#if CFG_Pos_Y_manuell = "aktiv"
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y_manuell
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_manu_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Z_Start_manu                       ;08
+
+#if CFG_Pos_Z_manuell = "aktiv"
+  L      MG_WZW_manu_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_manuell
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_manu_Unterbrechung
+    PSL
+  ENDI
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Z_in_Pos_manu                      ;09
+
+#if CFG_Pos_Z_manuell = "aktiv"
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_manuell
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_manu_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_manu_entspan                    ;10
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_WZW_quittieren
+  R      PN_Fehler_Tuer_zu_WZW_quittieren
+  S      O_LED_WZW_Anwahl
+  S      MG_SK_FG_WZW_Anwahl
+  S      MG_SK_FG_WZ_entspannen
+
+  L      MG_Taste_WZ_entspannen
+  O      MG_SK_WZ_entspannen
+  O      MG_Taste_WZ_entspannen_Fussschalter
+  S      PN_Fehler_Arbeitsraum_geschlossen
+
+  LN     MG_Pendeln_ein
+  IFT
+    LN     I_Arbeitsraum_1_zu
+    ON     I_Arbeitsraum_2_zu
+    O      MG_Tueren_inaktiv
+    R      PN_Fehler_Arbeitsraum_geschlossen
+  ELSE
+    L      MG_Axis_Limit_1
+    IFT
+      LN     I_Arbeitsraum_1_zu
+      R      PN_Fehler_Arbeitsraum_geschlossen
+    ENDI
+
+    L      MG_Axis_Limit_2
+    IFT
+      LN     I_Arbeitsraum_2_zu
+      R      PN_Fehler_Arbeitsraum_geschlossen
+    ENDI
+  ENDI
+
+  L      PN_Fehler_Arbeitsraum_geschlossen
+  R      MG_SK_WZ_entspannen
+  =N     PN_Fehler_Werkzeug_entspannen
+
+  L      MG_Takt_1_s
+  AN     MG_Sn_O_WZ_entspannen
+  =      O_LED_WZ_entspannt
+
+  L      MG_Taste_WZ_entspannen
+  AN     ML_Taste_betaetigt
+  O      MG_SK_WZ_entspannen
+  O      MG_Taste_WZ_entspannen_Fussschalter
+  AN     PN_Fehler_Arbeitsraum_geschlossen
+  S      MG_SK_WZ_entspannen
+  S      MG_Sn_O_WZ_entspannen
+
+  L      MG_BA_Manuell
+  O      MG_TOOL_CALL_Quittung_ohne_WZ_entspannen
+  =      MG_SK_FG_WZW_Anwahl
+  SN     MG_SK_WZW_Anwahl
+  IFT
+    L      MG_Taste_WZW_Anwahl
+    AN     ML_Taste_betaetigt
+    ON     MG_SK_WZW_Anwahl
+    R      MG_SK_WZW_Anwahl
+    IFT
+      L      BL_Schritt_WZW
+      +      K+3
+      =      BL_Schritt_WZW
+    ENDI
+  ENDI
+
+  PS     MG_Sn_O_WZ_entspannen
+
+EM
+
+;----------------------------
+LBL WZ_manu_spannen                    ;11
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_Werkzeug_entspannen
+  S      PN_Fehler_Werkzeug_spannen
+  R      PN_Fehler_WZW_quittieren
+  R      PN_Fehler_Tuer_zu_WZW_quittieren
+  R      PN_Fehler_WZW_manu_Ende_NC_Start
+  R      MG_SK_FG_WZW_Anwahl
+  S      MG_SK_WZW_Anwahl
+  S      O_LED_WZW_Anwahl
+
+  L      MG_Takt_1_s
+  A      MG_Sn_O_WZ_entspannen
+  =      O_LED_WZ_entspannt
+
+  L      MG_Taste_WZ_entspannen
+  AN     ML_Taste_betaetigt
+  ON     MG_SK_WZ_entspannen
+  O[
+    LN     MG_Taste_WZ_entspannen_Fussschalter
+    A      ML_Fussschalter_betaetigt
+  ]
+  R      MG_SK_WZ_entspannen
+  R      MG_Sn_O_WZ_entspannen
+
+  LN     MG_Sn_O_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZW_Abwahl                         ;12
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_Werkzeug_spannen
+
+  L      MG_Tueren_inaktiv
+  S      PN_Fehler_WZW_quittieren
+  SN     PN_Fehler_Tuer_zu_WZW_quittieren
+
+  L      MG_Taste_WZ_entspannen
+  AN     ML_Taste_betaetigt
+  O      MG_SK_WZ_entspannen
+  O      MG_Taste_WZ_entspannen_Fussschalter
+  A[
+    L      MG_Arbeitsraum_offen
+    O      MG_Tueren_inaktiv
+  ]
+  S      MG_SK_WZ_entspannen
+  S      MG_Sn_O_WZ_entspannen
+  IFT
+    DEC    BL_Schritt_WZW
+  ENDI
+
+  L      MG_Takt_1_s
+  =      O_LED_WZW_Anwahl
+
+  L      MG_Tueren_inaktiv
+  IFT
+    =      MG_SK_FG_WZ_entspannen
+    =      MG_SK_FG_WZW_Anwahl
+  ELSE
+    L      MG_Arbeitsraum_offen
+    =      MG_SK_FG_WZ_entspannen
+    =N     MG_SK_FG_WZW_Anwahl
+  ENDI
+
+  LN     MG_SK_FG_WZW_Anwahl
+  S      MG_SK_WZW_Anwahl
+
+  L      MG_Taste_WZW_Anwahl
+  AN     ML_Taste_betaetigt
+  ON     MG_SK_WZW_Anwahl
+  AN     MG_Arbeitsraum_offen
+  R      MG_SK_WZW_Anwahl
+  R      MG_SK_FG_WZW_Anwahl
+  R      MG_SK_FG_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZW_Quittung                       ;13
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_WZW_quittieren
+  R      PN_Fehler_Tuer_zu_WZW_quittieren
+  R      PN_Fehler_Arbeitsraum_geschlossen
+  R      PN_Fehler_Werkzeug_entspannen
+
+  L      MG_Taste_NC_Start
+  ON     NP_M4176_Stern_ein_oder_blinkt
+  =N     PN_Fehler_WZW_manu_Ende_NC_Start
+  PSL
+
+EM
+
+;----------------------------
+LBL Wiederanf_notwendig                ;14
+
+  L      MG_Stern_ein
+  O      NP_M4157_BA_Restore_Position_aktiv
+  ON     NP_M4176_Stern_ein_oder_blinkt
+  PSL
+
+EM
+
+;----------------------------
+LBL Wiederanfahren_ok                  ;15
+
+  L      MG_Stern_ein
+  AN     NP_M4157_BA_Restore_Position_aktiv
+  O      MG_Satzvorlauf_war_aktiv
+  ON     NP_M4176_Stern_ein_oder_blinkt
+  PSL
+
+EM
+
+;----------------------------
+LBL Tool_Call_quitt                    ;16
+
+  PS     MG_Null_Merker
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  S      PN_M4093_Quit_TOOL_CALL
+  IFT
+    L      NP_W264_Werkzeug_Nummer
+    =      WG_Werkzeug_in_Spindel
+  ENDI
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  S      MG_WZ_Vorwahl_Status_lesen
+  CMT    WZW_manu_Reset
+
+EM
+
+;----------------------------
+LBL WZW_manu_Reset
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_Werkzeug_spannen
+  R      PN_Fehler_Werkzeug_entspannen
+  R      PN_Fehler_WZW_quittieren
+  R      PN_Fehler_Tuer_zu_WZW_quittieren
+  R      PN_Fehler_WZW_manu_Ende_NC_Start
+  R      MG_WZW_manuell
+  R      MG_WZW_manuell_aktiv
+  R      MG_WZW_manu_Unterbrechung
+  R      MG_SK_WZW_Anwahl
+  R      MG_SK_WZ_entspannen
+  R      MG_SK_FG_WZ_entspannen
+  R      MG_Sn_O_WZ_entspannen
+
+  L      K+0
+  =      BL_Schritt_WZW
+
+EM
+
+;----------------------------
+LBL Sn_Input_lesen
+
+  L      MG_Spindel_1_aktiv
+  IFT
+    L      I_S1_WZ_gespannt
+    =      MG_Sn_I_WZ_gespannt
+
+    L      I_S1_WZ_entspannt
+    =      MG_Sn_I_WZ_entspannt
+
+    L      I_S1_WZ_ist_in_Spindel
+    =      MG_Sn_I_WZ_ist_in_Spindel
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  IFT
+    L      I_S2_WZ_gespannt
+    =      MG_Sn_I_WZ_gespannt
+
+    L      I_S2_WZ_entspannt
+    =      MG_Sn_I_WZ_entspannt
+
+    L      I_S2_WZ_ist_in_Spindel
+    =      MG_Sn_I_WZ_ist_in_Spindel
+  ENDI
+
+EM
+
+;----------------------------
+LBL Sn_Output_schreiben
+
+  L      MG_Spindel_1_aktiv
+  IFT
+    L      MG_Sn_O_WZ_spannen
+    =      O_S1_spannen
+
+    L      MG_Sn_O_WZ_entspannen
+    =      O_S1_entspannen
+
+    L      MG_Sn_O_Spindel_ausblasen
+    =      O_S1_ausblasen
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  IFT
+    L      MG_Sn_O_WZ_spannen
+    =      O_S2_spannen
+
+    L      MG_Sn_O_WZ_entspannen
+    =      O_S2_entspannen
+
+    L      MG_Sn_O_Spindel_ausblasen
+    =      O_S2_ausblasen
+  ENDI
+
+EM
+
+KFIELD Diagnose
+  KG_Dia_WZW_Manu                      ;-1
+  KG_Dia_WZW_manu_Start                ;00
+  KG_Dia_Sprung_BA_manu                ;01  ---> (1)
+  KG_Dia_Z_Start_sicher                ;02
+  KG_Dia_Z_in_Pos_sicher               ;03
+  KG_Dia_X_Start_manu                  ;04
+  KG_Dia_X_in_Pos_manu                 ;05
+  KG_Dia_Y_Start_manu                  ;06
+  KG_Dia_Y_in_Pos_manu                 ;07
+  KG_Dia_Z_Start_manu                  ;08
+  KG_Dia_Z_in_Pos_manu                 ;09
+  KG_Dia_WZ_manu_entspan               ;10
+  KG_Dia_WZ_manu_spannen               ;11
+  KG_Dia_WZW_Abwahl                    ;12
+  KG_Dia_WZW_Quittung                  ;13  <--- (1)
+  KG_Dia_Wiederanf_notwendig           ;14
+  KG_Dia_Wiederanfahren_ok             ;15
+  KG_Dia_Tool_Call_quitt               ;16
+  KG_Dia_leer                          ;17
+ENDK

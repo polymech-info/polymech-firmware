@@ -1,0 +1,1289 @@
+N38 %.2s lemaradás túl nagy
+N39 %.2s ford.szám célérték túl magas
+N41 %.2s nyugalmi figyelés hibát jelez
+N42 %.2s offszet túl nagy
+N50 Érintési pont nem elérhet¿
+N51 Pozícionálási hiba
+N52 Tapintószár már kilendült
+N53 Tapintóban elemet kell cserélni
+N54 Tapintó nem üzemkész
+N17738 Végálláskapcsoló %.2s+
+N56 Végálláskapcsoló %.2s+
+N17739 Végálláskapcsoló %.2s-
+N58 Végálláskapcsoló %.2s-
+N59 FN 14: hiba száma %-3u
+N60 Két vagy több TOOL DEF %-3u
+N61 Szerszámlista letiltva
+N62 Ref. jelek %.2s: távolság téves
+N63 Kézikerék ?
+N109 PLC: túl nagyfokú egymásbaépülés
+N110 PLC: stack underflow
+N111 PLC: stack overflow
+N112 PLC: timeout
+N113 PLC: CASE tartományon kívül
+N115 PLC: index tartomány hibás
+N133 PLC: M4005 / M4006 / M4007 hibás
+N134 PLC: egynél több aktív strobe
+N151 MP: számnélküli sor
+N152 MP: téves szám
+N153 MP: elválasztójel hiányzik
+N154 MP: beadott érték téves
+N155 MP: duplán meghatározva
+N156 MP: nincs meghatározva
+N157 MP: tárolás nem lehetséges
+N159 A 0. hely nincs engedélyezve
+N160 Téves szerszámhely
+N937 Téves szerszámhely
+N161 El¿tolás hiányzik
+N162 Új tengely forgáskor tilos
+N163 Elkopott a szerszám
+N164 A memória elemet cserélni kell
+N165 Orsópozícionálás nem lehetséges
+N166 Szerszámlista ?
+N167 Nullapontlista ?
+N168 Hiba
+N938 Funkció nélküli gomb
+N939 Programmemória megtelt
+N940 A keresett cím hiányzik
+N941 A 0. szerszám nem értelmezhet¿
+N169 Ez a szerszámszám már foglalt
+N170 Tilos a 0. cimkére ugrani
+N942 A megadott érték téves
+N943 A megadott érték téves
+N171 A megadott érték téves
+N172 A megadott érték téves
+N173 A megadott érték téves
+N174 A megadott érték téves
+N175 A megadott érték téves
+N176 A megadott érték téves
+N177 27.ciklus(G127): mélység > sugár
+N178 A megadott érték téves
+N179 A megadott érték téves
+N180 A nyersdarab meghatározása hibás
+N183 A program innen nem indul
+N184 Ilyen program nincs
+N185 Több fájl már nem tárolható
+N944 Ilyen fájl már van
+N187 Ez a cimkeszám már foglalt
+N188 %-3u. cimke többször el¿fordul
+N189 Adatátviteli hiba
+N194 A program nem teljes
+N196 Az adatcsatorna foglalt
+N197 Téves adatátviteli sebesség
+N945 Hiba a programban
+N946 Hiba a programban
+N200 Külsö be-/kivitel nem üzemkész
+N201 NC: törlés a programtárolóban
+N947 Nincsenek üzemi paraméterek
+N948 Védett fájl!
+N202 Az el¿hívott PGM megváltozott
+N203 VÉSZ-ÁLLJ hiba
+N205 PLC VÉSZ-ÁLLJ
+N207 Ez a program hiányzik
+N212 FK hivatkozás erre a mondatra
+N214 Aritmetikai hiba
+N215 Aritmetikai hiba
+N216 Kiszámított Q-paraméter túl nagy
+N217 Kiszámított koordináta túl nagy
+N218 Kiszámított ford.szám túl nagy
+N219 Kiszámított el¿tolás túl nagy
+N220 Számított szerszámszám túl nagy
+N221 Kiszámított cimkeszám túl nagy
+N222 Kiszámított hibasorszám túl nagy
+N223 Kiszámított mérettényz¿ túl nagy
+N224 Inkrementális polárszög túl nagy
+N225 0 emelkedés nem megengedett
+N226 Aritmetikai hiba
+N227 Aritmetikai hiba az APPR/DEP-ben
+N228 Aritmetikai hiba az APPR/DEP-ben
+N229 Aritmetikai hiba az APPR/DEP-ben
+N230 Aritmetikai hiba az APPR/DEP-ben
+N231 Aritmetikai hiba a kinagyolásban
+N232 Aritmetikai hiba a CR-ben
+N233 Aritmetikai hiba a CT-ben
+N234 Aritmetikai hiba az RND/CHF-ben
+N235 Hibás kör/kör metszéspont
+N236 Hibás kör/egyenes metszéspont
+N237 Hibás egyenes/egyenes metszéspnt
+N238 Aritmetikai hiba az APPR/DEP-ben
+N239 Hiba a sugárkorrekcióban
+N240 Hiba a kontúrzsebben
+N241 Hiba: kontúrzseb / átmen¿ kontúr
+N242 Hiba a kontúrzsebben
+N243 Hiba a kontúrzsebben
+N244 Hiba a sugárkorrekcióban
+N245 Hiba a sugárkorrekcióban
+N246 Hiba a kontúrzsebben
+N247 Hiba a kontúrzsebben
+N250 Aritmetikai hiba M112-nél
+N251 Paraméter számolási hiba
+N252 Hiba végálláskapcs. ellen¿rz.kor
+N253 Hiba a pályakorrekcióban
+N254 Hiányzó pályakorrekció
+N255 Hiányzó pályakorrekció
+N256 Hiányzó pályakorrekció
+N257 Hiányzó pályakorrekció
+N258 Hiányzó pályakorrekció
+N259 Hiányzó pályakorrekció
+N260 A ciklus nem teljes
+N261 CYCL DEF nincs meghatározva
+N263 0 léptetési mélység nem lehet
+N264 Nincs felhasználói ciklus
+N265 Nincs alprogram
+N266 Nincs alprogram
+N272 Hibás mondatfelépítés
+N274 TOOL DEF nem megengedett
+N275 TOOL DEF hossz vagy sugár nélkül
+N276 APPR után CT nem megengedett
+N277 APPR után CHF nem megengedett
+N278 APPR után RND nem megengedett
+N279 RND sugár = 0 nem megengedett
+N280 Letörés = 0 nem megengedett
+N281 A 2. lekerekítés nem megengedett
+N282 CHF után RND nem megengedett
+N283 RND után CHF nem megengedett
+N284 A 2. letörés nem megengedett
+N285 HELIX után nem lehet DEP LCT
+N286 HELIX el¿tt nem lehet APPR LCT
+N287 Nem megengedett NC mondat
+N288 Lekerekítés nem megengedett
+N289 Lekerekítés nem megengedett
+N290 Letörés nem megengedett
+N291 DEP nem lehet utolsó NC mondat
+N292 Lekrekítés nem lehet utsó mondat
+N293 Letörés nem lehet utolsó mondat
+N294 Csak egy DEP mondat lehetséges
+N295 DEP nem megengedett
+N296 APPR nem megengedett
+N297 APPR nem lehet els¿ mondat
+N299 14. CIKLUS (G37) nem megengedett
+N300 TOOL CALL nem megengedett
+N302 M91 / M92 nem lehet 3DROT esetén
+N303 M114 nem lehet 3DROT esetén
+N305 M114 nem lehet sugárkorrekcióval
+N307 Tengely duplán programozva
+N308 Tengely duplán programozva
+N309 Tengely duplán programozva
+N310 Tengely duplán programozva
+N311 Tengely duplán programozva
+N313 A sík megválasztása téves
+N314 3D korrekció: síkmeghat. hibás
+N315 A sík megválasztása téves
+N317 A sík megválasztása téves
+N318 A sík megválasztása téves
+N319 A sík megválasztása téves
+N320 A sík megválasztása téves
+N321 A sík megválasztása téves
+N322 A sík megválasztása téves
+N323 A sík megválasztása téves
+N324 A sík megválasztása téves
+N325 A sík megválasztása téves
+N326 A sík megválasztása téves
+N327 A sík megválasztása téves
+N328 A sík megválasztása téves
+N329 Itt forgótengely nem megengedett
+N950 Tengelyválasztás téves
+N951 Tengelyválasztás téves
+N330 Tiltott tengely lett programozva
+N331 Tengelyválasztás téves
+N332 Tengelyválasztás téves
+N333 Tengelyválasztás téves
+N335 Forgótengely nincs programozva
+N337 Forgótengely nincs programozva
+N338 Fö tengely nincs programozva
+N339 Gantry teng. tévesen programozva
+N952 Fordulatszám téves
+N340 Fordulatszám téves
+N341 Fordulatszám téves
+N342 Fordulatszám téves
+N343 Fordulatszám téves
+N344 Fordulatsz. a ciklushoz túl nagy
+N345 0 fordulatszám nem megengedett
+N346 Fordulatszám téves
+N347 Letörés nem megengedett
+N348 Letörés nem megengedett
+N349 Letörés nem megengedett
+N350 Letörés nem megengedett
+N351 Letörés nem megengedett
+N352 Letörés nem megengedett
+N353 Letörés nem megengedett
+N354 Letörés túl nagy
+N355 Letörés túl nagy
+N356 Letörés túl nagy
+N357 A kör végpontja téves
+N358 C mondat: a kör végpontja téves
+N359 A kör végpontja téves
+N360 A kör végpontja téves
+N361 A kör végpontja téves
+N362 Ilyen cimkeszám nincs
+N363 LBL 0 nem található
+N364 Ilyen cimkeszám nincs
+N365 14.ciklus: LBL nem található
+N366 A pólus hiányzik
+N367 A körközéppont hiányzik
+N368 Szerszámsugár túl kicsi
+N369 Szerszámsugár = 0 nem lehet
+N370 Sugárkorrekció nem használható
+N371 Sugárkorrekció nem használható
+N372 Sugárkorrekció nem használható
+N373 Sugárkorrekció nem használható
+N374 Sugárkorrekció nem használható
+N375 Referencia ponton át kell menni
+N376 Lekerekítés nem megfelel¿
+N377 Lekerekítés nem megfelel¿
+N378 Lekerekítés nem megengedett
+N379 Nagy a lekerekítési sugár
+N380 Nagy a lekerekítési sugár
+N381 Nagy a lekerekítési sugár
+N382 Nagy a lekerekítési sugár
+N383 Nagy a lekerekítési sugár
+N384 Nagy a lekerekítési sugár
+N385 Nagy a lekerekítési sugár
+N386 Nagy a lekerekítési sugár
+N387 Nagy a lekerekítési sugár
+N388 Az orsót el kell indítani
+N389 A szerszámtengely tükrözve van
+N390 A szerszámtengely tükrözve van
+N391 A szerszámtengely hiányzik
+N392 A szerszámtengely hiányzik
+N393 A szerszámtengely hiányzik
+N394 A szerszámtengely hiányzik
+N395 A szerszámtengely hiányzik
+N396 A szerszámtengely hiányzik
+N397 A szerszámtengely hiányzik
+N398 A szerszámmeghatározás hiányzik
+N400 A szerszámmeghatározás hiányzik
+N401 A szerszámszám hiányzik
+N402 A szerszámsugár túl nagy
+N403 A szerszámsugár túl nagy
+N404 A szerszámsugár túl nagy
+N405 A szerszámsugár túl nagy
+N406 A szerszámsugár túl nagy
+N407 A szerszámsugár túl nagy
+N408 A szerszámsugár túl nagy
+N409 A szerszámsugár túl nagy
+N410 A szerszámsugár túl nagy
+N411 A szerszámsugár túl nagy
+N412 A szerszámsugár túl nagy
+N413 Programindítás nem meghatározott
+N414 Programindítás nem meghatározott
+N415 Programindítás nem meghatározott
+N416 Programindítás nem meghatározott
+N417 Programindítás nem meghatározott
+N418 Programindítás nem meghatározott
+N419 Programindítás nem meghatározott
+N420 Programindítás nem meghatározott
+N421 Programindítás nem meghatározott
+N422 Programindítás nem meghatározott
+N423 Programindítás nem meghatározott
+N424 Programindítás nem meghatározott
+N425 PLC poz el¿tt sugárkorrt törölni
+N426 Programindítás nem meghatározott
+N953 Mondatszerkesztési hiba
+N427 Mondatszerkesztési hiba
+N429 Túlzott egymásbaépülés
+N430 Túlzott egymásbaépülés
+N432 Túlzott egymásbaépülés
+N433 Ciklus el¿jele ellentmondásos
+N434 Téves el¿jel
+N435 Szöghivatkozás hiányzik
+N436 Szöghivatkozás hiányzik
+N437 Kör sugara túl kicsi
+N438 Szöghivatkozás hiányzik
+N439 Szöghivatkozás hiányzik
+N440 DEP megszakítása nem megengedett
+N441 DEP megszakítása nem megengedett
+N442 APPR után hiányzó koordináták
+N443 Tartománytúllépés
+N444 Hiba a tartomány adataiban
+N445 Téves kiindulási helyzet
+N446 Id¿korlát túllépése
+N447 Téves ciklusparaméter
+N448 Ráhagyás nagyobb, mint a mélység
+N451 Mérettényez¿k nem azonosak
+N454 A tapintó kilengése túl nagy
+N455 Túl sok részkontúr
+N456 Túl sok részkontúr
+N457 Túl sok részkontúr
+N458 Túl sok részkontúr
+N459 Túl sok részkontúr
+N460 Túl sok részkontúr
+N461 Túl sok részkontúr
+N462 Túl sok részkontúr
+N463 Túl sok részkontúr
+N464 Túl sok részkontúr
+N465 Túl sok részkontúr
+N466 Túl sok részkontúr
+N467 Túl sok részkontúr
+N468 Túl sok részkontúr
+N469 Túl sok részkontúr
+N470 Túl sok részkontúr
+N471 Túl sok részkontúr
+N472 Túl sok részkontúr
+N473 Túl sok részkontúr
+N474 Túl sok részkontúr
+N475 Kontúr programozási hiba
+N477 Kontúr programozási hiba
+N478 Kontúr programozási hiba
+N479 Kontúr programozási hiba
+N480 Kontúr programozási hiba
+N481 Kontúr programozási hiba
+N482 Kontúr programozási hiba
+N483 Kontúr programozási hiba
+N484 Túl bonyolult kontúr
+N485 Túl bonyolult kontúr
+N486 Túl bonyolult kontúr
+N487 Túl bonyolult kontúr
+N488 Túl bonyolult kontúr
+N489 Túl bonyolult kontúr
+N490 Túl bonyolult kontúr
+N491 Túl bonyolult kontúr
+N492 Túl bonyolult kontúr
+N493 Túl bonyolult kontúr
+N954 Címbet¿ többször szerepel
+N494 Túl hosszú mondat
+N955 Azonos G-csoport többször
+N495 Ismeretlen G-funkció
+N496 Az N mondatszám hiányzik
+N497 CMA fájl: nincs aktív sor
+N500 Túl sok korrekciós pont
+N501 Túl sok korrekciós funkció
+N957 Áramkimaradás Áram- kimaradás
+N958 Relévezérl¿ fesz. hiányzik Relévezérl¿ fesz.hiányzik
+N859 HIBA
+N860 A tengely nem ábrázolható
+N861 Nem lehet tovább kicsinyíteni
+N862 Nem lehet tovább nagyítani
+N863 BLK FORM nem ábrázolható
+N864 BLK FORMban téves szersz.tengely
+N865 Szerszámsugár nem ábrázolható
+N888 A szöveg nem található
+N1086 Túl sok pont
+N1097 T¿résérték túl nagy
+N1106 Ciklus teljes törlése: DEL!
+N1107 Mondat nem lehet a ciklusban !
+N1125 %.6s mondathivatk. = DEL tilos
+N1126 M112-t inaktiválni
+N1141 RL / RR nem lehet, ha M120 = 0
+N1142 Hiányzik a sugárkorrekció
+N1143 Sugárkorrekció nem megengedett
+N1144 R+/R- nem megengedett M120-szal
+N1145 RND nem megengedett M120 esetén
+N1146 Letörés nem lehet M120 esetén
+N1147 Analóg fesz. nincs meghatározva
+N1148 Analóg feszültség nem egyértelm¿
+N1149 MP%.4u  : téves érték
+N1150 %.3s tapintó nem üzemkész
+N1151 Újra belépés M120 közben tilos
+N1154 Nem megengedett fájlnév / elérés
+N1170 A kijelölt tapintó mér¿ típusú
+N1171 Kijelölt tapintó kapcsoló típusú
+N1172 Tapintót kalibrálni
+N1178 3DROT aktív:teng.gombokat haszn.
+N1182 MP%.4u.%u : téves érték
+N1186 Fájl formátuma megváltozott
+N1187 M89 nem megengedett
+N1192 Szögérték nem megengedett
+N1193 TOOL.T: vágóélek számát beadni
+N1266 Mondatszerkesztési hiba
+N1521 PLC hibalista még nincs lefordítva
+N1523 PLC: nincs kiválasztva hibalista
+N1524 PLC: hibalista hiányzik
+N1525 PLC: a hibalista nem .PET fájl
+N1527 PLC: hibalista nem található
+N1528 PLC: hibalista formátuma hibás
+N1568 Téves tengely a .PNT fájlban
+N1590 Távolság értéke túl kicsi
+N1682 TOOL.T:LCUTS vagy ANGLE hiányzik
+N1745 A hozzáférést valami akadályozza
+N1749 Téves szám az FN17/FN18-ban
+N1749 Téves szám az FN17/FN18-ban
+N1750 PLC: hiba a modulel¿híváskor
+N1789 Ez a szerszám tiltva van
+N1790 Téves tartományciklus
+N1791 Ponttávolság túl nagy
+N1792 Téves sortengely
+N1793 Téves oszloptengely
+N1794 Téves szögtengely
+N1795 Téves teng. a tartományciklusban
+N1796 Téves sortávolság
+N1797 Tartományciklus nincs meghat.
+N1798 Tartomány túllép a végkapcsolón
+N1799 Biztonsági magasság túl kicsi
+N1807 Nem megengedett fájlnév
+N1809 M114 és M116 együtt nem lehet
+N1810 Rendszertároló túlcsordulás
+N1845 Rendszeradatokat frissíteni !
+N1848 A könyvtár nem üres
+N1850 4.ciklus(G75/G76): téves tengely
+N1851 M130 nem engedélyezett
+N1852 M130 nem megengedett M114-gyel
+N1853 M130 nem engedélyezett
+N1854 M130 nem lehet sug.korrekcióval
+N1855 Nincs meghtározva megmunk.ciklus
+N1856 Ide-oda el¿tolás értéke hiányzik
+N1857 A szerszámsugár túl nagy
+N1892 FN20/D20: hibás feltétel
+N1900 A készülék foglalt
+N1901 A meghajtó nem található
+N1914 Szerszámtörés
+N2039 Téves nullapont-szám
+N2040 Horonyszélesség túl kicsi
+N2041 Zseb túl kicsi
+N2042 Q202 nincs meghatározva
+N2043 Q205 nincs meghatározva
+N2044 Q218 nagyobb legyen, mint Q219
+N2045 CYCL 210 nincs engedélyezve
+N2046 CYCL 211 nincs engedélyezve
+N2047 Q220 túl nagy
+N2048 Q222 nagyobb legyen, mint Q223
+N2049 Q244 nagyobb legyen, mint 0
+N2050 Q245 nem lehet egyenlö Q246-tal
+N2051 Szögtart. kisebb legyen 360°-nál
+N2100 Téves paletta
+N2101 PLC:\NCMACRO.SYS hiányzik !
+N2102 'PALETT' NCMACRO.SYS-böl hiányzk
+N2103 Palettaadatok hiányoznak
+N2186 Billentés:szerszámteng. hiányzik
+N2211 M128 esetén TOOL CALL nem lehet
+N2212 M128 esetén M91 / M92 nem lehet
+N2213 MP75XX nincs meghatározva
+N312 Ez a tengely itt nem megengedett
+N2222 Fájl nincs az OEM.SYS-ben
+N2223 Hibás fájltípus
+N2224 A mez¿ neve nem található
+N2225 Fájl üres
+N2226 Anyaglista nem található
+N2227 Vágóél-anyaglista nem található
+N2228 Anyag nem lett kiválasztva
+N2229 Md/szerszanyag pársítás hiányzik
+N2230 Forgcs.adatok listája nincs kiv.
+N2231 E mondat nem lehet M112 esetén
+N2232 Hibás mondatot ki kell javítani
+N2233 FK mondat GOTO-val nem választh.
+N2238 Q223 nagyobb legyen, mint Q222
+N2243 A szög túl kicsi a TOOL.T-ben
+N2253 Vezérl¿feszültséget kikapcsolni!
+N2254 Relé: nyugalmi érintkez¿ nyitva?
+N2255 Vezérl¿feszültséget bekapcsolni
+N2273 TS: értékek eltérése túl nagy
+N2284 Párhuzamos üzem nem lehetséges
+N2285 Tengely tiltva van
+N2288 A szerszámbefogó hibás !
+N2300 Forgácslási adatokt ellen¿rizni!
+N2315 Q214: 0 nem megengedett
+N2316 PLC: esemény fájl hiányzik
+N2317 PLC: túl sok esemény
+N2319 Szerszámtípuslista nem található
+N2320 CDT elérési út nem található
+N2321 Túl sok *.CDT fájl
+N2336 Bizt. input nem = %d inputtal
+N2339 Nincs kapcsolat a hálózattal
+N2342 FN17: Nem megengedett érték
+N2344 A hiányzó elemet be kell adni!
+N2345 A szerszám nincs definiálva
+N2375 M112 nem megengedett M128-cal
+N2377 S: %.2s+ biztons. végálláskapcsoló
+N2378 S: durva pozícionálási hiba L %.2s
+N2377 S: %.1s- biztons. végálláskapcsoló
+N2384 Nincs egyetlen elem sem!
+N2385 Okvetlen szükségs elem hiányzik!
+N2386 Max. sorhossz túllépése!
+N2387 Hiba a konvertálás közben!
+N2500 Használja az EL¿RE ..MONDATHOZ-t
+N2504 Mozgási irány nincs definiálva
+N2505 Nincs aktív nullapont táblázat
+N2506 Pozícionálási hiba: 1.teng.közép
+N2507 Pozícionálási hiba: 2.teng.közép
+N2508 Furat túl kicsi
+N2509 Furat túl nagy
+N2510 Csap átmér¿je túl kicsi
+N2511 Csap átmér¿je túl nagy
+N2512 Zseb túl kicsi:utánmunk. 1.teng.
+N2513 Zseb túl kicsi:utánmunk. 2.teng.
+N2514 Zseb túl nagy: selejt 1. teng.
+N2515 Zseb túl nagy: selejt 2. teng.
+N2516 Csap túl kicsi: selejt 1. teng.
+N2517 Csap túl kicsi: selejt 2. teng.
+N2518 Csap túl nagy: utánmunk. 1.teng.
+N2519 Csap túl nagy: utánmunk. 2.teng.
+N2520 Mér¿ciklus: hosszabb, mint max
+N2521 Mér¿ciklus: rövidebb, mint min
+N2522 TCHPROBE 426: hosszabb, mint max
+N2523 TCHPROBE 426: rövidebb, mint min
+N2524 TCHPROBE 430: átmér¿ túl nagy
+N2525 TCHPROBE 430: átmér¿ túl kicsi
+N2609 3DROT esetén nem lehet M128
+N2610 M128 esetén nem lehet M114
+N2611 RR/RL esetén nem lehet M128
+N2617 Nincs meghatározva mérési teng.
+N2618 Formátumhiba a dátumban / id¿ben
+N2621 M128: Bázisp.eltolás nem lehets.
+N2635 Szerszám törési t¿rése túllépve
+N2636 M128 el¿tt sugárkorr.t törölni
+N2642 Hajtásszabályzó nem üzemkész
+N2644 M120: LOOK AHEAD nem lehetséges
+N2645 Bizt.mgsg Q260 < mérsi mgsg Q261
+N2646 MC gépi gomb benyomva vagy beragadt
+N2647 Relé: nyugalmi érintkez¿ zárva ?
+N2655 F¿motor árama nem egyenl¿ 0-val
+N2657 %.2s tengely motorárama nem = 0-val
+N2662 Kezd¿/záró mondat nem jelölhet¿
+N2663 Beszúrás itt nem lehetséges
+N2664 Közbens¿ tároló üres
+N2665 Mondat nincs kijelölve
+N2668 Hibás mondatformátmot kijavítani
+N2691 LN: orientálás nem lehetséges
+N2692 M128 nem lehet LN mondattal
+N2700 Lekapcsoló csat. tesztje inaktív
+N2711 Biztons. ellen¿rz¿ összeg hibás
+N2733 Túl sok oszlop
+N2734 Nincs kiválasztott teng. oszlop
+N2735 M128 nem megengedett
+N2736 Nincs megnyitott .TAB fájl
+N2737 TAB: mez¿ neve túl hosszú
+N2738 TAB: ez a mez¿ nem számjegyes
+N2739 TAB: túl sok mez¿név
+N2745 %.2s téves referencia pozíció
+N2746 MP%u téves érték
+N2747 Ez a sor írásvédett
+N2748 Mér¿ciklus: M114 nem megengedett
+N2749 Mér¿ciklus: M128 nem megengedett
+N2750 M114, M128, 3DROT nem megengdett
+N2752 MP: ellentmondásos adatbeadás
+N2757 Parancs puffer túlcsordulás
+N2758 Parancseltérés
+N2760 FS funkció nem lett végrehajtva
+N2768 MC az igazoló gombot megnyomták
+N2769 A hiányos ciklus törölve lett
+N2770 A közbens¿ tároló üres
+N2771 A fájlba írás nem engedélyezett
+N2772 A teljes m¿velet törlése: NO ENT
+N2773 Szövegösszefüggs nem módosítható
+N2774 Polárkoordináta nem lehetséges
+N2775 Szövegösszefüggés módosítása:ENT
+N2776 Bevitel kontextként nem lehets.
+N2777 Ellen¿rizze a zárójeleket
+N2820 %.2s MC helyzeteltérés túl nagy
+N2824 Kalibrálja TT-t elford. síkban
+N2825 Kalibrálja TT-t nem elford.síkbn
+N2826 TT nem párh. a szersz. teng.lyel
+N2827 %.2s hibás lefékezés
+N2828 Helyzetszab. ciklusid¿ túl rövid
+N2829 Q247 a beírt érték nem lehet 0
+N2830 Q247 értéke 5-nél nagyobb legyen
+N2834 EnDat hiba %X %.2s
+N2837 FK mondat nincs lefordítva
+N2849 Kapcsolja be a f¿orsót
+N2853 Együttfutás figyelése %.2s
+N2858 Tengelyvizsg. nincs engedélyezve
+N2868 TT: tengelyek el¿pozícionálása
+N2945 M91/M92 nem engedélyezett
+N2969 Szükséges érték hiányzik
+N2993 Internet cím téves
+N2995 Tiltott PLC nullponteltolás
+N2996 Mozgástart.váltás nem lehetséges
+N3002 Speciális orsóüzemmód tiltva van
+N3006 Szerszámcserét elvégezni !
+N3012 M120 LA nem engedélyezett
+N3013 Körinterpoláció nem engdélyezett
+N3025 A palettasor tiltva van !
+N3026 Sugárkorrekció nem lehetséges !
+N3055 Q351 marás típusa nem lehet 0
+N1149 MP%.4u  : téves érték
+N958 Relévezérl¿ fesz. hiányzik
+N1182 MP%.4u.%u : téves érték
+N3063 3DROT: nem található a leírás
+N3065 M114, M128 v. CYCL19-t törölni
+N3081 Progr. menetmélység túl nagy
+N3187 Nincs kiválasztva PNT fájl
+N3188 PNT: biztons. magasság túl kicsi
+N3189 CYCL CALL PAT nem megengedett
+N3192 El¿bb végezze el a kalibrálást
+N3193 Átlépte a t¿résmez¿ határát
+N3199 Tartományváltás nem megengedett
+N3205 Autostart nem engedélyezett
+N3206 %.20s makró nincs
+N2720 MC amplitúdó túl nagy %.2s
+N44 MC amplitúdó túl kicsi %.2s
+N45 MC frekvencia túl nagy %.2s
+N2687 MC NC h¿mérséklet t¿résen kívül
+N2612 MC biztons. bemenet %d nem = 0
+N14018 MC nyugalmi állapot figyelés %.2s
+N57 CC végálláskapcsoló %.2s-
+N55 CC végálláskapcsoló %.2s+
+N3214 Táblázati érték át lett írva
+N3218 Nem engedélyezett PLC m¿velet
+N3220 MP6510: t¿rés túl kicsi
+N3221 Kalibráló sugár túl nagy
+N3231 PAL/PGM mez¿ hiányzik
+N3232 Language load error %d
+N3234 Szerszámel¿választás folyamatban
+N3235 Negatív el¿tolás
+N3236 %.2s kikapcs. poz. eltér ENDAT-tól
+N3239 Kijelölt szoftver nem betölthet¿
+N3243 Szerszámteng. nincs programozva
+N3245 M funkció nem engedélyezett
+N3354 Nem engedélyezett funkció
+N3356 Kinematikai lista hibás
+N3357 MP részfájl hibás
+N3441 M144 nem engedélyezett
+N4957 Ellentmondásos adatbevitel
+N3532 MFUNCT.TAB: téves beírás
+N3927 Érintés nem megengedett
+N3928 M112 nem lehet M144-gyel együtt
+N4175 Palettasor készdarabot tartalmaz
+N4176 Felfogást váltó makro hiányzik
+N4177 Érvénytelen geometria-kontext
+N4197 A mondatel¿refutás aktív
+N4276 ORIENTÁLÁS nem megengedett
+N4491 El¿reugrás nem lehetséges
+N4492 Szersz.váltó eng. gomb megnyomva
+N4571 Mélység el¿jelét ellen¿rizni!
+N4572 Nem megengedett beviteli jel
+N4573 Kisbet¿ nem megengedett
+N4574 Bet¿ nem megengedett
+N4575 Számjegy nem megengedett
+N4880 Túl kevés rendszermemória
+N4881 PLC program nem található
+N4882 M140 nem engedélyezett
+N4903 Sugárráhagyás nem engedélyezett
+N4905 Az 1. processzor túl meleg
+N4906 A 2. processzor túl meleg
+N4935 %.2s aktuális pozíciója tárolva
+N5073 LSV2: a kapcsolat megszakadt
+N5074 LSV2: átviteli hiba
+N5075 LSV2: átviteli hiba
+N5076 LSV2: átviteli hiba
+N5077 LSV2: Timeout hiba
+N5078 LSV2: átviteli hiba
+N5079 LSV2: Timeout hiba
+N5080 LSV2: Timeout hiba
+N5081 LSV2: adási hiba
+N5099 MC nincs szabad memória
+N5225 Téves szoftverváltozat
+N5228 El¿tolás = 0 nem megengedett
+N5236 A TNC h¿mérséklete magas %d°C
+N5242 A PLC program nincs lefordítva
+N204 A TNC túlmelegedett %d°C
+N5286 Hiba: Profibus konfiguráció
+N5287 Profibus: hardver hiba
+N5288 Profibus: inicializálási hiba
+N5312 Remanens PLC adatok törölve
+N5338 Softkey projekt nincs lefordítva
+N5366 Sor beszúrása nem megengedett
+N5367 T %u a(z) %u sorban már foglalt
+N5368 LBL %u a(z) %u sorban már foglalt
+N5369 Nincs kiválasztott tengely
+N2612 CC%d Biztons. bemenet %d nem = 0
+N2687 CC%d NC h¿mérséklet t¿résen kívül
+N2688 CC%d +5V t¿résen kivül
+N5434 A funkció nem áll rendelkezésre
+N5479 Szersztárszabály nincslefordítva
+N5484 Tengelyszög nem= billent.szöggel
+N5566 Ref. rendszer cseréje tilos !
+N5567 MC hibás számú FS-CC
+N5568 Túl sok karakter
+N5569 Érvénytelen érték
+N5570 Túl sok tizedesjegy
+N5571 Nem megengedett el¿jel
+N5572 Csak egész számú érték lehet
+N5573 Q tilos: számot kell beírni!
+N5574 Inkrementális beadás tilos
+N5575 Túl sok M funkció
+N5576 Túl sok programozott tengely
+N5577 Tengely duplán programozva
+N5578 Elem duplán / nem engedélyezett
+N5579 Hiányos adatbeadás
+N5580 DIN/ISO: N mondatszám hiányzik
+N5581 Szükséges elem hiányzik
+N5582 Syntax hibás
+N5583 Nincs tárolt mérési érték %.2s
+N5617 Ismeretlen jelszó
+N5618 Nem módosítható syntax elem
+N5619 PGM fej nem módosítható
+N5627 MP1356.%d legyen %.4f
+N5628 Túl sok programozott tengely
+N2652 CC%d orsó hajtásszabályzója RDY=0
+N2653 CC%d hajtásszabályzó tengely RDY=0
+N2654 CC%d orsó hajtásszabályzója RDY=1
+N2656 CC%d hajtásszabályzó tengely RDY=1
+N2743 CC%d FS-Tesztösszeg-hiba
+N2759 CC%d nem igazolt parancs
+N2819 Hibás adatok a CC%d-tól
+N2821 Nincs pozició érték a CC%d-tól
+N2822 CC%d nincs pozíció érték az MC-tól
+N2823 MC/CC%d vizsgált tengelyek eltér¿k
+N2831 CC%d téves include-fájl verzió
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC S ellen¿rz¿ összeg hiba
+N5631 MC parancs %3d nincs nyugtázva
+N5632 MC és CC nem illenek össze
+N5635 %d csatorna nem jeleníthet¿ meg
+N5641 MC biztonsági ajtók nyitva vannak
+N5651 A szerszámtengely hiányzik
+N5655 %.2s teng.t MC ell.nélk. indította
+N5671 %.2s pozícióadót ellen¿rizni
+N5672 Használja a preset táblázatot!
+N5673 Q303 mér¿cikl.ban nem definiált!
+N5693 Szerszámtengely nem megengedett
+N5699 Számított érték téves
+N5700 Mérési pontok ellentmondásosak
+N5709 Kör adatok hibásak
+N5712 Jelszó nem található
+N5713 Nincs megadva jelszó
+N5714 Jelszó túl hosszú
+N5715 Jelszó már kódolva
+N5757 Preset beáll.: tengely tiltva!
+N5759 Bizt. magasság megadása téves!
+N5969 NC mondatot valóban törli? DEL!
+N5970 Nem megengedett tengely-bet¿
+N5971 Blockskip törlése nem lehetséges
+N5972 String nincs lezárva
+N6018 Dupla referencia felvétel aktiv
+N6027 Tengelyválasztás téves
+N6049 PET táblázat: túl sok sor
+N6052 Bemerülés típusa ellentmondásos!
+N6055 Nem megengedett ciklus
+N6066 Forgó teng. t¿rése nem megfelelö
+N6069 MC PWM kimenet nem található
+N6072 Elérte a képerny¿ szélét
+N6079 M128 nem engedélyezett
+N6080 M144 nem engedélyezett
+N6081 MC SOM 4 nem lehetséges
+N6082 MC üzemmód nem lehetséges
+N6086 Hiba a figyelési lista mentéskor
+N6087 Hiba a figyelési lista nyitáskor
+N6088 Hiba a TEMP.WLT nyitásakor
+N6089 Utolsó figyelési lista elveszett
+N6090 Kiválasztó lista nem található
+N6091 Kiválasztó lista üres
+N6094 Téves kulcsszám
+N6093 Nem biztonságos tengely/orsó
+N6099 Érvénytelen érték
+N6100 Érvénytelen operandus
+N6101 MC SOM 4 nincs engedélyezve
+N6102 Az oszlop nem változtatható meg
+N6103 Preset szám nem létezik
+N6105 MC SOM 2 csak 1 teng.engedélyezett
+N498 %.32s fájl hiányzik
+N206 A %.30s PGM hiányzik
+N6118 MC SOM 4 eng. gombot megnyomni
+N6182 Profibus: konfigurációs hiba
+N6183 Profibus: PCI hardver hiba
+N6184 Profibus: fájl/memória hiba
+N6187 Túlzott egymásbaépülés
+N6188 Túlzott egymásbaépülés
+N6189 5V tápfeszültség túl magas
+N6190 5V tápfeszültség túl alacsony
+N6193 Hibás spline kiindulási pont
+N6212 Akt. érték átvétele nem lehets.
+N6236 A PLC program le lett állítva
+N6264 Egyidej¿ grafika nem lehetséges!
+N6291 REF felvétele az orsóval!
+N6294 Biztons. MP-t PLC változtatott
+N6307 T%s: hátralév¿ éltartam túl rövid
+N6308 Nem definiált szerszám %s
+N6309 Adatátvitel: nem eng. karakter
+N6312 MP részfájl hiányzik
+N6408 MP részfájl hibás
+N6409 PLC strob nem megengedett (%s)
+N6410 PLC strob nem eng. %d ciklusban
+N6411 Végálláskapcsoló nem megengedett
+N6412 Preset mentése nem lehetséges
+N6413 Kinematika változtat. nem lehets
+N6414 Mondatkeresés inkonzisztens %s
+N7222 Ez a sor írásvédett
+N7784 Hiba a táblázatba íráskor
+N7799 MC fékteszt nincs elvégezve
+N7800 MC zárlat +24V a fékcsatornán
+N7801 MC zárlat 0V a fékcsatornán %.2s
+N7803 Bázispont kijelölés funkc.gombbal!
+N7815 A gép nincs inicializálva
+N7922 Tápfeszültség hiányzik az X44-en
+N7923 MC szersztár AutoStart nem lehet
+N7935 Bináris fájl küls¿ meghajtón
+N7936 Cél- és forráskönyvtár azonos
+N7937 Cél- és forrásfájl azonos
+N7938 MP2257.%d téves (ID=$%08X)!
+N7964 TCPM: irányvektor ellentmondás!
+N7969 Alkalmazás %s nem indítható
+N7971 Folyamat nem végrehajtható
+N7972 Célkészülék nem található
+N7973 Nem adható másik név a fájlnak
+N7974 Nem változtatható a fájl típusa
+N7975 Nincs hely a meghajtón
+N7977 Fájlrendszer I/O hiba
+N7978 Fájl hozzáférés megszakadt
+N7979 Túl sok fájl van megnyitva
+N7980 Sor/blokk túl hosszú
+N7981 Ez a fájl nem létezik
+N8001 Nincs aktív valós idej¿ alkalmazás
+N8002 Hiba a valós idej¿ alkalmazásban
+N8005 Kontext csere csak a megnyitóra!
+N8032 LSV 2: túl sok kapcsolat
+N8043 Fordítás nem engedélyezett
+N8044 PLC bináris fájl kiválasztva
+N8049 Az alárendelt fájl írásvédett
+N8071 Ablakváltás nem lehetséges!
+N8072 Írásvédett tagoló fájl!
+N8090 Középre beállás nem lehetséges!
+N8110 NC program megszakítva
+N7798 SYSTEM HIBA %d
+N8114 0x01 funkció nem ismert
+N8115 0x02 funkció már elindítva
+N8116 0x03 szabályzó nem aktív
+N8117 0x04 szabályzó aktív
+N8118 0x05 impulzus túl nagy
+N8119 0x06 ismeretlen paraméter
+N8120 0x07 hiba a DAC olvasásakor
+N8121 0x08 soros EEPROM: nincs igazolás
+N8122 0x09 soros EEPROM: SDA 0-n vagy 1-n maradt
+N8123 0x0A hiányzó adatok
+N8124 0x0C tiltott funkció
+N8125 0x0D téves TNC üzemmód
+N8126 0x10 nem definiált hiba (lásd a hibatárolót)
+N8128 DSP parancs string túl hosszú
+N8129 Nem érkeztek adatok
+N8130 Hibás adatok érkeztek
+N8131 Nincsenek mérési adatok
+N8132 A hiba oka bizonytalan
+N8133 Hajtásszabályzó gépi paraméterei hiányzanak
+N8134 Nem támogatott motortípus
+N8135 Nem HEIDENHAIN tápegység
+N8136 Téves szabályzó egység
+N8140 Nem definiált üzenet
+N8141 Nem várt üzenet
+N8142 Hibaüzenet a hajtásszabályzótól
+N8213 A megadott érték téves
+N499 %.32s fájl hiányzik
+N8231 TCPM FUNKCIÓ nem lehetséges
+N8284 Elektr. adattábla hiányos/nincs: %s
+N8290 Munkatér túllépés
+N8292 PL 510 tápfesz. hiányzik
+N8293 Rövidzárlat a PL 510 kimenetén
+N8401 Ismeretlen PLC modul %d
+N8494 CC%d timeout verzióösszehasonlítás
+N8495 CC%d timeout SMP ellen¿rz¿ összeg
+N8591 PLANE funkció: TURN nem lehets.!
+N8643 CYCL CALL POS mondat hiányos
+N8644 Inkr. programozás nem lehetséges
+N8658 Bázisp. kijelölés minden teng.en
+N8757 MC 422B ventilátor meghibásodott
+N8758 Ez az EnDat OEM verzió nincs támogatva.
+N8892 Összekapcs. funkc. nem végezhet¿
+N502 Forgási irány hiányzik
+N503 Lekerekítési sugár túl nagy
+N504 Ellentmondásos adatbevitel
+N505 Kontúrmeghatározás nem elegend¿
+N506 FPOL hiányzik
+N507 TNC programmondat csak a kontúr meghatározása után írható
+N508 A kontúr meghatározott: FSELECT mondat nincs engedélyezve
+N509 Zárt kontúr vége: inkrementális koordináta érték nem használható
+N510 Lekerekítés vagy letörés ezen
+N511 Lekerekítés/letörés érint¿leges kontúrátmenetnél nem lehetséges
+N512 Lekerekítés/letörés el¿tt vagy után az egyenes hossza nulla
+N513 Letörés csak két egyenes között lehetséges
+N514 Letörés túl nagy
+N515 Rosszul kezdett pályakorrekció: egyenes legyen az NC mondatban
+N516 Rosszul lezárt pályakorrekció: egyenes legyen az NC mondatban
+N517 Kontúr túl bonyolult. Több adat szükséges
+N518 FK: aritmetikai hiba
+N519 FK mondat itt nem engedélyezett
+N522 A megadott mondatra való hivatkozás nem engedélyezett
+N523 A CC mondatra való hivatkozás nem engedélyezett
+N525 Segédpontok esetén mindkét koordinátát meg kell adni
+N526 FK grafika párhuzamos üzemben nem lehetséges
+N527 Nyersdarab túl nagy
+N528 Ablakkivágás túl nagy
+N529 Ablakkivágás túl kicsi
+N530 Ablakkivágás nem tolható el tovább
+N9785 Mivel nem lehetett mozgást észlelni, nem lehetséges az irányfelismerés.
+N10248 NC funkció nem engedélyezett
+N10521 Start id¿pont elmúlt
+N10664 Szerszámhasználati fájl tiltva
+N10665 Progr. grafika nem lehetséges
+N10672 A SPAWN/SUBMIT blokkolja a kontaktusváltást
+N10710 PROFIBUS bemenetek nincsenek frissítve
+N10711 PROFIBUS bemenetek nincsenek frissítve
+N10942 Megjelenítés hiányos
+N10949 Oldalsó fogásvétel túl kicsi
+N10950 Átfedési tényez¿ túl nagy
+N11044 0 hengersugár nem engedélyezett!
+N11045 Queue túlcsordulás: %s
+N11114 Rendszerhiba
+N11115 Rendszerhiba
+N11116 Rendszerhiba
+N11117 Rendszerhiba
+N11232 Üzemmódváltás nem lehetséges
+N11275 Fájltípus hiányzik vagy hibás
+N11391 Billenty¿ tiltva
+N11410 Globális Q par. nincs definiálva
+N11411 Globális Q par duplán definiálva
+N11412 Globális paraméterek hiányoznak
+N11413 smarT.NC nem lehetséges
+N11442 Két forgópozíció nem megengedett
+N11453 A fájlnév már létezik
+N11454 A programfejléc létezik
+N11559 M120: LOOK AHEAD nem lehetséges
+N11574 M114 gépgeometria nélkül
+N11575 Tengelygeometria nincs meghat.
+N11576 Körasztal koordinátái hiányzanak
+N11577 Nincs definiálva kinematika
+N11578 Szögszámítás nem lehetséges
+N11579 Kinematikai lista hiányzik
+N11580 3DROT aktiválása
+N11581 PLANE funkció nem lehetséges!
+N11582 CC%d : %s program nem indul
+N11585 PLC strob nem megengedett (M%d)
+N11586 Tesztgrafika nem lehetséges
+N11588 PGM smarT.NC-ben lesz szerksztve
+N11589 PGM párhuzamosan lesz szerksztve
+N11593 Szab. egység opciója hiányzik
+N11595 A fájltörlés nem lehetséges
+N11597 Interferencia a PL-porton
+N11598 PLC partíció: Túl kevés memória
+N11601 CC%d : TIMEOUT CMD=0x%02X
+N11750 A fájl nem létezik
+N11751 Válassza ki a fájlt újra!
+N11752 A címkenév már foglalt
+N11753 A címkenév többszörösen foglalt
+N11754 A címkenév nem található
+N11755 A címkenév %u sorban már foglalt
+N12214 USB eszköz nem távolítható el
+N12215 USB eszköz lezárás nélkül eltávolítva
+N12283 Nincs definiálva csúcsszög
+N12284 Ellentmondásos adatok
+N12358 MEGSZAKÍTÁS %u mondatban (%u %%)
+N12759 Fanézet felépítése megszakítva
+N12760 MC házának ventillátora hibás
+N12767 Reentrance impossible
+N12768 Túl sok egységet programoztak
+N12770 3,3V tápfeszültség túl magas
+N12771 3,3V tápfeszültség túl alacsony
+N181 A nyersdarab meghatározása hibás
+N520 FCT vagy FLT mondat itt nem engedélyezett
+N521 Inkrementális szöghivatkozás itt nem engedélyezett
+N524 FPOL esetén mindkét koordinátát meg kell adni
+N12822 A funkciót nem lehetett befejezni (id¿túllépés)
+N12823 A szerszámsugár 0-nál nagyobb!
+N12824 Több mint 5 teng. a PLC poz.-ban
+N12830 0 horonypozíció nem megengedett!
+N12837 Kontúr-alpoz: Csak 1 teng.progr.
+N12857 Engedélyezett PGM hossz túllépve
+N6091 Nincs szimbolikus programozás
+N13066 Preset mentése nem lehetséges
+N13072 Bázispont kijelölése nem megeng.
+N13147 PLC program nem fut
+N4 Hiba az adatfeldolgozásban 3
+N9 Hiba az adatfeldolgozásban 8
+N11 Hiba az adatfeldolgozásban A
+N12 Hiba az adatfeldolgozásban A
+N14 Hiba az adatfeldolgozásban A
+N16 Hiba az adatfeldolgozásban B
+N19 Hiba az adatfeldolgozásban E
+N29 Hiba az adatfeldolgozásban O
+N33 Ellen¿rz¿ összeg hiba A
+N34 Ellen¿rz¿ összeg hiba B
+N40 %.2s mozgásfigyelés hibát jelez A
+N43 Pozícióeltérés <> fordulatszám túl magas %.2s
+N13741 %d sor: ; karakter hiányzik
+N13742 %d sor: Kulcsszavak száma
+N13743 %d sor: Hibás kulcsszó
+N13744 %d sor: Ismeretlen parancs
+N13745 %d sor: Formátumvál. hibás
+N13746 %d sor: Formátumvál. hiányos
+N13747 %d sor: Túl hosszú kulcsszó
+N13748 %d sor: Index hiányzik
+N13749 %d sor: ] az indexnél hiányzik
+N13750 Maszkfájl nem található
+N13751 Kimen¿ adatok nem hozhatók létre
+N13154
+N13155 Ütközésveszély nyugtázva
+N13156 Profibus szoftver már nem akt.
+N13302 MPFRAGMENTFILE nem létezik
+N13340 A megadott érték téves
+N13348 DHCP: Bevitel nem engedélyezett
+N13381 Az oszlop visszaállítása nem megengedett
+N13387 Fogásvétel 0-tól eltér¿ legyen
+N13475 Nem megengedett funkció!
+N13476 Vágólap üres!
+N13477 MC fékszabályozás hibás
+N13478 MC fékszabályozás hibás %2s
+N13486 Ford.szám tartományhatáron kívül %d%%
+N13487 USB: A TNC nem támogatja az eszközt
+N13752 Szerkesztés nem engedélyezett
+N13753 TOOL.T: Fogak száma=0 definiálva
+N13758 M118 nem engedélyezett
+N13761 Szerkesztés nem engedélyezett
+N13769 Szabályozatlan teng. %.2s: Nyug. helyzet
+N13816 Nem engedélyezett funkció
+N13825 Nem megengedett funkció
+N13827 Hibás DXF fájl
+N13838 Autom. billenty¿zár feloldva
+N13945 Nem engedélyezett funkció
+N13957 Szerkesztés nem megengedett
+N13958 M136 FU/FZ-vel nem megeng.
+N13960 smarT.NC nem engedélyezett
+N13961 Növekményes bevitel nem megeng.
+N14017 Q399 átkapcsolás nem megengedett
+N14019 CC%d id¿túllépés árammérésnél
+N14020 MC: téves S-üzemmód
+N14022 CC gépi gombot lenyomták
+N14023 MC MB engedélyez¿ gomb lenyomva
+N14024 CC MB engedélyez¿ gomb lenyomva
+N14025 CC kézikerék eng. gomb lenyomva
+N14026 CC szersz.gép eng. gomb lenyomva
+N14027 CC burkolatajtók nyitva
+N14032 Kiszámított koordináta túl nagy
+N14156 Nincs definiálva szerszámtengely
+N14253 Hohó: el¿poz.magass. definiálva!
+N14254 MC engedélyez¿ gomb lenyomva
+N14255 CC engedélyez¿ gomb lenyomva
+N14299 Programkonverzió nem lehetséges.
+N14434 Tartomány definíciója hibás!
+N14479 Nullapont tábl. nincs választva
+N14486 M140 MB MAX nincs engedélyezve
+N14487 Túllépte a max. karakterszámot
+N14518 Nem megengedett szerszám-szám
+N14519 Nem megengedett szerszámnév
+N14520 Osztás nullával nem megengedett
+N14521 Gyökvonás nem megengedett
+N14522 Logaritmus nem megengedett
+N14523 Tangens nem megengedett
+N14525 A funkciót az FCL tiltja
+N14550 Arcus cos: összeg nagyobb 1-nél
+N14551 Arcus sin: összeg nagyobb 1-nél
+N15439 M128: Preset változtatása tilos
+N15465 Nincs közölhet¿ adat!
+N15466 Fájltípus hiányzik vagy hibás
+N15491 LSV2: Megszakítási pont tilos!
+N15614 Tapintási irány nincs definiálva
+N15658 Ford.sz. S > NMAX a TOOL.T-ben
+N15672 A meghajtót nem lehet átnevezni!
+N15673 A meghajtót nem lehet másolni!
+N15674 A meghajtót nem lehet törölni!
+N15675 A fájltípust nem lehet megnyitni
+N15687 MC mozgásfelügyelet %.2s
+N15688 MC fékezési folyamat hibás %.2s
+N15691 GOTO funkció nem lehetséges!
+N15766 Nem megengedett szerszámtengely
+N15767 A megengedett mozgástartomány átlépése %.2s
+N15923 A PLC memória layout megváltozott
+N15967 Segít¿ rendszer nem el¿hívható
+N15973 M141 nem engedélyezett
+N16007 Párhuzamos üzem nem lehetséges
+N16010 A gépkezel¿t véd¿ modul nincs támogatva
+N16198 PLC memória elrendezés nem inicializálható
+N16362 MC átalakító RDY=0 %.2s
+N16363 MC átalakító RDY=1 %.2s
+N16407 Adatátvétel nem lehetséges
+N16408 Tengelyek cseréje nem lehetséges
+N16409 Tengelyek cseréje nem lehetséges
+N16410 Tengelyek cseréje nem lehetséges
+N16411 Beviteli határérték túllépése
+N16412 Változtatás nem lehetséges
+N16413 Meghatározhatatlan hiba
+N16561 AFC: Orsó túlterhelés
+N16563 Pozíciómér¿ %.2s: Amplitúdó túl nagy
+N16564 Pozíciómér¿ %.2s: Amplitúdó túl kicsi
+N16565 Pozíciómér¿ %.2s: Frekvencia túl magas
+N46 %.2s pozíciómér¿ meghibásodott
+N16586 PLANE AXIAL nem megengedett
+N16593 MC fékezésteszt nincs aktiválva
+N16623 Táblázat definíció hibás
+N16718 Orsófordulatszám a t¿résmez¿n kívül %.2s
+N16798 Globális PGM beáll. deaktiválva
+N16800 smarT.NC: nem megeng. fájltípus
+N16830 PGM futás közben nincs változás
+N17063 A TNC makrót nem tud feldolgozni
+N17161 ENDAT interpoláció nem lehetséges %.2s
+N17162 Elektr. adattábla lekérdezése nem letséges
+N17163 Hiba a TRC kompenzációban %.2s
+N17167 'AFC' hiányzik NCMACRO.SYS-b¿l
+N17207 MC: téves S-üzemállapot
+N17384 Nincs elég hely a f¿ memóriában
+N17386 Palettás megmunk.nem megengedett
+N17387 M128 nem engedélyezett
+N17390 PLANE funkció: MOVE nem lehetséges
+N17662 Aktív mozgási tartomány hibás
+N17663 DCM: állapotbeállítás hibás
+N17735 %.2s MC cél- és aktuális érték eltérése túl nagy
+N17938 EnDat kapcsolat nem lehetséges
+N18060 3DROT nem megengedett
+N18075 MC %.2s+ végálláskapcsoló 1. túllépése
+N18076 MC %.2s- végálláskapcsoló 1. túllépése
+N18145 Behívott PGM megváltozott
+N18146 Többszörös kijelölés tiltott
+N18147 Funkció könyvtárnál nem lehets.
+N18148 PGM védelem nem beállíth/feloldh
+N18149 Fájltípus MP-vel védve
+N18150 NYITÁS EZZEL tiltott
+N18156 USB eszköz nem távolítható el
+N18157 Nincs kijelölve USB eszköz
+N18220 Hibás PL konfiguráció
+N18280 %s
+N59 FN 14: hiba száma %s
+N18303 CC%d hajtás tengelyek RDY=0 (bizt. relé)
+N18304 CC%d hajtás tengelyek RDY=1 (bizt. relé)
+N18325 MC S szoftverhiba %d
+N18371 Lekapcsoló csatornák MC start tesztje nem lehets.
+N18401 Bels¿ hiba másolás közben!
+N18629 Szoftver opció nem aktív
+N18630 Kinem. helyreáll. nem lehets.
+N18631 Funkció nem megengedett
+N18632 Nyersdb méretei ellentmondásosak
+N18861 HSCI: hardver hiba
+N18862 HSCI: inicializálási hiba
+N18891 M91 vagy M92 nem lehetséges
+N18903 Rész-el¿szab. nem megengedett
+N18904 Nem létez¿ könyvtár
+N18912 CC%d hajtás orsó RDY=1 (biztonsági relé)
+N18913 CC%d hajtás orsó RDY=0 (biztonsági relé)
+N18914 Ciklusgenerálás hibás
+N18915 HSCI: IOC fájl hiányzik
+N18928 M128 nem engedélyezett
+N19236 LSV2 átvitel megszakadt!
+N19292 AFC: Nincs ref. teljesítmény meghat.
+N19293 TOOL.T: Túl sok él
+N19398 Mérési pozíció nem megengedett
+N19411 PLC program indítása sikertelen
+N19440 M funkciós makró nem megeng.
+N19448 DCM: Szerszámstátusz ismeretlen
+N13827 Alkalmazás 'DXF_CONVERTER' nem indítható
+N19501 Hiba az önellen¿rzés lefuttatásakor
+N19502 Id¿túllépés az önellen¿rzés során
+N19503 Kommunikációs hiba az önellen¿rzés során
+N19504 Ismeretlen hiba az önellen¿rzés során
+N19754 SPLC vész-állj
+N19755 SPLC végzetes hiba
+N19764 A szerszám törlése nem megenged.
+N20418 Önellen¿rzés kikapcsolva
+N20457 MC: Rendszerhiba az SPLC RTS-ben
+N20458 PL/MB hardver felismerése hibás
+N20459 HSCI PL/MB hibát jelez
+N20460 HSCI PL/MB hibát jelez
+N20461 MC: Rendszerhiba az SPLC RTS-ben
+N20462 MC: Rendszerhiba az SPLC RTS-ben
+N20463 SPLC program futási id¿ hiba
+N20464 SPLC nem tudja betölteni a prg-t
+N20465 SPLC program megváltozott
+N20466 SPLC program nem m¿köd¿képes
+N20467 Gép nem üzemel biztonságosan
+N20469 SPLC bemenetek konfigurálása
+N20471 SPLC bemenetek konfigurálása
+N20473 SPLC ciklusid¿ konfigurálása
+N20477 Python script már indítva van
+N20481 Kinem. hozzáférés nem lehetséges
+N20482 Mérésipoz. nincs a mozg.tart-ban
+N20483 Presetkompenzáció nem lehetséges
+N20639 Helytáblázat írásvédett
+N20650 Gombfunkció ábrázolásának vége
+N20661 Forgás nem engedélyezett
+N20662 Mérettényez¿ nem engedélyezett
+N20663 Tükrözés nem engedélyezett
+N20664 Eltolás nem engedélyezett
+N21084 Tegye a kézikereket a tölt¿re
+N21096 Preset eltolással aktív
+N21097 Szersz.sugár=0:DCM nem lehets.
+N21144 Kézikerék: M91/M92 nem megeng.
+N21219 ACCESSLEVEL: funkció zárolva
+N21232 Override-potencióméter?
+N21233 Szerszámtartó kinemat. hiányzik
+N21254 Az ellen¿rz¿program nem nyitható meg
+N21255 Az ellen¿rz¿program nem hozható létre
+N21256 Az ellen¿rz¿program nem hajtható végre
+N21257 DCM: tokmány inaktiv
+N21258 A fájl nem létezik
+N21260 SPLC-program nincs konfigurálva
+N21261 SPLC id¿túllépés MC
+N21426 DCM: ütközési test nem egyértelm¿
+N21675 Nem biztons. vezérl¿szoftver
+N21701 Sor törlése nem megengedett
+N21712 Kikapcsolás nem lehetséges
+N21948 MC hibás parancs az MC-t¿l
+N21949 Gyorsmenet-override hibásan konfigurálva
+N21932 MC id¿túllépés %.2s fékezés során
+N22055 Párhuzamos üzem nem lehetséges
+N22060 MC úttúllépés SS2-nél %.2s
+N22077 MC váltás SOM_2/SOM_3-ról SOM_4 után nem lehetséges
+N22077 MC váltás SOM_4-ról SOM_2/SOM_3 után nem lehetséges
+N22079 Munkatár túl kicsi
+N22124 MC SPLC érvénytelen stop-reakciót igényel
+N22125 MC SPLC érvényt. biztonsági funkciót igényel
+N22266 SPLC program nincs lefordítva
+N22330 M94 nem lehetség.
+N23611 Helytáblázat zárolva
+N2187 %.2s teng. riasztás
+N23636 MC fék inaktiválása nem lehetséges %.2s
+N23720 Ékezet em megengedett!
+N23756 Funkc. csak forgásteng-nél eng.
+N23767 Szerkesztés nem megengedett
+N23768 QR-param. nem állítható helyre
+N23784 MC az SPLC érvénytelen üzemmódja
+N23830 HSCI/Profibus: konfigurációs-hiba
+N23832 MC tengelycsoport hibásan konfig. %d
+N23835 Hiba az öntesztben
+N7798 CC%d hiba %d %d %d
+N7798 CC hiba %d %d %d
+N23945 MCórajel MC különböz¿ SKERN MC-t¿l
+N23946 MCórajel MC különböz¿ SPLC MC-t¿l
+N23947 MCórajel MC különböz¿ SPLC CC-t¿l
+N23949 Szerszámsugár túl nagy
+N23950 Bekezdésmód nem lehetség.
+N23951 Bekezdés szöge hibásan megadva
+N23952 Nyitás szöge nincs definiálva
+N23953 Horony túl széles
+N23960 MC-hiba összehasonlításnál:  %s
+N23961 MC bizt. kimenet nem egyenl¿:  %s
+N23967 Megnevezés nem található
+N23993 Paraméterhiba a Python-Skript-ben
+N24013 MC +3,3V t¿résen kívül
+N24014 MC +3,3VPIC t¿résen kívül
+N24015 MC +12V t¿résen kívül
+N24016 MC túl kicsi 1.vent. fordszám
+N24017 MC +5V t¿résen kívül
+N24024 Inkonzisztens szerszámadatok
+N24074 MC ventilátor ismeretl.
+N24075 MC túl kicsi 2.vent. fordszám
+N24128 MC hiba tényl.érték rögzítés%d %.2s
+N24130 %.2s MCteng szabályzásban
+N24131 %.2s MC orsó szabályzásban
+N24188 Megváltozott NC-szoftver verzió
+N24189 SPLC-konfigurációs adatok hibásak
+N24191 MC ford.szám névl-tényl. érték eltérése túl nagy %.2s
+N8127 Ismeretlen LSV2-hiba: %x
+N24360 %s biztonsági kimenet hibás állapota
+N24394 Sík nem meghatározható
+N24438 Fájl-tartalom hibás
+N24484 Szsz/forg.szám hozzárendelés hibás
+N24515 Vész-ki alatti start nem lehetséges
+N24585 MOVE nem lehetséges
+N24586 hibás mondatfelép.
+N24592 SPLC program megváltozott
+N24594 SPLC-program MC bináris kód megvált.
+N24596 SPLC-program CC bináris kód megvált.
+N24860 MC hibás adatok az SPLC %s-t¿l
+N24959 Preset-kijelölés nem megeng.
+N24967 MC végálláskapcsoló %.2s+
+N24968 MC végálláskapcsoló %.2s-
+N24972 Safe Torque Off (-STO.B.x) aktív
+N24973 Küls¿ VÉSZ-ÁLLJ
+N24974 MC biztons. bemenet %d nem= 0-val
+N24975 MC el¿tolás nagyobb mint SLS %.2s
+N24976 CC el¿tolás nagyobb mint SLS %.2s
+N24977 MC üzemi állapota nem= CC-éval
+N24979 MC fordszám nagyobb mint SLS %.2s
+N24980 CC fordszám nagyobb mint SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC: téves S-tengelycsoport
+N24983 Tengely nincs a tesztpozícióban
+N25030 MC S-státusz reakció aktív: %s
+N25031 SPLC %d-bemenet vezetékelés
+N25033 Vészállj vezetékelés
+N25160 MC SMC-Autotesztszoftv.betöltve
+N25237 Hibás %s bemenet a dinamikus teszthez
+N25243 Szerkezet ellentmondásos
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

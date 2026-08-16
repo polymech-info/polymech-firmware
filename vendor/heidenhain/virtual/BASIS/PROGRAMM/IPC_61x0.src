@@ -1,0 +1,468 @@
+*-----------------------------------------------------------------------------
+*  IPC 6110 / IPC 6120
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*    - Zur Anbindung des IPCs wurden 4 Softkeys eingeführt.
+*         - Softkey_IPC_aktiv
+*         - Softkey_Override_S_IPC
+*         - Softkey_Override_FMAX_IPC
+*         - Softkey_Override_F_IPC
+*      Parallel zum <Softkey_IPC_aktiv> existiert auf dem IPC eine Taste, mit
+*      der ebenfalls der IPC ein- bzw. ausgeschaltet werden kann.
+*    - Auf der TNC kann man mittels Taste <Home> den IPC deaktivieren
+*    - Die Overrides (5V DC Versorgung) sind mit separtem Kabel an den
+*      Analog Eingängen 1/2 X48 der MC42x angeschlossen. Eine zusätzliche
+*      Mittelwertbildung mit Hystereseauswertung sorgen für einen
+*      stetigen Kennlinienverlauf.
+*    - Bei akivem IPC erfolgt die Umschaltung auf IPC-Overrides durch
+*      Betätigen der entsprechenden Softkey oder eine Änderung der IPC-
+*      Overrides von mehr als 10 % (ohne HSCI).
+*    - An HSCI Anlagen mit MB6xxx existiert nur ein Softkey zur Umschaltung
+*      aller IPC-Overrides. Dieser muss generell zur Aktivierung oder De-
+*      aktivierung betätigt werden.
+*    - Analog dazu ist die Bedienung auf TNC Seite nachdem der IPC deaktiviert
+*      wurde.
+*    - Einstellungen IPC TNCterminal
+*        User: administrator (case sensitive)
+*        Passwort: 807667
+*        IP address: IP Adresse der TNC
+*        TNCterminal - ControlPanel\Settings\Edit\PLC Interaction [Adresse]
+*          Connect Marker             -> 'IPC_61x0.src'\ML_IPC_61x0_verbinden
+*          Disconnect Marker          -> 'IPC_61x0.src'\ML_IPC_61x0_trennen
+*          Disable Connect Key Marker -> 'IPC_61x0.src'\ML_IPC_61x0_sperren
+*          Connect Status Marker      -> 'IPC_61x0.src'\ML_IPC_61x0_verbunden
+*          Takt Überwachung           -> 'IPC_61x0.src'\ML_IPC_61x0_Takt_Ueberwachung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Faktor_Spannungs_Bereich              K +30
+#define /s    KL_Hysterese                             K +1
+#define /s    KL_Schwellwert_0_Prozent                 K +10
+#define /s    KL_Schwellwert_150_Prozent               K +490
+#define /s    KL_Spannungswert_0_Prozent               K +0
+#define /s    KL_Spannungswert_150_Prozent             K +500
+#define /s    KL_10_Prozent_Override                   K +1000
+#define /s    KL_Analog_Eingang_1_MC42x                K +64
+#define /s    KL_Analog_Eingang_2_MC42x                K +65
+#define /s    KL_Zeit_Takt_Ueberwachung_s              K +6
+#define /s    KL_MB6xxx_iTNC530                        K +0
+#define /s    KL_MB6xxx_IPC61x0                        K +1
+#define /s    KL_reserviert                            K +0
+
+#define /s    ML_IPC_61x0_verbinden                    M
+#define /s    ML_IPC_61x0_trennen                      M
+#define /s    ML_IPC_61x0_sperren                      M
+#define /s    ML_IPC_61x0_verbunden                    M
+#define /s    ML_IPC_61x0_Takt_Ueberwachung            M
+
+#define /s    ML_SK_Over_S_war_aktiv                   M
+#define /s    ML_SK_Over_FMAX_war_aktiv                M
+#define /s    ML_SK_Over_F_war_aktiv                   M
+#define /s    ML_SK_Override_S_F_IPC_war_aktiv         M
+#define /s    ML_IPC_61x0_war_verbunden                M
+#define /s    ML_IPC_61x0_Takt_war_aktiv               M
+
+#define /s    BL_Anzahl_Additionen                     B
+#define /s    BL_Takt_Ueberwachung                     B
+
+#define /s    WL_Faktor_Spindel_Override_IPC           W
+#define /s    WL_Faktor_Vorschub_Override_IPC          W
+#define /s    WL_Faktor_Eilgang_Override_IPC           W
+#define /s    WL_Faktor_Spindel_zuvor_aktiv            W
+#define /s    WL_Faktor_Vorschub_zuvor_aktiv           W
+#define /s    WL_Faktor_Eilgang_zuvor_aktiv            W
+#define /s    WL_U_Analog_Eingang_1_MC42x              W
+#define /s    WL_U_Analog_Eingang_2_MC42x              W
+#define /s    WL_U_Analog_Eingang_1_alt                W
+#define /s    WL_U_Analog_Eingang_2_alt                W
+
+#define /s    DL_U_Analog_Eingang_1_MC42x              D
+#define /s    DL_U_Analog_Eingang_2_MC42x              D
+
+#include Mac_Lib.inc
+
+#if CFG_HSCI = "inaktiv"
+EXTERN Absolut
+#endif
+
+GLOBAL IPC_61x0
+
+;----------------------------
+LBL IPC_61x0
+;----------------------------
+
+;Initialisierung beim Zuschalten des IPC
+
+  L      ML_IPC_61x0_verbunden
+  AN     ML_IPC_61x0_war_verbunden
+  S      MG_SK_IPC_aktiv
+#if CFG_HSCI = "inaktiv"
+  IFT
+    L      WL_Faktor_Spindel_Override_IPC
+    =      WL_Faktor_Spindel_zuvor_aktiv
+
+    L      WL_Faktor_Vorschub_Override_IPC
+    =      WL_Faktor_Vorschub_zuvor_aktiv
+
+    L      WL_Faktor_Eilgang_Override_IPC
+    =      WL_Faktor_Eilgang_zuvor_aktiv
+  ENDI
+#endif
+
+;Initialisierung beim Abschalten des IPC
+
+  LN     ML_IPC_61x0_verbunden
+  A      ML_IPC_61x0_war_verbunden
+  R      MG_SK_IPC_aktiv
+#if CFG_HSCI = "inaktiv"
+  IFT
+
+#if CFG_Override_Eilgang_statt_Spindel  = "aktiv"
+    L      NP_W496_Faktor_Eilgang_Override_NC
+    =      WL_Faktor_Eilgang_zuvor_aktiv
+#else
+    L      NP_W492_S_Override_NC
+    =      WL_Faktor_Spindel_zuvor_aktiv
+#endif
+    L      NP_W494_Faktor_Vorschub_Override_NC
+    =      WL_Faktor_Vorschub_zuvor_aktiv
+  ENDI
+#endif
+
+  L      ML_IPC_61x0_verbunden
+  =      ML_IPC_61x0_war_verbunden
+
+;PLC Schnittstelle Merker zum Ab- und Zuschalten des IPC
+
+  L      ML_IPC_61x0_Takt_Ueberwachung
+  AN     ML_IPC_61x0_Takt_war_aktiv
+  ON     ML_IPC_61x0_verbunden
+  IFT
+    L      KL_Zeit_Takt_Ueberwachung_s
+    =      BL_Takt_Ueberwachung
+  ENDI
+
+  L      ML_IPC_61x0_Takt_Ueberwachung
+  =      ML_IPC_61x0_Takt_war_aktiv
+
+  L      MG_Impuls_1_s
+  IFT
+    DEC    BL_Takt_Ueberwachung
+  ENDI
+
+  L      BL_Takt_Ueberwachung
+  <      K+0
+  A      ML_IPC_61x0_verbunden
+  S      PN_Fehler_IPC_61x0_Takt_Ueberwachung
+  S      ML_IPC_61x0_trennen
+
+  L      NP_W274_Tasten_Code_betaetigte_Taste
+  ==     KG_Taste_Home
+  A      ML_IPC_61x0_verbunden
+  S      ML_IPC_61x0_trennen
+
+  LN     MG_SK_IPC_aktiv
+  A      ML_IPC_61x0_verbunden
+  S      ML_IPC_61x0_trennen
+
+  LN     ML_IPC_61x0_verbunden
+  R      ML_IPC_61x0_trennen
+
+  L      MG_SK_IPC_aktiv
+  AN     ML_IPC_61x0_verbunden
+  S      ML_IPC_61x0_verbinden
+
+  L      ML_IPC_61x0_verbunden
+  R      ML_IPC_61x0_verbinden
+
+#if CFG_HSCI = "aktiv"
+
+  LN     MG_SK_Override_S_F_IPC
+  A      ML_SK_Override_S_F_IPC_war_aktiv
+  IFT
+    PS     KL_MB6xxx_iTNC530
+    PS     KL_reserviert
+    PS     KL_reserviert
+    CM     9132                        ;Anwahl Override-Potentiometer
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_SK_Override_S_F_IPC
+  AN     ML_SK_Override_S_F_IPC_war_aktiv
+  IFT
+    PS     KL_MB6xxx_IPC61x0
+    PS     KL_reserviert
+    PS     KL_reserviert
+    CM     9132                        ;Anwahl Override-Potentiometer
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_SK_Override_S_F_IPC
+  =      ML_SK_Override_S_F_IPC_war_aktiv
+
+EM
+
+#else
+;AD Wandlung Overrides
+
+  L      ML_IPC_61x0_verbunden
+  O      MG_SK_Override_S_IPC
+  O      MG_SK_Override_FMAX_IPC
+  O      MG_SK_Override_F_IPC
+  CMT    AD_Overrides
+
+;Overrides Zuweisung Werte von Poti IPC, Erkennung Override bewegt
+
+  L      ML_IPC_61x0_verbunden
+  IFT
+#if CFG_Override_Eilgang_statt_Spindel  = "aktiv"
+    L      MG_SK_Override_FMAX_IPC
+    IFT
+      L      WL_Faktor_Eilgang_Override_IPC
+      =      NP_W496_Faktor_Eilgang_Override_NC
+      =      PN_W752_Faktor_Eilgang_Override_PLC
+      =      WL_Faktor_Eilgang_zuvor_aktiv
+    ELSE
+      L      WL_Faktor_Eilgang_Override_IPC
+      -      WL_Faktor_Eilgang_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      S      MG_SK_Override_FMAX_IPC
+    ENDI
+#else
+    L      MG_SK_Override_S_IPC
+    IFT
+      L      WL_Faktor_Spindel_Override_IPC
+      =      NP_W492_S_Override_NC
+      =      PN_W764_S_Override_PLC
+      =      WL_Faktor_Spindel_zuvor_aktiv
+    ELSE
+      L      WL_Faktor_Spindel_Override_IPC
+      -      WL_Faktor_Spindel_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      S      MG_SK_Override_S_IPC
+    ENDI
+#endif
+
+    L      MG_SK_Override_F_IPC
+    IFT
+      L      WL_Faktor_Vorschub_Override_IPC
+      =      NP_W494_Faktor_Vorschub_Override_NC
+      =      PN_W766_Faktor_Vorschub_Override_PLC
+      =      WL_Faktor_Vorschub_zuvor_aktiv
+    ELSE
+      L      WL_Faktor_Vorschub_Override_IPC
+      -      WL_Faktor_Vorschub_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      S      MG_SK_Override_F_IPC
+    ENDI
+  ELSE
+
+#if CFG_Override_Eilgang_statt_Spindel  = "aktiv"
+    L      MG_SK_Override_FMAX_IPC
+    AN     ML_SK_Over_FMAX_war_aktiv
+    IFT
+      L      NP_W496_Faktor_Eilgang_Override_NC
+      =      WL_Faktor_Eilgang_zuvor_aktiv
+    ENDI
+
+    L      MG_SK_Override_FMAX_IPC
+    IFT
+      L      NP_W492_S_Override_NC
+      -      WL_Faktor_Eilgang_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      R      MG_SK_Override_FMAX_IPC
+
+      L      WL_Faktor_Eilgang_Override_IPC
+      =      NP_W492_S_Override_NC
+      =      PN_W752_Faktor_Eilgang_Override_PLC
+    ENDI
+#else
+    L      MG_SK_Override_S_IPC
+    AN     ML_SK_Over_S_war_aktiv
+    IFT
+      L      NP_W492_S_Override_NC
+      =      WL_Faktor_Spindel_zuvor_aktiv
+    ENDI
+
+    L      MG_SK_Override_S_IPC
+    IFT
+      L      NP_W492_S_Override_NC
+      -      WL_Faktor_Spindel_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      R      MG_SK_Override_S_IPC
+
+      L      WL_Faktor_Spindel_Override_IPC
+      =      NP_W492_S_Override_NC
+      =      PN_W764_S_Override_PLC
+    ENDI
+#endif
+
+    L      MG_SK_Override_F_IPC
+    AN     ML_SK_Over_F_war_aktiv
+    IFT
+      L      NP_W494_Faktor_Vorschub_Override_NC
+      =      WL_Faktor_Vorschub_zuvor_aktiv
+    ENDI
+
+    L      MG_SK_Override_F_IPC
+    IFT
+      L      NP_W494_Faktor_Vorschub_Override_NC
+      -      WL_Faktor_Vorschub_zuvor_aktiv
+      PSW
+      CM     Absolut
+      PLW
+      >=     KL_10_Prozent_Override
+      R      MG_SK_Override_F_IPC
+
+      L      WL_Faktor_Vorschub_Override_IPC
+      =      NP_W494_Faktor_Vorschub_Override_NC
+      =      PN_W766_Faktor_Vorschub_Override_PLC
+    ENDI
+  ENDI
+
+#if CFG_Override_Eilgang_statt_Spindel  = "aktiv"
+  L      MG_SK_Override_FMAX_IPC
+  =      ML_SK_Over_FMAX_war_aktiv
+#else
+  L      MG_SK_Override_S_IPC
+  =      ML_SK_Over_S_war_aktiv
+#endif
+
+  L      MG_SK_Override_F_IPC
+  =      ML_SK_Over_F_war_aktiv
+
+EM
+
+;----------------------------
+LBL AD_Overrides
+
+;Analog Spannungen an S-/F-Potentiometer lesen 0..5V, Auflösung 0,01V (0..500)
+
+  PS     KL_Analog_Eingang_1_MC42x
+  CM     9003                          ;Analog-Eingänge lesen
+  PL     WL_U_Analog_Eingang_1_MC42x
+  M_Modul_Fehler_anzeigen
+
+
+  PS     KL_Analog_Eingang_2_MC42x
+  CM     9003                          ;Analog-Eingänge lesen
+  PL     WL_U_Analog_Eingang_2_MC42x
+
+  M_Modul_Fehler_anzeigen
+
+;Digitale Spannungswerte auf min (0 %) und max (150 %) kalibrieren
+
+  L      WL_U_Analog_Eingang_1_MC42x
+  <=     KL_Schwellwert_0_Prozent
+  IFT
+    L      KL_Spannungswert_0_Prozent
+    =      WL_U_Analog_Eingang_1_MC42x
+  ENDI
+
+  L      WL_U_Analog_Eingang_2_MC42x
+  <=     KL_Schwellwert_0_Prozent
+  IFT
+    L      KL_Spannungswert_0_Prozent
+    =      WL_U_Analog_Eingang_2_MC42x
+  ENDI
+
+  L      WL_U_Analog_Eingang_1_MC42x
+  >=     KL_Schwellwert_150_Prozent
+  IFT
+    L      KL_Spannungswert_150_Prozent
+    =      WL_U_Analog_Eingang_1_MC42x
+  ENDI
+
+  L      WL_U_Analog_Eingang_2_MC42x
+  >=     KL_Schwellwert_150_Prozent
+  IFT
+    L      KL_Spannungswert_150_Prozent
+    =      WL_U_Analog_Eingang_2_MC42x
+  ENDI
+
+;Mittelwert bilden
+
+  L      WL_U_Analog_Eingang_1_MC42x
+  +      DL_U_Analog_Eingang_1_MC42x
+  =      DL_U_Analog_Eingang_1_MC42x
+
+  L      WL_U_Analog_Eingang_2_MC42x
+  +      DL_U_Analog_Eingang_2_MC42x
+  =      DL_U_Analog_Eingang_2_MC42x
+
+  INC    BL_Anzahl_Additionen
+
+  L      MG_Impuls_250_ms
+  IFT
+    L      DL_U_Analog_Eingang_1_MC42x
+    /      BL_Anzahl_Additionen
+    =      WL_U_Analog_Eingang_1_MC42x
+
+    L      DL_U_Analog_Eingang_2_MC42x
+    /      BL_Anzahl_Additionen
+    =      WL_U_Analog_Eingang_2_MC42x
+
+    L      K+0
+    =      BL_Anzahl_Additionen
+    =      DL_U_Analog_Eingang_1_MC42x
+    =      DL_U_Analog_Eingang_2_MC42x
+
+;Hysterese aktivieren
+
+    L      WL_U_Analog_Eingang_1_MC42x
+    -      WL_U_Analog_Eingang_1_alt
+    PSW
+    CM     Absolut
+    PLW
+    <=     KL_Hysterese
+    IFT
+      L      WL_U_Analog_Eingang_1_alt
+      =      WL_U_Analog_Eingang_1_MC42x
+    ENDI
+
+    L      WL_U_Analog_Eingang_2_MC42x
+    -      WL_U_Analog_Eingang_2_alt
+    PSW
+    CM     Absolut
+    PLW
+    <=     KL_Hysterese
+    IFT
+      L      WL_U_Analog_Eingang_2_alt
+      =      WL_U_Analog_Eingang_2_MC42x
+    ENDI
+
+    L      WL_U_Analog_Eingang_1_MC42x
+    =      WL_U_Analog_Eingang_1_alt
+
+    L      WL_U_Analog_Eingang_2_MC42x
+    =      WL_U_Analog_Eingang_2_alt
+  ENDI
+
+;Digitalen Spannungswert auf Override Bereich normieren
+
+  L      WL_U_Analog_Eingang_1_MC42x
+  X      KL_Faktor_Spannungs_Bereich
+  =      WL_Faktor_Spindel_Override_IPC
+
+  L      WL_U_Analog_Eingang_2_MC42x
+  X      KL_Faktor_Spannungs_Bereich
+  =      WL_Faktor_Vorschub_Override_IPC
+
+EM
+#endif

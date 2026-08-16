@@ -1,0 +1,42 @@
+/* Lineare Achsfehler Kompensation +/- 50[µm/m]
+   --------------------------------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"LINEARE ACHS-KOMP";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+
+CURSOR=ON;
+"\n";
+"Faktor              : -50...+50 µm/m \n";
+CURSOR=OFF;
+
+"\n";
+"X-Faktor            : %+5.1F µm/m\n",
+$WG_Achs_Komp_X_Faktor$/n=1/c;
+
+"Y-Faktor            : %+5.1F µm/m\n",
+$WG_Achs_Komp_Y_Faktor$/n=1/c;
+
+"Z-Faktor            : %+5.1F µm/m\n\n",
+$WG_Achs_Komp_Z_Faktor$/n=1/c;
+
+CURSOR=ON;
+"\n";
+"Kompensation        :  %s\n",
+$MG_Achs_Kompensation_aktiv$?"aktiv          ":"inaktiv        "/c;
+CURSOR=OFF;
+
+"\n";
+"X-Kompensation      :  %+7.4F mm\n",
+$WG_Achs_Kompensation_X$/n=4/c;
+"Y-Kompensation      :  %+7.4F mm\n",
+$WG_Achs_Kompensation_Y$/n=4/c;
+"Z-Kompensation      :  %+7.4F mm\n\n",
+$WG_Achs_Kompensation_Z$/n=4/c;
+
+
+
+

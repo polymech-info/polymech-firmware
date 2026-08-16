@@ -1,0 +1,1654 @@
+*-----------------------------------------------------------------------------
+*  Internal Definitions
+*-----------------------------------------------------------------------------
+*  Definition of symbols for conditional compilation
+*    - Decode tool changing systems
+*    - Decode tool magazine systems
+*    - Control connected to test device
+*
+*-----------------------------------------------------------------------------
+
+#if Temp_compensation_table = &active
+#define       T_compensation_with_table                K+0
+#endif
+
+*-----------------------------------------------------------------------------
+*  Tool changing systems
+*-----------------------------------------------------------------------------
+
+#if Tool_magazine_system ! &inactive
+
+#if Tool_changing_system  = &TC_type_01
+#define       Tool_changing_arm                        &Single_arm
+#define       TC_magazine_is_moving_to_spindle         &active        *;EUMACH
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#endif
+
+#if Tool_changing_system  = &TC_type_02
+#define       Tool_changing_arm                        &Single_arm
+#define       TC_magazine_is_moving_to_spindle         &active
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#endif
+
+#if Tool_changing_system  = &TC_type_03
+#define       Tool_changing_arm                        &Single_arm
+#define       TC_magazine_is_moving_to_spindle         &inactive
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#endif
+
+#if Tool_changing_system  = &TC_type_04
+#define       Tool_changing_arm                        &Single_arm    *;EUMACH
+#define       TC_magazine_is_moving_to_spindle         &active        *;EUMACH
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+;#define       Tool_magazine                            &inactive     *;EUMACH
+#endif
+
+#if Tool_changing_system  = &TC_type_05
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_06
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &inactive
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_07
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive
+#define       TC_gripper                               &active
+#endif
+
+#if Tool_changing_system  = &TC_type_08
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &inactive
+#define       TC_gripper                               &active
+#endif
+
+#if Tool_changing_system  = &TC_type_09
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &active
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_10
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &active
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_11
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &active
+#define       TC_gripper                               &active
+#endif
+
+#if Tool_changing_system  = &TC_type_12
+#define       Tool_changing_arm                        &Double_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &active
+#define       TC_gripper                               &active
+#endif
+
+#if Tool_changing_system  = &TC_type_13
+#define       Tool_changing_arm                        &Cam_driven_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_14
+#define       Tool_changing_arm                        &Cam_driven_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#define       TC_gripper                               &inactive
+#endif
+
+#if Tool_changing_system  = &TC_type_15
+#define       Tool_changing_arm                        &Cam_driven_arm
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#define       TC_gripper                               &active
+#endif
+
+#if Tool_changing_system  = &TC_type_16
+#define       Tool_changing_arm                        &Cam_driven_arm
+#define       Middle_position_exchange                 &active
+#define       Middle_position_basic                    &inactive      *;EUMACH
+#define       TC_gripper                               &inactive
+#endif
+
+#else
+
+#define       Tool_changing_arm                        &inactive
+
+*$WS dummy
+#define       Middle_position_exchange                 &inactive
+#define       Middle_position_basic                    &inactive      *;EUMACH
+
+#endif
+
+*;EUMACH Dual TC
+#if Tool_magazine_system_2 ! &inactive
+
+#if Tool_changing_system_2  = &TC_2_type_01
+#define       Tool_changing_arm_2                      &Single_arm
+#define       TC_magazine_2_is_moving_to_spindle       &active
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_02
+#define       Tool_changing_arm_2                      &Single_arm
+#define       TC_magazine_2_is_moving_to_spindle       &active
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_03
+#define       Tool_changing_arm_2                      &Single_arm
+#define       TC_magazine_2_is_moving_to_spindle       &inactive
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_04
+#define       Tool_changing_arm_2                      &Single_arm
+#define       TC_magazine_2_is_moving_to_spindle       &active
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+;#define       Tool_magazine                            &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_05
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_06
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_07
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &active
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_08
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &active
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_09
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &active
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_10
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &active
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_11
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &active
+#define       TC2_gripper                              &active
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_12
+#define       Tool_changing_arm_2                      &Double_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &active
+#define       TC2_gripper                              &active
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_13
+#define       Tool_changing_arm_2                      &Cam_driven_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_14
+#define       Tool_changing_arm_2                      &Cam_driven_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &inactive
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_15
+#define       Tool_changing_arm_2                      &Cam_driven_arm
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+#define       TC2_gripper                              &active
+#endif
+
+#if Tool_changing_system_2  = &TC_2_type_16
+#define       Tool_changing_arm_2                      &Cam_driven_arm
+#define       TC2_middle_position_exchange             &active
+#define       TC2_middle_position_basic                &active
+#define       TC2_gripper                              &inactive
+#endif
+
+#else
+
+#define       Tool_changing_arm_2                      &inactive
+
+*$WS dummy
+#define       TC2_middle_position_exchange             &inactive
+#define       TC2_middle_position_basic                &inactive
+
+#endif
+*;EUMACH Dual TC
+
+*-----------------------------------------------------------------------------
+*  Tool magazine systems
+*-----------------------------------------------------------------------------
+
+#if Tool_changing_arm ! &inactive
+#if Tool_changing_arm ! &pickup
+
+#if Tool_magazine_system = &Mag_type_01
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &active
+#define       TC_pocket_90_degree_shift                &inactive
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_02
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &active
+#define       TC_pocket_90_degree_shift                &active
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_03
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &active
+#define       TC_pocket_90_degree_shift                &inactive
+#define       TC_lock_pin                              &active
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_04
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &active
+#define       TC_pocket_90_degree_shift                &active
+#define       TC_lock_pin                              &active
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_05
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &inactive
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_06
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &active
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_07
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &inactive
+#define       TC_lock_pin                              &active
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_08
+#define       Tool_magazine                            &Pulse
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &active
+#define       TC_lock_pin                              &active
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_09
+#define       Tool_magazine                            &PLC_axis
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &inactive
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_10
+#define       Tool_magazine                            &PLC_axis
+#define       TC_magazine_reference_sensor             &inactive
+#define       TC_pocket_90_degree_shift                &active
+#define       TC_lock_pin                              &inactive
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_11                               *;EUMACH
+#define       Tool_magazine                            &PLC_axis      *;EUMACH
+#define       TC_magazine_reference_sensor             &inactive      *;EUMACH
+#define       TC_pocket_90_degree_shift                &inactive      *;EUMACH
+#define       TC_lock_pin                              &inactive      *;EUMACH
+#define       Tool_chain_pin                           &active        *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif                                                                *;EUMACH
+
+#if Tool_magazine_system = &Mag_type_12                               *;EUMACH
+#define       Tool_magazine                            &PLC_axis      *;EUMACH
+#define       TC_magazine_reference_sensor             &inactive      *;EUMACH
+#define       TC_pocket_90_degree_shift                &inactive      *;EUMACH
+#define       TC_lock_pin                              &inactive      *;EUMACH
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &inactive      *;EUMACH
+#endif                                                                *;EUMACH
+
+#if Tool_magazine_system = &Mag_type_13                               *;EUMACH
+#define       Tool_magazine                            &PLC_axis      *;EUMACH
+#define       TC_magazine_reference_sensor             &inactive      *;EUMACH
+#define       TC_pocket_90_degree_shift                &inactive      *;EUMACH
+#define       TC_lock_pin                              &inactive      *;EUMACH
+#define       Tool_chain_pin                           &inactive      *;EUMACH
+#define       TC_shifting_pocket_random_selection      &active        *;EUMACH
+#endif                                                                *;EUMACH
+
+#else
+#define       Tool_magazine                            &inactive
+#endif
+
+#else
+#define       Tool_magazine                            &inactive
+#define       TC_magazine_reference_sensor             &inactive
+#endif
+
+#if Tool_magazine = &PLC_axis
+#define       KG_Tool_magazine_axis                    &Magazine_axis
+#endif
+
+*;EUMACH Dual TC
+#if Tool_changing_arm_2 ! &inactive
+#if Tool_changing_arm_2 ! &pickup
+
+#if Tool_magazine_system_2 = &Mag_type_01
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &active
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_02
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &active
+#define       TC2_pocket_90_degree_shift               &active
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_03
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &active
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &active
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_04
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &active
+#define       TC2_pocket_90_degree_shift               &active
+#define       TC2_lock_pin                             &active
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_05
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_06
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &active
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_07
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &active
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_08
+#define       Tool_magazine_2                          &Pulse
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &active
+#define       TC2_lock_pin                             &active
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_09
+#define       Tool_magazine_2                          &PLC_axis
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_10
+#define       Tool_magazine_2                          &PLC_axis
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &active
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &inactive
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system_2 = &Mag_type_11
+#define       Tool_magazine_2                          &PLC_axis
+#define       TC_magazine_2_reference_sensor           &inactive
+#define       TC2_pocket_90_degree_shift               &inactive
+#define       TC2_lock_pin                             &inactive
+#define       Tool_chain_pin_TC2                       &active
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif
+
+#if Tool_magazine_system = &Mag_type_12                               *;EUMACH
+#define       Tool_magazine_2                          &PLC_axis      *;EUMACH
+#define       TC_magazine_2_reference_sensor           &inactive      *;EUMACH
+#define       TC2_pocket_90_degree_shift               &inactive      *;EUMACH
+#define       TC2_lock_pin                             &inactive      *;EUMACH
+#define       Tool_chain_pin_TC2                       &inactive      *;EUMACH
+#define       TC2_shifting_pocket_random_selection     &inactive      *;EUMACH
+#endif                                                                *;EUMACH
+
+#if Tool_magazine_system_2 = &Mag_type_13                             *;EUMACH
+#define       Tool_magazine_2                          &PLC_axis      *;EUMACH
+#define       TC_magazine_2_reference_sensor           &inactive      *;EUMACH
+#define       TC2_pocket_90_degree_shift               &inactive      *;EUMACH
+#define       TC2_lock_pin                             &inactive      *;EUMACH
+#define       Tool_chain_pin_TC2                       &inactive      *;EUMACH
+#define       TC2_shifting_pocket_random_selection     &active        *;EUMACH
+#endif                                                                *;EUMACH
+
+#else
+#define       Tool_magazine_2                          &inactive
+#endif
+
+#else
+#define       Tool_magazine_2                          &inactive
+#define       TC_magazine_2_reference_sensor           &inactive
+#endif
+
+#if Tool_magazine_2 = &PLC_axis
+#define       KG_Tool_magazine_2_axis                  &Magazine_2_axis
+#endif
+*;EUMACH Dual TC
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Working area monitoring type
+*-----------------------------------------------------------------------------
+
+#if WAM = &inactive
+#define       Working_area_monitoring                  &inactive
+#define       Rotary_table_protection                  &inactive
+#endif
+
+#if WAM = &WAM_type_01
+#define       Working_area_monitoring                  &active
+#define       Rotary_table_protection                  &Square
+#endif
+
+#if WAM = &WAM_type_02
+#define       Working_area_monitoring                  &active
+#define       Rotary_table_protection                  &Rectangular
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Machine/handwheel/additional panel type
+*-----------------------------------------------------------------------------
+
+#if PNL = &Panel_type_00
+#define       Machine_panel                            &MB620
+#define       Panel_S_start_stop                       &active
+#define       Panel_M03_M04_M05                        &inactive
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_01
+#define       Machine_panel                            &MB720
+#define       Panel_S_start_stop                       &active
+#define       Panel_M03_M04_M05                        &inactive
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_03
+#define       Machine_panel                            &MB620
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_04
+#define       Machine_panel                            &MB720
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_05
+#define       Machine_panel                            &TE745
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &3_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_06
+#define       Machine_panel                            &TE745
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_07
+#define       Machine_panel                            &MB620
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &active
+#define       Additional_machine_panel                 &MB620_01
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_08
+#define       Machine_panel                            &MB720
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &inactive
+#define       NC_START_NC_STOP_panel                   &active
+#define       Door_lock_safety_confirmation_panel      &active
+#define       Light_beam_protection                    &active
+#endif
+
+#if PNL = &Panel_type_11
+#define       Machine_panel                            &MB720
+#define       Panel_S_start_stop                       &active
+#define       Panel_M03_M04_M05                        &inactive
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &active
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+#if PNL = &Panel_type_14
+#define       Machine_panel                            &MB720
+#define       Panel_S_start_stop                       &inactive
+#define       Panel_M03_M04_M05                        &active
+#define       IPC_61x0                                 &inactive
+#define       Additional_machine_panel                 &inactive
+#define       Override_knobs                           &2_knobs
+#define       Override_FMAX_instead_S                  &active
+#define       NC_START_NC_STOP_panel                   &inactive
+#define       Door_lock_safety_confirmation_panel      &inactive
+#define       Light_beam_protection                    &inactive
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Hydraulic system
+*-----------------------------------------------------------------------------
+
+#if HYD = &inactive
+#define       Hydraulic_motor_overload                 &inactive
+#define       Hydraulic_oil_pressure_or_level          &inactive
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_01
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &active
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_02
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_03
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &active
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &active
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_04
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &active
+#define       Hydraulic_gravity_balance                &active
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_05
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &active
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_06
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &active
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_07
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &inactive
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &inactive
+#define       Hydraulic_2_oil_pressure_or_level        &inactive
+#define       Hydraulic_2_gravity_balance_valve        &inactive
+#define       Hydraulic_2_gravity_over_pressure_valve  &inactive
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &inactive
+#define       Hydraulic_2_ctrl_by_pressure             &inactive
+#endif
+
+#if HYD = &HYD_type_08
+#define       Hydraulic_motor_overload                 &active
+#define       Hydraulic_oil_pressure_or_level          &active
+#define       Hydraulic_oil_filter                     &inactive
+#define       Hydraulic_oil_temperature                &inactive
+#define       Hydraulic_valve_pressure                 &inactive
+#define       Hydraulic_gravity_balance                &inactive
+#define       Hydraulic_ctrl_by_pressure               &inactive
+#define       Hydraulic_ctrl_by_timer_plus_pressure    &inactive
+#define       Hydraulic_2_motor_overload               &active
+#define       Hydraulic_2_oil_pressure_or_level        &active
+#define       Hydraulic_2_gravity_balance_valve        &active
+#define       Hydraulic_2_gravity_over_pressure_valve  &active
+#define       Hydraulic_2_tool_and_axes_clamp_valve    &active
+#define       Hydraulic_2_ctrl_by_pressure             &active
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Automatic door system
+*-----------------------------------------------------------------------------
+
+#if ADS = &inactive
+#define       Mechanical_protection                    &inactive
+#define       Optical_protection                       &inactive
+#endif
+
+#if ADS = &ADS_type_01
+#define       Mechanical_protection                    &active
+#define       Optical_protection                       &inactive
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Guide Way/Ball Screw Lubrication system
+*-----------------------------------------------------------------------------
+
+*;--- Axis Lubrication System ---
+#if LUB = &inactive
+#define       LUBE_type                                &inactive
+#define       LUBE_pressure                            &inactive
+#define       LUBE_level                               &inactive
+#define       LUBE_XYZ                                 &inactive
+#define       LUBE_X                                   &inactive
+#endif
+
+#if LUB = &LUBE_type_01
+#define       LUBE_type                                &Oil
+#define       LUBE_pressure                            &inactive
+#define       LUBE_level                               &inactive
+#define       LUBE_XYZ                                 &active
+#define       LUBE_X                                   &inactive
+#endif
+
+#if LUB = &LUBE_type_02
+#define       LUBE_type                                &Oil
+#define       LUBE_pressure                            &active
+#define       LUBE_level                               &active
+#define       LUBE_XYZ                                 &active
+#define       LUBE_X                                   &inactive
+#endif
+
+#if LUB = &LUBE_type_03
+#define       LUBE_type                                &Oil
+#define       LUBE_pressure                            &inactive
+#define       LUBE_level                               &inactive
+#define       LUBE_XYZ                                 &inactive
+#define       LUBE_X                                   &active
+#endif
+
+#if LUB = &LUBE_type_04
+#define       LUBE_type                                &Oil
+#define       LUBE_pressure                            &active
+#define       LUBE_level                               &active
+#define       LUBE_XYZ                                 &inactive
+#define       LUBE_X                                   &active
+#endif
+
+#if LUB = &LUBE_type_10
+#define       LUBE_type                                &Grease
+#define       LUBE_pressure                            &active
+#define       LUBE_level                               &inactive
+#define       LUBE_XYZ                                 &active
+#define       LUBE_X                                   &inactive
+#endif
+
+#if LUB = &LUBE_type_11
+#define       LUBE_type                                &Grease
+#define       LUBE_pressure                            &active
+#define       LUBE_level                               &inactive
+#define       LUBE_XYZ                                 &inactive
+#define       LUBE_X                                   &active
+#endif
+
+*;--- 2nd Axis Lubrication System ---
+#if LUB2 = &inactive
+#define       LUBE2_type                               &inactive
+#define       LUBE2_pressure                           &inactive
+#define       LUBE2_level                              &inactive
+#define       LUBE2_Y                                  &inactive
+#define       LUBE2_YZ                                 &inactive
+#endif
+
+#if LUB2 = &LUBE2_type_01
+#define       LUBE2_type                               &Oil
+#define       LUBE2_pressure                           &inactive
+#define       LUBE2_level                              &inactive
+#define       LUBE2_Y                                  &active
+#define       LUBE2_YZ                                 &inactive
+#endif
+
+#if LUB2 = &LUBE2_type_02
+#define       LUBE2_type                               &Oil
+#define       LUBE2_pressure                           &active
+#define       LUBE2_level                              &active
+#define       LUBE2_Y                                  &active
+#define       LUBE2_YZ                                 &inactive
+#endif
+
+#if LUB2 = &LUBE2_type_10
+#define       LUBE2_type                               &Grease
+#define       LUBE2_pressure                           &active
+#define       LUBE2_level                              &inactive
+#define       LUBE2_Y                                  &active
+#define       LUBE2_YZ                                 &inactive
+#endif
+
+#if LUB2 = &LUBE2_type_11
+#define       LUBE2_type                               &Grease
+#define       LUBE2_pressure                           &active
+#define       LUBE2_level                              &inactive
+#define       LUBE2_Y                                  &inactive
+#define       LUBE2_YZ                                 &active
+#endif
+
+*;--- 3rd Axis Lubrication System ---
+#if LUB3 = &inactive
+#define       LUBE3_type                               &inactive
+#define       LUBE3_pressure                           &inactive
+#define       LUBE3_level                              &inactive
+#define       LUBE3_Z                                  &inactive
+#define       LUBE3_V                                  &inactive
+#endif
+
+#if LUB3 = &LUBE3_type_01
+#define       LUBE3_type                               &Oil
+#define       LUBE3_pressure                           &inactive
+#define       LUBE3_level                              &inactive
+#define       LUBE3_Z                                  &active
+#define       LUBE3_V                                  &inactive
+#endif
+
+#if LUB3 = &LUBE3_type_02
+#define       LUBE3_type                               &Oil
+#define       LUBE3_pressure                           &active
+#define       LUBE3_level                              &active
+#define       LUBE3_Z                                  &active
+#define       LUBE3_V                                  &inactive
+#endif
+
+#if LUB3 = &LUBE3_type_10
+#define       LUBE3_type                               &Grease
+#define       LUBE3_pressure                           &active
+#define       LUBE3_level                              &inactive
+#define       LUBE3_Z                                  &active
+#define       LUBE3_V                                  &inactive
+#endif
+
+#if LUB3 = &LUBE3_type_11
+#define       LUBE3_type                               &Grease
+#define       LUBE3_pressure                           &active
+#define       LUBE3_level                              &inactive
+#define       LUBE3_Z                                  &inactive
+#define       LUBE3_V                                  &active
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Spindle oil-air lubrication system
+*-----------------------------------------------------------------------------
+
+#if HSS = &inactive
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &inactive
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_01
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &active
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_19
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &active
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_20
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Analog
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &active
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_39
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &active
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_40
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Analog
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &active
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_41
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Analog
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_42
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &MIXAIR2
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_43
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_51
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Analog
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &active
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_60
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_61
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &active
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &active
+#endif
+
+#if HSS = &HS_type_62
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &active
+#define       Rotary_joint_cooling_circulation         &active
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_80
+#define       Tool_clamping_sensor_type                &Analog
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &active
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_81
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_stepless_rpm
+#define       S_bearing_temperature_type               &PT100
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &active
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &active
+#endif
+
+#if HSS = &HS_type_100
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_191
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &Continuous
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_296
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &inactive
+#define       S_cooling_control_type                   &M05_delay
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_298
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &MIXAIR2
+#define       S_cooling_control_type                   &M05_delay
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+#if HSS = &HS_type_299
+#define       Tool_clamping_sensor_type                &Digital
+#define       Tool_unclamping_sensor_type              &Digital
+#define       S_oil_air_lube_type                      &Simple
+#define       S_cooling_control_type                   &M05_delay
+#define       Tool_unclamp_rod_gap_sensor              &inactive
+#define       S_PTC_sensor                             &inactive
+#define       S_warming_up_type                        &Step_rpm
+#define       S_bearing_temperature_type               &inactive
+#define       S_rear_bearing_temperature_monitoring    &inactive
+#define       Solenoid_off_after_tool_clamped          &inactive
+#define       Rotary_joint_cooling_circulation         &inactive
+#define       CYTEC_CYCON_control                      &inactive
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  OEM cycle
+*-----------------------------------------------------------------------------
+
+#if CYCL = &CYCLE_type_00
+#define       Cycle_332                                &inactive
+#endif
+
+#if CYCL = &CYCLE_type_01
+#define       Cycle_332                                &active
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Tool Measuring System
+*-----------------------------------------------------------------------------
+
+#if TLM = &TLM_type_00
+#define       TLM_type                                 &TT
+#define       TLM_out_of_machining_traverse            &inactive
+#define       TLM_protected_by_ATC_door                &inactive
+#endif
+
+#if TLM = &TLM_type_01
+#define       TLM_type                                 &BLUM_NT
+#define       TLM_out_of_machining_traverse            &inactive
+#define       TLM_protected_by_ATC_door                &inactive
+#endif
+
+#if TLM = &TLM_type_02
+#define       TLM_type                                 &RENISHAW_NC
+#define       TLM_out_of_machining_traverse            &inactive
+#define       TLM_protected_by_ATC_door                &inactive
+#endif
+
+#if TLM = &TLM_type_10
+#define       TLM_type                                 &TT
+#define       TLM_out_of_machining_traverse            &active
+#define       TLM_protected_by_ATC_door                &active
+#endif
+
+#if TLM = &TLM_type_11
+#define       TLM_type                                 &BLUM_NT
+#define       TLM_out_of_machining_traverse            &active
+#define       TLM_protected_by_ATC_door                &active
+#endif
+
+#if TLM = &TLM_type_12
+#define       TLM_type                                 &RENISHAW_NC
+#define       TLM_out_of_machining_traverse            &active
+#define       TLM_protected_by_ATC_door                &active
+#endif
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Machine types
+*-----------------------------------------------------------------------------
+
+#if MT = &MT_11
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_12
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_13
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_14
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_15
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_15A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_16
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_17
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_21
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_22
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_25
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_25A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_25B
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_26
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_2B
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_2C
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_2D
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &active
+#endif
+
+#if MT = &MT_2MV
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_30
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_31
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_31A
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_31B
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_31C
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_32
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_32A
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_32B
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_33
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_34
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_34A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_35
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_35A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_35B
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_36
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_36A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_36B
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_37
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_37A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_37B
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_39
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_39A
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_3A
+#define       KINEMAT_tempcomp                         &inactive
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_3AA
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &inactive
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_3B
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+#if MT = &MT_3BA
+#define       KINEMAT_tempcomp                         &active
+;#define       TC_quit_while_tool_returning             &active
+;#define       TC2_quit_while_tool_returning            &inactive
+#endif
+
+*-----------------------------------------------------------------------------
+*  Symbol definitions (internal used, not for machine adaptation)
+*-----------------------------------------------------------------------------
+
+#if SPG = &active
+#define       Simulation                               K+0
+#endif
+
+#if Motor_unit = &active
+#define       Simulation                               K+0
+#endif
+

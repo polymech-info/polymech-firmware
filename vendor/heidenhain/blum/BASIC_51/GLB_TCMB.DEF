@@ -1,0 +1,2784 @@
+*-----------------------------------------------------------------------------
+*  Global symbols
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Legend:
+*
+*    S_      = spindle
+*    MG      = marker global
+*
+*    TC      = Tool changer
+*    TC_mag  = TC magazine
+*    PC      = Pallet changer
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Marker
+*-----------------------------------------------------------------------------
+
+#type M
+
+   MG_marker_one
+   MG_marker_zero
+
+   MG_clock_500_ms
+   MG_clock_1_s
+   MG_clock_2_s                                                       *;EUMACH Dual TC
+   MG_pulse_250_ms
+   MG_pulse_500_ms
+   MG_pulse_1_s
+   MG_pulse_1_min
+   MG_pulse_1_h
+   MG_control_operational
+   MG_power_delayed_on
+
+   MG_manual_mode
+   MG_automatic_mode
+   MG_manu_auto_mode_change
+   MG_auto_manu_mode_change
+   MG_edit_mode
+   MG_tool_table_selected
+   MG_pocket_table_selected
+   MG_edit_pocket_table
+   MG_mode_block_scan_has_been_active
+   MG_block_scan_restore_MSTQ
+   MG_auto_power_off_after_END_PGM
+   MG_soft_key_on
+   MG_DCM_active                                                      *;EUMACH BASIC 54
+
+   MG_power_on_AUTOSTART_on
+   MG_key_NC_start
+   MG_key_NC_start_p_pulse
+   MG_key_NC_start_n_pulse
+   MG_key_NC_stop
+   MG_key_NC_stop_p_pulse
+   MG_key_spindle_M3
+   MG_key_spindle_M4
+   MG_key_spindle_M5
+
+   MG_NC_stop_active
+   MG_NC_stop_in_manual_mode
+   MG_NC_start_pulse
+   MG_pulse_M_function
+   MG_pulse_END_PGM_M02_M30
+   MG_pulse_internal_stop
+   MG_pulse_external_stop
+   MG_pulse_CE_key
+   MG_submit_CE_key
+   MG_CE_key
+   MG_control_in_operation_on
+   MG_axes_in_position
+   MG_axes_in_motion
+   MG_reference_axes_traversed
+   MG_feed_release
+   MG_machine_parameter_are_read
+   MG_TNC_programming_station_with_PLC
+   MG_iTNC530_PC_programming_station
+   MG_TNC_digital
+   MG_test_lamps
+   MG_error_PLC_window
+   MG_error_inhibit
+   MG_start_blocked_lubrication
+   MG_start_blocked_2nd_lubrication                                   *;EUMACH
+   MG_start_blocked_3rd_lubrication                                   *;EUMACH
+   MG_NC_start_from_reference
+   NC_start_from_autostart
+/r MG_M01_stop_enabled
+   MG_programmed_stop_active
+   MG_conditional_stop_active
+   MG_error_marker_delete
+   MG_clear_screen
+   MG_FN19_date_new
+   MG_manual_motion_in_reference_mode
+   MG_servo_drive_release_axis_groups_X150_active
+
+   MG_TC_help
+   MG_TC_interruption
+   MG_TC2_interruption                                                *;EUMACH Dual TC
+   MG_TC_manu_interruption
+   MG_T_select_interruption                                           *;EUMACH standby tool loading/unloading
+   MG_T_mag_interruption
+   MG_T_mag_2_interruption                                            *;EUMACH Dual TC
+   MG_TC_diagnosis
+   MG_TC2_diagnosis                                                   *;EUMACH Dual TC
+   MG_TC_manual
+   MG_TC_automatic
+   MG_TC2_automatic                                                   *;EUMACH Dual TC
+   MG_TC_spindle_orientation_on
+   MG_TC2_spindle_orientation_on                                      *;EUMACH Dual TC
+   MG_tool_status_reading
+   MG_standby_tool_status_reading
+   MG_TC1_standby_tool_status_reading                                 *;EUMACH Dual TC
+   MG_TC2_standby_tool_status_reading                                 *;EUMACH Dual TC
+   MG_TC_STDT_tool_status_reading                                     *;EUMACH standby tool loading/unloading
+   MG_TC_auto_active
+   MG_tool_table_active
+   MG_TC_magazine_diagnosis
+   MG_TC_mag2_diagnosis                                               *;EUMACH Dual TC
+/r MG_TC_arm_turn_cw
+
+/r MG_TC_without_Tool_Call
+   MG_TC_magazine_reference_necessary
+   MG_TC_magazine_2_reference_necessary                               *;EUMACH Dual TC
+   MG_T_select_start                                                  *;EUMACH standby tool loading/unloading
+   MG_TC_magazine_start
+   MG_TC_magazine_2_start                                             *;EUMACH Dual TC
+   MG_TC_standby_position
+   MG_TC2_standby_position                                            *;EUMACH Dual TC
+   MG_TC_magazine_1_active                                            *;EUMACH Dual TC
+   MG_TC_magazine_2_active                                            *;EUMACH Dual TC
+
+*;EUMACH Dual TC
+   MG_TM_started_by_Tool_Call               [4]
+/c MG_TM1_started_by_Tool_Call              &MG_TM_started_by_Tool_Call + 0
+/c MG_TM2_started_by_Tool_Call              &MG_TM_started_by_Tool_Call + 1
+/c MG_TM3_started_by_Tool_Call              &MG_TM_started_by_Tool_Call + 2
+/c MG_TM4_started_by_Tool_Call              &MG_TM_started_by_Tool_Call + 3
+
+   MG_TM_started_by_Tool_Def                [4]
+/c MG_TM1_started_by_Tool_Def               &MG_TM_started_by_Tool_Def + 0
+/c MG_TM2_started_by_Tool_Def               &MG_TM_started_by_Tool_Def + 1
+/c MG_TM3_started_by_Tool_Def               &MG_TM_started_by_Tool_Def + 2
+/c MG_TM4_started_by_Tool_Def               &MG_TM_started_by_Tool_Def + 3
+*;EUMACH Dual TC
+
+   MG_TM_loading_active                                               *;EUMACH
+   MG_TM2_loading_active                                              *;EUMACH Dual TC
+
+/r MG_pocket_table_checking
+/r MG_STDT_checking                                                   *;EUMACH standby tool loading/unloading
+
+/r MG_tool_oversized
+   MG_tool_torque_monitoring_active
+
+   MG_PC_active
+   MG_PC_help
+   MG_PC_interruption
+   MG_PC_standby_position
+   MG_PC_drives_in_standby_position
+   MG_PC_pallet_holder_empty
+   MG_PC_check
+
+   MG_S_actual_equal_nominal_rpm
+   MG_spindle_nominal_rpm_reached
+   MG_spindle_stand_still
+   MG_spindle_off
+   MG_spindle_in_TC_position
+   MG_spindle_in_TC2_position                                         *;EUMACH Dual TC
+   MG_spindle_orientation_active
+   MG_spindle_reference_active
+   MG_spindle_in_Uf_control_mode
+   MG_spindle_with_gear
+   MG_spindle_with_ROD
+   MG_spindle_reference_using_sensor
+   MG_spindle_active
+   MG_spindle_digital
+   MG_spindle_on_axes
+   MG_spindle_on_after_gear_change
+   MG_spindle_off_orientation
+   MG_spindle_on_orientation
+   MG_spindle_C_axis_mode_active
+
+   MG_gear_change_active
+   MG_gear_range_ok
+   MG_gear_range_from_3D_head
+   MG_gear_range_1_from_3D_head
+   MG_strobe_G_code_rpm
+
+/r MG_touch_probe_active
+/r MG_3D_head_setup_ok
+   MG_3D_head_interruption
+   MG_3D_head_active
+   MG_3D_head_spindle_orientation_on
+   MG_3D_head_display
+   MG_3D_head_enter
+   MG_3D_head_axis_1_active
+   MG_3D_head_axis_2_active
+   MG_3D_head_axis_1_service_unclamping
+   MG_3D_head_axis_2_service_unclamping
+   MG_3D_head_axis_1_output_unclamping
+   MG_3D_head_axis_2_output_unclamping
+   MG_3D_head_axis_1_unclamped
+   MG_3D_head_axis_2_unclamped
+   MG_3D_head_axis_1_clamped
+   MG_3D_head_axis_2_clamped
+   MG_3D_head_unclamp_4
+   MG_3D_head_unclamp_5
+   MG_3D_head_unclamp_6
+   MG_3D_head_unclamp_7
+   MG_3D_head_unclamp_8
+   MG_3D_head_unclamp_9
+   MG_3D_head_unclamp_10
+   MG_3D_head_unclamp_11
+   MG_3D_head_unclamp_12
+   MG_3D_head_unclamp_13
+   MG_3D_head_unclamp_14
+   MG_3D_head_unclamp_15
+   MG_3D_head_unclamp_16
+   MG_3D_head_current_control_S_on
+
+   Compensation                             [3]
+/c MG_T_compensation_X_active               &Compensation + 0
+/c MG_T_compensation_Y_active               &Compensation + 1
+/c MG_T_compensation_Z_active               &Compensation + 2
+
+/r MG_T_compensation_active
+   MG_T_compensation_test
+   MG_T_compensation_test_auto
+   MG_T_compensation_on
+   MG_warm_up
+   MG_cool_down
+
+   Hysteresis                               [9]
+/c MG_hyst_X_after_warm_up                  &Hysteresis + 0
+/c MG_hyst_Y_after_warm_up                  &Hysteresis + 1
+/c MG_hyst_Z_after_warm_up                  &Hysteresis + 2
+/c MG_hyst_X_after_cool_down                &Hysteresis + 3
+/c MG_hyst_Y_after_cool_down                &Hysteresis + 4
+/c MG_hyst_Z_after_cool_down                &Hysteresis + 5
+/c MG_curve_without_hyst_X                  &Hysteresis + 6
+/c MG_curve_without_hyst_Y                  &Hysteresis + 7
+/c MG_curve_without_hyst_Z                  &Hysteresis + 8
+
+   Display                                  10                        ;[8]
+/c MG_axis_limit_1                          10                        *;Used in M61.MH
+   MG_axis_limit_2                          11                        *;Used in M62.MH
+   MG_axis_limit_3                          12
+   MG_alternating_table_on                  13                        *;Used in M71.MH/M72.MH/M73.MH
+   Display_reserved_4                       14
+   Display_reserved_5                       15
+   Display_reserved_6                       16
+   Display_reserved_7                       17
+
+   MG_enable_alternating_table
+   MG_interrupt_alternating_table
+   MG_new_workpiece_table_1
+   MG_new_workpiece_table_2
+
+   MG_guard_open
+   MG_guard_1_closed_locked
+   MG_guard_2_closed_locked
+
+*;EUMACH BASIC 53
+   MG_servo_drive_release                   [8]
+/c MG_servo_drive_release_1st_axes_group    &MG_servo_drive_release + 0
+/c MG_servo_drive_release_2nd_axes_group    &MG_servo_drive_release + 1
+/c MG_servo_drive_release_3rd_axes_group    &MG_servo_drive_release + 2
+/c MG_servo_drive_release_4th_axes_group    &MG_servo_drive_release + 3 *;EUMACH 5XT
+*;EUMACH BASIC 53
+
+   MG_servo_drive_release_spindle
+
+/r Pos_TC_arm                               [8]
+/c MG_TC_arm_on_basic                       &Pos_TC_arm + 0
+/c MG_TC_arm_to_unclamping                  &Pos_TC_arm + 1
+/c MG_TC_arm_on_unclamping                  &Pos_TC_arm + 2
+/c MG_TC_arm_exchanging                     &Pos_TC_arm + 3
+/c MG_TC_arm_on_clamping                    &Pos_TC_arm + 4
+/c MG_TC_arm_to_basic                       &Pos_TC_arm + 5
+
+   status_TC_mag                            [8]
+/c MG_PLC_axis_TC_magazine                  &status_TC_mag + 0
+/c MG_reference_OK_TC_magazine              &status_TC_mag + 1
+/c MG_posit_active_TC_magazine              &status_TC_mag + 2
+/c MG_posit_negative_TC_magazine            &status_TC_mag + 3
+/c MG_posit_error_TC_magazine               &status_TC_mag + 4
+
+   MG_M00_programmed_stop                   1000
+   MG_M01_conditional_stop                  1001
+   MG_M02_END_program                       1002
+   MG_M03_spindle_right_cw_on               1003
+   MG_M04_spindle_left_ccw_on               1004
+   MG_M05_spindle_off                       1005
+
+   MG_M07_coolant_inside_on                 1007
+   MG_M08_coolant_on                        1008
+   MG_M09_coolant_off                       1009
+   MG_M10_clamping_axes                     1010
+   MG_M11_unclamping_axes                   1011
+
+   MG_M13_Spindle_right_coolant_on          1013
+   MG_M14_Spindle_left_coolant_on           1014
+   MG_M15_coolant_chip_flush_on             1015                      *;EUMACH
+   MG_M16_coolant_water_gun_active          1016                      *;EUMACH
+   MG_M17_air_inside_on                     1017                      *;EUMACH
+   MG_M18_spindle_reference                 1018
+   MG_M19_spindle_orientation_0_degree      1019
+   MG_M20_spindle_orientation_CYCL_13       1020
+   MG_M21_start_index_table                 1021
+
+   MG_M23_air_blast_on                      1023                      *;EUMACH
+   MG_M24_air_blast_off                     1024                      *;EUMACH
+   MG_M25_coolant_chip_flush_off            1025                      *;EUMACH
+   MG_M26_coolant_water_gun_inactive        1026                      *;EUMACH
+   MG_M27_oil_mist_on                       1027                      *;EUMACH
+   MG_M28_oil_mist_off                      1028                      *;EUMACH
+
+   MG_M30_END_program                       1030
+   MG_M31_processing_without_M3_M4          1031
+   MG_M32_working_area_monitoring_off       1032
+   MG_M33_3D_head_axes_on                   1033
+   MG_M34_3D_head_axes_off                  1034
+
+   MG_M41_spindle_1                         1041
+   MG_M42_spindle_2                         1042
+
+   MG_M44_unclamping_axis_4                 1044
+   MG_M45_unclamping_axis_5                 1045
+   MG_M46_unclamping_axis_6                 1046
+
+   MG_M50_chip_conveyor_off                 1050
+   MG_M51_chip_conveyor_on                  1051
+   MG_M55_B_C_head_exchange                 1055
+   MG_M56_B_head_exchange                   1056
+   MG_M57_3D_head_replace                   1057
+
+   MG_M59_pallet_changer_vacate             1059
+   MG_M60_pallet_change                     1060
+   MG_M61_alternating_table_1               1061
+   MG_M62_alternating_table_2               1062
+/c MG_M61_pallet_1_to_machine               1061
+/c MG_M62_pallet_2_to_machine               1062
+
+   MG_M64_clamping_axis_4                   1064
+   MG_M65_clamping_axis_5                   1065
+   MG_M66_clamping_axis_6                   1066
+
+   MG_M70_PLC_preset_off                    1070
+   MG_M71_axis_limit_1                      1071
+   MG_M72_axis_limit_2                      1072
+   MG_M73_axis_limit_3                      1073
+   MG_M74_simulated_axes_feed_enable        1074                      *;EUMACH
+   MG_M75_buzzer_active                     1075                      *;EUMACH
+   MG_M76_buzzer_inactive                   1076                      *;EUMACH
+
+   MG_M79_PLC_preset_on                     1079
+   MG_M80_workpiece_counter_reset           1080
+   MG_M81_workpiece_counter_plus_1          1081
+   MG_M82_T_torque_off                      1082
+   MG_M83_T_torque_on                       1083
+
+*;EUMACH Marker assignment (M1300 - M1999) for M code 300 - M code 999
+   MG_M307_CTS_high_pressure                1307
+   MG_M310_fast_broken_tool_off             1310
+   MG_M311_fast_broken_tool_on              1311
+   MG_M320_latch_mode_off                   1320
+   MG_M321_latch_mode_on                    1321
+   MG_M330_TLM_air_blast_off                1330
+   MG_M331_TLM_air_blast_on                 1331
+   MG_M340_TLM_cover_closing                1340
+   MG_M341_TLM_cover_opening                1341
+   MG_M370_dust_mist_collector_off          1370
+   MG_M371_dust_mist_collector_on           1371
+   MG_M380_ext_sag_comp_off                 1380
+   MG_M381_ext_sag_comp_on                  1381
+   MG_M390_ATC_door_closing                 1390
+   MG_M391_ATC_door_opening                 1391
+   MG_M400_feed_disable_axis_4              1400
+   MG_M401_feed_enable_axis_4               1401
+   MG_M500_feed_disable_axis_5              1500
+   MG_M501_feed_enable_axis_5               1501
+*;EUMACH Marker assignment (M1300 - M1999) for M code 300 - M code 999
+
+   MG_soft_key_NC_stop
+   MG_soft_key_NC_start
+   MG_soft_key_spindle_M3
+   MG_soft_key_spindle_M5
+   MG_soft_key_S_jog_right_cw
+   MG_soft_key_S_jog_left_ccw
+   MG_soft_key_tool_unclamp
+   MG_soft_key_enable_toolchange
+   MG_soft_key_chip_conveyor
+   MG_soft_key_chip_con_back
+   MG_soft_key_axes_plus
+   MG_soft_key_axes_minus
+   MG_soft_key_TC_mag_right_cw
+   MG_soft_key_TC_mag_2_right_cw                                      *;EUMACH Dual TC
+   MG_soft_key_TC_mag_left_ccw
+   MG_soft_key_TC_mag_2_left_ccw                                      *;EUMACH Dual TC
+   MG_soft_key_TC_mag_load_active
+   MG_soft_key_TC_mag_2_load_active                                   *;EUMACH Dual TC
+   MG_soft_key_TC_service
+   MG_soft_key_lubrication
+   MG_soft_key_T_torque_monitoring
+   MG_soft_key_axes_motion_from_end_pos
+   MG_soft_key_working_area_monitoring_off
+   MG_soft_key_mode_line_0
+   MG_soft_key_mode_line_1
+   MG_soft_key_one_level_back
+
+   MG_hirth_positioning                     [16]
+/c MG_X_in_hirth_position                   &MG_hirth_positioning + 0
+/c MG_Y_in_hirth_position                   &MG_hirth_positioning + 1
+/c MG_Z_in_hirth_position                   &MG_hirth_positioning + 2
+/c MG_4_in_hirth_position                   &MG_hirth_positioning + 3
+/c MG_5_in_hirth_position                   &MG_hirth_positioning + 4
+/c MG_6_in_hirth_position                   &MG_hirth_positioning + 5
+/c MG_7_in_hirth_position                   &MG_hirth_positioning + 6
+/c MG_8_in_hirth_position                   &MG_hirth_positioning + 7
+/c MG_9_in_hirth_position                   &MG_hirth_positioning + 8
+/c MG_10_in_hirth_position                  &MG_hirth_positioning + 9
+/c MG_11_in_hirth_position                  &MG_hirth_positioning + 10
+/c MG_12_in_hirth_position                  &MG_hirth_positioning + 11
+/c MG_13_in_hirth_position                  &MG_hirth_positioning + 12
+/c MG_14_in_hirth_position                  &MG_hirth_positioning + 13
+/c MG_15_in_hirth_position                  &MG_hirth_positioning + 14
+/c MG_16_in_hirth_position                  &MG_hirth_positioning + 15
+
+   MG_inverter_Tmax                         [16]
+/c MG_inverter_X_Tmax                       &MG_inverter_Tmax + 0
+/c MG_inverter_Y_Tmax                       &MG_inverter_Tmax + 1
+/c MG_inverter_Z_Tmax                       &MG_inverter_Tmax + 2
+/c MG_inverter_4_Tmax                       &MG_inverter_Tmax + 3
+/c MG_inverter_5_Tmax                       &MG_inverter_Tmax + 4
+/c MG_inverter_6_Tmax                       &MG_inverter_Tmax + 5
+/c MG_inverter_7_Tmax                       &MG_inverter_Tmax + 6
+/c MG_inverter_8_Tmax                       &MG_inverter_Tmax + 7
+/c MG_inverter_9_Tmax                       &MG_inverter_Tmax + 8
+/c MG_inverter_10_Tmax                      &MG_inverter_Tmax + 9
+/c MG_inverter_11_Tmax                      &MG_inverter_Tmax + 10
+/c MG_inverter_12_Tmax                      &MG_inverter_Tmax + 11
+/c MG_inverter_13_Tmax                      &MG_inverter_Tmax + 12
+/c MG_inverter_14_Tmax                      &MG_inverter_Tmax + 13
+/c MG_inverter_15_Tmax                      &MG_inverter_Tmax + 14
+/c MG_inverter_16_Tmax                      &MG_inverter_Tmax + 15
+/c MG_inverter_S_Tmax                       &MG_inverter_Tmax + 15
+
+   MG_I2t_monitoring                        [32]
+/c MG_I2t_X_pre_warning                     &MG_I2t_monitoring + 0
+/c MG_I2t_Y_pre_warning                     &MG_I2t_monitoring + 1
+/c MG_I2t_Z_pre_warning                     &MG_I2t_monitoring + 2
+/c MG_I2t_4_pre_warning                     &MG_I2t_monitoring + 3
+/c MG_I2t_5_pre_warning                     &MG_I2t_monitoring + 4
+/c MG_I2t_6_pre_warning                     &MG_I2t_monitoring + 5
+/c MG_I2t_7_pre_warning                     &MG_I2t_monitoring + 6
+/c MG_I2t_8_pre_warning                     &MG_I2t_monitoring + 7
+/c MG_I2t_9_pre_warning                     &MG_I2t_monitoring + 8
+/c MG_I2t_10_pre_warning                    &MG_I2t_monitoring + 9
+/c MG_I2t_11_pre_warning                    &MG_I2t_monitoring + 10
+/c MG_I2t_12_pre_warning                    &MG_I2t_monitoring + 11
+/c MG_I2t_13_pre_warning                    &MG_I2t_monitoring + 12
+/c MG_I2t_14_pre_warning                    &MG_I2t_monitoring + 13
+/c MG_I2t_15_pre_warning                    &MG_I2t_monitoring + 14
+/c MG_I2t_16_pre_warning                    &MG_I2t_monitoring + 15
+/c MG_I2t_S_pre_warning                     &MG_I2t_monitoring + 15
+/c MG_I2t_X_limitation                      &MG_I2t_monitoring + 16
+/c MG_I2t_Y_limitation                      &MG_I2t_monitoring + 17
+/c MG_I2t_Z_limitation                      &MG_I2t_monitoring + 18
+/c MG_I2t_4_limitation                      &MG_I2t_monitoring + 19
+/c MG_I2t_5_limitation                      &MG_I2t_monitoring + 20
+/c MG_I2t_6_limitation                      &MG_I2t_monitoring + 21
+/c MG_I2t_7_limitation                      &MG_I2t_monitoring + 22
+/c MG_I2t_8_limitation                      &MG_I2t_monitoring + 23
+/c MG_I2t_9_limitation                      &MG_I2t_monitoring + 24
+/c MG_I2t_10_limitation                     &MG_I2t_monitoring + 25
+/c MG_I2t_11_limitation                     &MG_I2t_monitoring + 26
+/c MG_I2t_12_limitation                     &MG_I2t_monitoring + 27
+/c MG_I2t_13_limitation                     &MG_I2t_monitoring + 28
+/c MG_I2t_14_limitation                     &MG_I2t_monitoring + 29
+/c MG_I2t_15_limitation                     &MG_I2t_monitoring + 30
+/c MG_I2t_16_limitation                     &MG_I2t_monitoring + 31
+
+   MG_servo_drives_ready                    [16]
+/c MG_servo_drive_ready_X                   &MG_servo_drives_ready + 0
+/c MG_servo_drive_ready_Y                   &MG_servo_drives_ready + 1
+/c MG_servo_drive_ready_Z                   &MG_servo_drives_ready + 2
+/c MG_servo_drive_ready_4                   &MG_servo_drives_ready + 3
+/c MG_servo_drive_ready_5                   &MG_servo_drives_ready + 4
+/c MG_servo_drive_ready_6                   &MG_servo_drives_ready + 5
+/c MG_servo_drive_ready_7                   &MG_servo_drives_ready + 6
+/c MG_servo_drive_ready_8                   &MG_servo_drives_ready + 7
+/c MG_servo_drive_ready_9                   &MG_servo_drives_ready + 8
+/c MG_servo_drive_ready_10                  &MG_servo_drives_ready + 9
+/c MG_servo_drive_ready_11                  &MG_servo_drives_ready + 10
+/c MG_servo_drive_ready_12                  &MG_servo_drives_ready + 11
+/c MG_servo_drive_ready_13                  &MG_servo_drives_ready + 12
+/c MG_servo_drive_ready_14                  &MG_servo_drives_ready + 13
+/c MG_servo_drive_ready_15                  &MG_servo_drives_ready + 14
+/c MG_servo_drive_ready_16                  &MG_servo_drives_ready + 15
+/c MG_servo_drive_ready_S                   &MG_servo_drives_ready + 15
+
+   MG_reference_necessary_bit               [16]
+/c MG_reference_X_necessary_bit             &MG_reference_necessary_bit + 0
+/c MG_reference_Y_necessary_bit             &MG_reference_necessary_bit + 1
+/c MG_reference_Z_necessary_bit             &MG_reference_necessary_bit + 2
+/c MG_reference_4_necessary_bit             &MG_reference_necessary_bit + 3
+/c MG_reference_5_necessary_bit             &MG_reference_necessary_bit + 4
+/c MG_reference_6_necessary_bit             &MG_reference_necessary_bit + 5
+/c MG_reference_7_necessary_bit             &MG_reference_necessary_bit + 6
+/c MG_reference_8_necessary_bit             &MG_reference_necessary_bit + 7
+/c MG_reference_9_necessary_bit             &MG_reference_necessary_bit + 8
+/c MG_reference_10_necessary_bit            &MG_reference_necessary_bit + 9
+/c MG_reference_11_necessary_bit            &MG_reference_necessary_bit + 10
+/c MG_reference_12_necessary_bit            &MG_reference_necessary_bit + 11
+/c MG_reference_13_necessary_bit            &MG_reference_necessary_bit + 12
+/c MG_reference_14_necessary_bit            &MG_reference_necessary_bit + 13
+/c MG_reference_15_necessary_bit            &MG_reference_necessary_bit + 14
+/c MG_reference_16_necessary_bit            &MG_reference_necessary_bit + 15
+
+   MG_axes_release_bit                      [16]
+/c MG_axis_release_X_bit                    &MG_axes_release_bit + 0
+/c MG_axis_release_Y_bit                    &MG_axes_release_bit + 1
+/c MG_axis_release_Z_bit                    &MG_axes_release_bit + 2
+/c MG_axis_release_4_bit                    &MG_axes_release_bit + 3
+/c MG_axis_release_5_bit                    &MG_axes_release_bit + 4
+/c MG_axis_release_6_bit                    &MG_axes_release_bit + 5
+/c MG_axis_release_7_bit                    &MG_axes_release_bit + 6
+/c MG_axis_release_8_bit                    &MG_axes_release_bit + 7
+/c MG_axis_release_9_bit                    &MG_axes_release_bit + 8
+/c MG_axis_release_10_bit                   &MG_axes_release_bit + 9
+/c MG_axis_release_11_bit                   &MG_axes_release_bit + 10
+/c MG_axis_release_12_bit                   &MG_axes_release_bit + 11
+/c MG_axis_release_13_bit                   &MG_axes_release_bit + 12
+/c MG_axis_release_14_bit                   &MG_axes_release_bit + 13
+/c MG_axis_release_15_bit                   &MG_axes_release_bit + 14
+/c MG_axis_release_16_bit                   &MG_axes_release_bit + 15
+
+   MG_axes_in_motion_bit                    [16]
+/c MG_axis_X_in_motion_bit                  &MG_axes_in_motion_bit + 0
+/c MG_axis_Y_in_motion_bit                  &MG_axes_in_motion_bit + 1
+/c MG_axis_Z_in_motion_bit                  &MG_axes_in_motion_bit + 2
+/c MG_axis_4_in_motion_bit                  &MG_axes_in_motion_bit + 3
+/c MG_axis_5_in_motion_bit                  &MG_axes_in_motion_bit + 4
+/c MG_axis_6_in_motion_bit                  &MG_axes_in_motion_bit + 5
+/c MG_axis_7_in_motion_bit                  &MG_axes_in_motion_bit + 6
+/c MG_axis_8_in_motion_bit                  &MG_axes_in_motion_bit + 7
+/c MG_axis_9_in_motion_bit                  &MG_axes_in_motion_bit + 8
+/c MG_axis_10_in_motion_bit                 &MG_axes_in_motion_bit + 9
+/c MG_axis_11_in_motion_bit                 &MG_axes_in_motion_bit + 10
+/c MG_axis_12_in_motion_bit                 &MG_axes_in_motion_bit + 11
+/c MG_axis_13_in_motion_bit                 &MG_axes_in_motion_bit + 12
+/c MG_axis_14_in_motion_bit                 &MG_axes_in_motion_bit + 13
+/c MG_axis_15_in_motion_bit                 &MG_axes_in_motion_bit + 14
+/c MG_axis_16_in_motion_bit                 &MG_axes_in_motion_bit + 15
+
+/r MG_ref_end_positions                     [16]
+/c MG_ref_end_position_X                    &MG_ref_end_positions + 0
+/c MG_ref_end_position_Y                    &MG_ref_end_positions + 1
+/c MG_ref_end_position_Z                    &MG_ref_end_positions + 2
+/c MG_ref_end_position_4                    &MG_ref_end_positions + 3
+/c MG_ref_end_position_5                    &MG_ref_end_positions + 4
+/c MG_ref_end_position_6                    &MG_ref_end_positions + 5
+/c MG_ref_end_position_7                    &MG_ref_end_positions + 6
+/c MG_ref_end_position_8                    &MG_ref_end_positions + 7
+/c MG_ref_end_position_9                    &MG_ref_end_positions + 8
+/c MG_ref_end_position_10                   &MG_ref_end_positions + 9
+/c MG_ref_end_position_11                   &MG_ref_end_positions + 10
+/c MG_ref_end_position_12                   &MG_ref_end_positions + 11
+/c MG_ref_end_position_13                   &MG_ref_end_positions + 12
+/c MG_ref_end_position_14                   &MG_ref_end_positions + 13
+/c MG_ref_end_position_15                   &MG_ref_end_positions + 14
+/c MG_ref_end_position_16                   &MG_ref_end_positions + 15
+
+*;EUMACH Additional Markers
+/r MG_spindle_warmed_up
+/r MG_tool_clamping_error
+/r MG_tool_unclamping_error
+/r MG_Tool_Call_axis_checking
+;/r MG_check_tool_on_TC_arm_unit                                      *;EUMACH standby tool loading/unloading
+;/r MG_check_tool_on_TC_arm2_unit                                      *;EUMACH Dual TC *;EUMACH standby tool loading/unloading
+/r MG_S_head_lubricated
+/r MG_S_head_lubrication_necessary
+/r MG_PMC_T_comp_active
+/r MG_S_head_bearing_lubricated
+/r MG_S_head_bearing_lube_necessary
+/r MG_feed_disable_axis_4
+/r MG_feed_disable_axis_5
+/r MG_ext_sag_comp_active
+   MG_V_H_head_in_vertical_pos               2000                     *;Used in BS_INIT.MH/M71.MH
+   MG_V_H_head_in_horizontal_pos             2001                     *;Used in BS_INIT.MH/M72.MH
+   MG_traverse_range_M_codes_prohibited      2002                     *;Used in M71.MH/M72.MH/M73.MH
+   MG_automatic_V_H_head_installed           2003                     *;Used in M71.MH/M72.MH/M73.MH
+   MG_head_angle_protected_by_traverse_range 2004                     *;Used in M71.MH/M72.MH/M73.MH
+   MG_TOOL_CALL_0_before_M61_M62             2010                     *;Used in M61.MH/M62.MH
+   MG_kinematic_table_switching              2011                     *;Used in M61.MH/M62.MH
+   MG_manual_tool_in_spindle                 2021                     *;Used in M61.MH/M62.MH
+   MG_DCM_coordinates_configuration          2022                     *;Used in BS_INIT.MH/M71.MH/M72.MH
+   MG_start_blocked_nut_lubrication
+   MG_T_load_to_mag_start
+   MG_tool_back_to_mag2                                               *;EUMACH Dual TC
+   MG_key_spindle_start
+   MG_key_spindle_stop
+   MG_S_0_volt_status_inverse
+   MG_FAEMAT_S_clamped_without_tool
+   MG_tool_unclamping_processing
+   MG_tool_clamping_processing
+   MG_V_H_head_no_geometry_datum_shift
+   MG_V_H_head_H_to_V_geometry_datum_shift
+   MG_V_H_head_V_to_H_geometry_datum_shift
+   MG_manual_V_H_head_installed
+   MG_V_H_head_H_to_V_turning_proceeding
+   MG_V_H_head_V_to_H_turning_proceeding
+   MG_V_H_head_turning_proceeding
+   MG_V_H_head_turning_interruption
+   MG_TC_V_H_head_to_vertical_pos
+   MG_TC_V_H_head_to_horizontal_pos
+   MG_SHC_V_head_S_orient_initialization
+   MG_SHC_H_head_S_orient_initialization
+   MG_SHC_turning_S_orient_on
+   MG_TC_V_H_head_gear_range_no_recovery
+   MG_gear_in_range_2_before_TC
+   MG_S_in_V_head_initial_degree
+   MG_S_in_H_head_initial_degree
+   MG_S_in_V_H_head_V_to_H_degree
+   MG_S_in_V_H_head_H_to_V_degree
+   MG_V_H_head_Help_H_to_V_pos
+   MG_V_H_head_Help_V_to_H_pos
+   MG_V_H_head_Help_jog_ccw
+   MG_V_H_head_Help_jog_cw
+   MG_gear_range_1_from_HELP
+   MG_gear_range_1_from_V_H_head
+   MG_V_H_head_clamped_and_in_pos
+   MG_TC_S_blow_clean_after_CTS
+   MG_last_TC_S_blow_clean_after_CTS
+   MG_p_pulse_TC_S_blow_clean_after_CTS
+   MG_O_CTS_blow_clean_n_pulse
+   MG_3D_head_axis_1_prepos_service
+   MG_3D_head_axis_2_prepos_service
+   MG_3D_head_axis_1_cancel_prepos_service
+   MG_3D_head_axis_2_cancel_prepos_service
+   MG_3D_head_axis_not_clamped
+   MG_machine_in_table_1
+   MG_alt_table_automatic_workpiece_loaded
+   MG_3D_head_axis_2_feed_not_release
+   MG_3D_head_active_was_on
+   MG_3D_head_active_p_pulse
+   MG_error_S_head_transmission_lube_p_pulse
+   MG_error_S_head_bearing_lube_p_pulse
+   MG_anti_backlash_4_ready
+   MG_anti_backlash_4_start
+   MG_anti_backlash_4_executed
+   MG_anti_backlash_5_ready
+   MG_anti_backlash_5_start
+   MG_anti_backlash_5_executed
+   MG_service_operation
+   MG_sensor_calibration_active
+   MG_mag_axis_encoder_incremental
+   MG_mag_axis_encoder_EnDat
+   MG_T_load_to_arm2_by_Tool_Call                                     *;EUMACH Dual TC
+   MG_T_unload_from_mag_start
+   MG_tool_loading_to_arm2                                            *;EUMACH Dual TC
+   MG_T_back_to_mag_by_Tool_Call                                      *;EUMACH TC AUTO replaced tool returning to magazine pocket
+   MG_T_back_to_mag2_by_Tool_Call                                     *;EUMACH Dual TC
+;   MG_T_back_to_mag_pocket_unnecessary                                *;EUMACH standby tool loading/unloading
+;   MG_T_back_to_mag2_pocket_unnecessary                               *;EUMACH Dual TC *;EUMACH standby tool loading/unloading
+   MG_TC_STDT_pocket_by_T_select                                      *;EUMACH standby tool loading/unloading
+   MG_TC_nom_pocket_by_T_select                                       *;EUMACH standby tool loading/unloading
+   MG_T_load_to_mag_by_T_select                                       *;EUMACH standby tool loading/unloading
+   MG_T_unload_from_mag_by_T_select                                   *;EUMACH standby tool loading/unloading
+   MG_M4042_M08_MK_status_p_pulse
+   MG_soft_key_air_blast_p_pulse
+   MG_spindle_blow_clean
+   MG_S_blow_clean_after_CTS
+   MG_air_through_S_on
+   MG_M17_status
+   MG_M17_status_inverse
+   MG_S_warming_up_proceeding
+   MG_spindle_warmed_up_p_pulse
+   MG_working_area_Y_plus_motion_lock
+   MG_working_area_Y_minus_motion_lock
+   MG_working_area_Z_plus_motion_lock
+   MG_working_area_Z_minus_motion_lock
+   MG_working_area_IV_motion_lock
+   MG_manual_head_on_off_processing
+   MG_safety_mode_4
+   MG_safety_mode_4_p_pulse
+   MG_safety_mode_2_p_pulse
+   MG_guard_open_operation_hold                                       *;EUMACH CE Sep 06 2008
+   MG_NC_program_operating                                            *;EUMACH CE Sep 06 2008
+   MG_M8_tank_to_CTS_tank_off
+   MG_MP_are_read_p_pulse
+   MG_END_PGM_M02_M30
+   MG_guard_test_ok
+   MG_MP_read_after_part_files
+   MG_FN19_4_clamping_on_off_active
+   MG_FN19_5_clamping_on_off_active
+   MG_FN19_6_clamping_on_off_active
+   MG_FN19_tool_clamping_on_off_active
+   MG_manual_tool_in_S_reading
+   MG_p_pulse_control_operational
+   MG_PGM_running_control_in_operation_on
+   MG_p_pulse_PGM_running_control_in_operation_on
+   MG_IPC_61x0_active
+   MG_simulated_axes_feed_enable
+   MG_simulated_axes_in_motion
+   MG_simulated_axes_feed_disable_delay
+   MG_3D_head_pos_confirmation
+   MG_V_H_head_rear_axis_0_position
+   MG_Z_comp_axis_4_clamped                                           *;EUMACH Table clamped -> Z comp
+   MG_Z_brake_test_active
+   MG_delay_of_MG_power_delayed_on
+   MG_power_on_axis_limit_selected
+   MG_MP7620_TE_Fmax_instead_S_override                               *;EUMACH S% knob -> FMAX% knob
+   MG_MP7620_TE_with_Fmax_override                                    *;EUMACH G00% override
+   MG_2nd_TOOL_CALL_following                                         *;EUMACH standby tool loading/unloading
+   MG_STDT_to_magazine_pocket                                         *;EUMACH standby tool loading/unloading
+   MG_chip_conveyor_reset_interval
+   MG_chip_conveyor_pause_interval
+   MG_ext_sag_comp_file_reading_completed
+   MG_STDT0_and_Tool_Call_0_pocket_select                             *;EUMACH TC AUTO replaced tool returning to magazine pocket
+   MG_SFT_P_to_mag_start
+   MG_SFT_P_to_mag_by_TC_MAG1
+   MG_SFT_P_to_mag_by_TC_HELP
+   MG_SFT_P_to_TC_start
+   MG_SFT_P_to_TC_by_TC_MAG1
+   MG_SFT_P_to_TC_by_TC_AUTO
+   MG_SFT_P_to_TC_by_TC_HELP
+   MG_magazine_pos_backlash_ignored_at_power_on
+   MG_magazine_axis_in_position
+   MG_TM_loading_T_start                                              *;EUMACH TM loading T selection
+   MG_TM_started_by_TM_loading_T_select                               *;TM loading T selection
+   MG_T_load_to_mag_by_TM_loading_T_select                            *;EUMACH TM loading T selection
+   MG_TM_loading_T_status_reading                                     *;EUMACH TM loading T selection
+   MG_TM_loading_mag_guard_unlocked_open                              *;EUMACH TM loading T selection
+   MG_TM_loading_T_data_start                                         *;EUMACH TM loading T selection
+   MG_TM_loading_P_status_reading                                     *;EUMACH TM loading T selection
+   MG_standby_P_status_reading                                        *;EUMACH TM loading T selection
+   MG_TM_loading_T_display_request                                    *;EUMACH TM loading T selection
+   MG_TM_loading_P_display_request                                    *;EUMACH TM loading T selection
+   MG_spindle_tool_display_request                                    *;EUMACH TM loading T selection
+   MG_TC_standby_T_display_request                                    *;EUMACH TM loading T selection
+   MG_magazine_standby_T_display_request                              *;EUMACH TM loading T selection
+   MG_magazine_standby_P_display_request                              *;EUMACH TM loading T selection
+   MG_TM_loading_D_link_start                                         *;EUMACH TM loading T selection
+   MG_S_warmed_up_service
+   MG_both_mag_and_ATC_doors_open_protection                          *;EUMACH Protection for both magazine door open & ATC door open
+
+   status_aux_axis_jog                      [8]
+/c MG_aux_axis_of_aux_axis_jog              &status_aux_axis_jog + 0
+/c MG_reference_OK_aux_axis_jog             &status_aux_axis_jog + 1
+/c MG_posit_active_aux_axis_jog             &status_aux_axis_jog + 2
+/c MG_posit_negative_aux_axis_jog           &status_aux_axis_jog + 3
+/c MG_posit_error_aux_axis_jog              &status_aux_axis_jog + 4
+
+   MG_power_on_clamping_mode_assigned       [16]                      *;EUMACH M4x/M6x
+
+   MG_O_unclamping                          [16]
+/c MG_O_unclamping_X                        &MG_O_unclamping + 0
+/c MG_O_unclamping_Y                        &MG_O_unclamping + 1
+/c MG_O_unclamping_Z                        &MG_O_unclamping + 2
+/c MG_O_unclamping_4                        &MG_O_unclamping + 3
+/c MG_O_unclamping_5                        &MG_O_unclamping + 4
+/c MG_O_unclamping_6                        &MG_O_unclamping + 5
+/c MG_O_unclamping_7                        &MG_O_unclamping + 6
+/c MG_O_unclamping_8                        &MG_O_unclamping + 7
+/c MG_O_unclamping_9                        &MG_O_unclamping + 8
+/c MG_O_unclamping_10                       &MG_O_unclamping + 9
+/c MG_O_unclamping_11                       &MG_O_unclamping + 10
+/c MG_O_unclamping_12                       &MG_O_unclamping + 11
+/c MG_O_unclamping_13                       &MG_O_unclamping + 12
+/c MG_O_unclamping_14                       &MG_O_unclamping + 13
+/c MG_O_unclamping_15                       &MG_O_unclamping + 14
+/c MG_O_unclamping_16                       &MG_O_unclamping + 15
+*;EUMACH Additional Markers
+
+*;EUMACH Additional soft keys
+   MG_NP_BLUM_CYCLE_ACTIVE                  1219                      *; For BLUM
+/r MG_soft_key_S_man_head
+   MG_soft_key_coolant_chip_flush
+   MG_soft_key_coolant_water_gun
+   MG_soft_key_air_blast
+   MG_soft_key_S_head_pos_confirm
+   MG_soft_key_S_head_pos_display
+   MG_soft_key_S_head_pos_reset
+   MG_soft_key_S_warming_up
+   MG_soft_key_S_man_head_unclamp
+   MG_soft_key_OP_cabinet_folding
+   MG_soft_key_OP_cabinet_stretching
+   MG_soft_key_oil_mist
+   MG_soft_key_S_oil_air_lube_unit_reset
+   MG_soft_key_F100_percent
+   MG_soft_key_S100_percent
+   MG_HW_SK_coolant_M07
+   MG_HW_SK_coolant_M08
+;   MG_HW_SK_lubrication
+   MG_HW_SK_chip_conveyor
+   MG_HW_SK_TC_release                                                *;EUMACH MPG tool releasing
+   MG_HW_SK_TC_unclamp                                                *;EUMACH MPG tool releasing
+   MG_HW_SK_TC_load
+   MG_HW_SK_TC2_load                                                  *;EUMACH Dual TC
+   MG_soft_key_fluid_flow_valve
+   MG_soft_key_interval_chip_conveyor
+   MG_soft_key_setup_chip_conveyor
+*;EUMACH Additional soft keys
+
+*-----------------------------------------------------------------------------
+*  Byte
+*-----------------------------------------------------------------------------
+
+#type B
+
+   BG_pallet_number
+
+   BG_MP1350_reference_mode_X
+   BG_MP4030_0_assignment_logical_PL_1
+   BG_MP4030_1_assignment_logical_PL_2
+   BG_MP4030_2_assignment_logical_PL_3
+   BG_MP4030_3_assignment_logical_PL_4
+   BG_MP6010_touch_probe_type
+   BG_MP7640_handwheel_type
+   BG_tool_status_new
+   BG_standby_tool_status
+   BG_TC1_standby_tool_status                                         *;EUMACH Dual TC
+   BG_TC2_standby_tool_status                                         *;EUMACH Dual TC
+   BG_mask_number
+   BG_bytes_on_stack
+   BG_step_toolchange
+   BG_step_toolchange_2                                               *;EUMACH Dual TC
+   BG_step_magazine
+   BG_step_magazine_2                                                 *;EUMACH Dual TC
+   BG_step_pallet_change
+   BG_step_axis_1_3D_head
+   BG_step_axis_2_3D_head
+   BG_step_3D_head
+   BG_FN19_PLC_preset
+   BG_PLC_cycles_T_simulation
+   BG_step_T_selection                                                *;EUMACH standby tool loading/unloading
+
+/r BG_PLC_preset_number
+/r BG_mode_line_0
+/r BG_mode_line_1
+
+/r BG_tuning_mode                                                     *;EUMACH BASIC 54
+
+   BG_step_axes                             [16]
+/c BG_step_axis_X                           &BG_step_axes + 0
+/c BG_step_axis_Y                           &BG_step_axes + 1
+/c BG_step_axis_Z                           &BG_step_axes + 2
+/c BG_step_axis_4                           &BG_step_axes + 3
+/c BG_step_axis_5                           &BG_step_axes + 4
+/c BG_step_axis_6                           &BG_step_axes + 5
+/c BG_step_axis_7                           &BG_step_axes + 6
+/c BG_step_axis_8                           &BG_step_axes + 7
+/c BG_step_axis_9                           &BG_step_axes + 8
+/c BG_step_axis_10                          &BG_step_axes + 9
+/c BG_step_axis_11                          &BG_step_axes + 10
+/c BG_step_axis_12                          &BG_step_axes + 11
+/c BG_step_axis_13                          &BG_step_axes + 12
+/c BG_step_axis_14                          &BG_step_axes + 13
+/c BG_step_axis_15                          &BG_step_axes + 14
+/c BG_step_axis_16                          &BG_step_axes + 15
+
+   A_hirth                                  [16]
+/c BG_MP420_axis_X_hirth                    &A_hirth + 0
+/c BG_MP420_axis_Y_hirth                    &A_hirth + 1
+/c BG_MP420_axis_Z_hirth                    &A_hirth + 2
+/c BG_MP420_axis_4_hirth                    &A_hirth + 3
+/c BG_MP420_axis_5_hirth                    &A_hirth + 4
+/c BG_MP420_axis_6_hirth                    &A_hirth + 5
+/c BG_MP420_axis_7_hirth                    &A_hirth + 6
+/c BG_MP420_axis_8_hirth                    &A_hirth + 7
+/c BG_MP420_axis_9_hirth                    &A_hirth + 8
+/c BG_MP420_axis_10_hirth                   &A_hirth + 9
+/c BG_MP420_axis_11_hirth                   &A_hirth + 10
+/c BG_MP420_axis_12_hirth                   &A_hirth + 11
+/c BG_MP420_axis_13_hirth                   &A_hirth + 12
+/c BG_MP420_axis_14_hirth                   &A_hirth + 13
+/c BG_MP420_axis_15_hirth                   &A_hirth + 14
+/c BG_MP420_axis_16_hirth                   &A_hirth + 15
+
+*;EUMACH Additional Bytes
+/r BG_KINEMATICS_assignment                                           *;Used in M61.MH/M62.MH
+   BG_MP1350_ref_mode_5
+   BG_MP2160_S_SM1xx_voltage_protection
+   BG_TM_loading_temp                                                 *;EUMACH TM loading T selection
+   BG_TM_loading_T_temp                                               *;EUMACH TM loading T selection
+*;EUMACH Additional Bytes
+
+*-----------------------------------------------------------------------------
+*  Word
+*-----------------------------------------------------------------------------
+
+#type W
+
+/r WG_S_max_torque
+/r WG_tool_in_spindle
+/r WG_TC_pocket_number
+/r WG_TC2_pocket_number                                               *;EUMACH Dual TC
+   WG_TC_auto_new_tool_number
+   WG_TC_auto_tool_number
+   WG_TC_manu_tool_number
+   WG_TC_magazine_nominal_pocket
+   WG_TC_magazine_2_nominal_pocket                                    *;EUMACH Dual TC
+/r WG_TC_magazine_actual_pocket
+/r WG_TC_magazine_2_actual_pocket                                     *;EUMACH Dual TC
+   WG_act_nom_pocket_difference
+   WG_act_nom_2_pocket_difference                                     *;EUMACH Dual TC
+
+#if Tool_magazine = &Pulse
+#if TC_magazine_reference_sensor = &active
+   WG_TC_magazine_actual_2_pocket
+   WG_TC_mag_2_actual_2_pocket                                        *;EUMACH Dual TC
+#else
+/r WG_TC_magazine_actual_2_pocket
+#endif
+#endif
+   WG_TC_magazine_axis
+   WG_keys_inhibit
+   WG_MP10_active_axes
+   WG_controlled_axes
+   WG_clamping_mode_off
+   WG_activate_control_loop_open
+   WG_PLC_axes
+   WG_feed_stop_PLC_axes
+   WG_hirth_axes
+   WG_drives_digital
+   WG_release_axes_X150_X151
+
+   WG_traverse_reverence_active
+   WG_axis_encoder_distance_coded
+   WG_axis_encoder_one_reference_mark
+
+   WG_selected_handwheel_axis
+   WG_PLC_posit_hirth_necessary
+   WG_PLC_reference_necessary
+   WG_MP1320_direction_traverse_ref_negative
+   WG_MP7261_TC_magazine_max_pocket
+   WG_MP7261_TC_magazine_2_max_pocket                                 *;EUMACH Dual TC
+   WG_servo_drives_ready
+/r WG_workpiece_counter
+
+/r WG_time_next_emergency_stop_test
+
+   WG_temperature_spindle_Pt100
+   WG_temperature_spindle
+/r WG_temperature_machine_Pt100
+/r WG_temperature_machine
+/r WG_temperature_machine_offset
+   WG_temperature_table
+   WG_temperature_difference
+   WG_temperature_min_spindle
+   WG_temperature_max_spindle
+/r WG_error_status
+   WG_W268_tool_magazine_number                                       *;EUMACH Dual TC
+
+   WG_3D_head_activate
+   WG_3D_head_release
+   WG_3D_head_unclamping
+
+   A_axis_group                             [8]
+/c WG_MP2040_0_axis_group_1                 &A_axis_group + 0
+/c WG_MP2040_1_axis_group_2                 &A_axis_group + 2
+/c WG_MP2040_2_axis_group_3                 &A_axis_group + 4
+/c WG_MP2040_3_axis_group_4                 &A_axis_group + 6         *;EUMACH 5XT
+/c WG_MP2040_4_axis_group_5                 &A_axis_group + 8
+/c WG_MP2040_5_axis_group_6                 &A_axis_group + 10
+/c WG_MP2040_6_axis_group_7                 &A_axis_group + 12
+/c WG_MP2040_7_axis_group_8                 &A_axis_group + 14
+
+   WG_drive_temp_max                        [16]
+/c WG_drive_temp_max_X                      &WG_drive_temp_max + 0
+/c WG_drive_temp_max_Y                      &WG_drive_temp_max + 2
+/c WG_drive_temp_max_Z                      &WG_drive_temp_max + 4
+/c WG_drive_temp_max_4                      &WG_drive_temp_max + 6
+/c WG_drive_temp_max_5                      &WG_drive_temp_max + 8
+/c WG_drive_temp_max_6                      &WG_drive_temp_max + 10
+/c WG_drive_temp_max_7                      &WG_drive_temp_max + 12
+/c WG_drive_temp_max_8                      &WG_drive_temp_max + 14
+/c WG_drive_temp_max_9                      &WG_drive_temp_max + 16
+/c WG_drive_temp_max_10                     &WG_drive_temp_max + 18
+/c WG_drive_temp_max_11                     &WG_drive_temp_max + 20
+/c WG_drive_temp_max_12                     &WG_drive_temp_max + 22
+/c WG_drive_temp_max_13                     &WG_drive_temp_max + 24
+/c WG_drive_temp_max_14                     &WG_drive_temp_max + 26
+/c WG_drive_temp_max_15                     &WG_drive_temp_max + 28
+/c WG_drive_temp_max_16                     &WG_drive_temp_max + 30
+
+   WG_drive_temp_max_S
+
+   WG_drives_temperature                    [16]
+/c WG_drive_temperature_X                   &WG_drives_temperature + 0
+/c WG_drive_temperature_Y                   &WG_drives_temperature + 2
+/c WG_drive_temperature_Z                   &WG_drives_temperature + 4
+/c WG_drive_temperature_4                   &WG_drives_temperature + 6
+/c WG_drive_temperature_5                   &WG_drives_temperature + 8
+/c WG_drive_temperature_6                   &WG_drives_temperature + 10
+/c WG_drive_temperature_7                   &WG_drives_temperature + 12
+/c WG_drive_temperature_8                   &WG_drives_temperature + 14
+/c WG_drive_temperature_9                   &WG_drives_temperature + 16
+/c WG_drive_temperature_10                  &WG_drives_temperature + 18
+/c WG_drive_temperature_11                  &WG_drives_temperature + 20
+/c WG_drive_temperature_12                  &WG_drives_temperature + 22
+/c WG_drive_temperature_13                  &WG_drives_temperature + 24
+/c WG_drive_temperature_14                  &WG_drives_temperature + 26
+/c WG_drive_temperature_15                  &WG_drives_temperature + 28
+/c WG_drive_temperature_16                  &WG_drives_temperature + 30
+
+   WG_drive_temperature_S
+
+   WG_drive_utilization                     [16]
+/c WG_drive_utilization_X                   &WG_drive_utilization + 0
+/c WG_drive_utilization_Y                   &WG_drive_utilization + 2
+/c WG_drive_utilization_Z                   &WG_drive_utilization + 4
+/c WG_drive_utilization_4                   &WG_drive_utilization + 6
+/c WG_drive_utilization_5                   &WG_drive_utilization + 8
+/c WG_drive_utilization_6                   &WG_drive_utilization + 10
+/c WG_drive_utilization_7                   &WG_drive_utilization + 12
+/c WG_drive_utilization_8                   &WG_drive_utilization + 14
+/c WG_drive_utilization_9                   &WG_drive_utilization + 16
+/c WG_drive_utilization_10                  &WG_drive_utilization + 18
+/c WG_drive_utilization_11                  &WG_drive_utilization + 20
+/c WG_drive_utilization_12                  &WG_drive_utilization + 22
+/c WG_drive_utilization_13                  &WG_drive_utilization + 24
+/c WG_drive_utilization_14                  &WG_drive_utilization + 26
+/c WG_drive_utilization_15                  &WG_drive_utilization + 28
+/c WG_drive_utilization_16                  &WG_drive_utilization + 30
+
+   WG_drive_utilization_S
+
+   A_feed_reference                         [16]                      *;EUMACH
+/c WG_MP1330_feed_X_ref                     &A_feed_reference + 0     *;EUMACH
+/c WG_MP1330_feed_Y_ref                     &A_feed_reference + 2     *;EUMACH
+/c WG_MP1330_feed_Z_ref                     &A_feed_reference + 4     *;EUMACH
+/c WG_MP1330_feed_4_ref                     &A_feed_reference + 6     *;EUMACH
+/c WG_MP1330_feed_5_ref                     &A_feed_reference + 8     *;EUMACH
+/c WG_MP1330_feed_6_ref                     &A_feed_reference + 10    *;EUMACH
+/c WG_MP1330_feed_7_ref                     &A_feed_reference + 12    *;EUMACH
+/c WG_MP1330_feed_8_ref                     &A_feed_reference + 14    *;EUMACH
+/c WG_MP1330_feed_9_ref                     &A_feed_reference + 16    *;EUMACH
+/c WG_MP1330_feed_10_ref                    &A_feed_reference + 18    *;EUMACH
+/c WG_MP1330_feed_11_ref                    &A_feed_reference + 20    *;EUMACH
+/c WG_MP1330_feed_12_ref                    &A_feed_reference + 22    *;EUMACH
+/c WG_MP1330_feed_13_ref                    &A_feed_reference + 24    *;EUMACH
+/c WG_MP1330_feed_14_ref                    &A_feed_reference + 26    *;EUMACH
+/c WG_MP1330_feed_15_ref                    &A_feed_reference + 28    *;EUMACH
+/c WG_MP1330_feed_16_ref                    &A_feed_reference + 30    *;EUMACH
+
+*;EUMACH Additional Words
+   WG_TC_standby_tool_number                40                        *;EUMACH standby tool loading/unloading -> tool number at TC position location (pocket/arm gripper)
+   WG_W3000_lag_err_comp_X                  3000
+   WG_W3002_lag_err_comp_Y                  3002
+   WG_W3004_lag_err_comp_Z                  3004
+   WG_spindle_warming_up_remaining_seconds
+   WG_S_front_bearing_temperature
+   WG_S_rear_bearing_temperature
+   WG_axis_encoder_incremental
+   WG_axis_encoder_EnDat
+   WG_machine_base_temperature
+   WG_MP1352_power_off_pos_saved
+;   WG_voltage_input_0_on_MC                                          *;EUMACH non-HSCI
+   WG_MP2220_3_monitoring_functions_axis_4
+   WG_MP2220_4_monitoring_functions_axis_5
+   WG_MP2220_5_monitoring_functions_axis_6
+   WG_MP1355_double_reference_run
+   WG_Mx01_feed_enable
+   WG_3D_head_axis_5_monitoring_off
+   WG_axis_4_monitoring_off_torque_rotary
+   WG_axis_5_monitoring_off_torque_rotary
+   WG_axis_6_monitoring_off_torque_rotary
+   WG_MP12_simulated_axes                                             *;EUMACH MP12
+   WG_PMC_temp_comp_axis_X
+   WG_PMC_temp_comp_axis_Y
+   WG_PMC_temp_comp_axis_Z
+   WG_MP7620_F_S_override                                             *;EUMACH G00% override
+   WG_MAG_standby_tool_number                                         *;EUMACH standby tool loading/unloading -> tool number of magazine standby pocket
+   WG_TC_STDT_pocket_number                                           *;EUMACH standby tool loading/unloading
+/r WG_interval_pause_time_setup
+/r WG_interval_on_time_setup
+   WG_interval_pause_time
+   WG_interval_on
+   WG_MP3310_0_S_override_max										  *;EUMACH S% knob -> FMAX% knob
+   WG_MP3310_1_S_override_min										  *;EUMACH S% knob -> FMAX% knob
+   WG_TM_loading_T_number                                             *;EUMACH TM loading T selection
+   WG_TM_loading_T_pocket_number                                      *;EUMACH TM loading T selection
+   WG_mag_standby_pocket_number_for_TM_loading                        *;EUMACH TM loading T selection
+   WG_TM_loading_pos_pocket_number                                    *;EUMACH TM loading T selection
+   WG_TM_loading_pos_T_number                                         *;EUMACH TM loading T selection
+   WG_magazine_standby_tool_number                                    *;EUMACH TM loading T selection
+*;EUMACH Additional Words
+
+*-----------------------------------------------------------------------------
+*  Doubleword
+*-----------------------------------------------------------------------------
+
+#type D
+
+   DG_real_time
+   DG_TC_magazine_pocket_distance
+   DG_TC_magazine_nominal_posit
+   DG_TC_magazine_2_nominal_posit                                     *;EUMACH Dual TC
+   DG_spindle_actual_rpm
+
+/r DG_3D_head_axis_1_position
+/r DG_3D_head_axis_2_position
+/r DG_3D_head_axis_1_min_torque
+/r DG_3D_head_axis_2_min_torque
+/r DG_3D_head_axis_1_S_position
+/r DG_3D_head_axis_2_S_position
+/r DG_3D_head_S_position
+
+   A_SPos                                   [5]
+/c DG_position_axis_S_actual                &A_SPos + 0
+/c DG_position_axis_S_nominal               &A_SPos + 4
+/c DG_position_axis_S_ref                   &A_SPos + 8
+/c DG_position_axis_S_lag                   &A_SPos + 12
+/c DG_position_axis_S_dist_to_go            &A_SPos + 16
+
+*;EUMACH If any double words above are added or deleted,
+
+*;EUMACH
+ ;OEM cycles 300/301/302/304/305.H use DG_position_axis_4_ref
+ ;and DG_position_axis_5_ref, so assign fix addresses.
+   A_ref                                    2048
+/c DG_position_axis_X_ref                   2048
+   DG_position_axis_Y_ref                   2052
+   DG_position_axis_Z_ref                   2056
+   DG_position_axis_4_ref                   2060
+   DG_position_axis_5_ref                   2064
+   DG_position_axis_6_ref                   2068
+   DG_position_axis_7_ref                   2072
+   DG_position_axis_8_ref                   2076
+   DG_position_axis_9_ref                   2080
+   DG_position_axis_10_ref                  2084
+   DG_position_axis_11_ref                  2088
+   DG_position_axis_12_ref                  2092
+   DG_position_axis_13_ref                  2096
+   DG_position_axis_14_ref                  2100
+   DG_position_axis_15_ref                  2104
+   DG_position_axis_16_ref                  2108
+
+   A_actl                                   [16]
+/c DG_position_axis_X_ACTL                  &A_actl + 0
+/c DG_position_axis_Y_ACTL                  &A_actl + 4
+/c DG_position_axis_Z_ACTL                  &A_actl + 8
+/c DG_position_axis_4_ACTL                  &A_actl + 12
+/c DG_position_axis_5_ACTL                  &A_actl + 16
+/c DG_position_axis_6_ACTL                  &A_actl + 20
+/c DG_position_axis_7_ACTL                  &A_actl + 24
+/c DG_position_axis_8_ACTL                  &A_actl + 28
+/c DG_position_axis_9_ACTL                  &A_actl + 32
+/c DG_position_axis_10_ACTL                 &A_actl + 36
+/c DG_position_axis_11_ACTL                 &A_actl + 40
+/c DG_position_axis_12_ACTL                 &A_actl + 44
+/c DG_position_axis_13_ACTL                 &A_actl + 48
+/c DG_position_axis_14_ACTL                 &A_actl + 52
+/c DG_position_axis_15_ACTL                 &A_actl + 56
+/c DG_position_axis_16_ACTL                 &A_actl + 60
+
+*;EUMACH Original PLC
+;   A_ref                                    [16]
+;/c DG_position_axis_X_ref                   &A_ref + 0
+;/c DG_position_axis_Y_ref                   &A_ref + 4
+;/c DG_position_axis_Z_ref                   &A_ref + 8
+;/c DG_position_axis_4_ref                   &A_ref + 12
+;/c DG_position_axis_5_ref                   &A_ref + 16
+;/c DG_position_axis_6_ref                   &A_ref + 20
+;/c DG_position_axis_7_ref                   &A_ref + 24
+;/c DG_position_axis_8_ref                   &A_ref + 28
+;/c DG_position_axis_9_ref                   &A_ref + 32
+;/c DG_position_axis_10_ref                  &A_ref + 36
+;/c DG_position_axis_11_ref                  &A_ref + 40
+;/c DG_position_axis_12_ref                  &A_ref + 44
+;/c DG_position_axis_13_ref                  &A_ref + 48
+;/c DG_position_axis_14_ref                  &A_ref + 52
+;/c DG_position_axis_15_ref                  &A_ref + 56
+;/c DG_position_axis_16_ref                  &A_ref + 60
+
+   A_dist_to_go                             [16]
+/c DG_distance_to_go_X_axis                 &A_dist_to_go + 0
+/c DG_distance_to_go_Y_axis                 &A_dist_to_go + 4
+/c DG_distance_to_go_Z_axis                 &A_dist_to_go + 8
+/c DG_distance_to_go_4_axis                 &A_dist_to_go + 12
+/c DG_distance_to_go_5_axis                 &A_dist_to_go + 16
+/c DG_distance_to_go_6_axis                 &A_dist_to_go + 20
+/c DG_distance_to_go_7_axis                 &A_dist_to_go + 24
+/c DG_distance_to_go_8_axis                 &A_dist_to_go + 28
+/c DG_distance_to_go_9_axis                 &A_dist_to_go + 32
+/c DG_distance_to_go_10_axis                &A_dist_to_go + 36
+/c DG_distance_to_go_11_axis                &A_dist_to_go + 40
+/c DG_distance_to_go_12_axis                &A_dist_to_go + 44
+/c DG_distance_to_go_13_axis                &A_dist_to_go + 48
+/c DG_distance_to_go_14_axis                &A_dist_to_go + 52
+/c DG_distance_to_go_15_axis                &A_dist_to_go + 56
+/c DG_distance_to_go_16_axis                &A_dist_to_go + 60
+
+   A_win                                    [16]
+/c DG_MP1030_pos_window_X                   &A_win + 0
+/c DG_MP1030_pos_window_Y                   &A_win + 4
+/c DG_MP1030_pos_window_Z                   &A_win + 8
+/c DG_MP1030_pos_window_4                   &A_win + 12
+/c DG_MP1030_pos_window_5                   &A_win + 16
+/c DG_MP1030_pos_window_6                   &A_win + 20
+/c DG_MP1030_pos_window_7                   &A_win + 24
+/c DG_MP1030_pos_window_8                   &A_win + 28
+/c DG_MP1030_pos_window_9                   &A_win + 32
+/c DG_MP1030_pos_window_10                  &A_win + 36
+/c DG_MP1030_pos_window_11                  &A_win + 40
+/c DG_MP1030_pos_window_12                  &A_win + 44
+/c DG_MP1030_pos_window_13                  &A_win + 48
+/c DG_MP1030_pos_window_14                  &A_win + 52
+/c DG_MP1030_pos_window_15                  &A_win + 56
+/c DG_MP1030_pos_window_16                  &A_win + 60
+
+   DG_MP3420_pos_window_S
+
+   A_mod                                    [16]
+/c DG_MP810_modulo_value_X                  &A_mod + 0
+/c DG_MP810_modulo_value_Y                  &A_mod + 4
+/c DG_MP810_modulo_value_Z                  &A_mod + 8
+/c DG_MP810_modulo_value_4                  &A_mod + 12
+/c DG_MP810_modulo_value_5                  &A_mod + 16
+/c DG_MP810_modulo_value_6                  &A_mod + 20
+/c DG_MP810_modulo_value_7                  &A_mod + 24
+/c DG_MP810_modulo_value_8                  &A_mod + 28
+/c DG_MP810_modulo_value_9                  &A_mod + 32
+/c DG_MP810_modulo_value_10                 &A_mod + 36
+/c DG_MP810_modulo_value_11                 &A_mod + 40
+/c DG_MP810_modulo_value_12                 &A_mod + 44
+/c DG_MP810_modulo_value_13                 &A_mod + 48
+/c DG_MP810_modulo_value_14                 &A_mod + 52
+/c DG_MP810_modulo_value_15                 &A_mod + 56
+/c DG_MP810_modulo_value_16                 &A_mod + 60
+
+   A_hirth_increment                        [16]
+/c DG_MP430_hirth_increm_X                  &A_hirth_increment + 0
+/c DG_MP430_hirth_increm_Y                  &A_hirth_increment + 4
+/c DG_MP430_hirth_increm_Z                  &A_hirth_increment + 8
+/c DG_MP430_hirth_increm_4                  &A_hirth_increment + 12
+/c DG_MP430_hirth_increm_5                  &A_hirth_increment + 16
+/c DG_MP430_hirth_increm_6                  &A_hirth_increment + 20
+/c DG_MP430_hirth_increm_7                  &A_hirth_increment + 24
+/c DG_MP430_hirth_increm_8                  &A_hirth_increment + 28
+/c DG_MP430_hirth_increm_9                  &A_hirth_increment + 32
+/c DG_MP430_hirth_increm_10                 &A_hirth_increment + 36
+/c DG_MP430_hirth_increm_11                 &A_hirth_increment + 40
+/c DG_MP430_hirth_increm_12                 &A_hirth_increment + 44
+/c DG_MP430_hirth_increm_13                 &A_hirth_increment + 48
+/c DG_MP430_hirth_increm_14                 &A_hirth_increment + 52
+/c DG_MP430_hirth_increm_15                 &A_hirth_increment + 56
+/c DG_MP430_hirth_increm_16                 &A_hirth_increment + 60
+
+   A_ref_preset                             [16]
+/c DG_MP960_ref_preset_X                    &A_ref_preset + 0
+/c DG_MP960_ref_preset_Y                    &A_ref_preset + 4
+/c DG_MP960_ref_preset_Z                    &A_ref_preset + 8
+/c DG_MP960_ref_preset_4                    &A_ref_preset + 12
+/c DG_MP960_ref_preset_5                    &A_ref_preset + 16
+/c DG_MP960_ref_preset_6                    &A_ref_preset + 20
+/c DG_MP960_ref_preset_7                    &A_ref_preset + 24
+/c DG_MP960_ref_preset_8                    &A_ref_preset + 28
+/c DG_MP960_ref_preset_9                    &A_ref_preset + 32
+/c DG_MP960_ref_preset_10                   &A_ref_preset + 36
+/c DG_MP960_ref_preset_11                   &A_ref_preset + 40
+/c DG_MP960_ref_preset_12                   &A_ref_preset + 44
+/c DG_MP960_ref_preset_13                   &A_ref_preset + 48
+/c DG_MP960_ref_preset_14                   &A_ref_preset + 52
+/c DG_MP960_ref_preset_15                   &A_ref_preset + 56
+/c DG_MP960_ref_preset_16                   &A_ref_preset + 60
+
+   DG_actual_drive_rpm                      [16]
+/c DG_actual_drive_rpm_X                    &DG_actual_drive_rpm  + 0
+/c DG_actual_drive_rpm_Y                    &DG_actual_drive_rpm  + 4
+/c DG_actual_drive_rpm_Z                    &DG_actual_drive_rpm  + 8
+/c DG_actual_drive_rpm_4                    &DG_actual_drive_rpm  + 12
+/c DG_actual_drive_rpm_5                    &DG_actual_drive_rpm  + 16
+/c DG_actual_drive_rpm_6                    &DG_actual_drive_rpm  + 20
+/c DG_actual_drive_rpm_7                    &DG_actual_drive_rpm  + 24
+/c DG_actual_drive_rpm_8                    &DG_actual_drive_rpm  + 28
+/c DG_actual_drive_rpm_9                    &DG_actual_drive_rpm  + 32
+/c DG_actual_drive_rpm_10                   &DG_actual_drive_rpm  + 36
+/c DG_actual_drive_rpm_11                   &DG_actual_drive_rpm  + 40
+/c DG_actual_drive_rpm_12                   &DG_actual_drive_rpm  + 44
+/c DG_actual_drive_rpm_13                   &DG_actual_drive_rpm  + 48
+/c DG_actual_drive_rpm_14                   &DG_actual_drive_rpm  + 52
+/c DG_actual_drive_rpm_15                   &DG_actual_drive_rpm  + 56
+/c DG_actual_drive_rpm_16                   &DG_actual_drive_rpm  + 60
+
+   DG_actual_drive_rpm_S
+
+*;EUMACH Additional Double Words
+/r DG_position_axis_X_ref_power_off
+/r DG_position_axis_X_ref_accumulator
+/r DG_position_axis_Y_ref_power_off
+/r DG_position_axis_Y_ref_accumulator
+/r DG_position_axis_Z_ref_power_off
+/r DG_position_axis_Z_ref_accumulator
+/r DG_position_axis_4_ref_power_off
+/r DG_position_axis_4_ref_accumulator
+/r DG_position_axis_5_ref_power_off
+/r DG_position_axis_6_ref_power_off
+/r DG_V_H_head_B_initial_pos_REF
+/r DG_TNC_power_off_real_time_sec
+
+   A_nominal                                [16]
+/c DG_position_axis_X_nominal               &A_nominal + 0
+/c DG_position_axis_Y_nominal               &A_nominal + 4
+/c DG_position_axis_Z_nominal               &A_nominal + 8
+/c DG_position_axis_4_nominal               &A_nominal + 12
+/c DG_position_axis_5_nominal               &A_nominal + 16
+/c DG_position_axis_6_nominal               &A_nominal + 20
+/c DG_position_axis_7_nominal               &A_nominal + 24
+/c DG_position_axis_8_nominal               &A_nominal + 28
+/c DG_position_axis_9_nominal               &A_nominal + 32
+
+   DG_ext_sag_comp_REF_pos                  [100]
+   DG_ext_sag_comp_push_rod                 [100]
+   DG_ext_sag_comp_pull_rod                 [100]
+
+   DG_axes_use_nominal_value_as_actual
+   DG_position_axis_6_ref_with_sign
+   DG_MP911_X_plus_limit_switch
+   DG_MP920_X_minus_limit_switch
+   DG_MP920_X_limit_switch
+   DG_MP922_X_limit_switch
+   DG_MP910_Y_limit_switch
+   DG_MP920_Z_limit_switch
+   DG_MP921_Z_limit_switch
+   DG_MP910_5_limit_switch
+   DG_MP920_5_limit_switch
+   DG_MP3240_1_S_min_rpm
+   DG_MP3510_0_S_1st_gear_rpm
+   DG_spindle_head_running_time
+   DG_S_head_transmission_lube_interval_sec
+   DG_S_head_bearing_lube_interval_sec
+   DG_pos_axis_Y_ref_working_area
+   DG_pos_axis_Z_ref_working_area
+   DG_pos_axis_4_ref_working_area
+   DG_MP2256_3_field_angle_4
+   DG_MP2256_4_field_angle_5
+   DG_MP2256_5_field_angle_6
+   DG_MP2256_12_field_angle_S
+   DG_4_clamped_Z_comp                                                *;EUMACH Table clamped -> Z comp
+   DG_MP4110_30_TS_probe_air_blow
+   DG_MP710_magazine_axis_backlash
+*;EUMACH Additional Double Words
+
+*-----------------------------------------------------------------------------
+*  Constant
+*-----------------------------------------------------------------------------
+
+#type K
+
+   KG_axis_X                                0
+   KG_axis_Y                                1
+   KG_axis_Z                                2
+   KG_axis_4                                3
+   KG_axis_5                                4
+   KG_axis_6                                5
+   KG_axis_7                                6
+   KG_axis_8                                7
+   KG_axis_9                                8
+   KG_axis_10                               9
+   KG_axis_11                               10
+   KG_axis_12                               11
+   KG_axis_13                               12
+   KG_axis_14                               13
+   KG_axis_15                               14
+   KG_axis_16                               15
+
+   KG_spindle                               15
+
+*-----------------------------------------------------------------------------
+*  Error messages
+*    200 (M4800..M4999)
+*-----------------------------------------------------------------------------
+
+#type M
+
+   PN_error_circuit_breaker                 4800
+   PN_error_temp_drives_inverter            4801
+   PN_error_hydraulic_pressure              4802
+   PN_error_pneumatic_pressure              4803
+   PN_error_PW_210_temperature_max          4804
+   PN_error_DA300_pressure                  4805
+   PN_error_supply_servo_drives             4806
+
+   PN_error_guard_closed                    4809
+   PN_error_guard_open                      4810
+   PN_error_coolant_level_low               4811
+   PN_error_lubrication_axes                4812
+   PN_error_lubricant_level_low             4813
+   PN_error_ESB_servo_drive_release         4814                      *;EUMACH HSCI
+   PN_error_X15x_servo_drive_release        4815                      *;EUMACH BASIC 53
+   PN_error_central_drive                   4817
+   PN_error_positioning_TC_magacine         4818
+   PN_error_axes_motion_from_end_position   4819
+   PN_error_clamping                        4820
+   PN_error_hirth_position                  4821
+   PN_error_hirth_nominal_position          4822
+   PN_error_drives_operational              4823
+   PN_error_inverter_temp_max               4824
+   PN_error_drive_temp_max                  4825
+   PN_error_I2t_pre_warning                 4826
+   PN_error_I2t_limitation                  4827
+   PN_error_spindle_operational             4828
+   PN_error_S_actual_equal_nominal_rpm      4829
+   PN_error_S_actual_lower_nominal_rpm      4830
+   PN_error_spindle_I_max                   4831
+   PN_error_spindle_T_max                   4832
+   PN_error_S_torque_max                    4833
+   PN_error_touch_probe_in_spindle          4834
+   PN_error_touch_probe_not_in_spindle      4835
+
+   PN_error_gear_change                     4837
+   PN_error_tool_not_clamped                4838
+   PN_error_tool_unclamping                 4839
+   PN_error_tool_clamping                   4840
+   PN_error_quit_tool_change                4841
+   PN_error_guard_close_quit_tool_change    4842
+   PN_error_end_tool_change_NC_start        4843
+   PN_error_check_pocket_table              4844
+   PN_error_tool_spindle_ok                 4845
+   PN_error_spindle_without_tool            4846
+   PN_error_spindle_not_empty               4847
+   PN_error_TOOL_CALL_T0_necessary          4848
+   PN_error_tool_tolerance                  4849
+   PN_error_tool_life_max                   4850
+   PN_error_TC_basic_position               4851
+   PN_error_TC_timeout                      4852
+   PN_error_TC_magazine_guard_open          4853
+   PN_error_TC_magazine_reference           4854
+   PN_error_TC_magazine_timeout             4855
+   PN_error_TC_magazine_loading             4856
+   PN_error_TC_pocket_not_empty             4857
+   PN_error_TC_pocket_without_tool          4858
+   PN_error_tool_in_spindle_wrong           4859
+   PN_error_timeout_alternating_table       4860
+   PN_error_enable_table_1                  4861
+   PN_error_enable_table_2                  4862
+   PN_error_inactive_alternating_table      4863
+   PN_error_zone_alternating_table          4864
+   PN_error_3D_head_timeout                 4865
+   PN_error_3D_head_setup                   4866
+   PN_error_3D_head_G_range                 4867
+   PN_error_3D_head_NC_PLC_pos              4868                      *;EUMACH
+
+   PN_error_alternat_table_separation       4870                      *;EUMACH
+*$WS
+   PN_error_PC_timeout
+   PN_error_PC_alarm
+   PN_error_PC_check
+   PN_error_PC_guard_open
+   PN_error_PC_close_load_door
+   PN_error_PC_standby_position
+   PN_error_workpiece_not_clamped
+
+   PN_error_light_beam_blocked              4878                      *;EUMACH
+   PN_error_power_on_safety_confirmation    4879                      *;EUMACH
+   PN_error_cabinet_cooler_unit             4880                      *;EUMACH
+   PN_error_monitoring_working_area_off     4881
+   PN_error_protection_working_area         4882
+   PN_error_auto_power_off_after_END_PGM    4883
+   PN_error_reference_necessary             4884
+   PN_error_start_M_strobe                  4885
+   PN_error_temperature_compensation        4886
+   PN_error_stack_not_empty                 4887
+   PN_error_reading_machine_parameters      4888
+   PN_error_M00_programmed_stop             4889
+   PN_error_M01_conditional_stop            4890
+   PN_error_M3_M4_missing                   4891
+   PN_error_M_function_not_used             4892
+   PN_error_override_0                      4893
+   PN_error_function_ok                     4894
+   PN_error_check_machine_parameter         4895
+   PN_error_SPG_simulation                  4896
+   PN_error_submit_spawn_queue_full         4897
+   PN_error_TNC_programming_station_active  4898
+   PN_error_in_PLC_window                   4899
+   PN_error_logbook_writing                 4900
+   PN_error_value_not_permissible           4901
+
+*;EUMACH Additional PLC Error Messages
+   PN_error_T_select_timeout                4902                      *;EUMACH standby tool loading/unloading
+   PN_error_ATS_S_rpm_error                 4903
+   PN_error_tilting_axis_pos_before_REF     4904
+   PN_error_paper_filter_out_of_paper       4905
+   PN_error_feed_disable_C_axis             4906
+   PN_error_tool_clamping_line_pressure     4907                      *;CYCON K11
+   PN_errorIPC_61x0_clock_monitoring        4908
+   PN_error_SM1xx_temperature_too_high      4909
+   PN_error_Y_to_traverse_range             4910
+   PN_error_tool_clamping_timeout           4911
+   PN_error_safety_mode_2                   4912                      *;CE 2008 ;Using in M code MACRO
+   PN_error_air_hydraulic_unit_oil_level    4913
+   PN_error_safety_mode_4_1                 4914                      *;safety mode 4 ;Using in M code MACRO
+   PN_error_safety_mode_4_2                 4915                      *;safety mode 4 ;Using in M code MACRO
+   PN_error_safety_mode_error               4916                      *;safety mode
+   PN_error_CTS_tank_overflow               4917
+   PN_error_initial_coolant_level           4918
+   PN_error_safety_mode_switching           4919                      *;CE 2008
+   PN_error_safety_mode_off_necessary       4920                      *;safety mode 4
+   PN_error_hydraulic_filter                4921
+   PN_error_selection_additional_axis       4922                      *;BASIC54
+   PN_error_auto_door_1_open_closed         4923
+   PN_error_auto_door_2_open_closed         4924
+   PN_error_CTS_tank_inlet_pressure         4925
+   PN_error_CTS_tank_level_low              4926
+   PN_error_tool_clamping_hydraulic         4927
+   PN_error_S_cooling_liquid_flow           4928
+   PN_error_S_bearing_temp_sensor           4929
+   PN_error_setting_alternating_table       4930
+   PN_error_S_not_referenced                4931
+   PN_error_T_chain_pin_in                  4932
+   PN_error_S_rotary_joint_cooling_circulation 4933
+   PN_error_TOOL_CALL_tool_not_allowed      4934
+   PN_error_T_from_mag_timeout              4935
+   PN_error_T_to_mag_timeout                4936
+   PN_error_mag_servo_tuning_mode           4937
+   PN_error_pneumatic_filter_replacement    4938
+   PN_error_CTS_motor_pressure              4939
+   PN_error_thermal_comp_timeout            4940
+   PN_error_thermal_comp_unit               4941
+   PN_error_tool_clamping_pneumatic         4942
+   PN_error_warning_level_S_oil_air_lubricant 4943
+   PN_error_alarm_level_S_oil_air_lubricant 4944
+   PN_error_guard_signal                    4945
+   PN_error_guard_2_closed_and_locked       4946
+   PN_error_CTS_tank_level                  4947
+   PN_error_scale_S_bearing_air_clean       4948
+   PN_error_CTS_filter                      4949
+   PN_error_secondary_guards_open           4950
+   PN_error_thermal_sensor_temperature      4951
+   PN_error_nut_lubrication_axes            4952
+   PN_error_nut_lubricant_level_low         4953
+   PN_error_hydraulic_valve_pressure        4954
+   PN_error_hydraulic_temperature           4955
+   PN_error_oil_mist_unit_level_low         4956
+   PN_error_B_axis_plus_end_position        4957
+   PN_error_B_axis_minus_end_position       4958
+   PN_error_ball_screw_cooling_unit         4959
+   PN_error_spindle_cooling_unit            4960
+   PN_error_tool_clamping_unclamping        4961
+   PN_error_S_head_coupling_not_clamped     4962
+   PN_error_spindle_stop_necessary          4963
+   PN_error_spindle_gear_cooling            4964
+   PN_error_spindle_warming_up_necessary    4965
+   PN_error_spindle_during_warming_up       4966
+   PN_error_unit_error_S_oil_air_lube       4967
+   PN_error_MIXER_pressure_S_oil_air_lube   4968
+   PN_error_pressure_S_oil_air_lube         4969
+   PN_error_ATC_door_open                   4970
+   PN_error_check_tool_on_TC_arm_unit       4971
+   PN_error_cover_interference_area         4972
+   PN_error_axis_within_TC_area             4973
+   PN_error_S_head_bearing_lubrication      4974
+   PN_error_guard_open_for_tool_replace     4975
+   PN_error_tool_replace_and_guard_close    4976
+   PN_error_TC_mag_load_pos_lock_necessary  4977
+   PN_error_TC_automatic_prohibited         4978
+   PN_error_TC_mag_manual_control_mode      4979
+   PN_error_V_H_head_pos                    4980
+   PN_error_TOOL_CALL_3D_head_pos           4981
+   PN_error_TC_help_V_H_head_pos            4982
+   PN_error_V_H_head_clamping               4983
+   PN_error_V_H_no_head_tool_not_clamped    4984
+   PN_error_V_H_head_timeout                4985
+   PN_error_V_H_head                        4986
+   PN_error_check_Tool_Call_axis            4987
+   PN_error_3D_head_pos_confirmation        4988
+   PN_error_S_head_transmission_lubrication 4989
+   PN_error_S_bearing_temperature_too_high  4990
+   PN_error_3D_head_motion_command_error    4991
+   PN_error_3D_head_position_error          4992
+   PN_error_tool_unclamp_rod_gap            4993
+   PN_error_service_door_open               4994
+   PN_error_traverse_range_error            4995
+   PN_error_key_for_torque_motor_brake_releasing 4996
+   PN_error_anti_backlash_motion            4997
+   PN_error_TT_rotary_axis_pos_error        4998
+   PN_error_function_inhibited              4999
+*;EUMACH Additional PLC Error Messages
+
+#type K
+
+   KG_error_module_9002                     202
+   KG_error_module_9003                     203
+   KG_error_module_9004                     204
+   KG_error_module_9005                     205
+   KG_error_module_9006                     206
+   KG_error_module_9019                     219
+   KG_error_module_9032                     232
+   KG_error_module_9034                     234
+   KG_error_module_9035                     235
+   KG_error_module_9036                     236
+   KG_error_module_9038                     238
+   KG_error_module_9041                     241
+   KG_error_module_9044                     244
+   KG_error_module_9050                     250
+   KG_error_module_9051                     251
+   KG_error_module_9052                     252
+   KG_error_module_9053                     253
+   KG_error_module_9054                     254
+   KG_error_module_9055                     255
+   KG_error_module_9064                     264
+   KG_error_module_9065                     265
+   KG_error_module_9071                     271
+   KG_error_module_9080                     280
+   KG_error_module_9081                     281
+   KG_error_module_9082                     282
+   KG_error_module_9083                     283
+   KG_error_module_9085                     285
+   KG_error_module_9086                     286
+   KG_error_module_9087                     287
+   KG_error_module_9090                     290
+   KG_error_module_9091                     291
+   KG_error_module_9092                     292
+   KG_error_module_9093                     293
+   KG_error_module_9095                     295
+   KG_error_module_9097                     297
+   KG_error_module_9110                     310
+   KG_error_module_9111                     311
+   KG_error_module_9120                     320
+   KG_error_module_9121                     321
+   KG_error_module_9122                     322
+   KG_error_module_9124                     324
+   KG_error_module_9125                     325
+   KG_error_module_9130                     330
+   KG_error_module_9132                     332
+   KG_error_module_9135                     335
+   KG_error_module_9138                     338
+   KG_error_module_9145                     345
+   KG_error_module_9146                     346
+   KG_error_module_9147                     347
+   KG_error_module_9148                     348
+   KG_error_module_9157                     357
+   KG_error_module_9158                     358
+   KG_error_module_9159                     359
+   KG_error_module_9160                     360
+   KG_error_module_9161                     361
+   KG_error_module_9162                     362
+   KG_error_module_9163                     363
+   KG_error_module_9164                     364
+   KG_error_module_9165                     365
+   KG_error_module_9166                     366
+   KG_error_module_9167                     367
+   KG_error_module_9168                     368
+   KG_error_module_9169                     369
+   KG_error_module_9171                     371
+   KG_error_module_9175                     375
+   KG_error_module_9180                     380
+   KG_error_module_9181                     381
+   KG_error_module_9182                     382
+   KG_error_module_9183                     383
+   KG_error_module_9184                     384
+   KG_error_module_9189                     389
+   KG_error_module_9190                     390
+   KG_error_module_9191                     391
+   KG_error_module_9192                     392
+   KG_error_module_9195                     395
+   KG_error_module_9200                     400
+   KG_error_module_9201                     401
+   KG_error_module_9202                     402
+   KG_error_module_9210                     410
+   KG_error_module_9211                     411
+   KG_error_module_9220                     420
+   KG_error_module_9221                     421
+   KG_error_module_9222                     422
+   KG_error_module_9224                     424
+   KG_error_module_9240                     440
+   KG_error_module_9241                     441
+   KG_error_module_9245                     445
+   KG_error_module_9247                     447
+   KG_error_module_9250                     450
+   KG_error_module_9251                     451
+   KG_error_module_9252                     452
+   KG_error_module_9255                     455
+   KG_error_module_9256                     456
+   KG_error_module_9260                     460
+   KG_error_module_9261                     461
+   KG_error_module_9262                     462
+   KG_error_module_9275                     475
+   KG_error_module_9276                     476
+   KG_error_module_9279                     479
+   KG_error_module_9291                     491
+   KG_error_module_9301                     501                       *;EUMACH Dual TC
+   KG_error_module_9310                     510                       *;EUMACH BASIC54
+   KG_error_module_9312                     512                       *;EUMACH
+   KG_error_module_9342                     542                       *;EUMACH
+
+*-----------------------------------------------------------------------------
+*  PLC Error messages additional (PET from line 800)
+*
+*  EUMACH
+*     Error 800 - 989 (M2800 - M2989), total 190 error messages
+*-----------------------------------------------------------------------------
+
+#type M
+   MG_error                                 2800
+/c MG_error_800                             2800
+
+   MG_error_pneumatic_counter_weight_balancing 2801
+   MG_error_feed_motor_fan_circuit_breaker  2802
+
+   MG_error_lubrication_2_axes              2805
+   MG_error_lubricant_2_level_low           2806
+   MG_error_lubrication_3_axes              2807
+   MG_error_lubricant_3_level_low           2808
+
+   MG_error_manual_lubrication_message      2810
+
+   MG_error_balance_over_max_pressure       2819
+
+   MG_error_M08_motor_pressure              2839
+
+   MG_error_Mag_ATC_doors_open              2841                      *;EUMACH Protection for both magazine door open & ATC door open
+
+   MG_error_STDT_check                      2844                      *;EUMACH standby tool loading/unloading
+
+   MG_error_TM_loading_T_select             2846                      *;EUMACH TM loading T selection
+   MG_error_TM_loading_T_data               2847                      *;EUMACH TM loading T selection
+   MG_error_TM_loading_D_link               2848                      *;EUMACH TM loading T selection
+
+   MG_error_TC2_basic_position              2851                      *;EUMACH Dual TC
+   MG_error_TC2_timeout                     2852                      *;EUMACH Dual TC
+   MG_error_TC_magazine_2_guard_open        2853                      *;EUMACH Dual TC
+   MG_error_TC_magazine_2_reference         2854                      *;EUMACH Dual TC
+   MG_error_TC_magazine_2_timeout           2855                      *;EUMACH Dual TC
+   MG_error_TC_magazine_2_loading           2856                      *;EUMACH Dual TC
+   MG_error_TC2_pocket_not_empty            2857                      *;EUMACH Dual TC
+   MG_error_TC2_pocket_without_tool         2858                      *;EUMACH Dual TC
+
+   MG_error_TLM_cover_open_close            2887
+
+   MG_error_ext_sag_comp_table_check        2900
+
+   MG_error_T_to_arm2_timeout               2935                      *;EUMACH Dual TC
+   MG_error_T_to_mag2_timeout               2936                      *;EUMACH Dual TC
+
+   MG_error_check_tool_on_TC_arm_2_unit     2971                      *;EUMACH Dual TC
+
+   MG_error_TC_mag_2_load_pos_lock_necessary 2977                     *;EUMACH Dual TC
+
+   MG_error_TC_mag_2_manual_control_mode    2979                      *;EUMACH Dual TC
+
+   MG_error_mag_grp_to_standby_pos          2981                      *;EUMACH standby tool loading/unloading
+   MG_error_mag_grp_to_in_pos               2982                      *;EUMACH standby tool loading/unloading
+   MG_error_SFT_P_to_mag_timeout            2983                      *;EUMACH shifting pocket
+   MG_error_SFT_P_to_TC_timeout             2984                      *;EUMACH shifting pocket
+   MG_error_TC_pocket_on_mag_standby_pos    2985                      *;EUMACH shifting pocket
+   MG_error_magazine_pocket_pos             2986                      *;EUMACH shifting pocket
+   MG_error_TC_STDT_tool                    2987                      *;EUMACH standby tool loading/unloading
+   MG_error_TC_STDT_pocket_number           2988                      *;EUMACH standby tool loading/unloading
+   MG_error_end                             2989
+
+   MG_error_cycle_before                    [190]
+
+*;EUMACH Original PLC
+;   MG_error                                 [200]
+;   MG_error_cycle_before                    [200]
+;/c MG_error_800                             &MG_error + 00
+;/c MG_error_801                             &MG_error + 01
+;/c MG_error_802                             &MG_error + 02
+;/c MG_error_803                             &MG_error + 03
+;/c MG_error_804                             &MG_error + 04
+;/c MG_error_805                             &MG_error + 05
+;/c MG_error_806                             &MG_error + 06
+;/c MG_error_807                             &MG_error + 07
+;/c MG_error_808                             &MG_error + 08
+;/c MG_error_809                             &MG_error + 09
+
+;/c MG_error_end                             &MG_error + 199
+*;EUMACH Original PLC
+
+*-----------------------------------------------------------------------------
+*  Messages PLC Window
+*-----------------------------------------------------------------------------
+
+   A_PLC_win                                [200]
+
+/c MG_PLC_window_begin                      &A_PLC_win + 00
+
+/c MG_win_emergency_stop_button             &A_PLC_win + 00
+/c MG_win_end_position_Xp                   &A_PLC_win + 01
+/c MG_win_end_position_Yp                   &A_PLC_win + 02
+/c MG_win_end_position_Zp                   &A_PLC_win + 03
+/c MG_win_end_position_4p                   &A_PLC_win + 04
+/c MG_win_end_position_5p                   &A_PLC_win + 05
+/c MG_win_end_position_Xn                   &A_PLC_win + 06
+/c MG_win_end_position_Yn                   &A_PLC_win + 07
+/c MG_win_end_position_Zn                   &A_PLC_win + 08
+/c MG_win_end_position_4n                   &A_PLC_win + 09
+/c MG_win_end_position_5n                   &A_PLC_win + 10
+/c MG_win_TC_pos_X                          &A_PLC_win + 11
+/c MG_win_TC_pos_Y_put_out                  &A_PLC_win + 12
+/c MG_win_TC_pos_Y_put_in                   &A_PLC_win + 13
+/c MG_win_TC_pos_Y_manual                   &A_PLC_win + 14
+/c MG_win_TC_pos_Z_put_out                  &A_PLC_win + 15
+/c MG_win_TC_pos_Z_put_in                   &A_PLC_win + 16
+/c MG_win_TC_pos_Z_manual                   &A_PLC_win + 17
+/c MG_win_TC_pos_Z_safety                   &A_PLC_win + 18
+/c MG_win_TC_pos_S                          &A_PLC_win + 19
+/c MG_win_tool_unclamping                   &A_PLC_win + 20
+/c MG_win_tool_clamping                     &A_PLC_win + 21
+/c MG_win_TC_arm_put_out                    &A_PLC_win + 22
+/c MG_win_TC_arm_put_in                     &A_PLC_win + 23
+/c MG_win_TC_arm_turn                       &A_PLC_win + 24
+/c MG_win_TC_gripper_close                  &A_PLC_win + 25
+/c MG_win_TC_gripper_open                   &A_PLC_win + 26
+/c MG_win_TC_magazine_change_position       &A_PLC_win + 27
+/c MG_win_TC_magazine_close_guard           &A_PLC_win + 28
+/c MG_win_tool_in_spindle_wrong             &A_PLC_win + 29
+/c MG_win_TC_magazine_to_spindle_position   &A_PLC_win + 30
+/c MG_win_TC_magazine_to_basic_position     &A_PLC_win + 31
+/c MG_win_TC_pocket_put_out                 &A_PLC_win + 32
+/c MG_win_TC_pocket_put_in                  &A_PLC_win + 33
+/c MG_win_TC_mag_lock_pin_out               &A_PLC_win + 34
+/c MG_win_TC_mag_lock_pin_in                &A_PLC_win + 35
+/c MG_win_TC_arm_standby                    &A_PLC_win + 36
+/c MG_win_TC_arm_function_inhibited         &A_PLC_win + 37
+/c MG_win_TC_arm_to_spindle_position        &A_PLC_win + 38
+/c MG_win_TC_arm_to_basic_position          &A_PLC_win + 39
+/c MG_win_TC_arm_to_middle_position         &A_PLC_win + 40
+/c MG_win_axis_X                            &A_PLC_win + 41
+/c MG_win_axis_Y                            &A_PLC_win + 42
+/c MG_win_axis_Z                            &A_PLC_win + 43
+/c MG_win_axis_4                            &A_PLC_win + 44
+/c MG_win_axis_5                            &A_PLC_win + 45
+/c MG_win_axis_6                            &A_PLC_win + 46
+/c MG_win_axis_7                            &A_PLC_win + 47
+/c MG_win_axis_8                            &A_PLC_win + 48
+/c MG_win_axis_9                            &A_PLC_win + 49
+/c MG_win_axis_10                           &A_PLC_win + 50
+/c MG_win_axis_11                           &A_PLC_win + 51
+/c MG_win_axis_12                           &A_PLC_win + 52
+/c MG_win_axis_13                           &A_PLC_win + 53
+/c MG_win_axis_14                           &A_PLC_win + 54
+/c MG_win_axis_15                           &A_PLC_win + 55
+/c MG_win_axis_16                           &A_PLC_win + 56
+/c MG_win_spindle                           &A_PLC_win + 57
+/c MG_win_HR410_MP7645                      &A_PLC_win + 58
+/c MG_win_MSTG_strobe_block_scan            &A_PLC_win + 59
+/c MG_win_TC_magazine_PLC_axis              &A_PLC_win + 60
+/c MG_win_MP7640_HR_type_not_supported      &A_PLC_win + 61
+/c MG_win_block_scan_PLC_active             &A_PLC_win + 62
+/c MG_win_PGM_stop_M_strobe_MP7440          &A_PLC_win + 63
+/c MG_win_file_open                         &A_PLC_win + 64
+/c MG_win_read_table                        &A_PLC_win + 65
+/c MG_win_write_table                       &A_PLC_win + 66
+/c MG_win_value_not_found                   &A_PLC_win + 67
+/c MG_win_temperature_sensor                &A_PLC_win + 68
+/c MG_win_Pt100_not_found                   &A_PLC_win + 69
+/c MG_win_PC_posit_X                        &A_PLC_win + 70
+/c MG_win_PC_posit_Y                        &A_PLC_win + 71
+/c MG_win_PC_posit_Z                        &A_PLC_win + 72
+/c MG_win_PC_automatic                      &A_PLC_win + 73
+/c MG_win_PC_start                          &A_PLC_win + 74
+/c MG_win_PC_finish                         &A_PLC_win + 75
+/c MG_win_PC_door_open                      &A_PLC_win + 76
+/c MG_win_PC_door_close                     &A_PLC_win + 77
+/c MG_win_PC_pal_number_not_permissible     &A_PLC_win + 78
+/c MG_win_pal_in_machine_unclamping         &A_PLC_win + 79
+/c MG_win_pal_in_machine_clamping           &A_PLC_win + 80
+/c MG_win_axes_MP10_not_assigned            &A_PLC_win + 81
+
+/c MG_win_PC_to_stop_position
+/c MG_win_PC_1_pos_X
+/c MG_win_PC_2_pos_X
+/c MG_win_PC_no_standby_position
+/c MG_win_PC_1_in_standby_position
+/c MG_win_PC_2_in_standby_position
+   MG_win_PC_to_load_position
+   MG_win_PC_to_machine_position
+   MG_win_error_PC_position_sensors
+   MG_win_PC_posit_4
+   MG_win_3D_head_gear_range
+   MG_win_3D_head_spindle_position
+   MG_win_3D_head_positioning_error
+   MG_win_3D_head_torque
+
+*;EUMACH
+/c MG_win_end_position_6p                   &A_PLC_win + 82
+/c MG_win_end_position_7p                   &A_PLC_win + 83
+/c MG_win_end_position_6n                   &A_PLC_win + 84
+/c MG_win_end_position_7n                   &A_PLC_win + 85
+
+/c MG_win_A_to_plus_pos                     &A_PLC_win + 91
+/c MG_win_A_to_minus_pos                    &A_PLC_win + 92
+/c MG_win_B_to_plus_pos                     &A_PLC_win + 93
+/c MG_win_B_to_minus_pos                    &A_PLC_win + 94
+/c MG_win_C_to_plus_pos                     &A_PLC_win + 95
+/c MG_win_C_to_minus_pos                    &A_PLC_win + 96
+/c MG_win_TC_pos_V                          &A_PLC_win + 97
+*;EUMACH
+
+*/c free                                    &A_PLC_win + 86
+*/c ...
+*/c free                                    &A_PLC_win + 90
+
+/c MG_win_window_yes_no                     &A_PLC_win + 98
+/c MG_win_window_NC_start                   &A_PLC_win + 99
+
+;/c MG_PLC_window_end                        &A_PLC_win + 99          *;EUMACH
+
+*;EUMACH Additional PLC Small Window Messages
+/c MG_win_MP7620_bit_9_not_assigned         &A_PLC_win + 101          *;EUMACH G00% override
+/c MG_win_MP7620_bit_9_assigned             &A_PLC_win + 102          *;EUMACH G00% override
+
+/c MG_win_axis_YZ                           &A_PLC_win + 104
+/c MG_win_axis_V                            &A_PLC_win + 105
+
+/c MG_win_MP7620_bit_5_not_assigned         &A_PLC_win + 108          *;EUMACH S% knob -> FMAX% knob
+/c MG_win_MP7620_bit_5_assigned             &A_PLC_win + 109          *;EUMACH S% knob -> FMAX% knob
+/c MG_win_gripper_to_standby                &A_PLC_win + 110
+/c MG_win_gripper_to_magazine               &A_PLC_win + 111
+/c MG_win_gripper_to_STDT_pocket            &A_PLC_win + 112
+/c MG_win_gripper_put_out                   &A_PLC_win + 113
+/c MG_win_gripper_put_in                    &A_PLC_win + 114
+/c MG_win_pocket_to_standby                 &A_PLC_win + 115
+/c MG_win_pocket_to_magazine                &A_PLC_win + 116
+/c MG_win_pocket_swing_to_standby           &A_PLC_win + 117
+/c MG_win_pocket_swing_to_magazine          &A_PLC_win + 118
+/c MG_win_pocket_brace_off                  &A_PLC_win + 119          *;EUMACH Shifting pocket
+/c MG_win_pocket_brace_on                   &A_PLC_win + 120          *;EUMACH Shifting pocket
+/c MG_win_pocket_clamp                      &A_PLC_win + 121          *;EUMACH Shifting pocket
+/c MG_win_pocket_unclamp                    &A_PLC_win + 122          *;EUMACH Shifting pocket
+/c MG_win_TC_pocket_to_magazine_pos         &A_PLC_win + 123          *;EUMACH Shifting pocket
+/c MG_win_TC_pocket_to_TC_pos               &A_PLC_win + 124          *;EUMACH Shifting pocket
+/c MG_win_mag_standby_pos_has_a_pocket      &A_PLC_win + 125          *;EUMACH Shifting pocket
+
+/c MG_win_PMC_T_comp_AL01                   &A_PLC_win + 141
+/c MG_win_PMC_T_comp_AL02                   &A_PLC_win + 142
+/c MG_win_PMC_T_comp_AL03                   &A_PLC_win + 143
+/c MG_win_PMC_T_comp_AL04                   &A_PLC_win + 144
+/c MG_win_PMC_T_comp_AL05                   &A_PLC_win + 145
+/c MG_win_PMC_T_comp_AL06                   &A_PLC_win + 146
+
+/c MG_win_TC_arm_mag2_motor_overloaded      &A_PLC_win + 148          *;EUMACH Dual TC
+
+/c MG_win_hydraulic_motor_overloaded        &A_PLC_win + 150
+/c MG_win_spindle_fan_motor_overloaded      &A_PLC_win + 151
+/c MG_win_coolant_motor_overloaded          &A_PLC_win + 152
+/c MG_win_chip_conveyor_motor_overloaded    &A_PLC_win + 153
+/c MG_win_TC_arm_mag_motor_overloaded       &A_PLC_win + 154
+/c MG_win_S_gear_cooling_pump_overloaded    &A_PLC_win + 155
+/c MG_win_paper_filter_motor_overloaded     &A_PLC_win + 156
+/c MG_win_dust_mist_collector_overloaded    &A_PLC_win + 157
+/c MG_win_toolchain_pin_in                  &A_PLC_win + 158
+/c MG_win_toolchain_pin_out                 &A_PLC_win + 159
+/c MG_win_guard_2_closed                    &A_PLC_win + 160
+/c MG_win_TC_pos_X_put_out                  &A_PLC_win + 161
+/c MG_win_TC_arm_to_swing_pos               &A_PLC_win + 162
+/c MG_win_TC_arm_to_vertical                &A_PLC_win + 163
+/c MG_win_TC_arm_to_horizontal              &A_PLC_win + 164
+/c MG_win_TC_arm_to_mag_area                &A_PLC_win + 165
+/c MG_win_TC_arm_to_S_area                  &A_PLC_win + 166
+/c MG_win_TC_arm_to_magazine_position       &A_PLC_win + 167
+/c MG_win_TC_pos_6                          &A_PLC_win + 168
+/c MG_win_TC_pos_4                          &A_PLC_win + 169
+/c MG_win_TC_pos_Z_put_in_out               &A_PLC_win + 170
+/c MG_win_TC_pos_Y_safety                   &A_PLC_win + 171
+/c MG_win_TC_pos_5                          &A_PLC_win + 172
+/c MG_win_TC_load_tool_to_arm               &A_PLC_win + 173
+/c MG_win_TC_return_tool_to_pocket          &A_PLC_win + 174
+/c MG_win_ATC_door_opening                  &A_PLC_win + 175
+/c MG_win_ATC_door_closing                  &A_PLC_win + 176
+/c MG_win_magazine_pocket_pos               &A_PLC_win + 177
+/c MG_win_SHC_pos_X                         &A_PLC_Win + 178
+/c MG_win_machine_out_of_TC_area            &A_PLC_win + 179
+/c MG_win_SHC_pos_S                         &A_PLC_Win + 180
+/c MG_win_SHC_pos_Y                         &A_PLC_Win + 181
+/c MG_win_SHC_pos_Z                         &A_PLC_Win + 182
+/c MG_win_SHC_pos_V_H_head                  &A_PLC_Win + 183
+/c MG_win_V_H_head_gear_range               &A_PLC_Win + 184
+/c MG_win_V_H_head_unclamping               &A_PLC_Win + 185
+/c MG_win_V_H_head_clamping                 &A_PLC_Win + 186
+/c MG_win_V_H_head_S_turning_pos            &A_PLC_Win + 187
+/c MG_win_V_H_head_function_inhibited       &A_PLC_Win + 188
+/c MG_win_SHC_pos_Y_safety                  &A_PLC_Win + 189
+/c MG_win_SHC_pos_Z_safety                  &A_PLC_Win + 190
+/c MG_win_alt_table_zone                    &A_PLC_Win + 191
+/c MG_win_TC2_pocket_put_out                &A_PLC_win + 192          *;EUMACH Dual TC
+/c MG_win_TC2_pocket_put_in                 &A_PLC_win + 193          *;EUMACH Dual TC
+/c MG_win_TC2_mag_lock_pin_out              &A_PLC_win + 194          *;EUMACH Dual TC
+
+/c MG_win_TC_loading_front_guard_closing    &A_PLC_win + 196
+/c MG_win_TC_pos_confirm                    &A_PLC_win + 197
+
+/c MG_PLC_window_end                        &A_PLC_win + 199
+*;EUMACH Additional PLC Small Window Messages
+
+*-----------------------------------------------------------------------------
+*  Timer T0..T47 (values in MP4110.0 ... MP4110.47)
+*-----------------------------------------------------------------------------
+
+#type T
+
+   TS_pulse_250_ms                          0
+   TR_pulse_250_ms                          48
+
+   TS_keys_pulse_identifier                 2                          *;EUMACH S% knob -> FMAX% knob
+   TR_keys_pulse_identifier                 50                         *;EUMACH S% knob -> FMAX% knob
+
+;   TS_M4001_S_nominal_not_in_ramp           6                         *;EUMACH BASIC51
+;   TR_M4001_S_nominal_not_in_ramp           54                        *;EUMACH BASIC51
+   TS_delayed_spindle_stop                  7
+   TR_delayed_spindle_stop                  55
+   TS_servo_drive_releases                  8
+   TR_servo_drive_releases                  56
+   TS_servo_drives_ready                    9
+   TR_servo_drives_ready                    57
+   TS_spindle_rpm_change                    10
+   TR_spindle_rpm_change                    58
+   TS_servo_drive_release_S                 11
+   TR_servo_drive_release_S                 59
+   TS_gear_timeout                          12
+   TR_gear_timeout                          60
+   TS_S_rotation_total_gear_change          13
+   TR_S_rotation_total_gear_change          61
+   TS_S_rotation_cw_gear_change             14
+   TR_S_rotation_cw_gear_change             62
+   TS_TC_magazine_exact_position            15
+   TR_TC_magazine_exact_position            63
+   TS_TC_magazine_timeout                   16
+   TR_TC_magazine_timeout                   64
+   TS_TC_magazine_stop_delay                17
+   TR_TC_magazine_stop_delay                65
+   TS_TC_timeout                            18
+   TR_TC_timeout                            66
+   TS_TC_timer_universal                    19
+   TR_TC_timer_universal                    67
+   TS_lubrication                           20
+   TR_lubrication                           68
+   TS_lubricant_pressure                    21
+   TR_lubricant_pressure                    69
+   TS_hydraulic_pressure_ok                 22
+   TR_hydraulic_pressure_ok                 70
+   TS_timeout_alternating_table             23
+   TR_timeout_alternating_table             71
+   TS_start_index_table                     24
+   TR_start_index_table                     72
+   TS_TC_arm_middle_delay                   25
+   TR_TC_arm_middle_delay                   73
+   TS_PC_timeout                            26
+   TR_PC_timeout                            74
+   TS_PC_timer_universal                    27
+   TR_PC_timer_universal                    75
+   TS_3D_head_timeout                       28
+   TR_3D_head_timeout                       76
+   TS_3D_head_timer_universal               29
+   TR_3D_head_timer_universal               77
+
+*;EUMACH Dual TC
+   TS_TSxxx_air_blow                        30                        *;EUMACH TS air blow
+   TR_TSxxx_air_blow                        78                        *;EUMACH TS air blow
+   TS_TC_magazine_2_exact_position          31
+   TR_TC_magazine_2_exact_position          79
+   TS_TC_magazine_2_timeout                 32
+   TR_TC_magazine_2_timeout                 80
+   TS_TC_magazine_2_stop_delay              33
+   TR_TC_magazine_2_stop_delay              81
+*;EUMACH Dual TC
+*;EUMACH standby tool loading/unloading
+   TS_T_select_timeout                      34
+   TR_T_select_timeout                      82
+*;EUMACH standby tool loading/unloading
+   TS_lubrication_2                         35                        *;EUMACH
+   TR_lubrication_2                         83                        *;EUMACH
+   TS_lubricant_2_pressure                  36                        *;EUMACH
+   TR_lubricant_2_pressure                  84                        *;EUMACH
+   TS_lubrication_3                         37                        *;EUMACH
+   TR_lubrication_3                         85                        *;EUMACH
+   TS_lubricant_3_pressure                  38                        *;EUMACH
+   TR_lubricant_3_pressure                  86                        *;EUMACH
+   TS_TC_timer_2nd_universal                39                        *;EUMACH
+   TR_TC_timer_2nd_universal                87                        *;EUMACH
+
+*;EUMACH Dual TC
+   TS_TC2_timeout                           41
+   TR_TC2_timeout                           89
+   TS_TC2_timer_universal                   42
+   TR_TC2_timer_universal                   90
+   TS_TC2_timer_2nd_universal               43
+   TR_TC2_timer_2nd_universal               91
+*;EUMACH Dual TC
+
+   TS_extern_DC_voltage_on_off              46
+   TR_extern_DC_voltage_on_off              94
+   TS_extern_DC_voltage_off_on              47
+   TR_extern_DC_voltage_off_on              95
+
+*-----------------------------------------------------------------------------
+*  Timer T96..T999 (values with module 9006, only TR_ no TS_)
+*-----------------------------------------------------------------------------
+
+#type T
+
+   TR_unclamping_X                          96
+   TR_unclamping_Y                          97
+   TR_unclamping_Z                          98
+   TR_unclamping_4                          99
+   TR_unclamping_5                          100
+   TR_unclamping_6                          101
+   TR_unclamping_7                          102
+   TR_unclamping_8                          103
+   TR_unclamping_9                          104
+   TR_unclamping_10                         105
+   TR_unclamping_11                         106
+   TR_unclamping_12                         107
+   TR_unclamping_13                         108
+   TR_unclamping_14                         109
+   TR_unclamping_15                         110
+   TR_unclamping_16                         111
+
+   TR_clamping_X                            112
+   TR_clamping_Y                            113
+   TR_clamping_Z                            114
+   TR_clamping_4                            115
+   TR_clamping_5                            116
+   TR_clamping_6                            117
+   TR_clamping_7                            118
+   TR_clamping_8                            119
+   TR_clamping_9                            120
+   TR_clamping_10                           121
+   TR_clamping_11                           122
+   TR_clamping_12                           123
+   TR_clamping_13                           124
+   TR_clamping_14                           125
+   TR_clamping_15                           126
+   TR_clamping_16                           127
+
+   TR_clamping_timeout_X                    128
+   TR_clamping_timeout_Y                    129
+   TR_clamping_timeout_Z                    130
+   TR_clamping_timeout_4                    131
+   TR_clamping_timeout_5                    132
+   TR_clamping_timeout_6                    133
+   TR_clamping_timeout_7                    134
+   TR_clamping_timeout_8                    135
+   TR_clamping_timeout_9                    136
+   TR_clamping_timeout_10                   137
+   TR_clamping_timeout_11                   138
+   TR_clamping_timeout_12                   139
+   TR_clamping_timeout_13                   140
+   TR_clamping_timeout_14                   141
+   TR_clamping_timeout_15                   142
+   TR_clamping_timeout_16                   143
+
+   TR_waiting_in_posit_X                    144
+   TR_waiting_in_posit_Y                    145
+   TR_waiting_in_posit_Z                    146
+   TR_waiting_in_posit_4                    147
+   TR_waiting_in_posit_5                    148
+   TR_waiting_in_posit_6                    149
+   TR_waiting_in_posit_7                    150
+   TR_waiting_in_posit_8                    151
+   TR_waiting_in_posit_9                    152
+   TR_waiting_in_posit_10                   153
+   TR_waiting_in_posit_11                   154
+   TR_waiting_in_posit_12                   155
+   TR_waiting_in_posit_13                   156
+   TR_waiting_in_posit_14                   157
+   TR_waiting_in_posit_15                   158
+   TR_waiting_in_posit_16                   159
+   TR_axes_group_01_in_motion               160
+   TR_axes_group_02_in_motion               161
+   TR_axes_group_03_in_motion               162
+   TR_axes_group_04_in_motion               163
+   TR_axes_group_05_in_motion               164
+   TR_axes_group_06_in_motion               165
+   TR_axes_group_07_in_motion               166
+   TR_axes_group_08_in_motion               167
+
+*;EUMACH Additional Timers
+   TR_I_servo_drive_release                 200
+   TR_pneumatic_pressure                    201
+   TR_coolant_level_detection               202
+   TR_guard_1_signal                        203
+   TR_guard_2_signal                        204
+   TR_hydraulic_valve_pressure_ok           205
+   TR_MG_power_delayed_on                   206
+   TR_pneumatic_fine_filter                 207
+
+   TR_nut_lubrication                       209
+   TR_nut_lubricant_pressure                210
+   TR_pneumatic_counter_weight_balancing    211
+   TR_lubrication_pneumatic_spray           212
+   TR_tool_clamping_pneumatic_pressure      213
+   TR_tool_clamping_hydraulic_pressure      214
+   TR_buzzer_on                             215
+   TR_sensor_for_scale_S_bearing_air_clean  216
+   TR_pneumatic_chip_flush                  217
+   TR_S_cooling_unit_off_delay              218
+   TR_S_cooling_pressure                    219
+   TR_scale_S_bearing_air_clean             220
+   TR_S_gear_cooling_pressure               221
+   TR_CTS_filter                            222
+   TR_CTS_S_blow_clean                      223
+   TR_CTS_motor_outlet_pressure             224
+   TR_gear_range_output_delay               225
+   TR_gear_dwell                            226
+   TR_CTS_tank_inlet_pressure               227
+   TR_S_oil_air_lube_reset                  228
+   TR_S_oil_air_lube_pneumatic              229
+   TR_CYTEC_S_clamp_unclamp                 230
+   TR_CYTEC_S_aiming_seal                   231
+   TR_tool_clamp_line_pressure              232                       *;CYCON K11
+   TR_solenoid_off_after_S_clamped          233
+   TR_time_out_solenoid_off_after_S_clamped 234
+   TR_thermal_comp_time_out                 235
+   TR_thermal_comp_unit_error               236
+   TR_on_delay_S_oil_air_lube_pneumatic_on  237
+   TR_S_rotary_joint_cooling_off_delay      238
+   TR_timeout_S_rotary_joint_cooling        239
+
+;   TR_test_on                               238  *;test1
+;   TR_test_off                              239  *;test1
+
+   TR_coolant_air_blast_switching           240
+   TR_I_S_oil_air_lube_pressure_ok          241
+   TR_I_S_oil_air_lube_MIXER_pressure_ok    242
+   TR_MG_S_orientation_active_off_delay     243
+   TR_M08_motor_outlet_pressure             244
+   TR_M07_M307_switching_pause              245
+   TR_hydraulic_2_balance_pressure_ok       246
+   TR_hydraulic_2_T_axes_clamp_pressure_ok  247
+
+   TR_mag_braking_DC_voltage_injection      250
+   TR_SFT_P_to_mag_timeout                  251
+   TR_SFT_P_to_mag_timer_universal          252
+   TR_SFT_P_to_TC_timeout                   253
+   TR_SFT_P_to_TC_timer_universal           254
+   TR_T_from_mag_timeout                    255
+   TR_T_from_mag_timer_universal            256
+   TR_T_to_mag_timeout                      257
+   TR_T_to_mag_timer_universal              258
+
+   TR_T_from_mag2_timeout                   260
+   TR_T_from_mag2_timer_universal           261
+   TR_T_to_mag2_timeout                     262
+   TR_T_to_mag2_timer_universal             263
+
+   TR_SFT_P_to_mag_2nd_timer_universal      265
+
+   TR_3D_head_unclamping                    268
+
+   TR_V_H_head_turning_timeout              270
+   TR_V_H_head_timer_general                271
+   TR_V_H_head_unclamping                   272
+
+   TR_TLM_cover_open_close_timeout          275
+
+   TR_auto_door_1_opening                   280
+   TR_auto_door_1_closing                   281
+   TR_auto_door_2_opening                   282
+   TR_auto_door_2_closing                   283
+
+   TR_TM_loading_T_select_timeout           287
+   TR_TM_loading_T_data_timeout             288
+   TR_TM_loading_D_link_timeout             289
+*;EUMACH Additional Timers
+
+#type M
+
+   Unclamping                               [16]
+/c TS_unclamping_X                          &Unclamping + 0
+/c TS_unclamping_Y                          &Unclamping + 1
+/c TS_unclamping_Z                          &Unclamping + 2
+/c TS_unclamping_4                          &Unclamping + 3
+/c TS_unclamping_5                          &Unclamping + 4
+/c TS_unclamping_6                          &Unclamping + 5
+/c TS_unclamping_7                          &Unclamping + 6
+/c TS_unclamping_8                          &Unclamping + 7
+/c TS_unclamping_9                          &Unclamping + 8
+/c TS_unclamping_10                         &Unclamping + 9
+/c TS_unclamping_11                         &Unclamping + 10
+/c TS_unclamping_12                         &Unclamping + 11
+/c TS_unclamping_13                         &Unclamping + 12
+/c TS_unclamping_14                         &Unclamping + 13
+/c TS_unclamping_15                         &Unclamping + 14
+/c TS_unclamping_16                         &Unclamping + 15
+
+   Clamping                                 [16]
+/c TS_clamping_X                            &Clamping + 0
+/c TS_clamping_Y                            &Clamping + 1
+/c TS_clamping_Z                            &Clamping + 2
+/c TS_clamping_4                            &Clamping + 3
+/c TS_clamping_5                            &Clamping + 4
+/c TS_clamping_6                            &Clamping + 5
+/c TS_clamping_7                            &Clamping + 6
+/c TS_clamping_8                            &Clamping + 7
+/c TS_clamping_9                            &Clamping + 8
+/c TS_clamping_10                           &Clamping + 9
+/c TS_clamping_11                           &Clamping + 10
+/c TS_clamping_12                           &Clamping + 11
+/c TS_clamping_13                           &Clamping + 12
+/c TS_clamping_14                           &Clamping + 13
+/c TS_clamping_15                           &Clamping + 14
+/c TS_clamping_16                           &Clamping + 15
+
+   Timeout                                  [16]
+/c TS_clamping_timeout_X                    &Timeout + 0
+/c TS_clamping_timeout_Y                    &Timeout + 1
+/c TS_clamping_timeout_Z                    &Timeout + 2
+/c TS_clamping_timeout_4                    &Timeout + 3
+/c TS_clamping_timeout_5                    &Timeout + 4
+/c TS_clamping_timeout_6                    &Timeout + 5
+/c TS_clamping_timeout_7                    &Timeout + 6
+/c TS_clamping_timeout_8                    &Timeout + 7
+/c TS_clamping_timeout_9                    &Timeout + 8
+/c TS_clamping_timeout_10                   &Timeout + 9
+/c TS_clamping_timeout_11                   &Timeout + 10
+/c TS_clamping_timeout_12                   &Timeout + 11
+/c TS_clamping_timeout_13                   &Timeout + 12
+/c TS_clamping_timeout_14                   &Timeout + 13
+/c TS_clamping_timeout_15                   &Timeout + 14
+/c TS_clamping_timeout_16                   &Timeout + 15
+
+   Wait                                     [16]
+/c TS_waiting_in_posit_X                    &Wait + 0
+/c TS_waiting_in_posit_Y                    &Wait + 1
+/c TS_waiting_in_posit_Z                    &Wait + 2
+/c TS_waiting_in_posit_4                    &Wait + 3
+/c TS_waiting_in_posit_5                    &Wait + 4
+/c TS_waiting_in_posit_6                    &Wait + 5
+/c TS_waiting_in_posit_7                    &Wait + 6
+/c TS_waiting_in_posit_8                    &Wait + 7
+/c TS_waiting_in_posit_9                    &Wait + 8
+/c TS_waiting_in_posit_10                   &Wait + 9
+/c TS_waiting_in_posit_11                   &Wait + 10
+/c TS_waiting_in_posit_12                   &Wait + 11
+/c TS_waiting_in_posit_13                   &Wait + 12
+/c TS_waiting_in_posit_14                   &Wait + 13
+/c TS_waiting_in_posit_15                   &Wait + 14
+/c TS_waiting_in_posit_16                   &Wait + 15
+
+*;EUMACH Additional Timers
+   TS_I_servo_drive_release                 ;MP4111.200
+   TS_pneumatic_pressure                    ;MP4111.201
+   TS_coolant_level_detection               ;MP4111.202
+   TS_guard_1_signal                        ;MP4111.203
+   TS_guard_2_signal                        ;MP4111.204
+   TS_hydraulic_valve_pressure_ok           ;MP4111.205
+   TS_MG_power_delayed_on                   ;MP4111.206
+   TS_pneumatic_fine_filter                 ;MP4111.207
+
+   TS_nut_lubrication                       ;MP4111.209
+   TS_nut_lubricant_pressure                ;MP4111.210
+   TS_pneumatic_counter_weight_balancing    ;MP4111.211
+   TS_lubrication_pneumatic_spray           ;MP4111.212
+   TS_tool_clamping_pneumatic_pressure      ;MP4111.213
+
+   TS_tool_clamping_hydraulic_pressure      ;MP4111.214
+   TS_buzzer_on                             ;MP4111.215
+   TS_sensor_for_scale_S_bearing_air_clean  ;MP4111.216
+   TS_pneumatic_chip_flush                  ;MP4111.217
+   TS_S_cooling_unit_off_delay              ;MP4111.218
+   TS_S_cooling_pressure                    ;MP4111.219
+   TS_scale_S_bearing_air_clean             ;MP4111.220
+   TS_S_gear_cooling_pressure               ;MP4111.221
+   TS_CTS_filter                            ;MP4111.222
+   TS_CTS_S_blow_clean                      ;MP4111.223
+   TS_CTS_motor_outlet_pressure             ;MP4111.224
+   TS_gear_range_output_delay               ;MP4111.225
+   TS_gear_dwell                            ;MP4111.226
+   TS_CTS_tank_inlet_pressure               ;MP4111.227
+   TS_S_oil_air_lube_reset                  ;MP4111.228
+   TS_S_oil_air_lube_pneumatic              ;MP4111.229
+   TS_CYTEC_S_clamp_unclamp                 ;MP4111.230
+   TS_CYTEC_S_aiming_seal                   ;MP4111.231
+   TS_tool_clamp_line_pressure              ;MP4111.232               *;CYCON K11
+   TS_solenoid_off_after_S_clamped          ;MP4111.233
+   TS_time_out_solenoid_off_after_S_clamped ;MP4111.234
+   TS_thermal_comp_time_out                 ;MP4111.235
+   TS_thermal_comp_unit_error               ;MP4111.236
+   TS_on_delay_S_oil_air_lube_pneumatic_on  ;MP4111.237
+   TS_S_rotary_joint_cooling_off_delay      ;MP4111.238
+   TS_timeout_S_rotary_joint_cooling        ;MP4111.239
+
+;   TS_test_on                               ;MP4111.238  *;test1
+;   TS_test_off                              ;MP4111.239  *;test1
+
+   TS_coolant_air_blast_switching           ;MP4111.240
+   TS_I_S_oil_air_lube_pressure_ok          ;MP4111.241
+   TS_I_S_oil_air_lube_MIXER_pressure_ok    ;MP4111.242
+   TS_MG_S_orientation_active_off_delay     ;MP4111.243
+   TS_M08_motor_outlet_pressure             ;MP4111.244
+   TS_M07_M307_switching_pause              ;MP4111.245
+   TS_hydraulic_2_balance_pressure_ok       ;MP4111.246
+   TS_hydraulic_2_T_axes_clamp_pressure_ok  ;MP4111.247
+
+   TS_mag_braking_DC_voltage_injection      ;MP4111.250
+   TS_SFT_P_to_mag_timeout                  ;MP4111.251
+   TS_SFT_P_to_mag_timer_universal          ;MP4111.252
+   TS_SFT_P_to_TC_timeout                   ;MP4111.253
+   TS_SFT_P_to_TC_timer_universal           ;MP4111.254
+   TS_T_from_mag_timeout                    ;MP4111.255
+   TS_T_from_mag_timer_universal            ;MP4111.256
+   TS_T_to_mag_timeout                      ;MP4111.257
+   TS_T_to_mag_timer_universal              ;MP4111.258
+
+   TS_T_from_mag2_timeout                   ;MP4111.260
+   TS_T_from_mag2_timer_universal           ;MP4111.261
+   TS_T_to_mag2_timeout                     ;MP4111.262
+   TS_T_to_mag2_timer_universal             ;MP4111.263
+
+   TS_SFT_P_to_mag_2nd_timer_universal      ;MP4111.265
+
+   TS_3D_head_unclamping                    ;MP4111.268
+
+   TS_V_H_head_turning_timeout              ;MP4111.270
+   TS_V_H_head_timer_general                ;MP4111.271
+   TS_V_H_head_unclamping                   ;MP4111.272
+
+   TS_TLM_cover_open_close_timeout          ;MP4111.275
+
+   TS_auto_door_1_opening                   ;MP4111.280
+   TS_auto_door_1_closing                   ;MP4111.281
+   TS_auto_door_2_opening                   ;MP4111.282
+   TS_auto_door_2_closing                   ;MP4111.283
+
+   TS_TM_loading_T_select_timeout           ;MP4111.287
+   TS_TM_loading_T_data_timeout             ;MP4111.288
+   TS_TM_loading_D_link_timeout             ;MP4111.289
+*;EUMACH Additional Timers
+
+*-----------------------------------------------------------------------------
+*  Counter
+*-----------------------------------------------------------------------------
+
+#type C
+
+   CS_CTS_tank_low_level                    41
+   CR_CTS_tank_low_level                    89
+   CD_CTS_tank_low_level                    137
+
+   CS_chip_flush_on_duration                46
+   CR_chip_flush_on_duration                94
+   CD_chip_flush_on_duration                142
+   CS_chip_flush_off_duration               47
+   CR_chip_flush_off_duration               95
+   CD_chip_flush_off_duration               143
+
+*-----------------------------------------------------------------------------
+*  Machine parameters
+*-----------------------------------------------------------------------------
+
+#type W
+
+   NP_W986_color_adjustment                 986
+   NP_W988_lubrication_time                 988
+
+#type D
+
+   NP_D768_feed_PLC_X                       768
+   NP_D772_feed_PLC_Y                       772
+   NP_D776_feed_PLC_Z                       776
+   NP_D780_feed_PLC_4                       780
+   NP_D784_feed_PLC_5                       784
+   NP_D788_feed_PLC_6                       788
+   NP_D792_feed_PLC_7                       792
+   NP_D796_feed_PLC_8                       796
+   NP_D800_feed_PLC_9                       800
+   NP_D804_feed_service                     804
+   NP_D808_TC_position_X                    808
+   NP_D812_TC_position_Y_put_out            812
+   NP_D816_TC_position_Y_put_in             816
+   NP_D820_TC_position_Z_put_out            820
+   NP_D824_TC_position_Z_put_in             824
+   NP_D828_TC_pos_spindle                   828
+   NP_D832_TC_pos_X_manual                  832
+   NP_D836_TC_pos_Y_manual                  836
+   NP_D840_TC_pos_Z_manual                  840
+   NP_D844_TC_pos_Z_safety                  844
+   NP_D848_feed_special_mode                848
+   NP_D852_S_rpm_min                        852
+   NP_D856_S_rpm_distance_100               856
+   NP_D860_S_rpm_nominal                    860
+   NP_D864_S_min_torque                     864
+   NP_D868_S_max_torque                     868
+   NP_D872_factor_torque_reduction          872
+   NP_D876_S_service_rpm                    876
+   NP_D880_S_reference_rpm                  880
+   NP_D884_special_mode_rpm                 884
+   NP_D888_S_max_temperature                888
+   NP_D892_S_factor_utilization_display     892
+   NP_D896_TC_position_X_put_out            896                       *;EUMACH
+   NP_D900_factor_10_deg_range              900
+   NP_D904_factor_20_deg_range              904
+   NP_D908_factor_30_deg_range              908
+   NP_D912_factor_40_deg_range              912
+   NP_D916_factor_50_deg_range              916
+   NP_D920_posit_Y_end_alternating_table    920                       *;EUMACH
+   NP_D924_number_pallet_pockets            924
+   NP_D928_lubrication_time_min             928
+   NP_D932_lubrication_time_max             932
+   NP_D936_axes_module_wait_case            936
+   NP_D940_limit_X_alternating_table        940
+   NP_D944_posit_1_X_alternating_table      944
+   NP_D948_posit_2_X_alternating_table      948
+   NP_D952_posit_Y_alternating_table        952
+   NP_D956_posit_Z_alternating_table        956
+
+/c NP_D940_PC_posit_X                       940
+
+/c NP_D952_PC_posit_Y                       952
+/c NP_D956_PC_posit_Z                       956
+
+   NP_MP4230_0_working_area_manu_Y
+   NP_MP4230_1_working_area_manu_Z
+   NP_MP4230_2_working_area_auto_Y
+   NP_MP4230_3_working_area_auto_Z
+   NP_MP4230_4_working_area_auto_B
+;   NP_MP4230_5_working_area_auto_C                                   *;EUMACH original PLC
+   NP_MP4230_5_working_area_auto_Y2_Z2                                *;EUMACH
+   NP_MP4230_6_working_area_auto_B
+;   NP_MP4230_7_working_area_auto_C                                   *;EUMACH original PLC
+   NP_MP4230_7_S_head_bearing_lube_interval                           *;EUMACH
+   NP_MP4230_8_max_torque_axis_1
+   NP_MP4230_9_max_torque_axis_2
+
+   NP_MP4230_10_3D_head_offset_axis_1_S_position
+   NP_MP4230_11_3D_head_offset_axis_2_S_position
+
+   A_posit_after_reference                  [16]
+/c NP_MP4230_12_posit_after_reference_X     &A_posit_after_reference + 0
+/c NP_MP4230_13_posit_after_reference_Y     &A_posit_after_reference + 4
+/c NP_MP4230_14_posit_after_reference_Z     &A_posit_after_reference + 8
+/c NP_MP4230_15_posit_after_reference_4     &A_posit_after_reference + 12
+/c NP_MP4230_16_posit_after_reference_5     &A_posit_after_reference + 16
+/c NP_MP4230_17_posit_after_reference_6     &A_posit_after_reference + 20
+/c NP_MP4230_18_posit_after_reference_7     &A_posit_after_reference + 24
+/c NP_MP4230_19_posit_after_reference_8     &A_posit_after_reference + 28
+/c NP_MP4230_20_posit_after_reference_9     &A_posit_after_reference + 32
+/c NP_MP4230_21_posit_after_reference_10    &A_posit_after_reference + 36
+/c NP_MP4230_22_posit_after_reference_11    &A_posit_after_reference + 40
+/c NP_MP4230_23_posit_after_reference_12    &A_posit_after_reference + 44
+;/c NP_MP4230_24_posit_after_reference_13    &A_posit_after_reference + 48 *;EUMACH
+;/c NP_MP4230_25_posit_after_reference_14    &A_posit_after_reference + 52 *;EUMACH
+;/c NP_MP4230_26_posit_after_reference_15    &A_posit_after_reference + 56 *;EUMACH
+;/c NP_MP4230_27_posit_after_reference_16    &A_posit_after_reference + 60 *;EUMACH
+
+   NP_MP4230_24_tool_unclamped_V_upper_lim                            *;EUMACH
+   NP_MP4230_25_tool_unclamped_V_lower_lim                            *;EUMACH
+   NP_MP4230_26_tool_clamped_V_upper_lim                              *;EUMACH
+   NP_MP4230_27_tool_clamped_V_lower_lim                              *;EUMACH
+   NP_MP4230_28_no_tool_clamped_V_upper_lim                           *;EUMACH
+   NP_MP4230_29_no_tool_clamped_V_lower_lim                           *;EUMACH
+   NP_MP4230_30_min_torque_axis_1
+   NP_MP4230_31_min_torque_axis_2
+
+   NP_MP4230_34_4_clamped_Z_comp                                      *;EUMACH Table clamped -> Z comp
+
+   NP_MP4230_36_TC_pos_7                                              *;EUMACH
+
+   NP_MP4230_40_working_area_manu_Y2                                  *;EUMACH
+   NP_MP4230_41_working_area_manu_Z2                                  *;EUMACH
+   NP_MP4230_42_lubrication_2_time                                    *;EUMACH
+   NP_MP4230_43_lubrication_3_time                                    *;EUMACH
+
+   NP_MP4230_47_S_rear_bearing_T_limit                                *;EUMACH
+   NP_MP4230_48_ATS_S_rpm_limitation                                  *;EUMACH
+   NP_MP4230_49_coolant_level_sensor                                  *;EUMACH
+
+   NP_MP4230_60_X_manual_lubrication                                  *;EUMACH
+   NP_MP4230_61_Y_manual_lubrication                                  *;EUMACH
+   NP_MP4230_62_Z_manual_lubrication                                  *;EUMACH
+
+   NP_MP4230_66_TM_loading_pocket_offset                              *;EUMACH
+*$WS introduce table
+*   A_torque_limited                         [16]
+*/c NP_MP4230_10_torque_limited_X            &A_torque_limited + 0
+*/c NP_MP4230_11_torque_limited_Y            &A_torque_limited + 4
+*/c NP_MP4230_12_torque_limited_Z            &A_torque_limited + 8
+*/c NP_MP4230_13_torque_limited_4            &A_torque_limited + 12
+*/c NP_MP4230_14_torque_limited_5            &A_torque_limited + 16
+*/c NP_MP4230_15_torque_limited_6            &A_torque_limited + 20
+*/c NP_MP4230_16_torque_limited_7            &A_torque_limited + 24
+*/c NP_MP4230_17_torque_limited_8            &A_torque_limited + 28
+*/c NP_MP4230_18_torque_limited_9            &A_torque_limited + 32
+
+*;EUMACH MP4231
+   NP_MP4231_0_X_screw_nut_lubrication_travel
+   NP_MP4231_1_TC_pos_4
+   NP_MP4231_2_TC_pos_5
+   NP_MP4231_3_TC_pos_4_manual
+   NP_MP4231_4_TC_pos_5_manual
+   NP_MP4231_5_3D_head_S_prepos_window
+   NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+   NP_MP4231_7_V_H_head_geometric_X_offset
+   NP_MP4231_8_V_H_head_geometric_Y_offset
+   NP_MP4231_9_V_H_head_geometric_Z_offset
+   NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+   NP_MP4231_11_TC_pos_Y_safety
+   NP_MP4231_12_SHC_pos_XY
+   NP_MP4231_13_SHC_pos_Z
+   NP_MP4231_14_V_H_head_S_pos_window
+   NP_MP4231_15_S_pos_before_V_head_unclamping
+   NP_MP4231_16_S_pos_before_H_head_unclamping
+   NP_MP4231_17_head_V_to_H_turning_angle
+   NP_MP4231_18_head_H_to_V_turning_angle
+   NP_MP4231_19_V_H_head_turning_rpm
+   NP_MP4231_20_S_head_transmission_lube_interval
+   NP_MP4231_21_S_without_tool_max_rpm
+   NP_MP4231_22_S_front_bearing_T_limit
+   NP_MP4231_23_S_warming_up_3rd_duration_sec
+   NP_MP4231_24_S_warming_up_1st_duration_sec
+   NP_MP4231_25_S_warming_up_2nd_duration_sec
+   NP_MP4231_26_S_warming_up_1st_stage_rpm
+   NP_MP4231_27_S_warming_up_2nd_stage_rpm
+   NP_MP4231_28_S_warming_up_max_pause_sec
+   NP_MP4231_29_S_rewarming_up_standstill_min
+   NP_MP4231_30_S_warming_up_3rd_stage_rpm
+   NP_MP4231_31_S_head_S_limit_rpm
+*;EUMACH MP4231
+
+#type M
+
+*;EUMACH Option Bits from MP4310.0
+   NP_S_and_CTS_blow_clean_valve_separated  4300
+   NP_S_cooling_pressure_snesor_active      4301
+   NP_rotary_axes_to_TC_pos_simultaneously  4302
+   NP_1st_additional_axis_on_off_selection  4303
+
+   NP_manual_head_rear_axis_0_pos_sensor    4304
+   NP_paper_filter_device_active            4305
+   NP_CTS_motor_pressure_sensor_active      4306
+   NP_hydraulic_error_M05_NC_STOP           4307
+
+   NP_tool_clamped_without_tool_sensor      4308
+   NP_TC_mag_tool_detection_at_pocket_in    4309                      *;Magazine standby pocket tool detection
+   NP_S_bearing_relative_temperature        4310
+   NP_non_servo_mag_guard_with_lock_device  4311
+
+   NP_TC_mag_loading_continuous__motion     4312
+   NP_magazine_servo_commissioning          4313
+   NP_anti_backlash_motion_active           4314
+   NP_key_for_torque_motor_brake_releasing  4315
+*;EUMACH Option Bits from MP4310.0
+
+   NP_key_NC_stop_without_spindle_stop      4316
+   NP_additional_logbook_entry_active       4317
+   NP_coolant_without_spindle_turning       4318
+   NP_air_through_spindle                   4319                      *;EUMACH
+
+   NP_coolant_and_air_blast_in_same_nozzle  4320                      *;EUMACH
+   NP_ITRI_head_without_tool_clamped_sensor 4321                      *;EUMACH
+   NP_TC_no_TOOL_CALL_monitoring_inactive   4322                      *;EUMACH
+   NP_pneumatic_fine_filter_detection       4323                      *;EUMACH
+
+   NP_tool_clamping_pneumatic_sensor        4324                      *;EUMACH
+   NP_display_standby_tool_number           4325                      *;EUMACH
+   NP_mag_motor_with_internal_braking       4326                      *;EUMACH
+   NP_chip_flush_intermittent_control       4327                      *;EUMACH
+
+   NP_6_clamping_while_output=1             4328                      *;EUMACH
+   NP_pneumatic_error_M05_NC_STOP           4329                      *;EUMACH
+   NP_permissive_mode_NC_START_key_valid    4330                      *;EUMACH
+   NP_V_H_head_geometry_compensation        4331                      *;EUMACH
+
+   NP_commissioning                         4332
+   NP_guard_inactive                        4333
+   NP_feed_monitoring_M3_M4_inactive        4334
+   NP_pallet_change_alternat_table_inactive 4335
+
+   NP_ref_autostart_inactive                4336
+   NP_TC_position_IV_automatic_active       4337                      *:EUMACH
+   NP_tool_monitoring_inactive              4338
+   NP_TC_mag_monitoring_inactive            4339
+
+   NP_TC_T0_auto_manu_necessary             4340
+   NP_TC_position_manual_inactive           4341
+   NP_auto_guard_unlock_on_END_PGM          4342
+   NP_display_standby_pocket_inactive       4343
+
+   NP_temperature_compansation_active       4344                      *;EUMACH
+   NP_TC_mag_T0_necessary_before_loading    4345
+   NP_PLC_preset_table_active               4346
+   NP_T_torque_monitoring_inactive          4347
+
+*;EUMACH Option Bits from MP4310.3
+   NP_ref_end_position_4                    4348
+   NP_without_gear_range_display            4349
+   NP_scale_S_bearing_air_clean             4350
+   NP_S_blow_clean_after_CTS                4351
+
+   NP_ball_screw_cooling_active             4352
+   NP_TC_arm_saving_time_pos                4353
+   NP_CTS_filter_active                     4354
+   NP_pneumatic_chip_flush_active           4355
+
+   NP_3D_head_manual_operation_valid        4356
+   NP_2_guards_with_one_unlock_output       4357
+   NP_TC_position_X_automatic_active        4358
+   NP_TC_position_Y_automatic_active        4359
+
+   NP_lubrication_pneumatic_spray           4360
+   NP_TC_within_machining_area              4361
+   NP_nut_lubrication_with_pressure_sensor  4362
+   NP_X_ball_screw_nut_lubrication          4363
+*;EUMACH Option Bits from MP4310.3
+
+*;EUMACH Option Bits from MP4310.4
+   NP_4_clamping_while_output=1             4364
+   NP_5_clamping_while_output=1             4365
+   NP_auto_power_off_after_END_PGM_active   4366
+   NP_coolant_through_tool_active           4367
+
+   NP_ALT_PAL_change_X_preposition_active   4368
+   NP_secondary_guards_active               4369
+   NP_spindle_cooling_active                4370
+   NP_spindle_gear_cooling_active           4371
+
+   NP_single_arm_motor_shifting             4372
+   NP_TC_arm_in_pos_while_sensor=1          4373
+   NP_TC_mag_in_pos_while_counter=1         4374
+   NP_chip_flush_independent_with_conveyor  4375
+
+   NP_magazine_with_2_counters              4376
+   NP_independent_water_gun_motor           4377
+   NP_TC_mag_guard_and_panel                4378
+   NP_TC_mag_standby_pocket_tool_detection  4379
+*;EUMACH Option Bits from MP4310.4
+
+*;EUMACH Option Bits from MP4310.5
+   NP_auto_guard_unlock_EMG                 4394
+   NP_oil_mist_active                       4395
+*;EUMACH Option Bits from MP4310.5
+
+*;EUMACH Option Bits from MP4310.7
+   NP_tool_clamping_hydraulic_sensor        4412
+   NP_M3_M4_for_S_clamped_without_tool      4413
+   NP_TC_mag_in_pos_while_2nd_counter=1     4414
+   NP_air_to_hydraulic_unit                 4415
+
+   NP_dust_mist_collector_active            4416
+   NP_cabinet_cooler_active                 4417
+   NP_PGM_running_chip_conveyor_on          4418
+   NP_DCM_option_purchased                  4419
+
+   NP_EMG_4_axis_stop_before_clamping       4420
+   NP_EMG_5_axis_stop_before_clamping       4421
+   NP_EMG_6_axis_stop_before_clamping       4422
+   NP_partition_DCM_CMO_MACRO               4423
+
+   NP_WAM_before_axes_referenced            4424
+   NP_service_door_active                   4425
+   NP_all_modes_auto_door_opening_M61_M62   4426
+   NP_auto_door_opening_after_M61_M62       4427
+*;EUMACH Option Bits from MP4310.7
+
+*;EUMACH Option Bits from MP4310.8
+
+   NP_TC_mag2_loading_continuous__motion    4432                      *;EUMACH Dual TC
+   NP_mag2_motor_with_internal_braking      4433                      *;EUMACH Dual TC
+   NP_TC_mag2_tool_detection_at_pocket_in   4434                      *;EUMACH Dual TC Magazine 2 standby pocket tool detection
+   NP_TC_mag2_monitoring_inactive           4435                      *;EUMACH Dual TC
+
+   NP_single_arm2_motor_shifting            4436                      *;EUMACH Dual TC
+   NP_TC_arm2_in_pos_while_sensor=1         4437                      *;EUMACH Dual TC
+   NP_TC_mag2_in_pos_while_counter=1        4438                      *;EUMACH Dual TC
+   NP_non_servo_mag2_guard_with_lock_device 4439                      *;EUMACH Dual TC
+
+   NP_magazine2_with_2_counters             4440                      *;EUMACH Dual TC
+   NP_TC_mag2_T0_necessary_before_loading   4441                      *;EUMACH Dual TC
+   NP_TC_mag2_guard_and_panel               4442                      *;EUMACH Dual TC
+   NP_TC_mag2_standby_pocket_tool_detection 4443                      *;EUMACH Dual TC
+*;EUMACH Option Bits from MP4310.8
+
+*;EUMACH Option Bits from MP4310.9
+   NP_4_clamped_Z_comp                      4444                      *;EUMACH Table clamped -> Z comp
+   NP_M401_4_clamped_Z_comp                 4445                      *;EUMACH Table clamped -> Z comp
+   NP_5_overtravel_while_sensor=1           4447
+
+   NP_4_clamp_unclamp_high_low_pressure     4448
+   NP_5_clamp_unclamp_high_low_pressure     4449
+
+   NP_5_end_position_by_proximity_sensor    4452
+   NP_error_tool_life_max_without_NC_STOP   4453
+   NP_water_gun_solenoid_on_chip_flush_motor 4454
+   NP_CTS_high_low_pressure_switching       4455
+
+   NP_pneumatic_counter_weight_balancing    4456
+   NP_coolant_motor_pressure_sensor_active  4457
+   NP_TC_position_V_automatic_active        4458
+   NP_magazine_touch_panel_active           4459
+*;EUMACH Option Bits from MP4310.9

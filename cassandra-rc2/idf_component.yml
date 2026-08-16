@@ -1,0 +1,13 @@
+## IDF Component Manager Manifest File
+dependencies:
+  nanopb/nanopb: ~0.4.7
+  emodbus/emodbus: ~2.0.0
+  thijse/arduino-log: ~1.4.0
+  bblanchon/arduinojson: ~7.0.4
+  knolleary/pubsubclient: ~2.8
+  tobiasschuerg/influxdb-client-for-arduino: ~3.14.0
+  espressif/esp-async-webserver: ~3.1.0
+  espressif/async-tcp: ~1.2.2
+  ## Required IDF version
+  idf: '>=5.0'
+

@@ -1,0 +1,15 @@
+{
+  "sta_ssid": "Livebox6-EBCD",
+  "sta_password": "c4RK35h4PZNS",
+  "sta_local_ip": "192.168.1.252",
+  "sta_gateway": "192.168.1.1",
+  "sta_subnet": "255.255.0.0",
+  "sta_primary_dns": "8.8.8.8",
+  "sta_secondary_dns": "8.8.4.4",
+  "ap_ssid": "PolyMechAP",
+  "ap_password": "poly1234",
+  "ap_config_ip": "192.168.4.1",
+  "ap_config_gateway": "192.168.4.1",
+  "ap_config_subnet": "255.255.255.240",
+  "hostname": "cassandra-master-cat"
+} 

@@ -1,0 +1,27 @@
+﻿************************************
+!!! FIGYELEM !!!
+csak szakembereknek
+X, Y, Z mozgatható az
+X+, X-, Y+, Y-, Z+, Z-
+gombbal vagy kézikerékkel
+szerszámcserélö szerviz
+(dupla karos)
+************************************
+#201  Föorsót cserepozícióba
+#202  Z tengelyt cserepozícióba
+#203  Y tengelyt cserepozícióba
+#204  X tengelyt cserepozícióba
+#205  Szerszámtár ajtót nyit
+#206  Szerszámtár ajtót zár
+#207  Szerszám megfogót zár
+#208  Szerszám megfogót nyit
+#209  Szerszámot old
+#210  Szerszámot rögzít
+#211  Cserélökar ki
+#212  Cserélökar be
+#213  Cserélökar forgás cw (jobb)
+#214  Cserélökar forgás ccw (bal)
+#215  Szerszámtár forgás cw (jobb)
+#216  Szerszámtár forgás ccw (bal)
+#217  Szerszámtár referencia
+#218  Föorsó státuszt töröl (T0)

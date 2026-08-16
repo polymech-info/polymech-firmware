@@ -1,0 +1,164 @@
+<mxfile host="app.diagrams.net" modified="2024-07-30T12:00:00.000Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="unique_etag" version="24.4.9" type="device">
+  <diagram name="Class Diagram" id="diagram_id">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Classes -->
+        <mxCell id="App_Class" value="App&#xa;&lt;i&gt;(from polymech-base)&lt;/i&gt;" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="350" y="40" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Component_Class" value="Component&#xa;&lt;i&gt;(from polymech-base)&lt;/i&gt;&#xa;+id: short&#xa;+owner: Component*&#xa;+setup() : short&#xa;+loop() : short&#xa;+writeNetworkValue(...) : short&#xa;+readNetworkValue(...) : short&#xa;+registerModbusBlocks(...)" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="590" y="160" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="PHApp_Class" value="PHApp&#xa;-modbusManager: ModbusTCP*&#xa;-modbusRTU: ModbusRTU*&#xa;-rtuProxy: RTUProxyComponent*&#xa;-e5Proxy: E5Proxy*&#xa;-components: vector&amp;lt;Component*&amp;gt;&#xa;+setup() : short&#xa;+loop() : short" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="300" y="160" width="240" height="150" as="geometry" />
+        </mxCell>
+         <mxCell id="ModbusRTU_Class" value="ModbusRTU&#xa;+begin(...) : MB_Error&#xa;+process() : MB_Error&#xa;+writeRegister(...) : MB_Error&#xa;+readRegister(...) : MB_Error&#xa;+getRegisterValue(...) : bool&#xa;+writeCoil(...) : MB_Error&#xa;+getCoilValue(...) : bool" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="40" y="400" width="200" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="ModbusTCP_Class" value="ModbusTCP&#xa;-modbusServer: ModbusServerTCPasync*&#xa;-addressMappings: Vector&amp;lt;MB_Registers&amp;gt;&#xa;+setup() : short&#xa;+registerModbus(...) : bool&#xa;+findComponentForAddress(...) : Component*" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="590" y="400" width="220" height="130" as="geometry" />
+        </mxCell>
+         <mxCell id="RTUProxyComponent_Class" value="RTUProxyComponent&#xa;-modbusRTU: ModbusRTU*&#xa;-mappings: Vector&amp;lt;RTUMapping&amp;gt;&#xa;+addMapping(...) : bool&#xa;+writeNetworkValue(...) : short&#xa;+readNetworkValue(...) : short&#xa;+registerModbusBlocks(...)" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="300" y="400" width="240" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="E5Proxy_Class" value="E5Proxy&#xa;-rtuProxy: RTUProxyComponent*&#xa;+setup() : short" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="300" y="620" width="240" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Relay_Class" value="Relay" style="shape=umlClass;verticalAlign=top;align=center;html=1;margin=10;whiteSpace=wrap;overflow=hidden;" vertex="1" parent="1">
+          <mxGeometry x="700" y="620" width="110" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="Rel_PHApp_Inherit_App" value="" style="endArrow=block;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=center;verticalAlign=bottom;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="PHApp_Class" target="App_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="420" y="160" as="sourcePoint"/>
+                <mxPoint x="420" y="100" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="Rel_ModbusTCP_Inherit_Component" value="" style="endArrow=block;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=center;verticalAlign=bottom;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="ModbusTCP_Class" target="Component_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="700" y="400" as="sourcePoint"/>
+                <mxPoint x="700" y="310" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_RTUProxy_Inherit_Component" value="" style="endArrow=block;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=center;verticalAlign=bottom;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="RTUProxyComponent_Class" target="Component_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="420" y="400" as="sourcePoint"/>
+                <mxPoint x="590" y="235" as="targetPoint"/>
+                 <Array as="points">
+                    <mxPoint x="420" y="340"/>
+                    <mxPoint x="570" y="340"/>
+                    <mxPoint x="570" y="235"/>
+                </Array>
+            </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_E5Proxy_Inherit_Component" value="" style="endArrow=block;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=center;verticalAlign=bottom;rounded=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="E5Proxy_Class" target="Component_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="420" y="620" as="sourcePoint"/>
+                <mxPoint x="645" y="310" as="targetPoint"/>
+                <Array as="points">
+                     <mxPoint x="420" y="590"/>
+                    <mxPoint x="645" y="590"/>
+                 </Array>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="Rel_Relay_Inherit_Component" value="" style="endArrow=block;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=center;verticalAlign=bottom;rounded=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Relay_Class" target="Component_Class">
+            <mxGeometry relative="1" as="geometry">
+                 <mxPoint x="755" y="620" as="sourcePoint"/>
+                <mxPoint x="755" y="310" as="targetPoint"/>
+             </mxGeometry>
+        </mxCell>
+
+        <mxCell id="Rel_PHApp_Owns_ModbusTCP" value="" style="endArrow=none;html=1;edgeStyle=entityRelationEdgeStyle;startArrow=diamondThin;startFill=0;sourcePerimeterSpacing=0;startSize=12;endFill=0;" edge="1" parent="1" source="PHApp_Class" target="ModbusTCP_Class">
+             <mxGeometry relative="1" as="geometry">
+                <mxPoint x="540" y="235" as="sourcePoint"/>
+                <mxPoint x="590" y="465" as="targetPoint"/>
+                <Array as="points">
+                    <mxPoint x="570" y="235"/>
+                    <mxPoint x="570" y="465"/>
+                </Array>
+            </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_PHApp_Owns_ModbusRTU" value="" style="endArrow=none;html=1;edgeStyle=entityRelationEdgeStyle;startArrow=diamondThin;startFill=0;sourcePerimeterSpacing=0;startSize=12;endFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="PHApp_Class" target="ModbusRTU_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="300" y="235" as="sourcePoint"/>
+                 <mxPoint x="40" y="485" as="targetPoint"/>
+                 <Array as="points">
+                    <mxPoint x="270" y="235"/>
+                    <mxPoint x="270" y="485"/>
+                </Array>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="Rel_PHApp_Owns_RTUProxy" value="" style="endArrow=none;html=1;edgeStyle=entityRelationEdgeStyle;startArrow=diamondThin;startFill=0;sourcePerimeterSpacing=0;startSize=12;endFill=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PHApp_Class" target="RTUProxyComponent_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="420" y="310" as="sourcePoint"/>
+                <mxPoint x="420" y="400" as="targetPoint"/>
+             </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_PHApp_Owns_E5Proxy" value="" style="endArrow=none;html=1;edgeStyle=entityRelationEdgeStyle;startArrow=diamondThin;startFill=0;sourcePerimeterSpacing=0;startSize=12;endFill=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="PHApp_Class" target="E5Proxy_Class">
+            <mxGeometry relative="1" as="geometry">
+                 <mxPoint x="360" y="310" as="sourcePoint"/>
+                <mxPoint x="360" y="620" as="targetPoint"/>
+                 <Array as="points">
+                     <mxPoint x="360" y="340"/>
+                     <mxPoint x="300" y="340"/>
+                     <mxPoint x="300" y="660"/>
+                     <mxPoint x="300" y="660"/>
+                     <mxPoint x="420" y="620"/>
+                 </Array>
+            </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_PHApp_Owns_Relay" value="" style="endArrow=none;html=1;edgeStyle=entityRelationEdgeStyle;startArrow=diamondThin;startFill=0;sourcePerimeterSpacing=0;startSize=12;endFill=0;" edge="1" parent="1" source="PHApp_Class" target="Relay_Class">
+             <mxGeometry relative="1" as="geometry">
+                 <mxPoint x="540" y="235" as="sourcePoint"/>
+                 <mxPoint x="755" y="620" as="targetPoint"/>
+                 <Array as="points">
+                     <mxPoint x="570" y="235"/>
+                     <mxPoint x="570" y="645"/>
+                     <mxPoint x="700" y="645"/>
+                 </Array>
+            </mxGeometry>
+        </mxCell>
+
+        <mxCell id="Rel_RTUProxy_Uses_ModbusRTU" value="uses" style="endArrow=open;html=1;align=center;verticalAlign=middle;dashed=1;endFill=0;" edge="1" parent="1" source="RTUProxyComponent_Class" target="ModbusRTU_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="300" y="475" as="sourcePoint"/>
+                <mxPoint x="240" y="475" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="Rel_E5Proxy_Uses_RTUProxy" value="configures" style="endArrow=open;html=1;align=center;verticalAlign=middle;dashed=1;endFill=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="E5Proxy_Class" target="RTUProxyComponent_Class">
+            <mxGeometry relative="1" as="geometry">
+                <mxPoint x="420" y="620" as="sourcePoint"/>
+                <mxPoint x="420" y="550" as="targetPoint"/>
+            </mxGeometry>
+        </mxCell>
+        <mxCell id="Rel_ModbusTCP_Uses_Component" value="calls read/write&#xa;finds component" style="endArrow=open;html=1;align=center;verticalAlign=bottom;dashed=1;endFill=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ModbusTCP_Class" target="Component_Class">
+             <mxGeometry relative="1" as="geometry">
+                 <mxPoint x="700" y="400" as="sourcePoint"/>
+                 <mxPoint x="810" y="235" as="targetPoint"/>
+                 <Array as="points">
+                     <mxPoint x="700" y="340"/>
+                      <mxPoint x="840" y="340"/>
+                     <mxPoint x="840" y="235"/>
+                </Array>
+            </mxGeometry>
+        </mxCell>
+         <mxCell id="Rel_Component_Uses_ModbusTCP" value="calls registerModbusBlocks" style="endArrow=open;html=1;align=center;verticalAlign=top;dashed=1;endFill=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Component_Class" target="ModbusTCP_Class">
+             <mxGeometry relative="1" as="geometry">
+                 <mxPoint x="810" y="273" as="sourcePoint"/>
+                 <mxPoint x="700" y="400" as="targetPoint"/>
+                 <Array as="points">
+                     <mxPoint x="840" y="273"/>
+                     <mxPoint x="840" y="550"/>
+                     <mxPoint x="700" y="550"/>
+                 </Array>
+            </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

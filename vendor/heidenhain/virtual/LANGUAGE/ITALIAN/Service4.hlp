@@ -1,0 +1,23 @@
+﻿************************************
+!!! ATTENZIONE !!!
+solo per personale esperto
+Disimpegno cambio utensile
+(Tipo Pick Up)
+! modo manuale attivo !
+Premere "NC start" per attivare
+************************************
+#401  Mandrino in pos. di CU
+#402  Z in posizione di CU fuori
+#403  Z in posizione di CU dentro
+#404  Apre Blocco Utensile
+#405  Chiude blocco utensile
+#406  Uscita del Pick-Up
+#407  Entrata del Puck-Up
+#408  Sgancio Utensile
+#409  Bloccaggio Utensile
+#410  X in Pre-posizione di Cambio
+#411  X in Posizione di Cambio
+#412  Y in posizione Pn (Mandrino)
+#413  Y in posizione Pn+1
+#414  Y in posizione Pn-1
+#415  Reset stato mandrino (T0)

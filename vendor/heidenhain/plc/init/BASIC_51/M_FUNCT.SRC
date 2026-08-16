@@ -1,0 +1,926 @@
+*-----------------------------------------------------------------------------
+*  M functions
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+;#define       KL_max_M_function_decoded                K+89          *;EUMACH Original PLC
+
+*;EUMACH BASIC 54
+#define /s    KL_max_M_func_range_1                    K +89
+#define /s    KL_max_M_func_range_2                    K +300
+#define /s    KL_max_M_func_range_3                    K +999
+*;EUMACH BASIC 54
+
+#define /s    ML_auxiliary_marker_M_pulse              M
+
+GLOBAL M_functions
+
+;----------------------------
+LBL M_functions
+;----------------------------
+
+  L      PN_M4092_quit_M_function
+  R      MG_FN19_date_new
+
+  LN     NP_M4072_strobe_M_function
+  R      PN_M4092_quit_M_function
+
+  LN     NP_M4072_strobe_M_function
+  AN     ML_auxiliary_marker_M_pulse
+  EMT
+
+  L      NP_W260_M_code
+  =X
+;  >      KL_max_M_function_decoded                                   *;EUMACH Original PLC
+*;EUMACH BASIC 54
+  >      KL_max_M_func_range_1
+  A[
+    L      NP_W260_M_code
+    <      KL_max_M_func_range_2
+  ]
+*;EUMACH BASIC 54
+  S      PN_error_M_function_not_used
+  EMT
+
+*;EUMACH BASIC 54
+  L      NP_W260_M_code
+  >      KL_max_M_func_range_3
+  S      PN_error_M_function_not_used
+  EMT
+*;EUMACH BASIC 54
+
+*;EUMACH BASIC 54
+  L      NP_W260_M_code
+  <      KL_max_M_func_range_2
+  IFT
+*;EUMACH BASIC 54
+    L      KF M_func_tab[X]
+    =X
+*;EUMACH BASIC 54
+  ELSE
+    L      NP_W260_M_code
+    -      KL_max_M_func_range_2
+    =X
+
+    L      KF M_func_tab_2[X]
+    =X
+  ENDI
+*;EUMACH BASIC 54
+
+  L      NP_M4072_strobe_M_function
+  AN     ML_auxiliary_marker_M_pulse
+  =      MG_pulse_M_function
+
+  L      NP_M4072_strobe_M_function
+  =      M0[X]
+  =      ML_auxiliary_marker_M_pulse
+
+EM
+
+KFIELD M_func_tab
+  K &MG_M00_programmed_stop            ;00
+  K &MG_M01_conditional_stop           ;01
+  K &MG_M02_END_program                ;02
+  K &MG_M03_spindle_right_cw_on        ;03
+  K &MG_M04_spindle_left_ccw_on        ;04
+  K &MG_M05_spindle_off                ;05
+  K &PN_error_M_function_not_used      ;06
+  K &MG_M07_coolant_inside_on          ;07
+  K &MG_M08_coolant_on                 ;08
+  K &MG_M09_coolant_off                ;09
+  K &MG_M10_clamping_axes              ;10
+  K &MG_M11_unclamping_axes            ;11
+  K &PN_error_M_function_not_used      ;12
+  K &MG_M13_Spindle_right_coolant_on   ;13
+  K &MG_M14_Spindle_left_coolant_on    ;14
+  K &MG_M15_coolant_chip_flush_on      ;15                            *;EUMACH
+  K &MG_M16_coolant_water_gun_active   ;16                            *;EUMACH
+  K &MG_M17_air_inside_on              ;17                            *;EUMACH
+  K &MG_M18_spindle_reference          ;18
+  K &MG_M19_spindle_orientation_0_degree ;19
+  K &MG_M20_spindle_orientation_CYCL_13 ;20
+  K &MG_M21_start_index_table          ;21
+  K &PN_error_M_function_not_used      ;22
+  K &MG_M23_air_blast_on               ;23                            *;EUMACH
+  K &MG_M24_air_blast_off              ;24                            *;EUMACH
+  K &MG_M25_coolant_chip_flush_off     ;25                            *;EUMACH
+  K &MG_M26_coolant_water_gun_inactive ;26                            *;EUMACH
+  K &MG_M27_oil_mist_on                ;27                            *;EUMACH
+  K &MG_M28_oil_mist_off               ;28                            *;EUMACH
+  K &PN_error_M_function_not_used      ;29
+  K &MG_M30_END_program                ;30
+  K &MG_M31_processing_without_M3_M4   ;31
+#if (Working_area_monitoring = &active) and ((SK = SK_menu_04) or (SK = SK_menu_10))
+  K &MG_M32_working_area_monitoring_off ;32
+#else
+  K &PN_error_M_function_not_used      ;32
+#endif
+  K &PN_error_M_function_not_used      ;33                            *;EUMACH Using for M03 of AFC function, cannot be used for PLC M function any more
+  K &PN_error_M_function_not_used      ;34                            *;EUMACH Using for M03 of AFC function, cannot be used for PLC M function any more
+  K &PN_error_M_function_not_used      ;35                            *;EUMACH Using for M03 of AFC function, cannot be used for PLC M function any more
+  K &PN_error_M_function_not_used      ;36
+  K &PN_error_M_function_not_used      ;37
+  K &PN_error_M_function_not_used      ;38
+  K &PN_error_M_function_not_used      ;39
+  K &PN_error_M_function_not_used      ;40
+  K &PN_error_M_function_not_used      ;41
+  K &PN_error_M_function_not_used      ;42
+  K &PN_error_M_function_not_used      ;43
+  K &MG_M44_unclamping_axis_4          ;44
+  K &MG_M45_unclamping_axis_5          ;45
+  K &MG_M46_unclamping_axis_6          ;46
+  K &PN_error_M_function_not_used      ;47
+  K &PN_error_M_function_not_used      ;48
+  K &PN_error_M_function_not_used      ;49
+  K &MG_M50_chip_conveyor_off          ;50
+  K &MG_M51_chip_conveyor_on           ;51
+  K &PN_error_M_function_not_used      ;52
+  K &PN_error_M_function_not_used      ;53
+  K &PN_error_M_function_not_used      ;54
+#if 3D_head = &active
+  K &MG_M55_B_C_head_exchange          ;55
+  K &MG_M56_B_head_exchange            ;56
+  K &MG_M57_3D_head_replace            ;57
+#else
+  K &PN_error_M_function_not_used      ;55
+  K &PN_error_M_function_not_used      ;56
+  K &PN_error_M_function_not_used      ;57
+#endif
+  K &PN_error_M_function_not_used      ;58
+
+#if Pallet_changer > &Alternat_table
+  K &MG_M59_pallet_changer_vacate      ;59
+  K &MG_M60_pallet_change              ;60
+  K &MG_M61_pallet_1_to_machine        ;61
+  K &MG_M62_pallet_2_to_machine        ;62
+#else
+#if Pallet_changer = &Alternat_table
+  K &PN_error_M_function_not_used      ;59
+  K &PN_error_M_function_not_used      ;60
+  K &MG_M61_alternating_table_1        ;61
+  K &MG_M62_alternating_table_2        ;62
+#else
+  K &PN_error_M_function_not_used      ;59
+  K &PN_error_M_function_not_used      ;60
+  K &PN_error_M_function_not_used      ;61
+  K &PN_error_M_function_not_used      ;62
+#endif
+#endif
+
+  K &PN_error_M_function_not_used      ;63
+  K &MG_M64_clamping_axis_4            ;64
+  K &MG_M65_clamping_axis_5            ;65
+  K &MG_M66_clamping_axis_6            ;66
+  K &PN_error_M_function_not_used      ;67
+  K &PN_error_M_function_not_used      ;68
+  K &PN_error_M_function_not_used      ;69
+;  K &MG_M70_PLC_preset_off             ;70                           *;EUMACH
+  K &PN_error_M_function_not_used      ;70                            *;EUMACH
+  K &MG_M71_axis_limit_1               ;71
+  K &MG_M72_axis_limit_2               ;72
+  K &MG_M73_axis_limit_3               ;73
+  K &MG_M74_simulated_axes_feed_enable ;74
+  K &MG_M75_buzzer_active              ;75                            *;EUMACH
+  K &MG_M76_buzzer_inactive            ;76                            *;EUMACH
+  K &PN_error_M_function_not_used      ;77
+  K &PN_error_M_function_not_used      ;78
+;  K &MG_M79_PLC_preset_on              ;79                           *;EUMACH
+  K &PN_error_M_function_not_used      ;79                            *;EUMACH
+  K &MG_M80_workpiece_counter_reset    ;80
+  K &MG_M81_workpiece_counter_plus_1   ;81
+#if Tool_specific_torque_monitoring  = &active
+  K &MG_M82_T_torque_off               ;82
+  K &MG_M83_T_torque_on                ;83
+#else
+  K &PN_error_M_function_not_used      ;82
+  K &PN_error_M_function_not_used      ;83
+#endif
+  K &PN_error_M_function_not_used      ;84
+  K &PN_error_M_function_not_used      ;85
+  K &PN_error_M_function_not_used      ;86
+  K &PN_error_M_function_not_used      ;87
+  K &PN_error_M_function_not_used      ;88
+  K &PN_error_M_function_not_used      ;89
+ENDK
+
+*;EUMACH BASIC 54
+KFIELD M_func_tab_2
+  K &PN_error_M_function_not_used      ;300
+  K &PN_error_M_function_not_used      ;301
+  K &PN_error_M_function_not_used      ;302
+  K &PN_error_M_function_not_used      ;303
+  K &PN_error_M_function_not_used      ;304
+  K &PN_error_M_function_not_used      ;305
+  K &PN_error_M_function_not_used      ;306
+  K &MG_M307_CTS_high_pressure         ;307                           *;EUMACH
+  K &PN_error_M_function_not_used      ;308
+  K &PN_error_M_function_not_used      ;309
+  K &MG_M310_fast_broken_tool_off      ;310                           *;EUMACH
+  K &MG_M311_fast_broken_tool_on       ;311                           *;EUMACH
+  K &PN_error_M_function_not_used      ;312
+  K &PN_error_M_function_not_used      ;313
+  K &PN_error_M_function_not_used      ;314
+  K &PN_error_M_function_not_used      ;315
+  K &PN_error_M_function_not_used      ;316
+  K &PN_error_M_function_not_used      ;317
+  K &PN_error_M_function_not_used      ;318
+  K &PN_error_M_function_not_used      ;319
+  K &MG_M320_latch_mode_off            ;320                           *;EUMACH
+  K &MG_M321_latch_mode_on             ;321                           *;EUMACH
+  K &PN_error_M_function_not_used      ;322
+  K &PN_error_M_function_not_used      ;323
+  K &PN_error_M_function_not_used      ;324
+  K &PN_error_M_function_not_used      ;325
+  K &PN_error_M_function_not_used      ;326
+  K &PN_error_M_function_not_used      ;327
+  K &PN_error_M_function_not_used      ;328
+  K &PN_error_M_function_not_used      ;329
+  K &MG_M330_TLM_air_blast_off         ;330                           *;EUMACH
+  K &MG_M331_TLM_air_blast_on          ;331                           *;EUMACH
+  K &PN_error_M_function_not_used      ;332
+  K &PN_error_M_function_not_used      ;333
+  K &PN_error_M_function_not_used      ;334
+  K &PN_error_M_function_not_used      ;335
+  K &PN_error_M_function_not_used      ;336
+  K &PN_error_M_function_not_used      ;337
+  K &PN_error_M_function_not_used      ;338
+  K &PN_error_M_function_not_used      ;339
+  K &MG_M340_TLM_cover_closing         ;340                           *;EUMACH
+  K &MG_M341_TLM_cover_opening         ;341                           *;EUMACH
+  K &PN_error_M_function_not_used      ;342
+  K &PN_error_M_function_not_used      ;343
+  K &PN_error_M_function_not_used      ;344
+  K &PN_error_M_function_not_used      ;345
+  K &PN_error_M_function_not_used      ;346
+  K &PN_error_M_function_not_used      ;347
+  K &PN_error_M_function_not_used      ;348
+  K &PN_error_M_function_not_used      ;349
+  K &PN_error_M_function_not_used      ;350
+  K &PN_error_M_function_not_used      ;351
+  K &PN_error_M_function_not_used      ;352
+  K &PN_error_M_function_not_used      ;353
+  K &PN_error_M_function_not_used      ;354
+  K &PN_error_M_function_not_used      ;355
+  K &PN_error_M_function_not_used      ;356
+  K &PN_error_M_function_not_used      ;357
+  K &PN_error_M_function_not_used      ;358
+  K &PN_error_M_function_not_used      ;359
+  K &PN_error_M_function_not_used      ;360
+  K &PN_error_M_function_not_used      ;361
+  K &PN_error_M_function_not_used      ;362
+  K &PN_error_M_function_not_used      ;363
+  K &PN_error_M_function_not_used      ;364
+  K &PN_error_M_function_not_used      ;365
+  K &PN_error_M_function_not_used      ;366
+  K &PN_error_M_function_not_used      ;367
+  K &PN_error_M_function_not_used      ;368
+  K &PN_error_M_function_not_used      ;369
+  K &MG_M370_dust_mist_collector_off   ;370
+  K &MG_M371_dust_mist_collector_on    ;371
+  K &PN_error_M_function_not_used      ;372
+  K &PN_error_M_function_not_used      ;373
+  K &PN_error_M_function_not_used      ;374
+  K &PN_error_M_function_not_used      ;375
+  K &PN_error_M_function_not_used      ;376
+  K &PN_error_M_function_not_used      ;377
+  K &PN_error_M_function_not_used      ;378
+  K &PN_error_M_function_not_used      ;379
+#if MT = &MT_2MV                                                      *;EUMACH
+  K &MG_M380_ext_sag_comp_off          ;380                           *;EUMACH
+  K &MG_M381_ext_sag_comp_on           ;381                           *;EUMACH
+#else                                                                 *;EUMACH
+  K &PN_error_M_function_not_used      ;380
+  K &PN_error_M_function_not_used      ;381
+#endif                                                                *;EUMACH
+  K &PN_error_M_function_not_used      ;382
+  K &PN_error_M_function_not_used      ;383
+  K &PN_error_M_function_not_used      ;384
+  K &PN_error_M_function_not_used      ;385
+  K &PN_error_M_function_not_used      ;386
+  K &PN_error_M_function_not_used      ;387
+  K &PN_error_M_function_not_used      ;388
+  K &PN_error_M_function_not_used      ;389
+#if TLM_protected_by_ATC_door = &active                               *;EUMACH
+  K &MG_M390_ATC_door_closing          ;390                           *;EUMACH
+  K &MG_M391_ATC_door_opening          ;391                           *;EUMACH
+#else                                                                 *;EUMACH
+  K &PN_error_M_function_not_used      ;390
+  K &PN_error_M_function_not_used      ;391
+#endif                                                                *;EUMACH
+  K &PN_error_M_function_not_used      ;392
+  K &PN_error_M_function_not_used      ;393
+  K &PN_error_M_function_not_used      ;394
+  K &PN_error_M_function_not_used      ;395
+  K &PN_error_M_function_not_used      ;396
+  K &PN_error_M_function_not_used      ;397
+  K &PN_error_M_function_not_used      ;398
+  K &PN_error_M_function_not_used      ;399
+  K &MG_M400_feed_disable_axis_4       ;400                           *;EUMACH
+  K &MG_M401_feed_enable_axis_4        ;401                           *;EUMACH
+  K &PN_error_M_function_not_used      ;402
+  K &PN_error_M_function_not_used      ;403
+  K &PN_error_M_function_not_used      ;404
+  K &PN_error_M_function_not_used      ;405
+  K &PN_error_M_function_not_used      ;406
+  K &PN_error_M_function_not_used      ;407
+  K &PN_error_M_function_not_used      ;408
+  K &PN_error_M_function_not_used      ;409
+  K &PN_error_M_function_not_used      ;410
+  K &PN_error_M_function_not_used      ;411
+  K &PN_error_M_function_not_used      ;412
+  K &PN_error_M_function_not_used      ;413
+  K &PN_error_M_function_not_used      ;414
+  K &PN_error_M_function_not_used      ;415
+  K &PN_error_M_function_not_used      ;416
+  K &PN_error_M_function_not_used      ;417
+  K &PN_error_M_function_not_used      ;418
+  K &PN_error_M_function_not_used      ;419
+  K &PN_error_M_function_not_used      ;420
+  K &PN_error_M_function_not_used      ;421
+  K &PN_error_M_function_not_used      ;422
+  K &PN_error_M_function_not_used      ;423
+  K &PN_error_M_function_not_used      ;424
+  K &PN_error_M_function_not_used      ;425
+  K &PN_error_M_function_not_used      ;426
+  K &PN_error_M_function_not_used      ;427
+  K &PN_error_M_function_not_used      ;428
+  K &PN_error_M_function_not_used      ;429
+  K &PN_error_M_function_not_used      ;430
+  K &PN_error_M_function_not_used      ;431
+  K &PN_error_M_function_not_used      ;432
+  K &PN_error_M_function_not_used      ;433
+  K &PN_error_M_function_not_used      ;434
+  K &PN_error_M_function_not_used      ;435
+  K &PN_error_M_function_not_used      ;436
+  K &PN_error_M_function_not_used      ;437
+  K &PN_error_M_function_not_used      ;438
+  K &PN_error_M_function_not_used      ;439
+  K &PN_error_M_function_not_used      ;440
+  K &PN_error_M_function_not_used      ;441
+  K &PN_error_M_function_not_used      ;442
+  K &PN_error_M_function_not_used      ;443
+  K &PN_error_M_function_not_used      ;444
+  K &PN_error_M_function_not_used      ;445
+  K &PN_error_M_function_not_used      ;446
+  K &PN_error_M_function_not_used      ;447
+  K &PN_error_M_function_not_used      ;448
+  K &PN_error_M_function_not_used      ;449
+  K &PN_error_M_function_not_used      ;450
+  K &PN_error_M_function_not_used      ;451
+  K &PN_error_M_function_not_used      ;452
+  K &PN_error_M_function_not_used      ;453
+  K &PN_error_M_function_not_used      ;454
+  K &PN_error_M_function_not_used      ;455
+  K &PN_error_M_function_not_used      ;456
+  K &PN_error_M_function_not_used      ;457
+  K &PN_error_M_function_not_used      ;458
+  K &PN_error_M_function_not_used      ;459
+  K &PN_error_M_function_not_used      ;460
+  K &PN_error_M_function_not_used      ;461
+  K &PN_error_M_function_not_used      ;462
+  K &PN_error_M_function_not_used      ;463
+  K &PN_error_M_function_not_used      ;464
+  K &PN_error_M_function_not_used      ;465
+  K &PN_error_M_function_not_used      ;466
+  K &PN_error_M_function_not_used      ;467
+  K &PN_error_M_function_not_used      ;468
+  K &PN_error_M_function_not_used      ;469
+  K &PN_error_M_function_not_used      ;470
+  K &PN_error_M_function_not_used      ;471
+  K &PN_error_M_function_not_used      ;472
+  K &PN_error_M_function_not_used      ;473
+  K &PN_error_M_function_not_used      ;474
+  K &PN_error_M_function_not_used      ;475
+  K &PN_error_M_function_not_used      ;476
+  K &PN_error_M_function_not_used      ;477
+  K &PN_error_M_function_not_used      ;478
+  K &PN_error_M_function_not_used      ;479
+  K &PN_error_M_function_not_used      ;480
+  K &PN_error_M_function_not_used      ;481
+  K &PN_error_M_function_not_used      ;482
+  K &PN_error_M_function_not_used      ;483
+  K &PN_error_M_function_not_used      ;484
+  K &PN_error_M_function_not_used      ;485
+  K &PN_error_M_function_not_used      ;486
+  K &PN_error_M_function_not_used      ;487
+  K &PN_error_M_function_not_used      ;488
+  K &PN_error_M_function_not_used      ;489
+  K &PN_error_M_function_not_used      ;490
+  K &PN_error_M_function_not_used      ;491
+  K &PN_error_M_function_not_used      ;492
+  K &PN_error_M_function_not_used      ;493
+  K &PN_error_M_function_not_used      ;494
+  K &PN_error_M_function_not_used      ;495
+  K &PN_error_M_function_not_used      ;496
+  K &PN_error_M_function_not_used      ;497
+  K &PN_error_M_function_not_used      ;498
+  K &PN_error_M_function_not_used      ;499
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)                  *;EUMACH
+  K &MG_M500_feed_disable_axis_5       ;500                           *;EUMACH
+  K &MG_M501_feed_enable_axis_5        ;501                           *;EUMACH
+#else                                                                 *;EUMACH
+  K &PN_error_M_function_not_used      ;500                           *;EUMACH
+  K &PN_error_M_function_not_used      ;501                           *;EUMACH
+#endif                                                                *;EUMACH
+  K &PN_error_M_function_not_used      ;502
+  K &PN_error_M_function_not_used      ;503
+  K &PN_error_M_function_not_used      ;504
+  K &PN_error_M_function_not_used      ;505
+  K &PN_error_M_function_not_used      ;506
+  K &PN_error_M_function_not_used      ;507
+  K &PN_error_M_function_not_used      ;508
+  K &PN_error_M_function_not_used      ;509
+  K &PN_error_M_function_not_used      ;510
+  K &PN_error_M_function_not_used      ;511
+  K &PN_error_M_function_not_used      ;512
+  K &PN_error_M_function_not_used      ;513
+  K &PN_error_M_function_not_used      ;514
+  K &PN_error_M_function_not_used      ;515
+  K &PN_error_M_function_not_used      ;516
+  K &PN_error_M_function_not_used      ;517
+  K &PN_error_M_function_not_used      ;518
+  K &PN_error_M_function_not_used      ;519
+  K &PN_error_M_function_not_used      ;520
+  K &PN_error_M_function_not_used      ;521
+  K &PN_error_M_function_not_used      ;522
+  K &PN_error_M_function_not_used      ;523
+  K &PN_error_M_function_not_used      ;524
+  K &PN_error_M_function_not_used      ;525
+  K &PN_error_M_function_not_used      ;526
+  K &PN_error_M_function_not_used      ;527
+  K &PN_error_M_function_not_used      ;528
+  K &PN_error_M_function_not_used      ;529
+  K &PN_error_M_function_not_used      ;530
+  K &PN_error_M_function_not_used      ;531
+  K &PN_error_M_function_not_used      ;532
+  K &PN_error_M_function_not_used      ;533
+  K &PN_error_M_function_not_used      ;534
+  K &PN_error_M_function_not_used      ;535
+  K &PN_error_M_function_not_used      ;536
+  K &PN_error_M_function_not_used      ;537
+  K &PN_error_M_function_not_used      ;538
+  K &PN_error_M_function_not_used      ;539
+  K &PN_error_M_function_not_used      ;540
+  K &PN_error_M_function_not_used      ;541
+  K &PN_error_M_function_not_used      ;542
+  K &PN_error_M_function_not_used      ;543
+  K &PN_error_M_function_not_used      ;544
+  K &PN_error_M_function_not_used      ;545
+  K &PN_error_M_function_not_used      ;546
+  K &PN_error_M_function_not_used      ;547
+  K &PN_error_M_function_not_used      ;548
+  K &PN_error_M_function_not_used      ;549
+  K &PN_error_M_function_not_used      ;550
+  K &PN_error_M_function_not_used      ;551
+  K &PN_error_M_function_not_used      ;552
+  K &PN_error_M_function_not_used      ;553
+  K &PN_error_M_function_not_used      ;554
+  K &PN_error_M_function_not_used      ;555
+  K &PN_error_M_function_not_used      ;556
+  K &PN_error_M_function_not_used      ;557
+  K &PN_error_M_function_not_used      ;558
+  K &PN_error_M_function_not_used      ;559
+  K &PN_error_M_function_not_used      ;560
+  K &PN_error_M_function_not_used      ;561
+  K &PN_error_M_function_not_used      ;562
+  K &PN_error_M_function_not_used      ;563
+  K &PN_error_M_function_not_used      ;564
+  K &PN_error_M_function_not_used      ;565
+  K &PN_error_M_function_not_used      ;566
+  K &PN_error_M_function_not_used      ;567
+  K &PN_error_M_function_not_used      ;568
+  K &PN_error_M_function_not_used      ;569
+  K &PN_error_M_function_not_used      ;570
+  K &PN_error_M_function_not_used      ;571
+  K &PN_error_M_function_not_used      ;572
+  K &PN_error_M_function_not_used      ;573
+  K &PN_error_M_function_not_used      ;574
+  K &PN_error_M_function_not_used      ;575
+  K &PN_error_M_function_not_used      ;576
+  K &PN_error_M_function_not_used      ;577
+  K &PN_error_M_function_not_used      ;578
+  K &PN_error_M_function_not_used      ;579
+  K &PN_error_M_function_not_used      ;580
+  K &PN_error_M_function_not_used      ;581
+  K &PN_error_M_function_not_used      ;582
+  K &PN_error_M_function_not_used      ;583
+  K &PN_error_M_function_not_used      ;584
+  K &PN_error_M_function_not_used      ;585
+  K &PN_error_M_function_not_used      ;586
+  K &PN_error_M_function_not_used      ;587
+  K &PN_error_M_function_not_used      ;588
+  K &PN_error_M_function_not_used      ;589
+  K &PN_error_M_function_not_used      ;590
+  K &PN_error_M_function_not_used      ;591
+  K &PN_error_M_function_not_used      ;592
+  K &PN_error_M_function_not_used      ;593
+  K &PN_error_M_function_not_used      ;594
+  K &PN_error_M_function_not_used      ;595
+  K &PN_error_M_function_not_used      ;596
+  K &PN_error_M_function_not_used      ;597
+  K &PN_error_M_function_not_used      ;598
+  K &PN_error_M_function_not_used      ;599
+  K &PN_error_M_function_not_used      ;600
+  K &PN_error_M_function_not_used      ;601
+  K &PN_error_M_function_not_used      ;602
+  K &PN_error_M_function_not_used      ;603
+  K &PN_error_M_function_not_used      ;604
+  K &PN_error_M_function_not_used      ;605
+  K &PN_error_M_function_not_used      ;606
+  K &PN_error_M_function_not_used      ;607
+  K &PN_error_M_function_not_used      ;608
+  K &PN_error_M_function_not_used      ;609
+  K &PN_error_M_function_not_used      ;610
+  K &PN_error_M_function_not_used      ;611
+  K &PN_error_M_function_not_used      ;612
+  K &PN_error_M_function_not_used      ;613
+  K &PN_error_M_function_not_used      ;614
+  K &PN_error_M_function_not_used      ;615
+  K &PN_error_M_function_not_used      ;616
+  K &PN_error_M_function_not_used      ;617
+  K &PN_error_M_function_not_used      ;618
+  K &PN_error_M_function_not_used      ;619
+  K &PN_error_M_function_not_used      ;620
+  K &PN_error_M_function_not_used      ;621
+  K &PN_error_M_function_not_used      ;622
+  K &PN_error_M_function_not_used      ;623
+  K &PN_error_M_function_not_used      ;624
+  K &PN_error_M_function_not_used      ;625
+  K &PN_error_M_function_not_used      ;626
+  K &PN_error_M_function_not_used      ;627
+  K &PN_error_M_function_not_used      ;628
+  K &PN_error_M_function_not_used      ;629
+  K &PN_error_M_function_not_used      ;630
+  K &PN_error_M_function_not_used      ;631
+  K &PN_error_M_function_not_used      ;632
+  K &PN_error_M_function_not_used      ;633
+  K &PN_error_M_function_not_used      ;634
+  K &PN_error_M_function_not_used      ;635
+  K &PN_error_M_function_not_used      ;636
+  K &PN_error_M_function_not_used      ;637
+  K &PN_error_M_function_not_used      ;638
+  K &PN_error_M_function_not_used      ;639
+  K &PN_error_M_function_not_used      ;640
+  K &PN_error_M_function_not_used      ;641
+  K &PN_error_M_function_not_used      ;642
+  K &PN_error_M_function_not_used      ;643
+  K &PN_error_M_function_not_used      ;644
+  K &PN_error_M_function_not_used      ;645
+  K &PN_error_M_function_not_used      ;646
+  K &PN_error_M_function_not_used      ;647
+  K &PN_error_M_function_not_used      ;648
+  K &PN_error_M_function_not_used      ;649
+  K &PN_error_M_function_not_used      ;650
+  K &PN_error_M_function_not_used      ;651
+  K &PN_error_M_function_not_used      ;652
+  K &PN_error_M_function_not_used      ;653
+  K &PN_error_M_function_not_used      ;654
+  K &PN_error_M_function_not_used      ;655
+  K &PN_error_M_function_not_used      ;656
+  K &PN_error_M_function_not_used      ;657
+  K &PN_error_M_function_not_used      ;658
+  K &PN_error_M_function_not_used      ;659
+  K &PN_error_M_function_not_used      ;660
+  K &PN_error_M_function_not_used      ;661
+  K &PN_error_M_function_not_used      ;662
+  K &PN_error_M_function_not_used      ;663
+  K &PN_error_M_function_not_used      ;664
+  K &PN_error_M_function_not_used      ;665
+  K &PN_error_M_function_not_used      ;666
+  K &PN_error_M_function_not_used      ;667
+  K &PN_error_M_function_not_used      ;668
+  K &PN_error_M_function_not_used      ;669
+  K &PN_error_M_function_not_used      ;670
+  K &PN_error_M_function_not_used      ;671
+  K &PN_error_M_function_not_used      ;672
+  K &PN_error_M_function_not_used      ;673
+  K &PN_error_M_function_not_used      ;674
+  K &PN_error_M_function_not_used      ;675
+  K &PN_error_M_function_not_used      ;676
+  K &PN_error_M_function_not_used      ;677
+  K &PN_error_M_function_not_used      ;678
+  K &PN_error_M_function_not_used      ;679
+  K &PN_error_M_function_not_used      ;680
+  K &PN_error_M_function_not_used      ;681
+  K &PN_error_M_function_not_used      ;682
+  K &PN_error_M_function_not_used      ;683
+  K &PN_error_M_function_not_used      ;684
+  K &PN_error_M_function_not_used      ;685
+  K &PN_error_M_function_not_used      ;686
+  K &PN_error_M_function_not_used      ;687
+  K &PN_error_M_function_not_used      ;688
+  K &PN_error_M_function_not_used      ;689
+  K &PN_error_M_function_not_used      ;690
+  K &PN_error_M_function_not_used      ;691
+  K &PN_error_M_function_not_used      ;692
+  K &PN_error_M_function_not_used      ;693
+  K &PN_error_M_function_not_used      ;694
+  K &PN_error_M_function_not_used      ;695
+  K &PN_error_M_function_not_used      ;696
+  K &PN_error_M_function_not_used      ;697
+  K &PN_error_M_function_not_used      ;698
+  K &PN_error_M_function_not_used      ;699
+  K &PN_error_M_function_not_used      ;700
+  K &PN_error_M_function_not_used      ;701
+  K &PN_error_M_function_not_used      ;702
+  K &PN_error_M_function_not_used      ;703
+  K &PN_error_M_function_not_used      ;704
+  K &PN_error_M_function_not_used      ;705
+  K &PN_error_M_function_not_used      ;706
+  K &PN_error_M_function_not_used      ;707
+  K &PN_error_M_function_not_used      ;708
+  K &PN_error_M_function_not_used      ;709
+  K &PN_error_M_function_not_used      ;710
+  K &PN_error_M_function_not_used      ;711
+  K &PN_error_M_function_not_used      ;712
+  K &PN_error_M_function_not_used      ;713
+  K &PN_error_M_function_not_used      ;714
+  K &PN_error_M_function_not_used      ;715
+  K &PN_error_M_function_not_used      ;716
+  K &PN_error_M_function_not_used      ;717
+  K &PN_error_M_function_not_used      ;718
+  K &PN_error_M_function_not_used      ;719
+  K &PN_error_M_function_not_used      ;720
+  K &PN_error_M_function_not_used      ;721
+  K &PN_error_M_function_not_used      ;722
+  K &PN_error_M_function_not_used      ;723
+  K &PN_error_M_function_not_used      ;724
+  K &PN_error_M_function_not_used      ;725
+  K &PN_error_M_function_not_used      ;726
+  K &PN_error_M_function_not_used      ;727
+  K &PN_error_M_function_not_used      ;728
+  K &PN_error_M_function_not_used      ;729
+  K &PN_error_M_function_not_used      ;730
+  K &PN_error_M_function_not_used      ;731
+  K &PN_error_M_function_not_used      ;732
+  K &PN_error_M_function_not_used      ;733
+  K &PN_error_M_function_not_used      ;734
+  K &PN_error_M_function_not_used      ;735
+  K &PN_error_M_function_not_used      ;736
+  K &PN_error_M_function_not_used      ;737
+  K &PN_error_M_function_not_used      ;738
+  K &PN_error_M_function_not_used      ;739
+  K &PN_error_M_function_not_used      ;740
+  K &PN_error_M_function_not_used      ;741
+  K &PN_error_M_function_not_used      ;742
+  K &PN_error_M_function_not_used      ;743
+  K &PN_error_M_function_not_used      ;744
+  K &PN_error_M_function_not_used      ;745
+  K &PN_error_M_function_not_used      ;746
+  K &PN_error_M_function_not_used      ;747
+  K &PN_error_M_function_not_used      ;748
+  K &PN_error_M_function_not_used      ;749
+  K &PN_error_M_function_not_used      ;750
+  K &PN_error_M_function_not_used      ;751
+  K &PN_error_M_function_not_used      ;752
+  K &PN_error_M_function_not_used      ;753
+  K &PN_error_M_function_not_used      ;754
+  K &PN_error_M_function_not_used      ;755
+  K &PN_error_M_function_not_used      ;756
+  K &PN_error_M_function_not_used      ;757
+  K &PN_error_M_function_not_used      ;758
+  K &PN_error_M_function_not_used      ;759
+  K &PN_error_M_function_not_used      ;760
+  K &PN_error_M_function_not_used      ;761
+  K &PN_error_M_function_not_used      ;762
+  K &PN_error_M_function_not_used      ;763
+  K &PN_error_M_function_not_used      ;764
+  K &PN_error_M_function_not_used      ;765
+  K &PN_error_M_function_not_used      ;766
+  K &PN_error_M_function_not_used      ;767
+  K &PN_error_M_function_not_used      ;768
+  K &PN_error_M_function_not_used      ;769
+  K &PN_error_M_function_not_used      ;770
+  K &PN_error_M_function_not_used      ;771
+  K &PN_error_M_function_not_used      ;772
+  K &PN_error_M_function_not_used      ;773
+  K &PN_error_M_function_not_used      ;774
+  K &PN_error_M_function_not_used      ;775
+  K &PN_error_M_function_not_used      ;776
+  K &PN_error_M_function_not_used      ;777
+  K &PN_error_M_function_not_used      ;778
+  K &PN_error_M_function_not_used      ;779
+  K &PN_error_M_function_not_used      ;780
+  K &PN_error_M_function_not_used      ;781
+  K &PN_error_M_function_not_used      ;782
+  K &PN_error_M_function_not_used      ;783
+  K &PN_error_M_function_not_used      ;784
+  K &PN_error_M_function_not_used      ;785
+  K &PN_error_M_function_not_used      ;786
+  K &PN_error_M_function_not_used      ;787
+  K &PN_error_M_function_not_used      ;788
+  K &PN_error_M_function_not_used      ;789
+  K &PN_error_M_function_not_used      ;790
+  K &PN_error_M_function_not_used      ;791
+  K &PN_error_M_function_not_used      ;792
+  K &PN_error_M_function_not_used      ;793
+  K &PN_error_M_function_not_used      ;794
+  K &PN_error_M_function_not_used      ;795
+  K &PN_error_M_function_not_used      ;796
+  K &PN_error_M_function_not_used      ;797
+  K &PN_error_M_function_not_used      ;798
+  K &PN_error_M_function_not_used      ;799
+  K &PN_error_M_function_not_used      ;800
+  K &PN_error_M_function_not_used      ;801
+  K &PN_error_M_function_not_used      ;802
+  K &PN_error_M_function_not_used      ;803
+  K &PN_error_M_function_not_used      ;804
+  K &PN_error_M_function_not_used      ;805
+  K &PN_error_M_function_not_used      ;806
+  K &PN_error_M_function_not_used      ;807
+  K &PN_error_M_function_not_used      ;808
+  K &PN_error_M_function_not_used      ;809
+  K &PN_error_M_function_not_used      ;810
+  K &PN_error_M_function_not_used      ;811
+  K &PN_error_M_function_not_used      ;812
+  K &PN_error_M_function_not_used      ;813
+  K &PN_error_M_function_not_used      ;814
+  K &PN_error_M_function_not_used      ;815
+  K &PN_error_M_function_not_used      ;816
+  K &PN_error_M_function_not_used      ;817
+  K &PN_error_M_function_not_used      ;818
+  K &PN_error_M_function_not_used      ;819
+  K &PN_error_M_function_not_used      ;820
+  K &PN_error_M_function_not_used      ;821
+  K &PN_error_M_function_not_used      ;822
+  K &PN_error_M_function_not_used      ;823
+  K &PN_error_M_function_not_used      ;824
+  K &PN_error_M_function_not_used      ;825
+  K &PN_error_M_function_not_used      ;826
+  K &PN_error_M_function_not_used      ;827
+  K &PN_error_M_function_not_used      ;828
+  K &PN_error_M_function_not_used      ;829
+  K &PN_error_M_function_not_used      ;830
+  K &PN_error_M_function_not_used      ;831
+  K &PN_error_M_function_not_used      ;832
+  K &PN_error_M_function_not_used      ;833
+  K &PN_error_M_function_not_used      ;834
+  K &PN_error_M_function_not_used      ;835
+  K &PN_error_M_function_not_used      ;836
+  K &PN_error_M_function_not_used      ;837
+  K &PN_error_M_function_not_used      ;838
+  K &PN_error_M_function_not_used      ;839
+  K &PN_error_M_function_not_used      ;840
+  K &PN_error_M_function_not_used      ;841
+  K &PN_error_M_function_not_used      ;842
+  K &PN_error_M_function_not_used      ;843
+  K &PN_error_M_function_not_used      ;844
+  K &PN_error_M_function_not_used      ;845
+  K &PN_error_M_function_not_used      ;846
+  K &PN_error_M_function_not_used      ;847
+  K &PN_error_M_function_not_used      ;848
+  K &PN_error_M_function_not_used      ;849
+  K &PN_error_M_function_not_used      ;850
+  K &PN_error_M_function_not_used      ;851
+  K &PN_error_M_function_not_used      ;852
+  K &PN_error_M_function_not_used      ;853
+  K &PN_error_M_function_not_used      ;854
+  K &PN_error_M_function_not_used      ;855
+  K &PN_error_M_function_not_used      ;856
+  K &PN_error_M_function_not_used      ;857
+  K &PN_error_M_function_not_used      ;858
+  K &PN_error_M_function_not_used      ;859
+  K &PN_error_M_function_not_used      ;860
+  K &PN_error_M_function_not_used      ;861
+  K &PN_error_M_function_not_used      ;862
+  K &PN_error_M_function_not_used      ;863
+  K &PN_error_M_function_not_used      ;864
+  K &PN_error_M_function_not_used      ;865
+  K &PN_error_M_function_not_used      ;866
+  K &PN_error_M_function_not_used      ;867
+  K &PN_error_M_function_not_used      ;868
+  K &PN_error_M_function_not_used      ;869
+  K &PN_error_M_function_not_used      ;870
+  K &PN_error_M_function_not_used      ;871
+  K &PN_error_M_function_not_used      ;872
+  K &PN_error_M_function_not_used      ;873
+  K &PN_error_M_function_not_used      ;874
+  K &PN_error_M_function_not_used      ;875
+  K &PN_error_M_function_not_used      ;876
+  K &PN_error_M_function_not_used      ;877
+  K &PN_error_M_function_not_used      ;878
+  K &PN_error_M_function_not_used      ;879
+  K &PN_error_M_function_not_used      ;880
+  K &PN_error_M_function_not_used      ;881
+  K &PN_error_M_function_not_used      ;882
+  K &PN_error_M_function_not_used      ;883
+  K &PN_error_M_function_not_used      ;884
+  K &PN_error_M_function_not_used      ;885
+  K &PN_error_M_function_not_used      ;886
+  K &PN_error_M_function_not_used      ;887
+  K &PN_error_M_function_not_used      ;888
+  K &PN_error_M_function_not_used      ;889
+  K &PN_error_M_function_not_used      ;890
+  K &PN_error_M_function_not_used      ;891
+  K &PN_error_M_function_not_used      ;892
+  K &PN_error_M_function_not_used      ;893
+  K &PN_error_M_function_not_used      ;894
+  K &PN_error_M_function_not_used      ;895
+  K &PN_error_M_function_not_used      ;896
+  K &PN_error_M_function_not_used      ;897
+  K &PN_error_M_function_not_used      ;898
+  K &PN_error_M_function_not_used      ;899
+  K &PN_error_M_function_not_used      ;900
+  K &PN_error_M_function_not_used      ;901
+  K &PN_error_M_function_not_used      ;902
+  K &PN_error_M_function_not_used      ;903
+  K &PN_error_M_function_not_used      ;904
+  K &PN_error_M_function_not_used      ;905
+  K &PN_error_M_function_not_used      ;906
+  K &PN_error_M_function_not_used      ;907
+  K &PN_error_M_function_not_used      ;908
+  K &PN_error_M_function_not_used      ;909
+  K &PN_error_M_function_not_used      ;910
+  K &PN_error_M_function_not_used      ;911
+  K &PN_error_M_function_not_used      ;912
+  K &PN_error_M_function_not_used      ;913
+  K &PN_error_M_function_not_used      ;914
+  K &PN_error_M_function_not_used      ;915
+  K &PN_error_M_function_not_used      ;916
+  K &PN_error_M_function_not_used      ;917
+  K &PN_error_M_function_not_used      ;918
+  K &PN_error_M_function_not_used      ;919
+  K &PN_error_M_function_not_used      ;920
+  K &PN_error_M_function_not_used      ;921
+  K &PN_error_M_function_not_used      ;922
+  K &PN_error_M_function_not_used      ;923
+  K &PN_error_M_function_not_used      ;924
+  K &PN_error_M_function_not_used      ;925
+  K &PN_error_M_function_not_used      ;926
+  K &PN_error_M_function_not_used      ;927
+  K &PN_error_M_function_not_used      ;928
+  K &PN_error_M_function_not_used      ;929
+  K &PN_error_M_function_not_used      ;930
+  K &PN_error_M_function_not_used      ;931
+  K &PN_error_M_function_not_used      ;932
+  K &PN_error_M_function_not_used      ;933
+  K &PN_error_M_function_not_used      ;934
+  K &PN_error_M_function_not_used      ;935
+  K &PN_error_M_function_not_used      ;936
+  K &PN_error_M_function_not_used      ;937
+  K &PN_error_M_function_not_used      ;938
+  K &PN_error_M_function_not_used      ;939
+  K &PN_error_M_function_not_used      ;940
+  K &PN_error_M_function_not_used      ;941
+  K &PN_error_M_function_not_used      ;942
+  K &PN_error_M_function_not_used      ;943
+  K &PN_error_M_function_not_used      ;944
+  K &PN_error_M_function_not_used      ;945
+  K &PN_error_M_function_not_used      ;946
+  K &PN_error_M_function_not_used      ;947
+  K &PN_error_M_function_not_used      ;948
+  K &PN_error_M_function_not_used      ;949
+  K &PN_error_M_function_not_used      ;950
+  K &PN_error_M_function_not_used      ;951
+  K &PN_error_M_function_not_used      ;952
+  K &PN_error_M_function_not_used      ;953
+  K &PN_error_M_function_not_used      ;954
+  K &PN_error_M_function_not_used      ;955
+  K &PN_error_M_function_not_used      ;956
+  K &PN_error_M_function_not_used      ;957
+  K &PN_error_M_function_not_used      ;958
+  K &PN_error_M_function_not_used      ;959
+  K &PN_error_M_function_not_used      ;960
+  K &PN_error_M_function_not_used      ;961
+  K &PN_error_M_function_not_used      ;962
+  K &PN_error_M_function_not_used      ;963
+  K &PN_error_M_function_not_used      ;964
+  K &PN_error_M_function_not_used      ;965
+  K &PN_error_M_function_not_used      ;966
+  K &PN_error_M_function_not_used      ;967
+  K &PN_error_M_function_not_used      ;968
+  K &PN_error_M_function_not_used      ;969
+  K &PN_error_M_function_not_used      ;970
+  K &PN_error_M_function_not_used      ;971
+  K &PN_error_M_function_not_used      ;972
+  K &PN_error_M_function_not_used      ;973
+  K &PN_error_M_function_not_used      ;974
+  K &PN_error_M_function_not_used      ;975
+  K &PN_error_M_function_not_used      ;976
+  K &PN_error_M_function_not_used      ;977
+  K &PN_error_M_function_not_used      ;978
+  K &PN_error_M_function_not_used      ;979
+  K &PN_error_M_function_not_used      ;980
+  K &PN_error_M_function_not_used      ;981
+  K &PN_error_M_function_not_used      ;982
+  K &PN_error_M_function_not_used      ;983
+  K &PN_error_M_function_not_used      ;984
+  K &PN_error_M_function_not_used      ;985
+  K &PN_error_M_function_not_used      ;986
+  K &PN_error_M_function_not_used      ;987
+  K &PN_error_M_function_not_used      ;988
+  K &PN_error_M_function_not_used      ;989
+  K &PN_error_M_function_not_used      ;990
+  K &PN_error_M_function_not_used      ;991
+  K &PN_error_M_function_not_used      ;992
+  K &PN_error_M_function_not_used      ;993
+  K &PN_error_M_function_not_used      ;994
+  K &PN_error_M_function_not_used      ;995
+  K &PN_error_M_function_not_used      ;996
+  K &PN_error_M_function_not_used      ;997
+  K &PN_error_M_function_not_used      ;998
+  K &PN_error_M_function_not_used      ;999
+ENDK
+*;EUMACH BASIC 54

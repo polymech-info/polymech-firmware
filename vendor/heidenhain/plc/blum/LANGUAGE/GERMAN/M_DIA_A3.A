@@ -1,0 +1,38 @@
+/* Diagnosis axes/spindle
+   ----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"DIAG AXES/SPINDLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"Axis        X   Y   Z   4   5   6 \n";
+CURSOR=OFF;
+"Step        %1D   %1D   %1D   %1D   %1D   %1D\n\n",
+$BG_step_axis_X$/c,$BG_step_axis_Y$/c,
+$BG_step_axis_Z$/c,$BG_step_axis_4$/c,
+$BG_step_axis_5$/c,$BG_step_axis_6$/c;
+
+CURSOR=ON;
+"Axis        7   8   9  10  11  12 \n";
+CURSOR=OFF;
+"Step        %1D   %1D   %1D   %1D   %1D   %1D\n\n",
+$BG_step_axis_7$/c,$BG_step_axis_8$/c,
+$BG_step_axis_9$/c,$BG_step_axis_10$/c,
+$BG_step_axis_11$/c,$BG_step_axis_12$/c;
+
+"Legend\n";
+"  0 = Initialization \n";
+"  1 = Wait in position\n";
+"  2 = Current/speed control on\n";
+"  3 = Unclamping\n";
+"  4 = Close positioning loop\n";
+"  5 = Positioning\n";
+"  6 = Clamping\n";
+"  7 = Open positioning loop\n";
+"  8 = Current/speed control off\n";
+"  9 = Step end\n";
+

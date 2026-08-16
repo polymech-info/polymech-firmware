@@ -1,0 +1,15 @@
+{
+    "name": "Host Tests (1M flash)",
+    "base_config": "host-tests",
+    "options": [
+        "1m"
+    ],
+    "partitions": {
+        "fwfs_httprequest": {
+            "address": "0x000c0000"
+        },
+        "spiffs0": {
+            "address": "0x000e0000"
+        }
+    }
+}

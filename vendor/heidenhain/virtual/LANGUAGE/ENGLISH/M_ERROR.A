@@ -1,0 +1,20 @@
+/* FEHLER QUEUE
+   ------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"ERROR TABLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\nNo Stat Text                          \n";
+CURSOR=OFF;
+ERRQUE=17/c/l/s;
+
+"\n\n";
+" Status - C: CE possible\n";
+"          S: NC-STOP\n";
+"          E: Emergency STOP\n";
+"          F: no Feed Relaese\n";
+"        0-2: Priority";

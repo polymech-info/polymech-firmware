@@ -1,0 +1,71 @@
+﻿The toolsetter Z-NANO IR/TC54-20 could not be activated by
+the infrared flash.
+1                                                         |
+The stylus of the toolsetter Z-NANO/TC54-20 is deflected
+when starting the measuring bloc.
+2                                                         |
+The capacity of the battery is not sufficient enough for a
+precise and reliable measurement anymore.
+3                                                         |
+reserved
+4                                                         |
+The parameter approach side length axis and/or radius axis
+and/or auxiliary axis in file PLC:\BLUM\Z_PROBE_0.TAB are 
+faulty.
+5                                                         |
+reserved
+6                                                         |
+The tool could not be measured, because the stylus was
+not reached and deflected.
+7                                                         |
+The meas. cycle was called without a tool in the spindle.
+Attention, risk of collision!
+8                                                         |
+The given/measured tool geometry L,R exceeds the permitted
+limits defined in the file PLC:\BLUM\Z_PROBE_0.TAB.
+9                                                         |
+The permitted scattering tolerance Q362 of the single meas.
+values of Q361 repetitions was exceeded.
+10                                                        |
+The wear tolerance LTOL,RTOL resp. the breakage tolerance
+LBREAK,RBREAK in TOOL.T was exceeded. The tool is faulty
+and is locked for the further machining process.
+11                                                        |
+The tool data L,R,ROFFS,LOFFS in TOOL.T can cause a 
+collision between tool and probe.
+12                                                        |
+The actual tool axis (X,Y,Z) defined in the last TOOL CALL
+is different to the length axis number P40 in Z_PROBE_0.TAB.
+13                                                        |
+reserved
+14                                                        |
+The tool parameter L,R,DL,DR,ROFFS,LOFFS,LTOL,RTOL,LBREAK,
+RBREAK,CUT,TL in TOOL.T are faulty. They exceed permitted 
+limits.
+15                                                        |
+The cycle call parameter Q350,Q351,Q352,Q361,Q362 are
+faulty. They exceed permitted limits.
+16                                                        |
+One or more parameter in the file PLC:\BLUM\Z_PROBE_0.TAB
+are faulty. They exceed permitted limits.
+17                                                        |
+reserved
+18                                                        |
+reserved
+19                                                        |
+The difference between actual trigger position and brake
+position of the moved axis is greater than 20mm.
+Attention, risk of collision!
+20                                                        |
+reserved
+21                                                        |
+Read access to the parameter file Z_PROBE_x.ZPR is not 
+possible.
+22                                                        |
+Write access to the parameter file Z_PROBE_x.ZPR is not 
+possible.
+23                                                        |
+Read access to the tool table TOOL.T is not possible.
+24                                                        |
+Write access to the tool table TOOL.T is not possible.
+25                                                        |

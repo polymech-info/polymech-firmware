@@ -1,0 +1,150 @@
+*-----------------------------------------------------------------------------
+*  Spindle reference
+*-----------------------------------------------------------------------------
+*  Module Description
+*    special function if no ROD on spindle
+*      MP3143: 1 or
+*      MP3143: 2
+*-----------------------------------------------------------------------------
+
+#define /s    KL_direction_positive                    K+1
+
+#define /s    BL_Case_reference                        B
+
+#include Mac_Lib.inc
+
+GLOBAL Spindle_reference
+
+;----------------------------
+LBL Spindle_reference
+;----------------------------
+
+  CASE   BL_Case_reference
+    CM     Reference_active            ;00
+    CM     G_coupling_ok               ;01
+    CM     Drive_on                    ;02
+    CM     Reference_start             ;03
+    CM     Reference_ok                ;04
+    CM     Reference_quit              ;05
+    CM     Reference_end               ;06
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Case_reference
+  ENDI
+
+  LN     MG_control_operational
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  ON     MG_V_H_head_clamped_and_in_pos                               *;EUMACH
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_05                                            *;EUMACH
+  O[                                                                  *;EUMACH
+    L      MG_soft_key_S_man_head                                     *;EUMACH
+    A      O_S_head_coupling_unclamping                               *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  O      MG_3D_head_axis_not_clamped                                  *;EUMACH
+  O      PN_error_SM1xx_temperature_too_high                          *;EUMACH
+  O[                                                                  *;EUMACH Thermal relay
+    LN     I_S_PTC_sensor_temperature_ok                              *;EUMACH Thermal relay
+    A      PN_error_thermal_sensor_temperature                        *;EUMACH Thermal relay
+  ]                                                                   *;EUMACH Thermal relay
+  CMT    Spindle_reset
+
+EM
+
+;----------------------------
+LBL Reference_active                   ;00
+
+  L      MG_M18_spindle_reference
+  AN     MG_3D_head_active                                            *;EUMACH
+  AN     MG_spindle_C_axis_mode_active                                *;EUMACH
+  AN     I_tool_unclamped                                             *;EUMACH
+  A      I_tool_clamped                                               *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  A      I_tool_clamp_line_hydraulic_pressure_0                       *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+  S      MG_spindle_reference_active
+
+  L      MG_spindle_reference_active
+  A      MG_spindle_stand_still
+  AN     MG_guard_open
+  PSL
+
+EM
+
+;----------------------------
+LBL G_coupling_ok                      ;01
+
+  LN     PN_M4134_strobe_G_range_S_speed
+  PSL
+
+EM
+
+;----------------------------
+LBL Drive_on                           ;02
+
+  L      MG_spindle_digital
+  IFT
+    L      WG_servo_drives_ready
+    BT     KG_spindle
+    PSL
+  ELSE
+    LN     TR_servo_drive_release_S
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Reference_start                    ;03
+
+  PS     KG_spindle
+  L      NP_D880_S_reference_rpm
+  /      K+10
+  PSW
+  PS     KL_direction_positive
+  CM     9220
+  PLW
+  ==     K+0
+  PSL
+    M_display_module_error(KG_error_module_9220)
+
+EM
+
+;----------------------------
+LBL Reference_ok                       ;04
+
+  LN     NP_M4018_S_no_reference
+  PSL
+
+EM
+
+;----------------------------
+LBL Reference_quit                     ;05
+
+  L      NP_M4072_strobe_M_function
+  A      MG_M18_spindle_reference                                     *;EUMACH
+  S      PN_M4092_quit_M_function
+
+  LN     NP_M4072_strobe_M_function
+  ON     MG_M18_spindle_reference                                     *;EUMACH
+  PSL
+
+EM
+
+;----------------------------
+LBL Reference_end                      ;06
+
+  PS     MG_marker_zero
+
+LBL Spindle_reset
+
+  L      MG_marker_one
+  R      MG_spindle_reference_active
+
+  L      K+0
+  =      BL_Case_reference
+
+EM

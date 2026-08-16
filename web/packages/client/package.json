@@ -1,0 +1,56 @@
+{
+  "name": "@polymech/client-ts",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./modbusService": {
+      "import": "./dist/services/modbusService.js",
+      "require": "./dist/services/modbusService.cjs"
+    },
+    "./modbusApiService": {
+      "import": "./dist/services/modbusApiService.js",
+      "require": "./dist/services/modbusApiService.cjs"
+    },
+    "./modbusServiceMocked": {
+      "import": "./dist/services/modbusServiceMocked.js",
+      "require": "./dist/services/modbusServiceMocked.cjs"
+    },
+    "./modbusApiServiceMocked": {
+      "import": "./dist/services/modbusApiServiceMocked.js",
+      "require": "./dist/services/modbusApiServiceMocked.cjs"
+    },
+    "./lib": {
+      "import": "./dist/lib/index.js",
+      "require": "./dist/lib/index.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "tsc -p . --watch",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
+    "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.3.0",
+    "input-otp": "^1.2.4",
+    "lucide-react": "^0.462.0",
+    "modbus-serial": "^8.0.16",
+    "protobufjs": "^7.5.3",
+    "sonner": "^1.5.0",
+    "stream-browserify": "^3.0.0",
+    "vaul": "^0.9.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^22.15.3",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^8.0.1",
+    "vite": "^5.4.1"
+  }
+}

@@ -1,0 +1,1119 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "SETTINGS_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "SETTINGS_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Arduino.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ArduinoJson.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "MAX_CONTROLLERS_PER_PARTITION"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "16\r"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "MAX_PARTITIONS"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "4\r"
+            }
+          ]
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "MAX_SLAVES"
+            },
+            {
+              "type": "preproc_arg",
+              "text": "3\r"
+            }
+          ]
+        },
+        {
+          "type": "struct_specifier",
+          "children": [
+            {
+              "type": "struct",
+              "text": "struct"
+            },
+            {
+              "type": "type_identifier",
+              "text": "ControllerConfig"
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "slaveId"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "String"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "name"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "enabled"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "true",
+                      "text": "true"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "fromJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonObjectConst"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "jsonObj"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "toJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonObject"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "jsonObj"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "struct_specifier",
+          "children": [
+            {
+              "type": "struct",
+              "text": "struct"
+            },
+            {
+              "type": "type_identifier",
+              "text": "PartitionConfig"
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "String"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "name"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ControllerConfig"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "controllers"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "identifier",
+                          "text": "MAX_CONTROLLERS_PER_PARTITION"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "controllerCount"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// For auto-generation from UI, if needed\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "startSlaveId"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "numControllers"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "fromJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonObjectConst"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "jsonObj"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "toJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonObject"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "jsonObj"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "Settings"
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "PartitionConfig"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "partitions"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "identifier",
+                          "text": "MAX_PARTITIONS"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "partitionCount"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "String"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "Master"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "String"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "Slaves"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "identifier",
+                          "text": "MAX_SLAVES"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint8_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "slaveCount"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "declaration",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "Settings"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "fromJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonVariantConst"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "json"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "toJSON"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "JsonVariant"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "json"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "load"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_qualifier",
+                                  "children": [
+                                    {
+                                      "type": "const",
+                                      "text": "const"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "primitive_type",
+                                  "text": "char"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "filename"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "string_literal",
+                                  "children": [
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    },
+                                    {
+                                      "type": "string_content",
+                                      "text": "/partitions.json"
+                                    },
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "save"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_qualifier",
+                                  "children": [
+                                    {
+                                      "type": "const",
+                                      "text": "const"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "primitive_type",
+                                  "text": "char"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "filename"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "string_literal",
+                                  "children": [
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    },
+                                    {
+                                      "type": "string_content",
+                                      "text": "/partitions.json"
+                                    },
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "applyDefaults"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// SETTINGS_H"
+    }
+  ]
+}

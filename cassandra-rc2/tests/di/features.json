@@ -1,0 +1,98 @@
+{
+  "ENABLE_OPERATOR_SWITCH": {
+    "headerFile": "components/OperatorSwitch.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_RELAYS": {
+    "headerFile": "components/Relay.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_STATUS": {
+    "headerFile": "components/StatusLight.h",
+    "dependencies": [],
+    "settings": {
+      "STATUS_WARNING_PIN": "GPIO_PIN_CH6",
+      "STATUS_ERROR_PIN": "GPIO_PIN_CH5",
+      "STATUS_BLINK_INTERVAL": "800"
+    }
+  },
+  "ENABLE_FEEDBACK_BUZZER": {
+    "headerFile": "components/FeedbackBuzzer.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_SAKO_VFD": {
+    "headerFile": "components/SAKO_VFD.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_AMPERAGE_BUDGET_MANAGER": {
+    "headerFile": "components/AmperageBudgetManager.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_PROFILE_TEMPERATURE": {
+    "headerFile": "profiles/TemperatureProfile.h",
+    "dependencies": [],
+    "settings": {
+      "PROFILE_TEMPERATURE_COUNT": "4"
+    }
+  },
+  "ENABLE_PROFILE_SIGNAL_PLOT": {
+    "headerFile": "profiles/SignalPlot.h",
+    "dependencies": [],
+    "settings": {
+      "PROFILE_SIGNAL_PLOT_COUNT": "4"
+    }
+  },
+  "ENABLE_MODBUS_TCP": {
+    "headerFile": "WiFi.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_RS485": {
+    "headerFile": "components/RS485.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_PROFILER": {
+    "headerFile": "esp_cpu.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_LOGGER": {
+    "headerFile": "components/Logger.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_RUNTIME_STATE": {
+    "headerFile": "RuntimeState.h",
+    "dependencies": [],
+    "settings": {
+      "RUNTIME_STATE_FILENAME": "\"/runtime.json\"",
+      "RUNTIME_STATE_SAVE_INTERVAL": "4000"
+    }
+  },
+  "ENABLE_SETTINGS": {
+    "headerFile": "Settings.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_PLUNGER": {
+    "headerFile": "components/Plunger.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_REST_SERVER": {
+    "headerFile": "components/RestServer.h",
+    "dependencies": [],
+    "settings": {}
+  },
+  "ENABLE_LITTLEFS": {
+    "headerFile": "LittleFS.h",
+    "dependencies": [],
+    "settings": {}
+  }
+}

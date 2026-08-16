@@ -1,0 +1,99 @@
+*-----------------------------------------------------------------------------
+*  Initializing
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_mode_nominal_value_as_actual          K+0
+
+#include Mac_Lib.inc
+
+GLOBAL Init_after_Reset
+
+;----------------------------
+LBL Init_after_Reset
+;----------------------------
+
+  LN     MG_marker_one
+  S      MG_marker_one
+
+  L      MG_marker_zero
+  R      MG_marker_zero
+
+  L      MG_marker_one
+;  S      PN_M4753_error_PLC_module_to_PLC_logbook                    *;EUMACH BASIC 56 SP1 removing this marker
+  R      MG_TC_auto_active
+  R      MG_machine_parameter_are_read
+
+*;EUMACH Original PLC
+;  PS     KG_axes_use_nominal_value_as_actual
+;  PS     KL_mode_nominal_value_as_actual
+;  CM     9148
+;  M_display_module_error(KG_error_module_9148)
+*;EUMACH Original PLC
+
+*;EUMACH
+#if NaA = &No_axis
+  L      KG_axes_use_nominal_value_as_actual
+  A      K%111000111
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &4th_axis
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%001000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &5th_axis
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%010000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &6th_axis
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%100000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &4th_and_5th_axes
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%011000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &4th_and_6th_axes
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%101000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &5th_and_6th_axes
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%110000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+#if NaA = &4th_5th_6th_axes
+  L      KG_axes_use_nominal_value_as_actual
+  O      K%111000
+  =      DG_axes_use_nominal_value_as_actual
+#endif
+
+  PS     DG_axes_use_nominal_value_as_actual
+  PS     KL_mode_nominal_value_as_actual
+  CM     9148
+  M_display_module_error(KG_error_module_9148)
+*;EUMACH
+
+*;EUMACH M4x/M6x
+  L      K+0
+  =X
+
+  REPEAT
+    L      MG_marker_one
+    R      MG_power_on_clamping_mode_assigned[X]
+
+    INCX
+
+    LX
+    >      K+15
+  UNTILT
+*;EUMACH M4x/M6x
+
+EM

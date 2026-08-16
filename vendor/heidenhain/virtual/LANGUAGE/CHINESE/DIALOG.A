@@ -1,0 +1,2048 @@
+﻿控制器/编程站                      0/2
+缩放系数 xyz/z                   0/1
+铣削循环动作
+槽腔行距系数                 0.1-1.414
+圆弧终点误差
+3D旋转 OFF/ON              ..0/..1
+润滑轴                        [min]
+手轮 OFF/HR410                 0/6
+屏幕颜色选择                    [0..3]
+TT1x0 位置 X                 [REF]
+TT1x0 位置 Y                 [REF]
+TT1x0 位置 Z                 [REF]
+用户参数 13
+用户参数 14
+用户参数 15
+用户参数 16
+主轴 S1 时间          =
+主轴 S2 时间          =
+轴时间               =
+压力系统时间            =
+PLC计数器5           =
+PLC计数器6           =
+PLC计数器7           =
+PLC计数器8           =
+PLC计数器9           =
+PLC计数器10          =
+PLC计数器11          =
+PLC计数器12          =
+PLC计数器13          =
+* MP表编辑器标题信息块 <- 30行
+MP表编辑器
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 急停按钮
+-> 解锁
+H001 X轴正向限位
+-> 退出限位
+H002 Y轴正向限位
+-> 退出限位
+H003 Z轴正向限位
+-> 退出限位
+H004 第4轴正向限位
+-> 退出限位
+H005 第5轴正向限位
+-> 退出限位
+H006 X轴负向限位
+-> 退出限位
+H007 Y轴负向限位
+-> 退出限位
+H008 Z轴负向限位
+-> 退出限位
+H009 第4轴负向限位
+-> 退出限位
+H010 第5轴负向限位
+-> 退出限位
+H011 X轴换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H012 Y轴换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H013 Y轴等待换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H014 Y轴手动换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H015 Z轴等待抓刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H016 Z轴抓刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H017 Z轴手动换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H018 Z轴换刀安全位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H019 主轴换刀定向(M19)
+-> 手动/手轮 模式 -> MOD -> HELP
+H020 刀具松开
+-> 手动/手轮 模式 -> MOD -> HELP
+H021 刀具夹紧
+-> 手动/手轮 模式 -> MOD -> HELP
+H022 换刀臂伸出
+-> 手动/手轮 模式 -> MOD -> HELP
+H023 换刀臂复位
+-> 手动/手轮 模式 -> MOD -> HELP
+H024 换刀臂翻转到位
+-> 手动/手轮 模式 -> MOD -> HELP
+H025 换刀夹关闭
+-> 手动/手轮 模式 -> MOD -> HELP
+H026 换刀夹打开
+-> 手动/手轮 模式 -> MOD -> HELP
+H027 换刀夹主轴关闭
+-> 手动/手轮 模式 -> MOD -> HELP
+H028 换刀夹主轴打开
+-> 手动/手轮 模式 -> MOD -> HELP
+H029 换刀夹刀库关闭
+-> 手动/手轮 模式 -> MOD -> HELP
+H030 换刀夹刀库打开
+-> 手动/手轮 模式 -> MOD -> HELP
+H031 刀库定位
+-> 手动/手轮 模式 -> MOD -> HELP
+H032 刀库门关闭
+-> 手动/手轮 模式 -> MOD -> HELP
+H033 根据换刀状态
+-> 内部停止 -> MDI -> TOOL CALL
+H034 刀库到主轴
+-> 手动/手轮 模式 -> MOD -> HELP
+H035 刀库退回
+-> 手动/手轮 模式 -> MOD -> HELP
+H036 刀套伸出
+-> 手动/手轮 模式 -> MOD -> HELP
+H037 刀套退回
+-> 手动/手轮 模式 -> MOD -> HELP
+H038 刀库锁定
+-> 手动/手轮 模式 -> MOD -> HELP
+H039 刀库解锁
+-> 手动/手轮 模式 -> MOD -> HELP
+H040 换刀臂基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H041 换刀功能禁止
+-> 手动/手轮 模式 -> MOD -> HELP
+H042 换刀臂到主轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H043 换刀臂到刀库位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H044 换刀臂到基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H045 换刀臂到中间位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H046 HR410手轮按键由NC控制
+FCT A-C 由PLC控制 -> MP7645:0
+H047 M/S/T/Q 在程序扫描时过滤给PLC
+-> MP7681：11111
+H48 刀库为PLC轴
+小写字母 -> MP100
+H049 手轮类型不支持
+-> MP7640: 0..6/11..13
+H050 PLC程序扫描激活
+MP7680第11位：%xxxx1xxxxxxxxxxx
+H051 程序停止需要M功能
+MP7440第二位：%xxxxx0xx
+H052 打开文件错误
+-> 模块9240
+H053 读取表格错误
+-> 模块9255
+H054 写入表格错误
+-> 模块9256
+H055 错误值不在表中
+-> 模块9255
+H056 温度传感器PT100
+-> 检查X48接口
+H057 PT100接口没有定义
+-> 温度补偿
+H058 交换工作台X轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H059 交换工作台Y轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H060 交换工作台Z轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H061 激活PC自动
+
+H062 交换工作台开始
+-> 手动/手轮 模式 -> MOD -> HELP
+H063 交换工作台完成
+-> 循环启动按钮
+H064 交换工作台解锁
+-> 手动/手轮 模式 -> MOD -> HELP
+H065 交换工作台锁紧
+-> 手动/手轮 模式 -> MOD -> HELP
+H066 工作台序号不允许
+
+H067 工作台解锁（机床）
+-> 手动/手轮 模式 -> MOD -> HELP
+H068 工作台锁紧（机床）
+-> 手动/手轮 模式 -> MOD -> HELP
+H069 MP10控制轴没有定义
+-> 更正MP2040.X
+H070 交换工作台等待位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H071 PC1 - X轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H072 PC2 - X轴位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H073 交换工作台基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H074 PC1基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H075 PC2基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H076 PC到交换位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H077 PC到机床
+-> 手动/手轮 模式 -> MOD -> HELP
+H078 PC传感器错误
+-> 手动/手轮 模式 -> MOD -> HELP
+H079 第4轴PC位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H080 3D头换档
+
+H081 3D头主轴定向
+
+H082 3D头扭转
+-> 手动/手轮 模式 -> MOD -> HELP
+H083 刀库门打开
+-> 手动/手轮 模式 -> MOD -> HELP
+H084 刀库门关闭
+-> 手动/手轮 模式 -> MOD -> HELP
+H085 TC到换刀位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H086 TC到基本位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H087 X轴TC准备位置
+-> 手动/手轮 模式 -> MOD -> HELP
+H088 交换工作台报警
+
+H089 检查交换工作台
+
+H090 主轴在C轴模式
+-> 主轴定位（同步）
+H091 附加接口 - 20 回路
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 标准接口 - 16 回路
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> 自动启动/热机程序启动
+H094 Fmax进给倍率激活
+            MP7620: 置一 Bit05 或 Bit09
+H095 TC magazine hirth-/modulo-轴
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 PLC message
+
+H097 PLC message
+
+H098 YES -> NC启动
+no -> NC停止
+H099
+-> NC启动
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+.
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC自动 - 凸轮驱动刀臂 *
+* 刀库 - 计数 *
+* TC自动 - 单刀臂 *
+* TC自动 - 双刀臂 *
+* TC自动 - 凸轮驱动刀臂 *
+* TC自动 - 抓刀 *
+
+
+
+Magazine_start
+Magazine_end
+Tool_def_quit
+Pocket_put_in
+Pocket_pos_in
+Pocket_in_out
+Pocket_posit
+T_magazine_start
+T_mag_in_position
+Decode_P_no
+Standby_T_read
+Magazine_direct
+Lock_pin_out
+Lock_pin_pos_out
+Magazine_nom_pos
+Time_exact_stop
+Lock_pin_pos_in
+Mag_exact_stop
+TC_magazine_cw
+TC_magazine_ccw
+
+TC_auto_start
+TC_auto_end
+Tool_spindle_ok
+T_mag_start
+Magazine_in_pos
+Mag_full_empty
+Spi_full_empty
+Mag_full
+Mag_empty
+Spi_empty_full
+Tool_lock_open
+Tool_lock_opened
+Tool_lock_close
+Tool_lock_closed
+S_start
+S_in_TC_pos
+XY_start
+X_start
+X_in_pos
+X_TC_pre_pos
+X_in_pre_pos
+Y_start
+Y_in_TC_pos
+Y_TC_pre_pos
+Y_in_pre_pos
+Z_start
+Z_in_TC_pos
+Z_start_safety
+Z_in_pos_safety
+Z1_in_out_start
+Z1_posit_in_out
+Z2_in_out_start
+Z2_posit_in_out
+Z3_in_start
+Z3_posit_in
+T_pocket_put_out
+T_pocket_pos_out
+T_pocket_time
+Pickup_values_read
+Pickup_put_out
+Pickup_put_out_ok
+Pickup_put_in
+Pickup_put_in_ok
+T_arm_put_out
+T_arm_pos_out
+T_arm_put_in
+T_arm_pos_in
+T_arm_to_spindle
+T_arm_on_spindle
+T_arm_to_magazine
+T_arm_on_magazine
+T_arm_to_middle
+T_arm_in_middle
+T_arm_to_basic
+T_arm_on_basic
+T_arm_to_cw_ccw
+T_arm_in_cw_ccw
+T_arm_middle_stop
+TC_arm_delay
+Jump_TC_arm
+T_pocket_in_out
+T_pocket_pos_ok
+T_gripper_close
+T_gripper_closed
+T_gripper_open
+T_gripper_opened
+T_gri_mag_open
+T_gri_mag_opened
+T_gri_mag_close
+T_gri_mag_closed
+T_gri_spi_open
+T_gri_spi_opened
+T_gri_spi_close
+T_gri_spi_closed
+T_standby_read
+TC_auto_time
+Mag_to_spindle
+Mag_in_spindle
+Tool_unclamping
+Tool_unclamped
+Tool_clamping
+Tool_clamped
+Time_put_out
+Tnew_store
+T0_in_status
+T0_Tnew_status
+Tnew_in_status
+T_status_ok
+Tool_Call_2nd.
+Tool_Call_wait
+T_status_read
+Jump_clamping
+Mag_to_basic
+Mag_on_basic
+TOOL_CALL_quit
+Jump_T0_programed
+Jump_spindle_was_empty
+AC_in_TC_position
+T_gripper_to_cw_right
+T_gripper_to_ccw_left
+Tool_in magazine unlock
+Tool_in_magazine_unlocked
+Tool_in_magazine_lock
+Tool_in_magazine_locked
+TC_manual
+TC_manual_start
+Jump_BA_manual
+X_start_manual
+X_in_pos_manual
+Y_start_manual
+Y_in_pos_manual
+Z_start_manual
+Z_in_pos_manual
+Tool_manu_unclamping
+Tool_manu_clamping
+TC_disable
+TC_quit
+Restore_necessary
+Restore_pos_ok
+Tool_Call_quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+没有定义
+DC-link电压过高
+温度过高
+Uz电机相间短路
+DC-link电流过高
+电源模块未准备好
+漏电流过高
+
+
+
+0 没有错误代码
+1 参数超过允许范围
+2 参数非法/不存在
+3 地址超过允许范围
+4 块长度超过允许范围
+5 无字或双字地址范围
+6 值可以/不允许修改
+7 文件错误/不能读取
+8 不正确的操作模式
+9 - 定位指令已执行
+10 - 没有换刀定义
+11 非法字符
+12 无字符串结束，或者字符串不完整
+13 无连接
+14 RS-232忙或没被指定
+15 RS-232发送的缓冲区非空
+16 RS-232接受缓冲区空
+17 RS-232传输速率不允许
+18 RS-232传输错误
+19 没有电流控制器
+20 该模块没有在submit任务中调用
+21 调用的模块没有strobe
+22 队列溢出
+28 PLC错误信息队列溢出
+24 模块在一个Submit任务中被调用
+25 常数域元素太多
+26 常数域不允许的元素
+27 S定向已经激活
+28 模块功能已经激活
+29 打开的文件类型不识别
+30 域名称不包含在内
+31 查询条件不正确
+32 无记录数据符合查询条件
+33 坐标轴没有经过参考点
+34 复位；外部设备故障
+35 编辑器没激活
+36 允许多个不同的错误文件
+37 系统内存不足
+38 编译错误
+39 高速PLC输入驱动开
+40 驱动无法上电
+41 刀具表号类型检查
+42 电力故障不能断电
+43 调用模块但没有安全包
+44 软键资源错误
+45 模块取消
+46 Profibus或ASI错误
+47 -
+48 -
+49 -
+50 -
+51 功能不可能， 只能是PLC510
+52 不是单处理器功能
+53 无串口可用
+54 不是双处理器功能
+55 文件不能被锁住
+56 没找到文件
+57 选项FCL不可用
+58 NC通道功能不可用
+59 （Phyton）处理不允许
+60 模拟输出X8/9中断（HW）
+61 模块功能不支持
+62 标识符不存在
+63 结构创建错误
+64 句柄 未知/不正确
+65 错误数据
+66 功能在FS上不支持
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+0  BEGIN PGM M61 MM 
+1  WRITE TO PLC KEY "WG_Nummer_aktives_NC_Macro" =+61 ; NUMBER NC MACRO ON
+2  M61
+3  FN 31: RANGE:0
+4  WRITE TO PLC KEY "WG_Nummer_aktives_NC_Macro" =-1 ; NC MACRO OFF
+5  END PGM M61 MM 

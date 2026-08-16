@@ -1,0 +1,161 @@
+*-----------------------------------------------------------------------------
+*  System Konfiguration
+*-----------------------------------------------------------------------------
+*  Definition von Symbolen für bedingte Compilierung
+*    - Steuerungstypen (NC model)
+*    - NC Software Version (NC variant)
+*
+*  Maschinenspezifische Konfiguration bitte in Datei
+*  OEM.cfg vornehmen !
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  maximale Anzahl Achsen an TNC
+*-----------------------------------------------------------------------------
+
+#define       KG_max_Achs_Anzahl                       K +22
+#define       KG_max_Spindel_Anzahl                    K +2
+#define       KG_max_WZM_Anzahl                        K +8
+#if CFG_FS = "aktiv"
+#define       KG_max_Achsgruppen_Anzahl                K &S_AG_MAX
+#define       KG_S1_Index_FS                           K &FIRST_SPINDLE
+#define       KG_S2_Index_FS                           K &KG_S1_Index_FS + 1
+#endif
+
+;#ifndef $340420$ and not $340421$ and not $340422$ and not $340423$ and not $340480$ and not $340481$
+;#error Dieses PLC Projekt unterstützt nicht die angegebene NC Variante !
+;#endif
+
+*-----------------------------------------------------------------------------
+*  Konstanten-Definitionen (intern genutzt, nicht zur Maschinenanpassung)
+*-----------------------------------------------------------------------------
+
+#define       KG_Input_Speicherbereich                 K CFG_INPUTS
+#define       KG_Output_Speicherbereich                K CFG_OUTPUTS
+
+#define       KG_TNC_Variant                           K $VARIANT$
+
+#if CFG_IPC_61x0          = "aktiv"
+#define       IPC_61x0                                 0
+#endif
+
+#define       KG_3D_Kopf_Achse_1                       K CFG_3D_Kopf_Achse_1_Index
+#define       KG_3D_Kopf_Achse_2                       K CFG_3D_Kopf_Achse_2_Index
+#define       KG_S_Achs_Index                          K CFG_S_Achs_Index
+
+#define       KG_Drehen_Rund_Achs_Index                K CFG_Drehen_Rund_Achs_Index
+
+#define       KG_Achs_Bremse_aktiv                     K CFG_Achs_Bremse_aktiv
+#define       KG_Einschaltstellung_Klemmbetrieb_aus    K CFG_Einschaltstellung_Klemmbetrieb_aus
+#define       KG_Achsen_mit_geklemmt_Signal            K CFG_Achsen_mit_geklemmt_Signal
+#define       KG_Achsen_mit_geloest_Signal             K CFG_Achsen_mit_geloest_Signal
+#define       KG_Achs_Sollwert_statt_Istwert_verwenden K CFG_Achs_Sollwert_statt_Istwert_verwenden
+#define       KG_Achsen_mit_Zentralantrieb             K CFG_Achsen_mit_Zentralantrieb
+#define       KG_Achsen_mit_gemeinsamen_Lagemessgeraet K CFG_Achsen_mit_gemeinsamen_Lagemessgeraet
+#define       KG_Gruppe_1_mit_Gantry_Master_Slave_Mode K CFG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+#define       KG_Gruppe_2_mit_Gantry_Master_Slave_Mode K CFG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+#define       KG_Gruppe_3_mit_Gantry_Master_Slave_Mode K CFG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+#define       KG_Achsen_mit_Strom_Regler_aktiv         K CFG_Achsen_mit_Strom_Regler_aktiv
+#define       KG_Feldwinkel_in_PLC_speichern           K CFG_Feldwinkel_in_PLC_speichern
+#define       KG_Referenz_Endlagen_Software            K CFG_Referenz_Endlagen_Software
+#define       KG_Pos_sicher_nach_Referenz              K CFG_Pos_sicher_nach_Referenz
+#define       KG_WZM_max_Anzahl                        K CFG_WZM_max_Anzahl
+
+#define       inaktiv                                  0
+#define       aktiv                                    1
+
+#define       Einzelarm                                1
+#define       Doppelarm                                2
+#define       WZW_Kurvenscheibe                        3
+#define       Pickup                                   4
+
+#define       Asynchron                                1
+#define       Impuls                                   2
+
+#define       WZW_type_01                              1
+#define       WZW_type_02                              2
+#define       WZW_type_03                              3
+#define       WZW_type_04                              4
+#define       WZW_type_05                              5
+#define       WZW_type_06                              6
+#define       WZW_type_07                              7
+#define       WZW_type_08                              8
+#define       WZW_type_09                              9
+#define       WZW_type_10                              10
+#define       WZW_type_11                              11
+#define       WZW_type_12                              12
+#define       WZW_type_13                              13
+#define       WZW_type_14                              14
+#define       WZW_type_15                              15
+#define       WZW_type_16                              16
+#define       Mag_type_01                              1
+#define       Mag_type_02                              2
+#define       Mag_type_03                              3
+#define       Mag_type_04                              4
+#define       Mag_type_05                              5
+#define       Mag_type_06                              6
+#define       Mag_type_07                              7
+#define       Mag_type_08                              8
+#define       Mag_type_09                              9
+#define       Mag_type_10                              10
+
+
+#if CFG_Python_Masks = "aktiv"
+#define       KG_Python_Masks_aktiv                    1
+#endif
+
+#if CFG_OEMmachine_Window = "aktiv"
+#define       KG_OEMmachine_Window_aktiv               1
+#endif
+
+#if CFG_Energy_Option = "aktiv"
+#define       KG_Energy_Option_aktiv                   1
+#endif
+
+#if CFG_TNC_Mail = "aktiv"
+#define       KG_TNC_Mail_active                       1
+#endif
+
+#if CFG_Workspace_Camera = "aktiv"
+#define       KG_Workspace_Camera_aktiv                1
+#endif
+
+#if CFG_Web_Browser = "aktiv"
+#define       KG_Web_Browser_aktiv                     1
+#endif
+
+
+#if (CFG_Maschinen_Bedienfeld = "MB420") or (CFG_Maschinen_Bedienfeld = "MB520") or (CFG_Maschinen_Bedienfeld = "TE535Q") and (CFG_HSCI = "aktiv")
+
+#error Das ausgewählte Bedienfeld/Tastatureinheit wird nicht von HSCI unterstützt
+
+#else
+#ifdef MP4000_x_Simulation
+
+#if CFG_Maschinen_Bedienfeld                        = "MB620"
+#define       MB620                                    0
+#endif
+
+#if CFG_Maschinen_Bedienfeld                        = "MB720"
+#define       MB720                                    0
+#endif
+
+#if CFG_Maschinen_Bedienfeld                        = "TE635Q"
+#define       TE635Q                                   0
+#endif
+
+#if CFG_Maschinen_Bedienfeld                        = "TE645Q"
+#define       TE645Q                                   0
+#endif
+
+#if CFG_Maschinen_Bedienfeld                        = "TE735"
+#define       TE735                                    0
+#endif
+
+#if CFG_Maschinen_Bedienfeld                        = "TE745"
+#define       TE745                                    0
+#endif
+
+#endif
+#endif

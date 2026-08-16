@@ -1,0 +1,462 @@
+/* $Id: HashMap.h 1198 2011-06-14 21:08:27Z bhagman $
+||
+|| @author         Alexander Brevig <abrevig@wiring.org.co>
+|| @url            http://wiring.org.co/
+|| @url            http://alexanderbrevig.com/
+|| @contribution   Brett Hagman <bhagman@wiring.org.co>
+||
+|| @description
+|| | Implementation of a HashMap data structure.
+|| |
+|| | Wiring Cross-platform Library
+|| #
+||
+|| @license Please see cores/Common/License.txt.
+||
+*/
+
+/*
+ * @author: 3 Oct 2018 - mikee47 <mike@sillyhouse.net>
+ *
+ * Modified to use references (const or otherwise) to avoid object copies when used with classes, e.g. String.
+ *
+ * Note that if the value is a primitive then setNullValue should be called to provide a default value to be
+ * used when adding a new unspecified entry, or if a key value is not present. This should not be necessary
+ * for object values as the default constructor will be used.
+ *
+ */
+
+#pragma once
+
+#include <cstdint>
+#include <iterator>
+#include <cstdlib>
+#include "WiringList.h"
+#include "Print.h"
+
+/**
+ * @brief HashMap class template
+ * @ingroup wiring
+ */
+template <typename K, typename V> class HashMap
+{
+public:
+	template <bool is_const> struct BaseElement {
+	public:
+		using Value = typename std::conditional<is_const, const V, V>::type;
+
+		BaseElement(const K& key, Value& value) : k(key), v(value)
+		{
+		}
+
+		const K& key() const
+		{
+			return k;
+		}
+
+		Value& value()
+		{
+			return v;
+		}
+
+		const V& value() const
+		{
+			return v;
+		}
+
+		BaseElement& operator=(const V& value)
+		{
+			v = value;
+			return *this;
+		}
+
+		Value& operator*()
+		{
+			return v;
+		}
+
+		const Value& operator*() const
+		{
+			return v;
+		}
+
+		Value* operator->()
+		{
+			return &v;
+		}
+
+		const Value* operator->() const
+		{
+			return &v;
+		}
+
+		size_t printTo(Print& p) const
+		{
+			size_t n{0};
+			n += p.print(k);
+			n += p.print(" = ");
+			n += p.print(v);
+			return n;
+		}
+
+	private:
+		const K& k;
+		Value& v;
+	};
+
+	using Element = BaseElement<false>;
+	using ElementConst = BaseElement<true>;
+
+	template <bool is_const> class Iterator
+	{
+	public:
+		using iterator_category = std::random_access_iterator_tag;
+		using value_type = BaseElement<is_const>;
+		using difference_type = std::ptrdiff_t;
+		using pointer = BaseElement<is_const>*;
+		using reference = BaseElement<is_const>&;
+
+		using Map = typename std::conditional<is_const, const HashMap, HashMap>::type;
+		using Value = typename std::conditional<is_const, const V, V>::type;
+
+		Iterator(const Iterator&) = default;
+
+		Iterator(Map& map, unsigned index) : map(map), index(index)
+		{
+		}
+
+		Iterator& operator++()
+		{
+			++index;
+			return *this;
+		}
+
+		Iterator operator++(int)
+		{
+			Iterator tmp(*this);
+			++index;
+			return tmp;
+		}
+
+		Iterator operator+=(size_t distance)
+		{
+			Iterator tmp(*this);
+			index += distance;
+			return tmp;
+		}
+
+		bool operator==(const Iterator& rhs) const
+		{
+			return &map == &rhs.map && index == rhs.index;
+		}
+
+		bool operator!=(const Iterator& rhs) const
+		{
+			return !operator==(rhs);
+		}
+
+		BaseElement<is_const> operator*()
+		{
+			return BaseElement<is_const>{map.keyAt(index), map.valueAt(index)};
+		}
+
+		ElementConst operator*() const
+		{
+			return ElementConst{map.keyAt(index), map.valueAt(index)};
+		}
+
+	protected:
+		Map& map;
+		unsigned index{0};
+	};
+
+	/**
+	 * @brief Compare two keys for equality
+	 */
+	using Comparator = bool (*)(const K&, const K&);
+
+	/**
+	 * @brief Return true if key1 < key2
+	 */
+	using SortCompare = bool (*)(const ElementConst& e1, const ElementConst& e2);
+
+	/*
+    || @constructor
+    || | Default constructor
+    || #
+    */
+	HashMap() = default;
+
+	/*
+    || @constructor
+    || | Initialize this HashMap
+    || #
+    ||
+    || @parameter compare optional function for comparing a key against another (for complex types)
+    */
+	HashMap(Comparator compare) : cb_comparator(compare)
+	{
+	}
+
+	/*
+    || @description
+    || | Get the size of this HashMap
+    || #
+    ||
+    || @return The size of this HashMap
+    */
+	unsigned int count() const
+	{
+		return currentIndex;
+	}
+
+	/*
+    || @description
+    || | Get a key at a specified index
+    || #
+    ||
+    || @parameter idx the index to get the key at
+    ||
+    || @return The key at index idx
+    */
+	const K& keyAt(unsigned int idx) const
+	{
+		if(idx >= count()) {
+			abort();
+		}
+		return keys[idx];
+	}
+
+	K& keyAt(unsigned int idx)
+	{
+		if(idx >= count()) {
+			abort();
+		}
+		return keys[idx];
+	}
+
+	/*
+    || @description
+    || | Get a value at a specified index
+    || #
+    ||
+    || @parameter idx the index to get the value at
+    ||
+    || @return The value at index idx
+    */
+	const V& valueAt(unsigned int idx) const
+	{
+		if(idx >= count()) {
+			abort();
+		}
+		return values[idx];
+	}
+
+	V& valueAt(unsigned int idx)
+	{
+		if(idx >= count()) {
+			abort();
+		}
+		return values[idx];
+	}
+
+	/*
+    || @description
+    || | An indexer for accessing and assigning a value to a key
+    || | If a key is used that exists, it returns the value for that key
+    || | If there exists no value for that key, a nil value is returned
+    || |
+    || | Note that if the HashMap object is not const, the non-const version
+    || | of this operator will be called which will create a default value
+    || | for this key. If that behaviour is not desired, then check for the
+    || | existence of the key first, using either contains() or indexOf().
+    || #
+    ||
+    || @parameter key the key to get the value for
+    ||
+    || @return The const value for key
+    */
+	const V& operator[](const K& key) const
+	{
+		// Don't create non-existent values
+		auto i = indexOf(key);
+		return (i >= 0) ? values[i] : nil;
+	}
+
+	/*
+    || @description
+    || | An indexer for accessing and assigning a value to a key
+    || | If a key is used that exists, it returns the value for that key
+    || | If there exists no value for that key, the key is added
+    || #
+    ||
+    || @parameter key the key to get the value for
+    ||
+    || @return The value for key
+    */
+	V& operator[](const K& key);
+
+	bool allocate(unsigned int newSize)
+	{
+		return keys.allocate(newSize) && values.allocate(newSize);
+	}
+
+	/**
+	 * @brief Sort map entries
+	 */
+	void sort(SortCompare compare);
+
+	/*
+    || @description
+    || | Get the index of a key
+    || #
+    ||
+    || @parameter key the key to get the index for
+    ||
+    || @return The index of the key, or -1 if key does not exist
+    */
+	int indexOf(const K& key) const
+	{
+		for(unsigned i = 0; i < currentIndex; i++) {
+			if(cb_comparator) {
+				if(cb_comparator(key, keys[i])) {
+					return i;
+				}
+			} else if(key == keys[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/*
+    || @description
+    || | Check if a key is contained within this HashMap
+    || #
+    ||
+    || @parameter key the key to check if is contained within this HashMap
+    ||
+    || @return true if it is contained in this HashMap
+    */
+	bool contains(const K& key) const
+	{
+		return indexOf(key) >= 0;
+	}
+
+	/*
+     || @description
+     || | Remove entry at given index
+     || #
+     ||
+     || @parameter index location to remove from this HashMap
+     */
+	void removeAt(unsigned index)
+	{
+		if(index >= currentIndex) {
+			return;
+		}
+
+		keys.remove(index);
+		values.remove(index);
+
+		currentIndex--;
+	}
+
+	/*
+    || @description
+    || | Remove a key from this HashMap
+    || #
+    ||
+    || @parameter key the key to remove from this HashMap
+    */
+	void remove(const K& key)
+	{
+		int index = indexOf(key);
+		if(index >= 0) {
+			removeAt(index);
+		}
+	}
+
+	void clear()
+	{
+		keys.clear();
+		values.clear();
+		currentIndex = 0;
+	}
+
+	void setMultiple(const HashMap<K, V>& map)
+	{
+		for(auto e : map) {
+			(*this)[e.key()] = e.value();
+		}
+	}
+
+	void setNullValue(const V& nullv)
+	{
+		nil = nullv;
+	}
+
+	Iterator<false> begin()
+	{
+		return Iterator<false>(*this, 0);
+	}
+
+	Iterator<false> end()
+	{
+		return Iterator<false>(*this, count());
+	}
+
+	Iterator<true> begin() const
+	{
+		return Iterator<true>(*this, 0);
+	}
+
+	Iterator<true> end() const
+	{
+		return Iterator<true>(*this, count());
+	}
+
+protected:
+	using KeyList = wiring_private::List<K>;
+	using ValueList = wiring_private::List<V>;
+
+	KeyList keys;
+	ValueList values;
+	Comparator cb_comparator{nullptr};
+	unsigned currentIndex{0};
+	V nil{};
+
+private:
+	HashMap(const HashMap<K, V>& that);
+	HashMap& operator=(const HashMap& that);
+};
+
+template <typename K, typename V> V& HashMap<K, V>::operator[](const K& key)
+{
+	int i = indexOf(key);
+	if(i >= 0) {
+		return values[i];
+	}
+	if(currentIndex >= values.size) {
+		allocate(currentIndex + ((values.size < 16) ? 4 : 16));
+	}
+	keys[currentIndex] = key;
+	values[currentIndex] = nil;
+	currentIndex++;
+	return values[currentIndex - 1];
+}
+
+template <typename K, typename V> void HashMap<K, V>::sort(SortCompare compare)
+{
+	auto n = count();
+	for(unsigned i = 0; i < n - 1; ++i) {
+		for(unsigned j = 0; j < n - i - 1; ++j) {
+			HashMap::ElementConst e1{keys[j + 1], values[j + 1]};
+			HashMap::ElementConst e2{keys[j], values[j]};
+			if(compare(e1, e2)) {
+				std::swap(keys[j], keys[j + 1]);
+				std::swap(values[j], values[j + 1]);
+			}
+		}
+	}
+}

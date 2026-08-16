@@ -1,0 +1,100 @@
+PLCSOFTVERS                = Demo       
+MPFILE                     = PLC:\Demo\Demo.MP  
+;MP_DATA_TAB                = PLC:\MP\MP_DATA.TAB
+;MP_CONFIG_TAB              = PLC:\MP\MP_CONFIG.TAB
+
+;PLCMAIN                    = PLC:\BASIC\PROGRAM\MAIN_PGM.SRC
+;PLCPWM                     = PLC:\BASIC\PROGRAM\MAIN_PGM.SRC
+;PLCCOMPCFG                 = PLC:\BASIC\PROGRAM\OEM.CFG
+;PLCERRTAB                  = PLC:\LANGUAGE\ERR_TAB.PET
+
+;SOFTKEYPROJECT             = PLC:\BASIC\SOFTKEYS\Softkeys.spj
+;SOFTKEYPRESS               = ON
+
+SPLCSOFTVERS               = SPLC Version
+PLCSAFETY                  = PLC:\SPLC\sMainPgm.src
+PLCSAFETYCFG               = PLC:\SPLC\sOemFs.cfg
+SGMPCHANGE                 = SMP
+
+BRAKE2                     = NO
+
+;KINEMATIC                  = PLC:\KINEMAT\KINELIST.TAB
+;FIXTURE.FUNCTION           = YES
+
+;DEBUGPATH                  = PLC:\DEBUG
+;FORCELISTPATH              = PLC:\BASIC\PROGRAM\MAIN_PGM_01.FLT
+
+;OEMERRORCHM.FILE           = oem1.chm
+;OEMERRORCHM.OFFSET         = 10000000
+
+;MODEHELP                   = TC-Service.HLP
+
+;PLCERROR                   = ERROR.A
+;PLCDIALOG                  = DIALOG.A
+;PLCERRFIX                  = FIX.A
+;PLCERRREASON               = REASON.A
+
+;FNERROR                    = FN14_ERROR.A
+;FNERRREASON                = FN14_REASON.A
+;FNERRFIX                   = FN14_FIX.A
+
+;PLCEVENTS                  = PLC:\EVENTS.PEV
+;LOGO                       = PLC:\LOGO\%GraphicsResolution%\Logo_iTNC530.bmp
+;LOGOSP                     = PLC:\LOGO\%GraphicsResolution%\Logo_iTNC530.bmp
+
+;PLCPRESET                  = TNC:\DATUM\PRESET.TAB
+
+AXISNUMBER                 = 22
+PWMPARAMETER               = 24
+
+NUMBERMP4111               = 114
+;NUMBERMP4230               = 99
+
+;1. Absolute Adresse
+;2. Symbolname
+;3. Wert
+;4. Modul
+;5. Kommentar
+;WLB.ORDER = 4,2,1,3,5
+
+;TEMP_COMPENSATION          = PLC:\CORRECT\TMP_COMP.TAB
+;FK_NULLPUNKT_TABELLE       = PLC:\CORRECT\FK_NPKT.TAB
+
+;TNCOPT.LOCKSOFTKEYVISIBLE  = YES
+
+;MPFRAGMENT0                = PLC:\MP\MP_part0.MP
+;MPFRAGMENT1                = PLC:\MP\MP_part1.MP
+;MPFRAGMENT2                = PLC:\MP\MP_part2.MP
+;MPFRAGMENT3                = PLC:\MP\MP_part3.MP
+;MPFRAGMENTFILE             = PLC:\MP\MPFRAGMENT\MPFRAGMENT.A
+
+;TCHRULES                   = PLC:\WZM_20_40_1_1.TCR
+
+;IOCCFG                     = PLC:\IOC\hsci_pl62xx_mb_te.iocp
+;BISPATH                    = PLC:\IOC\BIS
+;PS_MODE                    = NOHSCI
+
+;PRESETTABLE                = OFF
+;PR.LINESLOCKED             = 0,1,2,10-12
+
+;TTYP                       = PLC:\TTYP_01.TAB
+;TABCMA                     = PLC:\CORRECT\CONFIG.CMA
+;MPPASSWORD                 = MP
+;MPLOCKFILE                 = PLC:\MP\MP_LOCK.MP
+;PLCPASSWORD                = PLC
+;REMOTE.LOCKSOFTKEYVISIBLE  = YES
+;REMOTE.PLCPASSWORDNEEDED   = NO
+;REMOTE.PLCPASSWORDFORCED   = NO
+;USR_PAL_POCKET             = PLC:\PROTO\PAL_POCK.P
+;SERVICE.REQUEST.HOST       = 160.1.246.119
+;SERVICE.REQUEST.CONTENT    = PLC:\SERVICE.SYS
+;SERVICE.REQUEST.PORT       = 19001
+;SERVICE.REQUEST.PERIOD     = 10
+;SERVICE.REQUEST.TIMEOUT    = 15
+;SUPPORT.REQUEST.HOST       = 160.1.246.119
+;SUPPORT.REQUEST.CONTENT    = PLC:\SUPPORT.SYS
+;OEMCYC.ZIPNAME             = OEMCY1.ZIP
+;LOCKEOPTIONS               = 44,45
+;STRICTREPOS                = YES
+REMOTE.RFBSERVER           = ON
+ACC.SOFTKEYVISIBLE         = YES

@@ -1,0 +1,456 @@
+*-----------------------------------------------------------------------------
+*  Spindle Orientation
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_0_shortest_path                       K+0
+#define /s    KL_3_CYCL13_shortest_path                K+3
+#define /s    KL_0_rpm_from_MP3520_1                   K+0
+#define /s    KL_angle_0_degree                        K+0
+#define /s    KL_spindle_360_degree                    K+3600000
+#define /s    KL_minus_1_M04_direction                 K-1            *;EUMACH
+#define /s    KL_plus_1_M03_direction                  K+1            *;EUMACH
+#define /s    KL_4_CYCL13_M03_direction                K+4            *;EUMACH
+
+#define /s    BL_case_orientation                      B
+
+#define /s    DL_offset_modulo_range                   D
+#define /s    DL_offset2_modulo_range                  D              *;EUMACH Dual TC
+#define /s    DL_synchronize                           D
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL Spindle_Orient
+
+;----------------------------
+LBL Spindle_Orient
+;----------------------------
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4174_1st_PLC_run_after_MP_edit
+  IFT
+    L      NP_D828_TC_pos_spindle
+    +      DG_MP3420_pos_window_S
+    MOD    K+3600000
+    <=[
+      L      DG_MP3420_pos_window_S
+      X      K+2
+    ]
+    IFT
+      L      K+100000
+      =      DL_offset_modulo_range
+    ELSE
+      L      K+0
+      =      DL_offset_modulo_range
+    ENDI
+  ENDI
+
+  L      MG_TC_help
+  O      MG_TC_automatic
+  RN     MG_spindle_in_TC_position
+  IFT
+    L      NP_D828_TC_pos_spindle
+    +      DL_offset_modulo_range
+    MOD    K+3600000
+    -[
+      L      DG_position_axis_S_actual
+      +      DL_offset_modulo_range
+      MOD    K+3600000
+    ]
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP3420_pos_window_S
+    A      NP_M4000_S_in_position
+    AN     NP_M4018_S_no_reference
+    A      MG_spindle_stand_still
+    =      MG_spindle_in_TC_position
+  ENDI
+
+*;EUMACH Dual TC
+#if Tool_changing_arm_2 ! &inactive
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4174_1st_PLC_run_after_MP_edit
+  IFT
+    L      NP_MP4231_15_S_pos_before_V_head_unclamping
+    +      DG_MP3420_pos_window_S
+    MOD    K+3600000
+    <=[
+      L      DG_MP3420_pos_window_S
+      X      K+2
+    ]
+    IFT
+      L      K+100000
+      =      DL_offset2_modulo_range
+    ELSE
+      L      K+0
+      =      DL_offset2_modulo_range
+    ENDI
+  ENDI
+
+  L      MG_TC_help
+  O      MG_TC2_automatic
+  RN     MG_spindle_in_TC2_position
+  IFT
+    L      NP_MP4231_15_S_pos_before_V_head_unclamping
+    +      DL_offset2_modulo_range
+    MOD    K+3600000
+    -[
+      L      DG_position_axis_S_actual
+      +      DL_offset2_modulo_range
+      MOD    K+3600000
+    ]
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP3420_pos_window_S
+    A      NP_M4000_S_in_position
+    AN     NP_M4018_S_no_reference
+    A      MG_spindle_stand_still
+    =      MG_spindle_in_TC2_position
+  ENDI
+#endif
+*;EUMACH Dual TC
+
+*;EUMACH
+  L      MG_spindle_orientation_active
+  =      TS_MG_S_orientation_active_off_delay
+*;EUMACH
+
+  CASE   BL_case_orientation
+    CM     Orient_on                   ;00
+    CM     Drive_control_on            ;01
+    CM     Orient_Start                ;02
+    CM     S_in_position               ;03
+    CM     M_quit                      ;04
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_case_orientation
+  ENDI
+
+  LN     MG_spindle_off_orientation
+  AN     MG_spindle_orientation_active
+  EMT
+
+  L      PN_M4005_S_M03_nominal_and_status
+  O      PN_M4006_S_M04_nominal_and_status
+  AN     PN_M4008_S_nominal_off_status_inverse
+  O[
+    L      PN_M4093_quit_TOOL_CALL
+    AN     NP_M4520_TOOL_CALL_2nd_strobe
+  ]
+  O[
+    L      MG_key_spindle_M5
+    A      MG_manual_mode
+  ]
+  O[                                                                  *;EUMACH
+    L      MG_3D_head_axis_1_cancel_prepos_service                    *;EUMACH
+    AN     MG_3D_head_axis_2_prepos_service                           *;EUMACH
+  ]                                                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    L      MG_3D_head_axis_2_cancel_prepos_service                    *;EUMACH
+    AN     MG_3D_head_axis_1_prepos_service                           *;EUMACH
+  ]                                                                   *;EUMACH
+  O[                                                                  *;EUMACH Thermal relay
+    LN     I_S_PTC_sensor_temperature_ok                              *;EUMACH Thermal relay
+    A      PN_error_thermal_sensor_temperature                        *;EUMACH Thermal relay
+  ]                                                                   *;EUMACH Thermal relay
+  O      PN_error_SM1xx_temperature_too_high                          *;EUMACH
+  O      MG_soft_key_S_jog_right_cw
+  O      MG_soft_key_S_jog_left_ccw
+  O      MG_M05_spindle_off
+  O      MG_spindle_off_orientation
+  O      MG_auto_manu_mode_change
+  O      MG_pulse_internal_stop
+  O      MG_pulse_END_PGM_M02_M30
+  O      NP_M4158_mode_block_scan
+  O      NP_M4070_strobe_G_code
+  O      MG_manual_head_on_off_processing                             *;EUMACH
+  O      MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  ON     I_servo_drive_release
+  ON     MG_servo_drive_release_spindle
+  ON     MG_control_operational
+  R      MG_spindle_off_orientation
+  R      MG_spindle_orientation_active
+  R      MG_3D_head_axis_1_prepos_service                             *;EUMACH
+  R      MG_3D_head_axis_2_prepos_service                             *;EUMACH
+  CMT    Orient_reset
+
+EM
+;----------------------------
+LBL Orient_on                          ;00
+
+  L      MG_M19_spindle_orientation_0_degree
+  O      MG_M20_spindle_orientation_CYCL_13
+  O      MG_spindle_on_orientation
+  O      MG_TC_spindle_orientation_on
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  O      MG_TC2_spindle_orientation_on                                *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  O[                                                                  *;EUMACH
+    O      MG_3D_head_axis_1_prepos_service                           *;EUMACH
+    O      MG_3D_head_axis_2_prepos_service                           *;EUMACH
+    A      PN_M4012_S_open_control_loop                               *;EUMACH
+  ]                                                                   *;EUMACH
+  AN     MG_3D_head_active
+  AN     MG_spindle_C_axis_mode_active
+  O      MG_3D_head_spindle_orientation_on
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  O      MG_SHC_V_head_S_orient_initialization                        *;EUMACH
+  O      MG_SHC_H_head_S_orient_initialization                        *;EUMACH
+  O      MG_SHC_turning_S_orient_on                                   *;EUMACH
+  AN     PN_error_V_H_head_pos                                        *;EUMACH
+  AN     PN_error_V_H_head_clamping                                   *;EUMACH
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_05                                            *;EUMACH
+  A[                                                                  *;EUMACH
+    L      MG_soft_key_S_man_head                                     *;EUMACH
+    AN     O_S_head_coupling_unclamping                               *;EUMACH
+    ON     MG_soft_key_S_man_head                                     *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  AN     MG_3D_head_axis_not_clamped                                  *;EUMACH
+  AN     I_tool_unclamped                                             *;EUMACH
+  A      I_tool_clamped                                               *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  A      I_tool_clamp_line_hydraulic_pressure_0                       *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+  A      MG_spindle_with_ROD
+  AN     PN_error_reference_necessary
+  S      MG_spindle_orientation_active
+  PSL
+
+EM
+
+;----------------------------
+LBL Drive_control_on                   ;01
+
+  L      NP_M4018_S_no_reference
+  A      MG_spindle_reference_using_sensor
+  S      MG_spindle_reference_active
+
+  L      NP_M4018_S_no_reference
+  AN     MG_spindle_reference_using_sensor
+  =      PN_M4011_S_speed_from_MP3520.0
+
+  L      MG_spindle_digital
+  IFT
+    L      WG_servo_drives_ready
+    BT     KG_spindle
+    AN     NP_M4018_S_no_reference
+    PSL
+  ELSE
+    LN     TR_servo_drive_release_S
+    AN     NP_M4018_S_no_reference
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Orient_Start                       ;02
+
+  PS     KL_angle_0_degree
+
+#if 3D_head = &active
+  L      MG_3D_head_axis_1_prepos_service
+  IFT
+    PL     DL_synchronize
+    PS     DG_3D_head_axis_1_S_position
+  ENDI
+
+  L      MG_3D_head_axis_2_prepos_service
+  IFT
+    PL     DL_synchronize
+    PS     DG_3D_head_axis_2_S_position
+  ENDI
+
+  L      MG_3D_head_spindle_orientation_on
+  IFT
+    PL     DL_synchronize
+    PS     DG_3D_head_S_position
+  ENDI
+#endif
+
+*;EUMACH Dual TC
+#if Tool_changing_arm_2 ! &inactive
+#if Pallet_changer = &Alternat_table
+  L      MG_axis_limit_1
+  O      MG_axis_limit_3
+  A      MG_M19_spindle_orientation_0_degree
+  O      MG_TC_spindle_orientation_on
+  IFT
+    PL     DL_synchronize
+    PS     NP_D828_TC_pos_spindle
+  ENDI
+
+  L      MG_axis_limit_2
+  A      MG_M19_spindle_orientation_0_degree
+  O      MG_TC2_spindle_orientation_on
+  IFT
+    PL     DL_synchronize
+    PS     NP_MP4231_15_S_pos_before_V_head_unclamping
+  ENDI
+#else
+  L      MG_TC_spindle_orientation_on
+  O      MG_M19_spindle_orientation_0_degree
+  IFT
+    PL     DL_synchronize
+    PS     NP_D828_TC_pos_spindle
+  ENDI
+
+  L      MG_TC2_spindle_orientation_on
+  IFT
+    PL     DL_synchronize
+    PS     NP_MP4231_15_S_pos_before_V_head_unclamping
+  ENDI
+#endif
+#else
+*;EUMACH Dual TC
+  L      MG_TC_spindle_orientation_on
+  O      MG_M19_spindle_orientation_0_degree                          *;EUMACH
+  IFT
+    PL     DL_synchronize
+    PS     NP_D828_TC_pos_spindle
+  ENDI
+#endif                                                                *;EUMACH Dual TC
+
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  L      MG_SHC_V_head_S_orient_initialization                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    PL     DL_synchronize                                             *;EUMACH
+    PS     NP_MP4231_15_S_pos_before_V_head_unclamping                *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  L      MG_SHC_H_head_S_orient_initialization                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    PL     DL_synchronize                                             *;EUMACH
+    PS     NP_MP4231_16_S_pos_before_H_head_unclamping                *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  L      MG_V_H_head_V_to_H_turning_proceeding                        *;EUMACH
+  O      MG_V_H_head_Help_V_to_H_pos                                  *;EUMACH
+  A      MG_SHC_turning_S_orient_on                                   *;EUMACH
+  IFT                                                                 *;EUMACH
+    PL     DL_synchronize                                             *;EUMACH
+    PS     NP_MP4231_17_head_V_to_H_turning_angle                     *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  L      MG_V_H_head_H_to_V_turning_proceeding                        *;EUMACH
+  O      MG_V_H_head_Help_H_to_V_pos                                  *;EUMACH
+  A      MG_SHC_turning_S_orient_on                                   *;EUMACH
+  IFT                                                                 *;EUMACH
+    PL     DL_synchronize                                             *;EUMACH
+    PS     NP_MP4231_18_head_H_to_V_turning_angle                     *;EUMACH
+  ENDI                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  PS     KL_0_rpm_from_MP3520_1
+
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  L      MG_SHC_turning_S_orient_on                                   *;EUMACH
+  IFT                                                                 *;EUMACH
+    PL     DL_synchronize                                             *;EUMACH
+
+    L      NP_MP4231_19_V_H_head_turning_rpm                          *;EUMACH
+    /      K+10                                                       *;EUMACH
+    PSW                                                               *;EUMACH
+  ENDI                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_M20_spindle_orientation_CYCL_13
+  IFT
+#if HSS = &HS_type_296                                                *;EUMACH
+    PS     KL_4_CYCL13_M03_direction                                  *;EUMACH
+#else                                                                 *;EUMACH
+    PS     KL_3_CYCL13_shortest_path
+#endif                                                                *;EUMACH
+  ELSE
+#if (HSS = &HS_type_296) or (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B) *;EUMACH
+    PS     KL_plus_1_M03_direction                                    *;EUMACH
+#else                                                                 *;EUMACH
+    PS     KL_0_shortest_path
+#endif                                                                *;EUMACH
+
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+    L      MG_V_H_head_V_to_H_turning_proceeding                      *;EUMACH
+    O      MG_V_H_head_Help_V_to_H_pos                                *;EUMACH
+    A      MG_SHC_turning_S_orient_on                                 *;EUMACH
+    IFT                                                               *;EUMACH
+      PL     DL_synchronize                                           *;EUMACH
+      PS     KL_plus_1_M03_direction                                  *;EUMACH
+    ENDI
+
+    L      MG_V_H_head_H_to_V_turning_proceeding                      *;EUMACH
+    O      MG_V_H_head_Help_H_to_V_pos                                *;EUMACH
+    A      MG_SHC_turning_S_orient_on                                 *;EUMACH
+    IFT                                                               *;EUMACH
+      PL     DL_synchronize                                           *;EUMACH
+      PS     KL_minus_1_M04_direction                                 *;EUMACH
+    ENDI                                                              *;EUMACH
+#endif                                                                *;EUMACH
+  ENDI
+  CM     9171
+  M_display_module_error(KG_error_module_9171)
+
+  LN     NP_M4203_error_module_9xxx
+  PSL
+
+EM
+
+;----------------------------
+LBL S_in_position                      ;03
+
+  L      MG_control_in_operation_on
+  AN     MG_NC_stop_active
+  O      MG_manual_mode
+  A      NP_M4000_S_in_position
+  PSL
+
+EM
+
+;----------------------------
+LBL M_quit                             ;04
+
+  PS     MG_marker_zero
+
+  LN     NP_M4072_strobe_M_function
+  O      MG_3D_head_spindle_orientation_on
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  O      MG_SHC_V_head_S_orient_initialization                        *;EUMACH
+  O      MG_SHC_H_head_S_orient_initialization                        *;EUMACH
+  O      MG_SHC_turning_S_orient_on                                   *;EUMACH
+#endif                                                                *;EUMACH
+  JPT    Orient_reset
+
+  L      MG_M19_spindle_orientation_0_degree
+  O      MG_M20_spindle_orientation_CYCL_13
+  S      PN_M4092_quit_M_function
+
+EM
+
+;----------------------------
+LBL Orient_reset
+
+  L      MG_marker_one
+  R      MG_spindle_on_orientation
+  R      MG_TC_spindle_orientation_on
+  R      MG_TC2_spindle_orientation_on                                *;EUMACH Dual TC
+  R      MG_3D_head_spindle_orientation_on
+  R      PN_M4011_S_speed_from_MP3520.0
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  R      MG_SHC_V_head_S_orient_initialization                        *;EUMACH
+  R      MG_SHC_H_head_S_orient_initialization                        *;EUMACH
+  R      MG_SHC_turning_S_orient_on                                   *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      K+0
+  =      BL_case_orientation
+
+EM

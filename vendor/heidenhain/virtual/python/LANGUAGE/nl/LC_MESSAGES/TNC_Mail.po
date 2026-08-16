@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "Instellen"
+
+msgid "MAIL"
+msgstr "E-Mail"
+
+msgid "EVENTS"
+msgstr "Events"
+
+msgid "FROM"
+msgstr "Van"
+
+msgid "TO"
+msgstr "Naar"
+
+msgid "CC"
+msgstr "CC"
+
+msgid "BCC"
+msgstr "BCC"
+
+msgid "SUBJECT"
+msgstr "Onderwerp"
+
+msgid "PLC_EVENTS"
+msgstr "PLC_Events"
+
+msgid "NAME"
+msgstr "Naam"
+
+msgid "PLC_ADDRESS"
+msgstr "PLC_Adres"
+
+msgid "TRIGGER"
+msgstr "Trigger"
+
+msgid "SERVER"
+msgstr "Server"
+
+msgid "USER"
+msgstr "Gebruiker"
+
+msgid "PASSWORD"
+msgstr "Paswoord"
+
+msgid "MAIL_TEXT"
+msgstr "Mail_tekst"
+
+msgid "HEADLINE"
+msgstr "Koplijn"
+
+msgid "FOOTER"
+msgstr "Voetlijn"
+

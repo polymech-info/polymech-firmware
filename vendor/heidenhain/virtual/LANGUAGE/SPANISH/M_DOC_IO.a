@@ -1,0 +1,343 @@
+/* Documentation PLC Output/Input
+   ------------------------------
+*/
+KBD;
+CHARSIZE=AUTO;"\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_NC_start              : %D - I146\n",I146/c;
+"I_key_NC_stop               : %D - M8617\n",M8617/c;
+"I_key_rapid_traverse        : %D - I148\n",I148/c;
+"O_LED_NC_start              : %D - O0\n",O0/c;
+"O_LED_NC_stop               : %D - O1\n",O1/c;
+"I_key_S_M3                  : %D - M8631\n",M8631/c;
+"I_key_S_M4                  : %D - M8632\n",M8632/c;
+"I_key_S_M5                  : %D - I144\n",I144/c;
+"O_LED_S_M3                  : %D - M8774\n",M8774/c;
+"O_LED_S_M4                  : %D - M8777\n",M8777/c;
+"O_LED_S_M5                  : %D - M8779\n",M8779/c;
+"\n";
+"O_HR410_LED_NC_start        : %D - O110\n",O110/c;
+"O_HR410_LED_NC_stop         : %D - O111\n",O111/c;
+"O_HR410_LED_S_M3            : %D - O109\n",O109/c;
+"O_HR410_LED_S_M4            : %D - M8703\n",M8703/c;
+"O_HR410_LED_S_M5            : %D - M8704\n",M8704/c;
+"I_HR410_key_NC_start        : %D - I174\n",I174/c;
+"I_HR410_key_NC_stop         : %D - I175\n",I175/c;
+"I_HR410_key_S_M3            : %D - I173\n",I173/c;
+"I_HR410_key_S_M4            : %D - M8499\n",M8499/c;
+"I_HR410_key_S_M5            : %D - M8501\n",M8501/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page down       ";COLOUR=11;"        (Page 1 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_Ax01_plus             : %D - I133\n",I133/c;
+"I_key_Ax01_minus            : %D - I128\n",I128/c;
+"O_servo_drive_release_X     : %D - O8\n",O8/c;
+"O_Ax01_unclamp              : %D - M8681\n",M8681/c;
+"I_clamped_axis_X            : %D - M8472\n",M8472/c;
+"I_unclamped_axis_X          : %D - M8494\n",M8494/c;
+"\n";
+"I_key_Ax02_plus             : %D - I134\n",I134/c;
+"I_key_Ax02_minus            : %D - I129\n",I129/c;
+"O_servo_drive_release_Y     : %D - O9\n",O9/c;
+"O_Ax02_unclamp              : %D - M8682\n",M8682/c;
+"I_clamped_axis_Y            : %D - M8473\n",M8473/c;
+"I_unclamped_axis_Y          : %D - M8495\n",M8495/c;
+"\n";
+"I_key_Ax03_plus             : %D - I135\n",I135/c;
+"I_key_Ax03_minus            : %D - I130\n",I130/c;
+"O_servo_drive_release_Z     : %D - O10\n",O10/c;
+"O_Ax03_unclamp              : %D - O13\n",O13/c;
+"I_clamped_axis_Z            : %D - M8474\n",M8474/c;
+"I_unclamped_axis_Z          : %D - M8496\n",M8496/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 2 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_Ax04_plus             : %D - I136\n",I136/c;
+"I_key_Ax04_minus            : %D - I131\n",I131/c;
+"O_servo_drive_release_4     : %D - O11\n",O11/c;
+"O_Ax04_unclamp              : %D - O14\n",O14/c;
+"I_clamped_axis_4            : %D - M8466\n",M8466/c;
+"I_unclamped_axis_4          : %D - M8488\n",M8488/c;
+"\n";
+"I_key_Ax05_plus             : %D - I137\n",I137/c;
+"I_key_Ax05_minus            : %D - I132\n",I132/c;
+"O_servo_drive_release_5     : %D - M8822\n",M8822/c;
+"O_Ax05_unclamp              : %D - M8683\n",M8683/c;
+"I_clamped_axis_5            : %D - M8467\n",M8467/c;
+"I_unclamped_axis_5          : %D - M8489\n",M8489/c;
+"\n";
+"I_key_Ax06_plus             : %D - I29\n",I29/c;
+"I_key_Ax06_minus            : %D - I30\n",I30/c;
+"O_servo_drive_release_6     : %D - M8823\n",M8823/c;
+"O_Ax06_unclamp              : %D - M8684\n",M8684/c;
+"I_clamped_axis_6            : %D - M8468\n",M8468/c;
+"I_unclamped_axis_6          : %D - M8490\n",M8490/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 3 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_Ax07_plus             : %D - M8584\n",M8584/c;
+"I_key_Ax07_minus            : %D - M8583\n",M8583/c;
+"O_servo_drive_release_7     : %D - M8824\n",M8824/c;
+"O_Ax07_unclamp              : %D - M8685\n",M8685/c;
+"I_clamped_axis_7            : %D - M8469\n",M8469/c;
+"I_unclamped_axis_7          : %D - M8491\n",M8491/c;
+"\n";
+"I_key_Ax08_plus             : %D - M8586\n",M8586/c;
+"I_key_Ax08_minus            : %D - M8585\n",M8585/c;
+"O_servo_drive_release_8     : %D - M8825\n",M8825/c;
+"O_Ax08_unclamp              : %D - M8686\n",M8686/c;
+"I_clamped_axis_8            : %D - M8470\n",M8470/c;
+"I_unclamped_axis_8          : %D - M8492\n",M8492/c;
+"\n";
+"I_key_Ax09_plus             : %D - M8588\n",M8588/c;
+"I_key_Ax09_minus            : %D - M8587\n",M8587/c;
+"O_servo_drive_release_9     : %D - M8826\n",M8826/c;
+"O_Ax09_unclamp              : %D - M8687\n",M8687/c;
+"I_clamped_axis_9            : %D - M8471\n",M8471/c;
+"I_unclamped_axis_9          : %D - M8493\n",M8493/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 4 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"O_axes_motion_from_end_pos  : %D - O27\n",O27/c;
+"I_ESA_control_operational   : %D - I3\n",I3/c;
+"I_emergency_button_unlocked : %D - I2\n",I2/c;
+"I_ESB_servo_drive_release   : %D - I32\n",I32/c;
+"I_X_not_overtravelled       : %D - M7000\n",M7000/c;
+"I_X_Y_not_overtravelled     : %D - M7000\n",M7000/c;
+"I_X_Y_Z_not_overtravelled   : %D - M7000\n",M7000/c;
+"I_end_posit_axis_X          : %D - I8\n",I8/c;
+"I_end_posit_axis_Y          : %D - I9\n",I9/c;
+"I_end_posit_axis_Z          : %D - I10\n",I10/c;
+"I_end_posit_axis_4          : %D - M8440\n",M8440/c;
+"I_end_posit_axis_5          : %D - M8441\n",M8441/c;
+"\n";
+"I_not_ref_end_posit_X       : %D - I4\n",I4/c;
+"I_not_ref_end_posit_Y       : %D - I5\n",I5/c;
+"I_not_ref_end_posit_Z       : %D - I6\n",I6/c;
+"I_not_ref_end_posit_4       : %D - I7\n",I7/c;
+"I_not_ref_end_posit_5       : %D - M8532\n",M8532/c;
+"I_not_ref_end_posit_6       : %D - M8533\n",M8533/c;
+"I_not_ref_end_posit_7       : %D - M8534\n",M8534/c;
+"I_not_ref_end_posit_8       : %D - M8535\n",M8535/c;
+"I_not_ref_end_posit_9       : %D - M8536\n",M8536/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 5 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"O_servo_drive_release_S1    : %D - O12\n",O12/c;
+"O_servo_drive_release_S2    : %D - M8827\n",M8827/c;
+"I_S1_spindle_operational    : %D - M7000\n",M7000/c;
+"I_S2_spindle_operational    : %D - M7000\n",M7000/c;
+"I_S1_spindle_temperature_ok : %D - M7000\n",M7000/c;
+"I_S2_spindle_temperature_ok : %D - M7000\n",M7000/c;
+"I_S1_spindle_I_max          : %D - M8562\n",M8562/c;
+"I_S2_spindle_I_max          : %D - M8569\n",M8569/c;
+"I_S1_actual_equal_nom_rpm   : %D - M8560\n",M8560/c;
+"I_S2_actual_equal_nom_rpm   : %D - M8566\n",M8566/c;
+"I_S1_actual_lower_nom_rpm   : %D - M8561\n",M8561/c;
+"I_S2_actual_lower_nom_rpm   : %D - M8567\n",M8567/c;
+"I_circuit_breaker_ok        : %D - M7000\n",M7000/c;
+"I_pneumatic_pressure_ok     : %D - M7000\n",M7000/c;
+"I_temp_drives_power_stage_ok: %D - M7000\n",M7000/c;
+"I_drives_operational        : %D - M7000\n",M7000/c;
+"O_hydraulic_on              : %D - M8705\n",M8705/c;
+"I_hydraulic_pressure_ok     : %D - M7000\n",M7000/c;
+"I_key_power_on              : %D - I31\n",I31/c;
+"O_LED_power_on              : %D - O2\n",O2/c;
+"O_LED_TNC_alarm             : %D - M8782\n",M8782/c;
+"O_LED_program_end           : %D - M8765\n",M8765/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 6 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"O_S1_gear_range_1           : %D - M8829\n",M8829/c;
+"O_S1_gear_range_2           : %D - M8830\n",M8830/c;
+"I_S1_gear_range_1           : %D - I13\n",I13/c;
+"I_S1_gear_range_2           : %D - I14\n",I14/c;
+"O_S2_gear_range_1           : %D - O25\n",O25/c;
+"O_S2_gear_range_2           : %D - O26\n",O26/c;
+"I_S2_gear_range_1           : %D - M8564\n",M8564/c;
+"I_S2_gear_range_2           : %D - M8565\n",M8565/c;
+"I_key_release_toolchange    : %D - I138\n",I138/c;
+"O_LED_TC_enable             : %D - M8785\n",M8785/c;
+"I_key_tool_unclamping       : %D - I139\n",I139/c;
+"I_key_tool_unclamping_foot_s: %D - M8636\n",M8636/c;
+"O_LED_tool_unclamped        : %D - M8784\n",M8784/c;
+"O_S1_unclamping             : %D - O17\n",O17/c;
+"I_S1_tool_unclamped         : %D - I15\n",I15/c;
+"O_S1_clamping               : %D - M8831\n",M8831/c;
+"I_S1_tool_clamped           : %D - I16\n",I16/c;
+"O_S2_unclamping             : %D - M8834\n",M8834/c;
+"I_S2_tool_unclamped         : %D - M8570\n",M8570/c;
+"O_S2_clamping               : %D - M8835\n",M8835/c;
+"I_S2_tool_clamped           : %D - M8571\n",M8571/c;
+"O_S1_blow_clean             : %D - M8828\n",M8828/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 7 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_S1_tool_located_in_spindle: %D - M8563\n",M8563/c;
+"I_S2_tool_located_in_spindle: %D - M8572\n",M8572/c;
+"I_tool_pocket_not_empty     : %D - M8663\n",M8663/c;
+"O_TC_arm_turn_cw            : %D - M8847\n",M8847/c;
+"I_TC_arm_cw                 : %D - M8647\n",M8647/c;
+"O_TC_arm_turn_ccw           : %D - M8846\n",M8846/c;
+"I_TC_arm_ccw                : %D - M8646\n",M8646/c;
+"O_TC_arm_to_middle_position : %D - M8854\n",M8854/c;
+"I_TC_arm_middle_pos         : %D - M8651\n",M8651/c;
+"O_TC_arm_to_spindle_position: %D - M8855\n",M8855/c;
+"I_TC_arm_spindle_pos        : %D - M8652\n",M8652/c;
+"O_TC_arm_to_basic_position  : %D - M8852\n",M8852/c;
+"I_TC_arm_basic_pos          : %D - M8649\n",M8649/c;
+"I_TC_arm_brake_pos          : %D - M8645\n",M8645/c;
+"O_TC_arm_put_out            : %D - M8845\n",M8845/c;
+"I_TC_arm_put_out            : %D - M8644\n",M8644/c;
+"O_TC_arm_put_in             : %D - M8848\n",M8848/c;
+"I_TC_arm_put_in             : %D - M8648\n",M8648/c;
+"O_TC_arm_grippers_close     : %D - M8851\n",M8851/c;
+"I_TC_arm_grippers_opened    : %D - M8655\n",M8655/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 8 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"O_TC_magazine_1_lock_pin_out: %D - M8861\n",M8861/c;
+"I_TC_magazine_1_lock_pin_out: %D - M8660\n",M8660/c;
+"O_TC_magazine_1_lock_pin_in : %D - M8862\n",M8862/c;
+"I_TC_magazine_1_lock_pin_in : %D - M8661\n",M8661/c;
+"O_TC_magazine_to_spindle_pos: %D - O20\n",O20/c;
+"I_TC_magazine_in_spindle_pos: %D - M8675\n",M8675/c;
+"O_TC_magazine_to_basic_pos  : %D - O21\n",O21/c;
+"I_TC_magazine_in_basic_pos  : %D - M8674\n",M8674/c;
+"O_TC_pocket_put_out         : %D - M8863\n",M8863/c;
+"I_TC_pocket_out             : %D - M8662\n",M8662/c;
+"O_TC_pocket_put_in          : %D - M8864\n",M8864/c;
+"I_TC_pocket_in              : %D - M8664\n",M8664/c;
+"I_key_TC_mag_plus           : %D - M8639\n",M8639/c;
+"I_key_TC_mag_minus          : %D - M8637\n",M8637/c;
+"O_TC_magazine_1_cw          : %D - O18\n",O18/c;
+"O_TC_magazine_1_ccw         : %D - O19\n",O19/c;
+"O_TC_magazine_1_rapid_trav  : %D - M8860\n",M8860/c;
+"O_TC_magazine_1_slow_motion : %D - M8865\n",M8865/c;
+"I_TC_magazine_reference     : %D - I17\n",I17/c;
+"I_TC_magazine_exact_position: %D - I18\n",I18/c;
+"I_TC_magazine_counter       : %D - I19\n",I19/c;
+"I_TC_magazine_guard_closed  : %D - I20\n",I20/c;
+"O_LED_TC_pocket_loading     : %D - M8783\n",M8783/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"        (Page 9 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_coolant_circuit_2     : %D - I150\n",I150/c;
+"O_coolant_M07_on            : %D - M8706\n",M8706/c;
+"O_LED_coolant_M07           : %D - M8759\n",M8759/c;
+"I_key_coolant_circuit_1     : %D - I145\n",I145/c;
+"O_coolant_M08_on            : %D - M8707\n",M8707/c;
+"O_LED_coolant_M08           : %D - M8760\n",M8760/c;
+"I_coolant_level_ok          : %D - M7000\n",M7000/c;
+"I_PW_210_temperature_ok     : %D - M7000\n",M7000/c;
+"I_DA400_pressure_ok         : %D - M7000\n",M7000/c;
+"I_key_chip_conveyor         : %D - I142\n",I142/c;
+"O_chip_conveyor             : %D - M8839\n",M8839/c;
+"O_LED_chip_conveyor         : %D - O15\n",O15/c;
+"I_key_chip_conveyor_back    : %D - I140\n",I140/c;
+"O_chip_conveyor_back        : %D - M8840\n",M8840/c;
+"I_key_lubrication_axes      : %D - M8633\n",M8633/c;
+"O_lubrication_on            : %D - M8838\n",M8838/c;
+"O_LED_lubrication_on        : %D - M8780\n",M8780/c;
+"I_lubricant_level_ok        : %D - M8574\n",M8574/c;
+"I_lubricant_pressure_ok     : %D - M8573\n",M8573/c;
+"I_key_working_light         : %D - M8582\n",M8582/c;
+"O_working_light             : %D - M8679\n",M8679/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down    ";COLOUR=11;"       (Page 10 of 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Output/Input";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                            Value Addr  \n";CURSOR=OFF;
+
+"I_key_guard_unlock          : %D - I141\n",I141/c;
+"O_guard_1_unlock            : %D - O30\n",O30/c;
+"O_guard_2_unlock            : %D - M8678\n",M8678/c;
+"I_guard_1_closed            : %D - I11\n",I11/c;
+"I_guard_2_closed            : %D - I11\n",I11/c;
+"I_guard_1_closed_locked     : %D - I12\n",I12/c;
+"I_guard_2_closed_locked     : %D - I12\n",I12/c;
+"O_auto_power_off_after_END_ : %D - M8680\n",M8680/c;
+"O_start_index_table         : %D - M8841\n",M8841/c;
+"I_index_table_in_position   : %D - M8641\n",M8641/c;
+"I_key_axes_plus             : %D - M8580\n",M8580/c;
+"I_key_axes_minus            : %D - M8579\n",M8579/c;
+"I_key_enable_table_1        : %D - M8622\n",M8622/c;
+"I_key_enable_table_2        : %D - M8623\n",M8623/c;
+"O_LED_table_1               : %D - M8763\n",M8763/c;
+"O_LED_table_2               : %D - M8764\n",M8764/c;
+"I_key_axes_motion_from_end_ : %D - I149\n",I149/c;
+"O_LED_axes_motion_from_end_ : %D - M8753\n",M8753/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up         ";COLOUR=11;"       (Page 11 of 11)";
+

@@ -1,0 +1,26 @@
+{
+  "name": "@plastichub/hydra",
+  "version": "0.1.0",
+  "description": "Extruder Firmware with serial/modbus interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/plastichub/hydra.git"
+  },
+  "keywords": [
+    "preciousplastic"
+  ],
+  "author": "PlasticHub",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://gitlab.com/plastichub/hydra/issues"
+  },
+  "homepage": "https://gitlab.com/plastichub/hydra#readme",
+  "dependencies": {
+    "@plastichub/fs": "^0.13.19",
+    "simple-git": "^1.131.0"
+  }
+}

@@ -1,0 +1,21 @@
+NAME = BL_Q301
+CAPTION = Q301 System Ein-Ausschalten
+CAPTION-EN = Q301 System Switch On-Off
+PARA-NR = 301
+TYPE = NUMBER
+RANGE = 0...1
+DEFAULT = 0
+Q-ALLOWED = YES
+GLOBAL-ALLOWED = NO
+INCH-CONVERT = NO
+FEED-PARA = NO
+
+DIA-ENGLISH = Activate System: 1=ON(yes)/0=OFF(no)
+DIA-GERMAN = System aktivieren: 1=EIN(ja)/0=AUS(nein)
+DIA-FRENCH = Activer Systeme: 1=Marche(oui)/0=Arrêt(no)
+DIA-ITALIAN = Attivare Sistema: 1=Accendere/0=Spegnere
+
+COM-ENGLISH = SYSTEM 1=ON / 0=OFF
+COM-GERMAN = SYSTEM 1=EIN / 0=AUS
+COM-FRENCH = SYSTEME 1=ACTIVE/0=INACTIVE
+COM-ITALIAN = ATTIVARE SISTEMA 1=ACCESO/0=SPENTO

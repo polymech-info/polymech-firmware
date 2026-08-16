@@ -1,0 +1,737 @@
+*-----------------------------------------------------------------------------
+*  Globale Merker NC <-> PLC
+*-----------------------------------------------------------------------------
+*  Legende:
+*
+*    X_      = Achse X
+*    Y_      = Achse Y
+*    Z_      = Achse Z
+*    4_      = Achse 4
+*    5_      = Achse 5
+*    S_      = Spindel
+*    Spg     = Spannung
+*    Posit   = Positionierung
+*    BA      = Betriebsart
+*-----------------------------------------------------------------------------
+
+#type
+
+*-----------------------------------------------------------------------------
+*  Spindel
+*-----------------------------------------------------------------------------
+
+   NP_M4000_S_in_Position                   M4000
+   NP_M4001_S_Sollwert_nicht_in_Rampe       M4001
+   NP_M4002_S_Sollwert_0                    M4002
+   NP_M4003_S_Sollwert_analog_oder_digital  M4003
+   NP_M4004_S_Drehzahl_nicht_erlaubt        M4004
+
+   PN_M4005_S_M03_Sollwert_und_Status       M4005
+   PN_M4006_S_M04_Sollwert_und_Status       M4006
+   PN_M4007_S_M05_Sollwert_0_und_Status     M4007
+   PN_M4008_S_Sollwert_aus_Status_invers    M4008
+
+   PN_M4009_S_pendeln_links                 M4009
+   PN_M4010_S_pendeln_rechts                M4010
+   PN_M4011_S_Drehzahl_aus_MP3520_0         M4011
+   PN_M4012_S_Regelkreis_oeffnen            M4012
+   PN_M4013_S_Orientierung_mit_M04          M4013
+   PN_M4014_S_Umkehr_Drehrichtung           M4014
+   PN_M4015_S_Referenz_Reset                M4015
+
+   NP_M4016_S_Zyklus_13_aktiv               M4016
+   NP_M4017_S_geregelt_in_Bewegung          M4017
+   NP_M4018_S_keine_Referenz                M4018
+
+   PN_M4019_S_Zaehlrichtung_Lage_invertieren M4019
+
+*-----------------------------------------------------------------------------
+*  Gewindeschneiden
+*-----------------------------------------------------------------------------
+
+   NP_M4030_Gewindebohren_aktiv             M4030
+   NP_M4031_Gewindebohren_gesteuert         M4031
+
+*-----------------------------------------------------------------------------
+*  Kühlmittel-Status
+*-----------------------------------------------------------------------------
+
+   PN_M4040_M07_M08_M09_MK_Status_invers    M4040
+   PN_M4041_M07_MK_Status                   M4041
+   PN_M4042_M08_MK_Status                   M4042
+
+*-----------------------------------------------------------------------------
+*  3D Tastsystem
+*-----------------------------------------------------------------------------
+
+   NP_M4050_Tast_System_nicht_bereit        M4050
+   NP_M4051_Taster_ausgelenkt_vor_Zyklus    M4051
+   NP_M4052_Tast_Zyklus_ausgefuehrt         M4052
+   NP_M4053_Tast_Zyklus_Ende_Stop           M4053
+   NP_M4054_Taster_DC_Versorgung_zu_gering  M4054
+   NP_M4055_Tast_Zyklus_Start_0_aktiv       M4055
+   PN_M4056_NC_STOP_Taster_ausgelenkt       M4056
+   NP_M4057_Tast_Zyklus_aktiv               M4057
+   NP_M4058_Tast_Zyklus_SOM_S_aktiv         M4058
+
+   NP_M4060_Werkzeug_vermessen              M4060
+   NP_M4061_Werkzeug_pruefen                M4061
+   NP_M4062_Werkzeug_Verschleiss_Toleranz   M4062
+   NP_M4063_Werkzeug_Bruch_Toleranz         M4063
+   NP_M4065_Werkstueck_alle_Masse_ok        M4065
+   NP_M4066_Werkstueck_ist_nachzubearbeiten M4066
+   NP_M4067_Werkstueck_ist_Ausschuss        M4067
+
+*-----------------------------------------------------------------------------
+*  Strobe-Signale von der NC an die PLC
+*-----------------------------------------------------------------------------
+
+   NP_M4070_Strobe_G_Code                   M4070
+   NP_M4071_Strobe_S_Code                   M4071
+   NP_M4072_Strobe_M_Funktion               M4072
+   NP_M4073_Strobe_TOOL_CALL                M4073
+   NP_M4074_Strobe_TOOL_DEF                 M4074
+   NP_M4075_Strobe_FN19                     M4075
+
+*-----------------------------------------------------------------------------
+*  Rückmeldung der NC Strobe-Signale
+*-----------------------------------------------------------------------------
+
+   PN_M4090_Quit_G_Code                     M4090
+   PN_M4091_Quit_S_Code                     M4091
+   PN_M4092_Quit_M_Funktion                 M4092
+   PN_M4093_Quit_TOOL_CALL                  M4093
+   PN_M4094_Quit_TOOL_DEF                   M4094
+   PN_M4095_Quit_FN19                       M4095
+
+*-----------------------------------------------------------------------------
+*  Strobe-Signale von der PLC an die NC
+*-----------------------------------------------------------------------------
+
+   PN_M4120_Strobe_PLC_Posit_Achse_X        M4120
+   PN_M4121_Strobe_PLC_Posit_Achse_Y        M4121
+   PN_M4122_Strobe_PLC_Posit_Achse_Z        M4122
+   PN_M4123_Strobe_PLC_Posit_Achse_4        M4123
+   PN_M4124_Strobe_PLC_Posit_Achse_5        M4124
+   PN_M4125_Strobe_PLC_Posit_Achse_6        M4125
+   PN_M4126_Strobe_PLC_Posit_Achse_7        M4126
+   PN_M4127_Strobe_PLC_Posit_Achse_8        M4127
+   PN_M4128_Strobe_PLC_Posit_Achse_9        M4128
+   PN_M4130_Strobe_PLC_Posit_Spindel        M4130
+   PN_M4131_Strobe_Q_Parameter_100_107      M4131
+   PN_M4132_Strobe_Nullpunkt_Korrektur      M4132
+   PN_M4133_Strobe_Freies_Drehen_Achsen     M4133
+   PN_M4134_Strobe_G_Stufe_Drehzahl         M4134
+   PN_M4135_Strobe_Verfahrbereich           M4135
+
+*-----------------------------------------------------------------------------
+*  NC-Betriebsarten und Status
+*-----------------------------------------------------------------------------
+
+   NP_M4150_BA_Manueller_Betrieb            M4150
+   NP_M4151_BA_Elektronisches_Handrad       M4151
+   NP_M4152_BA_Positionieren_Handeingabe    M4152
+   NP_M4153_BA_Programmlauf_Einzelsatz      M4153
+   NP_M4154_BA_Programmlauf_Satzfolge       M4154
+   NP_M4155_BA_Referenzaufnahme             M4155
+   NP_M4156_BA_Softkey_Manual_Operation     M4156
+   NP_M4157_BA_Restore_Position_aktiv       M4157
+   NP_M4158_BA_Satz_Vorlauf_aktiv           M4158
+   NP_M4159_Taste_END_Tab_Editor_betaetigt  M4159
+   NP_M4160_Paletten_Tabelle_angewaehlt     M4160
+   NP_M4161_MSTQ_Uebergabe_nach_Satzvorlauf M4161
+
+   NP_M4170_END_PGM_M02_M30_abgearbeitet    M4170
+   NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein   M4172
+   NP_M4173_1_PLC_Durchlauf_nach_Compile    M4173
+   NP_M4174_1_PLC_Durchlauf_nach_MP_Edit    M4174
+   NP_M4175_Stern_blinkt                    M4175
+   NP_M4176_Stern_ein_oder_blinkt           M4176
+   NP_M4177_Fehlermeldung_aktiv             M4177
+   NP_M4178_Externer_Not_Halt_aktiv         M4178
+   NP_M4179_Steuerung_wird_heruntergefahren M4179
+   NP_M4180_F_Max_programmiert              M4180
+   NP_M4181_NC_Programm_angewaehlt          M4181
+   NP_M4185_Internal_STOP                   M4185
+   NP_M4186_BA_Programm_Test                M4186
+   NP_M4187_Strom_Unterbrechung_aktiv       M4187
+   NP_M4188_PLC_Compile_Status_aktiv        M4188
+   NP_M4189_Not_Halt_Test_abgeschlossen     M4189
+   NP_M4190_Not_Halt_Test_aktiv             M4190
+   NP_M4191_Steuerung_betriebsbereit        M4191
+   NP_M4192_Not_Halt_Test_Steuerspannung_ein M4192
+   NP_M4193_RUNCANCEL_Makro_aktiv           M4193
+   NP_M4194_IO_Force_aktiv                  M4194
+   NP_M4195_Shutdown_anhalten_0_aktiv       M4195
+   NP_M4196_Paletten_Bearbeitung_beendet    M4196
+   NP_M4195_Shutdown_abbrechen              M4197
+
+   NP_M4260_Steuerung_nicht_betriebsbereit  M4260
+
+*-----------------------------------------------------------------------------
+*  Arithmetik- oder Modul_Fehler in der PLC
+*-----------------------------------------------------------------------------
+
+   NP_M4200_Overflow_bei_Multiplikation     M4200
+   NP_M4201_Division_durch_0                M4201
+   NP_M4202_MODULO_falsch_ausgefuehrt       M4202
+/c NP_M4203_Fehler_Modul_9xxx               M4203
+   NP_M4204_Reserviert_fuer_Fehler          M4204
+
+*-----------------------------------------------------------------------------
+*  Statusinformationen PET-Tabelle
+*-----------------------------------------------------------------------------
+
+   NP_M4220_PET_Tabelle_Vorschub_Stop       M4220
+   NP_M4221_PET_Tabelle_NC_STOP             M4221
+   NP_M4222_PET_Tabelle_Not_Halt            M4222
+   NP_M4223_PET_Tabelle_NC_Abbruch          M4223
+
+   PN_M4225_PET_alternat_Fehlerreaktion     M4225
+
+   NP_M4227_PET_E_Typ_aktiv                 M4227
+   NP_M4228_PET_W_Typ_aktiv                 M4228
+   NP_M4229_PET_I_Type_aktiv                M4229
+
+   NP_M4230_NC_START_von_LSV2               M4230
+   NP_M4231_NC_STOP_von_LSV2                M4231
+
+*-----------------------------------------------------------------------------
+*  Sicherheitsgerichtete Eingänge auf Merker transferiert
+*-----------------------------------------------------------------------------
+
+   NP_M4264_A2_Achskonfiguration            M4264
+   NP_M4265_B2_Achskonfiguration            M4265
+   NP_M4266_frei                            M4266
+   NP_M4267_Zustimmtaste_Bedienfeld         M4267
+   NP_M4268_Rueckmeldung_Abschaltung        M4268
+   NP_M4269_NC_Stop                         M4269
+   NP_M4270_SP_Stop                         M4270
+   NP_M4271_Zustimmtaste_Handrad            M4271
+   NP_M4272_Tuere_auf_zu_SRG_Achsen         M4272
+   NP_M4273_Tuere_auf_zu_SRG_Achsen_Spindel M4273
+   NP_M4274_Tuere_auf_zu_SRG_Hilfsachsen    M4274
+   NP_M4275_SBH_Achsen                      M4275
+   NP_M4276_SBH_Spindel                     M4276
+   NP_M4277_SBH_Hilfsachsen                 M4277
+   NP_M4278_Maschinentaste                  M4278
+   NP_M4279_Maschine_Ein                    M4279
+   NP_M4280_Stop_Reaktion_ist_aktiv         M4280
+   NP_M4281_beide_Zustimmtasten_gedrueckt   M4281
+   NP_M4282_Start_Abschaltkanaele           M4282            ;;ApiGen.NN_GenSafetySelftest
+   NP_M4283_Abschaltung_wg_fehlendem_Test   M4283
+   NP_M4284_Vorschub_Drehzahlbegr_aktiv     M4284
+
+*-----------------------------------------------------------------------------
+*  Über Maschinen-Parameter beeinflußbare Merker
+*-----------------------------------------------------------------------------
+
+   NP_M4300_Config_MP4310_0_Bit_00          M4300
+   NP_M4301_Config_MP4310_0_Bit_01          M4301
+   NP_M4302_Config_MP4310_0_Bit_02          M4302
+   NP_M4303_Config_MP4310_0_Bit_03          M4303
+   NP_M4304_Config_MP4310_0_Bit_04          M4304
+   NP_M4305_Config_MP4310_0_Bit_05          M4305
+   NP_M4306_Config_MP4310_0_Bit_06          M4306
+   NP_M4307_Config_MP4310_0_Bit_07          M4307
+   NP_M4308_Config_MP4310_0_Bit_08          M4308
+   NP_M4309_Config_MP4310_0_Bit_09          M4309
+   NP_M4310_Config_MP4310_0_Bit_10          M4310
+   NP_M4311_Config_MP4310_0_Bit_11          M4311
+   NP_M4312_Config_MP4310_0_Bit_12          M4312
+   NP_M4313_Config_MP4310_0_Bit_13          M4313
+   NP_M4314_Config_MP4310_0_Bit_14          M4314
+   NP_M4315_Config_MP4310_0_Bit_15          M4315
+
+   NP_M4316_Config_MP4310_1_Bit_00          M4316
+   NP_M4317_Config_MP4310_1_Bit_01          M4317
+   NP_M4318_Config_MP4310_1_Bit_02          M4318
+   NP_M4319_Config_MP4310_1_Bit_03          M4319
+   NP_M4320_Config_MP4310_1_Bit_04          M4320
+   NP_M4321_Config_MP4310_1_Bit_05          M4321
+   NP_M4322_Config_MP4310_1_Bit_06          M4322
+   NP_M4323_Config_MP4310_1_Bit_07          M4323
+   NP_M4324_Config_MP4310_1_Bit_08          M4324
+   NP_M4325_Config_MP4310_1_Bit_09          M4325
+   NP_M4326_Config_MP4310_1_Bit_10          M4326
+   NP_M4327_Config_MP4310_1_Bit_11          M4327
+   NP_M4328_Config_MP4310_1_Bit_12          M4328
+   NP_M4329_Config_MP4310_1_Bit_13          M4329
+   NP_M4330_Config_MP4310_1_Bit_14          M4330
+   NP_M4331_Config_MP4310_1_Bit_15          M4331
+   NP_M4332_Config_MP4310_2_Bit_00          M4332
+   NP_M4333_Config_MP4310_2_Bit_01          M4333
+   NP_M4334_Config_MP4310_2_Bit_02          M4334
+   NP_M4335_Config_MP4310_2_Bit_03          M4335
+   NP_M4336_Config_MP4310_2_Bit_04          M4336
+   NP_M4337_Config_MP4310_2_Bit_05          M4337
+   NP_M4338_Config_MP4310_2_Bit_06          M4338
+   NP_M4339_Config_MP4310_2_Bit_07          M4339
+   NP_M4340_Config_MP4310_2_Bit_08          M4340
+   NP_M4341_Config_MP4310_2_Bit_09          M4341
+   NP_M4342_Config_MP4310_2_Bit_10          M4342
+   NP_M4343_Config_MP4310_2_Bit_11          M4343
+   NP_M4344_Config_MP4310_2_Bit_12          M4344
+   NP_M4345_Config_MP4310_2_Bit_13          M4345
+   NP_M4346_Config_MP4310_2_Bit_14          M4346
+   NP_M4347_Config_MP4310_2_Bit_15          M4347
+
+   NP_M4348_Config_MP4310_3_Bit_00          M4348
+   NP_M4349_Config_MP4310_3_Bit_01          M4349
+   NP_M4350_Config_MP4310_3_Bit_02          M4350
+   NP_M4351_Config_MP4310_3_Bit_03          M4351
+   NP_M4352_Config_MP4310_3_Bit_04          M4352
+   NP_M4353_Config_MP4310_3_Bit_05          M4353
+   NP_M4354_Config_MP4310_3_Bit_06          M4354
+   NP_M4355_Config_MP4310_3_Bit_07          M4355
+   NP_M4356_Config_MP4310_3_Bit_08          M4356
+   NP_M4357_Config_MP4310_3_Bit_09          M4357
+   NP_M4358_Config_MP4310_3_Bit_10          M4358
+   NP_M4359_Config_MP4310_3_Bit_11          M4359
+   NP_M4360_Config_MP4310_3_Bit_12          M4360
+   NP_M4361_Config_MP4310_3_Bit_13          M4361
+   NP_M4362_Config_MP4310_3_Bit_14          M4362
+   NP_M4363_Config_MP4310_3_Bit_15          M4363
+
+   NP_M4364_Config_MP4310_4_Bit_00          M4364
+   NP_M4365_Config_MP4310_4_Bit_01          M4365
+   NP_M4366_Config_MP4310_4_Bit_02          M4366
+   NP_M4367_Config_MP4310_4_Bit_03          M4367
+   NP_M4368_Config_MP4310_4_Bit_04          M4368
+   NP_M4369_Config_MP4310_4_Bit_05          M4369
+   NP_M4370_Config_MP4310_4_Bit_06          M4370
+   NP_M4371_Config_MP4310_4_Bit_07          M4371
+   NP_M4372_Config_MP4310_4_Bit_08          M4372
+   NP_M4373_Config_MP4310_4_Bit_09          M4373
+   NP_M4374_Config_MP4310_4_Bit_10          M4374
+   NP_M4375_Config_MP4310_4_Bit_11          M4375
+   NP_M4376_Config_MP4310_4_Bit_12          M4376
+   NP_M4377_Config_MP4310_4_Bit_13          M4377
+   NP_M4378_Config_MP4310_4_Bit_14          M4378
+   NP_M4379_Config_MP4310_4_Bit_15          M4379
+
+   NP_M4380_Config_MP4310_5_Bit_00          M4380
+   NP_M4381_Config_MP4310_5_Bit_01          M4381
+   NP_M4382_Config_MP4310_5_Bit_02          M4382
+   NP_M4383_Config_MP4310_5_Bit_03          M4383
+   NP_M4384_Config_MP4310_5_Bit_04          M4384
+   NP_M4385_Config_MP4310_5_Bit_05          M4385
+   NP_M4386_Config_MP4310_5_Bit_06          M4386
+   NP_M4387_Config_MP4310_5_Bit_07          M4387
+   NP_M4388_Config_MP4310_5_Bit_08          M4388
+   NP_M4389_Config_MP4310_5_Bit_09          M4389
+   NP_M4390_Config_MP4310_5_Bit_10          M4390
+   NP_M4391_Config_MP4310_5_Bit_11          M4391
+   NP_M4392_Config_MP4310_5_Bit_12          M4392
+   NP_M4393_Config_MP4310_5_Bit_13          M4393
+   NP_M4394_Config_MP4310_5_Bit_14          M4394
+   NP_M4395_Config_MP4310_5_Bit_15          M4395
+
+   NP_M4396_Config_MP4310_6_Bit_00          M4396
+   NP_M4397_Config_MP4310_6_Bit_01          M4397
+   NP_M4398_Config_MP4310_6_Bit_02          M4398
+   NP_M4399_Config_MP4310_6_Bit_03          M4399
+   NP_M4400_Config_MP4310_6_Bit_04          M4400
+   NP_M4401_Config_MP4310_6_Bit_05          M4401
+   NP_M4402_Config_MP4310_6_Bit_06          M4402
+   NP_M4403_Config_MP4310_6_Bit_07          M4403
+   NP_M4404_Config_MP4310_6_Bit_08          M4404
+   NP_M4405_Config_MP4310_6_Bit_09          M4405
+   NP_M4406_Config_MP4310_6_Bit_10          M4406
+   NP_M4407_Config_MP4310_6_Bit_11          M4407
+   NP_M4408_Config_MP4310_6_Bit_12          M4408
+   NP_M4409_Config_MP4310_6_Bit_13          M4409
+   NP_M4410_Config_MP4310_6_Bit_14          M4410
+   NP_M4411_Config_MP4310_6_Bit_15          M4411
+
+*-----------------------------------------------------------------------------
+*  Werkzeug-Wechsel
+*-----------------------------------------------------------------------------
+
+   NP_M4520_TOOL_CALL_2_Strobe              M4520
+   NP_M4521_TOOL_CALL_T_0_programmiert      M4521
+   NP_M4522_TOOL_CALL_mit_Platznummer       M4522
+   NP_M4523_TOOL_CALL_ohne_Platznummer      M4523
+   NP_M4524_TOOL_CALL_mit_Sonderwerkzeug    M4524
+   NP_M4525_TOOL_CALL_von_Standzeitablauf   M4525
+   NP_M4526_Werkzeug_Achse_X                M4526
+   NP_M4527_Werkzeug_Achse_Y                M4527
+   NP_M4528_Werkzeug_Achse_Z                M4528
+   NP_M4529_Werkzeug_Achse_4                M4529
+   NP_M4530_Werkzeug_Achse_5                M4530
+   NP_M4531_Werkzeug_Achse_6                M4531
+   NP_M4532_Werkzeug_Achse_7                M4532
+   NP_M4533_Werkzeug_Achse_8                M4533
+   NP_M4534_Werkzeug_Achse_9                M4534
+
+   PN_M4538_Vorwahl_Werkzeug                M4538
+   PN_M4539_T_Status_invers                 M4539
+   PN_M4540_T_neu_zuerst_Festplatzwechsel   M4540
+   PN_M4541_Sonderwerkzeug_Festplatzwechsel M4541
+   PN_M4542_Platz_Tabelle_fest              M4542
+   PN_M4543_Standzeit_abgelaufen_TIME1      M4543
+   PN_M4546_Standzeit_abgelaufen_TIME2      M4546
+   NP_M4547_TOOL_CALL_mit_TG_Strobe         M4547
+
+*-----------------------------------------------------------------------------
+*  Zusätzliche Tasten
+*-----------------------------------------------------------------------------
+
+   PN_M4560_NC_STOP_0_aktiv                 M4560
+   PN_M4561_Eilgang                         M4561
+   PN_M4562_Achs_Tasten_speichern           M4562
+   PN_M4563_Vorschub_Freigabe               M4563
+   PN_M4564_NC_Start                        M4564
+
+*-----------------------------------------------------------------------------
+*  Allgemeine Funktionen
+*-----------------------------------------------------------------------------
+
+   NP_M4570_FN19_Wert_in_Inch               M4570
+   PN_M4571_Freigabe_decodierte_M_Funktion  M4571
+   PN_M4572_Freigabe_Schrittmass_Posit      M4572
+
+   PN_M4574_Axis_Limit_Vorwahl_Bit_0        M4574
+   PN_M4575_Axis_Limit_Vorwahl_Bit_1        M4575
+   PN_M4576_Handrad_Impulse_ausblenden      M4576
+   NP_M4577_gesperrte_Taste_betaetigt       M4577
+
+   NP_M4579_Schrittmass_ein_Softkey         M4579
+
+   PN_M4580_kein_Not_Halt_RK_auf_NC_Stop    M4580
+   PN_M4581_NC_Stop_Regelkreis_auf          M4581
+   PN_M4582_TNC410_Not_Halt_von_PLC         M4582
+   PN_M4583_Fehlermeldung_blinkend          M4583
+
+   NP_M4182_Autostart_aktiv                 M4182
+   NP_M4183_Zeit_aus_AUTOSTART_abgelaufen   M4183
+
+   PN_M4586_Autostart_Freigabe              M4586
+   PN_M4587_FMAX_Limit_inaktiv              M4587
+
+   NP_M4589_Preset_Tabelle_aktiv            M4589
+
+   NP_M4590_schneller_Eingang_MP4130_2      M4590
+   NP_M4591_schneller_Eingang_MP4130_3      M4591
+   NP_M4592_schneller_Eingang_MP4130_4      M4592
+   NP_M4593_schneller_Eingang_MP4130_5      M4593
+
+   PN_M4620_WZ_LIFTOFF_Freigabe_M148        M4620
+
+   NP_M4624_MOD_Verfahrbereich_modifiziert  M4624
+   PN_M4625_sperren_SLP_Teilvorsteuerung    M4625
+
+   NP_M4627_intern_Oszi_Trigger             M4627
+   NP_M4628_intern_Oszi_Aufzeichnung_Ende   M4628
+
+   NP_M4632_Achse_ueber_HRxxx_bewegt        M4632
+
+   NP_M4641_HSCI_Status_Bus_ok              M4641
+
+   PN_M4751_Modulaufruf_PLC_Logbuch         M4751
+   PN_M4752_Modulaufruf_Submit_PLC_Logbuch  M4752
+   PN_M4753_Fehler_PLC_Modul_in_PLC_Logbuch M4753
+
+*-----------------------------------------------------------------------------
+*  Handrad HR420/HR520/HR550
+*-----------------------------------------------------------------------------
+
+   NP_M4660_HR420_aktiv                     M4660
+   NP_M4661_HR420_Taste_NC_Start            M4661
+   NP_M4662_HR420_Taste_NC_Stop             M4662
+   NP_M4663_HR420_Taste_Eilgang             M4663
+   NP_M4664_HR420_Taste_S_M3                M4664
+   NP_M4665_HR420_Taste_S_M5                M4665
+   NP_M4666_HR420_Taste_Achse_plus          M4666
+   NP_M4667_HR420_Taste_Achse_minus         M4667
+   NP_M4668_HR420_Taste_Ctrl                M4668
+
+   NP_M4670_HR420_Overrides_HR_aktiv        M4670
+
+   PN_M4680_HR420_sperren                   M4680
+
+/c NP_M4660_HR5x0_aktiv                     M4660
+/c NP_M4661_HR5x0_Taste_NC_Start            M4661
+/c NP_M4662_HR5x0_Taste_NC_Stop             M4662
+/c NP_M4663_HR5x0_Taste_Eilgang             M4663
+/c NP_M4664_HR5x0_Taste_S_M3                M4664
+/c NP_M4665_HR5x0_Taste_S_M5                M4665
+/c NP_M4666_HR5x0_Taste_Achse_plus          M4666
+/c NP_M4667_HR5x0_Taste_Achse_minus         M4667
+/c NP_M4668_HR5x0_Taste_Ctrl                M4668
+   NP_M4669_HR5x0_Taste_IST_Wert            M4669
+/c NP_M4670_HR5x0_Overrides_HR_aktiv        M4670
+
+/c PN_M4680_HR5x0_sperren                   M4680
+   PN_M4681_HR5x0_LED_Taste_NC_Start        M4681
+   PN_M4682_HR5x0_LED_Taste_NC_Stop         M4682
+
+   PN_M4684_HR5x0_LED_Taste_S_M3            M4684
+   PN_M4685_HR5x0_LED_Taste_S_M5            M4685
+
+   PN_M4688_HR5x0_LED_Taste_Ctrl            M4688
+   PN_M4689_HR5x0_LED_Taste_IST_Wert        M4689
+
+*-----------------------------------------------------------------------------
+*  Liste der Wörter (Worte bitcodiert ...54ZYX)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Spindel
+*-----------------------------------------------------------------------------
+
+   NP_W320_S_Soll_Drehzahl                  W320
+   NP_W322_S_Ist_Drehzahl                   W322
+   NP_D356_S_Programmierte_Drehzahl_NC      D356
+   NP_D364_S_Soll_Drehzahl                  D364
+   NP_D368_S_Ist_Drehzahl                   D368
+   NP_D372_S_Enddrehzahl                    D372
+   NP_W492_S_Override_NC                    W492
+   PN_W764_S_Override_PLC                   W764
+   PN_D592_S_Position_Orientierung          D592
+   PN_D604_Max_S_Drehzahl_PLC               D604
+   PN_D756_S_Drehzahlvorgabe_PLC            D756
+   PN_D760_Offset_TS_Mittenversatz_3D_ROT   D760
+   NP_W1008_S_Code_fuer_minimale_Drehzahl   W1008
+   NP_W1010_S_Code_Drehzahl_Schritt         W1010
+
+*-----------------------------------------------------------------------------
+*  Achsen
+*-----------------------------------------------------------------------------
+
+;   NP_W1024_Achsfreigaben                   W1024
+;   NP_W1026_Achsen_in_Position              W1026
+;   NP_W1028_Achsen_in_Bewegung              W1028
+;   NP_W1030_Verfahrrichtung_negativ         W1030
+;   NP_W1032_Referenz_notwendig              W1032
+;   NP_W1034_Endschalter_plus                W1034
+;   NP_W1036_Endschalter_minus               W1036
+;
+;   PN_W1038_Regelkreis_oeffnen_Aktivierung  W1038
+;   PN_W1040_Regelkreis_oeffnen              W1040
+;   PN_W1042_Ueberwachung_inaktiv            W1042
+;   PN_W1044_Ist_Sollwert_Uebernahme         W1044
+;   PN_W1046_Manuelles_Verfahren_plus        W1046
+;   PN_W1048_Manuelles_Verfahren_minus       W1048
+;   PN_W1054_Referenz_Endlage                W1054
+;
+;   NP_W1056_Schmier_Impuls                  W1056
+
+;   PN_W1058_Schmierweg_Reset                W1058
+;   PN_W1060_Vorschubfreigabe_achsspezifisch W1060
+;   PN_W1062_Handrad_Impulse_ausblenden      W1062
+
+;Erweiterte Schnittstelle 22 Achsen / 24 Regelkreise
+
+   NP_D1100_Achsfreigaben                   D1100
+   NP_D1104_Achsen_in_Position              D1104
+   NP_D1108_Achsen_in_Bewegung              D1108
+   NP_D1112_Verfahrrichtung_negativ         D1112
+   NP_D1116_Referenz_notwendig              D1116
+   NP_D1120_Endschalter_plus                D1120
+   NP_D1124_Endschalter_minus               D1124
+
+   PN_D1128_Regelkreis_oeffnen_Aktivierung  D1128
+   PN_D1132_Regelkreis_oeffnen              D1132
+   PN_D1136_Ueberwachung_inaktiv            D1136
+   PN_D1140_Ist_Sollwert_Uebernahme         D1140
+   PN_D1144_Manuelles_Verfahren_plus        D1144
+   PN_D1148_Manuelles_Verfahren_minus       D1148
+   PN_D1160_Referenz_Endlage                D1160
+
+   NP_D1164_Schmier_Impuls                  D1164
+
+   PN_D1168_Schmierweg_Reset                D1168
+   PN_D1172_Vorschubfreigabe_achsspezifisch D1172
+   PN_D1176_Handrad_Impulse_ausblenden      D1176
+
+   PN_D528_PLC_Posit_Nullpunkt_X_Q_Paramet  D528
+   PN_D532_PLC_Posit_Nullpunkt_Y            D532
+   PN_D536_PLC_Posit_Nullpunkt_Z            D536
+   PN_D540_PLC_Posit_Nullpunkt_4            D540
+   PN_D544_PLC_Posit_Nullpunkt_5            D544
+
+   PN_W560_Vorschub_Achse_X                 W560
+   PN_W562_Vorschub_Achse_Y                 W562
+   PN_W564_Vorschub_Achse_Z                 W564
+   PN_W566_Vorschub_Achse_4                 W566
+   PN_W568_Vorschub_Achse_5                 W568
+
+   NP_W494_Faktor_Vorschub_Override_NC      W494
+   PN_W766_Faktor_Vorschub_Override_PLC     W766
+   NP_W496_Faktor_Eilgang_Override_NC       W496
+   PN_W752_Faktor_Eilgang_Override_PLC      W752
+   PN_B520_Vorschubfreigabe_achsspezifisch  B520
+   PN_D596_Max_Vorschub_PLC                 D596
+   NP_D360_Programmierter_Vorschub_NC       D360
+   NP_D388_aktueller_Bahnvorschub           D388
+
+   PN_B518_Freies_Drehen_54xxx              B518
+   PN_B519_Freies_Drehen_Richtung           B519
+   PN_W754_Faktor_Override_Freies_D         W754
+
+   PN_W524_Antriebsfreigabe_Achsgruppen     W524
+
+   PN_W576_Kompensation_Achsfehler_X        W576
+   PN_W578_Kompensation_Achsfehler_Y        W578
+   PN_W580_Kompensation_Achsfehler_Z        W580
+   PN_W582_Kompensation_Achsfehler_4        W582
+   PN_W584_Kompensation_Achsfehler_5        W584
+
+*-----------------------------------------------------------------------------
+*  Daten Strobe-Signale
+*-----------------------------------------------------------------------------
+
+   NP_W256_G_Code_Spindel                   W256
+   NP_W258_S_Code                           W258
+   NP_W260_M_Code                           W260
+   NP_W262_Werkzeug_Platz_Nummer            W262
+   NP_W264_Werkzeug_Nummer                  W264
+   NP_W266_Werkzeug_Index                   W266
+   NP_W268_Werkzeug_Magazin_Nummer          W268
+
+*-----------------------------------------------------------------------------
+*  Allgemeine Funktionen
+*-----------------------------------------------------------------------------
+
+   PN_W522_schnelle_PLC_Eingaenge           W522
+
+   NP_W270_Help_Datei_Zeilen_Nr             W270
+   NP_W272_Betriebsart                      W272
+
+   NP_W274_Tasten_Code_betaetigte_Taste     W274
+
+   NP_W302_PLC_Softkey_Nummer_horizontal    W302
+   NP_W304_PLC_Softkey_Nummer_vertikal      W304
+   NP_W306_PLC_Softkey_Nummer_HR            W306
+
+   NP_W336_AFC_Softkey_ein_bit_0            W336
+
+   NP_W348_AFC_aktueller_Modus              W348
+   NP_W350_AFC_Grund_NC_Stop                W350
+   PN_W624_AFC_Referenz_Load_in_T_Tab_Px    W624
+   PN_W632_AFC_Regeleingangswert            W632
+
+   NP_D276_Schluesselzahl                   D276
+
+   NP_D296_IO_Simulation_Identifier         D296
+
+   NP_W1022_Modul_Fehlerstatus              W1022
+
+   PN_W516_Q_Parameter_Nummer               W516
+
+   NP_D280_FN19_Zahlenwert_1                D280
+   NP_D284_FN19_Zahlenwert_2                D284
+
+   NP_D400_Status_Testausgaenge_A_B         D400
+   NP_W404_Anzahl_gueltige_Bits_D400        W404
+
+   NP_W1002_letzter_PLC_Laufzeitfehler      W1002
+   NP_W1004_letzter_NC_Fehlermeldung        W1004
+   NP_W1016_Nummer_fehlerhaftes_Modul       W1016
+   NP_W1018_Anzahl_geoeffneter_Dateien_PLC  W1018
+   NP_W1020_Anzahl_geoeffneter_Dateien      W1020
+
+*-----------------------------------------------------------------------------
+*  analoge Eingänge
+*-----------------------------------------------------------------------------
+
+   NP_W480_LE_Spannungs_Eingang_0           W480
+   NP_W482_LE_Spannungs_Eingang_1           W482
+   NP_W484_LE_Spannungs_Eingang_2           W484
+   NP_W486_LE_Temperatur_Eingang_0          W486
+   NP_W488_LE_Temperatur_Eingang_1          W488
+   NP_W490_LE_Temperatur_Eingang_2          W490
+
+*-----------------------------------------------------------------------------
+*  Über Maschinen-Parameter beeinflußbare Worte
+*-----------------------------------------------------------------------------
+
+   NP_W960_Wert_MP4220_0                    W960
+   NP_W962_Wert_MP4220_1                    W962
+   NP_W964_Wert_MP4220_2                    W964
+   NP_W966_Wert_MP4220_3                    W966
+   NP_W968_Wert_MP4220_4                    W968
+
+   NP_W976_Wert_MP4310_0                    W976
+   NP_W978_Wert_MP4310_1                    W978
+   NP_W980_Wert_MP4310_2                    W980
+   NP_W982_Wert_MP4310_3                    W982
+   NP_W984_Wert_MP4310_4                    W984
+/c NP_W986_Wert_MP4310_5                    W986
+/c NP_W988_Wert_MP4310_6                    W988
+
+   NP_D768_Wert_MP4210_0                    D768
+   NP_D772_Wert_MP4210_1                    D772
+   NP_D776_Wert_MP4210_2                    D776
+   NP_D780_Wert_MP4210_3                    D780
+   NP_D784_Wert_MP4210_4                    D784
+   NP_D788_Wert_MP4210_5                    D788
+   NP_D792_Wert_MP4210_6                    D792
+   NP_D796_Wert_MP4210_7                    D796
+   NP_D800_Wert_MP4210_8                    D800
+   NP_D804_Wert_MP4210_9                    D804
+   NP_D808_Wert_MP4210_10                   D808
+   NP_D812_Wert_MP4210_11                   D812
+   NP_D816_Wert_MP4210_12                   D816
+   NP_D820_Wert_MP4210_13                   D820
+   NP_D824_Wert_MP4210_14                   D824
+   NP_D828_Wert_MP4210_15                   D828
+   NP_D832_Wert_MP4210_16                   D832
+   NP_D836_Wert_MP4210_17                   D836
+   NP_D840_Wert_MP4210_18                   D840
+   NP_D844_Wert_MP4210_19                   D844
+   NP_D848_Wert_MP4210_20                   D848
+   NP_D852_Wert_MP4210_21                   D852
+   NP_D856_Wert_MP4210_22                   D856
+   NP_D860_Wert_MP4210_23                   D860
+   NP_D864_Wert_MP4210_24                   D864
+   NP_D868_Wert_MP4210_25                   D868
+   NP_D872_Wert_MP4210_26                   D872
+   NP_D876_Wert_MP4210_27                   D876
+   NP_D880_Wert_MP4210_28                   D880
+   NP_D884_Wert_MP4210_29                   D884
+   NP_D888_Wert_MP4210_30                   D888
+   NP_D892_Wert_MP4210_31                   D892
+   NP_D896_Wert_MP4210_32                   D896
+   NP_D900_Wert_MP4210_33                   D900
+   NP_D904_Wert_MP4210_34                   D904
+   NP_D908_Wert_MP4210_35                   D908
+   NP_D912_Wert_MP4210_36                   D912
+   NP_D916_Wert_MP4210_37                   D916
+   NP_D920_Wert_MP4210_38                   D920
+   NP_D924_Wert_MP4210_39                   D924
+   NP_D928_Wert_MP4210_40                   D928
+   NP_D932_Wert_MP4210_41                   D932
+   NP_D936_Wert_MP4210_42                   D936
+   NP_D940_Wert_MP4210_43                   D940
+   NP_D944_Wert_MP4210_44                   D944
+   NP_D948_Wert_MP4210_45                   D948
+   NP_D952_Wert_MP4210_46                   D952
+   NP_D956_Wert_MP4210_47                   D956
+
+#type K                                ;
+   KG_englisch                              0                ;;= englisch
+   KG_deutsch                               1                ;;= deutsch
+   KG_tschechisch                           2                ;;= tschechisch
+   KG_franzoesisch                          3                ;;= französisch
+   KG_italienisch                           4                ;;= italienisch
+   KG_spanisch                              5                ;;= spanisch
+   KG_portugiesisch                         6                ;;= portugiesisch
+   KG_schwedisch                            7                ;;= schwedisch
+   KG_daenisch                              8                ;;= dänisch
+   KG_finnisch                              9                ;;= finnisch
+   KG_niederlaendisch                       10               ;;= niederländisch
+   KG_polnisch                              11               ;;= polnisch
+   KG_ungarisch                             12               ;;= ungarisch
+   KG_reserviert                            13               ;;= reserviert (nur MP7230.0)
+   KG_russisch                              14               ;;= russisch
+   KG_chinesisch_1                          15               ;;= chinesisch (simplified)
+   KG_chinesisch_2                          16               ;;= chinesisch (traditional)
+   KG_slowenisch                            17               ;;= slowenisch (Option #41 - Additional Language)
+   KG_norwegisch                            18               ;;= norwegisch (Option #41 - Additional Language)
+   KG_slowakisch                            19               ;;= slowakisch (Option #41 - Additional Language)
+   KG_lettisch                              20               ;;= lettisch   (Option #41 - Additional Language)
+   KG_koreanisch                            21               ;;= koreanisch (Option #41 - Additional Language)
+   KG_estnisch                              22               ;;= estnisch   (Option #41 - Additional Language)
+   KG_tuerkisch                             23               ;;= türkisch   (Option #41 - Additional Language)
+   KG_rumaenisch                            24               ;;= rumänisch  (Option #41 - Additional Language)

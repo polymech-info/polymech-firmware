@@ -1,0 +1,128 @@
+*-----------------------------------------------------------------------------
+*  Späneförderer
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_default_Intervall_Pause               K +10
+#define /s    KL_default_Intervall_ein                 K +20
+
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Intervall_init                        M
+
+GLOBAL Spaenefoerderer
+
+;----------------------------
+LBL Spaenefoerderer
+;----------------------------
+
+  L      MG_M51_Spaenefoerderer_ein
+  O      MG_M50_Spaenefoerderer_aus
+  S      PN_M4092_Quit_M_Funktion
+
+  L      NP_M4158_BA_Satz_Vorlauf_aktiv
+  EMT
+
+  L      MG_Taste_Spaenefoerderer
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_Spaenefoerderer
+  =      MG_SK_Spaenefoerderer
+
+  L      MG_Taste_Spaenefoerderer
+  =      ML_Taste_betaetigt
+
+  L      MG_M51_Spaenefoerderer_ein
+  S      MG_SK_Spaenefoerderer
+
+  L      MG_M50_Spaenefoerderer_aus
+  O      MG_Impuls_End_PGM_M02_M30
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Taste_Spaene_zurueck
+  O      MG_SK_Spaene_zurueck
+  ON     MG_Steuerung_betriebsbereit
+  R      MG_SK_Spaenefoerderer
+
+  L      MG_Taste_Spaene_zurueck
+  O      MG_SK_Spaene_zurueck
+  AN     O_Spaenefoerderer
+  A      I_Arbeitsraum_1_zu_verriegelt
+  A      I_Arbeitsraum_2_zu_verriegelt
+  =      O_Spaenefoerderer_zurueck
+
+  L      MG_SK_Spaenefoerderer
+  A      I_Arbeitsraum_1_zu_verriegelt
+  A      I_Arbeitsraum_2_zu_verriegelt
+  AN     MG_Spaenefoerderer_Pause_Intervall
+  =      O_Spaenefoerderer
+
+  L      O_Spaenefoerderer_zurueck
+  =      O_LED_Spaenefoerderer_zurueck
+
+  L      MG_SK_Spaenefoerderer
+  A      MG_Takt_1_s
+  O      O_Spaenefoerderer
+  =      O_LED_Spaenefoerderer
+
+  L      MG_SK_back
+  R      MG_SK_Setup_Spaenefoerderer
+
+  L      MG_Spaenefoerderer_Reset_Intervall
+  R      MG_Spaenefoerderer_Reset_Intervall
+  R      ML_Intervall_init
+
+  L      MG_SK_Spaenefoerderer
+  A      MG_SK_Intervall_Spaenefoerderer
+  =      MG_Spaenefoerderer_Pause_Intervall
+  EMF
+
+  LN     ML_Intervall_init
+  IFT
+    S      ML_Intervall_init
+
+    L      WG_Intervall_Pause_setup
+    =      WG_Intervall_Pause
+
+    L      WG_Intervall_ein_setup
+    =      WG_Intervall_ein
+
+    L      WG_Intervall_Pause_setup
+    <      K +0
+    IFT
+      R      ML_Intervall_init
+
+      L      KL_default_Intervall_Pause
+      =      WG_Intervall_Pause_setup
+    ENDI
+
+    L      WG_Intervall_ein_setup
+    <=     K +0
+    IFT
+      R      ML_Intervall_init
+
+      L      KL_default_Intervall_ein
+      =      WG_Intervall_ein_setup
+    ENDI
+  ENDI
+
+  L      WG_Intervall_ein
+  >      K +0
+  IFT
+    R      MG_Spaenefoerderer_Pause_Intervall
+
+    L      MG_Impuls_1_s
+    IFT
+      DEC    WG_Intervall_ein
+    ENDI
+  ELSE
+    L      WG_Intervall_Pause
+    <=     K +0
+    R      ML_Intervall_init
+
+    L      MG_Impuls_1_min
+    IFT
+      DEC    WG_Intervall_Pause
+    ENDI
+  ENDI
+
+EM

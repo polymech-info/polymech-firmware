@@ -1,0 +1,32 @@
+X-axis         | Scale Off | Scale On
+MP20.0 bit 0 = | 0         | 1
+MP110.0      = | 0         | 203
+MP210 bit 0  = | 0         | 0
+MP331.0      = | 16.0      | 20.0
+MP332.0      = | 2048.0    | 1000.0
+MP910.0/MP911.0/MP912.0 = see parameter remarks
+MP920.0/MP921.0/MP922.0 = see parameter remarks
+MP1040 bit 0 = | 0         | 0
+MP1350.0     = | 2         | 3
+
+Y-axis         | Scale Off | Scale On
+MP20.0 bit 1 = | 0         | 1
+MP110.1      = | 0         | 202
+MP210 bit 1  = | 0         | 0
+MP331.1      = | 16.0      | 20.0
+MP332.1      = | 2048.0    | 1000.0
+MP910.1/MP911.1/MP912.1 = see parameter remarks
+MP920.1/MP921.1/MP922.1 = see parameter remarks
+MP1040 bit 1 = | 0         | 0
+MP1350.1     = | 2         | 3
+
+Z-axis         | Scale Off | Scale On
+MP20.0 bit 2 = | 0         | 1
+MP110.2      = | 0         | 204
+MP210 bit 2  = | 1         | 0
+MP331.2      = | 12.0      | 20.0
+MP332.2      = | 2048.0    | 1000.0
+MP910.2/MP911.2/MP912.2 = see parameter remarks
+MP920.2/MP921.2/MP922.2 = see parameter remarks
+MP1040 bit 2 = | 1         | 1
+MP1350.2     = | 2         | 3

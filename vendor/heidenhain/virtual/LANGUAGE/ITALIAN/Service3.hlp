@@ -1,0 +1,30 @@
+﻿************************************
+!!! ATTENZIONE !!!
+solo per personale esperto
+Disimpegno cambio utensile
+(doppio braccio Cam)
+! modo manuale attivo !
+Premere "NC start" per attivare
+************************************
+#301  Mandrino in pos. di CU
+#302  Z in posizione di CU
+#303  Y in posizione di CU
+#304  X in posizione di CU
+#305  Apre Blocco Utensile
+#306  Chiude blocco utensile
+#307  Sgancio Utensile
+#308  Bloccaggio Utensile
+#309  Pinze utensile chiuse
+#310  Pinze utensile aperte
+#311  Posto utensile fuori
+#312  Posto utensile dentro
+#313  Braccio alla pos. di sblocco
+#314  Braccio alla pos. di blocco
+#315  Braccio alla pos. base
+#316  Braccio indietro a pos. sblocco
+#317  Braccio indietro a pos. blocco
+#318  Braccio indietro a pos. base
+#319  Rotazione oraria magazzino
+#320  Rotazione antioraria magazzino
+#321  Cercare ref. magazzino
+#322  Reset stato mandrino (T0)

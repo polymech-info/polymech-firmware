@@ -1,0 +1,27 @@
+BEGIN DT_Base.TAB 
+#STRUCTBEGIN
+  NAME = DOC
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Designation of machine element?
+    DIA-GERMAN = Bezeichnung Maschinenelement?
+    DIA-CZECH = Designation of machine element?
+    DIA-FRENCH = Designation of machine element?
+    DIA-ITALIAN = Designation of machine element?
+    DIA-SPANISH = Designation of machine element?
+    DIA-PORTUGUE = Designation of machine element?
+    DIA-SWEDISH = Designation of machine element?
+    DIA-DANISH = Designation of machine element?
+    DIA-FINNISH = Designation of machine element?
+    DIA-DUTCH = Designation of machine element?
+    DIA-POLISH = Designation of machine element?
+    DIA-HUNGARIA = Designation of machine element?
+#STRUCTEND
+NR      DOC
+0       X_Bar                           
+1       Slide_Z                         
+2       TableHousingA                   
+3       RoundTableHousing               
+4       Roundtable                      
+[END]

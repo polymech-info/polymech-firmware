@@ -1,0 +1,364 @@
+*-----------------------------------------------------------------------------
+*  Configuration
+*-----------------------------------------------------------------------------
+*  Definition of symbols for conditional compilation
+*    - Machine configuration
+*    - Hardware components (PL410 ...)
+*    - Axes configuration
+*
+*  Conditional check #if <symbol> = <value>
+*                ...
+*              #endif
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Machine configuration
+*
+*  EUMACH
+*  VMC series with cam-driven arm (double arm) tool changer
+*-----------------------------------------------------------------------------
+
+#define       MT                                       &MT_31         *;EUMACH Machine Type
+
+#define       Tool_specific_torque_monitoring          &active
+#define       Emergency_end_position_axes_coded        &active
+#define       Temp_compensation_table                  &active
+#define       Spindle_wye_delta_connection             &inactive
+#define       Error_messages_additional                &active
+;#define       Working_area_monitoring                  &inactive     *;EUMACH Original PLC
+#define       Lubrication_axes                         &active
+
+*$WS will be prepared
+#define       2nd_spindle                              &inactive
+#define       LSV2_ActiveX_Control                     &inactive
+
+*-----------------------------------------------------------------------------
+*  3D Head
+*    - Number of the 1./2. 3D head axis [&axis_4 .. &axis_9]
+*    - Selection reference value from PLC (non volatile 3D head position)
+*      or transfer reference in mode reference (reference dog available)
+*      [&active/&inactive]
+*    - Torque limitation spindle motor before 3D head clamping
+*      [&active/&inactive]
+*
+*-----------------------------------------------------------------------------
+
+#define       3D_head                                  &inactive
+#define       KG_3D_head_axis_1                        &axis_6
+#define       KG_3D_head_axis_2                        &axis_7
+#define       Reference_value_selection                &inactive
+#define       Torque_limitation                        &inactive
+
+*-----------------------------------------------------------------------------
+*  Axes configuration
+*    - Axes with clamping mode and clamping signal
+*    - Axes with central drive or C axes mode
+*    - Move axes to 0 degree or mm after traverse reference
+*      [%FEDCBA987654ZYX]
+*-----------------------------------------------------------------------------
+*                                                       FEDCBA987654321
+#define       KG_clamping_mode_active                  %000000000011100
+
+*;EUMACH
+#if (M44 = &inactive) and (M45 = &inactive) and (M46 = &inactive)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000000100
+#endif
+
+#if (M44 = &active) and (M45 = &inactive) and (M46 = &inactive)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000001100
+#endif
+
+#if (M44 = &inactive) and (M45 = &active) and (M46 = &inactive)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000010100
+#endif
+
+#if (M44 = &inactive) and (M45 = &inactive) and (M46 = &active)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000100100
+#endif
+
+#if (M44 = &active) and (M45 = &active) and (M46 = &inactive)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000011100
+#endif
+
+#if (M44 = &inactive) and (M45 = &active) and (M46 = &active)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000110100
+#endif
+
+#if (M44 = &active) and (M45 = &inactive) and (M46 = &active)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000101100
+#endif
+
+#if (M44 = &active) and (M45 = &active) and (M46 = &active)                                                      *;EUMACH
+*                                                       FEDCBA987654321
+#define       KG_power_on_clamping_mode_off            %000000000111100
+#endif
+*;EUMACH
+
+*                                                       FEDCBA987654321
+#define       KG_axes_with_signal_clamped              %000000000011000
+#define       KG_axes_with_signal_unclamped            %000000000011000
+
+#define       KG_axes_use_nominal_value_as_actual      %000000000000000
+#define       KG_axes_with_central_drive_mode          %000000000000000
+#define       KG_axes_with_c_axis_mode                 %000000000000000
+#define       KG_axes_with_common_used_position_ROD    %000000000000000
+#define       KG_axes_group_1_gantry_or_master_slave   %000000000000000
+#define       KG_axes_group_2_gantry_or_master_slave   %000000000000000
+#define       KG_axes_with_active_current_control      %000000000000000
+
+#define       KG_reference_end_position_software       %000000000000000
+
+#define       KG_0_degree_positioning                  %000000000011000
+
+*-----------------------------------------------------------------------------
+*  WZW manual
+*    - If setting in MP4310.2 doesn't deactivate the option
+*      (+$0200 - TC manual axes position inactive - ),
+*      the TC of manual tools (tools not in pocket table) will be made after
+*      axes PLC positioning.
+*    - 1. Z to Z safe   - MP 4210.19 : xxx  ;TC pos Z safe
+*    - 2. X to X manual - MP 4210.16 : xxx  ;TC pos X manual
+*    - 3. Y to Y manual - MP 4210.17 : xxx  ;TC pos Y manual
+*    - 4. Z to Z manual - MP 4210.18 : xxx  ;TC pos Z manual
+*
+*  EUMACH
+*    - 5. Y to Y safe   - MP 4231.11 : xxx  ;TC pos Y safe
+*
+*-----------------------------------------------------------------------------
+
+#define       Pos_X_manual                             &inactive
+#define       Pos_Y_manual                             &inactive
+#define       Pos_Z_manual                             &active
+#define       Pos_Y_safety_manual                      &inactive      *;EUMACH
+#define       Pos_Z_safety_manual                      &active        *;EUMACH
+
+*-----------------------------------------------------------------------------
+*  Machine parameter for tool change
+*                           MP7480.0  MP7480.1
+*             inactive (1)     1         0
+*             single arm       5         0
+*             double arm       3         3
+*
+*      Legend:
+*        (1) - an existing automatic tool change system can be temporary
+*              switched off
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Tool changing system (Z is always the tool axis)
+*
+*    inactive   - only manual tool change posible
+*
+*    TC_type_xx ->          01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    single arm              X  X  X  X
+*    pickup Z Y                    X  X
+*    pickup Z                   X
+*    pickup Z X              X
+*    pickup Z X+/X-/Y+/Y-
+*    mag moving with X axis
+*    mag moving to spindle   X  X     X
+*    mag on fixed position         X
+*    no magazine
+*                           (3)   (1)(2)
+*
+*    TC_type_xx ->          01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    double arm                          X  X  X  X  X  X  X  X
+*    (hydraulic system)
+*    TC arm middle position                          X  X  X  X
+*    (as basic position)
+*    TC arm middle position                 X     X     X     X
+*    (for exchange Tspecial)
+*    TC gripper                                X  X        X  X
+*    (output)
+*
+*    TC_type_xx ->          01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    double arm                                                  X  X  X  X
+*    (cam driven)
+*    TC arm middle position                                         X     X
+*    (Tfest oder Tsonder)
+*    TC gripper                                                        X
+*    (output)
+*    TC standby tool pocket                                               X
+*
+*      Legend:                                                           (4)
+*        (1)/(2)/(3)/(4) - EUMACH
+*
+*-----------------------------------------------------------------------------
+
+#define       Tool_changing_system                     &TC_type_13
+
+*-----------------------------------------------------------------------------
+*  Tool changing system 2 (Z is always the tool axis)
+*
+*    inactive   - without tool changing system 2
+*
+*    TC_2_type_xx ->         01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    single arm               X  X  X  X
+*    pickup Z Y                     X  X
+*    pickup Z                    X
+*    pickup Z X               X
+*    pickup Z X+/X-/Y+/Y-
+*    mag moving with X axis
+*    mag moving to spindle    X  X     X
+*    mag on fixed position          X
+*    no magazine
+*                            (3)   (1)(2)
+*
+*    TC_2_type_xx ->         01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    double arm                           X  X  X  X  X  X  X  X
+*    (hydraulic system)
+*    TC arm middle position                           X  X  X  X
+*    (as basic position)
+*    TC arm middle position                  X     X     X     X
+*    (for exchange Tspecial)
+*    TC gripper                                 X  X        X  X
+*    (output)
+*
+*    TC_2_type_xx ->         01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
+*
+*    double arm                                                   X  X  X  X
+*    (cam driven)
+*    TC arm middle position                                          X     X
+*    (Tfest oder Tsonder)
+*    TC gripper                                                         X
+*    (output)
+*    TC standby tool pocket                                                X
+*
+*      Legend:                                                            (4)
+*        (1)/(2)/(3)/(4) - EUMACH
+*
+*-----------------------------------------------------------------------------
+
+#define       Tool_changing_system_2                   &inactive      *;EUMACH Dual TC
+
+*-----------------------------------------------------------------------------
+*  Tool magazine system
+*
+*    inactive    - only manual tool change posible
+*
+*    Mag_type_xx ->          01 02 03 04 05 06 07 08 09 10 11 12 13
+*
+*    pulse counter            X  X  X  X  X  X  X  X
+*    reference sensor         X  X  X  X
+*    pocket 90 deg shift         X     X     X     X
+*    lock pin                       X  X        X  X
+*
+*    PLC axis                                         X  X  X  X  X
+*    pocket 90 deg shift                                 X
+*    tool-chain pin                                         X
+*    TC standby tool pocket                                    X
+*    shifting pocket (random)                                     X
+*                                                       (1)
+*      Note:
+*        for Mag_type_09..12 (PLC axis) it is necessary to assign to an axis
+*        [axis_4 .. axis_9]
+*
+*      Legend:
+*        (1) - EUMACH: pocket 90 deg shift not yet considered during magazine
+*                      reference return
+*
+*  Possibility for operation guard unlocking during TC magazine rotating
+*    TC_mag_in_motion_guard_unlock ->
+*                                   Impossible                       [No]
+*                                   Possible, without restriction    [Yes]
+*                                   Possible, with ATC door closed   [ATC_door]
+*                                   Possible, with special condition [Special]
+*-----------------------------------------------------------------------------
+
+#define       Tool_magazine_system                     &Mag_type_02
+#define       Magazine_axis                            &axis_4
+#define       TC_magazine_pulse_counting               &Rising_edge   *;EUMACH
+#define       TC_magazine_load_position_sensor         &inactive      *;EUMACH
+#define       TC_mag_in_motion_guard_unlock            &No            *;EUMACH
+
+*-----------------------------------------------------------------------------
+*  Tool magazine system 2
+*
+*    inactive    - without tool magazine 2
+*
+*    Mag_2_type_xx ->        01 02 03 04 05 06 07 08 09 10 11 12 13
+*
+*    pulse counter            X  X  X  X  X  X  X  X
+*    reference sensor         X  X  X  X
+*    pocket 90 deg shift         X     X     X     X
+*    lock pin                       X  X        X  X
+*
+*    PLC axis                                         X  X  X  X  X
+*    pocket 90 deg shift                                 X
+*    tool-chain pin                                         X
+*    TC standby tool pocket                                    X
+*    shifting pocket (random)                                     X
+*                                                       (1)
+*      Note:
+*        for Mag_2_type_09..12 (PLC axis) it is necessary to assign to an axis
+*        [axis_4 .. axis_9]
+*
+*      Legend:
+*        (1) - EUMACH: pocket 90 deg shift not yet considered during magazine 2
+*                      reference return
+*
+*  Possibility for operation guard unlocking during TC magazine 2 rotating
+*    TC_mag_2_in_motion_guard_unlock ->
+*                                   Impossible                       [No]
+*                                   Possible, without restriction    [Yes]
+*                                   Possible, with ATC door 2 closed [ATC_door]
+*                                   Possible, with special condition [Special]
+*-----------------------------------------------------------------------------
+
+#define       Tool_magazine_system_2                   &inactive      *;EUMACH Dual TC
+#define       Magazine_2_axis                          &axis_8        *;EUMACH Dual TC --- preparing
+#define       TC_magazine_2_pulse_counting             &Rising_edge   *;EUMACH Dual TC
+#define       TC_magazine_2_load_position_sensor       &inactive      *;EUMACH Dual TC
+#define       TC_mag_2_in_motion_guard_unlock          &No            *;EUMACH Dual TC
+
+*-----------------------------------------------------------------------------
+*  Pallet Changing System
+*    - inactive                             [inactive]
+*    - Alternating table mode               [Alternat_table]
+*    - 3R system with I/O interface         [3R_System]
+*    - 2 pallet changer linear              [2_PC_linear]
+*    - 2 pallet changer turn                [2_PC_turn]          (1)
+*      Legend:
+*        (1) - will be prepeared
+*-----------------------------------------------------------------------------
+
+#define       Pallet_changer                           &inactive
+
+*-----------------------------------------------------------------------------
+*  EUMACH
+*  Magazine Functions
+*    - Magazine pocket to vertical/horizontal control  [Mag_pocket_out]/[Mag_2_pocket_out]
+*      (only for magazine with pocket 90 deg shift)
+*      Condition A: Bit 1 of PLC status in TOOL TABLE = (%00000000)
+*      Condition B: Bit 1 of PLC status in TOOL TABLE = (%00000010)
+*      active   -> In condition A, pocket in vertical position after TOOL DEF
+*               -> In condition B, pocket in horizontal position after TOOL DEF
+*
+*      inactive -> In condition A, pocket in horizontal position after TOOL DEF
+*               -> In condition B, pocket in vertical position after TOOL DEF
+*-----------------------------------------------------------------------------
+
+#define       Mag_pocket_out                           &inactive      *;EUMACH
+#define       Mag_2_pocket_out                         &inactive      *;EUMACH
+
+*-----------------------------------------------------------------------------
+*  Control connected to a Test Device (SPG)
+*  Machine simulation unit (MSU) conected
+*  [inactive/active]
+*-----------------------------------------------------------------------------
+
+#define       SPG                                      &inactive
+#define       Motor_unit                               &inactive

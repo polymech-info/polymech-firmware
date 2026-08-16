@@ -1,0 +1,32 @@
+*-----------------------------------------------------------------------------
+*  OEM spezifische Funktionen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    - M-Funktion: M900..999 reserviert für OEMs
+*    - Fehler: keine Reservierung für OEMs, können mit PLCText verschoben
+*               werden (ERROR.A, ERR_TAB.PET)
+*
+*-----------------------------------------------------------------------------
+
+GLOBAL OEM_Funktion_Beginn
+GLOBAL OEM_Funktion_Ende
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL OEM_Funktion_Beginn
+;----------------------------
+
+*  LN     I_Ref_Endlage_X                          I4
+*  =      I_keine_Ref_Endlage_X                    M
+
+EM
+
+;----------------------------
+LBL OEM_Funktion_Ende
+;----------------------------
+
+*  LN     O_Klemmung_loesen_4                      M
+*  =      O_Klemmung_ein_4                         O14
+
+EM

@@ -1,0 +1,24 @@
+﻿************************************
+!!! FIGYELEM !!!
+csak szakembereknek
+X, Y, Z mozgatható az
+X+, X-, Y+, Y-, Z+, Z-
+gombbal vagy kézikerékkel
+szerszámcserélö szerviz
+(felszedö rendszer)
+************************************
+#401  Föorsót cserepozícióba
+#402  Z kirakási pozícióba
+#403  Z berakási pozícióba
+#404  Szerszámtár ajtót nyit
+#405  Szerszámtár ajtót zár
+#406  Felszedö be
+#407  Felszedö ki
+#408  Szerszámot old
+#409  Szerszámot rögzít
+#410  X tengelyt elöpozícióra
+#411  X tengelyt cserepozícióba
+#412  Y föorsó szerintit Pn pozícióba
+#413  Y tengely Pn+1 pozícióba
+#414  Y tengely Pn-1 pozícióba
+#415  Föorsó státuszt töröl (T0)

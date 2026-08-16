@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "Beállít"
+
+msgid "MAIL"
+msgstr "E-mail"
+
+msgid "EVENTS"
+msgstr "Esemény"
+
+msgid "FROM"
+msgstr "Kitöl:"
+
+msgid "TO"
+msgstr "Kinek:"
+
+msgid "CC"
+msgstr "Cc:"
+
+msgid "BCC"
+msgstr "Bcc:"
+
+msgid "SUBJECT"
+msgstr "Tárgy:"
+
+msgid "PLC_EVENTS"
+msgstr "PLC esemény"
+
+msgid "NAME"
+msgstr "Név"
+
+msgid "PLC_ADDRESS"
+msgstr "PLC cím"
+
+msgid "TRIGGER"
+msgstr "Trigger"
+
+msgid "SERVER"
+msgstr "Szerver"
+
+msgid "USER"
+msgstr "Felhasználó"
+
+msgid "PASSWORD"
+msgstr "Jelszó"
+
+msgid "MAIL_TEXT"
+msgstr "E-mail szöveg"
+
+msgid "HEADLINE"
+msgstr "Fejsor"
+
+msgid "FOOTER"
+msgstr "Lábsor"
+

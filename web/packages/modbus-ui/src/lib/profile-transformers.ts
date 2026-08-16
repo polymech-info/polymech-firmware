@@ -1,0 +1,189 @@
+import { type ControlPoint, type Profile as ServiceProfile, Profile as UIProfile, Controller, PlotStatus, ProfileType } from '@/types';
+import { type RegisterData, type CoilData } from '@polymech/client-ts';
+import { getSlaveIdFromGroup, PartitionConfig } from '@/lib/controllerUtils.js';
+import { PROFILE_REGISTER_NAMES } from '@/constants';
+
+// Server sends control points as {x: 0-1000 (percentage of duration*10), y: 0-1000 (percentage of maxTemp*10)}
+// UI (BezierEditor) expects control points as {x: normalizedTime (0-1), y: normalizedTemp (0-1)}
+export const transformServiceControlPointsToUI = (serverPoints: ControlPoint[]): ControlPoint[] => {
+  if (!serverPoints || serverPoints.length === 0) {
+    return [{ x: 0, y: 0 }, { x: 1, y: 1 }]; // Default ramp if no points
+  }
+  const percentageDenom = 1000;
+  return serverPoints.map(p => ({
+    x: (p.x || 0) / percentageDenom, // Normalize x from 0-1000 to 0-1
+    y: (p.y || 0) / percentageDenom, // Normalize y from 0-1000 to 0-1
+  }));
+};
+
+// UI (BezierEditor) sends control points as {x: normalizedTime (0-1), y: normalizedTemp (0-1)}
+// Server expects control points as {x: 0-1000 (percentage of duration*10), y: 0-1000 (percentage of maxTemp*10)}
+export const transformUIControlPointsToService = (uiPoints: Partial<ControlPoint>[]): ControlPoint[] => {
+  const percentageMultiplier = 1000;
+  return uiPoints.map(p => ({
+    x: Math.round((p.x || 0) * percentageMultiplier),
+    y: Math.round((p.y || 0) * percentageMultiplier)
+  }));
+};
+
+// Transform ServiceProfile from context to TemperatureProfile for UI
+export const transformServiceProfileToUI = (
+  serviceProfile: ServiceProfile,
+  allRegisters: RegisterData[],
+  allCoils: CoilData[],
+  partitionConfig: PartitionConfig[]
+): UIProfile => {
+  const controllerNames: string[] = [];
+  if (serviceProfile.targetRegisters && allRegisters && partitionConfig) {
+    for (const targetAddr of serviceProfile.targetRegisters) {
+      if (targetAddr === 0) continue;
+      const targetRegisterEntry = allRegisters.find(reg => reg.address === targetAddr);
+      if (targetRegisterEntry) {
+        const slaveId = getSlaveIdFromGroup(targetRegisterEntry.group);
+        if (slaveId !== null) {
+          let foundControllerName: string | undefined = undefined;
+          for (const partition of partitionConfig) {
+            if (partition.controllers) {
+              const controller = partition.controllers.find(c => c.slaveid === slaveId);
+              if (controller && controller.name) {
+                foundControllerName = controller.name;
+                break;
+              }
+            }
+          }
+          if (foundControllerName) {
+            controllerNames.push(foundControllerName);
+          }
+        }
+      }
+    }
+  }
+
+  let liveStatus: PlotStatus | undefined = serviceProfile.status;
+  let liveCurrentTemp: number | undefined = serviceProfile.currentTemp;
+  let liveElapsed: number | undefined = serviceProfile.elapsed;
+  let liveRemaining: number | undefined = serviceProfile.remaining;
+  let liveDuration: number | undefined = serviceProfile.duration;
+
+  let liveEnabled: boolean = serviceProfile.enabled;
+
+  // Find Status Register
+  const statusRegister = allRegisters.find(
+    r => r.group === serviceProfile.name && r.name.startsWith(PROFILE_REGISTER_NAMES.STATUS)
+  );
+  if (statusRegister && typeof statusRegister.value === 'number' && statusRegister.value in PlotStatus) {
+    liveStatus = statusRegister.value as PlotStatus;
+  }
+
+  // Find Current Temperature Register
+  const currentTempRegister = allRegisters.find(
+    r => r.group === serviceProfile.name && r.name === PROFILE_REGISTER_NAMES.CURRENT_VALUE
+  );
+  if (currentTempRegister && typeof currentTempRegister.value === 'number') {
+    liveCurrentTemp = currentTempRegister.value;
+  }
+
+  // Find Duration Register (in seconds) 
+  const durationRegister = allRegisters.find(
+    r => r.group === serviceProfile.name && r.name === PROFILE_REGISTER_NAMES.DURATION
+  );
+  if (durationRegister && typeof durationRegister.value === 'number') {
+    liveDuration = durationRegister.value * 1000; // Convert seconds to milliseconds
+    //console.log(`Found duration register for ${serviceProfile.name}:`, durationRegister.value, 'seconds ->', liveDuration, 'ms');
+  } else {
+    //console.log(`Duration register NOT found for ${serviceProfile.name}`, { durationRegister });
+  }
+
+  // Find Elapsed Time Register (in seconds)
+  const elapsedRegister = allRegisters.find(
+    r => r.group === serviceProfile.name && r.name === PROFILE_REGISTER_NAMES.ELAPSED
+  );
+  if (elapsedRegister && typeof elapsedRegister.value === 'number') {
+    liveElapsed = elapsedRegister.value * 1000; // Convert seconds to milliseconds
+  }
+
+  // Find Remaining Time Register (in seconds)
+  const remainingRegister = allRegisters.find(
+    r => r.group === serviceProfile.name && r.name === PROFILE_REGISTER_NAMES.REMAINING
+  );
+  if (remainingRegister && typeof remainingRegister.value === 'number') {
+    liveRemaining = remainingRegister.value * 1000; // Convert seconds to milliseconds
+  } else {
+    //console.log(`Remaining register NOT found for ${serviceProfile.name}`, { remainingRegister });
+  }
+
+  // Find Enable Coil
+  const enableCoil = allCoils.find(
+    c => c.group === serviceProfile.name && c.name === PROFILE_REGISTER_NAMES.ENABLED
+  );
+  if (enableCoil !== undefined) {
+    liveEnabled = enableCoil.value;
+  }
+
+  return {
+    id: serviceProfile.id,
+    slot: serviceProfile.slot,
+    name: serviceProfile.name || `Profile ${serviceProfile.slot}`,
+    description: serviceProfile.description || '',
+    controlPoints: transformServiceControlPointsToUI(serviceProfile.controlPoints),
+    duration: liveDuration,
+    max: serviceProfile.max,
+    targetRegisters: serviceProfile.targetRegisters,
+    status: liveStatus,
+    currentTemp: liveCurrentTemp,
+    elapsed: liveElapsed,
+    remaining: liveRemaining,
+    associatedControllerNames: controllerNames,
+    enabled: liveEnabled,
+    signalPlot: serviceProfile.signalPlot,
+    pressureProfile: serviceProfile.pressureProfile,
+    type: ProfileType.Temperature,
+    children: serviceProfile.children || [],
+    overrides: serviceProfile.overrides || { sp: [] },
+  };
+};
+
+export const transformControllerConfigsToProfileFormFormat = (partitionConfigs: PartitionConfig[]): Controller[] => {
+  const controllers: Controller[] = [];
+  let stringIdCounter = 0;
+
+  partitionConfigs.forEach(partition => {
+    if (partition.controllers) {
+      partition.controllers.forEach(cfg => {
+        controllers.push({
+          id: `form-ctrl-${stringIdCounter++}`,
+          name: cfg.name || `Controller ${cfg.slaveid}`,
+          slaveId: cfg.slaveid,
+          currentTemp: 0,
+          targetTemp: 0,
+          minTemp: 0,
+          maxTemp: 0,
+          updateInterval: 1000,
+          currentProfile: null,
+          isRunning: false,
+          lastUpdated: new Date().toISOString(),
+          zoneId: partition.name,
+        });
+      });
+    } else if (partition.startslaveid !== undefined && partition.numcontrollers !== undefined) {
+      for (let i = 0; i < partition.numcontrollers; i++) {
+        const slaveId = partition.startslaveid + i;
+        controllers.push({
+          id: `form-ctrl-${stringIdCounter++}`,
+          name: `Controller ${slaveId}`,
+          slaveId: slaveId,
+          currentTemp: 0,
+          targetTemp: 0,
+          minTemp: 0,
+          maxTemp: 0,
+          updateInterval: 1000,
+          currentProfile: null,
+          isRunning: false,
+          lastUpdated: new Date().toISOString(),
+          zoneId: partition.name,
+        });
+      }
+    }
+  });
+  return controllers;
+}; 

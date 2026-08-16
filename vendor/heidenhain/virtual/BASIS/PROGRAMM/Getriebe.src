@@ -1,0 +1,464 @@
+*-----------------------------------------------------------------------------
+*  Getriebe-Schaltung Spindel
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*  - Vorwahl der letzten aktiven Spindel-Drehzahl nach Hauptschalter ein
+*
+*  - konventionelles mechanisches Schalten von 2 Getriebestufen (erweiterbar)
+*
+*  - einzelne Schritte werden auch vom Modul Getriebe_YD aufgerufen
+*
+*  - Spindel Umschaltung S1/S2 integriert
+*
+*  - Eingang-/Ausgangsschnittstelle
+*      I_S1_Getriebe_Stufe_1
+*      I_S1_Getriebe_Stufe_2
+*      I_S2_Getriebe_Stufe_1
+*      I_S2_Getriebe_Stufe_2
+*      O_S1_Getriebe_Stufe_1
+*      O_S1_Getriebe_Stufe_2
+*      O_S1_Stern_Dreieck_Umschaltung
+*      O_S2_Getriebe_Stufe_1
+*      O_S2_Getriebe_Stufe_2
+*      O_S2_Stern_Dreieck_Umschaltung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Getriebe_Stufe_1                      K +0
+#define /s    KL_Getriebe_Stufe_2                      K +1
+
+#define /s    KL_Ende_Schritte_pendeln                 K -1
+
+#define /s    ML_Getriebe_schalten_ok                  M
+#define /s    ML_S_0V_Spg_Status_invers                M
+
+#define /s /c TS_Timer_0                               T0
+
+#define /s    BL_Schritt_Getriebe                      B
+#define /s    BL_Schritt_Timer_pendeln                 B
+#define /s    BL_Index_Timer_pendeln                   B
+
+#define /s /r BL_G_Code                                B [2]
+#define /c    BL_S1_G_Code                             B &BL_G_Code + 0
+#define /c    BL_S2_G_Code                             B &BL_G_Code + 1
+
+#define /s /r DL_N_programmiert                        D [2]
+#define /c    DL_S1_N_programmiert                     D &DL_N_programmiert + 0
+#define /c    DL_S2_N_programmiert                     D &DL_N_programmiert + 4
+
+#include Mac_Lib.inc
+
+GLOBAL Getriebe_initialisieren
+GLOBAL Backup_G_S
+GLOBAL Sn_Input_lesen
+GLOBAL Sn_Output_schreiben
+GLOBAL Getriebe_ein
+GLOBAL Test_Getriebe_Sensoren
+GLOBAL Spindel_steht
+GLOBAL Quittung
+
+GLOBAL Spindel_Getriebe
+
+;----------------------------
+LBL Spindel_Getriebe
+;----------------------------
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  S      MG_Getriebe_initialisieren
+
+  LN     MG_Spindel_aktiv
+  EMT
+
+  CM     Sn_Input_lesen
+
+  LN     NP_M4176_Stern_ein_oder_blinkt
+  O      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+  O      MG_M52_AC_Tisch_1_aktivieren
+  O      MG_M53_AC_Tisch_2_aktivieren
+  O      MG_M54_AB_Kopf_aktivieren
+  O      MG_M55_AB_Kopf_C_Tisch_aktivieren
+  O      MG_M56_B_Kopf_C_Tisch_aktivieren
+  O      MG_M57_AC_Gabelkopf_aktivieren
+  O      MG_M58_Kinematik_inaktiv
+  A      MG_Maschinenparameter_gelesen
+  A      MG_Steuer_Spannung_verzoegert_ein
+  A      MG_Getriebe_initialisieren
+  A[
+    LN     DG_Feldwinkel_Ermittlung_aktiv
+    BT     KG_Spindel
+  ]
+  CMT    Getriebe_initialisieren
+
+  L      PN_D756_S_Drehzahlvorgabe_PLC
+  <>     DG_S_Drehzahlvorgabe_PLC
+  CMT    Backup_G_S
+
+  L      PN_D756_S_Drehzahlvorgabe_PLC
+  =      DG_S_Drehzahlvorgabe_PLC
+
+  LN     NP_M4070_Strobe_G_Code
+  R      PN_M4090_Quit_G_Code
+
+  CASE   BL_Schritt_Getriebe
+    CM     Getriebe_ein                ;00
+    CM     Spindel_steht               ;01
+    CM     Kuppeln                     ;02
+    CM     Referenz_Test               ;03
+    CM     Quittung                    ;04
+    CM     Getriebe_Ende               ;05
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_Getriebe
+  ENDI
+
+  LN     MG_Getriebe_Wechsel_aktiv
+  AN     MG_YD_Umschaltung_drehzahlabhaengig
+  =      TS_Getriebe_Timeout
+
+  L      PN_Fehler_Getriebe_Schaltung
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Getriebe_Reset
+
+  CM     Sn_Output_schreiben
+
+  L      MG_Spindel_mit_Getriebe
+  SN     MG_Getriebe_Stufe_ok
+  CMT    Test_Getriebe_Sensoren
+
+EM
+
+;----------------------------
+LBL Getriebe_ein                       ;00
+
+  L      NP_M4070_Strobe_G_Code
+  O      PN_M4134_Strobe_G_Stufe_Drehzahl
+  AN     MG_3D_Kopf_aktiv
+  AN     MG_Spindel_C_Achs_Betrieb_aktiv
+  O      MG_Getriebe_Stufe_1_von_3D_Kopf
+  O      MG_Getriebe_Stufe_von_3D_Kopf
+  AN     NP_M4158_BA_Satz_Vorlauf_aktiv
+  PSL
+  S      MG_Getriebe_Wechsel_aktiv
+  EMF
+
+  L      PN_M4008_S_Sollwert_aus_Status_invers
+  =      ML_S_0V_Spg_Status_invers
+
+  L      MG_Spindel_Referenz_mit_Sensor
+  S      PN_M4015_S_Referenz_Reset
+
+EM
+
+;----------------------------
+LBL Spindel_steht                      ;01
+
+  LN     TR_Getriebe_Timeout
+  S      PN_Fehler_Spindel_Nnull
+
+  PS     MG_Spindel_steht
+
+EM
+
+;----------------------------
+LBL Kuppeln                            ;02
+
+  CM     Getriebe_Stufen_Schalt
+
+  L      ML_Getriebe_schalten_ok
+  A      NP_M4002_S_Sollwert_0
+  R      PN_M4015_S_Referenz_Reset
+  PSL
+  EMF
+
+  L      MG_Spindel_Referenz_mit_Sensor
+  S      PN_M4134_Strobe_G_Stufe_Drehzahl
+  S      MG_Spindel_Referenz_aktiv
+
+EM
+
+;----------------------------
+LBL Referenz_Test                      ;03
+
+  LN     MG_Spindel_Referenz_aktiv
+  PSL
+
+EM
+
+;----------------------------
+LBL Quittung                           ;04
+
+  L      NP_M4070_Strobe_G_Code
+  S      PN_M4090_Quit_G_Code
+
+  LN     NP_M4070_Strobe_G_Code
+  PSL
+  EMF
+
+  LN     ML_S_0V_Spg_Status_invers
+  S      MG_Spindel_ein_Getriebe
+
+  CM     Backup_G_S
+
+EM
+
+;----------------------------
+LBL Getriebe_Ende                      ;05
+
+  PS     MG_Null_Merker
+
+LBL Getriebe_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Getriebe_Wechsel_aktiv
+  R      MG_Spindel_ein_Getriebe
+  R      MG_Getriebe_Stufe_1_von_3D_Kopf
+  R      MG_Getriebe_Stufe_von_3D_Kopf
+  R      ML_Getriebe_schalten_ok
+  R      PN_M4010_S_pendeln_rechts
+  R      PN_M4009_S_pendeln_links
+  R      PN_M4015_S_Referenz_Reset
+  R      MG_YD_Umschaltung_drehzahlabhaengig
+  R      MG_Sn_O_Stern_Dreieck_Umschaltung
+  R      MG_Sn_O_Getriebe_Stufe_1
+  R      MG_Sn_O_Getriebe_Stufe_2
+  R      TS_Getriebe_pendeln_Pause
+  R      TR_Getriebe_pendeln_Pause
+  R      TS_Getriebe_pendeln_rechts
+  R      TR_Getriebe_pendeln_rechts
+  R      TS_Getriebe_pendeln_links
+  R      TR_Getriebe_pendeln_links
+
+  L      K+0
+  =      BL_Schritt_Getriebe
+  =      BL_Schritt_Timer_pendeln
+
+EM
+
+;----------------------------
+LBL Getriebe_Stufen_Schalt
+
+  LN     MG_Spindel_mit_Getriebe
+  S      ML_Getriebe_schalten_ok
+
+  L      ML_Getriebe_schalten_ok
+  EMT
+
+  L      BL_Schritt_Timer_pendeln
+  =X
+
+  L      KF Timer_pendeln[X]
+  =      BL_Index_Timer_pendeln
+  ==     KL_Ende_Schritte_pendeln
+  IFT
+    L      K+0
+    =      BL_Schritt_Timer_pendeln
+    =X
+
+    L      KF Timer_pendeln[X]
+    =      BL_Index_Timer_pendeln
+  ENDI
+
+  L      TS_Timer_0[BL_Index_Timer_pendeln]
+  IFT
+    R      TS_Timer_0[BL_Index_Timer_pendeln]
+
+    INC    BL_Schritt_Timer_pendeln
+  ENDI
+
+  LN     TR_Getriebe_pendeln_Pause
+  AN     TR_Getriebe_pendeln_rechts
+  AN     TR_Getriebe_pendeln_links
+  =      TS_Timer_0[BL_Index_Timer_pendeln]
+
+  L      TR_Getriebe_pendeln_rechts
+  =      PN_M4010_S_pendeln_rechts
+
+  L      TR_Getriebe_pendeln_links
+  =      PN_M4009_S_pendeln_links
+
+  L      MG_Getriebe_Stufe_1_von_3D_Kopf
+  IFT
+    CM     Getriebe_Stufe_1            ;+00
+  ELSE
+    CASE   NP_W256_G_Code_Spindel
+      CM     Getriebe_Stufe_1          ;+00
+      CM     Getriebe_Stufe_2          ;+01
+    ENDC
+  ENDI
+
+  L      ML_Getriebe_schalten_ok
+  R      PN_M4010_S_pendeln_rechts
+  R      PN_M4009_S_pendeln_links
+
+EM
+
+;----------------------------
+LBL Getriebe_Stufe_1                   ;+00
+
+  LN     MG_Sn_I_Getriebe_Stufe_1
+  O      MG_Sn_I_Getriebe_Stufe_2
+  =      TS_Getriebe_verzoegert_aus
+
+  L      TS_Getriebe_verzoegert_aus
+  O      TR_Getriebe_verzoegert_aus
+  =      MG_Sn_O_Getriebe_Stufe_1
+  SN     ML_Getriebe_schalten_ok
+
+EM
+
+;----------------------------
+LBL Getriebe_Stufe_2                   ;+01
+
+  L      MG_Sn_I_Getriebe_Stufe_1
+  ON     MG_Sn_I_Getriebe_Stufe_2
+  =      TS_Getriebe_verzoegert_aus
+
+  L      TS_Getriebe_verzoegert_aus
+  O      TR_Getriebe_verzoegert_aus
+  =      MG_Sn_O_Getriebe_Stufe_2
+  SN     ML_Getriebe_schalten_ok
+
+EM
+
+;----------------------------
+LBL Test_Getriebe_Sensoren
+
+  L      MG_Eins_Merker
+  R      MG_Getriebe_Stufe_ok
+
+  L      NP_W256_G_Code_Spindel
+  ==     KL_Getriebe_Stufe_1
+  O      MG_3D_Kopf_aktiv
+  A      MG_Sn_I_Getriebe_Stufe_1
+  AN     MG_Sn_I_Getriebe_Stufe_2
+  S      MG_Getriebe_Stufe_ok
+
+  L      NP_W256_G_Code_Spindel
+  ==     KL_Getriebe_Stufe_2
+  AN     MG_Sn_I_Getriebe_Stufe_1
+  A      MG_Sn_I_Getriebe_Stufe_2
+  S      MG_Getriebe_Stufe_ok
+
+  L      MG_Spindel_1_aktiv
+  A      O_Regler_Freigabe_S1
+  O[
+    L      MG_Spindel_2_aktiv
+    A      O_Regler_Freigabe_S2
+  ]
+  ON     PN_M4007_S_M05_Sollwert_0_und_Status
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  AN     MG_Getriebe_Stufe_ok
+  AN     NP_M4070_Strobe_G_Code
+  AN     MG_Getriebe_Wechsel_aktiv
+  AN     MG_Getriebe_initialisieren
+  O[
+    AN     TS_Getriebe_Timeout
+    AN     TR_Getriebe_Timeout
+  ]
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_Getriebe_Schaltung
+
+EM
+
+;----------------------------
+LBL Getriebe_initialisieren
+
+  L      MG_Eins_Merker
+  R      MG_Getriebe_initialisieren
+  S      PN_M4134_Strobe_G_Stufe_Drehzahl
+
+  L      BL_G_Code[BG_Index_Sn]
+  =      NP_W256_G_Code_Spindel
+
+  L      DL_N_programmiert[BG_Index_Sn]
+  ==     K+0
+  IFT
+    L      KL_Getriebe_Stufe_1
+    =      NP_W256_G_Code_Spindel
+
+    L      DG_MP3520_1_Drehzahl_S_orientieren[BG_Index_Sn]
+    =      PN_D756_S_Drehzahlvorgabe_PLC
+  ELSE
+    L      DL_N_programmiert[BG_Index_Sn]
+    =      PN_D756_S_Drehzahlvorgabe_PLC
+    =      DG_S_Drehzahlvorgabe_PLC
+  ENDI
+
+EM
+
+;----------------------------
+LBL Backup_G_S
+
+  L      MG_Spindel_mit_Getriebe
+  IFT
+    L      NP_W256_G_Code_Spindel
+    =      BL_G_Code[BG_Index_Sn]
+  ELSE
+    L      KL_Getriebe_Stufe_1
+    =      BL_G_Code[BG_Index_Sn]
+  ENDI
+
+  L      PN_D756_S_Drehzahlvorgabe_PLC
+  =      DL_N_programmiert[BG_Index_Sn]
+
+EM
+
+;----------------------------
+LBL Sn_Input_lesen
+
+  L      MG_Spindel_1_aktiv
+  IFT
+    L      I_S1_Getriebe_Stufe_1
+    =      MG_Sn_I_Getriebe_Stufe_1
+    L      I_S1_Getriebe_Stufe_2
+    =      MG_Sn_I_Getriebe_Stufe_2
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  IFT
+    L      I_S2_Getriebe_Stufe_1
+    =      MG_Sn_I_Getriebe_Stufe_1
+    L      I_S2_Getriebe_Stufe_2
+    =      MG_Sn_I_Getriebe_Stufe_2
+  ENDI
+
+EM
+
+;----------------------------
+LBL Sn_Output_schreiben
+
+  L      MG_Spindel_1_aktiv
+  IFT
+    L      MG_Sn_O_Stern_Dreieck_Umschaltung
+    =      O_S1_Stern_Dreieck_Umschaltung
+    L      MG_Sn_O_Getriebe_Stufe_1
+    =      O_S1_Getriebe_Stufe_1
+    L      MG_Sn_O_Getriebe_Stufe_2
+    =      O_S1_Getriebe_Stufe_2
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  IFT
+    L      MG_Sn_O_Stern_Dreieck_Umschaltung
+    =      O_S2_Stern_Dreieck_Umschaltung
+    L      MG_Sn_O_Getriebe_Stufe_1
+    =      O_S2_Getriebe_Stufe_1
+    L      MG_Sn_O_Getriebe_Stufe_2
+    =      O_S2_Getriebe_Stufe_2
+  ENDI
+
+EM
+
+KFIELD Timer_pendeln
+  K &TS_Getriebe_pendeln_Pause         ;00
+  K &TS_Getriebe_pendeln_rechts        ;01
+  K &TS_Getriebe_pendeln_Pause         ;02
+  K &TS_Getriebe_pendeln_links         ;03
+  KL_Ende_Schritte_pendeln             ;04
+ENDK
+

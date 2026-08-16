@@ -1,0 +1,139 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Mandrino"
+
+msgid "AXIS"
+msgstr "Assi"
+
+msgid "SCREEN"
+msgstr "Schermo"
+
+msgid "MACHINE"
+msgstr "Macchina"
+
+msgid "CONTROL"
+msgstr "Controllo"
+
+msgid "LIGHT"
+msgstr "Illuminazione"
+
+msgid "LIGHT_1"
+msgstr "Illuminazione 1"
+
+msgid "LIGHT_2"
+msgstr "Illuminazione 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Imp. Pneumatico"
+
+msgid "OEL_AGGREGATE"
+msgstr "Imp. Idraulico"
+
+msgid "DRIVES"
+msgstr "Inverters"
+
+msgid "MONDAY_SHORT"
+msgstr "Lu"
+
+msgid "TUESDAY_SHORT"
+msgstr "Ma"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Me"
+
+msgid "THURSDAY_SHORT"
+msgstr "Gi"
+
+msgid "FRIDAY_SHORT"
+msgstr "Ve"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Sa"
+
+msgid "SUNDAY_SHORT"
+msgstr "Do"
+
+msgid "SETUP"
+msgstr "Setup"
+
+msgid "ADVANCED"
+msgstr "Avanzate"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Warmup"
+
+msgid "STANDBY"
+msgstr "Standby"
+
+msgid "SWITCH_OFF"
+msgstr "Switch off"
+
+msgid "TIME"
+msgstr "Time"
+
+msgid "AXIS_FILTER"
+msgstr "Filtro Assi"
+
+msgid "SPINDLE_FILTER"
+msgstr "Filtro Mandrini"
+
+msgid "SWITCH_ON"
+msgstr "Switch on"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Con la funzione EnergyOpt è\n"
+"possibile ottimizzare il consumo\n"
+"energetico della macchina utensile.\n"
+"Dispositivi non in utilizzo possono\n"
+"essere posti in standby o spenti\n"
+"completamente.\n"
+"- Premere il Softkey EDIT\n"
+"- Attivare i dispositivi da\n"
+"controllare con le caselle\n"
+"tipo ON/OFF\n"
+"- Selezionare i relativi\n"
+"tempi di intervento\n"
+"- Uscire dalla funzione di\n"
+"editing con il Softkey EDIT"
+
+msgid "MILLISECOND"
+msgstr "Millisecondo"
+
+msgid "MILLISECONDS"
+msgstr "Millisecondi"
+
+msgid "SECOND"
+msgstr "Secondo"
+
+msgid "SECONDS"
+msgstr "Secondi"
+
+msgid "MINUTE"
+msgstr "Minuto"
+
+msgid "MINUTES"
+msgstr "Minuti"
+
+msgid "HOUR"
+msgstr "Ora"
+
+msgid "HOURS"
+msgstr "Ore"
+
+msgid "DAY"
+msgstr "Giorno"
+
+msgid "DAYS"
+msgstr "Giorni"
+
+msgid "WEEK"
+msgstr "Sett."
+
+msgid "WEEKS"
+msgstr "Sett."
+

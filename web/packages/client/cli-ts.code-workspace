@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../../cli-ts"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}

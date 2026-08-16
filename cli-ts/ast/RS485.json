@@ -1,0 +1,1386 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "RS485_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "RS485_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Component.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ArduinoLog.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ModbusClientRTU.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusRTU.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusTypes.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config-modbus.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            },
+            {
+              "type": "comment",
+              "text": "// application modbus config\r"
+            }
+          ]
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "ModbusTCP"
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "ModbusBlockView"
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "RS485"
+            },
+            {
+              "type": "base_class_clause",
+              "children": [
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "Component"
+                }
+              ]
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "declaration",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "RS485"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "owner"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "declaration",
+                  "children": [
+                    {
+                      "type": "virtual",
+                      "text": "virtual"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "destructor_name",
+                          "children": [
+                            {
+                              "type": "~",
+                              "text": "~"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "RS485"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setup"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "loop"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "onMessage"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "int"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "originId"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "E_CALLS"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "reason"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "E_MessageFlags"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "flags"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "void"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "data"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "null",
+                                  "children": [
+                                    {
+                                      "type": "nullptr",
+                                      "text": "nullptr"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "sender"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "null",
+                                  "children": [
+                                    {
+                                      "type": "nullptr",
+                                      "text": "nullptr"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "value"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "value"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ushort"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_error"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusTCP"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "manager"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusRTU"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "modbus"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// RTU Master instance\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "Manager"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "deviceManager"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Manages RTU slave devices\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusTCP"
+                    },
+                    {
+                      "type": "pointer_declarator",
+                      "children": [
+                        {
+                          "type": "*",
+                          "text": "*"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "manager"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "storage_class_specifier",
+                      "children": [
+                        {
+                          "type": "static",
+                          "text": "static"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "RS485"
+                    },
+                    {
+                      "type": "pointer_declarator",
+                      "children": [
+                        {
+                          "type": "*",
+                          "text": "*"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "instance"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "storage_class_specifier",
+                      "children": [
+                        {
+                          "type": "static",
+                          "text": "static"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "staticRtuRegisterChangeCallback"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_qualifier",
+                                  "children": [
+                                    {
+                                      "type": "const",
+                                      "text": "const"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusOperation"
+                                },
+                                {
+                                  "type": "reference_declarator",
+                                  "children": [
+                                    {
+                                      "type": "&",
+                                      "text": "&"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "op"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "oldValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "newValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "handleRtuRegisterChange"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_qualifier",
+                                  "children": [
+                                    {
+                                      "type": "const",
+                                      "text": "const"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusOperation"
+                                },
+                                {
+                                  "type": "reference_declarator",
+                                  "children": [
+                                    {
+                                      "type": "&",
+                                      "text": "&"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "op"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "oldValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "newValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "unsigned",
+                          "text": "unsigned"
+                        },
+                        {
+                          "type": "long",
+                          "text": "long"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "lastLoopTime"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// RS485_H "
+    }
+  ]
+}

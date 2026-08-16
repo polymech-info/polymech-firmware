@@ -1,0 +1,1289 @@
+N38 Erro de seguimento excessivo %.2s
+N39 Rotacoes nominais excessivas %.2s
+N41 Supervisao parado %.2s
+N42 Offset demasiado grande %.2s
+N50 Ponto de contato inacessivel
+N51 Erro de posicionamento
+N52 Apalpador em contato
+N53 Trocar pilhas apalpador
+N54 Apalpador nao disponivel
+N17738 Fim-de-curso %.2s+
+N56 Fim-de-curso %.2s+
+N17739 Fim-de-curso %.2s-
+N58 Fim-de-curso %.2s-
+N59 FN 14: codigo de erro %-3u
+N60 Dois TOOL DEF %-3u com PGM CALL
+N61 Tabela de ferramentas travada
+N62 Marcas ref %.2s: distancia errada
+N63 Manivela eletronica?
+N109 PLC: Demasiadas repeticoes
+N110 PLC: stack underflow
+N111 PLC: stack overflow
+N112 PLC: time out
+N113 PLC: campo invalido para CASE
+N115 PLC: campo index errado
+N133 PLC: M4005, M4006, M4007 erradas
+N134 PLC:strobes activos simultaneam.
+N151 MP: linha sem numero
+N152 MP: numero errado
+N153 MP: nenhum signo de separacao
+N154 MP: valor introduzido errado
+N155 MP: definido duas vezes
+N156 MP: nao definido
+N157 MP: impossvel memorizar
+N159 Alojamento 0 nao definido
+N160 Numero de alojamento incorreto
+N937 Numero de alojamento incorreto
+N161 Falta avanco
+N162 Nenhum eixo novo p/rotacao
+N163 Vida util ferramenta terminada
+N164 Substituir pilhas
+N165 Orientacao inativa
+N166 Tabela de ferramenta?
+N167 Tabela de pontos-zero?
+N168 Erro
+N938 Tecla sem funcao
+N939 Capacidade de memoria excedida
+N940 Caracter procurado inexistente
+N941 TOOL DEF 0 nao permitida
+N169 Numero de ferramenta ocupado
+N170 Salto ao LBL 0 nao permitido
+N942 Valor digitado incorreto
+N943 Valor digitado incorreto
+N171 Valor digitado incorreto
+N172 Valor digitado incorreto
+N173 Valor digitado incorreto
+N174 Valor digitado incorreto
+N175 Valor digitado incorreto
+N176 Valor digitado incorreto
+N177 Ciclo 27(G127): profund. > raio
+N178 Valor digitado incorreto
+N179 Valor digitado incorreto
+N180 Definicao BLK FORM incorrecta
+N183 Linha atual nao selecionada
+N184 Nome de programa inexistente
+N185 Diretorio de ficheiros lotado
+N944 Nome de fichero ocupado
+N187 Numero de label ocupado
+N188 Label %-3u ocupado
+N189 Valor transmitido incorreto
+N194 Programa incompleto
+N196 Interface ocupada
+N197 Baud rate invalida
+N945 Dados de programa incorrectos
+N946 Dados de programa incorrectos
+N200 Entrada/saida nao pronta
+N201 NC: memoria de programa apagada
+N947 Parametros de sistema apagados
+N948 Ficheiro protegido!
+N202 Alteracao no PGM seleccionado
+N203 Defeito no sistema de emergencia
+N205 Parada de emergencia PLC
+N207 PGM nao disponivel
+N212 Referencia FK na linha atual
+N214 Erro aritmetico
+N215 Erro aritmetico
+N216 Param. Q calculado demas. grande
+N217 Coord. calculada demas. grande
+N218 RPM calculadas demas. elevadas
+N219 Avanco calculado demas. grande
+N220 Nr. ferram. calc. demas. grande
+N221 Nr.label calculado demas.elevado
+N222 Nr. erro calc. demas. elevado
+N223 Factor esc. calc. demas. grande
+N224 Angulo polar incr. demas. grande
+N225 Pendente 0 nao permitida
+N226 Erro aritmetico
+N227 Erro aritmetico em APPR/DEP
+N228 Erro aritmetico em APPR/DEP
+N229 Erro aritmetico em APPR/DEP
+N230 Erro aritmetico em APPR/DEP
+N231 Erro aritmetico em desbaste
+N232 Erro aritmetico em CR
+N233 Error aritmetico en CT
+N234 Erro aritmetico em RND/CHF
+N235 Ponto corte circ./circ. errado
+N236 Ponto corte circ./recta errado
+N237 Ponto corte recta/recta errado
+N238 Erro aritmetico em APPR/DEP
+N239 Erro na correccao de raio
+N240 Erro na caixa de contorno
+N241 Erro na caixa/tracado contorno
+N242 Erro na caixa de contorno
+N243 Erro na caixa de contorno
+N244 Erro na correccao de raio
+N245 Erro na correccao de raio
+N246 Erro na caixa de contorno
+N247 Erro na caixa de contorno
+N250 Erro aritmetico em M112
+N251 Erro em calculo de parametros
+N252 Erro; verific. fins de curso
+N253 Correcao raio incorreta
+N254 Correc.contorno incorrecto
+N255 Correc.contorno incorrecto
+N256 Correc.contorno incorrecto
+N257 Correc.contorno incorrecto
+N258 Correc.contorno incorrecto
+N259 Correc.contorno incorrecto
+N260 Ciclo incompleto
+N261 CYCL DEF nao definido
+N263 Passo aprofundam.0 nao permitido
+N264 Ciclo cliente inexistente
+N265 Subprograma inexistente
+N266 Subprograma inexistente
+N272 Estrutura de frase errada
+N274 Definicao ferram. nao permitida
+N275 Def.ferram.sem longitude ou raio
+N276 CT depois de APPR nao permitida
+N277 CHF depois de APPR nao permitida
+N278 RND depois de APPR nao permitida
+N279 Redondo = 0 nao permitido
+N280 Frase = 0 nao permitida
+N281 Segundo redondo nao permitido
+N282 RND depois de CHF nao permitido
+N283 CHF depois de RND permitido
+N284 Segundo chamfer nao permitido
+N285 DEP LCT antes HELICE nao permit.
+N286 APPR LCT antes HELICE no permit.
+N287 Instrucao NC nao permitida
+N288 Redondo nao permitido
+N289 Redondo nao permitido
+N290 Chamfer nao permitido
+N291 DEP na ultima frase
+N292 Redondo na ultima frase
+N293 Chamfer na ultima frase
+N294 Varias frases DEP nao permitidas
+N295 DEP nao permitida
+N296 APPR nao permitida
+N297 APPR na primera frase
+N299 Ciclo 14 (G37) nao permitido
+N300 Chamada ferramenta nao permitida
+N302 M91/M92 em 3DROT nao permitido
+N303 M114 em 3DROT nao permitido
+N305 M114 com correccao nao permitida
+N307 Eixo duplamente programado
+N308 Eixo duplamente programado
+N309 Eixo duplamente programado
+N310 Eixo duplamente programado
+N311 Eixo duplamente programado
+N313 Plano definido incorreto
+N314 Corr. 3D: plano mal definido
+N315 Plano definido incorreto
+N317 Plano definido incorreto
+N318 Plano definido incorreto
+N319 Plano definido incorreto
+N320 Plano definido incorreto
+N321 Plano definido incorreto
+N322 Plano definido incorreto
+N323 Plano definido incorreto
+N324 Plano definido incorreto
+N325 Plano definido incorreto
+N326 Plano definido incorreto
+N327 Plano definido incorreto
+N328 Plano definido incorreto
+N329 Eixo giratorio nao permitido
+N950 Eixo programado incorreto
+N951 Eixo programado incorreto
+N330 Programacao de eixo bloqueado
+N331 Eixo programado incorreto
+N332 Eixo programado incorreto
+N333 Eixo programado incorreto
+N335 Eixo giratorio nao programado
+N337 Nenhum eixo giratorio programado
+N338 Nenhum eixo principal programado
+N339 Programado eixo gantry, escravo
+N952 Vel. rot. fuso incorreta
+N340 Vel. rot. fuso incorreta
+N341 Vel. rot. fuso incorreta
+N342 Vel. rot. fuso incorreta
+N343 Vel. rot. fuso incorreta
+N344 RPM para ciclo demas. elevadas
+N345 RPM 0 nao permitida
+N346 Vel. rot. fuso incorreta
+N347 Chanfro no permitido
+N348 Chanfro no permitido
+N349 Chanfro no permitido
+N350 Chanfro no permitido
+N351 Chanfro no permitido
+N352 Chanfro no permitido
+N353 Chanfro no permitido
+N354 Chanfro muito grande
+N355 Chanfro muito grande
+N356 Chanfro muito grande
+N357 Ponto final do circulo incorreto
+N358 Frase C:pto. final circ. errado
+N359 Ponto final do circulo incorreto
+N360 Ponto final do circulo incorreto
+N361 Ponto final do circulo incorreto
+N362 Numero LBL inexistente
+N363 Label 0 inexistente
+N364 Numero LBL inexistente
+N365 Ciclo 14: label inexistente
+N366 Falta polo
+N367 Falta centro circulo
+N368 Raio ferram. demasiado pequeno
+N369 Correc. raio 0 nao permitida
+N370 Correcao de raio indefinida
+N371 Correcao de raio indefinida
+N372 Correcao de raio indefinida
+N373 Correcao de raio indefinida
+N374 Correcao de raio indefinida
+N375 Passar marcas de referencia
+N376 Arredondamento nao definido
+N377 Arredondamento nao definido
+N378 Arredondamento nao permitido
+N379 Raio arredondamento muito grande
+N380 Raio arredondamento muito grande
+N381 Raio arredondamento muito grande
+N382 Raio arredondamento muito grande
+N383 Raio arredondamento muito grande
+N384 Raio arredondamento muito grande
+N385 Raio arredondamento muito grande
+N386 Raio arredondamento muito grande
+N387 Raio arredondamento muito grande
+N388 Fuso?
+N389 Eixo da ferramenta espelhado
+N390 Eixo da ferramenta espelhado
+N391 Falta eixo da ferramenta
+N392 Falta eixo da ferramenta
+N393 Falta eixo da ferramenta
+N394 Falta eixo da ferramenta
+N395 Falta eixo da ferramenta
+N396 Falta eixo da ferramenta
+N397 Falta eixo da ferramenta
+N398 Falta TOOL DEF
+N400 Falta TOOL DEF
+N401 Falta numero da ferramenta
+N402 Raio da ferr. muito grande
+N403 Raio da ferr. muito grande
+N404 Raio da ferr. muito grande
+N405 Raio da ferr. muito grande
+N406 Raio da ferr. muito grande
+N407 Raio da ferr. muito grande
+N408 Raio da ferr. muito grande
+N409 Raio da ferr. muito grande
+N410 Raio da ferr. muito grande
+N411 Raio da ferr. muito grande
+N412 Raio da ferr. muito grande
+N413 Inicio de PGM indefinido
+N414 Inicio de PGM indefinido
+N415 Inicio de PGM indefinido
+N416 Inicio de PGM indefinido
+N417 Inicio de PGM indefinido
+N418 Inicio de PGM indefinido
+N419 Inicio de PGM indefinido
+N420 Inicio de PGM indefinido
+N421 Inicio de PGM indefinido
+N422 Inicio de PGM indefinido
+N423 Inicio de PGM indefinido
+N424 Inicio de PGM indefinido
+N425 Cancelar RL/RR antes de pos. PLC
+N426 Inicio de PGM indefinido
+N953 Formato frase incorreto
+N427 Formato frase incorreto
+N429 Aninhamento excessivo
+N430 Aninhamento excessivo
+N432 Aninhamento excessivo
+N433 Sinal do ciclo contraditorio
+N434 Sinal algebrico incorreto
+N435 Falta referencia para angulo
+N436 Falta referencia para angulo
+N437 Raio circulo demasiado pequeno
+N438 Falta referencia para angulo
+N439 Falta referencia para angulo
+N440 Interrupcao DEP nao permitida
+N441 Interrupcao DEP nao permitida
+N442 Nenhumas coord. depois de APPR
+N443 Faixa excedida
+N444 Faixa programada incorreta
+N445 Posicao inicial incorreta
+N446 Limite de tempo excedido
+N447 Parametro ciclo incorreto
+N448 Sobremed. maior que profundidade
+N451 Factores de escala diferentes
+N454 Deflexao da haste muito grande
+N455 Excesso de contornos parciais
+N456 Excesso de contornos parciais
+N457 Excesso de contornos parciais
+N458 Excesso de contornos parciais
+N459 Excesso de contornos parciais
+N460 Excesso de contornos parciais
+N461 Excesso de contornos parciais
+N462 Excesso de contornos parciais
+N463 Excesso de contornos parciais
+N464 Excesso de contornos parciais
+N465 Excesso de contornos parciais
+N466 Excesso de contornos parciais
+N467 Excesso de contornos parciais
+N468 Excesso de contornos parciais
+N469 Excesso de contornos parciais
+N470 Excesso de contornos parciais
+N471 Excesso de contornos parciais
+N472 Excesso de contornos parciais
+N473 Excesso de contornos parciais
+N474 Excesso de contornos parciais
+N475 Erro de programacao de contorno
+N477 Erro de programacao de contorno
+N478 Erro de programacao de contorno
+N479 Erro de programacao de contorno
+N480 Erro de programacao de contorno
+N481 Erro de programacao de contorno
+N482 Erro de programacao de contorno
+N483 Erro de programacao de contorno
+N484 Contorno muito complexo
+N485 Contorno muito complexo
+N486 Contorno muito complexo
+N487 Contorno muito complexo
+N488 Contorno muito complexo
+N489 Contorno muito complexo
+N490 Contorno muito complexo
+N491 Contorno muito complexo
+N492 Contorno muito complexo
+N493 Contorno muito complexo
+N954 Caracter de endereco ocupado
+N494 Linha muito comprida
+N955 Grupo codigo G ja ocupado
+N495 Codigo G desconhecido
+N496 Falta codigo N
+N497 Arquivo CMA: linha desactivada
+N500 Excesso de pontos de correccao
+N501 Excesso de funcoes de correccao
+N957 Energia interrompida Energia interrompida
+N958 Falta tensao aos reles Falta tensao aos reles
+N859 ERRO
+N860 Eixo nao representavel
+N861 Impossivel reduzir mais
+N862 Nao e possivel ampliar mais
+N863 BLK FORM nao representavel
+N864 Eixo ferr. incorreto em BLK-FORM
+N865 Raio ferramenta no representavel
+N888 Texto nao encontrado
+N1086 Pontos em excesso
+N1097 Valor tolerancia demas. grande
+N1106 Limpar ciclo completamente:DEL!
+N1107 Sentenca nao permitida no ciclo!
+N1125 Referência linha %.6s: sem DEL
+N1126 Desactivar M112
+N1141 Com M120LA=0 cancel.correc.RL/RR
+N1142 Falta correcçao de raio
+N1143 Correccao do radio nao permitida
+N1144 R+/R- em M120 nao permitida
+N1145 RND em M120 nao permitida
+N1146 Chamfer em M120 nao permitido
+N1147 Tensao analogica nao definida
+N1148 Tensao analogica nao univoca
+N1149 Valor incorreto MP%.4u
+N1150 Apalpador nao pronto %.3s
+N1151 Reentrada com M120 errada
+N1154 Nome de arquivo nao permitido
+N1170 Apalpador analógico selecionado
+N1171 Apalpador digital selecionado
+N1172 Calibraçao do apalpador
+N1178 3DROT activo: usar teclas eixos
+N1182 Valor incorreto MP%.4u.%u
+N1186 Formato do arquivo foi alterado
+N1187 M89 nao permitida
+N1192 Angulo nao permitido
+N1193 TOOL.T: numero de facas
+N1266 Formato frase incorreto
+N1521 PLC tabela de erros nao traduzida
+N1523 PLC: tab.erros nao seleccionada
+N1524 PLC: tabela de erros inexistente
+N1525 PLC: tabela erros nao .PET
+N1527 PLC: tabela erros nao encontrada
+N1528 PLC: tabela err. formato errado
+N1568 Eixos incorretos no arquivo .PNT
+N1590 Valor dist. muito pequeno
+N1682 TOOL.T: falta LCUTS ou ANGLE!
+N1745 Acesso negado
+N1749 Numero errado para FN17/FN18
+N1749 Numero errado para FN17/FN18
+N1750 PLC: erro na chamada de modulo
+N1789 Ferramenta inibida
+N1790 Ciclo de faixa incorreto
+N1791 Distancia pontos muito grande
+N1792 Eixo direcao linhas incorreto
+N1793 Eixo direcao colunas incorreto
+N1794 Eixo angular incorreto
+N1795 Eixo errado no ciclo de campo
+N1796 Distancia entre colunas errada
+N1797 Ciclo de campo nao definido
+N1798 Faixa excede fim-de-curso
+N1799 Altura seguranca muito pequena
+N1807 Nome de arquivo ilegal
+N1809 M114 com M116 nao permitido
+N1810 Overflow memoria sistema
+N1845 Actualizar dados de sistema!
+N1848 Diretorio nao esta vazio
+N1850 Ciclo 4(G75/G76): eixo errado
+N1851 M130 não permitido
+N1852 M130 nao permitida com M114
+N1853 M130 não permitido
+N1854 M130 nao permitida com correccao
+N1855 Nenhum ciclo definido
+N1856 Falta avanco pendular
+N1857 Raio da ferr. muito grande
+N1892 FN20/D20: condicao errada
+N1900 Equipamento ocupado
+N1901 Aparelho inexistente
+N1914 Quebra de ferramenta
+N2039 Zero peca errado
+N2040 Largura da caixa insuficiente
+N2041 Caixa muito pequena
+N2042 Q202 nao definida
+N2043 Q205 nao definida
+N2044 Q218 tem de ser maior que Q219
+N2045 Cyclo 210 nao permitido
+N2046 CYCL 211 nao permitido
+N2047 Q220 valor elevado
+N2048 Q222 tem de ser maior que Q223
+N2049 Q244 tem de ser maior que 0
+N2050 Q245 diferente de Q246
+N2051 Valor angular menor que 360°
+N2100 Palete errada
+N2101 PLC:\NCMACRO.SYS perdido!
+N2102 'PALETT' no NCMACRO.SYS perdida
+N2103 Dados da palete perdidos
+N2186 Inclinacao:falta eixo ferramenta
+N2211 Chamada ferra.nao permiti.c/M128
+N2212 M91/M92 nao permitido com M128
+N2213 MP75XX nao definido
+N312 Eixo colunas aqui nao permitido
+N2222 Ficheiro nao encontrado OEM.SYS
+N2223 Tipo de ficheiro errado
+N2224 Nome de campo nao encontrado
+N2225 Ficheiro vazio
+N2226 Tabela mat. peca nao encontrada
+N2227 Tab. mat.navalha nao encontrada
+N2228 Material peca nao seleccionado
+N2229 Falta combinação WMAT-TMAT
+N2230 Tab.dados corte nao seleccionada
+N2231 Frase nao permitida com M112
+N2232 Corrigir frase errada
+N2233 Frase FK nao seleccio. com GOTO
+N2238 Q223 tem de ser maior que Q222
+N2243 Angulo em TOOL T muito pequeno
+N2253 Desconectar tensão control
+N2254 Relé:contacto de repouso aberto?
+N2255 Conectar tensão control
+N2273 TS: campo trabalho ultrapassado
+N2284 Operacao em paralelo impossivel
+N2285 Eixo bloqueado
+N2288 Porta-ferramentas defeituoso !
+N2300 Comprovar dados de corte!
+N2315 Q214: 0 nao permitido
+N2316 PLC: falta ficheiro sucesso
+N2317 PLC: demasiados eventos
+N2319 Tabela tipo ferr.nao encontrada
+N2320 Caminho CDT nao encontrado
+N2321 Too many *.CDT files
+N2336 Entrada S diferente de %d
+N2339 No connection to network
+N2342 FN17: Assignment value illegal
+N2344 Enter the element.
+N2345 Ferramenta nao defenida
+N2375 M112 nao permitida com M128
+N2377 S: Limite carreira %.2s+
+N2378 S: Grande erro posicionam. L %.2s
+N2377 S: Limite carreira %.1s-
+N2384 Todos os elementos apagados!
+N2385 Elemento obrigatorio apagado !
+N2386 Long.maxima de linha excedida!
+N2387 Erro durante a conversao !
+N2500 Usar RESTAURAR POS. EN N
+N2504 Direc. deslocamento nao defenida
+N2505 Tabela pontos zero inactiva
+N2506 Erro posicao: centro no eixo 1
+N2507 Erro posicao: centro no eixo 2
+N2508 Diametro furo muito pequeno
+N2509 Diametro furo excessivo
+N2510 Diametro ilha muito pequeno
+N2511 Diametro ilha excessivo
+N2512 Caixa muito peq.:retoc. eixo 1
+N2513 Caixa muito peq.: retoc.eixo 2
+N2514 Caixa muito grande:recomp.eixo 1
+N2515 Caixa muito grande:recomp.eixo 2
+N2516 Ilha muito peq.: recomp. eixo 1
+N2517 Ilha muito peq.: recomp. eixo 2
+N2518 Ilha muito grande:retocar eixo 1
+N2519 Ilha muito grande:retocar eixo 2
+N2520 Ciclo medicao: erro cota maxima
+N2521 Ciclo medicao: erro cota minima
+N2522 TCH PROBE 426: long. excede max.
+N2523 TCH PROBE 426: long. menor min.
+N2524 TCH PROBE 430: diam. excessivo
+N2525 TCH PROBE 430: diametro pequeno
+N2609 M128 nao permitida com 3DROT
+N2610 M114 nao permitida com M128
+N2611 M128 nao permitida com RR/RL
+N2617 Eixo de mediçâo indefinido
+N2618 Erro formato na data ou hora
+N2621 M128: Fixar PT REF nâo permitido
+N2635 Toler. rotura ferram. excedida
+N2636 Cancel. correc. raio antes  M128
+N2642 Inversor nâo preparado
+N2644 M120: LOOK AHEAD nâo posible
+N2645 Altr.seg. Q260 < Altr.med. Q261
+N2646 MC botaô de máquina presionado
+N2647 Rele: Contacto n.c. fechado?
+N2655 Corrente motor cabecote nao e 0
+N2657 Corrente mot.eixo %.2s nao igual 0
+N2662 Nao e possivel marcar
+N2663 Nao e possivel inserir
+N2664 Memoria intermedia vazia
+N2665 Nenhum inicio de bloco marcado
+N2668 Corrigir formato frase errada
+N2691 LN: Orientacao impossivel
+N2692 M128 com frase LN nao permitida
+N2700 Teste canais de corte inactivo
+N2711 Soma de comprovacao errada
+N2733 Demasiadas colunas
+N2734 Coluna de eixos nao seleccionada
+N2735 M128 nao permitida
+N2736 Nenhum ficheiro TAB aberto?
+N2737 TAB:nome campo demasiado longo
+N2738 TAB: campo nao numérico
+N2739 TAB: demasiados nomes de campo
+N2745 Pos. de referencia %.2s incorrecta
+N2746 Valor incorreto MP%u
+N2747 Línha protegida contra escrita
+N2748 Ciclo de med.:M114 nao permitida
+N2749 Ciclo de med.:M128 nao permitida
+N2750 M114, M128, 3DROT nao permitidas
+N2752 MP: introducao contraditoria
+N2757 Buffer de comando cheio.
+N2758 Comando nao se corresponde
+N2760 Funcao FS nao executada
+N2768 MC tecla validacao volante activo
+N2769 Apagar ciclo incompleto
+N2770 Memoria intermedia vazia
+N2771 Sem permissao de escrita
+N2772 Apagar contexto completo: NO ENT
+N2773 Modificar contexto nao permitido
+N2774 Coord. polares nao permitidas
+N2775 Para mudar contexto:pulse ENT
+N2776 Introd. invalida como contexto
+N2777 Comprovar numero de parenteses
+N2820 Desv. posicao MC muito grande %.2s
+N2824 Calibrar TT em plano inclinado
+N2825 Calibrar TT plano nao inclinado
+N2826 TT nao paralelo eixo ferramenta
+N2827 Processo de travagem errado %.2s
+N2828 Tempo pos. control muito curto
+N2829 Introduzir Q247 diferente de 0
+N2830 Introduzir Q247 maior que 5
+N2834 EnDat defeituoso %X %.2s
+N2837 Frase FK nao foi traduzida
+N2849 Conectar cabeçal
+N2853 Control sincronização %.2s
+N2858 Sem permissao para teste
+N2868 TT: Pre-posicionar os eixos
+N2945 M91/M92 nao permitido
+N2969 Falta valor obrigatório
+N2993 Direccao internet errada
+N2995 Desloc.pto. zero PLC nao permit.
+N2996 Comutacao campo nao permitida
+N3002 Funcion. especial nao permitido
+N3006 Executar mudanca de ferramenta
+N3012 M120 LA nao permitida
+N3013 Interpol. circular nao permitida
+N3025 Linha de palete bloqueada
+N3026 Correccao de raio impossivel
+N3055 Intr. modo fresado Q351 dif. a 0
+N1149 Valor incorreto MP%.4u
+N958 Falta tensao aos reles
+N1182 Valor incorreto MP%.4u.%u
+N3063 3DROT: Não existe descrição
+N3065 Reset M114, M128 ou CYCL19
+N3081 Reduzir profundidade de roscado
+N3187 Nenhum ficheiro PNT seleccionado
+N3188 PNT: altura seg. muito pequena
+N3189 CYCL CALL PAT não permitido
+N3192 Realizar calibração
+N3193 Tolerancia excedida
+N3199 Comutação cabeçal não permitida
+N3205 Autoinicio não autorizado
+N3206 Falta macro %.20s
+N2720 Amplit. MC demasiado grande %.2s
+N44 Amplit. MC demasiado pequena %.2s
+N45 Frequencia MC demasiado alta %.2s
+N2687 Temperat. NC do MC fora toler.
+N2612 Entrada S do MC %d nao igual a 0
+N14018 Control de paragem MC %.2s
+N57 Comutador final CC %.2s-
+N55 Comutador final CC %.2s+
+N3214 Valores da tabela modificados
+N3218 Função PLC não permitida
+N3220 Tolerancia no MP6510 demas.baixa
+N3221 Raio calibracao demas. grande
+N3231 Falta campo PAL/PGM
+N3232 Language load error %d
+N3234 Pré-selecção ferram. em marcha
+N3235 Avanço negativo
+N3236 Pos. comut. %.2s não igual ENDAT
+N3239 Soft. seleccionado não carregado
+N3243 Nenhum eixo de ferr. programado
+N3245 Função M não permitida
+N3354 Função não permitida
+N3356 Tabela cinemática errada
+N3357 Subficheiro MP incorrecto
+N3441 M144 não permitida
+N4957 Discrepancia nos dados
+N3532 Entrada incorrecta em MFUNCT.TAB
+N3927 Palpação não permitida
+N3928 M112 não permitida com M144
+N4175 Linha palete tem peça acabada
+N4176 Falta macro de mudança fixação
+N4177 Contexto de geometria inválido
+N4197 Processamento de frases activo
+N4276 ORIENTAÇÃO não permitida
+N4491 Processam. em blocos impossivel
+N4492 MC: Botão máquina de permissão não premido
+N4571 Comprovar sinal profundidade
+N4572 Sinal introducção não permitido
+N4573 Não se admitem minúsculas
+N4574 Não se admitem letras
+N4575 Não se admitem números
+N4880 Memoria do sistema insuficiente
+N4881 Nao se encontra programa de PLC
+N4882 M140 nao permitido
+N4903 Sobremedida raio nao permitida
+N4905 Processador 1 Temp. demas. alta
+N4906 Processador 2 Temp. demas. alta
+N4935 Posição actual guardada %.2s
+N5073 LSV2: Linha interrompida
+N5074 LSV2: Erro de emissão
+N5075 LSV2: Erro de emissão
+N5076 LSV2: Erro de emissão
+N5077 LSV2: erro timeout
+N5078 LSV2: Erro de emissão
+N5079 LSV2: erro timeout
+N5080 LSV2: erro timeout
+N5081 LSV2: Erro de emissão
+N5099 Memória MC não disponivel
+N5225 Versão de software incorrecta
+N5228 Avanco = 0 não permitido
+N5236 Aviso temperatura TNC %d°C
+N5242 Programa PLC nao traduzido
+N204 Temperatura TNC excessiva %d°C
+N5286 Erro: Configuração do Profibus
+N5287 Profibus: Erro de hardware
+N5288 Profibus: Erro de inicialização
+N5312 Dados resíduos PLC apagados
+N5338 Projecto softKey não traduzido
+N5366 Inserção de linha não permitida
+N5367 T %u em linha %u já atribuida
+N5368 LBL %u em linha %u já atribuida
+N5369 Nenhum eixo seleccionado
+N2612 CC%d entrada S %d nao igual a 0
+N2687 CC%d temperat. NC fora toler.
+N2688 CC%d +5V fora de tolerancia
+N5434 Função não disponivel
+N5479 Tabelas armazém não traduzidas
+N5484 Ang. eixo difer. ang. inclinado
+N5566 Sem troca sistema referência!
+N5567 MC quantidade falsa FS-CC
+N5568 Excedeu nº caracteres máx.
+N5569 Valor fora margem introdução
+N5570 Demasiadas casas décimais
+N5571 Sinal algébrico não permitido
+N5572 Admite só valores integrais
+N5573 Q não permitida: ¡Introd. número!
+N5574 Introd. incremental não permitida
+N5575 Demasiadas funções M
+N5576 Demasiados eixos programados
+N5577 Eixo duplamente programado
+N5578 Elemento duplo / não permitido
+N5579 Intrudução de dados incompleta
+N5580 DIN/ISO: Falta número bloco N
+N5581 Falta elemento solicitado
+N5582 Sintâxe incorrecto
+N5583 Nenhum val. medic. %.2s guardado
+N5617 Chave desconhecida
+N5618 Elemento sintâxe não alterável
+N5619 Cabeçalho PGM não alterável
+N5627 Colocar MP1356.%d a %.4f
+N5628 Demasiados eixos programados
+N2652 CC%d inversor cabecote RDY=0
+N2653 CC%d inversor eixos RDY=0
+N2654 CC%d inversor cabecote RDY=1
+N2656 CC%d inversor eixos RDY=1
+N2743 CC%d Erro soma de verificação FS
+N2759 CC%d comando nao reconhecido
+N2819 Dados errados de CC%d
+N2821 Nenhum valor posic. desde CC%d
+N2822 Nenhum valor posic. MC a CC%d
+N2823 MC/CC%d verif. eixos desiguais
+N2831 Versão fich. incluí %d defeituoso.
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC erro de comprovacao S
+N5631 Comando MC %3d cancelado
+N5632 MC e CC não coincide
+N5635 O canal %d não pode visualizar-se
+N5641 MC portas de segurança abertas
+N5651 Falta eixo da ferramenta
+N5655 Eixo não comprov. MC %.2s iniciado
+N5671 Comprovar encoder de posição %.2s
+N5672 Empregar tabela preset
+N5673 Q303 não def. no ciclo de med.
+N5693 Eixo de ferramenta não permitido
+N5699 Valor calculado incorrecto
+N5700 Pontos de medição contraditórios
+N5709 Dados do círculo incorrectos
+N5712 Contrasenha não encontrada
+N5713 Não se introduziu contrasenha
+N5714 Contrasenha demasiado comprida
+N5715 Contrasenha já codificada
+N5757 Fixar preset: Eixo bloqueado!
+N5759 Altura segur. introd. incorrecta
+N5969 Apagar realmente bloco NC? DEL!
+N5970 Letra de eixo não permitida
+N5971 Não é possivel cancelar Blockskip
+N5972 String incompleto
+N6018 Dupla referência activa
+N6027 Eixo programado incorreto
+N6049 Tabela PET: Demasiadas linhas
+N6052 Tipo de profund. contraditório!
+N6055 Ciclo de mecan. não permitido.
+N6066 Tolerância de eixo rotat. ilegal
+N6069 Saída PWM MC não disponivel
+N6072 Alcançada extermidade do monitor
+N6079 M128 não permitida
+N6080 M144 não permitida
+N6081 MC SOM 4 impossivel
+N6082 Não é possivel modo funcion. MC
+N6086 Erro ao salvar lista supervisão
+N6087 Erro ao abrir lista supervisão
+N6088 Erro ao abrir TEMP.WLT
+N6089 Falta a última lista de control
+N6090 Não se encontra lista selecção
+N6091 Lista de selecção vazia
+N6094 Código incorrecto
+N6093 Eixos/cabeçal não seguros
+N6099 Valor inválido
+N6100 Operando inválido
+N6101 MC SOM 4 não habilitado
+N6102 A coluna não pode ser alterada
+N6103 Número de preset não existe
+N6105 MC SOM 2 só permite um eixo
+N498 Falta arquivo %.32s
+N206 PGM %.28s nao disponivel
+N6118 Pulsar tecla confirm. MC SOM 4
+N6182 Profibus: Erro de configuração
+N6183 Profibus: Erro de hardware PCI
+N6184 Profibus: Erro memória/ficheiro
+N6187 Aninhamento excessivo
+N6188 Aninhamento excessivo
+N6189 Tensão aliment. 5V demas. alta
+N6190 Tensão aliment. 5V demas. baixa
+N6193 Ponto inicio spline incorrecto
+N6212 Captura posição act.não possivel
+N6236 O programa de PLC foi parado
+N6264 Gráfico em paralelo impossível
+N6291 Referência do cabeçal
+N6294 MP segur. alterado pelo PLC
+N6307 T%s: Tempo vida rest. dem. curto
+N6308 Ferramenta %s não definida
+N6309 Trans.dados: caract. não permit.
+N6312 Falta subficheiro MP
+N6408 Subficheiro MP incorrecto
+N6409 Strobe PLC não permitido (%s)
+N6410 Strobe PLC não permit. no ciclo %d
+N6411 Fim de curso não permitido
+N6412 Não é possivel guardar preset
+N6413 Troca cinemático impossivél
+N6414 Execução prévia inconsistente %s
+N7222 Línha protegida contra escrita
+N7784 Erro ao escrever na tabela
+N7799 Não se realizou teste travag. MC
+N7800 Curto MC +24V no canal travag.
+N7801 Curto MC 0V no canal travag. %.2s
+N7803 FIxar pto. de ref. com softkey!
+N7815 Máquina não inicializada
+N7922 Falta tensão aliment. em X44
+N7923 MC autoarranque ferram. imposs.
+N7935 Ficheiro binário unidade externa
+N7936 Direct. fonte = direct. destino
+N7937 Ficheiro fonte = fich. destino
+N7938 MP2257.%d incorrecto (ID=$%08X)!
+N7964 TCPM: vector direc. contrad.!
+N7969 Aplicação %s impossivél
+N7971 Processo não executavél
+N7972 Unidade de destino não existe
+N7973 Não é possivél renomear
+N7974 Modif. tipo ficheiro impossivél
+N7975 Sem espaço na unidade
+N7977 Erro sistema ficheiro I/O
+N7978 Accesso ao ficheiro interrompido
+N7979 Demasiados ficheiros abertos
+N7980 Linha/bloco demasiado largo
+N7981 Ficheiro não existe
+N8001 Ning. aplic. tempo real activa
+N8002 Erro na aplicação tempo real
+N8005 Alter. contexto só ao inicio!
+N8032 LSV-2: Demasiadas conexões
+N8043 Compilação não permitida
+N8044 Ficheiro binário PLC selec.
+N8049 Fich. dep. proteg. cont. escrit.
+N8071 Não é possivél trocar janela!
+N8072 Ficheiro estruct. só leitura!
+N8090 Pendular impossivel!
+N8110 Programa NC interrompido
+N7798 Erro system %d
+N8114 0x01 Função não reconhecida
+N8115 0x02 Função já iniciada
+N8116 0x03 Regulador não está activo
+N8117 0x04 Regulador activo
+N8118 0x05 Impulso é demasiado grande
+N8119 0x06 Parâmetro desconhecido
+N8120 0x07 Erro ao ler valores DAC
+N8121 0x08 EEPROM em série : Sem aviso de recepção
+N8122 0x09 EEPROM em série : SDA pendurado em 0 ou 1
+N8123 0x0A Faltam dados
+N8124 0x0C Função bloqueada
+N8125 0x0D Modo funcionam. TNC errado
+N8126 0x10 Erro não definido (ver buffer de erro)
+N8128 Comando string DSP muito longo
+N8129 Não se recebem dados
+N8130 Recebidos dados errados
+N8131 Sem dados medição disponíveis
+N8132 Causa do erro indeterminada
+N8133 Parám. máquina regulador motor não disponíveis
+N8134 Modelo de motor não suportado
+N8135 Módulo potência não HEIDENHAIN
+N8136 Regulador incorrecto
+N8140 Mensagem sem definir
+N8141 Mensagem não esperada
+N8142 Aviso erro do regulad. motor
+N8213 Valor digitado incorreto
+N499 Falta arquivo %.32s
+N8231 FUNÇÃO TCPM impossivel
+N8284 Falta registo etiq. id. electr.: %s
+N8290 Transgrs. campo de trabalho
+N8292 Falta tens. alimentação PL 510
+N8293 Curto-circuito na saída PL 510
+N8401 Módulo PLC %d desconhecido
+N8494 CC%d Timeout versão comparação
+N8495 CC%d Timeout soma comprov. SMP
+N8591 Func. PLANE : ¡TURN não permit.!
+N8643 Bloco CYCL CALL POS incompleto
+N8644 Program. increm. não permitida
+N8658 Fixar pto. ref. em todos eixos
+N8757 MC 422B ventilador defeituoso
+N8758 Esta versão OEM EnDat não é suportada.
+N8892 Função acoplamento não execut.
+N502 Falta sentido de rotacao
+N503 Raio arredonda.demasiado grande
+N504 Discrepancia nos dados
+N505 Definicao do contorno insuficiente
+N506 Falta FPOL
+N507 Linha TNC nao permitida enquanto contorno nao estiver resolvido
+N508 Contorno esta resolvido: Linha FSELECT nao permitida
+N509 Fim do contorno fechado. coorde- nadas incr. nao permitidas
+N510 Frase RND o CHF neste ponto nao permitida
+N511 RND/CHF nao possivel en transiccao tangencial
+N512 Recta anterior ou posterior a RND / CHF tem longitude 0
+N513 CHF so e possivel entre duas rectas
+N514 Chanfro muito grande
+N515 Inicio correccao raio incorreto: linha inicial deve ser uma reta
+N516 Correccao da traject.incorrecta: linha final deve ser uma reta
+N517 Contorno muito complexo. Fornecer mais dados
+N518 FK: erro aritmetico
+N519 Linha FK nao permitida neste ponto
+N522 Referencia a linha indicada nao permitida
+N523 Referencia a linha CC nao permitida
+N525 Fornecer as duas coordenadas para pontos auxiliares
+N526 Representacao grafica FK nao disponivel em operacao paralela
+N527 Bloco demasiado grande
+N528 Seccao demasiado grande
+N529 Seccao muito pequena
+N530 Janela de visualizacao nao pode ser mais deslocada
+N9785 Não pode reconhecer nenhum movimento. Com ele não é possível a detecção da direcção.
+N10248 Função NC não permitida
+N10521 Tempo de arranque excedido
+N10664 Fich. aplic. ferram. bloqueado
+N10665 Gráficos programação impossivéis
+N10672 SPAWN/SUBMIT bloqueia a troca de contexto
+N10710 Entradas PROFIBUS não actualizadas
+N10711 Entradas PROFIBUS não actualizadas
+N10942 Representação incompleta
+N10949 Profund. lateral demas. pequena
+N10950 Factor sobreposição demas. alto
+N11044 Raio cilindro 0 não permitido!
+N11045 Excesso queue: %s
+N11114 Errror del sistema
+N11115 Erro do sistema
+N11116 Erro do sistema
+N11117 Erro do sistema
+N11232 Não é possível mudar modo func.
+N11275 Falta tipo ficheiro ou é incorr.
+N11391 Tecla bloqueada
+N11410 Parâmetro Q global não definido
+N11411 Parâm.Q global definido 2 vezes
+N11412 Faltam parâmetros globais
+N11413 smarT.NC não possível
+N11442 Não se permitem duas posic. giro
+N11453 O nome do ficheiro já existe
+N11454 Cabeçalho do programa já existe
+N11559 M120: LOOK AHEAD nâo posible
+N11574 M114 sem geometria de maquina
+N11575 Geometria do eixo indeterminada
+N11576 Faltam coord. mesa giratoria
+N11577 Sem defínir cinemática
+N11578 Calculo do angulo impossivel
+N11579 Falta tabela cinemática
+N11580 Activar 3DROT
+N11581 Função PLANO não é possível!
+N11582 CC%d : Programa %s não arranca
+N11585 Strobe do PLC não permitido (M%d)
+N11586 Gráfico de teste impossível
+N11588 PGM edita-se no smarT.NC
+N11589 PGM edita-se em paralelo
+N11593 Falta opção p. unidade regulaç.
+N11595 ELiminar ficheiro impossível
+N11597 Interferências no interface PL
+N11598 Partição PLC: memória insufic.
+N11601 CC%d: TIMEOUT CMD=0x%02X
+N11750 Ficheiro inexistente
+N11751 Selecç. de novo o ficheiro!
+N11752 Nome do label já assignado
+N11753 Nome do label já assignado
+N11754 Nome de label não existe
+N11755 Nome label já assign. na linha %u
+N12214 Não se pode desconectar o aparelho USB
+N12215 Aparelho USB desconectado sem fechar
+N12283 Ângulo da ponta indefinido
+N12284 Dados contraditórios
+N12358 INTERRUPÇÃO na frase %u (%u %%)
+N12759 Formação vista em árvore interr.
+N12760 Ventilador carcaça MC defeituoso
+N12767 Reentrance impossible
+N12768 Demasiados units programados
+N12770 Tensão aliment. 3,3V demas. alta
+N12771 Tensão aliment. 3,3V demas. baixa
+N181 Definicao BLK FORM incorrecta
+N520 Linha FCT ou FLT nao permitida neste ponto
+N521 Referencia angular incremental nao permitida neste ponto
+N524 Indicar ambas coordenadas para FPOL
+N12822 Não se pode finalizar a função (timeout).
+N12823 Introd. raio ferra. maior que 0
+N12824 Mais de 5 eixos na posição. PLC
+N12830 Posição ranhura 0 não permitida!
+N12837 Subp. Contorno: só 1 eixo pgdo.
+N12857 Sobrepassagem long. pgm. admitida
+N6091 Sem programação simbólica
+N13066 Não é possível guardar preset
+N13072 Fixar pto. de refer. não permit.
+N13147 O pgm PLC não está a ser executado
+N4 Defeito eletronico no comando 3
+N9 Defeito eletronico no comando 8
+N11 Defeito eletronico no comando A
+N12 Defeito eletronico no comando A
+N14 Defeito eletronico no comando A
+N16 Defeito eletronico no comando B
+N19 Defeito eletronico no comando E
+N29 Defeito eletronico no comando O
+N33 Erro de check-sum A
+N34 Erro de check-sum B
+N40 Supervisao movimento %.2s A
+N43 Difer. na posição <> velocidade demas. alta %.2s
+N13741 Linha %d: falta sinal ;
+N13742 Linha %d: nº palavras chave
+N13743 Linha %d: palavra chave falsa
+N13744 Linha %d: comando desconhecido
+N13745 Linha %d: indic. formato falsa
+N13746 Linha %d: indic. formato incomp.
+N13747 Lin. %d: chave demasiado comprida l
+N13748 Linha %d: falta índice
+N13749 Linha %d: falta ] no índice
+N13750 Não se encontra ficheiro máscaras
+N13751 Ficheiro edição não executável
+N13154
+N13155 Recebido aviso de colisão
+N13156 Firmware Profibus não é actual
+N13302 MPFRAGMENTFILE indisponível
+N13340 Valor digitado incorreto
+N13348 DHCP: introducção não permitida
+N13381 Não está perm. resetear uma col.
+N13387 Introd. profund. diferente de 0
+N13475 Função não permitida!
+N13476 Clipboard vazio!
+N13477 Controlo de travagem MC defeituoso
+N13478 Controlo travagem MC defeit. %.2s
+N13486 Velocidade fora de limites %d%%
+N13487 USB: TNC não dá apoio ao aparelho
+N13752 Não está permitdo editar
+N13753 TOOL.T: Número dentes definido=0
+N13758 M118 não permitida
+N13761 Não está permitido editar
+N13769 Eixo não regulado %.2s: paragem
+N13816 Função não permitida
+N13825 Função não activada
+N13827 Ficheiro DXF errado
+N13838 Eliminar bloqueio de teclas automático
+N13945 Função não permitida
+N13957 Não está permitido editar
+N13958 M136 com FU/FZ não permitido
+N13960 smarT.NC não permitido
+N13961 Introduç. increm. não permitida
+N14017 Comutação Q399 não permitida
+N14019 CC%d Timeout na medição corrente
+N14020 MC incorrecta tipo de funç. S
+N14022 Tecla de máquina CC premida
+N14023 MC: Tecla confirmação MB premida
+N14024 CC Tecla confirmação MB premida
+N14025 CC Tecla de confirmação volante premida
+N14026 CC Tecla de confirmação FERRAMENTA premida
+N14027 CC Portas protecção abertas
+N14032 Coord. calculada demas. grande
+N14156 Nenhum eixo ferramenta definido
+N14253 Atenção: altura prépos. defin.!
+N14254 MC tecla de confirmação premida
+N14255 CC tecla de confirmação premida
+N14299 Conversão programa impossível
+N14434 Definição do campo errada!
+N14479 Nenhuma tabela pontos zero selec.
+N14486 M140 MB MAX não permitido
+N14487 Long. máxima de linha excedida!
+N14518 Número ferramenta não permitido
+N14519 Nome ferramenta não permitido
+N14520 Divisão por 0 não permitida
+N14521 Extracção de raíz não permitida
+N14522 Logarítmo não permitido
+N14523 Tangente não permitida
+N14525 Função por FCL bloqueada
+N14550 Arco coseno: valor maior que 1
+N14551 Arco seno: valor maior que 1
+N15439 M128:modif. preset não permitido
+N15465 Sem dados disponíveis!
+N15466 Falta ficheiro ou é incorr.
+N15491 LSV2: Ponto interrup. não perm.!
+N15614 Sem direcção apalpação definida
+N15658 Veloc. S maior que NMAX de TOOL.T
+N15672 Unidade não renomeável!
+N15673 Unidade não copiável!
+N15674 Unidade não apagável
+N15675 TNC não pode abrir tipo ficheiro!
+N15687 Supervisão do movimento MC %.2s
+N15688 MC processo travagem errado %.2s
+N15691 Função GOTO não permitida!
+N15766 Eixo de ferramenta não permitido
+N15767 Sobrepassagem área deslocamento admitida %.2s
+N15923 Layout da memória do PLC alterou
+N15967 Impossível chamar o sist. ajuda
+N15973 M141 não permitida
+N16007 Operacao em paralelo impossivel
+N16010 O módulo protecc. do operador não recebe suporte
+N16198 Não se pode inicilizar o layout da memória do PLC
+N16362 Inversor MC  RDY=0 %.2s
+N16363 Inversor MC  RDY=1 %.2s
+N16407 Transmissão de dados impossível
+N16408 Não é possível a troca de eixo
+N16409 Não é possível a troca de eixo
+N16410 Não é possível a troca de eixo
+N16411 Excedido limite de introdução
+N16412 Não é permitida nenhuma modific.
+N16413 Erro indefinido
+N16561 AFC: Sobrecarga cabeçal
+N16563 Sist. medida de posição %.2s: amplitude excessiva
+N16564 Sist. med. posiç. %.2s: amplitude demas. baixa
+N16565 Sist. de med. posição %.2s: freq. excessiva
+N46 Sist. de medida de posição %.2s defeituoso
+N16586 PLANE AXIAL não permitido
+N16593 MC Teste de travagem desactivado
+N16623 Definição de tabela incorrecta
+N16718 Velocidade cabeçal fora de campo tolerância %.2s
+N16798 Ajustes prog. glob. desactivados
+N16800 smarT.NC: Tipo fich. não perm.
+N16830 Não modif. durante execuç. prog.
+N17063 TNC não pode executar a macro
+N17161 Não é possível interpolação ENDAT %.2s
+N17162 Não é possível consultar etiqueta electr.
+N17163 Erro na compensação TRC %.2s
+N17167 Falta 'AFC' na NCMACRO.SYS
+N17207 MC estado operativo incorrecto S
+N17384 Memória principal insuficiente
+N17386 Operação palete não permitida
+N17387 M128 não permitida
+N17390 Função PLANO: MOVE impossível
+N17662 Área deslocamento activa errada.
+N17663 DCM: Config. de estado errada
+N17735 Desvio valor real-nominal de MC demasiado grande %.2s
+N17938 Ligação EnDat impossível
+N18060 3DROT nao permitido
+N18075 MC 1ª sobrecarga interruptor limite %.2s+
+N18076 MC 1ª sobrecarga interruptor limite %.2s-
+N18145 PGM aberto foi alterado
+N18146 Marcação múltipla não permitida
+N18147 Função impossível no índice
+N18148 Protec.PGM não aplicávl/removívl
+N18149 Tipo ficheiro protegido por MP
+N18150 ABRIR COM não permitido
+N18156 Dispositivo USB não removível
+N18157 Nenhum dispositivo USB marcado
+N18220 Configuração PL incorrecta
+N18280 %s
+N59 FN 14: codigo de erro %s
+N18303 Conversor CC%d dos eixos RDY=0 (relé de segurança)
+N18304 Conversor CC%d dos eixos RDY=1 (relé de segurança)
+N18325 MC Erro de software S %d
+N18371 MC Start Test dos canais de desligamento impossível
+N18401 Erro interno durante a cópia!
+N18629 Opção de software inactiva
+N18630 Impossível restaurar Cinemática
+N18631 Função não permitida
+N18632 Dim. bloco contraditórias
+N18861 HSCI: Erro de hardware
+N18862 HSCI: Erro de inicialização
+N18891 M91 ou M92 impossível
+N18903 Comando prév.parcial proibido
+N18904 Directório não existe
+N18912 Conversor CC%d da ferr.ta RDY=1 (relé de segurança)
+N18913 Conversor CC%d da ferr.ta RDY=0 (relé de segurança)
+N18914 Geração de ciclo defeituosa
+N18915 HSCI: Falta ficheiro IOC
+N18928 M128 não permitido!
+N19236 Transferência LSV2 interrompida
+N19292 AFC: Sem pot. de referência registada
+N19293 TOOL.T: Demasiados cortes
+N19398 Posição medição não permitida
+N19411 Programa PLC não pôde ser iniciado
+N19440 Macro da função M não permitida
+N19448 DCM: Estado ferr.ta desconhecido
+N13827 Aplicação 'DXF_CONVERTER' impossivél
+N19501 Erro durante o auto-teste
+N19502 Tempo de auto-texte excedido
+N19503 Erro de comunicação durante o auto-teste
+N19504 Erro desconhecido durante o auto-teste
+N19754 Paragem de emergência SPLC
+N19755 Erro fatal SPLC
+N19764 Apagamento ferr.ta não permitido
+N20418 O auto-teste está desactivado
+N20457 MC: erro de sistema em SPLC-LZS
+N20458 Detecção do hardware PL/MB incorrecta
+N20459 HSCI-PL/MB acusa erro
+N20460 HSCI-PL/MB acusa erro
+N20461 MC: erro de sistema em SPLC-LZS
+N20462 MC: erro de sistema em SPLC-LZS
+N20463 Erro time out no programa SPLC
+N20464 SPLC não pode carregar programa
+N20465 Programa SPLC modificado
+N20466 Programa SPLC não executável
+N20467 Máquina fora de funcionamento seguro
+N20469 Configuração das entradas SPLC
+N20471 Configuração das entradas SPLC
+N20473 Configuração tempo de ciclo SPLC
+N20477 Script Python já iniciado
+N20481 Acesso à cinemática impossível
+N20482 Pos.medição fora área deslocação
+N20483 Compensação de preset impossível
+N20639 Tab posições protegida de escrita
+N20650 Reprodução seq. teclas terminada
+N20661 Rotacao nao permitida
+N20662 Fator de escala nao permitido
+N20663 Espelhamento nao permitido
+N20664 Translacao nao permitida
+N21084 Colocar volante na estação de carga
+N21096 Preset com deslocação activa
+N21097 Raio ferr.ta=0: DCM impossível
+N21144 Volante: M91/M92 não permitidos
+N21219 ACCESSLEVEL: Função bloqueada
+N21232 Potenciómetro de override?
+N21233 Falta cinemática suporte ferr.ta
+N21254 Não é possível abrir o programa de teste
+N21255 Não é possível gerar o programa de teste
+N21256 Não é possível executar o programa de teste
+N21257 DCM: Dispositivo tensor inactivo
+N21258 O ficheiro não existe
+N21260 Programa SPLC não configurado
+N21261 Tempo operação SPLC excedido em MC
+N21426 DCM: corpo de colisão não evidente
+N21675 Software de comando não seguro
+N21701 Não é permitido apagar linhas
+N21712 Processo desligamento impossível
+N21948 MC Comando do MC errado
+N21949 Override de marcha rápida erradamente configurado
+N21932 Tempo excedido MC na travagem %.2s
+N22055 Operacao em paralelo impossivel
+N22060 Percurso MC excedido em SS2 %.2s
+N22077 Troca MC de SOM_2/SOM_3 após SOM_4 impossível
+N22077 Troca MC de SOM_4 após SOM_2/SOM_3 impossível
+N22079 RAM insuficiente
+N22124 MC SPLC exige reacção de paragem inválida
+N22125 MC SPLC exige função de segurança inválida
+N22266 Programa SPLC não compilado
+N22330 M94 impossível
+N23611 Tabela de posições fixada
+N2187 Alarme no eixo %.2s
+N23636 Desactivar travagem MC impossível %.2s
+N23720 Tremas não permitidos!
+N23756 Funç. permitida só em eixos rotat
+N23767 Não está permitido editar
+N23768 Parâmetros QR não restauráveis
+N23784 MC Modo de funcionamento SPLC inválido
+N23830 HSCI/Profibus: Erro de configuração
+N23832 Grupo de eixo MC configurado incorrectamente %d
+N23835 Erro no auto-teste
+N7798 Erro CC%d %d %d %d
+N7798 Erro CC %d %d %d
+N23945 MC Medidor de sistema MC diferente de SKERN MC
+N23946 MC Medidor de sistema MC diferente de SPLC MC
+N23947 MC Medidor de sistema MC diferente de SPLC CC
+N23949 Raio da ferramenta demasiado grande
+N23950 Tipo de imersão impossível
+N23951 Ângulo de imersão definido incorrectamente
+N23952 Ângulo de abertura indefinido
+N23953 Largura da ranhura demasiado grande
+N23960 Erro MC durante comparação cruzada:  %s
+N23961 Saída de segurança MC diferente:  %s
+N23967 Designação não encontrada
+N23993 Erro de parametrização no script Python
+N24013 MC +3,3V sem tolerância
+N24014 MC +3,3VPIC sem tolerância
+N24015 MC +12V sem tolerância
+N24016 Rotação MC da ventoinha 1 demasiado lenta
+N24017 MC +5V fora de tolerancia
+N24024 Dados da ferramenta inconsistentes
+N24074 Ventoinha MC não reconhecido
+N24075 Rotação MC da ventoinha 2 demasiado lenta
+N24128 Erro MC de medição do valor real %d %.2s
+N24130 Eixo MC %.2s no servo de controlo
+N24131 Mandril MC %.2s no servo de controlo
+N24188 Versão de software NC modificada
+N24189 Dados de configuração SPLC incorrectos
+N24191 Desv. valor nom. real MC das rot. demas. grande %.2s
+N8127 Erro LSV2 desconhecido: %x
+N24360 Estado incorrecto da saída de segurança %s
+N24394 Plano indefinível
+N24438 Conteúdo do ficheiro incorrecto
+N24484 Atribuição ferramenta/nº de corte incorrecta
+N24515 Arranque impossível durante a paragem de emergência
+N24585 MOVE impossível
+N24586 Montagem do conjunto errada
+N24592 Programa SPLC modificado
+N24594 Código binário MC do programa SPLC modificado
+N24596 Código binário CC do programa SPLC modificado
+N24860 MC: Dados incorrectos de SPLC %s
+N24959 Definir presets não permitido!
+N24967 Comutador final MC %.2s+
+N24968 Comutador final MC %.2s-
+N24972 Safe Torque Off (-STO.B.x) activo
+N24973 Emergencia externa
+N24974 Entrada S MC %d distinta
+N24975 Avanco MC maior que SLS %.2s
+N24976 Avanco CC maior que SLS %.2s
+N24977 Estado func.MC diferente do CC
+N24979 Revolucoes MC maior que SLS %.2s
+N24980 Revolucoes CC maior que SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC incorrecta grupo de eixo S
+N24983 Eixo não está em posição teste
+N25030 MC Estado S Reacção activo: %s
+N25031 Cablagem entrada SPLC %d
+N25033 Cablagem paragem emergência
+N25160 MC Software autot. SMC carregado
+N25237 Entrada incorrecta %s para teste dinâmico
+N25243 Estrutura contraditória
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

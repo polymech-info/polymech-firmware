@@ -1,0 +1,30 @@
+// This file is used as the main page (index.html) and to define elements of the API documentation such as groups that do not naturally fit in to a source header file.
+
+/** @defgroup constants Sming constant values
+ *  @brief  Constants and enumerated lists used by Sming functions
+ */
+
+/** @defgroup event_handlers Sming event handlers
+ *  @brief  Definitions of Sming event handler functions
+ */
+
+/** @defgroup structures Sming structures
+ *  @brief  Structure definitions used by Sming functions
+ */
+
+/** @defgroup wifi WiFi
+ *  @brief  Sming WiFi support classes and definitions
+ */
+
+/** @defgroup drivers Hardware Drivers
+ *  @brief  Low-level APIs for accessing hardware
+ */
+
+/** @mainpage
+
+The API documentation is provided as a set of modules, each describing a logical element of the API. Each module generally relates to a C++ class or group of related global functions. There are also modules for other global elements such as constant values.
+
+Return to the main [Sphinx documentation pages](../index.html).
+
+ */
+

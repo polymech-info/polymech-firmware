@@ -1,0 +1,62 @@
+*-----------------------------------------------------------------------------
+*  PL-Input lesen / PL-Output schreiben
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    In MP4031, Überwachung der tatsächlich angeschlossenen PLs, muss die
+*    Anzahl der in der Maschine vorhandenen PLs eingetragen werden. Der
+*    früher verwendete Konfigurationsparameter in oem.cfg entfällt.
+*    Die Zuordnung zwischen physikalischer Verkabelung und logischen Adressen
+*    kann mit MP4030 modifiziert werden.
+*
+*-----------------------------------------------------------------------------
+
+#include Mac_Lib.inc
+
+GLOBAL Input_lesen
+GLOBAL Output_schreiben
+
+;----------------------------
+LBL Input_lesen
+;----------------------------
+
+  L      K+0
+  =X
+
+  LX
+  <      BG_MP4031_Anzahl_angeschlossene_PL
+  WHILET
+    PS     BG_MP4030_0_Zuordnung_logische_PL_1[X]
+    CM     9002                        ;Digitale Eingänge einer PLC-Leistungsplatine PLB 51x lesen
+    M_Modul_Fehler_anzeigen
+
+    INCX
+
+    LX
+    <      BG_MP4031_Anzahl_angeschlossene_PL
+  ENDW
+
+EM
+
+;----------------------------
+LBL Output_schreiben
+;----------------------------
+
+  L      K+0
+  =X
+
+  LX
+  <      BG_MP4031_Anzahl_angeschlossene_PL
+  WHILET
+    PS     BG_MP4030_0_Zuordnung_logische_PL_1[X]
+    CM     9005                        ;Ausgänge einer PLC-Leistungsplatine PLB 51x beschreiben
+
+    M_Modul_Fehler_anzeigen
+
+
+    INCX
+
+    LX
+    <      BG_MP4031_Anzahl_angeschlossene_PL
+  ENDW
+
+EM

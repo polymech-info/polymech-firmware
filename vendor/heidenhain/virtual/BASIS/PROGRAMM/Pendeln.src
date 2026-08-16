@@ -1,0 +1,445 @@
+*-----------------------------------------------------------------------------
+*  Pendel-Betrieb
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolut_ohne_Software_Endschalter     K +0
+
+#define /s    ML_Pendeln_war_aus                       M
+#define /s    ML_Taste_betaetigt                       M
+
+#define /s    BL_Schritt_Pendeln                       B
+
+#include Mac_Lib.inc
+
+EXTERN In_Posit
+EXTERN Start_Posit
+EXTERN Start_Posit_Parameter
+
+GLOBAL Pendel_Betrieb
+
+;----------------------------
+LBL Pendel_Betrieb
+;----------------------------
+
+  L      I_Arbeitsraum_1_zu_verriegelt
+  =      MG_Arbeitsraum_1_zu_verriegelt
+
+  L      I_Arbeitsraum_2_zu_verriegelt
+  =      MG_Arbeitsraum_2_zu_verriegelt
+
+  L      MG_Paletten_Wechsel_Pendeln_inaktiv
+  R      MG_Pendeln_ein
+
+  L      MG_Pendeln_ein
+  A      ML_Pendeln_war_aus
+  IFT
+    L      DG_Ref_Pos_Achse[KG_Achse_X]
+    >      DG_Pendel_Pos_1_X
+    A[
+      L      DG_Ref_Pos_Achse[KG_Achse_X]
+      <      DG_Pendel_Pos_2_X
+    ]
+    R      MG_Pendeln_ein
+    =      PN_Fehler_Pendelbereich
+    EMT
+
+    LN     MG_BA_Manuell
+    ON     MG_Achsen_in_Position
+    R      MG_Pendeln_ein
+  ENDI
+
+*$WS
+*  L      MG_BA_manuell
+*  A      MG_Achsen_in_Position
+*  IFT
+*    LN    I_Pendeln_Trennwand_abgebaut
+*    AN    MG_Paletten_Wechsel_Pendeln_inaktiv
+*    =     MG_Pendeln_ein
+*  ELSE
+*    LN    I_Pendeln_Trennwand_abgebaut
+*    XO    MG_Pendeln_ein
+*    S     PN_Fehler_Pendeln_Trennwand
+*  ENDI
+
+  L      MG_M61_Pendeln_Seite_1
+  O      MG_M62_Pendeln_Seite_2
+  AN     MG_Pendeln_ein
+  S      PN_Fehler_Pendeln_nicht_aktiv
+  EMT
+
+  L      MG_Pendeln_ein
+  A      ML_Pendeln_war_aus
+  IFT
+    R      MG_Axis_Limit_3
+    S      PN_M4135_Strobe_Verfahrbereich
+    R      PN_M4575_Axis_Limit_Vorwahl_Bit_1
+
+    L      DG_Ref_Pos_Achse[KG_Achse_X]
+    <      DG_Pendel_Grenze_X
+    =      MG_Axis_Limit_1
+    =N     MG_Axis_Limit_2
+    =N     PN_M4574_Axis_Limit_Vorwahl_Bit_0
+  ENDI
+
+  LN     MG_Pendeln_ein
+  R      MG_Rohteil_Seite_1
+  R      MG_Rohteil_Seite_2
+  R      MG_Pendeln_Unterbrechung
+  R      O_LED_Pendeln_Seite_1
+  R      O_LED_Pendeln_Seite_2
+  =      ML_Pendeln_war_aus
+  EMT
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  >=     DG_Pendel_Grenze_X
+  SN     O_LED_Pendeln_Seite_1
+  IFT
+    L      MG_Rohteil_Seite_1
+    A      MG_Takt_1_s
+    =      O_LED_Pendeln_Seite_1
+
+    L      MG_M61_Pendeln_Seite_1
+    IFT
+      L      MG_Takt_500_ms
+      =      O_LED_Pendeln_Seite_1
+    ENDI
+    LN     I_Arbeitsraum_1_zu_verriegelt
+    R      O_LED_Pendeln_Seite_1
+  ENDI
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  <      DG_Pendel_Grenze_X
+  SN     O_LED_Pendeln_Seite_2
+  IFT
+    L      MG_Rohteil_Seite_2
+    A      MG_Takt_1_s
+    =      O_LED_Pendeln_Seite_2
+
+    L      MG_M62_Pendeln_Seite_2
+    IFT
+      L      MG_Takt_500_ms
+      =      O_LED_Pendeln_Seite_2
+    ENDI
+    LN     I_Arbeitsraum_2_zu_verriegelt
+    R      O_LED_Pendeln_Seite_2
+  ENDI
+
+  L      MG_Taste_Anwahl_Rohteil_inaktiv
+  IFF
+    L      MG_Rohteil_Seite_1
+    A      MG_Axis_Limit_2
+    XO[
+      L      MG_Taste_Pendeln_Seite_1
+      AN     ML_Taste_betaetigt
+    ]
+    A      I_Arbeitsraum_1_zu_verriegelt
+    =      MG_Rohteil_Seite_1
+
+    L      MG_Rohteil_Seite_2
+    A      MG_Axis_Limit_1
+    XO[
+      L      MG_Taste_Pendeln_Seite_2
+      AN     ML_Taste_betaetigt
+    ]
+    A      I_Arbeitsraum_2_zu_verriegelt
+    =      MG_Rohteil_Seite_2
+
+    L      MG_Taste_Pendeln_Seite_1
+    O      MG_Taste_Pendeln_Seite_2
+    =      ML_Taste_betaetigt
+  ENDI
+
+  CASE   BL_Schritt_Pendeln
+    CM     Pendeln_ein                 ;00
+    CM     Freigabe                    ;01
+    CM     Z_Start_Pendeln             ;02
+    CM     Z_in_Pos                    ;03
+    CM     Y_Start_Pendeln             ;04
+    CM     Y_in_Pos                    ;05
+    CM     X_1_2_Start                 ;06
+    CM     X_1_2_in_Pos                ;07
+    CM     Limit_1_2_Anwahl            ;08
+    CM     Pendeln_Quit                ;09
+    CM     Pendeln_Ende                ;10
+  ENDC
+
+  PLL
+  AN     MG_Pendeln_Unterbrechung
+  =      TS_PW_Timeout
+  IFT
+    INC    BL_Schritt_Pendeln
+  ENDI
+
+  LN     MG_Pendeln_aktiv
+  S      TS_PW_Timeout
+  EMT
+
+  L      MG_Impuls_NC_Start
+  R      MG_Pendeln_Unterbrechung
+
+  L      MG_Taste_NC_Start
+  O      MG_Impuls_CE_Taste
+  S      TS_PW_Timeout
+
+  LN     TR_PW_Timeout
+  AN     TS_PW_Timeout
+  =      PN_Fehler_Pendeln_Timeout
+  S      MG_Pendeln_Unterbrechung
+
+  L      MG_Taste_NC_Stop
+  O      MG_Impuls_External_STOP
+  S      MG_Pendeln_Unterbrechung
+
+  L      MG_BA_Wechsel_Auto_Manu
+  O      MG_Impuls_Internal_STOP
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Pendeln_Reset
+
+EM
+
+;----------------------------
+LBL Pendeln_ein                        ;00
+
+  L      MG_Axis_Limit_1
+  A      MG_Referenz_Achsen_aufgenommen
+  S      MG_Arbeitsraum_2_zu_verriegelt
+
+  L      MG_Axis_Limit_2
+  A      MG_Referenz_Achsen_aufgenommen
+  S      MG_Arbeitsraum_1_zu_verriegelt
+
+  L      MG_M61_Pendeln_Seite_1
+  O      MG_M62_Pendeln_Seite_2
+  AN     PN_M4092_Quit_M_Funktion
+  S      MG_Pendeln_aktiv
+  PSL
+
+EM
+
+;----------------------------
+LBL Freigabe                           ;01
+
+  L      MG_Axis_Limit_1
+  A      MG_M61_Pendeln_Seite_1
+  O[
+    L      MG_Axis_Limit_2
+    A      MG_M62_Pendeln_Seite_2
+  ]
+  S      PN_M4092_Quit_M_Funktion
+  JPT    Pendeln_Ende
+
+  L      MG_Taste_Anwahl_Rohteil_inaktiv
+  S      MG_Rohteil_Seite_1
+  S      MG_Rohteil_Seite_2
+
+  L      MG_M61_Pendeln_Seite_1
+  AN     MG_Rohteil_Seite_1
+  S      PN_Fehler_Anwahl_Table_1
+
+  L      MG_Rohteil_Seite_1
+  R      PN_Fehler_Anwahl_Table_1
+
+  L      MG_M62_Pendeln_Seite_2
+  AN     MG_Rohteil_Seite_2
+  S      PN_Fehler_Anwahl_Table_2
+
+  L      MG_Rohteil_Seite_2
+  R      PN_Fehler_Anwahl_Table_2
+
+  L      I_Arbeitsraum_1_zu_verriegelt
+  A      I_Arbeitsraum_2_zu_verriegelt
+  O      MG_Tueren_inaktiv
+  AN     PN_Fehler_Anwahl_Table_1
+  AN     PN_Fehler_Anwahl_Table_2
+  A      MG_Stern_ein
+  AN     NP_M4157_BA_Restore_Position_aktiv
+  AN     NP_M4193_RUNCANCEL_Makro_aktiv
+  =N     TS_PW_Timeout
+  PSL
+
+EM
+
+;----------------------------
+LBL Z_Start_Pendeln                    ;02
+
+  L      MG_Pendeln_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_Pendel_Pos_Z
+    CM     Start_Posit
+    PLL
+    SN     MG_Pendeln_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_Pos                           ;03
+
+  PS     KG_Achse_Z
+  PS     DG_Pendel_Pos_Z
+  CM     In_Posit
+  PLL
+  AN     MG_Pendeln_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Y_Start_Pendeln                    ;04
+
+  L      MG_Pendeln_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Y
+    PS     DG_Pendel_Pos_Y
+    CM     Start_Posit
+    PLL
+    SN     MG_Pendeln_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_in_Pos                           ;05
+
+  PS     KG_Achse_Y
+  PS     DG_Pendel_Pos_Y
+  CM     In_Posit
+  PLL
+  AN     MG_Pendeln_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL X_1_2_Start                        ;06
+
+  L      MG_M61_Pendeln_Seite_1
+  CMT    X_Limit_1_Start
+  CMF    X_Limit_2_Start
+
+EM
+
+;----------------------------
+LBL X_1_2_in_Pos                       ;07
+
+  L      MG_M61_Pendeln_Seite_1
+  CMT    X_in_Limit_1_Pos
+  CMF    X_in_Limit_2_Pos
+
+EM
+
+;----------------------------
+LBL X_Limit_1_Start
+
+  L      MG_Pendeln_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_Pendel_Pos_1_X
+    PS     DG_Vorschub_PLC_Pos[KG_Achse_X]
+    PS     KL_absolut_ohne_Software_Endschalter
+    CM     Start_Posit_Parameter
+    PLL
+    SN     MG_Pendeln_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_Limit_1_Pos
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_1_X
+  CM     In_Posit
+  PLL
+  AN     MG_Pendeln_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL X_Limit_2_Start
+
+  L      MG_Pendeln_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_Pendel_Pos_2_X
+    PS     DG_Vorschub_PLC_Pos[KG_Achse_X]
+    PS     KL_absolut_ohne_Software_Endschalter
+    CM     Start_Posit_Parameter
+    PLL
+    SN     MG_Pendeln_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_Limit_2_Pos
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_2_X
+  CM     In_Posit
+  PLL
+  AN     MG_Pendeln_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Limit_1_2_Anwahl                   ;08
+
+  L      MG_M61_Pendeln_Seite_1
+  =      MG_Axis_Limit_1
+  =N     MG_Axis_Limit_2
+  =N     PN_M4574_Axis_Limit_Vorwahl_Bit_0
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL Pendeln_Quit                       ;09
+
+  L      MG_M61_Pendeln_Seite_1
+  O      MG_M62_Pendeln_Seite_2
+  AN     PN_M4135_Strobe_Verfahrbereich
+  S      PN_M4092_Quit_M_Funktion
+
+  LN     NP_M4072_Strobe_M_Funktion
+  AN     PN_M4135_Strobe_Verfahrbereich
+  R      MG_Rohteil_Seite_1
+  R      MG_Rohteil_Seite_2
+  PSL
+
+EM
+
+;----------------------------
+LBL Pendeln_Ende                       ;10
+
+  PS     MG_Null_Merker
+
+LBL Pendeln_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Pendeln_aktiv
+  R      MG_Pendeln_Unterbrechung
+
+  L      K+0
+  =      BL_Schritt_Pendeln
+
+EM

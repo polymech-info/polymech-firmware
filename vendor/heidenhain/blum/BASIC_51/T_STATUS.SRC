@@ -1,0 +1,461 @@
+*-----------------------------------------------------------------------------
+*  TC Tool table - PLC status reading
+*-----------------------------------------------------------------------------
+*  Module Description
+*    PLC status (tool table):
+*    #Bit 0 (%00000001) - TS touch probe
+*    #Bit 1 (%00000010) - pocket in/out control after TOOL DEF
+*                       - (defining in Mag_pocket_out of CONFIG_xx.DEF)
+*-----------------------------------------------------------------------------
+
+#define /s    KL_tool_table                            K+0
+#define /s    KL_pocket_table                          K+2
+#define /s    KL_PLC_status                            K+17
+#define /s    KL_PLC_value                             K+26
+#define /s    KL_spindle_pocket_P0                     K+0
+#define /s    KL_tool_number                           K+0
+#define /s    KL_index_0                               K+0
+#define /s    KL_magazine_1                            K+0            *;EUMACH Dual TC
+#define /s    KL_magazine_2                            K+1            *;EUMACH Dual TC
+#define /s    KL_tool_0                                K+0            *;EUMACH
+#define /s    KL_occupied_pocket                       K+0            *;EUMACH
+#define /s    KL_reserved_pocket                       K+1            *;EUMACH
+#define /s    KL_searching_from_spindle_pocket         K+0            *;EUMACH
+#define /s    KL_magazine_not_found                    K-1            *;EUMACH
+#define /s    KL_pocket_not_found                      K-1            *;EUMACH
+#define /s    KL_tool_not_found                        K+30           *;EUMACH
+
+#define /s    BL_identifier                            B
+#define /s    WL_line_number                           W
+#define /s    WL_standby_tool_number                   W
+#define /s    WL_TC1_line_number                       W              *;EUMACH Dual TC
+#define /s    WL_TC2_line_number                       W              *;EUMACH Dual TC
+#define /s    WL_TC1_standby_tool_number               W              *;EUMACH Dual TC
+#define /s    WL_TC2_standby_tool_number               W              *;EUMACH Dual TC
+#define /s    WL_TC1_standby_pocket_TCH_line_number    W              *;EUMACH Dual TC
+#define /s    WL_TC2_standby_pocket_TCH_line_number    W              *;EUMACH Dual TC
+#define /s    WL_T_located_magazine_number             W              *;EUMACH
+#define /s    WL_T_located_pocket_number               W              *;EUMACH
+
+#include Mac_Lib.inc
+
+GLOBAL Tool_status
+
+;----------------------------
+LBL Tool_status
+;----------------------------
+
+  LN     MG_tool_status_reading
+  AN     MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+  AN     MG_TC_STDT_tool_status_reading                               *;EUMACH standby tool loading/unloading
+  AN     MG_TM_loading_T_status_reading                               *;EUMACH TM loading T selection
+  AN     MG_TM_loading_P_status_reading                               *;EUMACH TM loading T selection
+  AN     MG_standby_P_status_reading                                  *;EUMACH TM loading T selection
+  AN     MG_manual_tool_in_S_reading                                  *;EUMACH
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  AN     MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+  AN     MG_TC2_standby_tool_status_reading                           *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  EMT
+
+  LN     MG_tool_table_active
+  R      MG_tool_status_reading
+  R      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+  R      MG_TC_STDT_tool_status_reading                               *;EUMACH standby tool loading/unloading
+  R      MG_TM_loading_T_status_reading                               *;EUMACH TM loading T selection
+  R      MG_TM_loading_P_status_reading                               *;EUMACH TM loading T selection
+  R      MG_standby_P_status_reading                                  *;EUMACH TM loading T selection
+  R      MG_manual_tool_in_S_reading                                  *;EUMACH
+  R      MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+  R      MG_TC2_standby_tool_status_reading                           *;EUMACH Dual TC
+  EMT
+
+  RPLY   BL_identifier
+  <>     K+0
+  EMT
+
+  SUBM   Tool_status_subm
+  =      BL_identifier
+  ==     K+0
+  S      PN_error_submit_spawn_queue_full
+
+EM
+
+;----------------------------
+LBL Tool_status_subm
+
+  L      MG_tool_status_reading
+  CMT    TC_status_read
+
+  L      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+  CMT    TC_standby_status
+
+  L      MG_TC_STDT_tool_status_reading                               *;EUMACH standby tool loading/unloading
+  CMT    TC_STDT_status                                               *;EUMACH tool status of standby tool at tool change position
+
+  L      MG_TM_loading_T_status_reading                               *;EUMACH TM loading T selection
+  CMT    TM_loading_T_status                                          *;EUMACH TM loading T selection
+
+  L      MG_TM_loading_P_status_reading                               *;EUMACH TM loading T selection
+  CMT    TM_loading_P_status                                          *;EUMACH TM loading T selection
+
+  L      MG_standby_P_status_reading                                  *;EUMACH TM loading T selection
+  CMT    Standby_P_status                                             *;EUMACH TM loading T selection
+
+  L      MG_manual_tool_in_S_reading                                  *;EUMACH
+  CMT    Manual_T_in_S_status                                         *;EUMACH
+
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  L      MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+  CMT    TC1_standby_status                                           *;EUMACH Dual TC
+
+  L      MG_TC2_standby_tool_status_reading                           *;EUMACH Dual TC
+  CMT    TC2_standby_status                                           *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+
+EM
+
+;----------------------------
+LBL TC_status_read
+
+  PS     KL_tool_table
+
+  L      NP_M4073_strobe_TOOL_CALL                                    *;EUMACH BASIC 53
+  IFT                                                                 *;EUMACH BASIC 53
+    PS     NP_W264_tool_number
+  ELSE                                                                *;EUMACH BASIC 53
+    PS     WG_tool_in_spindle                                         *;EUMACH BASIC 53
+  ENDI                                                                *;EUMACH BASIC 53
+
+  PS     KL_index_0
+  CM     9091
+  PLW
+  =      WL_line_number
+  PSW
+  M_display_module_error(KG_error_module_9091)
+
+  PS     KL_PLC_status
+  CM     9093
+  PL     BG_tool_status_new
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      BG_tool_status_new                                           *;EUMACH BASIC 53
+  BT     K+0                                                          *;EUMACH BASIC 53
+  =      MG_touch_probe_active                                        *;EUMACH BASIC 53
+
+#if Tool_specific_torque_monitoring = &active
+  PS     KL_tool_table
+  PS     WL_line_number
+  PS     KL_PLC_value
+  CM     9093
+  PLW
+  /      K+10000
+  =      WG_S_max_torque
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      WG_S_max_torque
+  ==     K+0
+  IFT
+    L      NP_D868_S_max_torque
+    /      K+10000
+    =      WG_S_max_torque
+  ELSE
+    L      WG_S_max_torque
+    <[
+      L      NP_D864_S_min_torque
+      /      K+10000
+    ]
+    IFT
+      L      NP_D864_S_min_torque
+      /      K+10000
+      =      WG_S_max_torque
+    ENDI
+  ENDI
+#else
+  L      NP_D868_S_max_torque
+  /      K+10000
+  =      WG_S_max_torque
+#endif
+
+  L      MG_TC_auto_active
+  IFT
+    PS     KL_pocket_table
+    PS     KL_spindle_pocket_P0
+    PS     KL_tool_number
+    CM     9093
+    PL     WG_tool_in_spindle
+    PLX
+    M_display_module_error(KG_error_module_9093)
+  ENDI
+
+  L      MG_marker_one
+  R      MG_tool_status_reading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------
+LBL TC_standby_status
+
+  PS     KL_pocket_table
+  PS     WG_TC_magazine_actual_pocket
+  PS     KL_tool_number
+  CM     9093
+  PL     WL_standby_tool_number
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  PS     KL_tool_table
+  PS     WL_standby_tool_number
+  PS     KL_index_0
+  CM     9091
+  PLW
+  =      WL_line_number
+  PSW
+  M_display_module_error(KG_error_module_9091)
+
+  PS     KL_PLC_status
+  CM     9093
+  PL     BG_standby_tool_status
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+  R      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+
+  L      WL_standby_tool_number                                       *;EUMACH standby tool loading/unloading
+  =      WG_MAG_standby_tool_number                                   *;EUMACH standby tool loading/unloading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------
+LBL TC_STDT_status                                                    *;EUMACH standby tool loading/unloading
+
+  PS     KL_pocket_table
+  PS     WG_TC_standby_tool_number
+  PS     KL_tool_number
+  PS     K+0
+  CM     9092
+  PL     WG_TC_STDT_pocket_number
+  PLX
+  M_display_module_error(KG_error_module_9092)
+
+  L      MG_TC_STDT_tool_status_reading
+  R      MG_TC_STDT_tool_status_reading
+
+EM
+
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+;----------------------------                                         *;EUMACH Dual TC
+LBL TC1_standby_status
+
+  PS     KL_magazine_1
+  PS     WG_TC_magazine_actual_pocket
+  CM     9301
+  PL     WL_TC1_standby_pocket_TCH_line_number
+  M_display_module_error(KG_error_module_9301)
+
+  PS     KL_pocket_table
+  PS     WL_TC1_standby_pocket_TCH_line_number
+  PS     KL_tool_number
+  CM     9093
+  PL     WL_TC1_standby_tool_number
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  PS     KL_tool_table
+  PS     WL_TC1_standby_tool_number
+  PS     KL_index_0
+  CM     9091
+  PLW
+  =      WL_TC1_line_number
+  PSW
+  M_display_module_error(KG_error_module_9091)
+
+  PS     KL_PLC_status
+  CM     9093
+  PL     BG_TC1_standby_tool_status
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      MG_TC1_standby_tool_status_reading
+  R      MG_TC1_standby_tool_status_reading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------                                         *;EUMACH Dual TC
+LBL TC2_standby_status
+
+  PS     KL_magazine_2
+  PS     WG_TC_magazine_2_actual_pocket
+  CM     9301
+  PL     WL_TC2_standby_pocket_TCH_line_number
+  M_display_module_error(KG_error_module_9301)
+
+  PS     KL_pocket_table
+  PS     WL_TC2_standby_pocket_TCH_line_number
+  PS     KL_tool_number
+  CM     9093
+  PL     WL_TC2_standby_tool_number
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  PS     KL_tool_table
+  PS     WL_TC2_standby_tool_number
+  PS     KL_index_0
+  CM     9091
+  PLW
+  =      WL_TC2_line_number
+  PSW
+  M_display_module_error(KG_error_module_9091)
+
+  PS     KL_PLC_status
+  CM     9093
+  PL     BG_TC2_standby_tool_status
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      MG_TC2_standby_tool_status_reading
+  R      MG_TC2_standby_tool_status_reading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+#endif                                                                *;EUMACH Dual TC
+
+;----------------------------
+LBL TM_loading_T_status                                               *;EUMACH TM loading T selection
+
+  PS     KL_pocket_table
+  PS     WG_TM_loading_T_number
+  PS     KL_tool_number
+  PS     K+0
+  CM     9092
+  PL     WG_TM_loading_T_pocket_number
+  PLX
+
+  L      WG_TM_loading_T_pocket_number
+  <>     KL_pocket_not_found
+  IFT
+    M_display_module_error(KG_error_module_9092)
+  ENDI
+
+  L      MG_TM_loading_T_status_reading
+  R      MG_TM_loading_T_status_reading
+
+EM
+
+;----------------------------
+LBL TM_loading_P_status                                               *;EUMACH TM loading T selection
+
+  PS     KL_pocket_table
+  PS     WG_TM_loading_pos_pocket_number
+  PS     KL_tool_number
+  CM     9093
+  PL     WG_TM_loading_pos_T_number
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      MG_TM_loading_P_status_reading
+  R      MG_TM_loading_P_status_reading
+
+EM
+
+;----------------------------
+LBL Standby_P_status                                                  *;EUMACH TM loading T selection
+
+  PS     KL_pocket_table
+  PS     WG_TC_magazine_actual_pocket
+  PS     KL_tool_number
+  CM     9093
+  PL     WG_magazine_standby_tool_number
+  PLX
+  M_display_module_error(KG_error_module_9093)
+
+  L      MG_standby_P_status_reading
+  R      MG_standby_P_status_reading
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL Manual_T_in_S_status
+
+  PS     KL_tool_0
+  PS     KL_occupied_pocket
+  PS     KL_searching_from_spindle_pocket
+  CM     9342
+  PL     WL_T_located_magazine_number
+  PL     WL_T_located_pocket_number
+
+  L      NP_W1022_Modul_Fehlerstatus
+  <>     KL_tool_not_found
+  IFT
+    M_display_module_error(KG_error_module_9342)
+  ENDI
+
+  L      WL_T_located_magazine_number
+  ==     KL_magazine_not_found
+  A[
+    L      WL_T_located_magazine_number
+    ==     KL_pocket_not_found
+  ]
+  S      MG_manual_tool_in_spindle
+
+  L      MG_manual_tool_in_S_reading
+  R      MG_manual_tool_in_S_reading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM

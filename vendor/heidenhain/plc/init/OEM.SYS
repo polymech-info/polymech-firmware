@@ -1,0 +1,95 @@
+PLCSOFTVERS                = XXXXLHS000L
+MPFILE                     = PLC:\MP\BA293.MP
+PLCMAIN                    = PLC:\BASIC_51\MAIN_31.SRC
+PLCPWM                     = PLC:\BASIC_51\MAIN_31.SRC
+PLCCOMPCFG                 = PLC:\BASIC_51\OEM.CFG
+PLCERRTAB                  = PLC:\LANGUAGE\ERR_TAB.PET
+
+SOFTKEYPROJECT             = PLC:\SOFTKEYS\Softkey_BMX.spj
+
+KINEMATIC                  = PLC:\KINEMAT\KINELIST.TAB
+FIXTURE.FUNCTION           = YES
+
+DEBUGPATH                  = PLC:\DEBUG
+
+MODEHELP                   = SERVICE_3031.HLP
+
+PLCERROR                   = ERROR.A
+PLCDIALOG                  = DIALOG.A
+PLCERRFIX                  = FIX.A
+PLCERRREASON               = REASON.A
+
+FNERROR                    = FN14_ERROR.A
+FNERRREASON                = FN14_REASON.A
+FNERRFIX                   = FN14_FIX.A
+
+PLCEVENTS                  = PLC:\EVENTS.PEV
+LOGO                       = PLC:\LOGO\LOGO530.BMP
+LOGOSP                     = PLC:\LOGO\LOGO530.BMP
+
+PLCPRESET                  = TNC:\DATUM\PRESET.TAB
+
+PWMPARAMETER               = 16
+AXISNUMBER                 = 14
+NUMBERMP4111               = 200         ;max = 999
+NUMBERMP4230               = 70          ;max = 99
+
+TEMP_COMPENSATION          = PLC:\CORRECT\TMP_COMP.TAB
+FK_NULLPUNKT_TABELLE       = PLC:\CORRECT\FK_NPKT.TAB
+
+TNCOPT.LOCKSOFTKEYVISIBLE  = YES
+
+;IOCCFG                     = PLC:\IOC\CC6106_PLB6204.IOC
+IOCCFG                     = PLC:\IOC\CC6106_PLB6206.IOC
+;IOCCFG                     = PLC:\IOC\CC6106_PLB6208.IOC
+;IOCCFG                     = PLC:\IOC\CC6108_PLB6206.IOC
+;IOCCFG                     = PLC:\IOC\CC6108_PLB6208.IOC
+
+TABCMA                     = PLC:\CORRECT\CONFIG.CMA
+
+;MPFRAGMENTx and MPFRAGMENTFILE cannot exist at the same time.
+;MPFRAGMENT1-3  -> additional axis installed/uninstalled
+;MPFRAGMENT4    -> EBM V/H head removed (DCM)
+;MPFRAGMENTFILE -> weight tuning (cycle 332)
+;MPFRAGMENT0                = PLC:\MP\MP_part0.A
+;MPFRAGMENT1                = PLC:\MP\MP_part1.A
+;MPFRAGMENT2                = PLC:\MP\MP_part2.A
+;MPFRAGMENT3                = PLC:\MP\MP_part3.A
+;MPFRAGMENT4                = PLC:\MP\MP_part4.A
+;MPFRAGMENTFILE             = PLC:\MP\MPFRAGMENT\MPFRAGMENT.A
+
+;TCHRULES                   = PLC:\WZM_20_40_1_1.TCR
+
+;IOCCFG                     = PLC:\IOC\PROFIBUS.IOC
+;BISPATH                    = PLC:\IOC\BIS
+
+;PROFIBUSCFG                = PLC:\PROFIBUS\PROFIBUS.IOC
+
+;PRESETTABLE                = OFF
+;PR.LINESLOCKED             = 0,1,2,10-12
+
+;TTYP                       = PLC:\TTYP_01.TAB
+;MPPASSWORD                 = MP
+;MPLOCKFILE                 = PLC:\MP\MP_LOCK.MP
+;PLCPASSWORD                = PLC
+;REMOTE.LOCKSOFTKEYVISIBLE  = YES
+;REMOTE.PLCPASSWORDNEEDED   = YES
+;REMOTE.PLCPASSWORDFORCED   = SYS807667
+;USR_PAL_POCKET             = PLC:\PROTO\PAL_POCK.P
+;SERVICE.REQUEST.HOST       = 160.1.246.119
+;SERVICE.REQUEST.CONTENT    = PLC:\SERVICE.SYS
+;SERVICE.REQUEST.PORT       = 19001
+;SERVICE.REQUEST.PERIOD     = 10
+;SERVICE.REQUEST.TIMEOUT    = 15
+;SUPPORT.REQUEST.HOST      = 160.1.246.119
+;SUPPORT.REQUEST.CONTENT   = PLC:\SUPPORT.SYS
+;OEMCYC.ZIPNAME             = OEMCY1.ZIP
+;LOCKEOPTIONS               = 44,45
+;STRICTREPOS                = YES
+;MP_DATA_TAB                = PLC:\MP\MP_DATA.TAB
+;MP_CONFIG_TAB              = PLC:\MP\MP_CONFIG.TAB
+;SOFTKEYPRESS               = ON
+;FORCELISTPATH              = PLC:\BASIC\PROGRAM\MAIN_PGM_01.FLT
+;OEMERRORCHM.FILE           = oem1.chm
+;OEMERRORCHM.OFFSET         = 10000000
+ACC.SOFTKEYVISIBLE = YES

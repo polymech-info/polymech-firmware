@@ -1,0 +1,1289 @@
+N38 Sleepafstand te groot %.2s
+N39 Nom. toerentalwaarde te groot %.2s
+N41 Stilstandsbewaking %.2s
+N42 Offset te groot %.2s
+N50 Tastpunt niet bereikbaar
+N51 Positioneerfout
+N52 Taststift uit positie
+N53 Batterij tastsysteem verwisselen
+N54 Tastsysteem niet gereed
+N17738 Eindschakelaar %.2s+
+N56 Eindschakelaar %.2s+
+N17739 Eindschakelaar %.2s-
+N58 Eindschakelaar %.2s-
+N59 FN 14: foutnummer %-3u
+N60 Twee TOOL DEF %-3u door PGM CALL
+N61 Gereedschapstabel gesloten
+N62 Ref.merken %.2s foutieve afstand
+N63 Handwiel?
+N109 PLC: te hoge nesting
+N110 PLC: stack underflow
+N111 PLC: stack overflow
+N112 PLC: time out
+N113 PLC: ongeldig bereik voor CASE
+N115 PLC: indexbereik fout
+N133 PLC: M4005, M4006, M4007 fout
+N134 PLC: 2 functies tegelijk actief
+N151 MP:regel zonder nummer
+N152 MP: fout nummer
+N153 MP: geen scheidingsteken
+N154 MP: ingegeven waarde fout
+N155 MP: dubbel gedefinieerd
+N156 MP: niet gedefinieerd
+N157 MP: opslaan niet mogelijk
+N159 Plaats 0 niet gedefinieerd
+N160 Foutief plaatsnummer
+N937 Foutief plaatsnummer
+N161 Aanzet ontbreekt
+N162 Geen nieuwe as bij rotatie
+N163 Ger. standtijd overschreden
+N164 Bufferbatterij verwisselen
+N165 Oriëntatie inactief
+N166 Gereedschapstabel?
+N167 Nulpuntstabel?
+N168 Fout
+N938 Toets zonder functie
+N939 Programmageheugen vol
+N940 Zoekkenmerk niet aanwezig
+N941 GEREED.NR. 0 niet definieerbaar
+N169 Gereedschapsnummer bezet
+N170 Sprong label 0 niet toegestaan
+N942 Ingegeven waarde fout
+N943 Ingegeven waarde fout
+N171 Ingegeven waarde fout
+N172 Ingegeven waarde fout
+N173 Ingegeven waarde fout
+N174 Ingegeven waarde fout
+N175 Ingegeven waarde fout
+N176 Ingegeven waarde fout
+N177 Cyclus 27 (G127):diepte > radius
+N178 Ingegeven waarde fout
+N179 Ingegeven waarde fout
+N180 Definitie ruwdeel fout
+N183 Actuele regel niet gekozen
+N184 Programmanaam niet aanwezig
+N185 Ingave meer bestanden onmogelijk
+N944 Bestandsnaam bezet
+N187 Labelnummer bezet
+N188 Labelnr. %-3u reeds bezet
+N189 Foutieve overdracht
+N194 Programma niet compleet
+N196 Interface bezet
+N197 Baudrate niet mogelijk
+N945 Foutieve programmadata
+N946 Foutieve programmadata
+N200 Externe in-/uitgifte niet gereed
+N201 NC: programmageheugen gewist
+N947 Bedrijfsparameters gewist
+N948 Beveiligd bestand!
+N202 Veranderingen in oproepende PGM
+N203 NOODSTOP defect
+N205 NOODSTOP PLC
+N207 PGM ontbreekt
+N212 FK relateert zich aan act. regel
+N214 Rekenkundige fout
+N215 Rekenkundige fout
+N216 Berekende Q-parameter te groot
+N217 Berekende coördinaat te groot
+N218 Berekend toerental te hoog
+N219 Berekende aanzet te groot
+N220 Berek. gereedschapsnr. te groot
+N221 Berekend labelnummer te hoog
+N222 Berekend foutnummer te groot
+N223 Berekende maatfactor te groot
+N224 Incr. polaire hoek te groot
+N225 Spoed 0 niet toegestaan
+N226 Rekenkundige fout
+N227 Rekenkundige fout bij APPR/DEP
+N228 Rekenkundige fout bij APPR/DEP
+N229 Rekenkundige fout bij APPR/DEP
+N230 Rekenkundige fout bij APPR/DEP
+N231 Rekenkundige fout bij uitruimen
+N232 Rekenkundige fout bij CR
+N233 Rekenkundige fout bij CT
+N234 Rekenkundige fout bij RND/CHF
+N235 Foutief snijpunt cirkel/cirkel
+N236 Foutief snijpunt cirkel/rechte
+N237 Foutief snijpunt rechte/rechte
+N238 Rekenkundige fout bij APPR/DEP
+N239 Fout bij radiuscorrectie
+N240 Fout in contourkamer
+N241 Fout in kamer/aaneengesl. cont.
+N242 Fout in contourkamer
+N243 Fout in contourkamer
+N244 Fout bij radiuscorrectie
+N245 Fout bij radiuscorrectie
+N246 Fout in contourkamer
+N247 Fout in contourkamer
+N250 Rekenkundige fout bij M112
+N251 Fout bij berekening parameters
+N252 Fout bij testen eindschakelaar
+N253 Baancorr. fout beëindigd
+N254 Baancorr. fout begonnen
+N255 Baancorr. fout begonnen
+N256 Baancorr. fout begonnen
+N257 Baancorr. fout begonnen
+N258 Baancorr. fout begonnen
+N259 Baancorr. fout begonnen
+N260 Cyclus niet compleet
+N261 CYCL DEF niet gedefinieerd
+N263 Diepteverpl. 0 niet toegestaan
+N264 Gebruikercyclus niet voorhanden
+N265 Onderprogramma niet voorhanden
+N266 Onderprogramma niet voorhanden
+N272 Foutieve regelindeling
+N274 Gereedschapsdef. niet toegestaan
+N275 Gereed.def. zonder lengte/radius
+N276 CT na APPR niet toegestaan
+N277 CHF na APPR niet toegestaan
+N278 RND na APPR niet toegestaan
+N279 Afronding = 0 niet toegestaan
+N280 Afkanting = 0 niet toegestaan
+N281 Tweede afronding niet toegestaan
+N282 Afronding na afkanting mag niet
+N283 Afkanting na afronding mag niet
+N284 Tweede afkanting niet toegestaan
+N285 DEP LCT na HELIX niet toegestaan
+N286 APPR LCT voor HELIX mag niet
+N287 NC-regel niet toegestaan
+N288 Afronding niet toegestaan
+N289 Afronding niet toegestaan
+N290 Afkanting niet toegestaan
+N291 DEP is niet de laatste regel
+N292 Geen afronding als laatste regel
+N293 Geen afkanting als laatste regel
+N294 Meerdere DEP-regels mag niet
+N295 DEP niet toegestaan
+N296 APPR niet toegestaan
+N297 APPR niet als eerste regel
+N299 Cyclus 14 (G37) niet toegestaan
+N300 Gereed.-oproep niet toegestaan
+N302 M91/M92 bij 3DROT mag niet
+N303 M114 bij 3DROT niet toegestaan
+N305 M114 met correctie mag niet
+N307 As dubbel geprogrammeerd
+N308 As dubbel geprogrammeerd
+N309 As dubbel geprogrammeerd
+N310 As dubbel geprogrammeerd
+N311 As dubbel geprogrammeerd
+N313 Vlak fout gedefinieerd
+N314 3D-corr.: vlak fout gedefinieerd
+N315 Vlak fout gedefinieerd
+N317 Vlak fout gedefinieerd
+N318 Vlak fout gedefinieerd
+N319 Vlak fout gedefinieerd
+N320 Vlak fout gedefinieerd
+N321 Vlak fout gedefinieerd
+N322 Vlak fout gedefinieerd
+N323 Vlak fout gedefinieerd
+N324 Vlak fout gedefinieerd
+N325 Vlak fout gedefinieerd
+N326 Vlak fout gedefinieerd
+N327 Vlak fout gedefinieerd
+N328 Vlak fout gedefinieerd
+N329 Rotatie-as hier niet toegestaan
+N950 As fout geprogrammeerd
+N951 As fout geprogrammeerd
+N330 Geblokkeerde as geprogrammeerd
+N331 As fout geprogrammeerd
+N332 As fout geprogrammeerd
+N333 As fout geprogrammeerd
+N335 Rotatie-as niet geprogrammeerd
+N337 Geen rotatie-as geprogrammeerd
+N338 Geen hoofdas geprogrammeerd
+N339 Volg-hulp-as geprogrammeerd
+N952 Toerental fout
+N340 Toerental fout
+N341 Toerental fout
+N342 Toerental fout
+N343 Toerental fout
+N344 Toerental voor cyclus te hoog
+N345 Toerental 0 niet toegestaan
+N346 Toerental fout
+N347 Afkanting niet toegestaan
+N348 Afkanting niet toegestaan
+N349 Afkanting niet toegestaan
+N350 Afkanting niet toegestaan
+N351 Afkanting niet toegestaan
+N352 Afkanting niet toegestaan
+N353 Afkanting niet toegestaan
+N354 Afkanting te groot
+N355 Afkanting te groot
+N356 Afkanting te groot
+N357 Cirkeleindpunt fout
+N358 C-regel: eindpunt cirkel fout
+N359 Cirkeleindpunt fout
+N360 Cirkeleindpunt fout
+N361 Cirkeleindpunt fout
+N362 Labelnummer niet aanwezig
+N363 Label 0 niet voorhanden
+N364 Labelnummer niet aanwezig
+N365 Cyclus 14: label niet voorhanden
+N366 Pool ontbreekt
+N367 Cirkelmiddelpunt ontbreekt
+N368 Gereedschapsradius te klein
+N369 Gereedschapsradius 0 mag niet
+N370 Radiuscorrectie niet gedef.
+N371 Radiuscorrectie niet gedef.
+N372 Radiuscorrectie niet gedef.
+N373 Radiuscorrectie niet gedef.
+N374 Radiuscorrectie niet gedef.
+N375 Referentiepunten passeren
+N376 Afronding niet gedefinieerd
+N377 Afronding niet gedefinieerd
+N378 Afronding niet toegestaan
+N379 Afrondingsradius te groot
+N380 Afrondingsradius te groot
+N381 Afrondingsradius te groot
+N382 Afrondingsradius te groot
+N383 Afrondingsradius te groot
+N384 Afrondingsradius te groot
+N385 Afrondingsradius te groot
+N386 Afrondingsradius te groot
+N387 Afrondingsradius te groot
+N388 Spil?
+N389 Gereedschapsas gespiegeld
+N390 Gereedschapsas gespiegeld
+N391 Gereedschapsas ontbreekt
+N392 Gereedschapsas ontbreekt
+N393 Gereedschapsas ontbreekt
+N394 Gereedschapsas ontbreekt
+N395 Gereedschapsas ontbreekt
+N396 Gereedschapsas ontbreekt
+N397 Gereedschapsas ontbreekt
+N398 Gereedschapsdefinitie ontbreekt
+N400 Gereedschapsdefinitie ontbreekt
+N401 Gereedschapsnummer ontbreekt
+N402 Gereedschapsradius te groot
+N403 Gereedschapsradius te groot
+N404 Gereedschapsradius te groot
+N405 Gereedschapsradius te groot
+N406 Gereedschapsradius te groot
+N407 Gereedschapsradius te groot
+N408 Gereedschapsradius te groot
+N409 Gereedschapsradius te groot
+N410 Gereedschapsradius te groot
+N411 Gereedschapsradius te groot
+N412 Gereedschapsradius te groot
+N413 Niet gedefinieerde pgm.-start
+N414 Niet gedefinieerde pgm.-start
+N415 Niet gedefinieerde pgm.-start
+N416 Niet gedefinieerde pgm.-start
+N417 Niet gedefinieerde pgm.-start
+N418 Niet gedefinieerde pgm.-start
+N419 Niet gedefinieerde pgm.-start
+N420 Niet gedefinieerde pgm.-start
+N421 Niet gedefinieerde pgm.-start
+N422 Niet gedefinieerde pgm.-start
+N423 Niet gedefinieerde pgm.-start
+N424 Niet gedefinieerde pgm.-start
+N425 Radiuscor. voor PLC-pos opheffen
+N426 Niet gedefinieerde pgm.-start
+N953 Regelopbouw fout
+N427 Regelopbouw fout
+N429 Te diepe nesting
+N430 Te diepe nesting
+N432 Te diepe nesting
+N433 Cycl.-voorteken tegenstrijdig
+N434 Voorteken fout
+N435 Referentiehoek ontbreekt
+N436 Referentiehoek ontbreekt
+N437 Cirkelradius te klein
+N438 Referentiehoek ontbreekt
+N439 Referentiehoek ontbreekt
+N440 DEP-onderbreking niet toegestaan
+N441 DEP-onderbreking niet toegestaan
+N442 Geen coördinaten na APPR.
+N443 Bereik overschreden
+N444 Gegevens voor het bereik foutief
+N445 Beginpositie fout
+N446 Tijdsbegrenzing overschreden
+N447 CYCL-parameter fout
+N448 Overmaat groter dan diepte
+N451 Maatfactoren niet gelijk
+N454 Tasteruitwijking te groot
+N455 Te veel deelcontouren
+N456 Te veel deelcontouren
+N457 Te veel deelcontouren
+N458 Te veel deelcontouren
+N459 Te veel deelcontouren
+N460 Te veel deelcontouren
+N461 Te veel deelcontouren
+N462 Te veel deelcontouren
+N463 Te veel deelcontouren
+N464 Te veel deelcontouren
+N465 Te veel deelcontouren
+N466 Te veel deelcontouren
+N467 Te veel deelcontouren
+N468 Te veel deelcontouren
+N469 Te veel deelcontouren
+N470 Te veel deelcontouren
+N471 Te veel deelcontouren
+N472 Te veel deelcontouren
+N473 Te veel deelcontouren
+N474 Te veel deelcontouren
+N475 Contourprogrammeerfout
+N477 Contourprogrammeerfout
+N478 Contourprogrammeerfout
+N479 Contourprogrammeerfout
+N480 Contourprogrammeerfout
+N481 Contourprogrammeerfout
+N482 Contourprogrammeerfout
+N483 Contourprogrammeerfout
+N484 Contour te complex
+N485 Contour te complex
+N486 Contour te complex
+N487 Contour te complex
+N488 Contour te complex
+N489 Contour te complex
+N490 Contour te complex
+N491 Contour te complex
+N492 Contour te complex
+N493 Contour te complex
+N954 Adresletter reeds bezet
+N494 Regel te lang
+N955 G-code reeds bezet
+N495 Onbekende G-functie
+N496 N ontbreekt
+N497 CMA-bestand: geen actieve regel
+N500 Te veel correctiepunten
+N501 Te veel correctiefuncties
+N957 Stroomonderbreking Stroom- onderbreking
+N958 Stuurspanning relais ontbreekt Stuurspanning relais ontbr.
+N859 FOUT
+N860 As niet weer te geven
+N861 Geen verdere verkleining
+N862 Geen verdere vergroting
+N863 BLK FORM niet weer te geven
+N864 Gereedschapsas in BLK-FORM fout
+N865 Gereedsch.rad niet weer te geven
+N888 Tekst niet gevonden
+N1086 Te veel punten
+N1097 Tolerantiewaarde te groot
+N1106 Cyclus compleet wissen: del!
+N1107 Regel in cycl. niet toegestaan !
+N1125 Ref. in regel %.6s: geen del
+N1126 M112 inactiveren
+N1141 Met M120LA=0 ook RL/RR opheffen
+N1142 Opgave radiuscorrectie ontbreekt
+N1143 Radiuscorrectie niet toegestaan
+N1144 R+/R- bij M120 niet toegestaan
+N1145 RND bij M120 niet toegestaan
+N1146 Afkanting bij M120 mag niet
+N1147 Analoge spanning niet gedef.
+N1148 Analoge spanning niet bepaald
+N1149 Foutieve ingave in MP%.4u
+N1150 Tastsysteem niet gereed %.3s
+N1151 Herstarten met M120 fout
+N1154 Bestandsnaam niet toegestaan
+N1170 Metend tastsysteem gekozen
+N1171 Schakelend tastsysteem gekozen
+N1172 Tastsysteem kalibreren
+N1178 3DROT act: astoetsen gebruiken
+N1182 Foutieve ingave MP%.4u.%u
+N1186 Bestandsformaat veranderd
+N1187 M89 niet toegestaan
+N1192 Hoek niet toegestaan
+N1193 TOOL.T:aantal snijkanten ingeven
+N1266 Regelopbouw fout
+N1521 PLC-fouttabel niet geconverteerd
+N1523 PLC: geen fouttabel geselecteerd
+N1524 PLC: geen fouttabel voorhanden
+N1525 PLC: fouttabel niet .PET
+N1527 PLC: fouttabel niet gevonden
+N1528 PLC: fouttabel fout formaat
+N1568 Foutieve assen in .PNT-bestand
+N1590 Afstandswaarde te klein
+N1682 TOOL.T: LCUTS of ANGLE ontbr.!
+N1745 Toegang geweigerd
+N1749 Foutief nummer voor FN17/FN18
+N1749 Foutief nummer voor FN17/FN18
+N1750 PLC: fout bij module-oproep
+N1789 Gereedschap geblokkeerd
+N1790 Foutieve cyclus BEREIK
+N1791 Puntafstand te groot
+N1792 Foutieve as voor lijn
+N1793 Foutieve as voor kolom
+N1794 Foutieve hoekas
+N1795 Foutieve as in cyclus bereik
+N1796 Lijnafstand fout
+N1797 Geen cyclus bereik gedefinieerd
+N1798 Eindschakelaar digital.bereik
+N1799 Veilige hoogte te klein
+N1807 Ontoelaatbare bestandsnaam
+N1809 M114 met M116 niet toegestaan
+N1810 Systeemgeheugen vol
+N1845 Systeemdata actualiseren!
+N1848 Directory is niet leeg
+N1850 Cyclus 4 (G75/G76): foutieve as
+N1851 M130 niet toegestaan
+N1852 M130 met M114 niet toegestaan
+N1853 M130 niet toegestaan
+N1854 M130 met correctie mag niet
+N1855 Bewerk.cyclus niet gedefinieerd
+N1856 Aanzet pendelen ontbreekt
+N1857 Gereedschapsradius te groot
+N1892 FN20/D20: foute voorwaarde
+N1900 Apparaat bezet
+N1901 Kan loopwerk niet vinden
+N1914 Gereedschapsbreuk
+N2039 Foutief nulpuntnummer
+N2040 Sleufbreedte te klein
+N2041 Kamer te klein
+N2042 Q202 niet gedefinieerd
+N2043 Q205 niet gedefinieerd
+N2044 Q218 moet groter zijn dan Q219
+N2045 CYCL 210 niet toegestaan
+N2046 CYCL 211 niet toegestaan
+N2047 Q220 te groot
+N2048 Q222 moet groter zijn dan Q223
+N2049 Q244 moet groter zijn dan 0
+N2050 Q245 ongelijk aan Q246 ingeven
+N2051 Hoekbereik < 360° ingeven
+N2100 Pallet niet omgewisseld
+N2101 PLC:\NCMACRO.SYS ontbreekt!
+N2102 'PALETT' in NCMACR.SYS ontbreekt
+N2103 Palletgegevens ontbreken
+N2186 Zwenken:gereedschapsas ontbreekt
+N2211 TOOL CALL bij M128 mag niet
+N2212 M91/M92 bij M128 niet toegestaan
+N2213 MP75XX niet gedefinieerd
+N312 Ger.-as niet toegestaan
+N2222 Bestand niet in OEM.SYS
+N2223 Verkeerd bestandstype
+N2224 Veldnaam niet gevonden
+N2225 Bestand leeg
+N2226 Materiaaltabel niet gevonden
+N2227 Snijmateriaaltabel niet gevonden
+N2228 Geen materiaal gekozen
+N2229 Comb. ger/werkstuk mat. ontbr.
+N2230 Geen verspaningsdata-tab.gekozen
+N2231 Regel bij M112 niet toegestaan
+N2232 Foutieve regel corrigeren
+N2233 FK-regel niet via GOTO te kiezen
+N2238 Q223 moet groter zijn dan Q222
+N2243 Hoek in TOOL.T te klein
+N2253 Stuurspanning uitschakelen!
+N2254 Relais: rustcontact open?
+N2255 Stuurspanning inschakelen
+N2273 TS: betrouwbaar.bereik overschr.
+N2284 Parallelbedrijf niet mogelijk
+N2285 As geblokkeerd
+N2288 Gereeds. kleminrichting defect !
+N2300 Snijgegevens controleren !
+N2315 Q214: 0 Niet toegestaan
+N2316 PLC: Result. bestand ontbreekt
+N2317 PLC: Teveel acties
+N2319 Type gereed.tabel niet gevonden
+N2320 CDT-pad niet gevonden
+N2321 Teveel *.CDT bestanden
+N2336 S-ingang ongelijk aan %d
+N2339 Geen netwerkverbinding
+N2342 FN17: toewijzingswaarde fout
+N2344 Element ingeven!
+N2345 Gereedschap niet gedefinieerd
+N2375 M112 met M128 niet toegestaan
+N2377 S: eindschakelaar %.2s+
+N2378 S: grove positioneerfout L %.2s
+N2377 S: eindschakelaar %.1s-
+N2384 Alle elementen gewist!
+N2385 Benodigd element gewist!
+N2386 Max. aantal tekens overschreden!
+N2387 Fout bij het converteren!
+N2500 Gebruik BEREKEN TOT REGEL N
+N2504 Verplaatsingsrichting niet gedef
+N2505 Geen nulpuntstabel actief
+N2506 Positiefout: Midden as 1
+N2507 Positiefout: Midden as 2
+N2508 Te kleine diameter boring
+N2509 Te grote diameter boring
+N2510 Tap diameter te klein
+N2511 Tap diameter te groot
+N2512 Kamer te klein :nabewerking as 1
+N2513 Kamer te klein :nabewerking as 2
+N2514 Kamer te groot:buit. bereik as 1
+N2515 Kamer te groot:buit. bereik as 2
+N2516 Tap te klein:buit. bereik as 1
+N2517 Tap te klein:buiten bereik as 2
+N2518 Tap te groot : nabewerking as 1
+N2519 Tap te groot : nabewerking as 2
+N2520 Meetcyclus: fout max. lengte
+N2521 Meetcyclus: Fout min. lengte
+N2522 TCHPROBE 426: max.lengte gepass.
+N2523 TCHPROBE 426: lengte onder min.
+N2524 TCHPROBE 430: diameter te groot
+N2525 TCHPROBE 430: diameter te klein
+N2609 M128 niet toegestaan met 3DROT
+N2610 M114 niet toegestaan met M128
+N2611 M128 niet toegestaan met RR/RL
+N2617 Geen meetassen gedefinieerd
+N2618 Format fout voor datum of tijd
+N2621 M128: NULPNT bep. niet toegest.
+N2635 Gereedsch.-breuktoler. overschr.
+N2636 Radiuscomp. voor M128 opheffen
+N2642 Inverter niet gereed
+N2644 M120: LOOK AHEAD niet mogelijk
+N2645 Veiligh.hgt Q260 < Meethgt. Q261
+N2646 MC machinetoets ingeschakeld
+N2647 Relais: n.c. contact gesloten ?
+N2655 Spindelmotorstroom ongelijk 0
+N2657 As %.2s motorstroom ongelijk 0
+N2662 Markeren niet mogelijk
+N2663 Invoegen niet mogelijk
+N2664 Buffergeheugen leeg
+N2665 Geen aanvangsregel gemarkeerd
+N2668 Foutief regelformat corrigeren
+N2691 LN: Oriëntering niet mogelijk
+N2692 M128 met LN-regel niet toegest.
+N2700 Test uitschakelkanalen inactief
+N2711 S-controlesom fout
+N2733 Te veel kolommen
+N2734 Geen askolom geselecteerd
+N2735 M128 niet toegestaan
+N2736 Geen .TAB-bestand geopend?
+N2737 TAB: Veldnaam te lang
+N2738 TAB: Veld niet numeriek
+N2739 TAB: Te veel veldnamen
+N2745 Foutieve referentie-positie %.2s
+N2746 FOUTIEVE INGAVE MP%u
+N2747 Regel is schrijf-beveiligd
+N2748 Meetcyclus: M114 niet toegestaan
+N2749 Meetcyclus: M128 niet toegestaan
+N2750 M114, M128, 3DROT niet toegest.
+N2752 MP: ingave tegenstrijdig
+N2757 Commando buffer overloop
+N2758 Commando's stemmen niet overeen
+N2760 FS-functie niet uitgevoerd
+N2768 MC vrijgavetoets handwiel ingedr
+N2769 Incomplete cyclus gewist
+N2770 Buffergeheugen leeg
+N2771 Schrijven niet toegestaan
+N2772 Gehele context wissen: NO ENT
+N2773 Context wijzigen niet toegestaan
+N2774 Polaire coörd. niet mogelijk
+N2775 Context wijzigen: ENT drukken
+N2776 Ingave als context ontoelaatbaar
+N2777 Aantal haakjes controleren
+N2820 MC Pos. afwijking te groot  %.2s
+N2824 TT gezwenkt kalibreren
+N2825 TT ongezwenkt kalibreren
+N2826 TT niet parallel aan ger.sch.-as
+N2827 Foutief remproces %.2s
+N2828 Positiereg. cyclustijd te kort
+N2829 Q247 ongelijk 0 ingeven
+N2830 Waarde Q247 groter dan 5 ingeven
+N2834 EnDat defect %X %.2s
+N2837 FK-regel niet geconverteerd
+N2849 Spil inschakelen
+N2853 Synchronisatie-controlesysteem %.2s
+N2858 Testen niet toegestaan
+N2868 TT: Assen voorpositioneren
+N2945 M91/M92 niet toegestaan
+N2969 Verplichte waarde ontbreekt
+N2993 Internet adres fout
+N2995 PLC-NPV niet toegestaan
+N2996 Bereik-omschakeling niet toeg.
+N3002 Speciale spilfunctie niet toeg.
+N3006 Gereedschapswissel uitvoeren !
+N3012 M120 LA niet toegestaan
+N3013 Circ. interpolatie niet toeg.
+N3025 Pallet regel geblokkeerd !
+N3026 Radius compensatie niet mogelijk
+N3055 Freeswijze Q351 ongel. 0 ingeven
+N1149 Foutieve ingave in MP%.4u
+N958 Stuurspanning relais ontbreekt
+N1182 Foutieve ingave MP%.4u.%u
+N3063 3DROT: Beschrijving ontbreekt
+N3065 Reset M114, M128 of CYCL19
+N3081 Draaddiepte verminderen
+N3187 Geen PNT-bestand geselecteerd
+N3188 PNT: Veiligheidsafstand te klein
+N3189 CYCL CALL PAT niet toegestaan
+N3192 Calibreren doorvoeren
+N3193 Tolerantie overschreden
+N3199 Spilomschakeling niet toegestaan
+N3205 Autostart niet vrijgegeven
+N3206 Geen macro %.20s
+N2720 MC amplitude te groot %.2s
+N44 MC amplitude te klein %.2s
+N45 MC frequentie te hoog %.2s
+N2687 MC NC-temp. buiten tolerantie
+N2612 MC S-ingang %d niet gelijk 0
+N14018 MC stilstands-bewaking %.2s
+N57 CC eindschakelaar %.2s-
+N55 CC eindschakelaar %.2s+
+N3214 Tabelwaarden gewijzigd
+N3218 PLC-functie niet toegestaan
+N3220 Tolerantie in MP6510 te klein
+N3221 Calibreer-radius te groot
+N3231 PAL/PGM veld ontbreekt
+N3232 Language load error %d
+N3234 Gereedschaps-voorkeuze loopt
+N3235 Negatieve aanzet
+N3236 Uitschakelpos. %.2s ongelijk ENDAT
+N3239 Geselect. software niet geladen
+N3243 Geen gereedschapsas geprogramm.
+N3245 M-functie niet toegestaan
+N3354 Functie niet toegestaan
+N3356 Kinematica-tabel fout
+N3357 MP-subbestand fout
+N3441 M144 niet toegestaan
+N4957 Tegenstrijdige ingave
+N3532 Foute ingave in MFUNCT.TAB
+N3927 Aantasten niet toegestaan
+N3928 M112 met M144 niet toegestaan
+N4175 Palletregel bevat gereed product
+N4176 Opspanningswisselmacro ontbreekt
+N4177 Ongeldige geometrie context
+N4197 Mid-programma start actief
+N4276 ORIENTATIE niet toegestaan
+N4491 Mid-programmastart niet mogelijk
+N4492 MC: vrijgavetoets mach. ingedr.
+N4571 Voorteken diepte controleren
+N4572 Ingave teken niet toegestaan
+N4573 Kleine letter niet toegestaan
+N4574 Letter niet toegestaan
+N4575 Cijfer niet toegestaan
+N4880 Te weinig systeemgeheugen
+N4881 PLC programma niet gevonden
+N4882 M140 niet toegestaan
+N4903 Radius overmaat niet toegestaan
+N4905 Processor 1 temperatuur te hoog
+N4906 Processor 2 temperatuur te hoog
+N4935 Actuele positie opgeslagen %.2s
+N5073 LSV2: Verbinding verbroken
+N5074 LSV2: Transmissiefout
+N5075 LSV2: Transmissiefout
+N5076 LSV2: Transmissiefout
+N5077 LSV2: Timeout fout
+N5078 LSV2: Transmissiefout
+N5079 LSV2: Timeout fout
+N5080 LSV2: Timeout fout
+N5081 LSV2: Verzendfout
+N5099 MC geen geheugen beschikbaar
+N5225 Verkeerde software versie
+N5228 Aanzet = 0 niet toegestaan
+N5236 TNC temperatuur waarschuwing %d°C
+N5242 PLC-programma niet geconverteerd
+N204 TNC-temperatuur te hoog %d°C
+N5286 Fout: Profibus configuratie
+N5287 Profibus: Hardware fout
+N5288 Profibus: Initialisatiefout
+N5312 Remanente PLC gegevens gewist
+N5338 Soft-key project niet vertaald
+N5366 Regel invoegen niet toegestaan
+N5367 T %u in regel %u al toegekend
+N5368 LBL %u in regel %u al toegekend
+N5369 Geen asselectie beschikbaar
+N2612 CC%d S-ingang %d niet gelijk 0
+N2687 CC%d NC-temp. buiten tolerantie
+N2688 CC%d +5V buiten tolerantie
+N5434 Functie niet beschikbaar
+N5479 Magazijn regels niet vertaald
+N5484 Ashoek niet gelijk aan zwenkhoek
+N5566 Geen referentiesysteemwissel!
+N5567 MC verkeerd aantal FS-CC
+N5568 Te veel karakters
+N5569 Waarde buiten ingavebereik
+N5570 Te veel decimaalplaatsen
+N5571 Voorteken niet toegestaan
+N5572 Alleen hele waarden toegestaan
+N5573 Q niet toegestaan:getal invoeren
+N5574 Incrementele ingave niet toegestaan
+N5575 Te veel M functies
+N5576 Te veel assen geprogrammeerd
+N5577 As dubbel geprogrammeerd
+N5578 Element dubbel / niet toegestaan
+N5579 Gegevens onvolledig ingegeven
+N5580 DIN/ISO: Regelnummer N ontbreekt
+N5581 Vereist element ontbreekt
+N5582 Syntax fout
+N5583 Geen meetwaarde opgeslagen %.2s
+N5617 Sleutelwaarde onbekend
+N5618 Syntaxelement niet te wijzigen
+N5619 PGM-kop niet te wijzigen
+N5627 Stel MP1356.%d in op %.4f
+N5628 Te veel assen geprogrammeerd
+N2652 CC%d inverter voor spindel RDY=0
+N2653 CC%d inverter voor assen RDY=0
+N2654 CC%d inverter voor spindel RDY=1
+N2656 CC%d inverter voor assen RDY=1
+N2743 CC%d FS-checksumfout
+N2759 CC%d commando niet bevestigd
+N2819 Foutieve data vanuit CC%d
+N2821 Geen pos.-waarde vanuit CC%d
+N2822 Geen MC pos.-waarde aan CC%d
+N2823 MC/CC%d as-controle ongelijk
+N2831 CC%d foutieve versie include-best.
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC S-controlesom-fout
+N5631 MC commando %3d niet bevestigd
+N5632 MC en CC passen niet samen
+N5635 Kanaal %d niet weer te geven
+N5641 MC veiligheidsdeuren geopend
+N5651 Gereedschapsas ontbreekt
+N5655 As %.2s gestart zonder MC test
+N5671 Positiegever %.2s controleren
+N5672 Preset tabel gebruiken!
+N5673 Q303 in meetcyclus niet gedef.!
+N5693 Gereedschapsas niet toegestaan
+N5699 Berekende waarde fout
+N5700 Meetpunten tegenstrijdig
+N5709 Cirkelgegevens fout
+N5712 Wachtwoord niet gevonden
+N5713 Geen wachtwoord aangegeven
+N5714 Wachtwoord te lang
+N5715 Wachtwoord al gecodeerd
+N5757 Preset-instelling: As geblokk.!
+N5759 Veilige hoogte fout ingegeven!
+N5969 NC-regel werkelijk wissen? DEL!
+N5970 Asletter niet toegestaan
+N5971 Opheffen Blockskip niet mogelijk
+N5972 String niet afgesloten
+N6018 Dubbele referentie opname actief
+N6027 As fout geprogrammeerd
+N6049 PET tabel: Te veel regels
+N6052 Insteekwijze tegenstrijdig!
+N6055 Bewerkingscyclus niet toegestaan
+N6066 Rotatieas tolerantie niet toeg.
+N6069 MC PWM uitgang niet beschikbaar
+N6072 Beeldschermrand bereikt
+N6079 M128 niet toegestaan
+N6080 M144 niet toegestaan
+N6081 MC SOM 4 niet mogelijk
+N6082 MC werkstand niet mogelijk
+N6086 Fout bij opslaan monitorlijst
+N6087 Fout bij openen monitorlijst
+N6088 Fout bij openen TEMP.WLT
+N6089 Laatste monitor lijst ontbreekt
+N6090 Selectielijst niet beschikbaar
+N6091 Selectielijst is leeg
+N6094 Fout sleutelgetal
+N6093 Geen veilige as/spil
+N6099 Waarde ongeldig
+N6100 Operand ongeldig
+N6101 MC SOM 4 niet vrijgegeven
+N6102 Kolomwijziging niet mogelijk
+N6103 Preset nummer niet beschikbaar
+N6105 MC SOM 2 alleen een as toegestaan
+N498 Bestand %.24s ontbr.
+N206 PGM %.28s ontbreekt
+N6118 MC SOM 4 bevest. toets indrukken
+N6182 Profibus: Configuratiefout
+N6183 Profibus: PCI hardware fout
+N6184 Profibus: bestands-/geheugenfout
+N6187 Te diepe nesting
+N6188 Te diepe nesting
+N6189 5-V voedingsspanning te groot
+N6190 5-V voedingsspanning te klein
+N6193 Sleuf startpunt niet correct
+N6212 Actuele pos. overname niet mog.
+N6236 Het PLC programma is onderbroken
+N6264 Grafisch progr.-afloop niet mog.
+N6291 Spil REF passeren!
+N6294 SG-MP door PLC gewijzigd
+N6307 T%s: Rest-standtijd te kort
+N6308 Gereedschap %s is niet gedefineerd
+N6309 Datatrans.: ontoelaatbare tekens
+N6312 MP-subbestand ontbreekt
+N6408 MP-subbestand fout
+N6409 PLC-aftasting niet toegestaan (%s)
+N6410 PLC-aft. niet toeg. in cyclus %d
+N6411 Eindsch. omschakelen niet toeg.
+N6412 Preset opslaan niet mogelijk
+N6413 Kinematica wijziging niet mog.
+N6414 Regel scan inconsistent %s
+N7222 Regel is schrijf-beveiligd
+N7784 Fout bij schrijven naar tabel
+N7799 MC remtest niet doorgevoerd
+N7800 MC kortsl. +24 V op remleiding
+N7801 MC kortsl. 0V op remleiding %.2s
+N7803 Nulpunt instellen via soft key!
+N7815 Machine niet geïnitialiseerd
+N7922 Verzorgingssp. aan X44 ontbreekt
+N7923 MC ger.mag. AutoStart niet mog.
+N7935 Binair bestand op extern station
+N7936 Doeldir. is gelijk aan brondir.
+N7937 Doelbest. is gelijk aan bronbest
+N7938 MP2257.%d fout (ID=$%08X)!
+N7964 TCPM: richtingsvector tegenstr.!
+N7969 Toepassing %s niet mogelijk
+N7971 Proces niet uitvoerbaar
+N7972 Doelinstrument niet aanwezig
+N7973 Hernoemen niet mogelijk
+N7974 Wijziging bestandstype niet mog.
+N7975 Geen ruimte op het station
+N7977 Bestandssysteem I/O fout
+N7978 Toegang tot bestand afgebroken
+N7979 Te veel bestanden geopend
+N7980 Regel/block te lang
+N7981 Bestand niet aanwezig
+N8001 Geen real-time applicatie actief
+N8002 Fout in real-time applicatie
+N8005 Contekstwissel all.bij initial.!
+N8032 LSV-2: Te veel verbindingen
+N8043 Compilatie niet toegestaan
+N8044 PLC bronbestanden niet beschikb.
+N8049 Gerelateerd bestand schrijfbev.
+N8071 Wisselen venster niet mogelijk!
+N8072 Schrijfbev. tekstoverzichtsbest.
+N8090 Pendelbeweging niet mogelijk!
+N8110 NC-programma afgebroken
+N7798 System fout %d
+N8114 0x01 Functie niet herkend
+N8115 0x02 Functie is al gestart
+N8116 0x03 Besturing is niet actief
+N8117 0x04 Besturing is actief
+N8118 0x05 Puls is te groot
+N8119 0x06 Onbekende parameter
+N8120 0x07 Fout bij lezen DAC-waarden
+N8121 0x08 Seriële EEPROM: geen bevestiging
+N8122 0x09 Seriële EEPROM: SDA hangt op 0 of 1
+N8123 0x0A Gegevens ontbreken
+N8124 0x0C Functie geblokkeerd
+N8125 0x0D Verkeerde werkstand van TNC
+N8126 0x10 Ongedefinieerde fout (zie foutbuffer)
+N8128 DSP-commando string te lang
+N8129 Geen gegevens ontvangen
+N8130 Foute gegevens ontvangen
+N8131 Geen meetgegevens beschikbaar
+N8132 Onbepaalde fout-oorzaak
+N8133 Mach.param. besturing aandrijving niet beschikb.
+N8134 Niet ondersteund motor type
+N8135 Geen HEIDENHAIN vermogensdeel
+N8136 Verkeerde besturings-eenheid
+N8140 Bericht niet gedefinieerd
+N8141 Bericht niet verwacht
+N8142 Foutmelding besturing aandr.
+N8213 Ingegeven waarde fout
+N499 Bestand %.24s ontbr.
+N8231 FUNCTIE TCPM is niet mogelijk
+N8284 Ingave el. type label ontbreekt: %s
+N8290 Bewerkingsruimte overschreden
+N8292 PL 510 voedingsspanning ontbr.
+N8293 Kortsluiting bij PL 510 uitgang
+N8401 PLC module %d onbekend
+N8494 CC%d timeout versie vergelijking
+N8495 CC%d timeout SMP proefsom
+N8591 PLANE fct.: TURN niet toegest.!
+N8643 CYCL CALL POS regel incompleet
+N8644 Increm. programmering niet toeg.
+N8658 Ref. punt in alle assen inst.
+N8757 MC 422B ventilator defect
+N8758 Deze EnDat OEM versie wordt niet ondersteund.
+N8892 Koppelfunctie niet mogelijk
+N502 Rotatierichting ontbreekt
+N503 RND-radius te groot
+N504 Tegenstrijdige ingave
+N505 Contourdefinitie niet toereikend
+N506 FPOOL ontbreekt
+N507 TNC PGM-regel niet toegestaan zolang contour niet is berekend
+N508 De contour is bepaald: FSELECT-regel is niet toegestaan
+N509 Einde van de gesloten contour - geen incr. coörd. toegestaan
+N510 RND- of CHF-regel op deze plaats niet toegestaan
+N511 RND/CHF bij tangentiale overgang niet mogelijk
+N512 Rechte voor of na RND/CHF heeft de lengte 0
+N513 Afkanting is alleen tussen twee rechten mogelijk
+N514 Afkanting te groot
+N515 Baancorrectie fout begonnen: NC-regel moet een rechte zijn
+N516 Baancorrectie fout beëindigd: NC-regel moet een rechte zijn
+N517 Contour te complex. Meer gegevens vereist
+N518 FK: rekenkundige fout
+N519 FK-regel hier niet toegestaan
+N522 Verwijzing naar aangegeven regel niet toegestaan
+N523 Verwijzing naar CC-regel niet toegestaan
+N525 Voor hulppunten beide coördinaten opgeven
+N526 FK grafisch in parallelbedrijf niet mogelijk
+N527 Ruwdeel te groot
+N528 Venstergedeelte te groot
+N529 Venstergedeelte te klein
+N530 Venstergedeelte niet verder te verschuiven
+N9785 Er kon geen verplaatsing worden vastgesteld. Daarmee is bepaling richting niet mogelijk.
+N10248 NC functie niet toegestaan
+N10521 Starttijd verstreken
+N10664 Ger.sch. gegevensbestand afgesl.
+N10665 Grafisch programm. niet mogelijk
+N10672 SPAWN/SUBMIT blokkeert de context wissel
+N10710 PROFIBUS ingangen niet geactualiseerd
+N10711 PROFIBUS ingangen niet geactualiseerd
+N10942 Incomplete display
+N10949 Zijwaartse voeding te klein
+N10950 Overlap factor te groot
+N11044 Cilinder radius 0 niet toegest.!
+N11045 Queue overloop: %s
+N11114 Systeemfout
+N11115 Systeemfout
+N11116 Systeemfout
+N11117 Systeemfout
+N11232 Wissel van werkst. niet mogelijk
+N11275 Bestandstype ontbreekt of fout
+N11391 Toets is geblokkeerd
+N11410 Globale Q-parameter niet gedef.
+N11411 Globale Q param. dubbel gedef.
+N11412 Globale parameters ontbreken
+N11413 smarT.NC niet mogelijk
+N11442 Twee rotatiepos. niet toegestaan
+N11453 Bestandsnaam bestaat al
+N11454 Programma kop bestaat al
+N11559 M120: LOOK AHEAD niet mogelijk
+N11574 M114 zonder machinegeometrie
+N11575 Asgeometrie niet vastgelegd
+N11576 Coörd. rondtafel ontbreken
+N11577 Geen kinematica gedefinieerd
+N11578 Hoekberekening onmogelijk
+N11579 Kinematica-tabel ontbreekt
+N11580 3DROT activeren
+N11581 PLANE functie niet mogelijk!
+N11582 CC%d : Programma %s start niet
+N11585 PLC strobe niet toegestaan (M%d)
+N11586 Grafische test niet mogelijk
+N11588 PGM wordt in smarT.NC gewijzigd
+N11589 PGM wordt parallel gewijzigd
+N11593 Optie voor best. eenh. ontbr.
+N11595 Wissen van bestand niet mogelijk
+N11597 Storingen aan PL interface
+N11598 PLC partitie: Te weinig geheugen
+N11601 CC%d: TIMEOUT CMD=0x%02X
+N11750 Bestand bestaat niet
+N11751 Bestand opnieuw selecteren!
+N11752 Label naam is al toegewezen
+N11753 Label naam al vaker toegewezen
+N11754 Label naam niet aanwezig
+N11755 Label naam in regel %u toegewezen
+N12214 USB app. kan niet verwijdert worden
+N12215 USB app. verwijdert zonder te sluiten
+N12283 Geen punthoek gedefinieerd
+N12284 Tegenstrijdige data
+N12358 ONDERBREKING in regel %u (%u %%)
+N12759 Opbouw overzicht boom afgebroken
+N12760 MC kast ventilator defect
+N12767 Reentrance impossible
+N12768 Te veel units geprogrammeerd
+N12770 3,3-V voedingsspanning te groot
+N12771 3,3-V voedingsspanning te klein
+N181 Definitie ruwdeel fout
+N520 FCT- of FLT-regel hier niet toegestaan
+N521 Incrementele hoekverwijzing hier niet toegestaan
+N524 Voor FPOOL beide coördinaten opgeven
+N12822 Functie kon niet beëindigd worden (Timeout)
+N12823 Ger.sch.-radius groter 0 ingeven
+N12824 Meer dan 5 assen bij PLC-Pos.
+N12830 Groef positie 0 niet toegestaan
+N12837 Contour subp.: Alleen 1 as gepr.
+N12857 Toegest. progr. lengte overschr.
+N6091 Geen symbolische programmering
+N13066 Preset opslaan niet mogelijk
+N13072 Instellen nulpunten niet toegest
+N13147 PLC programma loopt niet
+N4 Foutieve dataverwerking 3
+N9 Foutieve dataverwerking 8
+N11 Foutieve dataverwerking A
+N12 Foutieve dataverwerking A
+N14 Foutieve dataverwerking A
+N16 Foutieve dataverwerking B
+N19 Foutieve dataverwerking E
+N29 Foutieve dataverwerking O
+N33 Controlesomfout A
+N34 Controlesomfout B
+N40 Bewegingsbewaking %.2s A
+N43 Positieverschil situatie <> Toerental te hoog %.2s
+N13741 Rgl %d: puntkomma (;) ontbreekt
+N13742 Regel %d: te veel trefwoorden
+N13743 Regel %d: verkeerd trefwoord
+N13744 Regel %d: commando onbekend
+N13745 Rgl %d: verkeerde formaatinstr.
+N13746 Rgl %d: onvoll. formaatinstruct.
+N13747 Regel %d: trefwoord te lang
+N13748 Regel %d: index ontbreekt
+N13749 Rg %d: geen hk. sl. (]) na index
+N13750 Maskerbestand niet gevonden
+N13751 Uitv.best. kan niet wrd. gemaakt
+N13154
+N13155 Waarschuwing botsing bevestigd
+N13156 Profibus firmware niet actueel
+N13302 MPFRAGMENTFILE bestaat niet
+N13340 Ingegeven waarde fout
+N13348 DHCP: Ingave niet toegestaan
+N13381 Kolom terugzetten niet toegest.
+N13387 Aanzet ongelijk 0 ingeven
+N13475 Functie niet toegestaan!
+N13476 Klembord is leeg!
+N13477 MC rembesturing defect
+N13478 MC rembesturing defect %.2s
+N13486 Toerental buiten bereik %d%%
+N13487 USB: TNC onderst. toestel niet
+N13752 Bewerken niet toegestaan
+N13753 TOOL.T: aantal tanden=0 gedef.
+N13758 M118 niet toegestaan
+N13761 Bewerken niet toegestaan
+N13769 Niet-gestuurde as %.2s: stilstand
+N13816 Functie niet toegestaan
+N13825 Functie niet vrijgegeven
+N13827 Foutief DXF-bestand
+N13838 Aut. toetsenbordblokk. opgeheven
+N13945 Functie niet toegestaan
+N13957 Bewerken niet toegestaan
+N13958 M136 niet toegestaan met FU/FZ
+N13960 smarT.NC niet toegestaan
+N13961 Increm. invoer niet toegestaan
+N14017 Omschak. Q399 niet toegestaan
+N14019 CC%d timeout stroommeting
+N14020 MC: onjuiste veilige werk- stand
+N14022 CC: machinetoets ingedrukt
+N14023 MC: vrijgavetoets mach. ingedr.
+N14024 CC: vrijgavetoets mach. ingedr.
+N14025 CC: vrijgavetoets ingedrukt
+N14026 CC: vrijgavetoets mach. ingedr.
+N14027 CC: veiligheidsdeuren zijn open
+N14032 Berekende coördinaat te groot
+N14156 Geen gereedschapsas gedefinieerd
+N14253 Let op: voorpos.-hoogte gedef.!
+N14254 MC-vrijgavetoets geactiveerd
+N14255 CC-vrijgavetoets geactiveerd
+N14299 Prog. kan niet geconvert. worden
+N14434 Bereiksdefinitie foutief!
+N14479 Geen nulpunttabel geselecteerd
+N14486 M140 MB MAX niet toegestaan
+N14487 Max. tekenlengte overschreden
+N14518 Gereedschapsnr. niet toegestaan
+N14519 Gereedschapsnaam niet toegestaan
+N14520 Delen door 0 niet toegestaan
+N14521 Worteltrekken niet toegestaan
+N14522 Logaritme niet toegestaan
+N14523 Tangens niet toegestaan
+N14525 Functie met FCL geblokkeerd
+N14550 Arc-cosinus: waarde groter dan 1
+N14551 Arc-sinus: waarde groter dan 1
+N15439 M128:Preset niet veranderen
+N15465 Geen gegevens voor berekening!
+N15466 Bestand ontbreekt of beschadigd
+N15491 LSV2: stop niet toegestaan!
+N15614 Geen tastrichting gedefinieerd
+N15658 Toerent. S > NMAX uit TOOL.T
+N15672 Wijzgn stationsnmn niet mogelijk
+N15673 Kopiëren stations niet mogelijk
+N15674 Wissen stations niet mogelijk
+N15675 TNC kan best.type niet openen!
+N15687 MC-bewegingsbewaking %.2s
+N15688 MC-afremprocedure foutief %.2s
+N15691 GOTO-functie niet toegestaan!
+N15766 Gereedschapsas niet toegestaan
+N15767 Toegestaan verplaatsingsbereik overschreden %.2s
+N15923 PLC-geheugenlayout is gewijzigd
+N15967 Oproep helpsysteem niet mogelijk
+N15973 M141 niet toegestaan
+N16007 Parallelbedrijf niet mogelijk
+N16010 Personenbeveiligingsmodule wordt niet ondersteund
+N16198 PLC-geheugenlayout kon niet worden geïnitialiseerd
+N16362 MC-omvormer RDY=0 %.2s
+N16363 MC-omvormer RDY=1 %.2s
+N16407 Geen gegevensovername mogelijk
+N16408 Asverwisseling niet mogelijk
+N16409 Asverwisseling niet mogelijk
+N16410 Asverwisseling niet mogelijk
+N16411 Invoergrens overschreden
+N16412 Geen wijziging toegestaan
+N16413 Ondefinieerbare fout
+N16561 AFC: spiloverbelasting
+N16563 Positiemeetsysteem %.2s: amplitude te groot
+N16564 Positiemeetsysteem %.2s: amplitude te klein
+N16565 Positiemeetsysteem %.2s: frequentie te hoog
+N46 Positiemeetsysteem %.2s defect
+N16586 PLANE AXIAAL niet toegestaan
+N16593 MC remtest niet geactiveerd
+N16623 Tabeldefinitie bevat fouten
+N16718 Spiltoerental buiten tolerantiegebied %.2s
+N16798 Globale PGM-inst. gedeactiveerd
+N16800 smarT.NC: Best.type niet toeg.
+N16830 Geen wijz. terw. PGM wordt uitg.
+N17063 TNC kan macro niet verwerken
+N17161 ENDAT-interpolatie niet mogelijk %.2s
+N17162 Opvragen el. typeplaatje niet mogelijk
+N17163 Fout TRC-compensatie %.2s
+N17167 'AFC' in NCMACRO.SYS ontbreekt
+N17207 MC foutieve bedrijfstoest. S
+N17384 Onvoldoende intern geheugen
+N17386 Palletbew. niet toegestaan
+N17387 M128 niet toegestaan
+N17390 PLANE-funct.: MOVE niet mogelijk
+N17662 Actief verplaats.bereik foutief
+N17663 DCM: Foutieve statusinst.
+N17735 MC afwijk. nom. en act. waarde te groot %.2s
+N17938 Verbinding EnDat niet mogelijk
+N18060 3DROT niet toegestaan
+N18075 MC 1e overschrijding eindschakelaar %.2s+
+N18076 MC 1e overschrijding eindschakelaar %.2s-
+N18145 Opgeroepen PGM is gewijzigd
+N18146 Meermaals mark. niet toegest
+N18147 Fnct. niet mog. bij directory
+N18148 PGM-bev. niet aan/annuleerbaar
+N18149 Bestandstype beveiligd door MP
+N18150 OPENEN MET niet toegestaan
+N18156 USB-apparaat niet verwijderbaar
+N18157 Geen USB-apparaat gemarkeerd
+N18220 PL-configuratie foutief
+N18280 %s
+N59 FN 14: foutnummer %s
+N18303 CC%d omvormer assen RDY=0 (veiligheidsrelais)
+N18304 CC%d omvormer assen RDY=1 (veiligheidsrelais)
+N18325 MC S-softwarefout %d
+N18371 MC Start test van uitschakelkanalen niet mogelijk
+N18401 Interne fout bij kopiëren!
+N18629 Software-optie niet actief
+N18630 Restore kinematica niet mogelijk
+N18631 Functie niet toegestaan
+N18632 Maten onbew. werkst. tegenstr.
+N18861 HSCI: Hardware fout
+N18862 HSCI: Initialisatiefout
+N18891 M91 of M92 niet mogelijk
+N18903 Ged. voorsturing niet toegest.
+N18904 Directory niet aanwezig
+N18912 CC%d omvormer spil RDY=1 (veiligheidsrelais)
+N18913 CC%d omvormer spil RDY=0 (veiligheidsrelais)
+N18914 Cycli niet correct gegenereerd
+N18915 HSCI: IOC-bestand ontbreekt
+N18928 M128 niet toegestaan!
+N19236 LSV2-overdracht afgebroken!
+N19292 AFC: geen ref.vermogen geregistreerd
+N19293 TOOL.T: te veel snijkanten
+N19398 Meetpositie niet toegestaan
+N19411 PLC programma kon niet worden gestart
+N19440 M-functie-macro niet toegestaan
+N19448 DCM: gereedschapsstatus onbekend
+N13827 Toepassing 'DXF_CONVERTER' niet mogelijk
+N19501 Fout tijdens zelftest
+N19502 Tijdoverschrijding tijdens zelftest
+N19503 Communicatiefout tijdens zelftest
+N19504 Onbekende fout tijdens zelftest
+N19754 Noodstop SPLC
+N19755 Fatale fout SPLC
+N19764 Wissen van GS niet toegestaan
+N20418 Zelftest is gedeactiveerd
+N20457 MC: systeemfout in SPLC-LZS
+N20458 Detectie van PL/MB-hardware foutief
+N20459 HSCI-PL/MB meldt fout
+N20460 HSCI-PL/MB meldt fout
+N20461 MC: systeemfout in SPLC-LZS
+N20462 MC: systeemfout in SPLC-LZS
+N20463 Runtimefout SPLC-programma
+N20464 SPLC kan programma niet laden
+N20465 SPLC-programma gewijzigd
+N20466 SPLC-progr. kan niet draaien
+N20467 Machine niet in veilige modus
+N20469 Configuratie SPLC-ingangen
+N20471 Configuratie SPLC-ingangen
+N20473 Configuratie SPLC-cyclustijd
+N20477 Python-script al gestart
+N20481 Geen toegang tot kinematica mog.
+N20482 Meetpos. niet in verpl.bereik
+N20483 Preset-compensatie niet mogelijk
+N20639 Plaatstabel heeft schrijfbeveil.
+N20650 Wrg. toetsaanslagen beëindigd
+N20661 Rotatie niet toegestaan
+N20662 Maatfactor niet toegestaan
+N20663 Spiegeling niet toegestaan
+N20664 Verschuiving niet toegestaan
+N21084 Handwiel in laadstation plaatsen
+N21096 Preset met verschuiving actief
+N21097 GS-radius=0: geen DCM mogelijk
+N21144 Handwiel: M91/M92 niet toegestaan
+N21219 ACCESSLEVEL: functie geblokkeerd
+N21232 Override-potentiometer?
+N21233 Kinematica GS-houder ontbreekt
+N21254 Testprogramma kan niet worden geopend
+N21255 Testprogramma kan niet worden gegenereerd
+N21256 Testprogramma kan niet worden uitgevoerd
+N21257 DCM: spanmiddel niet actief
+N21258 Bestand niet aanwezig
+N21260 SPLC-programma niet geconfigureerd
+N21261 SPLC runtime-overschrijding MC
+N21426 DCM: object met botsingsbewaking niet eenduidig
+N21675 Onveilige besturingssoftware
+N21701 Regels wissen niet toegestaan
+N21712 Uitschakelen niet mogelijk
+N21948 MC Verkeerd commando van de MC
+N21949 IJlgang-override verkeerd geconfigureerd
+N21932 MC tijdoverschrijding bij remmen %.2s
+N22055 Parallelbedrijf niet mogelijk
+N22060 MC baanoverschrijding bij SS2 %.2s
+N22077 MC omschak. van SOM_2/SOM_3 naar SOM_4 niet mogelijk
+N22077 MC omschak. van SOM_4 naar SOM_2/SOM_3 niet mogelijk
+N22079 Onvoldoende intern geheugen
+N22124 MC SPLC vraagt ongeldige stopreactie
+N22125 MC SPLC vraagt ongeldige veiligheidsfunctie
+N22266 SPLC-programma niet vertaald
+N22330 M94 niet mogelijk
+N23611 Plaatstabel vergrendeld
+N2187 Alarm as %.2s
+N23636 MC rem deactiveren niet mogelijk %.2s
+N23720 Trema's niet toegestaan!
+N23756 Fct. alleen toegest. voor rot.as
+N23767 Bewerken niet toegestaan
+N23768 QR-parameters niet herstelbaar
+N23784 MC ongeldige werkstand van SPLC
+N23830 HSCI/Profibus: configuratiefout
+N23832 MC asgroep verkeerd geconfigureerd %d
+N23835 Fout tijdens zelftest
+N7798 CC%d-fout %d %d %d
+N7798 CC-fout %d %d %d
+N23945 MC systeemtijd MC niet gelijk aan SKERN MC
+N23946 MC systeemtijd MC niet gelijk aan SPLC MC
+N23947 MC systeemtijd MC niet gelijk aan SPLC CC
+N23949 Gereedschapsradius te groot
+N23950 Insteekwijze niet mogelijk
+N23951 Insteekhoek verkeerd gedef.
+N23952 Openingshoek niet gedefinieerd
+N23953 Sleufbreedte te groot
+N23960 MC fout bij kruisvergelijking:  %s
+N23961 MC veilige uitgang niet gelijk:  %s
+N23967 Aanduiding niet gevonden
+N23993 Parametriseringsfout in Python-script
+N24013 MC +3,3V buiten tolerantie
+N24014 MC +3,3VPIC buiten tolerantie
+N24015 MC +12V buiten tolerantie
+N24016 MC toerental vent. 1 te laag
+N24017 MC +5V buiten tolerantie
+N24024 GS-gegevens inconsistent
+N24074 MC ventilator niet herkend
+N24075 MC toerental vent. 2 te laag
+N24128 MC meetfout actuele waarde %d %.2s
+N24130 MC as %.2s wordt geregeld
+N24131 MC spil %.2s wordt geregeld
+N24188 Gewijzigde NC-softwareversie
+N24189 Fouten in SPLC-configuratiegegevens
+N24191 MC afwijking nom./werkelijk toerental te groot %.2s
+N8127 Onbekende LSV2-fout: %x
+N24360 Foute status van veilige uitgang %s
+N24394 Vlak niet te bepalen
+N24438 Bestandsinhoud niet correct
+N24484 Toewijzing GS/snedenr. verkeerd
+N24515 Start onmogelijk tijdens noodstop
+N24585 MOVE niet mogelijk
+N24586 Regelstructuur niet correct
+N24592 SPLC-programma gewijzigd
+N24594 SPLC-programma binaire code MC gewijzigd
+N24596 SPLC-programma binaire code CC gewijzigd
+N24860 MC Foutieve gegevens van SPLC %s
+N24959 Preset mag niet worden ingest.!
+N24967 MC eindschakelaar %.2s+
+N24968 MC eindschakelaar %.2s-
+N24972 Safe Torque Off (-STO.B.x) actief
+N24973 Externe NOODSTOP
+N24974 MC S-ingang %d ongelijk
+N24975 MC aanzet groter SLS %.2s
+N24976 CC aanzet groter SLS %.2s
+N24977 MC bedrijfstoest. ongelijk CC
+N24979 MC toerental groter SLS %.2s
+N24980 CC toerental groter SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC: onjuiste veilige asgroep
+N24983 As niet op testpositie
+N25030 MC S-status reactie actief: %s
+N25031 Bedrading SPLC ingang %d
+N25033 Bedrading noodstop
+N25160 MC SMC-autotestsoftware geladen
+N25237 Verkeerde ingang %s voor dynamische test
+N25243 Onderverdeling tegenstrijdig
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

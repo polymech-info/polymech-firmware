@@ -1,0 +1,137 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "主軸"
+
+msgid "AXIS"
+msgstr "軸向"
+
+msgid "SCREEN"
+msgstr "螢幕"
+
+msgid "MACHINE"
+msgstr "機器"
+
+msgid "CONTROL"
+msgstr "控制器"
+
+msgid "LIGHT"
+msgstr "電燈"
+
+msgid "LIGHT_1"
+msgstr "電燈 1"
+
+msgid "LIGHT_2"
+msgstr "電燈 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "氣體收集器"
+
+msgid "OEL_AGGREGATE"
+msgstr "油液收集器"
+
+msgid "DRIVES"
+msgstr "驅動器"
+
+msgid "MONDAY_SHORT"
+msgstr "星期一"
+
+msgid "TUESDAY_SHORT"
+msgstr "星期二"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "星期三"
+
+msgid "THURSDAY_SHORT"
+msgstr "星期四"
+
+msgid "FRIDAY_SHORT"
+msgstr "星期五"
+
+msgid "SUTURDAY_SHORT"
+msgstr "星期六"
+
+msgid "SUNDAY_SHORT"
+msgstr "星期日"
+
+msgid "SETUP"
+msgstr "設定"
+
+msgid "ADVANCED"
+msgstr "進階設定"
+
+msgid "INFO"
+msgstr "訊息"
+
+msgid "WARMUP_PROGRAM"
+msgstr "暖機程式"
+
+msgid "STANDBY"
+msgstr "待命"
+
+msgid "SWITCH_OFF"
+msgstr "關機"
+
+msgid "TIME"
+msgstr "時間"
+
+msgid "AXIS_FILTER"
+msgstr "軸向過濾器"
+
+msgid "SPINDLE_FILTER"
+msgstr "主軸過濾器"
+
+msgid "SWITCH_ON"
+msgstr "啟動"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "使用EnergyOpt可最佳化\n"
+"機台效率，\n"
+"未使用的電子驅動裝置\n"
+"可以切換到待機模式\n"
+"或關機。\n"
+"- 按軟鍵 EDIT\n"
+"- 啟動相關設備\n"
+"並選擇時間\n"
+"- 使用軟鍵EDIT\n"
+"離開編輯模式\n"
+"- 使用 軟鍵開啟/關閉\n"
+"啟動或關閉所有選項"
+
+msgid "MILLISECOND"
+msgstr "毫秒"
+
+msgid "MILLISECONDS"
+msgstr "毫秒"
+
+msgid "SECOND"
+msgstr "秒"
+
+msgid "SECONDS"
+msgstr "秒"
+
+msgid "MINUTE"
+msgstr "分鐘"
+
+msgid "MINUTES"
+msgstr "分鐘"
+
+msgid "HOUR"
+msgstr "小時"
+
+msgid "HOURS"
+msgstr "小時"
+
+msgid "DAY"
+msgstr "天數"
+
+msgid "DAYS"
+msgstr "天數"
+
+msgid "WEEK"
+msgstr "週"
+
+msgid "WEEKS"
+msgstr "週"
+

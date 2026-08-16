@@ -1,0 +1,5 @@
+/mnt/plc oem:object_r:base_t
+/mnt/plc/.* oem:object_r:base_t
+/mnt/plc/.*\.py oem:object_r:netapp_t
+
+

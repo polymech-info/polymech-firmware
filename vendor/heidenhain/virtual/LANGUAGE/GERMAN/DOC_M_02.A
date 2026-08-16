@@ -1,0 +1,22 @@
+\n  M33 - AFC Spindel rechts ein
+\n  M34 - AFC Spindel links ein
+\n  M35 - AFC Spindel aus
+\n  M41 - Anwahl Spindel 1
+\n  M42 - Anwahl Spindel 2
+\n  M44 - Klemmbetrieb aus Achse 4
+\n  M45 - Klemmbetrieb aus Achse 5
+\n  M46 - Klemmbetrieb aus Achse 6
+\n  M50 - Späneförderer aus
+\n  M51 - Späneförderer ein
+\n  M54 - AB Kopf aktivieren
+\n  M55 - AB Kopf C Tisch aktivieren
+\n  M56 - B Kopf C Tisch aktivieren
+\n  M57 - AC Tisch aktivieren
+\n  M58 - XYZ Kinematik aus
+\n  M59 - Palettenaufnahme leeren
+\n  M60 - Paletten Wechsel
+\n  M61 - Pendeln Seite 1
+\n  M62 - Pendeln Seite 2
+\n  M64 - Klemmbetrieb ein Achse 4
+\n  M65 - Klemmbetrieb ein Achse 5
+\n  M66 - Klemmbetrieb ein Achse 6

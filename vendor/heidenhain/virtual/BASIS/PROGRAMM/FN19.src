@@ -1,0 +1,237 @@
+*-----------------------------------------------------------------------------
+*  FN19 Funktionen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Das Modul wurde eingeführt, um spezielle PLC Funktionen zu starten, die
+*    zusätzliche Daten benötigen.
+*    Mit FN19 werden 2 Doppelwörter an die PLC übertragen. Im PLC Basis
+*    Programm wird das 1. Doppelwort (D280) als Kennung und das 2. Doppelwort
+*    (D284) für Daten verwandt.
+*    Folgende Funktionen werden unterstützt.
+*      Funktion                          Kennung (D280)  Daten (D284)
+*        Achsen Klemmbetrieb ein           K+99990         Achsen bitcodiert
+*        Achsen Klemmbetrieb aus           K+99991         Achsen bitcodiert
+*
+*        Tuning Mode                       K+99993         0: standard
+*                                                          1: genau
+*                                                          2: sauber
+*                                                          3: schruppen
+*        Freies Drehen                     K+99994         Vorschub [°/min]
+*        Achs-Kompensat (Zeile) aktivieren K+99998         Zeile in Config.cma
+*        Vorauswahl PLC Preset (M79)       K+99999         Zeile in Preset.tab
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_Strobe_FN19                           M
+#define /s    ML_CMA_Zeile_angewaehlt                  M
+#define /s    ML_CMA_Zeile_angewaehlen                 M
+
+#define /s    BL_FN19_PLC_Funktion                     B
+#define /s    BL_Identifier                            B
+
+#define /s    BL_Fehler_Code                           B
+
+#include Mac_Lib.inc
+
+GLOBAL FN19
+
+;----------------------------
+LBL FN19
+;----------------------------
+
+  L      NP_M4075_Strobe_FN19
+  AN     ML_Strobe_FN19
+  IFT
+    L      NP_D280_FN19_Zahlenwert_1
+    /      K+10000
+    <=     K+99999
+    A[
+      L      NP_D280_FN19_Zahlenwert_1
+      /      K+10000
+      >=     K+99990
+    ]
+    IFT
+      L      NP_D280_FN19_Zahlenwert_1
+      /      K+10000
+      -      K+99990
+      =      BL_FN19_PLC_Funktion
+    ELSE
+      L      NP_M4075_Strobe_FN19
+      S      PN_M4095_Quit_FN19
+      EMT
+    ENDI
+  ENDI
+
+  LN      NP_M4075_Strobe_FN19
+  AN      ML_Strobe_FN19
+  EMT
+
+  CASE   BL_FN19_PLC_Funktion
+    CM     Klemmbetrieb_ein            ;99990
+    CM     Klemmbetrieb_aus            ;99991
+    CM     Keine_Funktion              ;99992
+    CM     Tuning_Mode                 ;99993
+    CM     Freies_Drehen               ;99994
+    CM     Keine_Funktion              ;99995
+    CM     Keine_Funktion              ;99996
+    CM     Keine_Funktion              ;99997
+    CM     CMA_Kompensation            ;99998
+    CM     Preset_PLC                  ;99999
+  ENDC
+
+  L      NP_M4075_Strobe_FN19
+  =      ML_Strobe_FN19
+
+EM
+
+;----------------------------
+LBL Keine_Funktion
+
+  L      MG_Eins_Merker
+  S      PN_Fehler_Wert_unzulaessig
+
+EM
+
+;----------------------------
+LBL Klemmbetrieb_ein                   ;99990
+
+* Auswertung erfolgt im Modul Achsen.src
+
+EM
+
+;----------------------------
+LBL Klemmbetrieb_aus                   ;99991
+
+* Auswertung erfolgt im Modul Achsen.src
+
+EM
+
+;----------------------------
+LBL Tuning_Mode                        ;99993
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  >      K+3
+  S      PN_Fehler_Wert_unzulaessig
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  <      K+0
+  S      PN_Fehler_Wert_unzulaessig
+
+  LN     PN_Fehler_Wert_unzulaessig
+  IFT
+    L      NP_D284_FN19_Zahlenwert_2
+    /      K+10000
+    =      BG_Tuning_Mode
+
+    L      NP_M4075_Strobe_FN19
+    S      PN_M4095_Quit_FN19
+  ELSE
+    L      K+0
+    =      BG_Tuning_Mode
+  ENDI
+
+EM
+
+;----------------------------
+LBL Freies_Drehen                      ;99994
+
+  LN     MG_Freies_Drehen_aktiv
+  A      NP_M4075_Strobe_FN19
+  S      PN_M4095_Quit_FN19
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  =      DG_Drehen_Rund_Achs_Vorschub
+
+  L      DG_Drehen_Rund_Achs_Vorschub
+  >      DG_MP1010_Eilgang_Drehen_Rund_Achse
+  S      PN_Fehler_Wert_unzulaessig
+  IFT
+    L      DG_Vorschub_PLC_Pos[KG_Drehen_Rund_Achs_Index]
+    >      DG_MP1010_Eilgang_Drehen_Rund_Achse
+    IFT
+      L      DG_MP1010_Eilgang_Drehen_Rund_Achse
+      =      DG_Drehen_Rund_Achs_Vorschub
+    ELSE
+      L      DG_Vorschub_PLC_Pos[KG_Drehen_Rund_Achs_Index]
+      =      DG_Drehen_Rund_Achs_Vorschub
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL CMA_Kompensation
+
+  L      NP_M4075_Strobe_FN19
+  AN     ML_Strobe_FN19
+  R      ML_CMA_Zeile_angewaehlt
+
+  L      NP_M4075_Strobe_FN19
+  A      ML_CMA_Zeile_angewaehlt
+  A      ML_CMA_Zeile_angewaehlen
+  R      ML_CMA_Zeile_angewaehlen
+  S      PN_M4095_Quit_FN19
+
+
+  L      ML_CMA_Zeile_angewaehlt
+  EMT
+
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   CMA_Submit
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+  =N     ML_CMA_Zeile_angewaehlen
+
+EM
+
+;----------------------------
+LBL CMA_Submit
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  PSW
+  CM     9095                          ;Achs-Fehler-Kompensation aktivieren
+  PL     BL_Fehler_Code
+
+  M_Modul_Fehler_anzeigen
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  S      ML_CMA_Zeile_angewaehlt
+  S      PN_M4095_Quit_FN19
+
+EM
+
+;----------------------------
+LBL Preset_PLC                         ;99999
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  >      K$7F
+  S      PN_Fehler_Wert_unzulaessig
+
+  L      NP_D284_FN19_Zahlenwert_2
+  /      K+10000
+  <=     K+0
+  S      PN_Fehler_Wert_unzulaessig
+
+  LN     PN_Fehler_Wert_unzulaessig
+  IFT
+    L      NP_D284_FN19_Zahlenwert_2
+    /      K+10000
+    =      BG_FN19_PLC_Preset_Nr
+
+    L      NP_M4075_Strobe_FN19
+    S      PN_M4095_Quit_FN19
+  ELSE
+    L      K+0
+    =      BG_FN19_PLC_Preset_Nr
+  ENDI
+
+EM

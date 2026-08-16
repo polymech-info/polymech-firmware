@@ -1,0 +1,228 @@
+*-----------------------------------------------------------------------------
+*  Machine Parameter Part File loading
+*-----------------------------------------------------------------------------
+*  Module Description
+*    Original machine parameter MP4310.5 <NP_W986_color_adjustment> is cancelled.
+*    New function for enable/disable additional axes
+*
+*    MP part file
+*    PLC:\MP\MP_Part0.A -> without any additional axis
+*    PLC:\MP\MP_Part1.A -> enabling 4th axis
+*    PLC:\MP\MP_Part2.A -> enabling 5th axis
+*    PLC:\MP\MP_Part3.A -> enabling 6th axis
+*    PLC:\MP\MP_Part4.A -> EBM with V/H head & DCM -> for V/H head removed
+*-----------------------------------------------------------------------------
+
+#define /s    BL_MP_part_file_identifier               B              *;EUMACH
+#define /s    BL_MP_part_file2_identifier              B              *;EUMACH
+#define /s    BL_cycle332_MP_file_identifier           B              *;EUMACH
+
+#define /s    ML_temp1_1st_additional_axis_mounted     M              *;EUMACH
+#define /s    ML_temp2_1st_additional_axis_mounted     M              *;EUMACH
+#define /s    ML_p_pulse_1st_additional_axis_mounted   M              *;EUMACH
+#define /s    ML_n_pulse_1st_additional_axis_mounted   M              *;EUMACH
+#define /s    ML_error_selection_additional_axis       M              *;EUMACH
+#define /s    ML_MP_part_file_processing               M              *;EUMACH
+#define /s    ML_cycle332_MP_file_processing           M              *;EUMACH
+
+#define /s    WL_number_MP_part_file                   W
+
+#define /s    KL_string_2                              K+2
+
+#include Mac_Lib.inc
+
+GLOBAL MP_part_file
+
+;----------------------------
+LBL MP_part_file
+;----------------------------
+
+  L      NP_1st_additional_axis_on_off_selection
+#if MT = &MT_3A
+  O[
+    L      NP_DCM_option_purchased
+    AN     MG_automatic_V_H_head_installed
+  ]
+#endif
+  IFT
+    L      NP_1st_additional_axis_on_off_selection
+    IFT
+      LN     I_1st_additional_axis_mounted
+      O      ML_temp1_1st_additional_axis_mounted
+      AN     ML_p_pulse_1st_additional_axis_mounted
+      =      ML_temp1_1st_additional_axis_mounted
+
+      L      ML_temp1_1st_additional_axis_mounted
+      A      I_1st_additional_axis_mounted            ;This rising edge signal does not turned on when the input sensor
+      =      ML_p_pulse_1st_additional_axis_mounted   ;signal is already = 1 before PLC compiled.
+
+      LN     I_1st_additional_axis_mounted
+      A      ML_temp2_1st_additional_axis_mounted
+      =      ML_n_pulse_1st_additional_axis_mounted
+
+      L      I_1st_additional_axis_mounted
+      =      ML_temp2_1st_additional_axis_mounted
+
+      L      ML_p_pulse_1st_additional_axis_mounted
+      O      ML_n_pulse_1st_additional_axis_mounted
+      S      ML_error_selection_additional_axis
+
+      L      ML_error_selection_additional_axis
+      =      PN_error_selection_additional_axis
+    ENDI
+
+    L      NP_M4172_1st_PLC_run_after_power_on
+    O      NP_M4173_1st_PLC_run_after_compile
+    O      NP_M4174_1st_PLC_run_after_MP_edit
+    S      ML_MP_part_file_processing
+
+    L      ML_MP_part_file_processing
+    IFT
+      RPLY   BL_MP_part_file_identifier
+      ==     K+0
+      IFT
+        SUBM   MP_part_file_submit
+        =      BL_MP_part_file_identifier
+        ==     K+0
+        S      PN_error_submit_spawn_queue_full
+      ENDI
+    ENDI
+  ELSE
+#if Cycle_332 = &active
+    L      MG_MP_are_read_p_pulse
+    S      ML_cycle332_MP_file_processing
+
+    L      ML_cycle332_MP_file_processing
+    IFT
+      RPLY   BL_cycle332_MP_file_identifier
+      ==     K+0
+      IFT
+        SUBM   Cycle332_MP_file_submit
+        =      BL_cycle332_MP_file_identifier
+        ==     K+0
+        S      PN_error_submit_spawn_queue_full
+      ENDI
+    ENDI
+#endif
+  ENDI
+
+EM
+
+;----------------------------
+LBL MP_part_file_submit
+
+  L      NP_1st_additional_axis_on_off_selection
+  AN     I_1st_additional_axis_mounted
+  IFT
+    L      S"PLC:\MP\MP_PART0.A"
+    =      S2
+
+    PS     KL_string_2
+    CM     9034
+    PLW
+    <>     K+0
+    M_error_display(KG_error_module_9034)
+  ENDI
+
+  L      NP_1st_additional_axis_on_off_selection
+  A      I_1st_additional_axis_mounted
+  IFT
+    L      S"PLC:\MP\MP_PART1.A"
+    =      S2
+
+    PS     KL_string_2
+    CM     9034
+    PLW
+    <>     K+0
+    M_error_display(KG_error_module_9034)
+  ENDI
+
+#if MT = &MT_3A
+  L      NP_DCM_option_purchased
+  AN     MG_automatic_V_H_head_installed
+  IFT
+    L      S"PLC:\MP\MP_PART4.A"
+    =      S2
+
+    PS     KL_string_2
+    CM     9034
+    PLW
+    <>     K+0
+    M_error_display(KG_error_module_9034)
+  ENDI
+#endif
+
+  L      MG_marker_one
+  S      MG_MP_read_after_part_files                                  *;MP reading after part file activated
+  R      ML_MP_part_file_processing
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+#if Cycle_332 = &active
+;----------------------------
+LBL Cycle332_MP_file_submit
+
+  CASE   BG_tuning_mode
+    CM     Part_file_light
+    CM     Part_file_middle
+    CM     Part_file_heavy
+  ENDC
+
+  PS     KL_string_2
+  CM     9034
+  PLW
+  <>     K+0
+  M_error_display(KG_error_module_9034)
+
+  L      MG_marker_one
+  S      MG_MP_read_after_part_files                                  *;MP reading after part file activated
+  R      ML_cycle332_MP_file_processing
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------
+LBL Part_file_light
+
+  L      S"PLC:\MP\MPFRAGMENT\TUNING\LIGHT.A"
+  =      S2
+
+EM
+
+;----------------------------
+LBL Part_file_middle
+
+  L      S"PLC:\MP\MPFRAGMENT\TUNING\MIDDLE.A"
+  =      S2
+
+EM
+
+;----------------------------
+LBL Part_file_heavy
+
+  L      S"PLC:\MP\MPFRAGMENT\TUNING\HEAVY.A"
+  =      S2
+
+EM
+#endif

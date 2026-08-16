@@ -1,0 +1,988 @@
+PLC SOFTKEY Project File - Version 1.0
+
+SKPATH PLC:\BASIS\SOFTKEYS\BPJ\BMX
+SOFTKEY Machine_function.bmx SK_Machine
+SOFTKEY NC_start.bmx SK_NC_Start
+SOFTKEY NC_stop.bmx SK_NC_Stop
+SOFTKEY Axes_plus.bmx SK_Axes_plus
+SOFTKEY Axes_minus.bmx SK_Axes_minus
+SOFTKEY Rapid_traverse.bmx SK_Rapid_traverse
+SOFTKEY Lubrication.bmx SK_Lubrication
+SOFTKEY Back.bmx SK_Back
+SOFTKEY Chip_conveyor.bmx SK_Chip_conveyor
+SOFTKEY Chip_conveyor_reverse.bmx SK_Chip_conveyor_rev
+SOFTKEY Chip_conveyor_interval.bmx SK_Chip_conveyor_int
+SOFTKEY Chip_conveyor_setup.bmx SK_Chip_conveyor_setup
+SOFTKEY Back.bmx SK_Back_1
+SOFTKEY Chip_conveyor_setup.bmx SK_Chip_conveyor_setup_
+SOFTKEY Back.bmx SK_Back_28
+SOFTKEY Lubrication.bmx SK_Lubrication_1
+SOFTKEY Working_area.bmx SK_Working_area
+SOFTKEY Alternating_table.bmx SK_Alternating_table
+SOFTKEY 3D_head.bmx SK__3D_head
+SOFTKEY 3D_head_set.bmx SK__3D_head_set
+SOFTKEY Emergency_end_position.bmx SK_Emergency_end
+SOFTKEY Back.bmx SK_Back_2
+SOFTKEY Spindle_function.bmx SK_Spindle
+SOFTKEY Spindle_on.bmx SK_Spindle_start
+SOFTKEY Spindle_off.bmx SK_Spindle_stop
+SOFTKEY Spindle_tip_cw.bmx SK_Spindle_M3_jog
+SOFTKEY Spindle_tip_ccw.bmx SK_Spindle_M4_jog
+SOFTKEY Spindle_M19.bmx SK_Spindle_M19
+SOFTKEY Back.bmx SK_Back_29
+SOFTKEY Coolant_M08.bmx SK_Coolant_M08
+SOFTKEY Coolant_M07.bmx SK_Coolant_M07
+SOFTKEY Back.bmx SK_Back_3
+SOFTKEY Coolant_M17_additional.bmx SK_Coolant_M17_addit
+SOFTKEY TSxxx_M16_air_blow.bmx SK_TSxxx_M16_air_blow
+SOFTKEY Coolant_dry_run.bmx SK_Dry_Run
+SOFTKEY Back.bmx SK_Back_21
+SOFTKEY Free_rot_override.bmx SK_Free_rot_override
+SOFTKEY Free_rot_cw.bmx SK_Free_rotation_cw
+SOFTKEY Free_rot_ccw.bmx SK_Free_rotation_ccw
+SOFTKEY Back.bmx SK_Back_31
+SOFTKEY TC_function.bmx SK_Tool
+SOFTKEY TC_enable_quit.bmx SK_TC_enable_quit
+SOFTKEY T_unclamp_clamp.bmx SK_T_unclamp_clamp
+SOFTKEY T_torque_monitoring.bmx SK_T_torque_monit
+SOFTKEY TC_magazine_load.bmx SK_TC_magazine_load
+SOFTKEY TC_magazine_cw.bmx SK_TC_magazine_cw
+SOFTKEY TC_magazine_ccw.bmx SK_TC_magazine_ccw
+SOFTKEY TC_magazine_T_in.bmx SK_Tool_in
+SOFTKEY TC_magazine_T_out.bmx SK_Tool_out
+SOFTKEY Back.bmx SK_TC_mag_load_back
+SOFTKEY Back.bmx SK_Back_30
+SOFTKEY IPC_61x0.bmx SK_IPC_61x0_Menu
+SOFTKEY IPC_61x0_on_off.bmx SK_IPC_61x0_active
+SOFTKEY Override_S_F_IPC.bmx SK_Override_S_F_IPC
+SOFTKEY Override_S_IPC.bmx SK_Override_S_IPC
+SOFTKEY Override_Fmax_IPC.bmx SK_Override_Fmax_IPC
+SOFTKEY Override_F_IPC.bmx SK_Override_F_IPC
+SOFTKEY Back.bmx SK_Back_25
+SOFTKEY Override_S_plus.bmx SK_Override_S_plus
+SOFTKEY Override_S_100.bmx SK_Override_S_100
+SOFTKEY Override_F_100.bmx SK_Override_F_100
+SOFTKEY Override_S_minus.bmx SK_Override_S_minus
+SOFTKEY Override_F_100.bmx SK_Override_F_100_1
+SOFTKEY Information.bmx SK_Info
+SOFTKEY Diagnosis_function.bmx SK_Diagnosis
+SOFTKEY Diagnosis.bmx SK_Machine_diagnosis
+SOFTKEY Diagnosis_drive.bmx SK_Diagnosis_drive
+SOFTKEY Diagnosis_drive_step.bmx SK_Diagnosis_drive_step
+SOFTKEY Diagnosis_TC.bmx SK_Diagnosis_TC
+SOFTKEY Diagnosis_TC_magazine.bmx SK_Diagnosis_Tmag_axis
+SOFTKEY Diagnosis_TC_magazine.bmx SK_Diagnosis_Tmag_count
+SOFTKEY Back.bmx SK_Back_6
+SOFTKEY Temp_compensation.bmx SK_Temp_comp_tab
+SOFTKEY Temp_compensation_set.bmx SK_Temp_comp_tab_set
+SOFTKEY Temp_compensation.bmx SK_Temp_compensation
+SOFTKEY Back.bmx SK_Back_7
+SOFTKEY Status.bmx SK_Status
+SOFTKEY Status_general.bmx SK_Status_general
+SOFTKEY Status_strobe.bmx SK_Status_strobe
+SOFTKEY Status_axes.bmx SK_Status_axes
+SOFTKEY Status_spindle.bmx SK_Status_spindle
+SOFTKEY Status_PLC_position.bmx SK_Status_PLC_posit
+SOFTKEY Back.bmx SK_Back_10
+SOFTKEY Documentation.bmx SK_Documentation
+SOFTKEY Documentation_M_function.bmx SK_Docu_M_function
+SOFTKEY Documentation_IO_interface.bmx SK_Docu_IO_interface
+SOFTKEY Documentation_graphic.bmx SK_Docu_graphic
+SOFTKEY Back.bmx SK_Back_9
+SOFTKEY Back.bmx SK_Back_32
+SOFTKEY Error_queue.bmx SK_Error_queue
+SOFTKEY Log_PLC_Debug.bmx SK_Log_PLC_Debug
+SOFTKEY Back.bmx SK_Back_8
+SOFTKEY selfTest.bmx SK_Safe_tests
+SOFTKEY fsSelfTestStart.bmx SK_Self_test_start
+SOFTKEY fsSelfTestBlocked.bmx SK_Self_test_blocked
+SOFTKEY fsBrakeTestStart.bmx SK_Brake_test_start
+SOFTKEY back.bmx SK_Back_4
+SOFTKEY Python_Tools.bmx SK_Python_Tools
+SOFTKEY Energy_Option.bmx SK_Energy_Option_1
+SOFTKEY TNC_Mail.bmx SK_TNC_Mail
+SOFTKEY camera.bmx SK_workspace_camera
+SOFTKEY camera_status.bmx SK_camera_status
+SOFTKEY camera_medium.bmx SK_camera_PLCmedium
+SOFTKEY camera_large.bmx SK_camera_PLClarge
+SOFTKEY camera_ontop.bmx SK_camera_onTop
+SOFTKEY camera_off.bmx SK_camera_off
+SOFTKEY Back.bmx SK_Back_22
+SOFTKEY Python_demo.bmx SK_HelloWorldPy
+SOFTKEY Back.bmx SK_Back_5
+SOFTKEY Axes_compensation.bmx SK_Axis_comp_1
+SOFTKEY Axes_compensation_set.bmx SK_Axis_comp_set_1
+SOFTKEY Mode_line_0_PLC_window.bmx SK_Mode_0_PLC_window
+SOFTKEY Mode_line_1_PLC_window.bmx SK_Mode_1_PLC_window
+SOFTKEY Auto_power_off.bmx SK_Auto_power_off
+SOFTKEY MP_config.bmx SK_MP_config_total
+SOFTKEY Save.bmx SK_Save
+SOFTKEY BACK.bmx SK_Back_11
+SOFTKEY MP_data.bmx SK_MP_data_total
+SOFTKEY Save.bmx SK_Save_1
+SOFTKEY BACK.bmx SK_Back_12
+SOFTKEY MP_data_spindle.bmx SK_MP_data_spindle
+SOFTKEY Save.bmx SK_Save_2
+SOFTKEY BACK.bmx SK_Back_13
+SOFTKEY MP_data_PLC_feed.bmx SK_MP_data_PLC_feed
+SOFTKEY Save.bmx SK_Save_4
+SOFTKEY BACK.bmx SK_Back_15
+SOFTKEY MP_data_TC.bmx SK_MP_data_TC
+SOFTKEY Save.bmx SK_Save_6
+SOFTKEY BACK.bmx SK_Back_17
+SOFTKEY MP_data_pos_ref.bmx SK_MP_data_pos_ref
+SOFTKEY Save.bmx SK_Save_7
+SOFTKEY BACK.bmx SK_Back_18
+SOFTKEY MP_data_T_comp.bmx SK_MP_data_T_comp
+SOFTKEY Save.bmx SK_Save_5
+SOFTKEY BACK.bmx SK_Back_16
+SOFTKEY MP_data_pallet.bmx SK_MP_data_pallet
+SOFTKEY Save.bmx SK_Save_3
+SOFTKEY BACK.bmx SK_Back_14
+SOFTKEY MP_data_3D_head.bmx SK_MP_data_3D_head
+SOFTKEY Save.bmx SK_Save_8
+SOFTKEY BACK.bmx SK_Back_19
+SOFTKEY MP_data_other.bmx SK_MP_data_other
+SOFTKEY Save.bmx SK_Save_9
+SOFTKEY BACK.bmx SK_Back_20
+TX #IMa SK_HR_Machine
+TX #ILub SK_HR_Lubrication
+TX #IChp+ SK_HR_Chip_conv
+TX #IChp- SK_HR_Chip_conv_back
+TX #IMa2 SK_HR_guard_power_on
+TX #IPon SK_HR_Power_on
+TX #IDoor SK_HR_guard_open
+TX #A133 SK_HR_Back_9
+TX #A133 SK_HR_Back
+TX #IS SK_HR_Spindle
+TX #ICool SK_HR_Coolant
+TX #IM08 SK_HR_Coolant_M08
+TX #IM07 SK_HR_Coolant_M07
+TX #IM17 SK_HR_Coolant_M17
+TX #IDry SK_HR_Coolant_Dry
+TX #A133 SK_HR_Back_4
+TX #IScw SK_HR_Spindle_M3_jog
+TX #ISccw SK_HR_Spindle_M4_jog
+TX #IM19 SK_HR_Spindle_M19
+TX #A133 SK_HR_Back_01
+TX #IT SK_HR_Tool
+TX #IQuit SK_HR_TC_enable_quit
+TX #ITclp SK_HR_TC_unclamp_clamp
+TX #A133 SK_HR_Back_1
+TX #ITmag SK_HR_Tool_magazine
+TX #ILoad SK_HR_TC_magazine_load
+TX #IMag#A128 SK_HR_TC_magazine_cw
+TX #IMag#A129 SK_HR_TC_magazine_ccw
+TX #A133 SK_HR_Back_3
+TX #A133 SK_Back_27
+
+SKMENU RootMenu VROOT
+SKNEXTDEF 0x17D 
+NODE SK_Machine Machine          
+NODE SK_Spindle Spindle          
+NODE SK_Tool Tool          
+
+#if CFG_IPC_61x0 = "aktiv"
+NODE SK_IPC_61x0_Menu IPC_61x0_Menu          
+#endif
+
+
+#if (CFG_IPC_61x0 = "inaktiv") and (CFG_Override_Eilgang_statt_Spindel = "inaktiv")
+BLANK
+#endif
+
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+#endif
+
+
+#if (CFG_Override_Eilgang_statt_Spindel = "inaktiv") and (CFG_Resolution = "1280x1024")
+BLANK
+#endif
+
+
+#if CFG_Override_Eilgang_statt_Spindel = "aktiv"
+ACTION SK_Override_S_plus  STATUS:MG_SK_Override_S_plus          
+#endif
+
+
+#if (CFG_Override_Eilgang_statt_Spindel = "inaktiv") and (CFG_Resolution = "1280x1024")
+BLANK
+#endif
+
+CHECK SK_Override_S_100  STATUS:MG_SK_Override_S_100         
+
+#if CFG_Override_Eilgang_statt_Spindel = "inaktiv"
+CHECK SK_Override_F_100  STATUS:MG_SK_Override_F_100         
+#endif
+
+
+#if CFG_Override_Eilgang_statt_Spindel = "aktiv"
+ACTION SK_Override_S_minus  STATUS:MG_SK_Override_S_minus          
+CHECK SK_Override_F_100_1  STATUS:MG_SK_Override_F_100         
+#endif
+
+
+#ifdef NICHT_BENUTZT
+STATE SK_Info        STATES:4   HelpId:10000200
+#endif
+
+NODE SK_Diagnosis Diagnosis          
+
+#if (CFG_Maschinen_Typ = "MSU_530") or (CFG_Simulation = "inaktiv")
+NODE SK_Safe_tests Safe_tests          
+#endif
+
+
+#if CFG_Python = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_Python = "aktiv"
+NODE SK_Python_Tools Python_Tools          
+#endif
+
+CHECK SK_Axis_comp_1  STATUS:MG_SK_Achs_Komp_Anzeige  SMALLWINDOW:M_linear_axes_comp.a       
+CHECK SK_Axis_comp_set_1  STATUS:MG_SK_Achs_Komp_Eingabe  SMALLWINDOW:M_linear_axes_comp_set.a       
+
+#if CFG_Override_Eilgang_statt_Spindel = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+#endif
+
+PULSE SK_Mode_0_PLC_window  STATUS:MG_SK_Mode_Zeile_0          
+PULSE SK_Mode_1_PLC_window  STATUS:MG_SK_Mode_Zeile_1          
+CHECK SK_Auto_power_off  STATUS:MG_auto_HS_aus_nach_END_PGM         
+ENDSKMENU
+
+
+SKMENU Machine
+CHECK SK_NC_Start  STATUS:MG_SK_Status_NC_Start         
+CHECK SK_NC_Stop  STATUS:MG_SK_Status_NC_Stop         
+ACTION SK_Axes_plus  STATUS:MG_SK_Achsen_plus          
+ACTION SK_Axes_minus  STATUS:MG_SK_Achsen_minus          
+
+#if (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+CHECK SK_Rapid_traverse  STATUS:MG_SK_Taste_Eilgang         
+#endif
+
+
+#if (CFG_Schmierung_Achsen = "aktiv") and (CFG_Resolution ! "1280x1024") and (CFG_Maschinen_Typ ! "PS_OEM") and (CFG_Maschinen_Typ ! "PS")
+CHECK SK_Lubrication  STATUS:MG_SK_Schmierung         
+#endif
+
+
+#if (CFG_Schmierung_Achsen = "inaktiv") and (CFG_Resolution ! "1280x1024")
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BACK SK_Back  STATUS:MG_SK_back       
+#endif
+
+CHECK SK_Chip_conveyor  STATUS:MG_SK_Spaenefoerderer         
+ACTION SK_Chip_conveyor_rev  STATUS:MG_SK_Spaene_zurueck          
+CHECK SK_Chip_conveyor_int  STATUS:MG_SK_Intervall_Spaenefoerderer         
+
+#if (CFG_Maschinen_Typ ! "PS_OEM") and (CFG_Maschinen_Typ ! "PS") or (CFG_Resolution ! "1280x1024")
+CHECK SK_Chip_conveyor_setup  STATUS:MG_SK_Setup_Spaenefoerderer  SMALLWINDOW:M_chip_con_interval_set.a       
+#endif
+
+
+#if CFG_Resolution = "1280x1024"
+BACK SK_Back_1  STATUS:MG_SK_back       
+#endif
+
+
+#if ((CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")) and (CFG_Resolution = "1280x1024")
+CHECK SK_Chip_conveyor_setup_  STATUS:MG_SK_Setup_Spaenefoerderer  SMALLWINDOW:M_chip_con_interval_set.a       
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+BACK SK_Back_28  STATUS:MG_SK_back       
+#endif
+
+
+#if (CFG_Schmierung_Achsen = "aktiv") and (CFG_Resolution = "1280x1024") or (CFG_Maschinen_Typ = "PS_OEM") or (CFG_Maschinen_Typ = "PS")
+CHECK SK_Lubrication_1  STATUS:MG_SK_Schmierung         
+#endif
+
+
+#if (CFG_Schmierung_Achsen = "inaktiv") and (CFG_Resolution = "1280x1024") and (CFG_Maschinen_Typ ! "PS_OEM") and (CFG_Maschinen_Typ ! "PS")
+BLANK
+#endif
+
+
+#if CFG_Arbeitsraum_Ueberwachung = "aktiv"
+CHECK SK_Working_area  STATUS:MG_SK_Arbeitsraum_Ueberwachung_aus         
+#endif
+
+
+#if CFG_Arbeitsraum_Ueberwachung = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+CHECK SK_Alternating_table ENABLE:MG_Freigabe_PLC_Strobe STATUS:MG_Pendeln_ein         
+#endif
+
+
+#if CFG_Paletten_Wechsel ! "Pendel_Betrieb"
+BLANK
+#endif
+
+
+#if CFG_3D_Kopf = "aktiv"
+CHECK SK__3D_head  STATUS:MG_3D_Kopf_Anzeige  SMALLWINDOW:3D_head.a       
+#endif
+
+
+#if CFG_3D_Kopf = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_3D_Kopf = "aktiv"
+CHECK SK__3D_head_set ENABLE:MG_Spindel_aus STATUS:MG_3D_Kopf_Eingabe  SMALLWINDOW:3D_head_enter.a       
+#endif
+
+
+#if CFG_3D_Kopf = "inaktiv"
+BLANK
+#endif
+
+
+#if (CFG_Maschinen_Typ ! "PS_OEM") and (CFG_Maschinen_Typ ! "PS")
+ACTION SK_Emergency_end  STATUS:MG_SK_Achsen_Freifahren          
+#endif
+
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_2  STATUS:MG_SK_back       
+ENDSKMENU
+
+
+SKMENU Spindle
+PULSE SK_Spindle_start  STATUS:MG_SK_S_M3          
+PULSE SK_Spindle_stop  STATUS:MG_SK_S_M5          
+ACTION SK_Spindle_M3_jog  STATUS:MG_SK_S_M3_tippen          
+ACTION SK_Spindle_M4_jog  STATUS:MG_SK_S_M4_tippen          
+PULSE SK_Spindle_M19  STATUS:MG_SK_S_M19          
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BACK SK_Back_29  STATUS:MG_SK_back       
+#endif
+
+CHECK SK_Coolant_M08  STATUS:PN_M4042_M08_MK_Status         
+CHECK SK_Coolant_M07  STATUS:PN_M4041_M07_MK_Status         
+
+#if CFG_Resolution = "1280x1024"
+BACK SK_Back_3  STATUS:MG_SK_back       
+#endif
+
+CHECK SK_Coolant_M17_addit  STATUS:MG_SK_M17_MK_zusaetzlich         
+CHECK SK_TSxxx_M16_air_blow ENABLE:MG_3D_Tastsystem_aktiv STATUS:MG_SK_TSxxx_abblasen         
+CHECK SK_Dry_Run  STATUS:MG_SK_Trocken_Bearbeitung         
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BACK SK_Back_21  STATUS:MG_SK_back       
+#endif
+
+
+#if CFG_Freies_Drehen = "aktiv"
+CHECK SK_Free_rot_override ENABLE:MG_SK_FG_S_Over_Drehen STATUS:MG_SK_S_Over_Drehen_zugeordnet         
+CHECK SK_Free_rotation_cw ENABLE:MG_SK_FG_Freies_Drehen STATUS:MG_SK_Freies_Drehen_rechts         
+CHECK SK_Free_rotation_ccw ENABLE:MG_SK_FG_Freies_Drehen STATUS:MG_SK_Freies_Drehen_links         
+#endif
+
+
+#if (CFG_Freies_Drehen = "inaktiv") and (CFG_Resolution = "1280x1024")
+BLANK
+BLANK
+BLANK
+BLANK
+#endif
+
+
+#if (CFG_Freies_Drehen = "aktiv") and (CFG_Resolution ! "1280x1024")
+BLANK
+BLANK
+#endif
+
+
+#if (CFG_Freies_Drehen = "aktiv") and (CFG_Resolution = "1280x1024")
+BLANK
+#endif
+
+
+#if (CFG_Freies_Drehen = "aktiv") or (CFG_Resolution = "1280x1024")
+BACK SK_Back_31  STATUS:MG_SK_back       
+#endif
+
+ENDSKMENU
+
+
+SKMENU Tool
+CHECK SK_TC_enable_quit ENABLE:MG_SK_FG_WZW_Anwahl STATUS:MG_SK_WZW_Anwahl         
+CHECK SK_T_unclamp_clamp ENABLE:MG_SK_FG_WZ_entspannen STATUS:MG_SK_WZ_entspannen         
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+#endif
+
+
+#if CFG_WZ_spezifische_Momenten_Ueberwachung = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_WZ_spezifische_Momenten_Ueberwachung = "aktiv"
+CHECK SK_T_torque_monit  STATUS:MG_SK_T_Moment_Ueberwachung         
+#endif
+
+NODE SK_TC_magazine_load TC_magazine_load ENABLE:MG_SK_FG_WZM_Beladen_aktiv STATUS:MG_SK_WZM_Beladen_aktiv        
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+#endif
+
+BLANK
+BACK SK_Back_30  STATUS:MG_SK_back       
+ENDSKMENU
+
+
+#if CFG_IPC_61x0 = "aktiv"
+
+SKMENU IPC_61x0_Menu
+CHECK SK_IPC_61x0_active  STATUS:MG_SK_IPC_aktiv         
+
+#if CFG_HSCI = "aktiv"
+CHECK SK_Override_S_F_IPC  STATUS:MG_SK_Override_S_F_IPC         
+BLANK
+#endif
+
+
+#if (CFG_Override_Eilgang_statt_Spindel = "inaktiv") and (CFG_HSCI = "inaktiv")
+CHECK SK_Override_S_IPC  STATUS:MG_SK_Override_S_F_IPC         
+#endif
+
+
+#if (CFG_Override_Eilgang_statt_Spindel = "aktiv") and (CFG_HSCI = "inaktiv")
+CHECK SK_Override_Fmax_IPC  STATUS:MG_SK_Override_FMAX_IPC         
+#endif
+
+
+#if CFG_HSCI = "inaktiv"
+CHECK SK_Override_F_IPC  STATUS:MG_SK_Override_F_IPC         
+#endif
+
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_25         
+ENDSKMENU
+
+#endif
+
+
+SKMENU Diagnosis
+NODE SK_Machine_diagnosis Machine_diagnosis          
+NODE SK_Status Status          
+NODE SK_Documentation Documentation          
+BLANK
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+BACK SK_Back_32  STATUS:MG_SK_back       
+#endif
+
+PULSE SK_Error_queue    SMALLWINDOW:M_ERROR.A        
+CHECK SK_Log_PLC_Debug  STATUS:PN_M4753_Fehler_PLC_Modul_in_PLC_Logbuch         
+BLANK
+BLANK
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+#endif
+
+BACK SK_Back_8         
+ENDSKMENU
+
+
+#if (CFG_Maschinen_Typ = "MSU_530") or (CFG_Simulation = "inaktiv")
+
+SKMENU Safe_tests
+PULSE SK_Self_test_start  STATUS:MG_SK_Selbsttest_starten          
+CHECK SK_Self_test_blocked  STATUS:MG_SK_Selbsttest_sperren         
+CHECK SK_Brake_test_start  STATUS:MG_SK_Bremsentest_starten         
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_4         
+ENDSKMENU
+
+#endif
+
+
+#if CFG_Python = "aktiv"
+
+SKMENU Python_Tools
+
+#if CFG_Energy_Option = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_Energy_Option = "aktiv"
+CHECK SK_Energy_Option_1  STATUS:MG_SK_Energy_Opt_anzeigen          PyName:Energy_Opt PyMem:8 PYSCRIPT:PLC:\Python\energyOption.py PyPara:show_all
+#endif
+
+
+#if CFG_TNC_Mail = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_TNC_Mail = "aktiv"
+CHECK SK_TNC_Mail  STATUS:MG_SK_TNC_Mail_anzeigen          PyName:TNC_MAIL PyMem:8 PYSCRIPT:PLC:\Python\tncMail.py PyPara:None
+#endif
+
+
+#if CFG_Workspace_Camera = "inaktiv"
+BLANK
+#endif
+
+
+#if CFG_Workspace_Camera = "aktiv"
+NODE SK_workspace_camera workspace_camera  STATUS:MG_SK_Kamera_anzeigen         PyName:CAMERA PyMem:5 PYSCRIPT:PLC:\Python\workspaceCamera.py PyPara:init
+#endif
+
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+ACTION SK_HelloWorldPy             PyName:World PyMem:10 PYSCRIPT:PLC:\Python\helloWorld.py PyPara:None
+BACK SK_Back_5         PyRestart
+ENDSKMENU
+
+#endif
+
+
+SKMENU TC_magazine_load
+ACTION SK_TC_magazine_cw ENABLE:MG_SK_FG_WZM_plus STATUS:MG_SK_WZM_plus          
+ACTION SK_TC_magazine_ccw ENABLE:MG_SK_FG_WZM_minus STATUS:MG_SK_WZM_minus          
+BLANK
+CHECK SK_Tool_in ENABLE:MG_SK_FG_WZ_Beladen STATUS:MG_SK_WZ_Beladen         
+CHECK SK_Tool_out ENABLE:MG_SK_FG_WZ_Entladen STATUS:MG_SK_WZ_Entladen         
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_TC_mag_load_back  STATUS:MG_SK_WZM_Beladen_zurueck       
+ENDSKMENU
+
+
+SKMENU Machine_diagnosis
+RADIO SK_Diagnosis_drive   FirstInGroup SMALLWINDOW:M_DIA_A1.a       
+RADIO SK_Diagnosis_drive_step    SMALLWINDOW:M_DIA_A3.a       
+RADIO SK_Diagnosis_TC  STATUS:MG_WZW_Diagnose  SMALLWINDOW:M_DIA_WZ.a       
+
+#if (CFG_WZ_Magazin_System = "Mag_type_09") OR (CFG_WZ_Magazin_System = "Mag_type_10")
+RADIO SK_Diagnosis_Tmag_axis  STATUS:MG_WZM_Diagnose  SMALLWINDOW:M_DIA_M1.a       
+#endif
+
+
+#if (CFG_WZ_Magazin_System ! "Mag_type_09") AND (CFG_WZ_Magazin_System ! "Mag_type_10")
+RADIO SK_Diagnosis_Tmag_count  STATUS:MG_WZM_Diagnose  SMALLWINDOW:M_DIA_M2.a       
+#endif
+
+BLANK
+
+#if CFG_Resolution ! "1280x1024"
+BACK SK_Back_6         
+#endif
+
+
+#if CFG_Temperatur_Kompensation = "Tabelle"
+RADIO SK_Temp_comp_tab   FirstInGroup SMALLWINDOW:M_TKOMP2.a       
+RADIO SK_Temp_comp_tab_set    SMALLWINDOW:M_TKOMP2_set.a       
+#endif
+
+
+#if CFG_Temperatur_Kompensation = "MP_Faktor"
+RADIO SK_Temp_compensation   FirstInGroup SMALLWINDOW:M_TKOMP1.a       
+BLANK
+#endif
+
+
+#if CFG_Temperatur_Kompensation = "inaktiv"
+BLANK
+BLANK
+#endif
+
+
+#if CFG_Resolution ! "1280x1024"
+BLANK
+BLANK
+#endif
+
+BLANK
+BACK SK_Back_7         
+ENDSKMENU
+
+
+SKMENU Status
+RADIO SK_Status_general   FirstInGroup SMALLWINDOW:M_ST_ALL.A       
+RADIO SK_Status_strobe    SMALLWINDOW:M_STROBE.A       
+RADIO SK_Status_axes    SMALLWINDOW:M_ST_AX.A       
+RADIO SK_Status_spindle    SMALLWINDOW:M_ST_SPI.a       
+RADIO SK_Status_PLC_posit    SMALLWINDOW:M_ST_PLC.a       
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_10         
+ENDSKMENU
+
+
+SKMENU Documentation
+PULSE SK_Docu_M_function    SMALLWINDOW:M_DOC_M.A        
+PULSE SK_Docu_IO_interface    SMALLWINDOW:M_DOC_IO.a        
+PULSE SK_Docu_graphic    SMALLWINDOW:M_GRAPHIC.A        
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_9         
+ENDSKMENU
+
+
+#if CFG_Workspace_Camera = "aktiv"
+
+SKMENU workspace_camera
+ACTION SK_camera_status  STATUS:MG_SK_Kamera_stateWin           PyName:CAMERA PyMem:5 PYSCRIPT:PLC:\Python\workspaceCamera.py PyPara:state
+ACTION SK_camera_PLCmedium  STATUS:MG_SK_Kamera_mediumWin           PyName:CAMERA PyMem:5 PYSCRIPT:PLC:\Python\workspaceCamera.py PyPara:medium
+ACTION SK_camera_PLClarge  STATUS:MG_SK_Kamera_largeWin           PyName:CAMERA PyMem:5 PYSCRIPT:PLC:\Python\workspaceCamera.py PyPara:large
+ACTION SK_camera_onTop  STATUS:MG_SK_Kamera_onTopWin           PyName:CAMERA PyMem:5 PYSCRIPT:PLC:\Python\workspaceCamera.py PyPara:ontop
+ACTION SK_camera_off  STATUS:MG_SK_Kamera_Aus          
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_22         PyRestart
+ENDSKMENU
+
+#endif
+
+
+SKMENU MP_Edit
+NODE SK_MP_config_total MP_config_total  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_total MP_data_total  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_spindle MP_data_spindle  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_PLC_feed MP_data_PLC_feed  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_TC MP_data_TC  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_pos_ref MP_data_pos_ref  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_T_comp MP_data_T_comp  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_pallet MP_data_pallet  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_3D_head MP_data_3D_head  STATUS:WG_Softkey_MP_Daten        
+NODE SK_MP_data_other MP_data_other  STATUS:WG_Softkey_MP_Daten        
+ENDSKMENU
+
+
+SKMENU MP_config_total
+BACK SK_Save  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_11  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_total
+BACK SK_Save_1  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_12  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_spindle
+BACK SK_Save_2  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_13  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_PLC_feed
+BACK SK_Save_4  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_15  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_TC
+BACK SK_Save_6  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_17  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_pos_ref
+BACK SK_Save_7  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_18  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_T_comp
+BACK SK_Save_5  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_16  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_pallet
+BACK SK_Save_3  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_14  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_3D_head
+BACK SK_Save_8  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_19  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU MP_data_other
+BACK SK_Save_9  STATUS:MG_SK_MP_Daten_speichern       
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if CFG_Resolution = "1280x1024"
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_Back_20  STATUS:MG_SK_MP_Daten_verwerfen       
+ENDSKMENU
+
+
+SKMENU HRxx0 HRROOT "TITLE:Machine Function"
+NODE SK_HR_Machine HR_Machine          
+NODE SK_HR_Spindle HR_Spindle          
+NODE SK_HR_Tool HR_Tool          
+NODE SK_HR_Tool_magazine HR_Tool_magazine          
+BACK SK_Back_27         
+ENDSKMENU
+
+
+SKMENU HR_Machine HRMENU TITLE:Machine
+PULSE SK_HR_Lubrication  STATUS:MG_SK_Schmierung          
+CHECK SK_HR_Chip_conv  STATUS:MG_SK_Spaenefoerderer         
+ACTION SK_HR_Chip_conv_back  STATUS:MG_SK_Spaene_zurueck          
+NODE SK_HR_guard_power_on HR_guard_power_on          
+BACK SK_HR_Back         
+ENDSKMENU
+
+
+SKMENU HR_Spindle HRMENU TITLE:Spindle
+NODE SK_HR_Coolant HR_Coolant          
+ACTION SK_HR_Spindle_M3_jog  STATUS:MG_SK_S_M3_tippen          
+ACTION SK_HR_Spindle_M4_jog  STATUS:MG_SK_S_M4_tippen          
+PULSE SK_HR_Spindle_M19  STATUS:MG_SK_S_M19          
+BACK SK_HR_Back_01         
+ENDSKMENU
+
+
+SKMENU HR_Tool HRMENU TITLE:Tool
+CHECK SK_HR_TC_enable_quit  STATUS:MG_SK_WZW_Anwahl         
+CHECK SK_HR_TC_unclamp_clamp  STATUS:MG_SK_WZ_entspannen         
+BLANK
+BLANK
+BACK SK_HR_Back_1         
+ENDSKMENU
+
+
+SKMENU HR_Tool_magazine HRMENU "TITLE:Tool Magazine"
+CHECK SK_HR_TC_magazine_load  STATUS:MG_SK_WZM_Beladen_aktiv         
+ACTION SK_HR_TC_magazine_cw  STATUS:MG_SK_WZM_plus          
+ACTION SK_HR_TC_magazine_ccw  STATUS:MG_SK_WZM_minus          
+BLANK
+BACK SK_HR_Back_3         
+ENDSKMENU
+
+
+SKMENU HR_guard_power_on HRMENU TITLE:
+ACTION SK_HR_Power_on  STATUS:MG_SK_Steuerspannung_ein          
+BLANK
+BLANK
+ACTION SK_HR_guard_open  STATUS:MG_SK_Arbeitsraum_entriegeln          
+BACK SK_HR_Back_9         
+ENDSKMENU
+
+
+SKMENU HR_Coolant HRMENU TITLE:Coolant
+CHECK SK_HR_Coolant_M08  STATUS:PN_M4042_M08_MK_Status         
+CHECK SK_HR_Coolant_M07  STATUS:PN_M4041_M07_MK_Status         
+CHECK SK_HR_Coolant_M17  STATUS:MG_SK_M17_MK_zusaetzlich         
+CHECK SK_HR_Coolant_Dry  STATUS:MG_SK_Trocken_Bearbeitung         
+BACK SK_HR_Back_4         
+ENDSKMENU
+

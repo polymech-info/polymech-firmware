@@ -1,0 +1,37 @@
+/* Diagnosis TC magazine
+   ---------------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAG TC MAGAZINE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %-28s\n",$SG_WZM_Diagnose_Zeile_1$/c;
+CURSOR=ON;
+"CASE(%2d): %-28s\n",$STG_WZM[0].BG_Schritt_WZM$/c,$SG_WZM_Diagnose_Zeile_2$/c;
+CURSOR=OFF;
+"(+1)    : %-28s\n\n",$SG_WZM_Diagnose_Zeile_3$/c;
+
+"TC magazine active  : %s\n",$STG_WZM[0].MG_WZM_Start$?"on ":"off"/c;
+"\n";
+
+"T CALL strobe M4073 :    %d\n",$NP_M4073_Strobe_TOOL_CALL$/c;
+"T DEF strobe  M4074 :    %d\n\n",$NP_M4074_Strobe_TOOL_DEF$/c;
+
+"TOOL pocket    W262 : %4D\n",$NP_W262_Werkzeug_Platz_Nummer$/c;
+"TOOL number    W264 : %4D\n\n",$NP_W264_Werkzeug_Nummer$/c;
+"TOOL magazine  W268 : %4D\n\n",$NP_W268_Werkzeug_Magazin_Nummer$/c;
+
+"Standby pocket      : %4D\n",$STG_WZM[0].WG_WZM_Ist_Platz$/c;
+"Act/nom pocket diff : %4D\n\n",$STG_WZM[0].WG_WZM_Ist_Soll_Platz_Differenz$/c;
+
+"I TC mag counter    : %d\n",$STG_WZM[0].MG_I_WZM_Zaehler$/c;
+"I TC mag exact posit: %d\n",$STG_WZM[0].MG_I_WZM_Genauhalt$/c;
+"I TC mag reference  : %d\n\n",$STG_WZM[0].MG_I_WZM_Referenz$/c;
+
+"O TC mag cw         : %d\n",$STG_WZM[0].MG_O_WZM_Rechtslauf$/c;
+"O TC mag ccw        : %d\n",$STG_WZM[0].MG_O_WZM_Linkslauf$/c;
+"O TC mag rapid      : %d\n",$STG_WZM[0].MG_O_WZM_Eilgang$/c;
+

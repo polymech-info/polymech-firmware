@@ -1,0 +1,1289 @@
+N38 Vle¿ná odchylka je velká %.2s
+N39 Zadaná hodnota otá¿ek velká %.2s
+N41 Hlídání klidového stavu %.2s
+N42 Velký offset %.2s
+N50 Bod dotyku není dosažitelný
+N51 Chyba polohování
+N52 Dotykový palec v kontaktu
+N53 Vym¿¿te baterii dotykové sondy
+N54 Dotyková sonda není p¿ipravena
+N17738 Koncový spína¿ %.2s+
+N56 Koncový spína¿ %.2s+
+N17739 Koncový spína¿ %.2s-
+N58 Koncový spína¿ %.2s-
+N59 FN 14: ¿íslo chyby %-3u
+N60 Dva TOOL DEF %-3u p¿es PGM CALL
+N61 Tabulka nástroj¿ uzam¿ena
+N62 REF. BOD %.2s: chybná absol.rozte¿
+N63 Ru¿ní kole¿ko ?
+N109 PLC: p¿íliš mnoho vrstvení
+N110 PLC: podte¿ení zásobníku
+N111 PLC: p¿ete¿ení zásobníku
+N112 PLC: time out
+N113 PLC: neplatný rozsah pro CASE
+N115 PLC: Index - chybný rozsah
+N133 PLC:M4005, M4006, M4007 chybn¿
+N134 PLC:Strobe sou¿asn¿ aktivní
+N151 MP: ¿ádek bez ¿ísla
+N152 MP: Chybné ¿íslo
+N153 MP: není odd¿lova¿
+N154 MP: chybná hodnota
+N155 MP: duplicitní definice
+N156 MP: není definován
+N157 MP: nelze uložit do pam¿ti
+N159 Místo 0 není definováno
+N160 Chybné ¿íslo místa
+N937 Chybné ¿íslo místa
+N161 Chybí posuv
+N162 Chybí osa nástr.u otá¿ení
+N163 Uplynula životnost nástroje
+N164 Vym¿¿te zálohovací baterii
+N165 Orientování není aktivní
+N166 Tabulka nástroj¿ ?
+N167 Tabulka nulových bod¿ ?
+N168 Chyba
+N938 Tla¿ítko bez funkce
+N939 P¿ekro¿ena kapacita pam¿ti PGM
+N940 Chybí vyhledávací parametr
+N941 TOOL DEF 0 není dovoleno
+N169 ¿íslo nástroje obsazeno
+N170 Skok na LBL 0 není dovolen
+N942 Chybná vstupní hodnota
+N943 Chybná vstupní hodnota
+N171 Chybná vstupní hodnota
+N172 Chybná vstupní hodnota
+N173 Chybná vstupní hodnota
+N174 Chybná vstupní hodnota
+N175 Chybná vstupní hodnota
+N176 Chybná vstupní hodnota
+N177 Cyklus 27(G127): hloubka>polom¿r
+N178 Chybná vstupní hodnota
+N179 Chybná vstupní hodnota
+N180 Def.polotovaru-BLK FORM chybná
+N183 Aktuální blok není navolen
+N184 Jméno programu se nevyskytuje
+N185 Nelze zapsat další soubory
+N944 ¿íslo programu obsazeno
+N187 ¿íslo LBL obsazeno
+N188 ¿íslo LBL již zadáno %-3u
+N189 Chybný p¿enos dat
+N194 Program není úplný
+N196 Rozhranní je obsazeno
+N197 Rychlost baudrate není možná
+N945 Chybná data programu
+N946 Chybná data programu
+N200 Ext. zápis/výpis není p¿ipraven
+N201 NC: pam¿¿ programu vymazána
+N947 Strojní parametry smazány
+N948 Chrán¿ný soubor!
+N202 Zm¿ny ve volaném PGM
+N203 Porucha Central stopu
+N205 Central stop PLC
+N207 PGM není k dispozici
+N212 FK reference k aktuálnímu bloku
+N214 Aritmetická chyba
+N215 Aritmetická chyba
+N216 Vypo¿tený Q-parametr je velký
+N217 Vypo¿tená sou¿adnice je velká
+N218 Vypo¿tené otá¿ky jsou vysoké
+N219 Vypo¿tený posuv je p¿íliš velký
+N220 Vypo¿tené ¿ís.nástroje je vysoké
+N221 Vypo¿tené ¿íslo Label je vysoké
+N222 Vypo¿tené ¿íslo chyby je vysoké
+N223 Vypo¿tené m¿¿ítko je velké
+N224 Inkr.polární úhel je velký
+N225 Stoupání 0 není dovoleno
+N226 Aritmetická chyba
+N227 Aritmetická chyba p¿i APPR/DEP
+N228 Aritmetická chyba p¿i APPR/DEP
+N229 Aritmetická chyba p¿i APPR/DEP
+N230 Aritmetická chyba p¿i APPR/DEP
+N231 Aritmetická chyba u vyhrubování
+N232 Aritmetická chyba p¿i CR
+N233 Aritmetická chyba p¿i CT
+N234 Aritmetická chyba p¿i RND/CHF
+N235 Chybný pr¿se¿ík kruh/kruh
+N236 Chybný pr¿se¿ík kruh/p¿ímka
+N237 Chybný pr¿se¿ík p¿ímka/p¿ímka
+N238 Aritmetická chyba p¿i APPR/DEP
+N239 Chyba korekce polom¿ru
+N240 Chybná kontura kapsy
+N241 Chyba v obrysu ¿i pr¿chodu kapsy
+N242 Chybná kontura kapsy
+N243 Chybná kontura kapsy
+N244 Chyba korekce polom¿ru
+N245 Chyba korekce polom¿ru
+N246 Chybná kontura kapsy
+N247 Chybná kontura kapsy
+N250 Aritmetická chyba p¿i M112
+N251 Chyba p¿i výpo¿tu parametru
+N252 Chybné SW koncové spína¿e
+N253 Korekce dr.chybn¿ ukon¿ena
+N254 Korekce dr.chybn¿ zapo¿ata
+N255 Korekce dr.chybn¿ zapo¿ata
+N256 Korekce dr.chybn¿ zapo¿ata
+N257 Korekce dr.chybn¿ zapo¿ata
+N258 Korekce dr.chybn¿ zapo¿ata
+N259 Korekce dr.chybn¿ zapo¿ata
+N260 Cyklus je nekompletní
+N261 Cyklus není definován
+N263 Hloubka p¿ísuvu 0 není dovolena
+N264 Uživatelský cyklus nenalezen
+N265 Podprogram nenalezen
+N266 Podprogram nenalezen
+N272 Chybná skladba NC bloku
+N274 DEF. nástroje není dovolena
+N275 Chybí zadání délky ¿i polom¿ru
+N276 CT po APPR není dovoleno
+N277 CHF po APR není dovoleno
+N278 RND po APR není dovoleno
+N279 RND = 0 není dovoleno
+N280 CHF = 0 není dovoleno
+N281 Druhé RND zaoblení není dovoleno
+N282 RND po CHF není povoleno
+N283 CHF po RND není dovoleno
+N284 Druhá CHF není dovolena
+N285 DEP LCT po HELIX není dovoleno
+N286 APPR LCT p¿ed HELIX nelze
+N287 Nedovolený NC blok
+N288 RND není povoleno
+N289 RND není povoleno
+N290 CHF není povoleno
+N291 DEP nesmí být na konci cyklu
+N292 RND nesmí být na konci cyklu
+N293 CHF nesmí být na konci cyklu
+N294 Více DEP bloku není dovoleno
+N295 DEP není dovoleno
+N296 APPR není dovoleno
+N297 APPR nesmí být první blok cyklu
+N299 Cyklus 14 (G37) není dovolen
+N300 TOOL CALL není povolen
+N302 M91/M92 není dovolen p¿i 3D ROT
+N303 M114 není dovolen p¿i 3D ROT
+N305 M114 s korekcí není dovolena
+N307 Sou¿adn. 2x programována
+N308 Sou¿adn. 2x programována
+N309 Sou¿adn. 2x programována
+N310 Sou¿adn. 2x programována
+N311 Sou¿adn. 2x programována
+N313 Chybn¿ definována rovina
+N314 3D-korekce:chybná defin. roviny
+N315 Chybn¿ definována rovina
+N317 Chybn¿ definována rovina
+N318 Chybn¿ definována rovina
+N319 Chybn¿ definována rovina
+N320 Chybn¿ definována rovina
+N321 Chybn¿ definována rovina
+N322 Chybn¿ definována rovina
+N323 Chybn¿ definována rovina
+N324 Chybn¿ definována rovina
+N325 Chybn¿ definována rovina
+N326 Chybn¿ definována rovina
+N327 Chybn¿ definována rovina
+N328 Chybn¿ definována rovina
+N329 Rota¿ní osa zde není dovolena
+N950 Použita chybná sou¿adnice
+N951 Použita chybná sou¿adnice
+N330 Programována osa je blokována
+N331 Použita chybná sou¿adnice
+N332 Použita chybná sou¿adnice
+N333 Použita chybná sou¿adnice
+N335 Rota¿ní osa není programována
+N337 Není programována rota¿ní osa
+N338 Není programována hlavní osa
+N339 Gantry-slave osa naprogramována
+N952 Chybné otá¿ky
+N340 Chybné otá¿ky
+N341 Chybné otá¿ky
+N342 Chybné otá¿ky
+N343 Chybné otá¿ky
+N344 Vysoké otá¿ky cyklu
+N345 Nelze zadat nulové otá¿ky
+N346 Chybné otá¿ky
+N347 Zkosení hrany nedovoleno
+N348 Zkosení hrany nedovoleno
+N349 Zkosení hrany nedovoleno
+N350 Zkosení hrany nedovoleno
+N351 Zkosení hrany nedovoleno
+N352 Zkosení hrany nedovoleno
+N353 Zkosení hrany nedovoleno
+N354 Zkosení p¿íliš veliké
+N355 Zkosení p¿íliš veliké
+N356 Zkosení p¿íliš veliké
+N357 Koncový bod kruhu chybný
+N358 C-blok: konc.bod kruhu chybný
+N359 Koncový bod kruhu chybný
+N360 Koncový bod kruhu chybný
+N361 Koncový bod kruhu chybný
+N362 ¿íslo LBL není k dispozici
+N363 ¿íslo LBL 0 není k dispozici
+N364 ¿íslo LBL není k dispozici
+N365 Cyklus 14: LBL není k dispozici
+N366 Chybí pól
+N367 St¿ed kruhu není definován
+N368 Malý polom¿r nástroje
+N369 Korekce polom¿ru 0 je nedovolena
+N370 Korekce polom¿ru není definována
+N371 Korekce polom¿ru není definována
+N372 Korekce polom¿ru není definována
+N373 Korekce polom¿ru není definována
+N374 Korekce polom¿ru není definována
+N375 Najet do referencí
+N376 Zaoblení není definováno
+N377 Zaoblení není definováno
+N378 Zaoblení není dovoleno
+N379 Polom¿r zaobl. moc velký
+N380 Polom¿r zaobl. moc velký
+N381 Polom¿r zaobl. moc velký
+N382 Polom¿r zaobl. moc velký
+N383 Polom¿r zaobl. moc velký
+N384 Polom¿r zaobl. moc velký
+N385 Polom¿r zaobl. moc velký
+N386 Polom¿r zaobl. moc velký
+N387 Polom¿r zaobl. moc velký
+N388 V¿eteno ?
+N389 Zrcadlení v ose nástroje
+N390 Zrcadlení v ose nástroje
+N391 Chybí osa nástroje
+N392 Chybí osa nástroje
+N393 Chybí osa nástroje
+N394 Chybí osa nástroje
+N395 Chybí osa nástroje
+N396 Chybí osa nástroje
+N397 Chybí osa nástroje
+N398 Chybí TOOL DEF popis nástroje
+N400 Chybí TOOL DEF popis nástroje
+N401 Chybí ¿íslo nástroje
+N402 Polom¿r nástroje moc velký
+N403 Polom¿r nástroje moc velký
+N404 Polom¿r nástroje moc velký
+N405 Polom¿r nástroje moc velký
+N406 Polom¿r nástroje moc velký
+N407 Polom¿r nástroje moc velký
+N408 Polom¿r nástroje moc velký
+N409 Polom¿r nástroje moc velký
+N410 Polom¿r nástroje moc velký
+N411 Polom¿r nástroje moc velký
+N412 Polom¿r nástroje moc velký
+N413 Nedefinovaný start programu
+N414 Nedefinovaný start programu
+N415 Nedefinovaný start programu
+N416 Nedefinovaný start programu
+N417 Nedefinovaný start programu
+N418 Nedefinovaný start programu
+N419 Nedefinovaný start programu
+N420 Nedefinovaný start programu
+N421 Nedefinovaný start programu
+N422 Nedefinovaný start programu
+N423 Nedefinovaný start programu
+N424 Nedefinovaný start programu
+N425 P¿ed PLC polohováním zruš RR/RL
+N426 Nedefinovaný start programu
+N953 Chybný formát bloku
+N427 Chybný formát bloku
+N429 Vrstvení podprogr.p¿ekro¿.
+N430 Vrstvení podprogr.p¿ekro¿.
+N432 Vrstvení podprogr.p¿ekro¿.
+N433 Cyklus - rozporné znaménko
+N434 Chybné znaménko
+N435 Chybí ref. úhlu
+N436 Chybí ref. úhlu
+N437 Polom¿r kruhu zv¿tšit
+N438 Chybí ref. úhlu
+N439 Chybí ref. úhlu
+N440 DEP-p¿erušení není dovoleno
+N441 DEP-p¿erušení není dovoleno
+N442 Chybí sou¿adnice po APPR
+N443 Pracovní rozsah p¿ekro¿en
+N444 Prac. rozsah chybn¿ definován
+N445 Start. poloha chybná
+N446 ¿asové ohrani¿ení p¿ekro¿eno
+N447 Parametr cyklu chybný
+N448 P¿ídavek je menší než hloubka
+N451 Faktor zm¿n m¿¿ítka není stejný
+N454 Velké vychýlení sondy
+N455 P¿íliš mnoho ¿ástí obrysu
+N456 P¿íliš mnoho ¿ástí obrysu
+N457 P¿íliš mnoho ¿ástí obrysu
+N458 P¿íliš mnoho ¿ástí obrysu
+N459 P¿íliš mnoho ¿ástí obrysu
+N460 P¿íliš mnoho ¿ástí obrysu
+N461 P¿íliš mnoho ¿ástí obrysu
+N462 P¿íliš mnoho ¿ástí obrysu
+N463 P¿íliš mnoho ¿ástí obrysu
+N464 P¿íliš mnoho ¿ástí obrysu
+N465 P¿íliš mnoho ¿ástí obrysu
+N466 P¿íliš mnoho ¿ástí obrysu
+N467 P¿íliš mnoho ¿ástí obrysu
+N468 P¿íliš mnoho ¿ástí obrysu
+N469 P¿íliš mnoho ¿ástí obrysu
+N470 P¿íliš mnoho ¿ástí obrysu
+N471 P¿íliš mnoho ¿ástí obrysu
+N472 P¿íliš mnoho ¿ástí obrysu
+N473 P¿íliš mnoho ¿ástí obrysu
+N474 P¿íliš mnoho ¿ástí obrysu
+N475 Chyba v programování obrysu
+N477 Chyba v programování obrysu
+N478 Chyba v programování obrysu
+N479 Chyba v programování obrysu
+N480 Chyba v programování obrysu
+N481 Chyba v programování obrysu
+N482 Chyba v programování obrysu
+N483 Chyba v programování obrysu
+N484 Obrys p¿íliš komplexní
+N485 Obrys p¿íliš komplexní
+N486 Obrys p¿íliš komplexní
+N487 Obrys p¿íliš komplexní
+N488 Obrys p¿íliš komplexní
+N489 Obrys p¿íliš komplexní
+N490 Obrys p¿íliš komplexní
+N491 Obrys p¿íliš komplexní
+N492 Obrys p¿íliš komplexní
+N493 Obrys p¿íliš komplexní
+N954 Adresa již zapsaná
+N494 Blok p¿íliš dlouhý
+N955 G-funkce již zadána
+N495 Neznámá G funkce
+N496 N kód chybí
+N497 CMA soubor :žádný aktiv.¿ádek
+N500 Mnoho korek¿ních bod¿
+N501 Mnoho korek¿ních funkcí
+N957 P¿erušení P¿erušení proudu
+N958 Chybí ¿ídící nap¿tí pro relé ¿ídící nap¿tí pro relé není
+N859 Chyba
+N860 Osu nelze zobrazit
+N861 Další zmenšení není možné
+N862 Další zv¿tšení není možné
+N863 BLK FORM nelze zobrazit
+N864 Chybná osa nástroje v BLK FORM
+N865 Polom¿r nástroje nelze zobrazit
+N888 Text nenalezen
+N1086 Ubrat po¿et bod¿
+N1097 P¿íliš velká hodnota tolerance
+N1106 Vymazat celý cyklus: DEL!
+N1107 Blok není v cyklu povolen !
+N1125 Vztah k bloku %.6s: Nemazat
+N1126 M112 deaktivovat
+N1141 P¿i M120 LA=0 zrušit RL/RR
+N1142 Chybí zadání korekce polom¿ru
+N1143 Korekce polom¿ru není povolena
+N1144 R+/R- p¿i M120 není dovolen
+N1145 RND s M120 není dovolen
+N1146 CHF s M120 není dovolen
+N1147 Analogové nap¿tí není definováno
+N1148 Analog. nap¿tí není jednozna¿né
+N1149 Chyba zadání parametru MP%.4u
+N1150 Dotyk.sonda není p¿ipravena %.3s
+N1151 Návrat aktivací M120 nelze
+N1154 Nepovolené ozna¿ení souboru
+N1170 M¿¿ící sonda TM je navolena
+N1171 Sonda TS je navolena
+N1172 Sonda TT je navolena
+N1178 3DROT aktiv:užít osová tla¿ítka
+N1182 Chyba zadání parametru MP%.4u.%u
+N1186 Zm¿na formátu souboru
+N1187 M89 není dovolena
+N1192 Nedovolený úhel
+N1193 TOOL.T: zadejte po¿et b¿it¿
+N1266 Chybný formát bloku
+N1521 PLC-Chyba:Tabulka není p¿eložena
+N1523 PLC: není navolena chyb.tabulka
+N1524 PLC: chybí tabulky chyb
+N1525 PLC:tabulky chyb nejsou .PET
+N1527 PLC: tabulka chyb nenalezena
+N1528 PLC: chybný formát tabulky chyb
+N1568 Osy v souboru .PNT chybn¿
+N1590 Absolutní hodnota malá
+N1682 TOOL.T: LCUTS nebo ANGLE Chybí!
+N1745 P¿ístup VERWEIGERT
+N1749 Chybn¿ ¿íslo pro FN17/FN18
+N1749 Chybn¿ ¿íslo pro FN17/FN18
+N1750 PLC: Chyba p¿i vyvolání modulu
+N1789 Nástroj blokován
+N1790 Chyba v cyklu rozsahu
+N1791 Velká rozte¿ bod¿
+N1792 Chybná osa ¿ádk¿
+N1793 Chybná osa sloupce
+N1794 Chybná osa úhlu
+N1795 Chybná osa v cyklu rozsahu
+N1796 Chybná rozte¿ ¿ádk¿
+N1797 Chybí definice cyklu rozsahu
+N1798 Koncový spína¿ rozsahu digitalz.
+N1799 Zv¿tšit bezpe¿nou výšku
+N1807 Nep¿ípustný název souboru
+N1809 M114 s M116 není dovoleno
+N1810 Zahlcení pam¿ti systému
+N1845 Aktualizovat systémové soubory!
+N1848 Adresá¿ není prázdný
+N1850 Cyklus 4(G75/G76): chybná osa
+N1851 M130 nedovoleno
+N1852 M130 s M114 nep¿ípustný
+N1853 M130 nedovoleno
+N1854 M130 s korekcí je nep¿ípustný
+N1855 Zprac. cyklus nedefinován
+N1856 Posuv pendlování chybí
+N1857 Polom¿r nástroje moc velký
+N1892 FN20/D20: chybné podmínky
+N1900 P¿ístroj obsazen
+N1901 Disk.mechanika není k dispozici
+N1914 Zlomený nástroj
+N2039 Chybné ¿íslo nulového bodu
+N2040 Ší¿ka drážky p¿íliš malá
+N2041 Kapsa p¿íliš malá
+N2042 Q202 není definován
+N2043 Q205 není definován
+N2044 Q218 musí být v¿tší než Q219
+N2045 CYCL 210 není povolen
+N2046 CYCL 211 není povolen
+N2047 Q220 p¿íliš velký
+N2048 Q222 musí být v¿tší než Q223
+N2049 Q244 musí být v¿tší než 0
+N2050 Q245 nesmí být rovno Q246
+N2051 Rozsah úhlu musí být do 360°
+N2100 Paleta není vym¿n¿na
+N2101 PLC:\NCMACRO.SYS Chybí!
+N2102 'PALETT' Chybí v NCMACRO.SYS
+N2103 Chybí údaje palety
+N2186 Nakláp¿ní: chybí osa nástroje
+N2211 TOOL CALL s M128 není dovolen
+N2212 M91/M92 s M128 není dovolen
+N2213 MP75XX není definován
+N312 Osa není dovolena
+N2222 Soubor nenalezen v OEM.SYS
+N2223 Nesprávný typ souboru
+N2224 Název pole nenalezen
+N2225 Prázdný soubor
+N2226 Tabulka materiálu nenalezena
+N2227 Tab.¿ezných materiál¿ nenalezena
+N2228 Materiál není navolen
+N2229 WMAT-TMAT kombinace chybí
+N2230 Není navolena tab. ¿ezných dat
+N2231 Blok s M112 není dovolen
+N2232 Opravit chybný blok
+N2233 FK-blok nelze navolit s GOTO
+N2238 Q223 musí být v¿tší než Q222
+N2243 Úhel v TOOL.T je p¿íliš malý
+N2253 Vypnout ¿ídící nap¿tí!
+N2254 Relé: Klidový kontakt otev¿en?
+N2255 Zapnout ¿ídící nap¿tí
+N2273 TS: p¿ekro¿en povolený rozsah
+N2284 Paralelní provoz není možný
+N2285 Osa blokována
+N2288 Porucha upínání nástroje!
+N2300 Zkontrolujte ¿ezné údaje !
+N2315 Q214: 0 nedovoleno
+N2316 PLC: soubor nenalezen
+N2317 PLC: p¿íliš mnoho událostí
+N2319 Tab.typu nástroje nenalezena
+N2320 CDT cesta nenalezena
+N2321 P¿íliš mnoho *.CDT soubor¿
+N2336 S-vstup neodpovídá %d
+N2339 Není sí¿ové spojení
+N2342 FN17: Nep¿ípustná hodn.p¿i¿azení
+N2344 Zadat element!
+N2345 Nástroj není definován
+N2375 M112 a M128 nelze sou¿asn¿
+N2377 S: Koncový spína¿ %.2s+
+N2378 S: Hrubá chyba polohování L %.2s
+N2377 S: Koncový spína¿ %.1s-
+N2384 Všechny elementy vymazány!
+N2385 Povinné pole vymazáno!
+N2386 P¿ekro¿ena délka ¿ádky!
+N2387 Chyba v pr¿b¿hu konvertování!
+N2500 B¿h až k bloku N
+N2504 Sm¿r pohybu není definován
+N2505 Aktivujte tab. nulových bod¿
+N2506 Chyba polohy: st¿ed 1.osy
+N2507 Chyba polohy: st¿ed 2.osy
+N2508 Malý pr¿m¿r díry
+N2509 Velký pr¿m¿r díry
+N2510 Malý pr¿m¿r ¿epu
+N2511 Velký pr¿m¿r ¿epu
+N2512 Kapsa p¿íliš malá: Oprav v ose 1
+N2513 Kapsa p¿íliš malá: Oprav v ose 2
+N2514 Kapsa p¿íliš velká: zmetek osa 1
+N2515 Kapsa p¿íliš velká: zmetek osa 2
+N2516 ¿ep p¿íliš malý: zmetek osa 1
+N2517 ¿ep p¿íliš malý: zmetek osa 2
+N2518 ¿ep p¿íliš velký: oprav v ose 1
+N2519 ¿ep p¿íliš velký: oprav v ose 2
+N2520 Cyklus sondy:Délka v¿tší než max
+N2521 Cyklus sondy:Délka menší než min
+N2522 TCHPROBE 426:Délka v¿tší než max
+N2523 TCHPROBE 426:délka menší než min
+N2524 TCHPROBE 430:p¿íliš velký pr¿m¿r
+N2525 TCHPROBE 430: p¿íliš malý pr¿m¿r
+N2609 M128 není dovoleno s 3DROT
+N2610 M114 není dovoleno s M128
+N2611 M128 není dovoleno s RR/RL
+N2617 Není definována osa m¿¿ení
+N2618 Chybný formát data nebo ¿asu
+N2621 M128:vložení vzt.bodu nedovoleno
+N2635 Tolerance zlomu nástr.p¿ekro¿ena
+N2636 Zrušit korekci polom. p¿ed M128
+N2642 M¿ni¿ není p¿ipraven
+N2644 M120: LOOK AHEAD není možný
+N2645 Bezp.výška Q260< m¿¿.výška Q261
+N2646 MC tla¿ítko stroje je stisknuto
+N2647 Relé: sepnutý klidový kontakt?
+N2655 Motor v¿etena: nenulový proud
+N2657 Osa %.2s : Nenulový proud motoru
+N2662 Blok nelze ozna¿it
+N2663 Blok nelze vložit
+N2664 Mezipam¿¿ je prázdná
+N2665 Za¿átek bloku není ozna¿en
+N2668 Opravit formát bloku
+N2691 LN: Orientovaný stop není možný
+N2692 M128 v bloku LN není dovoleno
+N2700 Test kanálu odpojení inaktiv
+N2711 S-Chyba kontrolního sou¿tu
+N2733 P¿íliš mnoho sloupc¿
+N2734 Sloupec není navolen
+N2735 M128 nedovoleno
+N2736 Tab.soubor není otev¿en?
+N2737 TAB: velká délka pole
+N2738 TAB: pole není ¿íselné
+N2739 TAB: mnoho polí
+N2745 Chybná ref.poloha %.2s
+N2746 Chyba zadání parametru MP%u
+N2747 ¿ádka chrán¿ná proti p¿episu
+N2748 Cyklus m¿¿ení: M114 nedovoleno
+N2749 Cyklus m¿¿ení: M128 nedovoleno
+N2750 M114, M128, 3DROT nedovoleno
+N2752 MP: Rozporné zadání
+N2757 Pam¿¿ povel¿ zapln¿na
+N2758 Povel nesouhlasí
+N2760 FS funkce není vykonána
+N2768 MC blokovací klávesa je aktivována
+N2769 Nekompletní cyklus je smazán
+N2770 Prázdná mezipam¿¿
+N2771 Zápis nepovolen
+N2772 Kontext kompletn¿ smazat: NO ENT
+N2773 Nepovolená zm¿na kontextu
+N2774 Polární sou¿adnice nelze zadat
+N2775 Zm¿na kontextu: stisknout ENT
+N2776 Zadání jako kontext nedovoleno
+N2777 Zkontrolujte po¿et závorek
+N2820 MC velká odchylka polohy %.2s
+N2824 TT kalibrace ve sklon¿né rovin¿
+N2825 TT kalibrace v nesklon¿né rovin¿
+N2826 TT není paralelní s osou nástr.
+N2827 Chybný proces bržd¿ní %.2s
+N2828 Krátký ¿as polohové smy¿ky
+N2829 Zadej Q247 nerovno 0
+N2830 Zadej Q247 v¿tší než 5
+N2834 EnDat chyba %X %.2s
+N2837 FK blok není p¿eložen
+N2849 Spustit v¿eteno
+N2853 Hlídání synchronizace %.2s
+N2858 Není oprávn¿ní k test¿m
+N2868 TT: p¿edpolohování v osách
+N2945 M91/M92 nedovoleno
+N2969 Scházejí hodnoty zadání
+N2993 Chyba internet.adresy
+N2995 Nedovolené posun.nul.bodu z PLC
+N2996 Nedovolená zm¿na prac. rozsahu
+N3002 Zvláštní provoz v¿etena zakázán
+N3006 Prove¿te vým¿nu nástroje!
+N3012 M120 LA nedovoleno
+N3013 Nedovolena kruhová interpolace
+N3025 ¿ádek palet blokován!
+N3026 Korekce polom¿ru nepovolena!
+N3055 Zadat druh fréz. Q351 nerovno 0
+N1149 Chyba zadání parametru MP%.4u
+N958 Chybí ¿ídící nap¿tí pro relé
+N1182 Chyba zadání parametru MP%.4u.%u
+N3063 3DROT: popis nenalezen
+N3065 Reset M114, M128 nebo CYCL19
+N3081 Snížit hloubku závitu
+N3187 PNT soubor není navolen
+N3188 PNT: malá bezpe¿ná výška
+N3189 CYCL CALL PAT nedovoleno
+N3192 Prove¿te nejprve kalibraci
+N3193 Tolerance p¿ekro¿ena
+N3199 P¿epínání v¿etena nedovoleno
+N3205 Autostart nedovolen
+N3206 Chybí makro %.20s
+N2720 MC amplituda p¿íliš vysoká %.2s
+N44 MC amplituda p¿íliš nízká %.2s
+N45 MC frekvence p¿íliš vysoká %.2s
+N2687 MC NC teplota mimo toleranci
+N2612 MC S-vstup %d r¿zný od nuly
+N14018 MC hlídání klidového stavu %.2s
+N57 CC koncový spína¿ %.2s-
+N55 CC koncový spína¿ %.2s+
+N3214 Zm¿ny v tabulkách nul.bod¿
+N3218 PLC funkce není dovolena
+N3220 Malá tolerance v MP6510
+N3221 Velký kalibra¿ní polom¿r
+N3231 Chybí pole PAL/PGM
+N3232 Chyba p¿i zavád¿ní jazyka %d
+N3234 Probíhá p¿edvolba nástroje
+N3235 Negativní hodnota posuvu
+N3236 Pol.p¿i vypnutí %.2s rozdíl ENDAT
+N3239 Navolený sw. není k disposici
+N3243 Osa nástroje není zadána
+N3245 M funkce není dovolena
+N3354 Funkce není dovolena
+N3356 Chyba v tabulce kinematiky
+N3357 Chyba v díl¿ím MP souboru
+N3441 M144 nedovolena
+N4957 Rozporné zadání
+N3532 Chybné zadání v MFUNCT.TAB
+N3927 Snímání sondou není dovoleno
+N3928 M112 neni p¿ípustné s M144
+N4175 ¿ádek palety s hotovým dílcem
+N4176 Chybí makro zm¿ny upínání
+N4177 Neplatný kontext geometrie
+N4197 Zpracování programu je aktivní
+N4276 Orientace není povolena
+N4491 Start programu není možný
+N4492 MC potvrz.tla¿ítka stroje-aktiv
+N4571 Zkontroluj znaménko hloubky!
+N4572 Zadaný znak nepovolen
+N4573 Malá písmena nejsou povolena
+N4574 Písmeno není povoleno
+N4575 ¿íslice není povolena
+N4880 Nedostatek systemove pameti
+N4881 PLC program nenalezen
+N4882 M140 nedovolena funkce
+N4903 Pridavek na polomer nedovolen
+N4905 Procesor 1 vysoka teplota
+N4906 Procesor 2 vysoka teplota
+N4935 Aktualni poloha ulozena %.2s
+N5073 LSV2: prerusene spojeni
+N5074 LSV2: chyba prenosu
+N5075 LSV2: chyba prenosu
+N5076 LSV2: chyba prenosu
+N5077 LSV2: Timeout chyba
+N5078 LSV2: chyba prenosu
+N5079 LSV2: Timeout chyba
+N5080 LSV2: Timeout chyba
+N5081 LSV2: chyba pri vysilani
+N5099 MC neni volna pamet
+N5225 Nespravna verze software
+N5228 Posuv = 0 neni pripustny
+N5236 TNC vysoka teplota %d°C
+N5242 PLC program není p¿eložen
+N204 Teplota TNC prilis vysoka %d°C
+N5286 Chyba: Profibus konfigurace
+N5287 Profibus: chyba hardware
+N5288 Profibus: chyba initializace
+N5312 Remanentni PLC data vymazany
+N5338 Soft-key projekt neprelozen
+N5366 Vlozit radku zakazano
+N5367 T %u v radku %u obsazeno
+N5368 LBL %u v radku %u obsazeno
+N5369 Neni zvolena zadna osa
+N2612 CC%d S-vstup %d ruzny od nuly 0
+N2687 CC%d NC teplota mimo toleranci
+N2688 CC%d +5V mimo toleranci
+N5434 Funkce neni k dispozici
+N5479 Pravidla zasobniku neprelozena
+N5484 Uhel osy ruzny od uhlu sklopeni
+N5566 Nemenit vztazny system!
+N5567 MC chybny pocet FS-CC
+N5568 Prekrocen max.pocet znaku
+N5569 Hodnota mimo definicni obor
+N5570 Mnoho desetinnych mist
+N5571 Nepripustne znamenko
+N5572 Zadat pouze celociselne hodnoty
+N5573 Q nepovoleno:zadat cislo!
+N5574 Inkrementalni zadani nepovoleno
+N5575 Mnoho M-funkci
+N5576 Naprogramovano mnoh os
+N5577 Sou¿adn. 2x programována
+N5578 Prvek je dvakrat / nedovoleno
+N5579 Neuplne zadani dat
+N5580 ISO: chybi cislo bloku N
+N5581 chybi pozadovany prvek
+N5582 Syntaxe nespravna
+N5583 Neni ulozena merena hodnota %.2s
+N5617 Nezname cislo klice
+N5618 Syntax prvek nelze menit
+N5619 PGM zahlavi nelze menit
+N5627 Nastavit MP1356.%d na %.4f
+N5628 Naprogramovano mnoh os
+N2652 CC%d MENIC VRETENA  RDY=0
+N2653 CC%d MENIC POHONU OS RDY=0
+N2654 CC%d MENIC VRETENA RDY=1
+N2656 CC%d MENIC POHONU OS RDY=1
+N2743 CC%d FS CHYBA KONTROL.SOUCTU
+N2759 CC%d COMMAND NEPOTVRZEN
+N2819 CHYBNA DATA Z CC%d
+N2821 ZADNA HODNOTA POLOHY Z CC%d
+N2822 CC%d ZADNA HODNOTA POLOHY Z MC
+N2823 MC/CC%d rozdil v ose
+N2831 CC%d CHYBNA VERZE Include-SOUBORU
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC S CHYBA KONTROL.SOUCTU
+N5631 MC PRIKAZ %3d NEPOTVRZEN
+N5632 MC a CC nepasuji dohromady
+N5635 Kanal %d nelze zobrazit
+N5641 MC bezpecnostni kryt je otevreny
+N5651 Chybí osa nástroje
+N5655 MC osa %.2s spustena bez testu
+N5671 Zkontrolujte snimac %.2s
+N5672 Pouzijte tabulku PRESET!
+N5673 Q303 doplnte v cyklu mereni!
+N5693 nedovolena osa nastroje
+N5699 chybna vypoctena funkce
+N5700 rozporny mereny bod
+N5709 chybne udaje kruhu
+N5712 heslo nenalezeno
+N5713 heslo neni zadano
+N5714 heslo je dlouhe
+N5715 heslo je jiz kodovano
+N5757 nastavit preset: blokovana osa!
+N5759 chybne zadani bezpecne vysky!
+N5969 opravdu smazat NC blok? DEL!
+N5970 nedovolene pismeno pro osu
+N5971 neni mozny Block Skip
+N5972 String nekompletni
+N6018 Dvojita reference aktivni
+N6027 Použita chybná sou¿adnice
+N6049 PET tabulka: uberte pocet linek
+N6052 Rozporny zpusob zanoreni!
+N6055 Tento pevny cyklus neni povolen
+N6066 Tolerance rot.osy neni dovolena
+N6069 MC PWM vystup neni k dispozici
+N6072 Okraj obrazovky je dosazen
+N6079 M128 neni dovoleno
+N6080 M144 neni dovoleno
+N6081 MC SOM 4 neni mozne
+N6082 MC provozni rezim neni mozny
+N6086 chyba ukladani prehledu kontrol
+N6087 chyba otevreni prehledu kontrol
+N6088 chyba pri otevirani TEMP.WLT
+N6089 chybi posledni prehled kontrol
+N6090 vyberovy list neni dosazitelny
+N6091 vyberovy list je prazdny
+N6094 chybne cislo klice
+N6093 neni bezpecna osa/vreteno
+N6099 neplatna hodnota
+N6100 neplatny operand
+N6101 MC SOM 4 neni uvolneno
+N6102 zmena sloupce neni povolena
+N6103 cislo preset neexistuje
+N6105 MC SOM 2 jen jedna osa je povolena
+N498 SOUBOR %.25s CHYBI
+N206 PGM %.28s NENI K DISPOZICI
+N6118 stiskni klavesu uvolneni MC SOM 4
+N6182 Profibus: chyba konfigurace
+N6183 Profibus: chyba PCI hardware
+N6184 Profibus: chyba pameti/souboru
+N6187 Vrstvení podprogr.p¿ekro¿.
+N6188 Vrstvení podprogr.p¿ekro¿.
+N6189 5-V napajeni je vysoke
+N6190 5-V napajeni je nizke
+N6193 nespravny start.bod pro spline
+N6212 Aktual polohu nelze prevzit
+N6236 PLC program byl zastaven
+N6264 Paralelni grafiku nelze spustit!
+N6291 Najet REF vretena!
+N6294 Ulozit MP zmenene v PLC
+N6307 T%s:zbytkovy cas nastroje - kratky
+N6308 Nastroj %s neni definovan
+N6309 Prenos dat: nedovolene znaky
+N6312 MP chybi subsoubor
+N6408 Chyba v díl¿ím MP souboru
+N6409 PLC strobe nedovoleno (%s)
+N6410 PLC strobe nepripustny cyklus %d
+N6411 Prepnnuti konc.spinacu zakazano
+N6412 Ulozeni preset neni mozne
+N6413 Zmena kinematiky neni mozna
+N6414 Scan bloku inkonsistentni %s
+N7222 ¿ádka chrán¿ná proti p¿episu
+N7784 Chyba pri zapisu do tabulky
+N7799 MC test brzdy nebyl proveden
+N7800 MC zkrat +24V ve vedeni brzdy
+N7801 MC zkrat 0V ve vedeni brzdy %.2s
+N7803 Zadat vztazny bod pres softkey!
+N7815 Stroj neni inicializovan
+N7922 napajeci napeti na X44 chybi
+N7923 MC autoStart stroje nelze
+N7935 binarni soubor na externi mechanice
+N7936 cil.adresar je zdroj.adresar
+N7937 cil.soubor je zdroj.soubor
+N7938 MP2257.%d chybne zadani(ID=$%08X)!
+N7964 TCPM: norm.vektor rozporny!
+N7969 Aplikace %s neni mozna
+N7971 Proces neni proveditelny
+N7972 Cilovy pristroj neexistuje
+N7973 Prejmenovani souboru nelze
+N7974 Zmena typu souboru nelze
+N7975 Neni prostor na mechanice
+N7977 Soubor systemu I/O chyby
+N7978 Pristup do souboru zrusen
+N7979 Mnoho otevrenych souboru
+N7980 Radek/blok prilis dlouhy
+N7981 Soubor neexistuje
+N8001 Aplikace v realnem case inkativ
+N8002 Chyba v aplikaci v realnem case
+N8005 Zmena kontextu pri inicializaci!
+N8032 LSV-2: velky pocet pripojeni
+N8043 Compilace neni povolena
+N8044 PLC zdroj.soubor neni pristupny
+N8049 Zavisle soubory chraneny
+N8071 Zmena okna neni mozna!
+N8072 Soubor s clenenim chraneny!
+N8090 Kyvne zafrezovani neni mozne!
+N8110 NC program je prerusen
+N7798 SYSTEM CHYBA %d
+N8114 0x01 funkce neni znama
+N8115 0x02 funkce jiz odstartovana
+N8116 0x03 regulator nenei aktivni
+N8117 0x04 regulator je aktivni
+N8118 0x05 puls je moc velky
+N8119 0x06 Neznámý parametr
+N8120 0x07 chybne nacteni DAC hodnot
+N8121 0x08 seriove EEPROM: zadne potvrzeni
+N8122 0x09 seriove EEPROM: SDA visi na 0 nebo 1
+N8123 0x0A data chybeji
+N8124 0x0C funkce je uzamcena
+N8125 0x0D chybny provozni rezim TNC
+N8126 0x10 nedefinovana chyba (viz. zaloha chyb)
+N8128 DSP povelovy string je dlouhy
+N8129 zadna data nebyla prijata
+N8130 prijata chybna data
+N8131 nejsou k dispozici merena data
+N8132 neurcena pricina chyby
+N8133 stroj.parametry pro regulator nejsou k dispozici
+N8134 typ motoru neni evidovan
+N8135 cizi vykonovy modul
+N8136 chybna jednotka regulatoru
+N8140 Nedefinovana zprava
+N8141 Neocekavana zprava
+N8142 Chybove hlaseni z regul. pohonu
+N8213 Chybná vstupní hodnota
+N499 SOUBOR %.25s CHYBI
+N8231 FUNCTION TCPM neni mozna
+N8284 Chybi zaznam el. typ.stitku: %s
+N8290 Prekroceni pracov. prostoru
+N8292 PL 510 chybi napajeni
+N8293 Zkrat na vystupu PL 510
+N8401 PLC modul %d neznamy
+N8494 CC%d timeout porovnani verzi
+N8495 CC%d timeout SMP kontrol. soucet
+N8591 PLANE fce.: TURN neni dovolena!
+N8643 CYCL CALL POS-blok nekompletni
+N8644 Inkrementalni progr. nedovoleno
+N8658 Nastav vztaz.bod ve vsech osach
+N8757 MC 422B vadny ventilator
+N8758 Tato verze EnDat OEM neni podporovana.
+N8892 Funkce pripojeni neni mozna
+N502 CHYBI SMYSL OTACENI
+N503 RND RADIUS PRILIS VELKY
+N504 ROZPORNE ZADANI
+N505 DEFINICE OBRYSU NENI DOSTATECNA
+N506 FPOL CHYBI
+N507 TNC BLOK PROGRAMU NENI DOVOLEN POKUD NENI OBRYS PROPOCITAN
+N508 OBRYS JE PROPOCITAN F-VOLBA BLOKU NENI DOVOLENA
+N509 KONEC UZAVRENEHO OBRYSU - DALSI INKR. SOURADNICE NELZE
+N510 RND NEBO CHF BLOK NENI V TOMTO MISTE DOVOLEN
+N511 RND NEBO CHF S TANGENCIAL. PRECHODEM NENI MOZNE
+N512 PRIMKA PRED NEBO PO RND/CHF MA DELKU 0
+N513 ZKOSENI HRANY JE MOZNE JEN MEZI DVEMI PRIMKAMI
+N514 ZKOSENI HRANY PRILIS VELKE
+N515 DRAHOVA KOREKCE CHYBNE ZAPOCATA: NC BLOK MUSI BYT PRIMKA
+N516 KOREKCE DRAHY CHYBNE ZAKONCENA NC BLOK MUSI BYT PRIMKA
+N517 OBRYS JE PRILIS KOMPLEXNI DALSI UDAJE NUTNE
+N518 FK: ARITMETICKA CHYBA
+N519 FK BLOK ZDE NENI DOVOLEN
+N522 REFERENCE K ZADANEMU BLOKU NENI DOVOLENA
+N523 REFERENCE K CC-BLOKU NENI DOVOLENA
+N525 POZADOVANY OBE SOURADNICE POMOCNEHO BODU
+N526 PARALELNI PROVOZ FK-GRAFIKY NENI MOZNY
+N527 POLOTOVAR-BLK FORM PRILIS VELKY
+N528 OKNO-VYREZ PRILIS VELKE
+N529 OKNO-VYREZ PRILIS MALE
+N530 OKNO-VYREZ NELZE DALE ROZSIRIT
+N9785 nebyl zjisten pohyb rozliseni smeru tedy neni mozne
+N10248 NC funkce neni povolena
+N10521 Start. cas minul
+N10664 Data využití nástroje blokována
+N10665 Gafika programování není možná
+N10672 SPAWN/SUBMIT blokuje sepnutí kontextu
+N10710 PROFIBUS-vstupy nejsou aktualizovány
+N10711 PROFIBUS-vstupy nejsou aktualizovány
+N10942 Zobrazení je nekompletní
+N10949 Bo¿ní p¿ísuv je malý
+N10950 Faktor p¿ekrytí je velký
+N11044 Radius válce 0 není p¿ípustný!
+N11045 Queue-p¿epln¿ní: %s
+N11114 Systémová chyba
+N11115 Systémová chyba
+N11116 Systémová chyba
+N11117 Systémová chyba
+N11232 Nelze p¿epnout provozní režim
+N11275 Typ souboru chybí nebo je chybný
+N11391 Klávesa je blokována
+N11410 Globalní Q-Para. není definován
+N11411 Globalní Q-Param. zadán dvakrát
+N11412 Chyb¿jí globální parametry
+N11413 smarT.NC není možný
+N11442 Dv¿ rot¿aní polohy nejsou povoleny
+N11453 Název souboru již existuje
+N11454 Záhlaví programu již existuje
+N11559 M120: LOOK AHEAD není možný
+N11574 M114 bez geometrie stroje
+N11575 Geometrie os není definována
+N11576 Chybí sou¿adnice oto¿ného stolu
+N11577 Není definována kinematika
+N11578 Úhel nelze vypo¿ítat
+N11579 Chybí tabulka kinematiky
+N11580 Aktivace 3DROT
+N11581 PLANE funkce neni mozna!
+N11582 CC%d : Program %s nestartuje
+N11585 PLC strobe nedovoleno (M%d)
+N11586 Grafický test není možný
+N11588 PGM je editován v smarT.NC
+N11589 PGM je editován soub¿žn¿
+N11593 Chybí opce pro regulátor
+N11595 Smazání souboru není možné
+N11597 Rušení na rozhraní PL
+N11598 PLC-Partition: málo pam¿ti
+N11601 CC%d: TIMEOUT CMD=0x%02X
+N11750 Soubor neexistuje
+N11751 Zvolte soubor znovu!
+N11752 Label-Name je již použit
+N11753 Label-Name je již použit
+N11754 Label-Name nenalezen
+N11755 Label-Name v ¿ádku %u je obsazen
+N12214 USB-p¿ístroj nem¿že být odpojen
+N12215 USB-p¿ístroj byl odpojen bez ukon¿ení
+N12283 Není definován úhel špi¿ky
+N12284 Rozporné údaje
+N12358 P¿ERUŠENÍ v bloku %u (%u %%)
+N12759 Zrušeno vytvo¿ení Treeview
+N12760 MC porucha ventilátoru
+N12767 Reentrance impossible
+N12768 Je naprogramováno mnoho UNIT¿
+N12770 3,3-V napajeni je vysoke
+N12771 3,3-V napajeni je nizke
+N181 DEF.POLOTOVARU-BLK FORM CHYBNA
+N520 FCT NEBO FLT BLOK NENI DOVOLEN V TOMTO MISTE
+N521 INKREMENTALNI REF. UHLU ZDE NENI DOVOLENA
+N524 ZADAT OBE SOURADNICE FPOL
+N12822 Funkce nem¿že být ukon¿ena(Timeout)
+N12823 Zadán R-nástroje v¿tší než 0
+N12824 Více než 5 os p¿i PLC-polohování
+N12830 Poloha drážky 0 nep¿ípustná!
+N12837 Kontur.podprog.: jen 1 osu prog.
+N12857 P¿ekro¿ena max.délka programu
+N6091 Žádné symbolické programování
+N13066 Uložení preset není možné
+N13072 Vložení vztaž.bodu není dovoleno
+N13147 PLC-Program neb¿ží
+N4 CHYBNE ZPRACOVANI DAT 3
+N9 CHYBNE ZPRACOVANI DAT 8
+N11 CHYBNE ZPRACOVANI DAT A
+N12 CHYBNE ZPRACOVANI DAT A
+N14 CHYBNE ZPRACOVANI DAT A
+N16 CHYBNE ZPRACOVANI DAT B
+N19 CHYBNE ZPRACOVANI DAT E
+N29 CHYBNE ZPRACOVANI DAT O
+N33 CHYBA KONTROL.SOUCTU PAMETI A
+N34 CHYBA KONTROL.SOUCTU PAMETI B
+N40 HLIDANI POHYBU %.2s A
+N43 P¿íliš velký rozdíl mezi polohou a otá¿kami %.2s
+N13741 ¿ádek %d: chybí st¿edník ;
+N13742 ¿ádek %d: mnoho hesel
+N13743 ¿ádek %d: chybné heslo
+N13744 ¿ádek %d: neznámý p¿íkaz
+N13745 ¿ádek %d: chyba instrukce formátu
+N13746 ¿ádek %d: nekomp.instrukce formátu
+N13747 ¿ádek %d: heslo je dlouhé
+N13748 ¿ádek %d: chybí index
+N13749 ¿ádek %d: znak ] chybí za indexem
+N13750 Soubor masky nenalezen
+N13751 Výstupní soubor nelze vytvo¿it
+N13154
+N13155 Kolizní varování potvrzeno
+N13156 Profibus-Firmware není aktuální
+N13302 MPFRAGMENTFILE neexistuje
+N13340 Chybná vstupní hodnota
+N13348 DHCP: zadání není povoleno
+N13381 Reset sloupce je nep¿ípustný
+N13387 Zadejte p¿ísuv není rovno 0
+N13475 Funkce je nep¿ípustná!
+N13476 Clipboard je prázdný!
+N13477 MC porucha brzd¿ní
+N13478 MC porucha brzd¿ní %.2s
+N13486 Otá¿ky mimo povolený rozsah %d%%
+N13487 USB: TNC za¿ízení nepodporuje
+N13752 Editování není povoleno
+N13753 TOOL.T: definovaný po¿et zub¿=0
+N13758 M118 je nep¿ípustné
+N13761 Editování není povoleno
+N13769 Ne¿ízená osa %.2s: klidový stav
+N13816 Funkce není dovolena
+N13825 Funkce není uvoln¿na
+N13827 DXF-soubor je chybný
+N13838 Autom. zámek kláves byl uvoln¿n
+N13945 Funkce není dovolena
+N13957 Editování není povoleno
+N13958 M136 s FU/FZ je nep¿ípustný
+N13960 smarT.NC není povolen
+N13961 Inkrementál.zadání je nep¿ípustné
+N14017 P¿epnutí Q399 je nep¿ípustné
+N14019 CC%d Timeout p¿i m¿¿ení proudu
+N14020 MC chybný provozní režim S
+N14022 CC klávesy stroje aktivní
+N14023 MC potvrz.tla¿ítka MB aktivní
+N14024 CC potvrz.tla¿ítka MB aktivní
+N14025 CC potvrz.tla¿ítka HR aktivní
+N14026 CC potvrz.tla¿ítka WZM aktivní
+N14027 CC otev¿ený kryt
+N14032 Vypo¿tená sou¿adnice je velká
+N14156 Není definována osa nástroje
+N14253 Pozor: P¿ednastavena výška!
+N14254 Stisk MC potvrzovacího tla¿ítka
+N14255 Stisk CC potvrzovacího tla¿ítka
+N14299 Konverze programu není možná
+N14434 Chybná definice rozsahu!
+N14479 Nebyla vybrána tab.nulových bod¿
+N14486 M140 MB MAX nepovoleno
+N14487 P¿ekro¿ena max. délka  ¿et¿zce
+N14518 ¿íslo nástroje není povoleno
+N14519 Jméno nástroje není povoleno
+N14520 D¿lení nulou není povoleno
+N14521 Odmoc¿ování není povoleno
+N14522 Logaritmus není povolen
+N14523 Tangens není povolen
+N14525 Funkce blokována FCL
+N14550 Arc cos: Abs.hodnota v¿tší než 1
+N14551 Arc sin: Abs.hodnota v¿tší než 1
+N15439 M128: Zm¿na Preset není povolena
+N15465 Žádná data nejsou dostupná!
+N15466 Soubor chybí ¿i je chybný
+N15491 LSV2:Bod p¿erušení není povolen!
+N15614 Není definován sm¿r snímání
+N15658 Otá¿ky S v¿tší než NMAX z TOOL.T
+N15672 Jednotku nelze p¿ejmenovat!
+N15673 Jednotku nelze kopírovat!
+N15674 Jednotku nelze smazat
+N15675 TNC nem¿že otev¿ít typ souboru!
+N15687 MC hlídání polohy %.2s
+N15688 MC chyba p¿i bržd¿ní %.2s
+N15691 GOTO-Funkce není povolena!
+N15766 Osa nástroje není povolena
+N15767 P¿ípustný rozsah pojezdu byl p¿ekro¿en %.2s
+N15923 Uspo¿ádání pam¿ti PLC se zm¿nilo
+N15967 Vyvolání nápov¿dy není možné
+N15973 M141 není dovoleno
+N16007 Paralelní provoz není možný
+N16010 Ochranný modul není podporován
+N16198 Uspo¿ádání PLC pam¿ti nemohlo být inicializováno
+N16362 MC m¿ni¿ RDY=0 %.2s
+N16363 MC m¿ni¿ RDY=1 %.2s
+N16407 Datový p¿enos není možný
+N16408 Vým¿na os není možná
+N16409 Vým¿na os není možná
+N16410 Vým¿na os není možná
+N16411 Vstupní hranice p¿ekro¿ena
+N16412 Žádná zm¿na není povolena
+N16413 Nedefinovatelná chyba
+N16561 AFC: P¿etížení v¿etena
+N16563 Sníma¿ polohy %.2s: Amplituda je p¿íliš velká
+N16564 Sníma¿ polohy %.2s: Amplituda je p¿íliš malá
+N16565 Sníma¿ polohy %.2s: Frekvence p¿íliš vysoká
+N46 Sníma¿ polohy %.2s je vadný
+N16586 PLANE AXIAL nedovoleno
+N16593 MC Test brzdy neaktivován
+N16623 Chybná definice tabulky
+N16718 Otá¿ky v¿etena mimo toleran¿ní rozsah %.2s
+N16798 Globální PGM-nastav.deaktivováno
+N16800 smarT.NC: Typ souboru nepovolen
+N16830 Editace v b¿žícím PGM nedovolena
+N17063 TNC nem¿že makro zpracovat
+N17161 ENDAT Interpolace není možná %.2s
+N17162 Žádost o elektronický ID-štítek není možná
+N17163 Chyba v TRC-kompenzaci %.2s
+N17167 Chybí 'AFC' v NCMACRO.SYS
+N17207 MC chybný provozní stav S
+N17384 Nedostatek základní pam¿ti
+N17386 Operace s paletou není povolena
+N17387 M128 nedovoleno
+N17390 Funkce PLANE: MOVE není možný
+N17662 Chybný aktivní rozsah pojezdu
+N17663 DCM: Status nesprávné nastavení
+N17735 MC odchylka žádaná - skut poloha p¿íliš velká %.2s
+N17938 EnDat spojení není možné
+N18060 3DROT není dovoleno
+N18075 MC 1.p¿ekro¿ení koncového spína¿e %.2s+
+N18076 MC 1.p¿ekro¿ení koncového spína¿e %.2s-
+N18145 Volaný PGM byl zm¿n¿n
+N18146 Vícenásobné ozna¿ení nepovoleno
+N18147 Funkce pro adresá¿ není možná
+N18148 PGM-ochranu nelze nastav./zrušit
+N18149 Typ souboru chrán¿n souborem MP
+N18150 OTEV¿ÍT S není povoleno
+N18156 USB-za¿ízení nelze odpojit
+N18157 Žádné USB za¿ízení není ozna¿eno
+N18220 Chybná PL konfigurace
+N18280 %s
+N59 FN 14: ¿íslo chyby %s
+N18303 CC%d M¿ni¿ os RDY=0 (Bezpe¿nostní relé)
+N18304 CC%d M¿ni¿ os RDY=1 (Bezpe¿nostní relé)
+N18325 MC S-chyba software %d
+N18371 MC Start test odpínacích kanál¿ není možný
+N18401 Interní chyba p¿i kopírování!
+N18629 Softwarová opce není aktivní
+N18630 Obnova kinematiky není možná!
+N18631 Funkce nedovolena
+N18632 rozm¿ry polotovaru si odporují
+N18861 HSCI: chyba hardware
+N18862 HSCI: chyba initializace
+N18891 M91 ¿i M92 není možná
+N18903 ¿áste¿né p¿ed¿ízení nedovoleno
+N18904 Adresar neexistuje
+N18912 CC%d M¿ni¿ v¿etena RDY=1 (Bezpe¿nostní relé)
+N18913 CC%d M¿ni¿ v¿etena RDY=0 (Bezpe¿nostní relé)
+N18914 Chybná generace cyklu
+N18915 HSCI: Chybí IOC-soubor
+N18928 M128 nedovolena!
+N19236 LSV2 p¿enos p¿erušen!
+N19292 AFC: Nezachycen referen¿ní výkon
+N19293 TOOL.T: P¿íliš mnoho ¿ez¿
+N19398 M¿¿ící poloha není povolena
+N19411 PLC program %1 nemohl být spušt¿n
+N19440 Makro M-funkcí není povoleno
+N19448 DCM: Neznámý status nástroje
+N13827 Aplikace 'DXF_CONVERTER' neni mozna
+N19501 Chyba b¿hem (self) testu
+N19502 Timeout (self) testu
+N19503 Chyba komunikace p¿i (self) testu
+N19504 Neznámá chyba p¿i (self) testu
+N19754 Nouzový stop z SPLC
+N19755 Fatální chyba z SPLC
+N19764 Zrušení nástroje není povoleno
+N20418 (Self) test je deaktivován
+N20457 MC: Systémová chyba v SPLC-LZS
+N20458 Detekce hardwaru PL/MB chybná
+N20459 HSCI-PL/MB hlásí chybu
+N20460 HSCI-PL/MB hlásí chybu
+N20461 MC: Systémová chyba v SPLC-LZS
+N20462 MC: Systémová chyba v SPLC-LZS
+N20463 Chyba doby b¿hu v SPLC programu:
+N20464 Do SPLC nelze vložit program
+N20465 SPLC program byl zm¿n¿n
+N20466 SPLC program není v po¿ádku
+N20467 Stroj není v bezpe¿ném provozu
+N20469 Konfigurace SPLC vstup¿
+N20471 Konfigurace SPLC vstup¿
+N20473 Konfigurace SPLC ¿asu cyklu
+N20477 Python-Skript je již odstartován
+N20481 P¿ístup do kinematiky není možný
+N20482 M¿¿.poloha není v rozsahu pohybu
+N20483 Kompenzace presetu není možná
+N20639 Tabul.míst je chrán¿na proti zápisu
+N20650 Tla¿ítková re-sekvence ukon¿ena
+N20661 Otá¿ení není dovoleno
+N20662 Nedovolený faktor zm¿ny m¿¿ítka
+N20663 Zrcadlení není dovoleno
+N20664 Posun nul.bodu není dovolen
+N21084 Dejte ru¿ní kole¿ko do nabíje¿ky
+N21096 Je aktivní preset s posunutím
+N21097 polom¿r nástr.=0: DCM není možná
+N21144 Ru¿ní kole¿ko: M91/M92 nepovolena
+N21219 ACCESSLEVEL: Funkce blokována
+N21232 Potenciometr Override ?
+N21233 Chybí kinematika nosi¿e nástroje
+N21254 Testovací program nelze otev¿ít
+N21255 Testovací program nelze generovat
+N21256 Testovací program nelze spustit
+N21257 DCM: Upína¿ neaktivní
+N21258 Soubor neexistuje
+N21260 SPLC program není konfigurován
+N21261 SPLC p¿ekro¿ení doby b¿hu MC
+N21426 DCM: Kolizní t¿lesa nejsou jednozna¿ná
+N21675 Software ¿ízení není bezpe¿ný
+N21701 Není povoleno smazat ¿ádek
+N21712 Postup vypínání není možný
+N21948 MC nesprávný p¿íkaz od MC
+N21949 Chybn¿ konfigurovaný override rychloposuvu
+N21932 P¿ekro¿ení MC ¿asu p¿i brzd¿ní %.2s
+N22055 Paralelní provoz není možný
+N22060 P¿ekro¿ení dráhy MC p¿i SS2 %.2s
+N22077 MC zm¿na z SOM_2/SOM_3 na SOM_4 není možná
+N22077 MC zm¿na z SOM_4 na SOM_2/SOM_3 není možná
+N22079 Malá kapacita RAM pam¿ti
+N22124 MC SPLC vyžaduje neplatnou odezvu na stop
+N22125 MC SPLC vyžaduje neplatnou bezpe¿nostní funkci
+N22266 SPLC program není p¿eložen
+N22330 M94 není možné
+N23611 Tabulka míst je zam¿ena
+N2187 Výstraha osy %.2s
+N23636 MC brzdu nelze deaktivovat %.2s
+N23720 P¿ehlásky nejsou povoleny!
+N23756 Fce povolena jen pro rota¿ní osy
+N23767 Editování není povoleno
+N23768 QR parameter se nedá obnovit
+N23784 MC neplatný provozní režim z SPLC
+N23830 HSCI/Profibus: chyba konfigurace
+N23832 MC Chyba konfigurace skupiny os %d
+N23835 Chyba p¿i (self) testu
+N7798 CC%d error %d %d %d
+N7798 CC error %d %d %d
+N23945 MC Systémový takt MC není shodný se SKERN MC
+N23946 MC Systémový takt MC není shodný se SPLC MC
+N23947 MC Systémový takt MC není shodný se SPLC CC
+N23949 Polom¿r nástroje moc velký
+N23950 Zp¿sob vno¿ení není možný
+N23951 Úhel vno¿ení je špatn¿ definován
+N23952 Úhel otev¿ení není definován
+N23953 Ší¿ka drážky je moc velká
+N23960 MC chyba p¿i k¿ížovém porovnání:  %s
+N23961 MC bezpe¿ný výstup rozdílný:  %s
+N23967 Ozna¿ení nebylo nalezeno
+N23993 Parametriza¿ní chyba v Python skriptu
+N24013 Nap¿tí MC +3,3V mimo toleranci
+N24014 Nap. MC +3,3VPIC mimo toleranci
+N24015 Nap¿tí MC +12V mimo toleranci
+N24016 MC otá¿ky v¿tráku 1 moc nízké
+N24017 MC +5V mimo toleranci
+N24024 Nekonzistentní data nástroje
+N24074 V¿trák MC nebyl zjišt¿n
+N24075 MC otá¿ky v¿tráku 2 moc nízké
+N24128 MC chyba zjišt¿ní aktuální hodnoty %d %.2s
+N24130 MC osa %.2s je v polohové vazb¿
+N24131 MC v¿eteno %.2s je ve vazb¿
+N24188 Zm¿n¿ná verze NC softwaru
+N24189 Chybná data konfigurace SPLC
+N24191 MC odchylka skute¿. a progr.otá¿ek je moc velká %.2s
+N8127 Neznámá chyba LSV2: %x %x
+N24360 Chybný stav bezpe¿ného výstupu %s
+N24394 Rovinu nelze ur¿it
+N24438 Obsah souboru je chybný
+N24484 Chyba p¿i¿azení ¿ís. T a ¿ísla ¿ezu
+N24515 P¿i NOUZOVÉM STOPU není start možný
+N24585 MOVE není možné
+N24586 Chybný formát bloku
+N24592 SPLC program byl zm¿n¿n
+N24594 Je zm¿n¿n binární kód SPLC programu v MC
+N24596 Je zm¿n¿n binární kód SPLC programu v CC
+N24860 MC: Erroneous data from SPLC %s
+N24959 Presetting not allowed!
+N24967 MC koncový spína¿ %.2s+
+N24968 MC koncový spína¿ %.2s-
+N24972 Safe Torque Off (-STO.B.x) is active
+N24973 Externí CENTRAL STOP
+N24974 MC S-vstup %d nerovno
+N24975 MC posuv v¿tší než SLS %.2s
+N24976 CC posuv v¿tší než SLS %.2s
+N24977 MC provoz.stav rozdílný od CC
+N24979 MC otá¿ky v¿tší než SLS %.2s
+N24980 CC otá¿ky v¿tší než SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC chybná skupina os S
+N24983 Osa není v kontrolní poloze
+N25030 MC S status reaction is active: %s
+N25031 Wiring of SPLC input %d
+N25033 Wiring of emergency stop
+N25160 MC SMC Autotest software loaded
+N25237 Wrong input %s for dynamic test
+N25243 Gliederung widersprüchlich
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

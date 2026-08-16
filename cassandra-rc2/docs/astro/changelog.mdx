@@ -1,0 +1,68 @@
+---
+title: Change Log
+image:
+  url: "./main.png"
+  alt: "Cassandra Firmware Update"
+tags: ["firmware", "update", "release"]
+---
+
+import LGallery from "@polymech/astro-base/components/GalleryK.astro";
+import RelativeImage from "@polymech/astro-base/components/RelativeImage.astro";
+import RelativePicture from "@polymech/astro-base/components/RelativePicture.astro";
+import RelativeGallery from "@polymech/astro-base/components/RelativeGallery.astro";
+import FileTree from "@polymech/astro-base/components/FileTree.astro";
+
+## v0.6.1 (2025-12-07)
+
+### New Features
+
+- **Pressure Profile Editor**:
+  - Launched a dedicated editor for Pressure Profiles w/ Bezier curves.
+  - Optimized for 0-100% pressure scaling (removed temperature fields).
+  - Added "Edit" shortcut button to Pressure Profile rows for quick access.
+- **Pressure Control**:
+  - Added `+` and `-` buttons for precise Setpoint adjustment.
+  - Hold `Shift` while clicking to adjust by 10 units.
+  - Improved layout for better accessibility.
+
+### Improvements
+
+- **Profile Playback**:
+  - Fixed duration display for Pressure Profiles (was showing seconds as ms).
+  - Updated graph axis labels to "Pressure (%)" for clarity.
+- **Modbus Communication**:
+  - Implemented `PriorityFilter` to dynamically prioritize critical operations.
+  - **Loadcell**: Mandatory read blocks are now flagged as **High Priority** to ensure timely data updates despite bus load.
+
+## v0.6.0 (2025-12-05)
+
+### Breaking Changes
+
+### New Features
+
+- **Timeline Scrubbing**: You can now jump to any point in a profile's timeline using the new slider. This is available in both the Profile Card and the main Playback controls, allowing for quick adjustments to the elapsed time.
+- **Pressure Cylinder HOLD**: Double-tapping UP on the joystick now triggers a "HOLD" function. This captures the current pressure as the new setpoint and automatically switches to Auto mode to maintain it. This feature can be enabled/disabled via settings.
+- **Settings Memory**: The machine now remembers your "Interlocked" and "Mode" settings for the Pressure Cylinder even after a restart.
+- **Pressure Profiles**: There are now 4 instead of 1 pressure profiles.
+- **Warmup Notification**: A buzzer now sounds when a temperature profile completes its warmup phase and begins running.
+- **Sound feedback for Temperature Profiles**: The machine now makes a sound when a temperature profile warmup phase is completed.
+
+### Improvements & Fixes
+
+- **Pressure Cylinder**:
+  - Unified manual control logic for single and multi-cylinder modes, ensuring consistent overload protection.
+  - Improved stability of mode transitions and loadcell handling.
+- **Visual Feedback**:
+  - Added a "Disconnected" icon (crossed-out WiFi) to Controller Cards and Pressure Cylinder controls. This appears immediately if the connection is lost, so you know when data is stale.
+  - Added a "Profile" badge to Controller Cards to clearly show which profile is currently active.
+  - Enabled buzzer sounds for key profile events.
+- **Profile Editor**:
+  - Fixed text readability in the description field when using Dark Mode.
+  - Optimized button layout for better usability on mobile devices.
+- **Safety**:
+  - Added safeguards to prevent accidental pressure application when no profile is running.
+- **Fixes**:
+  - Better handling of disconnected devices over Modbus.
+  - Restore IsSlave, ComWrite after reboot.
+  - Restore Omon & Temperature profile enabled state after reboot.
+  - **Profile Timing**: Fixed an issue where the profile timer would start counting during the warmup phase. The timer now correctly starts only after the profile enters the running state.

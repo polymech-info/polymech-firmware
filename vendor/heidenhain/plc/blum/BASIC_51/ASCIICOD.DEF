@@ -1,0 +1,185 @@
+*-----------------------------------------------------------------------------
+*  Global symbols
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  ASCII Codes NC Keys
+*-----------------------------------------------------------------------------
+
+#type
+
+   KG_buffer_empty                          K-2
+
+* Group Codes
+
+   KG_all_keys                              K $10000
+   KG_ASCII_keys                            K $10001
+   KG_soft_keys                             K $10002
+   KG_cursor_keys                           K $10003
+   KG_number_keys                           K $10004
+   KG_operating_mode                        K $10005
+   KG_NC_block_opening_keys                 K $10006
+
+* Single Keys
+
+   KG_no_key                                K $00
+   KG_key_BACKSPACE_ASCII                   K $08
+   KG_key_ret_ASCII                         K $0D
+   KG_key_space_ASCII                       K $20
+   KG_key_!_ASCII                           K $21
+   KG_key_"_ASCII                           K $22
+   KG_key_#_ASCII                           K $23
+   KG_key_$_ASCII                           K $24
+   KG_key_%_ASCII                           K $25
+   KG_key_&_ASCII                           K $26
+   KG_key_(_ASCII                           K $28
+   KG_key_)_ASCII                           K $29
+   KG_key_asterisk_ASCII                    K $2A
+   KG_key_plus_ASCII                        K $2B
+   KG_key_comma_ASCII                       K $2C
+   KG_key_minus_ASCII                       K $2D
+   KG_key_.ASCII_DOT_ASCII                  K $2E
+   KG_key_/_ASCII                           K $2F
+   KG_key_0_numbers                         K $30
+   KG_key_1_numbers                         K $31
+   KG_key_2_numbers                         K $32
+   KG_key_3_numbers                         K $33
+   KG_key_4_numbers                         K $34
+   KG_key_5_numbers                         K $35
+   KG_key_6_numbers                         K $36
+   KG_key_7_numbers                         K $37
+   KG_key_8_numbers                         K $38
+   KG_key_9_numbers                         K $39
+   KG_key_:_ASCII                           K $3A
+   KG_key_semicolon_ASCII                   K $3B
+   KG_key_<_ASCII                           K $3C
+   KG_key_=_ASCII                           K $3D
+   KG_key_>_ASCII                           K $3E
+   KG_key_?_ASCII                           K $3F
+   KG_key_A_ASCII                           K $41
+   KG_key_B_ASCII                           K $42
+   KG_key_C_ASCII                           K $43
+   KG_key_D_ASCII                           K $44
+   KG_key_E_ASCII                           K $45
+   KG_key_F_ASCII                           K $46
+   KG_key_G_ASCII                           K $47
+   KG_key_H_ASCII                           K $48
+   KG_key_I_ASCII                           K $49
+   KG_key_J_ASCII                           K $4A
+   KG_key_K_ASCII                           K $4B
+   KG_key_L_ASCII                           K $4C
+   KG_key_M_ASCII                           K $4D
+   KG_key_N_ASCII                           K $4E
+   KG_key_O_ASCII                           K $4F
+   KG_key_P_ASCII                           K $50
+   KG_key_Q_ASCII                           K $51
+   KG_key_R_ASCII                           K $52
+   KG_key_S_ASCII                           K $53
+   KG_key_T_ASCII                           K $54
+   KG_key_U_ASCII                           K $55
+   KG_key_V_ASCII                           K $56
+   KG_key_W_ASCII                           K $57
+   KG_key_X_ASCII                           K $58
+   KG_key_Y_ASCII                           K $59
+   KG_key_Z_ASCII                           K $5A
+   KG_key_^_ASCII                           K $5E
+   KG_key_a_ASCII_                          K $61
+   KG_key_b_ASCII_                          K $62
+   KG_key_c_ASCII_                          K $63
+   KG_key_d_ASCII_                          K $64
+   KG_key_e_ASCII_                          K $65
+   KG_key_f_ASCII_                          K $66
+   KG_key_g_ASCII_                          K $67
+   KG_key_h_ASCII_                          K $68
+   KG_key_i_ASCII_                          K $69
+   KG_key_j_ASCII_                          K $6A
+   KG_key_k_ASCII_                          K $6B
+   KG_key_l_ASCII_                          K $6C
+   KG_key_m_ASCII_                          K $6D
+   KG_key_n_ASCII_                          K $6E
+   KG_key_o_ASCII_                          K $6F
+   KG_key_p_ASCII_                          K $70
+   KG_key_q_ASCII_                          K $71
+   KG_key_r_ASCII_                          K $72
+   KG_key_s_ASCII_                          K $73
+   KG_key_t_ASCII_                          K $74
+   KG_key_u_ASCII_                          K $75
+   KG_key_v_ASCII_                          K $76
+   KG_key_w_ASCII_                          K $77
+   KG_key_x_ASCII_                          K $78
+   KG_key_y_ASCII_                          K $79
+   KG_key_z_ASCII_                          K $7A
+   KG_key_home                              K $128
+   KG_soft_key_0_soft_key                   K $180
+   KG_soft_key_1_soft_key                   K $181
+   KG_soft_key_2_soft_key                   K $182
+   KG_soft_key_3_soft_key                   K $183
+   KG_soft_key_4_soft_key                   K $184
+   KG_soft_key_5_soft_key                   K $185
+   KG_soft_key_6_soft_key                   K $186
+   KG_soft_key_7_soft_key                   K $187
+   KG_key_FBACK_soft_key                    K $19C
+   KG_key_FNEXT_soft_key                    K $19D
+   KG_key_FNEXT_up_soft_key                 K $19E
+   KG_key_cursor_up                         K $1A0
+   KG_key_cursor_down                       K $1A1
+   KG_key_cursor_left                       K $1A2
+   KG_key_cursor_right                      K $1A3
+   KG_key_enter                             K $1A8
+   KG_key_no_enter                          K $1A9
+   KG_key_del                               K $1AB
+   KG_key_end_block                         K $1AC
+   KG_key_goto                              K $1AD
+   KG_key_._numbers                         K $1BD
+   KG_key_manual_mode                       K $1C0
+   KG_key_MDI_mode                          K $1C1
+   KG_key_single_block_mode                 K $1C2
+   KG_key_full_sequence_mode                K $1C3
+   KG_key_edit_mode                         K $1C4
+   KG_key_handwheel_mode                    K $1C5
+   KG_key_test_mode                         K $1C6
+   KG_key_MOD                               K $1C7
+   KG_key_PGM_MGT                           K $1CB
+   KG_key_PGM_CALL_NC_block_opening         K $1D0
+   KG_key_TOOL_DEF_NC_block_opening         K $1D1
+   KG_key_TOOL_CALL_NC_block_opening        K $1D2
+   KG_key_CYCL_DEF_NC_block_opening         K $1D3
+   KG_key_CYCL_CALL_NC_block_opening        K $1D4
+   KG_key_LBL_SET_NC_block_opening          K $1D5
+   KG_key_LBL_CALL_NC_block_opening         K $1D6
+   KG_key_L_NC_block_opening                K $1D7
+   KG_key_CE                                K $1AE
+   KG_key_X                                 K $1B0
+   KG_key_Y                                 K $1B1
+   KG_key_Z                                 K $1B2
+   KG_key_IV                                K $1B3
+   KG_key_V                                 K $1B4
+   KG_key_POLAR                             K $1B8
+   KG_key_INKREMENT                         K $1B9
+   KG_key_Q                                 K $1BA
+   KG_key_ACTPOS_numbers                    K $1BB
+   KG_key_minus_numbers                     K $1BC
+   KG_key_C_NC_block_opening                K $1D8
+   KG_key_CR_NC_block_opening               K $1D9
+   KG_key_CT_NC_block_opening               K $1DA
+   KG_key_CC_NC_block_opening               K $1DB
+   KG_key_RND_NC_block_opening              K $1DC
+   KG_key_CHF_NC_block_opening              K $1DD
+   KG_key_FK_NC_block_opening               K $1DE
+   KG_key_touch_probe                       K $1DF
+   KG_key_STOP_NC_block_opening             K $1E0
+   KG_key_APPR/DEP_NC_block_opening         K $1E1
+   KG_key_DIA                               K $1EA
+   KG_key_FIG                               K $1EB
+   KG_key_screen_change                     K $1EC
+   KG_key_HELP                              K $1ED
+   KG_key_INFO                              K $1EE
+   KG_key_CALC                              K $1EF
+   KG_key_NC_START                          K $1F0
+
+* Key combinations
+
+   KG_key_Ctrl_S_NC_Start                   K $0013
+   KG_key_Ctrl_X_NC_Stop                    K $0018
+   KG_key_Ctrl_cursor_up_axes_plus          K $FFFF81A0
+   KG_key_Ctrl_cursor_down_axes_minus       K $FFFF81A1
+   KG_key_Alt_X_TNC_emergency_stop          K $2078

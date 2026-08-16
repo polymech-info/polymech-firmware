@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "hast-util-from-html": "^2.0.3",
+    "hast-util-to-html": "^9.0.5",
+    "mdast-util-to-hast": "^13.2.0",
+    "playwright": "^1.52.0",
+    "rehype-mermaid": "^3.0.0",
+    "unist-util-visit": "^5.0.0"
+  }
+}

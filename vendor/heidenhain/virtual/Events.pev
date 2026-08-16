@@ -1,0 +1,15 @@
+SPAWN_WZM_BELADEN; MG_Event_P_Tab_sperren==1; $0001   ; P-Tabelle sperren
+SPAWN_WZM_BELADEN; MG_Event_P_Tab_freigeben==1; $0002   ; P-Tabelle freigeben
+SPAWN_WZM_BELADEN; MG_Event_Tab_aktive_Zeile==1; $0004   ; Tabelle aktive Zeile ermitteln
+SPAWN_WZM_BELADEN; MG_Event_WZ_Nr_in_P_Tab_lesen==1; $0008   ; WZ Nummer in P-Tabelle lesen
+SPAWN_WZM_BELADEN; MG_Event_WZ_Nr_in_T_Tab_lesen==1; $0010   ; WZ Nummer in T-Tabelle lesen
+SPAWN_WZM_BELADEN; MG_Event_leer_in_P_Tab_suchen==1; $0020   ; Leer-Platz in P-Tabelle ermitteln
+SPAWN_WZM_BELADEN; MG_Event_WZ_in_P_Tab_suchen==1; $0040   ; WZ-Nummer in P-Tabelle ermitteln
+SPAWN_WZM_BELADEN; MG_Event_WZ_Name_in_P_Tab_suchen==1; $0080   ; WZ-Name in P-Tabelle ermitteln
+
+;SPAWN_FEHLER; $MG_Fehler_Merker_loeschen$==1; $0001; Fehler Merker loeschen
+;SPAWN_FEHLER; $NP_W274_Tasten_Code_betaetigte_Taste$==430; $0002; CE-Taste
+;&& Verknüpfungen noch nicht verfügber
+;SPAWN_WZ_STATUS; ($MG_WZ_Status_lesen$==1) && ($MG_WZ_Tabelle_aktiv$==0); $0001; WZ Status lesen
+;SPAWN_WZ_STATUS; ($MG_WZ_Vorwahl_Status_lesen$==1) && ($MG_WZ_Tabelle_aktiv$==0); $0002; WZ Vorwahl Status lesen
+

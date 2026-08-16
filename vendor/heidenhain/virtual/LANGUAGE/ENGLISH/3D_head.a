@@ -1,0 +1,42 @@
+/* 3D Kopf
+   -------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"3D HEAD";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"AXIS                 %s         %s     \n",
+$SG_Kennung_3D_Achse_1$/c,$SG_Kennung_3D_Achse_2$/c;
+CURSOR=OFF;
+
+"%s/%s position  :  %+9.3F %+9.3F\n",
+$SG_Kennung_3D_Achse_1$/c,$SG_Kennung_3D_Achse_2$/c,
+$DG_3D_Kopf_Achse_1_Position$/n=4/c,$DG_3D_Kopf_Achse_2_Position$/n=4/c;
+
+"S preposition :  %+9.3F %+9.3F\n",
+$DG_3D_Kopf_Achse_1_S_Position$/n=4/c,$DG_3D_Kopf_Achse_2_S_Position$/n=4/c;
+
+"S min torque  :  %+9.3F %+9.3F\n\n",
+$DG_3D_Kopf_Achse_1_min_Torsionsmoment$/n=3/c,$DG_3D_Kopf_Achse_2_min_Torsionsmoment$/n=4/c;
+
+"Unclamp  [1/0]:      %D         %D\n",
+$MG_3D_Kopf_Achse_1_loesen_Service$/c,$MG_3D_Kopf_Achse_2_loesen_Service$/c;
+
+"O unclamp     :      %D         %D\n",
+$MG_3D_Kopf_Achse_1_Klemmung_loesen$/c,$MG_3D_Kopf_Achse_2_Klemmung_loesen$/c;
+
+"I unclamped   :      %D         %D\n",
+$MG_3D_Kopf_Achse_1_geloest$/c,$MG_3D_Kopf_Achse_2_geloest$/c;
+
+"I clamped     :      %D         %D\n\n",
+$MG_3D_Kopf_Achse_1_geklemmt$/c,$MG_3D_Kopf_Achse_2_geklemmt$/c;
+
+"Step axis     :      %1D         %1D  \n",
+$BG_Schritt_Achse_1_3D_Kopf$/c,$BG_Schritt_Achse_2_3D_Kopf$/c;
+
+"Step 3D head  :     %2D        %2D  \n",
+$MG_3D_Kopf_Achse_1_aktiv$?$BG_Schritt_3D_Kopf$:0./c,$MG_3D_Kopf_Achse_2_aktiv$?$BG_Schritt_3D_Kopf$:0/c;

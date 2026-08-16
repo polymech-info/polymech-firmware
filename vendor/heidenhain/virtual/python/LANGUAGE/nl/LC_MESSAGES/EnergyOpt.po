@@ -1,0 +1,138 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Spindel"
+
+msgid "AXIS"
+msgstr "Assen"
+
+msgid "SCREEN"
+msgstr "Scherm"
+
+msgid "MACHINE"
+msgstr "Machine"
+
+msgid "CONTROL"
+msgstr "Sturing"
+
+msgid "LIGHT"
+msgstr "Licht"
+
+msgid "LIGHT_1"
+msgstr "Licht_1"
+
+msgid "LIGHT_2"
+msgstr "Licht_2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Lucht aggregaat"
+
+msgid "OEL_AGGREGATE"
+msgstr "Hyd_groep"
+
+msgid "DRIVES"
+msgstr "Drivers"
+
+msgid "MONDAY_SHORT"
+msgstr "Ma"
+
+msgid "TUESDAY_SHORT"
+msgstr "Di"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Wo"
+
+msgid "THURSDAY_SHORT"
+msgstr "Do"
+
+msgid "FRIDAY_SHORT"
+msgstr "Vri"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Za"
+
+msgid "SUNDAY_SHORT"
+msgstr "Zo"
+
+msgid "SETUP"
+msgstr "Instellen"
+
+msgid "ADVANCED"
+msgstr "Uitgebreid"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Opwarmprogramma"
+
+msgid "STANDBY"
+msgstr "Standby"
+
+msgid "SWITCH_OFF"
+msgstr "Uitschakelen"
+
+msgid "TIME"
+msgstr "Tijd"
+
+msgid "AXIS_FILTER"
+msgstr "As_filter"
+
+msgid "SPINDLE_FILTER"
+msgstr "Spindel_filter"
+
+msgid "SWITCH_ON"
+msgstr "Inschakelen"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Met EnergyOpt kan je het\n"
+"energieverbruik van Uw\n"
+"machine optimeren. Ongebruikte\n"
+"kunnen in standby geschakeld\n"
+"of helemaal uitgeschakeld\n"
+"worden.\n"
+"- Druk de Edit softkey\n"
+"- Selecteer de gewenst apparaten\n"
+"en stel een tijd in.\n"
+"- Verlaat de EDIT mode door\n"
+"nogmaals op EDIT te drukken\n"
+"- Schakel alle opties in of uit\n"
+"met de softkey Aan/Uit"
+
+msgid "MILLISECOND"
+msgstr "Milliseconde"
+
+msgid "MILLISECONDS"
+msgstr "Milliseconden"
+
+msgid "SECOND"
+msgstr "Seconde"
+
+msgid "SECONDS"
+msgstr "Seconden"
+
+msgid "MINUTE"
+msgstr "Minuut"
+
+msgid "MINUTES"
+msgstr "Minuten"
+
+msgid "HOUR"
+msgstr "Uur"
+
+msgid "HOURS"
+msgstr "Uren"
+
+msgid "DAY"
+msgstr "Dag"
+
+msgid "DAYS"
+msgstr "Dagen"
+
+msgid "WEEK"
+msgstr "Week"
+
+msgid "WEEKS"
+msgstr "Weken"
+

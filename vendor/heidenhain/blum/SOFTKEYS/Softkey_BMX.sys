@@ -1,0 +1,115 @@
+; Softkey Tree Definition File V2.1
+; Creation date:   Mon Jun 28 19:08:49 2021
+; Softkey project: /mnt/plc/SOFTKEYS/Softkey_BMX.spj
+P /mnt/plc/SOFTKEYS/BMX/
+V 0 B - 
+N 1 /mnt/plc/SOFTKEYS/BMX/Machine_function.bmx - - 1 -1 - -1 0 -1 - - - -1 - -1 - -
+N 2 /mnt/plc/SOFTKEYS/BMX/Spindle_function.bmx - - 2 -1 - -1 0 -1 - - - -1 - -1 - -
+N 3 /mnt/plc/SOFTKEYS/BMX/TC_function.bmx - - 3 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+N 4 /mnt/plc/SOFTKEYS/BMX/Diagnosis_function.bmx - - 4 -1 - -1 0 -1 - - - -1 - -1 - -
+M 1 B - 
+C 20 /mnt/plc/SOFTKEYS/BMX/Coolant_chip_flush.bmx - MG_soft_key_coolant_chip_flush 0 -1 - -1 -1 - - - -1 - -1 - -
+C 21 /mnt/plc/SOFTKEYS/BMX/Coolant_water_gun.bmx - MG_soft_key_coolant_water_gun 0 -1 - -1 -1 - - - -1 - -1 - -
+C 22 /mnt/plc/SOFTKEYS/BMX/Air_blast.bmx - MG_soft_key_air_blast 0 -1 - -1 -1 - - - -1 - -1 - -
+C 31 /mnt/plc/SOFTKEYS/BMX/Oil_mist.bmx - MG_soft_key_oil_mist 0 -1 - -1 -1 - - - -1 - -1 - -
+C 34 /mnt/plc/SOFTKEYS/BMX/Air_through_S.bmx - MG_M17_status 0 -1 - -1 -1 - - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - MG_soft_key_one_level_back 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+C 14 /mnt/plc/SOFTKEYS/BMX/Lubrication.bmx - MG_soft_key_lubrication 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - MG_soft_key_one_level_back 0 -1 - - -1 0 0
+C 11 /mnt/plc/SOFTKEYS/BMX/Auto_power_off.bmx - MG_auto_power_off_after_END_PGM 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+C 35 /mnt/plc/SOFTKEYS/BMX/F100.bmx - MG_soft_key_F100_percent 0 -1 - -1 -1 - - - -1 - -1 - -
+C 36 /mnt/plc/SOFTKEYS/BMX/S100.bmx - MG_soft_key_S100_percent 0 -1 - -1 -1 - - - -1 - -1 - -
+C 37 /mnt/plc/SOFTKEYS/BMX/Fluid_flow_valve.bmx - MG_soft_key_fluid_flow_valve 0 -1 - -1 -1 - - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - MG_soft_key_one_level_back 0 -1 - - -1 0 0
+S 16 /mnt/plc/SOFTKEYS/BMX/Chip_conveyor_back.bmx - MG_soft_key_chip_con_back 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+C 38 /mnt/plc/SOFTKEYS/BMX/Chip_conveyor_interval.bmx - MG_soft_key_interval_chip_conveyor 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+C 39 /mnt/plc/SOFTKEYS/BMX/Chip_conveyor_setup.bmx - MG_soft_key_setup_chip_conveyor 0 0 M_CHIP_CON_INT_SETUP.A -1 -1 - - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - MG_soft_key_one_level_back 0 -1 - - -1 0 0
+M 2 B - 
+# -1 -
+# -1 -
+S 42 /mnt/plc/SOFTKEYS/BMX/Spindle_tip_cw.bmx - MG_soft_key_S_jog_right_cw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 43 /mnt/plc/SOFTKEYS/BMX/Spindle_tip_ccw.bmx - MG_soft_key_S_jog_left_ccw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 3 B - 
+U 47 /mnt/plc/SOFTKEYS/BMX/TC_magazine_load.bmx - MG_soft_key_TC_mag_load_active 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 48 /mnt/plc/SOFTKEYS/BMX/TC_magazine_cw.bmx - MG_soft_key_TC_mag_right_cw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 49 /mnt/plc/SOFTKEYS/BMX/TC_magazine_ccw.bmx - MG_soft_key_TC_mag_left_ccw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+U 50 /mnt/plc/SOFTKEYS/BMX/T_torque_monitoring.bmx - MG_soft_key_T_torque_monitoring 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 4 B - 
+U 51 /mnt/plc/SOFTKEYS/BMX/Error_queue.bmx - - 0 0 M_Error.A -1 -1 - -1 -1 - - -1 - -1 - -
+N 52 /mnt/plc/SOFTKEYS/BMX/Diagnosis.bmx - - 5 -1 - -1 0 -1 - - - -1 - -1 - -
+N 53 /mnt/plc/SOFTKEYS/BMX/Status.bmx - - 7 -1 - -1 0 -1 - - - -1 - -1 - -
+N 54 /mnt/plc/SOFTKEYS/BMX/Documentation.bmx - - 6 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 5 B - 
+R 55 /mnt/plc/SOFTKEYS/BMX/Diagnosis_1_drive.bmx - - 1 0 M_Dia_A1.A -1 -1 - - - -1 - -1 - -
+R 56 /mnt/plc/SOFTKEYS/BMX/Diagnosis_2_drive.bmx - - 0 0 M_Dia_A2.A -1 -1 - - - -1 - -1 - -
+R 57 /mnt/plc/SOFTKEYS/BMX/Diagnosis_3_drive.bmx - - 0 0 M_Dia_A3.A -1 -1 - - - -1 - -1 - -
+R 58 /mnt/plc/SOFTKEYS/BMX/Diagnosis_TC.bmx - MG_TC_diagnosis 0 0 M_Dia_WZ.A -1 -1 - - - -1 - -1 - -
+R 60 /mnt/plc/SOFTKEYS/BMX/Diagnosis_TC_magazine.bmx - MG_TC_magazine_diagnosis 0 0 M_Dia_M1.A -1 -1 - - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 6 B - 
+U 64 /mnt/plc/SOFTKEYS/BMX/Documentation_M_function.bmx - - 0 0 M_Doc_M.A -1 -1 - -1 -1 - - -1 - -1 - -
+U 65 /mnt/plc/SOFTKEYS/BMX/Documentation_IO_interface.bmx - - 0 0 M_Doc_IO.A -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+U 66 /mnt/plc/SOFTKEYS/BMX/Mode_line_0_PLC_window.bmx - MG_soft_key_mode_line_0 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 67 /mnt/plc/SOFTKEYS/BMX/Mode_line_1_PLC_window.bmx - MG_soft_key_mode_line_1 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 7 B - 
+R 69 /mnt/plc/SOFTKEYS/BMX/Status_general.bmx - - 1 0 M_St_all.A -1 -1 - - - -1 - -1 - -
+R 72 /mnt/plc/SOFTKEYS/BMX/Status_strobe.bmx - - 0 0 M_Strobe.A -1 -1 - - - -1 - -1 - -
+R 70 /mnt/plc/SOFTKEYS/BMX/Status_axes.bmx - - 0 0 M_St_Ax.A -1 -1 - - - -1 - -1 - -
+R 71 /mnt/plc/SOFTKEYS/BMX/Status_spindle.bmx - - 0 0 M_St_Spi.A -1 -1 - - - -1 - -1 - -
+R 73 /mnt/plc/SOFTKEYS/BMX/Status_PLC_position.bmx - - 0 0 M_St_Plc.A -1 -1 - - - -1 - -1 - -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 8 B - 
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 0 /mnt/plc/SOFTKEYS/BMX/Back.bmx - - 0 -1 - - -1 0 0
+W 9 B  
+N 74 #IMa - - 10 -1 - -1 0 -1 - - - -1 - -1 - -
+N 79 #ISpl - - 11 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+N 88 #ITmag - - 12 -1 - -1 0 -1 - - - -1 - -1 - -
+B 93 #A133 - - 0 -1 - - -1 0 0
+L 10 B Machine 
+U 75 #IM07 - MG_HW_SK_coolant_M07 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 76 #IM08 - MG_HW_SK_coolant_M08 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+U 77 #IChip - MG_HW_SK_chip_conveyor 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 78 #A133 - - 0 -1 - - -1 0 0
+L 11 B Spindle 
+S 80 #IScw - MG_soft_key_S_jog_right_cw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 81 #ISccw - MG_soft_key_S_jog_left_ccw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+# -1 -
+B 83 #A133 - - 0 -1 - - -1 0 0
+L 12 B "Tool Magazine" 
+U 89 #ILoad - MG_HW_SK_TC_load 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+S 90 #IMag#A128 - MG_soft_key_TC_mag_right_cw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 91 #IMag#A129 - MG_soft_key_TC_mag_left_ccw 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 92 #A133 - - 0 -1 - - -1 0 0

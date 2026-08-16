@@ -1,0 +1,26 @@
+﻿************************************
+!!! OPGELET !!!
+alleen voor geoefende machineoperator
+X, Y, Z kunnen worden verplaatst
+met X+, X-, Y+, Y-, Z+, Z- toets
+of handwiel
+Service gereedschapswisselaar
+(pickup systeem)
+! Werkstand "Handbedrijf" actief !
+Aktivering: Toets "NC-Start"
+************************************
+#401  S naar T-wisselpositie
+#402  Z naar T-wisselpositie boven
+#403  Z naar T-wisselpositie onder
+#404  T deur openen
+#405  T deur sluiten
+#406  Tool pickup inklappen
+#407  Tool pickup uitklappen
+#408  Gereedschap ontklemmen
+#409  Gereedschap klemmen
+#410  X naar T-wissel voorpositie
+#411  X naar T-wissel positie
+#412  Y naar Pn positie spindel Tool
+#413  Y naar Pn+1 positie
+#414  Y naar Pn-1 positie
+#415  Spindelregister wissen (T0)

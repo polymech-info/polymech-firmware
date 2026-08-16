@@ -1,0 +1,981 @@
+user parameter 1
+user parameter 2
+user parameter 3
+user parameter 4
+user parameter 5
+user parameter 6
+user parameter 7
+user parameter 8
+user parameter 9
+M83 feed rate dropping factor 
+user parameter 11
+Power-on 4th axis->0:clamp;1:unclamp
+Power-on 5th axis->0:clamp;1:unclamp
+Power-on 6th axis->0:clamp;1:unclamp
+user parameter 15
+user parameter 16
+Spindle time        =
+S head running time =
+PLC counter 3       =
+PLC counter 4       =
+PLC counter 5       =
+PLC counter 6       =
+PLC counter 7       =
+PLC counter 8       =
+PLC counter 9       =
+PLC counter 10      =
+PLC counter 11      =
+PLC counter 12      =
+PLC counter 13      =
+* Dialogs for small PLC window <- line 30 (without 0 line counting)
+% X[Nm]
+% Y[Nm]
+% Z[Nm]
+% 4[Nm]
+% 5[Nm]
+% 6[Nm]
+% 7[Nm]
+% 8[Nm]
+% 9[Nm]
+%10[Nm]
+%11[Nm]
+%12[Nm]
+%13[Nm]
+%14[Nm]
+
+
+
+
+* Dialogs for PLC window
+* TC_MAG1.SRC                . <- line 50 (without 0 line counting)
+* TC magazine - PLC axis *   .
+00 Magazine start            .
+01 Tool def quit             .
+02 Pocket put in             .
+03 Pocket pos in             .
+04 T chain pin out           .
+05 T chain pin pos out       .
+06 T magazine start          .
+07 T mag in posit            .
+08 Decode pocket no          .
+09 T chain pin in            .
+10 T chain pin pos in        .
+11 Standby T read            .
+12 Pocket in out             .
+13 Pocket posit              .
+14 TC magazine end           .
+                             .
+                             .
+* Dialogs for PLC window
+* TC_MAG2.SRC                . <- line 70 (without 0 line counting)
+* TC magazine - Pulse counter.
+00 Magazine start            .
+01 Pocket put in             .
+02 Pocket pos in             .
+03 Magazine direction        .
+04 Lock pin out              .
+05 Lock pin pos out          .
+06 Magazine nom pos          .
+07 Time exact stop           .
+08 Lock pin pos in           .
+09 Magazine exact stop       .
+10 Standby T read            .
+11 Pocket in out             .
+12 Pocket posit              .
+13 Magazine end              .
+                             .
+                             .
+
+
+
+
+
+
+
+
+
+
+* Dialogs for PLC window
+* TC_AUTO11.SRC    
+* Z & magazine fixed         . <- line 100 (without 0 line counting)
+* TC auto - Single arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 magazine pocket full/empty.
+03 spindle full/empty ?      .
+04 X start                   .
+05 X in TC position          .
+06 Z in/out start (1)        .
+07 magazine start            .
+08 S start                   .
+09 Z in position (1)         .
+10 magazin in position       .
+11 S in TC position          .
+12 magazine to spindle start .
+13 magazine in spindle       .
+14 tool unclamping           .
+15 tool unclamped            .
+16 time wait to put out      .
+17 Z in/out start (2)        .
+18 T0/T new in status        .
+19 T status selection ok     .
+20 Z in position (2)         .
+21 tool call 2nd             .
+22 tool call 2nd wait        .
+23 T status read tooltable   .
+24 jump tool clamping        .
+25 magazine start            .
+26 magazine in position      .
+27 magazine full ?           .
+28 Z in start (3)            .
+29 Z in position (3)         .
+30 tool clamping             .
+31 tool clamped              .
+32 spindle full/empty        .
+33 magazine to basic start   .
+34 T new in status           .
+35 T status selection ok     .
+36 magazine in basic         .
+37 touch probe off/on        .
+38 tool call quit            .
+39 TC auto end               .
+                             .
+                             .
+* Dialogs for PLC window
+* TC_AUTO31A.SRC             .
+* TC without middle position . <- line 146 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC auto start             .
+01 Tool spindle ok           .
+02 Spi full empty            .
+03 Z start                   .
+04 T mag start               .
+05 S start                   .
+06 Z in TC position          .
+07 X Y B start               .
+08 B in TC position          .
+09 X in TC position          .
+10 Y in TC position          .
+11 T status read             .
+12 Mag to spindle            .
+13 Magazine in pos           .
+14 Mag full empty            .
+15 T pocket put out          .
+16 T pocket pos out          .
+17 Mag at spindle            .
+18 TC pocket time            .
+19 Mag full empty            .
+20 S in TC position          .
+21 T arm to spindle          .
+22 T arm on spindle          .
+23 T gripper close           .
+24 T gripper closed          .
+25 T unclamping              .
+26 Tool unclamped            .
+27 TC auto time              .
+28 Tnew store                .
+29 T0 in status              .
+30 T status ok               .
+31 Tool Call 2nd             .
+32 Tool Call wait            .
+33 T arm put out             .
+34 T arm pos in              .
+35 T clamping                .
+36 Tool clamped              .
+37 TC auto time              .
+38 Spi empty full            .
+39 Tnew in status            .
+40 T status ok               .
+41 T arm to basic            .
+42 T standby read            .
+43 T arm on basic            .
+44 T gripper open            .
+45 T gripper opened          .
+46 Probe on off              .
+47 2nd Tool Call             .
+48 Jump to TC auto start     .
+49 Mag to standby            .
+50 T pocket in out           .
+51 T pocket pos              .
+52 Mag at standby            .
+53 TOOL CALL quit            .
+54 TC auto end               .
+
+
+* Dialogs for PLC window
+* TC_AUTO31B.SRC             .
+* TC without middle position . <- line 207 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC auto start             .
+01 Tool spindle ok           .
+02 Spi full empty            .
+03 T mag start               .
+04 S start                   .
+05 Z start                   .
+06 Z in TC position          .
+07 X Y B start               .
+08 T status read             .
+09 Magazine in pos           .
+10 S in TC position          .
+11 B in TC position          .
+12 X in TC position          .
+13 Y in TC position          .
+14 Mag full empty            .
+15 T pocket put out          .
+16 T pocket pos out          .
+17 TC pocket time            .
+18 Mag full empty            .
+19 T arm to spindle          .
+20 T arm on spindle          .
+21 T gripper close           .
+22 T gripper closed          .
+23 T unclamping              .
+24 Tool unclamped            .
+25 TC auto time              .
+26 Tnew store                .
+27 T0 in status              .
+28 T status ok               .
+29 Tool Call 2nd             .
+30 Tool Call wait            .
+31 T arm put out             .
+32 T arm pos in              .
+33 T clamping                .
+34 Tool clamped              .
+35 TC auto time              .
+36 Spi empty full            .
+37 Tnew in status            .
+38 T status ok               .
+39 T arm to basic            .
+40 T standby read            .
+41 T arm on basic            .
+42 T gripper open            .
+43 T gripper opened          .
+44 T pocket in out           .
+45 T pocket pos              .
+46 Probe on off              .
+47 TOOL CALL quit            .
+48 TC auto end               .
+
+
+
+
+
+* Dialogs for PLC window
+* TC_AUTO15.SRC    
+* Y/Z & magazine shifting    . <- line 265 (without 0 line counting)
+* TC auto - Single arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 Y end position start      .
+09 Y in end position         .
+10 ATC door open             .
+11 Y start                   .
+12 Y in TC position          .
+13 Z in/out start (1)        .
+14 magazin in position       .
+15 S in TC position          .
+16 Z in position (1)         .
+17 magazine pocket full/empty.
+18 magazine to spindle start .
+19 magazine in spindle       .
+20 time wait                 .
+21 tool unclamping           .
+22 tool unclamped            .
+23 time wait to put out      .
+24 Z in/out start (2)        .
+25 T0/T new in status        .
+26 T status selection ok     .
+27 Z in position (2)         .
+28 tool call 2nd             .
+29 tool call 2nd wait        .
+30 T status read tooltable   .
+31 jump tool clamping        .
+32 magazine start            .
+33 magazine in position      .
+34 magazine full ?           .
+35 Z in start (3)            .
+36 Z in position (3)         .
+37 tool clamping             .
+38 tool clamped              .
+39 spindle full/empty        .
+40 time wait                 .
+41 magazine to basic start   .
+42 T new in status           .
+43 T status selection ok     .
+44 magazine in basic         .
+45 Z safety start            .
+46 Z in safety position      .
+47 Y end position start      .
+48 Y in end position         .
+49 ATC door closing          .
+50 touch probe off/on        .
+51 ATC door closed           .
+52 tool call quit            .
+53 TC auto end               .
+                             .
+    
+
+    
+* Dialogs for PLC window
+* TC_AUTO16.SRC/TC_AUTO17.SRC    
+* Y/Z & magazine shifting    . <- line 327 (without 0 line counting)
+* TC auto - Single arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 X/Y start                   .
+09 X/Y in TC position          .
+10 Z in/out start (1)        .
+11 magazin in position       .
+12 ATC door open             .
+13 S in TC position          .
+14 Z in position (1)         .
+15 magazine pocket full/empty.
+16 magazine to spindle start .
+17 magazine in spindle       .
+18 time wait                 .
+19 tool unclamping           .
+20 tool unclamped            .
+21 time wait to put out      .
+22 Z in/out start (2)        .
+23 T0/T new in status        .
+24 T status selection ok     .
+25 Z in position (2)         .
+26 tool call 2nd             .
+27 tool call 2nd wait        .
+28 T status read tooltable   .
+29 jump tool clamping        .
+30 magazine start            .
+31 magazine in position      .
+32 magazine full ?           .
+33 Z in start (3)            .
+34 Z in position (3)         .
+35 tool clamping             .
+36 tool clamped              .
+37 spindle full/empty        .
+38 time wait                 .
+39 magazine to basic start   .
+40 T new in status           .
+41 T status selection ok     .
+42 magazine in basic         .
+43 ATC door closing          .
+44 Z safety start            .
+45 Z in safety position      .
+46 touch probe off/on        .
+47 ATC door closed           .
+48 tool call quit            .
+49 TC auto end               .
+                             .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Dialogs for PLC window
+* TC_AUTO21.SRC              .
+* TC with middle position    . <- line 400 (without 0 line counting)
+* TC auto - Double arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 Y end position start      .
+09 Y in TC end position      .
+10 ATC door open             .
+11 Y start                   .
+12 Y in TC position          .
+13 Z start                   .
+14 Z in TC position          .
+15 T status read tooltable   .
+16 S in TC position          .
+17 TC_loading_tool_to_arm    .
+18 T arm to spindle          .
+19 T arm on spindle          .
+20 TC auto time              .
+21 T unclamping              .
+22 Tool unclamped            .
+23 TC auto time              .
+24 T arm put out             .
+25 Tnew store                .
+26 T0 in status              .
+27 T status ok               .
+28 T arm pos out             .
+29 Tool Call 2nd             .
+30 Tool Call wait            .
+31 magazine start            .
+32 TC auto time              .
+33 T arm cw ccw              .
+34 T arm in cw ccw           .
+35 TC auto time              .
+36 T arm put in              .
+37 T arm pos in              .
+38 TC auto time              .
+39 T clamping                .
+40 Tool clamped              .
+41 TC auto time              .
+42 spindle full/empty ?      .
+43 Tnew in status            .
+44 T status ok               .
+45 T arm to basic            .
+46 T arm on basic            .
+47 Z safety start            .
+48 TC auto time              .
+49 Z in safety position      .
+50 Y end position start      .
+51 Y in TC end position      .
+52 ATC door closing          .
+53 touch probe off/on        .
+54 ATC door closed           .
+55 tool call quit            .
+56 TC_returning_tool_to_arm  .
+57 TC auto end               .
+                             .
+                             .
+    
+* Dialogs for PLC window
+* TC_AUTO25.SRC              .
+* TC with middle position    . <- line 465 (without 0 line counting)
+* TC auto - Double arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 magazine start            .
+03 spindle full/empty ?      .
+04 V/H head to horizontal pos.
+05 V/H head in horizontal pos.
+06 S start                   .
+07 Y start                   .
+08 Y in TC position          .
+09 Z start                   .
+10 Z in TC position          .
+11 T status read tooltable   .
+12 S in TC position          .
+13 TC_loading_tool_to_arm    .
+14 T arm to spindle          .
+15 T arm on spindle          .
+16 TC auto time              .
+17 T unclamping              .
+18 Tool unclamped            .
+19 TC auto time              .
+20 T arm put out             .
+21 Tnew store                .
+22 T0 in status              .
+23 T status ok               .
+24 T arm pos out             .
+25 Tool Call 2nd             .
+26 Tool Call wait            .
+27 magazine start            .
+28 TC auto time              .
+29 T arm cw ccw              .
+30 T arm in cw ccw           .
+31 TC auto time              .
+32 T arm put in              .
+33 T arm pos in              .
+34 TC auto time              .
+35 T clamping                .
+36 Tool clamped              .
+37 TC auto time              .
+38 spindle full/empty ?      .
+39 Tnew in status            .
+40 T status ok               .
+41 T arm to basic            .
+42 T arm on basic            .
+43 touch probe off/on        .
+44 V/H head to previous pos  .
+45 V/H head in previous pos  .
+46 tool call quit            .
+47 TC_returning_tool_to_arm  .
+48 TC auto end               .
+                             .
+                             . 
+* Dialogs for PLC window
+* TC_AUTO25AB.SRC            .
+* TC with middle position    . <- line 520 (without 0 line counting)
+* TC auto - Double arm *     .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 3D head change Y/Z start  .
+04 magazine start            .
+05 T loading to arm start    .
+06 Y in 3D head change pos   .
+07 Z in 3D head change pos   .
+08 3D rear head start        .
+09 3D rear head in TC pos    .
+10 3D front head start       .
+11 3D front head in TC pos   .
+12 traverse range 2          .
+13 wait for axis limit active.
+14 Y&Z start                 .
+15 TC auto time              .
+16 S start                   .
+17 Y in TC position          .
+18 Z in TC position          .
+19 X start                   .
+20 T status read tooltable   .
+21 S in TC position          .
+22 X in TC position          .
+23 T loading to arm          .
+24 T arm to spindle          .
+25 T arm on spindle          .
+26 TC auto time              .
+27 T unclamping              .
+28 Tool unclamped            .
+29 TC auto time              .
+30 T arm put out             .
+31 Tnew store                .
+32 T0 in status              .
+33 T status ok               .
+34 T arm pos out             .
+35 Tool Call 2nd             .
+36 Tool Call wait            .
+37 magazine start            .
+38 TC auto time              .
+39 T arm cw ccw              .
+40 T arm in cw ccw           .
+41 TC auto time              .
+42 T arm put in              .
+43 T arm pos in              .
+44 TC auto time              .
+45 T clamping                .
+46 Tool clamped              .
+47 TC auto time              .
+48 spindle full/empty ?      .
+49 Tnew in status            .
+50 T status ok               .
+51 T arm to basic            .
+52 tool call quit saving time.
+53 T arm on basic            .
+54 TC auto time              .
+55 T returning to arm start  .
+56 tool call quit            .
+57 T returning to arm        .
+58 TC auto end               .
+
+
+* Dialogs for PLC window
+* TC_AUTO35A.SRC/TC_AUTO35B.SRC    
+* TC without middle position . <- line 585 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 3D head change Y/Z start  .
+04 magazine start            .
+05 Y in 3D head chang pos    .
+06 Z in 3D head chang pos    .
+07 3D front head start       .
+08 3D front head in TC pos   .
+09 3D rear head start        .
+10 3D rear head in TC pos    .
+11 traverse range 3          .
+12 wait for axis limit active.
+13 Y&Z start                 .
+14 TC auto time              .
+15 S start                   .
+16 Y in TC position          .
+17 Z in TC position          .
+18 X start                   .
+19 T status read tooltable   .
+20 magazin in position       .
+21 S in TC position          .
+22 X in TC position          .
+23 T pocket put out          .
+24 T pocket pos out          .
+25 T pocket time             .
+26 Mag full empty            .
+27 T arm to spindle          .
+28 T arm on spindle          .
+29 T gripper close           .
+30 T gripper closed          .
+31 T unclamping              .
+32 Tool unclamped            .
+33 TC auto time              .
+34 Tnew store                .
+35 T0 in status              .
+36 T status ok               .
+37 Tool Call 2nd             .
+38 Tool Call wait            .
+39 T arm put out             .
+40 T arm pos in              .
+41 T clamping                .
+42 Tool clamped              .
+43 TC auto time              .
+44 Spi empty full            .
+45 Tnew in status            .
+46 T status ok               .
+47 T arm to basic            .
+48 T standby read            .
+49 T arm on basic            .
+50 T gripper open            .
+51 T gripper opened          .
+52 T pocket in out           .
+53 T pocket pos              .
+54 touch probe off/on        .
+55 tool call quit            .
+56 TC auto end               .
+
+
+
+    
+* Dialogs for PLC window
+* TC_AUTO31.SRC               .
+* TC without middle position . <- line 650 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC auto start             .
+01 Tool spindle ok           .
+02 Spi full empty            .
+03 T mag start               .
+04 S start                   .
+05 Z start                   .
+06 Z in TC position          .
+07 X Y start                 .
+08 T status read             .
+09 Magazine in pos           .
+10 S in TC position          .
+11 X in TC position          .
+12 Y in TC position          .
+13 Mag full empty            .
+14 T pocket put out          .
+15 T pocket pos out          .
+16 TC pocket time            .
+17 Mag full empty            .
+18 T arm to spindle          .
+19 T arm on spindle          .
+20 T gripper close           .
+21 T gripper closed          .
+22 T unclamping              .
+23 Tool unclamped            .
+24 TC auto time              .
+25 Tnew store                .
+26 T0 in status              .
+27 T status ok               .
+28 Tool Call 2nd             .
+29 Tool Call wait            .
+30 T arm put out             .
+31 T arm pos in              .
+32 T clamping                .
+33 Tool clamped              .
+34 TC auto time              .
+35 Spi empty full            .
+36 Tnew in status            .
+37 T status ok               .
+38 T arm to basic            .
+39 T standby read            .
+40 T arm on basic            .
+41 T gripper open            .
+42 T gripper opened          .
+43 T pocket in out           .
+44 T pocket pos              .
+45 Probe on off              .
+46 TOOL CALL quit            .
+47 TC auto end               .
+                             .
+                             .
+
+
+
+
+
+
+* Dialogs for PLC window
+* TC_AUTO32/33/34.SRC    
+* TC without middle position . <- line 710 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 Y TC end position start   .
+09 Y in TC end position      .
+10 ATC door open             .
+11 X/Y start                 .
+12 X/Y in TC position        .
+13 Z start                   .
+14 Z in TC position          .
+15 T status read tooltable   .
+16 magazin in position       .
+17 S in TC position          .
+18 Mag full empty            .
+19 T pocket put out          .
+20 T pocket pos out          .
+21 T pocket time             .
+22 Mag full empty            .
+23 ATC door open             .
+24 T arm to spindle          .
+25 T arm on spindle          .
+26 T gripper close           .
+27 T gripper closed          .
+28 T unclamping              .
+29 Tool unclamped            .
+30 TC auto time              .
+31 Tnew store                .
+32 T0 in status              .
+33 T status ok               .
+34 Tool Call 2nd             .
+35 Tool Call wait            .
+36 T arm put out             .
+37 T arm pos in              .
+38 T clamping                .
+39 Tool clamped              .
+40 TC auto time              .
+41 Spi empty full            .
+42 Tnew in status            .
+43 T status ok               .
+44 T arm to basic            .
+45 T standby read            .
+46 T arm on basic            .
+47 T gripper open            .
+48 T gripper opened          .
+49 T pocket in out           .
+50 T pocket pos              .
+51 touch probe off/on        .
+52 2nd Tool Call             .
+53 Jump to TC auto start     .
+54 ATC door closing          .
+55 Z safety start            .
+56 Z in safety position      .
+57 Y TC end position start   .
+58 Y in TC end position      .
+59 ATC door closing          .
+60 ATC door closed           .
+61 tool call quit            .
+62 TC auto end               .
+                             .
+                             .
+
+* Dialogs for PLC window
+* TC_AUTO35.SRC
+* TC without middle position . <- line 780 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC auto start             .
+01 Tool spindle ok           .
+02 Spi full empty            .
+03 T mag start               .
+04 V/H head to vertical pos  .
+05 V/H head in vertical pos  .
+06 S start                   .
+07 Z start                   .
+08 Z in TC position          .
+09 X Y start                 .
+10 T status read             .
+11 Magazine in pos           .
+12 S in TC position          .
+13 X in TC position          .
+14 Y in TC position          .
+15 Mag full empty            .
+16 T pocket put out          .
+17 T pocket pos out          .
+18 T pocket time             .
+19 Mag full empty            .
+20 T arm to spindle          .
+21 T arm on spindle          .
+22 T gripper close           .
+23 T gripper closed          .
+24 T unclamping              .
+25 Tool unclamped            .
+26 TC auto time              .
+27 Tnew store                .
+28 T0 in status              .
+29 T status ok               .
+30 Tool Call 2nd             .
+31 Tool Call wait            .
+32 T arm put out             .
+33 T arm pos in              .
+34 T clamping                .
+35 Tool clamped              .
+36 TC auto time              .
+37 Spi empty full            .
+38 Tnew in status            .
+39 T status ok               .
+40 T arm to basic            .
+41 T standby read            .
+42 T arm on basic            .
+43 T gripper open            .
+44 T gripper opened          .
+45 T pocket in out           .
+46 T pocket pos              .
+47 Probe on off              .
+48 2nd Tool Call             .
+49 Jump to TC auto start     .
+50 V/H head to previous pos  .
+51 V/H head in previous pos  .
+52 TOOL CALL quit            .
+53 TC auto end               .
+                             .
+                             .
+
+
+
+* Dialogs for PLC window
+* TC_AUTO39A.SRC    
+* TC without middle position . <- line 843 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 X/Y/B/C start             .
+09 X in TC position          .
+10 Y in TC position          .
+11 B in TC position          .
+12 C in TC position          .
+13 Z start                   .
+14 Z in TC position          .
+15 T status read tooltable   .
+16 magazin in position       .
+17 S in TC position          .
+18 Mag full empty            .
+19 T pocket put out          .
+20 T pocket pos out          .
+21 T pocket time             .
+22 Mag full empty            .
+23 ATC door open             .
+24 T arm to spindle          .
+25 T arm on spindle          .
+26 T gripper close           .
+27 T gripper closed          .
+28 T unclamping              .
+29 Tool unclamped            .
+30 TC auto time              .
+31 Tnew store                .
+32 T0 in status              .
+33 T status ok               .
+34 Tool Call 2nd             .
+35 Tool Call wait            .
+36 T arm put out             .
+37 T arm pos in              .
+38 T clamping                .
+39 Tool clamped              .
+40 TC auto time              .
+41 Spi empty full            .
+42 Tnew in status            .
+43 T status ok               .
+44 T arm to basic            .
+45 T standby read            .
+46 T arm on basic            .
+47 T gripper open            .
+48 T gripper opened          .
+49 T pocket in out           .
+50 T pocket pos              .
+51 touch probe off/on        .
+52 2nd Tool Call             .
+53 Jump to TC auto start     .
+54 Z safety start            .
+55 ATC door closing          .
+56 Z in safety position      .
+57 ATC door closed           .
+58 tool call quit            .
+59 TC auto end               .
+
+
+
+
+* Dialogs for PLC window
+* TC_AUTO37.SRC/TC_AUTO37A.SRC/TC_AUTO37B.SRC    
+* TC without middle position . <- line 911 (without 0 line counting)
+* TC auto - Cam driven arm * .
+00 TC automatic start        .
+01 tool spindle ok ?         .
+02 spindle full/empty ?      .
+03 ATC door opening          .
+04 Z safety start            .
+05 magazine start            .
+06 S start                   .
+07 Z in safety position      .
+08 B start                   .
+09 B in TC position          .
+10 Y start                   .
+11 Y in TC position          .
+12 X start/Z start           .
+13 Z in TC position          .
+14 X in TC position          .
+15 T status read tooltable   .
+16 magazin in position       .
+17 S in TC position          .
+18 Mag full empty            .
+19 T pocket put out          .
+20 T pocket pos out          .
+21 T pocket time             .
+22 Mag full empty            .
+23 ATC door open             .
+24 T arm to spindle          .
+25 T arm on spindle          .
+26 T gripper close           .
+27 T gripper closed          .
+28 T unclamping              .
+29 Tool unclamped            .
+30 TC auto time              .
+31 Tnew store                .
+32 T0 in status              .
+33 T status ok               .
+34 Tool Call 2nd             .
+35 Tool Call wait            .
+36 T arm put out             .
+37 T arm pos in              .
+38 T clamping                .
+39 Tool clamped              .
+40 TC auto time              .
+41 Spi empty full            .
+42 Tnew in status            .
+43 T status ok               .
+44 T arm to basic            .
+45 T standby read            .
+46 T arm on basic            .
+47 T gripper open            .
+48 T gripper opened          .
+49 T pocket in out           .
+50 T pocket pos              .
+51 2nd Tool Call             .
+52 Jump to TC auto start     .
+53 X limit pos start         .
+54 Z safety start            .
+55 ATC door closing          .
+56 Z in safety position      .
+57 X in limit position       .
+58 Y end position start      .
+59 Y in TC end position      .
+60 touch probe off/on        .
+61 ATC door closed           .
+62 tool call quit            .
+63 TC auto end               .
+
+
+
+
+980 PLC DIALOG

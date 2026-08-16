@@ -1,0 +1,20 @@
+\n  M80 - workpiece counter reset
+\n  M81 - workpiece counter plus 1
+\n  M82 - tool torque monitoring off
+\n  M83 - tool torque monitoring on
+\n  M84 - reserved
+\n  M85 - reserved
+\n  M86 - reserved
+\n  M87 - reserved
+\n  M88 - reserved
+\n  M89 - reserved
+\n  M307 - CTS (high pressure)
+\n  M310 - laser fast broken tool off
+\n  M311 - laser fast broken tool on
+\n  M312 - V-axis Kinematics comp
+\n  M320 - laser latch mode off
+\n  M321 - laser latch mode on
+\n  M330 - TLM air blast off
+\n  M331 - TLM air blast on
+\n  M370 - dust/mist collector off
+\n  M371 - dust/mist collector on

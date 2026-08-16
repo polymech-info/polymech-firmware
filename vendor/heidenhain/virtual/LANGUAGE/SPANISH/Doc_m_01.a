@@ -1,0 +1,22 @@
+\n  M00 - stop programado
+\n  M01 - stop condicional
+\n  M02 - FIN de programa
+\n  M03 - giro cabezal horario
+\n  M04 - giro cabezal antihorario
+\n  M05 - paro del cabezal
+\n  M07 - refrigeración interna
+\n  M08 - refrigeración externa
+\n  M09 - desconectar refrigeración
+\n  M10 - bloquear  ejes
+\n  M11 - desbloquear ejes
+\n  M13 - cabezal horario + refrig.
+\n  M14 - cabezal antihor.+ refrig.
+\n  M19 - herramienta a cero grados
+\n  M20 - orientar a grados ciclo 13
+\n  M21 - pos. divisores tipo Nykken 
+\n  M30 - FIN de programa
+\n  M31 - trabajar sin M3/M4
+\n  M32 - area de trabajo SIN límites
+\n  M44 - desbloqueo eje 4
+\n  M45 - desbloqueo eje 5
+\n  M46 - desbloqueo eje 6

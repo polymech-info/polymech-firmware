@@ -1,0 +1,2048 @@
+﻿Maschine/Programmierplatz  - 0/2
+Massfaktor XYZ/Z           - 0/1
+Verhalten bei Zyklen
+Überlappung Taschen    0.1-1.414
+Toleranz Kreisbahn     max 0.016
+3D Rotation aus/ein  -  ..0/ ..1
+Schmierung Achsen          [min]
+Handrad aus/HR410            0/6
+Farbpalette Monitor       [0..3]
+TT1x0 Position X           [REF]
+TT1x0 Position Y           [REF]
+TT1x0 Position Z           [REF]
+Anwenderparameter 13
+Anwenderparameter 14
+Anwenderparameter 15
+Anwenderparameter 16
+Spindel S1        =
+Spindel S2        =
+Achsen            =
+Hydraulik         =
+Betriebsstunden 5 =
+Betriebsstunden 6 =
+Betriebsstunden 7 =
+Betriebsstunden 8 =
+Betriebsstunden 9 =
+Betriebsstunden 10 =
+Betriebsstunden 11 =
+Betriebsstunden 12 =
+Betriebsstunden 13 =
+* Titel Überblendfenster <- Zeile 30
+ MP Tabellen-Editor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Not Aus Taster
+                         -> entriegeln
+H001 Achse Not-Aus Endlage X+
+                   -> Taste Freifahren
+H002 Achse Not-Aus Endlage Y+
+                   -> Taste Freifahren
+H003 Achse Not-Aus Endlage Z+
+                   -> Taste Freifahren
+H004 Achse Not-Aus Endlage 4+
+                   -> Taste Freifahren
+H005 Achse Not-Aus Endlage 5+
+                   -> Taste Freifahren
+H006 Achse Not-Aus Endlage X-
+                   -> Taste Freifahren
+H007 Achse Not-Aus Endlage Y-
+                   -> Taste Freifahren
+H008 Achse Not-Aus Endlage Z-
+                   -> Taste Freifahren
+H009 Achse Not-Aus Endlage 4-
+                   -> Taste Freifahren
+H010 Achse Not-Aus Endlage 5-
+                   -> Taste Freifahren
+H011 Achse X WZW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H012 Achse Y WZW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H013 Achse Y WZW-Vor-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H014 Achse Y WZW-Position manuell
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H015 Achse Z WZW-Position ausheben
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H016 Achse Z WZW-Position einsetzen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H017 Achse Z WZW-Position manuell
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H018 Achse Z WZW-Position sicher
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H019 Spindel WZW Position (M19)
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H020 Werkzeug entspannen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H021 Werkzeug spannen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H022 WZ-Greifer ausheben
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H023 WZ-Greifer einsetzen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H024 WZ-Greifer rechts/links anlegen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H025 WZ-Zangen schliessen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H026 WZ-Zangen öffnen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H027 WZ-Zange Spindel schliessen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H028 WZ-Zange Spindel öffnen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H029 WZ-Zange Magazin schliessen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H030 WZ-Zange Magazin öffnen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H031 WZ-Magazin zu Wechsel-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H032 WZ Magazin Tür offen
+                         -> schliessen
+H033 Werkzeug einwechseln siehe Status
+  -> Internal Stop -> MDI -> TOOL CALL
+H034 WZ-Magazin zu Spindel
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H035 WZ-Magazin zu Grund-Stellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H036 WZ-Magazin Platz ausklappen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H037 WZ-Magazin Platz einklappen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H038 WZ-Magazin Index ausheben
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H039 WZ-Magazin Index einsetzen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H040 WZ-Wechsler zu Grund-Stellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H041 WZW Funktion nicht erlaubt
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H042 WZ-Greifer zu Spindel Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H043 WZ-Greifer zu Magazin Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H044 WZ-Greifer zu Grund Stellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H045 WZ-Greifer zu Mittel Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H046 HR410 Auswertung Tasten über NC
+    FCT A-C über PLC      -> MP7645: 0
+H047 M/S/T/Q-Übergabe an PLC während
+    Satzvorlauf     -> MP7681: %110111
+H048 WZ-Magazin ist eine PLC-Achse !
+    Kleinbuchstabe     -> MP100/MP7291
+H049 Handrad Typ nicht unterstützt
+                -> MP7640: 0..6/11..13
+H050 Satzvorlauf PLC aktiv !
+    Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 PGM stop mit M-Funktion notwendig
+            Bit 02  MP 7440: %xxxxx0xx
+H052 Fehler beim öffnen einer Datei
+    -> Modul 9240
+H053 Fehler lesen von Tabellen
+    -> Modul 9255
+H054 Fehler schreiben von Tabellen
+    -> Modul 9256
+H055 Fehler Wert nicht in Tabelle
+    -> Modul 9255
+H056 Temperatur Sensoren Pt100 defekt
+    -> Anschluss X48 kontrollieren
+H057 Pt100 Anschluss nicht definiert
+    -> Tabelle Temperatur Kompensation
+H058 Achse X PW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H059 Achse Y PW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H060 Achse Z PW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H061 PW Automatik aktivieren
+
+H062 PW Start
+                     -> Taste NC-Start
+H063 PW beenden
+                     -> Taste NC-Start
+H064 PW-Schleuse auf
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H065 PW-Schleuse zu
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H066 PW Paletten Nummer nicht zulässig
+
+H067 Palette in Maschine entspannen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H068 Palette in Maschine spannen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H069 Achsen aus MP10 nicht zugeordnet
+                    -> MP2040.x ändern
+H070 PW zu Halt Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H071 PW1 - Achse X Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H072 PW2 - Achse X Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H073 PW keine Ausgangsstellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H074 PW1 - Grundstellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H075 PW2 - Grundstellung
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H076 PW zum Beladen
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H077 PW zu Maschine
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H078 PW Fehler Platz Sensoren
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H079 Achse 4 PW-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H080 3D-Kopf Getriebeschalten
+
+H081 3D-Kopf Spindel Orientierung
+
+H082 3D-Kopf Torsionsmoment
+         ->BA Manuel ->Softkey 3D Kopf
+H083 WZ Schleuse auf
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H084 WZ Schleuse zu
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H085 WZ Pickup ausfahren
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H086 WZ Pickup einfahren
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H087 Achse X WZW-Vor-Position
+ -> BA Manuell/Handrad -> MOD -> Hilfe
+H088 Palettenwechsel Alarm
+
+H089 Palettenwechsel prüfen
+
+H090 Spindel in C-Achs Betrieb
+ -> Spindel Position (Synchronisation)
+H091 Erweiterte Schnittstelle (20 RK)
+    MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard Schnittstelle (16 RK)
+    MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+ -> AUTOSTART / Warmlauf-Programm aktiv
+H094 Fmax Override aktivieren
+       MP7620: Bit05 oder Bit09 setzen
+H095 WZ-Magazin Hirth-/Modulo-Achse
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 PLC Meldung
+
+H097 PLC Meldung
+
+H098      ja   -> NC-Start
+          nein -> NC-Stop
+H099
+                           -> NC-Start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* WZ Magazin - PLC Achse *
+* WZ Magazin - Zählimpuls *
+* WZW Auto - Einzelarm *
+* WZW Auto - Doppelarm *
+* WZW Auto - Kurvenscheibe *
+* WZW Automatik - Pickup *
+
+
+
+WZ-Magazin Start
+WZ-Magazin Ende
+TOOL DEF Quittung
+WZ-Magazin Platz einklappen
+WZ-Magazin Platz eingeklappt
+WZ-Magazin Platz aus-/einklappen
+WZ-Magazin Platz aus-/eingeklappt
+WZ-Magazin Start
+WZ-Magazin in Position
+WZ-Platz-Nummer dekodieren
+WZ Vorwahl und Status ermitteln
+WZ-Magazin Richtung ermitteln
+WZ-Magazin Index ausheben
+WZ-Magazin Index ausgehoben
+WZ-Magazin SOLL Position
+WZ-Magazin Time Genau-Halt
+WZ-Magazin Index eingesetzt
+WZ-Magazin Genau-Halt
+WZ-Magazin cw (rechts)
+WZ-Magazin ccw (links)
+
+WZW Automatik Start
+WZW Automatik Ende
+richtiges WZ in Spindel
+WZW Automatik WZ-Magazin Start
+WZ-Magazin in Position
+WZ-Magazin Platz belegt/leer
+Spindel belegt/leer
+WZ-Magazin Platz belegt
+WZ-Magazin Platz leer
+Spindel leer/belegt
+Werkzeug Schleuse öffnen
+Werkzeug Schleuse geöffnet
+Werkzeug Schleuse schließen
+Werkzeug Schleuse geschlossen
+Start Spindel Orientierung
+Spindel in WZW Position
+Start X-/Y-Achse
+Start X-Achse
+X-Achse in WZW Position
+Start X-Achse WZW Vor-Position
+X-Achse in WZW Vor-Position
+Start Y-Achse
+Y-Achse in WZW Position
+Start Y-Achse WZW Vor-Position
+Y-Achse in WZW Vor-Position
+Start Z-Achse
+Z-Achse in WZW-Position
+Start Z-Achse WZW Position sicher
+Z-Achse in WZW Position sicher
+Z1_ein_aus_Start
+Z1_in_Pos_e_a
+Z2_ein_aus_Start
+Z2_in_Pos_e_a
+Z3_ein_Start
+Z3_in_Pos_ein
+WZ_Platz_aus
+WZ_Platz_Pos_aus
+WZ_Platz_Time
+Pickup_Werte_lesen
+Pickup_ausfahren
+Pickup_ausgefahren
+Pickup_einfahren
+Pickup_eingefahren
+Greifer_ausheben
+Greifer_ausgehoben
+Greifer_einsetzen
+Greifer_eingesetzt
+Greifer_zu_Spindel
+Greifer_an_Spindel
+Greifer_zu_Magazin
+Greifer_an_Magazin
+Greifer_zu_Mittelstellung
+Greifer_in_Mittelstellung
+Greifer_zu_Grundstellung
+Greifer_in_Grundstellung
+Greifer_zu_cw_ccw
+Greifer_in_cw_ccw
+WZ_Greifer_Mitte_stop
+WZ_Greifer_verzoegern
+Sprung_Greifer
+WZ_Platz_ein_aus
+WZ_Platz_Pos_ok
+Zange_zu
+Zange_ist_zu
+Zange_auf
+Zange_ist_auf
+Zange_Mag_auf
+Zange_Mag_ist_auf
+Zange_Mag_zu
+Zange_Mag_ist_zu
+Zange_Spi_auf
+Zange_Spi_ist_auf
+Zange_Spi_zu
+Zange_Spi_ist_zu
+WZ_in_Mag_lesen
+WZW_auto_Time
+Mag_zu_Spindel
+Mag_in_Spindel
+WZ_entspannen
+WZ_entspannt
+WZ_spannen
+WZ_gespannt
+Time_ausheben
+Tneu_merken
+T0_in_Status
+T0_Tneu_Status
+Tneu_in_Status
+T_Status_ok
+Tool_Call_2nd
+Tool_Call_Wait
+WZ_Status_lesen
+Sprung_spannen
+Mag_zu_Grund_Stellung
+Mag_in_Grund_Stellung
+Tool_Call_Quit
+Sprung_T0_programmiert
+Sprung_Spindel_war_leer
+3D-Kopf in WZW-Position
+WZ-Greifer cw (rechts)
+WZ-Greifer ccw (links)
+WZ in Magazin entriegeln
+WZ in Magazin entriegelt
+WZ in Magazin verriegeln
+WZ in Magazin verriegelt
+WZW Manuell
+WZW manuell Start
+Sprung BA manuell
+X Start manuell
+X in Pos manuell
+Y Start manuell
+Y in Pos manuell
+Z Start manuell
+Z in Pos manuell
+WZ manu entspannen
+WZ manu spannen
+WZW Abwahl
+WZW Quittung
+Wiederanf notwendig
+Wiederanfahren ok
+Tool Call quitt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nicht definiert
+Zwischenkreis-Spannung zu groß
+Kühlkörper-Temperatur zu hoch
+Kurzschluss einer Motorphase mit Uz
+Zwischenkreisstrom zu groß
+Versorgungsmodul nicht betriebsbereit
+Leckstrom zu hoch
+
+
+
+0 kein zusätzlicher Fehlercode
+1 Parameter ausserhalb Wertebereich
+2 Parameter ungültig/existiert nicht
+3 Adresse ausserhalb Wertebereich
+4 Blocklänge ausserhalb Wertebereich
+5 keine Wort- bzw. Doppel-Wortadresse
+6 Wert darf nicht verändert werden
+7 Datei fehlerhaft
+8 falsche Betriebsart
+9 Posit-Kommando bereits ausgeführt
+10 Kein Werkzeugwechsler definiert
+11 unerlaubte Zeichen
+12 String unvollständig kein Ende
+13 keine Verbindung
+14 V24-belegt oder nicht zugeordnet
+15 V24-Sendebuffer nicht leer
+16 V24-Empfangsbuffer leer
+17 V24-Baudrate nicht möglich
+18 V24-Übertragungsfehler
+19 kein Stromregler vorhanden
+20 Modul nicht aus SUBMIT gerufen
+21 Modul ohne Strobe gerufen
+22 Überlauf Tastenqueue
+23 Überlauf PLC-Fehlermeld.-Queue
+24 Modul wurde aus SUBMIT-Job gerufen
+25 zu viele Elemente Konstanten-Feld
+26 nicht erlaubte Elemente K-Feld
+27 Spindel-Orientierung bereits aktiv
+28 Modul-Funktion ist bereits aktiv
+29 geöffnete Datei falscher Typ
+30 Feldname in Datei nicht enthalten
+31 Query-Bedingung syntaktisch falsch
+32 kein Datensatz mit Query-Bedingung
+33 Achse noch nicht über Referenz
+34 Reset; externes Gerät fehlerhaft
+35 Editor ist nicht aktiv
+36 allgemeiner Fehler Dateizugriff
+37 zu wenig Systemspeicher
+38 Fehler beim Übersetzen
+39 Schneller PLC-Eingang Antriebe ein
+40 Antriebe einschalten nicht möglich
+41 Zahlentypprüfung WZ-Tabelle
+42 Powerfail nicht abschaltbar
+43 Modul ohne SG-Paket gerufen
+44 Fehler Softkey-Resourcen
+45 Modulabbruch
+46 Profibus- oder ASI-Fehler-
+47 -
+48 -
+49 -
+50 -
+51 Funktion nicht möglich keine PL510
+52 Funktion nicht bei Einprozessor
+53 keine serielle Interface verfügbar
+54 Funktion nicht bei Zweiprozessor
+55 Datei konnte nicht gesperrt werden
+56 Datei nicht vorhanden
+57 Option/FCL nicht freigegeben
+58 Funktion NC Kanal nicht verfügbar
+59 Prozess (Python) nicht zulässig
+60 Analogausgang X8/9 HW gesperrt
+61 Modul Funktion nicht unterstützt
+62 Symbol/Bezeichner existiert nicht
+63 Fehler bei Create Struktur
+64 Handle nicht bekannt/falsch
+65 falsche Datenrichtung
+66 Funktion nicht unterstützt bei FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

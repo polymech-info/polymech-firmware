@@ -1,0 +1,22 @@
+\n  M60 - reserved
+\n  M61 - alternating table 1
+\n  M62 - alternating table 2
+\n  M63 - reserved
+\n  M64 - clamping mode on axis 4
+\n  M65 - clamping mode on axis 5
+\n  M66 - clamping mode on axis 6
+\n  M67 - reserved
+\n  M68 - reserved
+\n  M69 - reserved
+\n  M70 - reserved
+\n  M71 - axis limit 1
+\n  M72 - axis limit 2
+\n  M73 - axis limit 3
+\n  M74 - simulated axes feed enabling
+\n  M75 - buzzer ready
+\n  M76 - buzzer cancel
+\n  M77 - reserved
+\n  M78 - reserved
+\n  M79 - reserved
+
+

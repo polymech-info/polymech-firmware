@@ -1,0 +1,1100 @@
+*-----------------------------------------------------------------------------
+*  Achsen manuell und mit Handrad positionieren
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*    Achsen manuell (Tipp) Positionieren
+*    Jogging (Schrittmaß) Positionierung
+*    Speichernd (Konventionell) Positionieren
+*    Eilgang
+*    Handrad
+*    Maschinen-Bedienfeld (MB_) MBxxx
+*
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Handrad HR 330
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    MP 7640: 3
+*
+*    Ein-, Ausgangs-Belegung des Handrades
+*    -----     -----
+*      +  I160   -  I161
+*    -----     -----
+*    -----     -----
+*      ~  I162   ~  I162
+*    -----     -----
+*    Der Eingang I162 wird nur an die PLC-gemeldet, wenn Plus oder Minus und
+*    die Eilgangs-Taste betaetigt wurde.
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Handrad HR 410 (Ident-Nr. 296 469-45)
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    MP 7640: 6
+*    MP 7645: 0
+*
+*    Ein-, Ausgangs-Belegung des Handrades
+*
+*    -----               -----
+*      X                  IV
+*    -----               -----
+*    -----               -----
+*      Y                   V
+*    -----               -----
+*    -----               -----
+*      Z                  Ist
+*    -----               -----
+*    -----     -----     -----
+*     F1        F2        F3         Ist: Istwert-Übernahme
+*    -----     -----     -----       F1:  Vorschub klein
+*    -----               -----       F2:  Vorschub mittel
+*      -                   +         F3:  Vorschub groß
+*    -----               -----       F/A: Funktion A - Spindel Start
+*    -----     -----     -----       F/B: Funktion B - NC Start
+*     F/A O109  F/B O110  F/C O111   F/C: Funktion C - NC Stop
+*    -----I173 -----I174 -----I175
+*-----------------------------------------------------------------------------
+
+#define /s    KL_angewaehlte_Achse                     K +8
+#define /s    KL_HR_Achse                              K +9
+#define /s    KL_inaktiv                               K +0
+#define /s    KL_MP7640_max_Wert                       K +13
+#define /s    KL_VT_Achse_bitcodiert                   K $8000000
+#define /s    KL_Handrad_Achse                         K +6
+#define /s    KL_VT_Achse                              K -1
+#define /s    KL_HR420                                 K +11
+#define /s    KL_Rund_Achse_inaktiv                    K -1
+
+#define /s    ML_XYZ45_Plus                            M[32]
+#define /c    ML_X_Plus                                M &ML_XYZ45_Plus + 0
+#define /c    ML_Y_Plus                                M &ML_XYZ45_Plus + 1
+#define /c    ML_Z_Plus                                M &ML_XYZ45_Plus + 2
+#define /c    ML_4_Plus                                M &ML_XYZ45_Plus + 3
+#define /c    ML_5_Plus                                M &ML_XYZ45_Plus + 4
+#define /c    ML_6_Plus                                M &ML_XYZ45_Plus + 5
+#define /c    ML_7_Plus                                M &ML_XYZ45_Plus + 6
+#define /c    ML_8_Plus                                M &ML_XYZ45_Plus + 7
+#define /c    ML_9_Plus                                M &ML_XYZ45_Plus + 8
+#define /c    ML_10_Plus                               M &ML_XYZ45_Plus + 9
+#define /c    ML_11_Plus                               M &ML_XYZ45_Plus + 10
+#define /c    ML_12_Plus                               M &ML_XYZ45_Plus + 11
+#define /c    ML_13_Plus                               M &ML_XYZ45_Plus + 12
+#define /c    ML_14_Plus                               M &ML_XYZ45_Plus + 13
+#define /c    ML_15_Plus                               M &ML_XYZ45_Plus + 14
+#define /c    ML_16_Plus                               M &ML_XYZ45_Plus + 15
+#define /c    ML_17_Plus                               M &ML_XYZ45_Plus + 16
+#define /c    ML_18_Plus                               M &ML_XYZ45_Plus + 17
+#define /c    ML_19_Plus                               M &ML_XYZ45_Plus + 18
+#define /c    ML_20_Plus                               M &ML_XYZ45_Plus + 19
+#define /c    ML_21_Plus                               M &ML_XYZ45_Plus + 20
+#define /c    ML_22_Plus                               M &ML_XYZ45_Plus + 21
+
+#define /s    ML_XYZ45_Minus                           M[32]
+#define /c    ML_X_Minus                               M &ML_XYZ45_Minus + 0
+#define /c    ML_Y_Minus                               M &ML_XYZ45_Minus + 1
+#define /c    ML_Z_Minus                               M &ML_XYZ45_Minus + 2
+#define /c    ML_4_Minus                               M &ML_XYZ45_Minus + 3
+#define /c    ML_5_Minus                               M &ML_XYZ45_Minus + 4
+#define /c    ML_6_Minus                               M &ML_XYZ45_Minus + 5
+#define /c    ML_7_Minus                               M &ML_XYZ45_Minus + 6
+#define /c    ML_8_Minus                               M &ML_XYZ45_Minus + 7
+#define /c    ML_9_Minus                               M &ML_XYZ45_Minus + 8
+#define /c    ML_10_Minus                              M &ML_XYZ45_Minus + 9
+#define /c    ML_11_Minus                              M &ML_XYZ45_Minus + 10
+#define /c    ML_12_Minus                              M &ML_XYZ45_Minus + 11
+#define /c    ML_13_Minus                              M &ML_XYZ45_Minus + 12
+#define /c    ML_14_Minus                              M &ML_XYZ45_Minus + 13
+#define /c    ML_15_Minus                              M &ML_XYZ45_Minus + 14
+#define /c    ML_16_Minus                              M &ML_XYZ45_Minus + 15
+#define /c    ML_17_Minus                              M &ML_XYZ45_Minus + 16
+#define /c    ML_18_Minus                              M &ML_XYZ45_Minus + 17
+#define /c    ML_19_Minus                              M &ML_XYZ45_Minus + 18
+#define /c    ML_20_Minus                              M &ML_XYZ45_Minus + 19
+#define /c    ML_21_Minus                              M &ML_XYZ45_Minus + 20
+#define /c    ML_22_Minus                              M &ML_XYZ45_Minus + 21
+
+#define /s    ML_HR_Taste_NC_Stop                      M
+#define /s    ML_HR_Taste_S_M5                         M
+#define /s    ML_LED_Test_P_Impuls                     M
+#define /s    ML_LED_Test_Aux_P_Impuls                 M
+#define /s    ML_LED_Test_N_Impuls                     M
+#define /s    ML_LED_Test_Aux_N_Impuls                 M
+#define /s    ML_Taste_geaendert                       M
+#define /s    ML_debug                                 M
+
+#define /s    ML_LED_Test                              M[64]
+
+#define /s    BL_Fehlercode                            B
+#define /s    BL_LED_Index                             B
+#define /s    BL_Achs_Index                            B
+
+#define /s    WL_Adr_I_Achse_Minus                     W
+#define /s    WL_Adr_I_Achse_Plus                      W
+#define /s    WL_Adr_O_LED                             W
+#define /s    WL_Stack_synchronisieren                 W
+
+#define /s    DL_WZM_Achsen_aktiv                      D
+
+#define /c    M_0                                      M 0
+#define /c    O_0                                      O 0
+#define /c    I_0                                      I 0
+
+#include Mac_Lib.inc
+
+GLOBAL Manuell_Handrad
+GLOBAL LED_Test
+
+;----------------------------
+LBL Manuell_Handrad
+;----------------------------
+
+  LN     MG_Maschinenparameter_gelesen
+  EMT
+
+  L      BG_MP7640_HR_Typ
+  >      KL_MP7640_max_Wert
+  IFT
+    CM     reserviert
+  ELSE
+    CASE   BG_MP7640_HR_Typ
+      CM     MB_gesamt                 ;0  Nr HR
+      CM     MB_gesamt                 ;1  HR330 Auswertung über NC
+      CM     MB_gesamt                 ;2  HR130 oder HR330
+      CM     HR330_Handrad             ;3  HR330 +,- Eilgang über PLC
+      CM     MB_gesamt                 ;4  HR332 nicht mehr im Lieferumfang
+      CM     MB_gesamt                 ;5  HRA110 HR150 + HRA110
+      CM     HR410_Handrad             ;6  HR410 Tasten FCT A..C über PLC
+      CM     reserviert                ;7  reserviert
+      CM     reserviert                ;8  reserviert
+#if CFG_FS = "aktiv"                   * SPLC_0016
+      CM     HR410_Handrad             ;9  HR410FS Tasten FCT A..C über PLC
+#else
+      CM     reserviert                ;9  reserviert
+#endif
+      CM     reserviert                ;10 reserviert
+      CM     HR420_Handrad             ;11 HR420/HR420FS - Zustimmtaste MP7645.3: 1
+      CM     HR5x0_Handrad             ;12 HR550FS       - Zustimmtaste MP7645.3: 1
+      CM     HR5x0_Handrad             ;13 HR520FS       - Zustimmtaste MP7645.3: 1
+    ENDC
+  ENDI
+
+  L      BG_MP7640_HR_Typ
+  >=     KL_HR420
+  IFT
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Taste_Handrad_Betriebsart
+    S      PN_Fehler_Taste_ohne_Funktion
+
+    PS     KG_Taste_Handrad_Betriebsart
+    CM     9181                        ;NC-Taste durch die PLC sperren
+    PL     BL_Fehlercode
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_BA_Manuell
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Achs_Endlagen
+  CMT    Achsen_manu_Posit
+
+  L      DG_Tasten_sperren
+  AN     DG_PLC_Hilfs_Achsen
+  <>     KL_inaktiv
+  O[
+    LN     I_Taste_HR_Zustimmbetrieb
+    A      MG_BA_Automatik
+  ]
+  =      PN_M4576_Handrad_Impulse_ausblenden
+
+  LN     MG_BA_Wechsel_Manu_Auto
+  EMT
+
+  L      K+0
+  =      PN_D1144_Manuelles_Verfahren_plus
+  =      PN_D1148_Manuelles_Verfahren_minus
+
+EM
+
+;----------------------------
+LBL reserviert
+
+  L      MG_Eins_Merker
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_MP7640_HR_Typ_nicht_unterstuetzt
+
+  CM     MB_gesamt
+
+EM
+
+;----------------------------
+LBL MB_gesamt
+
+  L      MG_Taste_NC_Start
+  O      MG_BA_Manuell
+  A      I_Taste_Eilgang
+  =      MG_Taste_Eilgang
+  =      PN_M4561_Eilgang
+
+  L      NP_W304_PLC_Softkey_Nummer_vertikal
+  ==     SK_NC_Start
+  O      I_Taste_NC_Start
+  O      NP_M4230_NC_START_von_LSV2
+  =      MG_Taste_NC_Start
+
+  L      I_Taste_S_M3_M4
+  O      MG_SK_S_M3_M4
+  AN     MG_M04_war_aktiv
+  O      I_Taste_S_M3
+  O      MG_SK_S_M3
+#if CFG_FS = "aktiv"
+  AN     MG_Taste_S_M3_M4_gesperrt     * SPLC_0012
+#endif
+  =      MG_Taste_S_M3
+
+  L      I_Taste_S_M3_M4
+  O      MG_SK_S_M3_M4
+  A      MG_M04_war_aktiv
+  O      I_Taste_S_M4
+  O      MG_SK_S_M4
+#if CFG_FS = "aktiv"
+  AN     MG_Taste_S_M3_M4_gesperrt     * SPLC_0012
+#endif
+  =      MG_Taste_S_M4
+
+  L      I_Taste_WZW_Anwahl
+  =      MG_Taste_WZW_Anwahl
+
+  L      I_Taste_WZ_entspannen
+  =      MG_Taste_WZ_entspannen
+
+  L      I_Taste_WZ_entspannen_Fussschalter
+  =      MG_Taste_WZ_entspannen_Fussschalter
+
+  L      I_Taste_WZM_Tuer_entriegeln
+  =      MG_Taste_WZM_Tuer_entriegeln
+
+  L      I_Taste_Arbeitsraum_entriegeln
+  =      MG_Taste_Arbeitsraum_entriegeln
+
+  L      I_Taste_Achsen_Freifahren
+  =      MG_Taste_Achsen_Freifahren
+
+  L      I_Taste_Steuerspannung_ein
+  =      MG_Taste_Steuerspannung_ein
+
+  L      I_Taste_Kuehlkreis_2
+  =      MG_Taste_Kuehlmittel_M07
+
+  L      I_Taste_Kuehlkreis_1
+  =      MG_Taste_Kuehlmittel_M08
+
+  L      I_Taste_Kuehlkreis_3
+  =      MG_Taste_Kuehlmittel_M17
+
+  L      I_Taste_Trocken_Bearbeitung
+  =      MG_Taste_Trocken_Bearbeitung
+
+  L      I_Taste_Schmierung_Achsen
+  =      MG_Taste_Schmierung_Achsen
+
+  L      I_Taste_Spaenefoerderer
+  =      MG_Taste_Spaenefoerderer
+
+  L      I_Taste_Spaenefoerderer_zurueck
+  =      MG_Taste_Spaene_zurueck
+
+  L      I_Taste_Pendeln_Seite_1
+  =      MG_Taste_Pendeln_Seite_1
+
+  L      I_Taste_Pendeln_Seite_2
+  =      MG_Taste_Pendeln_Seite_2
+
+  L      I_Taste_Anwahl_Rohteil
+  =      MG_Taste_Anwahl_Rohteil
+
+  L      I_Taste_Arbeitsraum_Licht
+  =      MG_Taste_Arbeitsraum_Licht
+
+  L      I_Taste_WZM_plus
+  =      MG_Taste_WZM_plus
+
+  L      I_Taste_WZM_minus
+  =      MG_Taste_WZM_minus
+
+  L      I_Taste_WZM_n_Anwahl
+  =      MG_Taste_WZM_n_Anwahl
+
+  L      I_SLS_Betriebsart_1
+  =      MG_SLS_Betriebsart_1
+
+  L      I_SLS_Betriebsart_2_Einrichten
+  =      MG_SLS_Betriebsart_2_Einrichten
+
+  L      I_SLS_Betriebsart_3
+  =      MG_SLS_Betriebsart_3
+
+  L      I_SLS_Betriebsart_4
+  =      MG_SLS_Betriebsart_4
+
+  L      I_Taste_Override_F_100
+  =      MG_Taste_Override_F_100
+
+  L      I_Taste_Override_S_100
+  =      MG_Taste_Override_S_100
+
+  L      I_Taste_Override_S_plus
+  =      MG_Taste_Override_S_plus
+
+  L      I_Taste_Override_S_minus
+  =      MG_Taste_Override_S_minus
+
+  L      I_Taste_MB_Zustimmbetrieb
+  =      MG_Taste_MB_Zustimmbetrieb
+
+  L      MG_Taste_MB_Zustimmbetrieb
+  =      O_LED_MB_Zustimmbetrieb
+
+  L      NP_W304_PLC_Softkey_Nummer_vertikal
+  ==     SK_Spindle_M3_jog
+  O      I_Taste_S_M3_tippen
+  =      MG_SK_S_M3_tippen
+  =      MG_Taste_S_M3_tippen
+
+  L      NP_W304_PLC_Softkey_Nummer_vertikal
+  ==     SK_Spindle_M4_jog
+  O      I_Taste_S_M4_tippen
+  =      MG_SK_S_M4_tippen
+  =      MG_Taste_S_M4_tippen
+
+  L      I_Taste_Werkstueck_Spannung_ein_aus
+  =      MG_Taste_Werkstueck_Spannung_ein_aus
+
+  L      I_Taste_PW_Kabine_oeffnen
+  =      MG_Taste_PW_Kabine_oeffnen
+
+  L      I_Taste_FN1
+  =      O_LED_FN1
+
+  L      I_Taste_FN2
+  =      O_LED_FN2
+
+  L      I_Taste_FN3
+  =      O_LED_FN3
+
+  CM     Achs_Tasten
+
+;----------------------------
+LBL MB_Stop_Funktion
+
+  L      PN_D1144_Manuelles_Verfahren_plus
+  O      PN_D1148_Manuelles_Verfahren_minus
+  >      K+0
+  A      MG_Taste_NC_Start
+  =      PN_M4562_Achs_Tasten_speichern
+  S      MG_Achs_Tasten_speichern
+
+  L      NP_W304_PLC_Softkey_Nummer_vertikal
+  ==     SK_NC_Stop
+  ON     I_Taste_NC_Stop_0_aktiv
+  O      I_Taste_NC_Stop
+  ON     I_Taste_NC_S_Stop_0_aktiv
+  O      I_Taste_NC_S_Stop
+  O      ML_HR_Taste_NC_Stop
+  ON     NP_M4231_NC_STOP_von_LSV2
+  =      MG_Taste_NC_Stop
+
+  LN     I_Taste_NC_S_Stop_0_aktiv
+  O      I_Taste_NC_S_Stop
+  =      MG_Taste_S_Stop
+
+  LN     MG_Achsen_in_Bewegung
+  O      MG_Impuls_End_PGM_M02_M30
+  A      MG_Achs_Tasten_speichern
+  R      MG_Achs_Tasten_speichern
+  S      MG_Taste_NC_Stop
+
+  L      I_Taste_S_M5
+  ON     I_Taste_S_M5_0_aktiv
+  O      ML_HR_Taste_S_M5
+  O      MG_SK_S_M5
+  =      MG_Taste_S_M5
+
+  L      O_LED_NC_Start
+  =      MG_SK_Status_NC_Start
+
+  L      O_LED_NC_Stop
+  =      MG_SK_Status_NC_Stop
+
+EM
+
+;----------------------------
+LBL HR330_Handrad
+
+  L      NP_M4151_BA_Elektronisches_Handrad
+  CMT    MB_Stop_Funktion
+  JPF    MB_gesamt
+
+  L      I_HR330_Taste_Eilgang
+  =      PN_M4561_Eilgang
+
+  PS     KL_angewaehlte_Achse
+  CM     9035                          ;NC-Statusinformationen lesen
+  M_Modul_Fehler_anzeigen
+
+  PLW
+  =X
+
+  L      K +0
+  D=     ML_XYZ45_Plus
+  D=     ML_XYZ45_Minus
+
+  L      I_HR330_Taste_Plus
+  S      ML_XYZ45_Plus[X]
+
+  L      I_HR330_Taste_Minus
+  S      ML_XYZ45_Minus[X]
+
+EM
+
+;----------------------------
+LBL HR410_Handrad
+
+;NC-Stop, Spindel-Stop generell aktiv
+
+  L      I_HR410_Taste_NC_Stop
+  =      ML_HR_Taste_NC_Stop
+
+  L      I_HR410_Taste_S_M5
+  =      ML_HR_Taste_S_M5
+
+  L      O_LED_NC_Stop
+  =      O_HR410_LED_NC_Stop
+
+  L      O_LED_NC_Start
+  =      O_HR410_LED_NC_Start
+
+  L      O_LED_S_M3
+  O      O_LED_S_M3_M4
+  =      O_HR410_LED_S_M3
+
+  L      O_LED_S_M4
+  O      O_LED_S_M3_M4
+  =      O_HR410_LED_S_M4
+
+  L      O_LED_S_M5
+  =      O_HR410_LED_S_M5
+
+  L      I_HR410_Taste_Anwahl_VT
+  IFT
+    L      DG_Handrad_Achsen
+    <>     KL_VT_Achse_bitcodiert
+    IFT
+
+      PS     KL_Handrad_Achse          ;Nummer Status-Information
+      PS     KL_VT_Achse               ;Wert
+      CM     9036                      ;Schreiben von NC-Statusinformationen
+      PL     WL_Stack_synchronisieren
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+  L      NP_M4151_BA_Elektronisches_Handrad
+  O      NP_M4156_BA_Softkey_Manual_Operation
+  O      MG_M118_aktiv
+  CMT    MB_Stop_Funktion
+  JPF    MB_gesamt
+
+  L      I_HR410_Taste_NC_Start
+  O      NP_M4230_NC_START_von_LSV2
+  =      MG_Taste_NC_Start
+
+  L      I_HR410_Taste_S_M3
+  =      MG_Taste_S_M3
+
+  L      I_HR410_Taste_S_M4
+  =      MG_Taste_S_M4
+
+  L      I_HR410_Taste_S_M3_tippen
+  =      MG_Taste_S_M3_tippen
+
+  L      I_Taste_Arbeitsraum_entriegeln
+  =      MG_Taste_Arbeitsraum_entriegeln
+
+  L      K +0
+  D=     ML_XYZ45_Plus
+  D=     ML_XYZ45_Minus
+
+EM
+
+;----------------------------
+LBL HR420_Handrad
+
+;NC-Stop, Spindel-Stop generell aktiv
+
+  L      NP_M4662_HR420_Taste_NC_Stop
+  =      ML_HR_Taste_NC_Stop
+
+  L      NP_M4665_HR420_Taste_S_M5
+  =      ML_HR_Taste_S_M5
+
+  L      NP_M4660_HR420_aktiv
+  CMT    MB_Stop_Funktion
+  JPF    MB_gesamt
+
+  L      NP_M4661_HR420_Taste_NC_Start
+  O      NP_M4230_NC_START_von_LSV2
+  =      MG_Taste_NC_Start
+
+  L      NP_M4664_HR420_Taste_S_M3
+  =      MG_Taste_S_M3
+
+  L      MG_SK_S_M3_tippen
+  =      MG_Taste_S_M3_tippen
+
+  L      MG_SK_S_M4_tippen
+  =      MG_Taste_S_M4_tippen
+
+  L      I_Taste_Arbeitsraum_entriegeln
+  =      MG_Taste_Arbeitsraum_entriegeln
+
+  PS     KL_angewaehlte_Achse
+  CM     9035                          ;NC-Statusinformationen lesen
+  M_Modul_Fehler_anzeigen
+
+  PLW
+  =X
+
+  L      K +0
+  D=     ML_XYZ45_Plus
+  D=     ML_XYZ45_Minus
+
+  L      NP_M4666_HR420_Taste_Achsrichtung_plus
+  S      ML_XYZ45_Plus[X]
+
+  L      NP_M4667_HR420_Taste_Achsrichtung_minus
+  S      ML_XYZ45_Minus[X]
+
+EM
+
+;----------------------------
+LBL HR5x0_Handrad
+
+;NC-Stop, Spindel-Stop generell aktiv
+
+  L      NP_M4662_HR5x0_Taste_NC_Stop
+  =      ML_HR_Taste_NC_Stop
+
+  L      NP_M4665_HR5x0_Taste_S_M5
+  =      ML_HR_Taste_S_M5
+
+  L      O_LED_NC_Stop
+  =      PN_M4682_HR5x0_LED_Taste_NC_Stop
+
+  L      O_LED_NC_Start
+  =      PN_M4681_HR5x0_LED_Taste_NC_Start
+
+  L      O_LED_S_M3
+  O      O_LED_S_M3_M4
+  =      PN_M4684_HR5x0_LED_Taste_S_M3
+
+  L      O_LED_S_M5
+  =      PN_M4685_HR5x0_LED_Taste_S_M5
+
+  L      NP_M4660_HR5x0_aktiv
+  CMT    MB_Stop_Funktion
+  JPF    MB_gesamt
+
+  L      NP_M4661_HR5x0_Taste_NC_Start
+  O      NP_M4230_NC_START_von_LSV2
+  =      MG_Taste_NC_Start
+
+  L      NP_M4664_HR5x0_Taste_S_M3
+  =      MG_Taste_S_M3
+
+  L      NP_M4663_HR5x0_Taste_Eilgang
+  =      MG_Taste_Eilgang
+
+  L      MG_SK_S_M3_tippen
+  =      MG_Taste_S_M3_tippen
+
+  L      MG_SK_S_M4_tippen
+  =      MG_Taste_S_M4_tippen
+
+  L      MG_SK_Steuerspannung_ein
+  =      MG_Taste_Steuerspannung_ein
+
+  L      MG_SK_Arbeitsraum_entriegeln
+  O      I_Taste_Arbeitsraum_entriegeln
+  =      MG_Taste_Arbeitsraum_entriegeln
+
+  PS     KL_angewaehlte_Achse
+  CM     9035                          ;NC-Statusinformationen lesen
+  M_Modul_Fehler_anzeigen
+
+  PLW
+  =X
+
+  L      K +0
+  D=     ML_XYZ45_Plus
+  D=     ML_XYZ45_Minus
+
+  L      NP_M4666_HR5x0_Taste_Achsrichtung_plus
+  S      ML_XYZ45_Plus[X]
+
+  L      NP_M4667_HR5x0_Taste_Achsrichtung_minus
+  S      ML_XYZ45_Minus[X]
+
+  L      NP_M4668_HR5x0_Taste_Ctrl
+  =      PN_M4688_HR5x0_LED_Taste_Ctrl
+
+  L      NP_M4669_HR5x0_Taste_IST_Wert
+  =      PN_M4689_HR5x0_LED_Taste_IST_Wert
+
+EM
+
+;----------------------------
+LBL Achs_Tasten
+
+  L      K+0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      BL_Achs_Index
+    =X
+
+    L      KF Adr_I_Achse_Minus[X]
+    =      WL_Adr_I_Achse_Minus
+
+    L      KF Adr_I_Achse_Plus[X]
+    =      WL_Adr_I_Achse_Plus
+
+    L      WL_Adr_I_Achse_Minus
+    >=     KG_Input_Speicherbereich
+    IFT
+      L      M_0[WL_Adr_I_Achse_Minus]
+      =      ML_XYZ45_Minus[BL_Achs_Index]
+    ELSE
+      L      I_0[WL_Adr_I_Achse_Minus]
+      =      ML_XYZ45_Minus[BL_Achs_Index]
+    ENDI
+
+    L      WL_Adr_I_Achse_Plus
+    >=     KG_Input_Speicherbereich
+    IFT
+      L      M_0[WL_Adr_I_Achse_Plus]
+      =      ML_XYZ45_Plus[BL_Achs_Index]
+    ELSE
+      L      I_0[WL_Adr_I_Achse_Plus]
+      =      ML_XYZ45_Plus[BL_Achs_Index]
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+#if CFG_Simulation = "aktiv"
+
+  L      MG_Eins_Merker
+  R      ML_Taste_geaendert
+
+  L      BG_Achse_Index_A
+  ==     KL_Rund_Achse_inaktiv
+  O      ML_Taste_geaendert
+  IFT
+    LN     ML_Taste_geaendert
+    R      ML_XYZ45_Minus[KG_Achse_A]
+    R      ML_XYZ45_Plus[KG_Achse_A]
+  ELSE
+    L      ML_XYZ45_Minus[KG_Achse_A]
+    R      ML_XYZ45_Minus[KG_Achse_A]
+    S      ML_XYZ45_Minus[BG_Achse_Index_A]
+    S      ML_Taste_geaendert
+
+    L      ML_XYZ45_Plus[KG_Achse_A]
+    R      ML_XYZ45_Plus[KG_Achse_A]
+    S      ML_XYZ45_Plus[BG_Achse_Index_A]
+    S      ML_Taste_geaendert
+  ENDI
+
+  L      BG_Achse_Index_B
+  ==     KL_Rund_Achse_inaktiv
+  O      ML_Taste_geaendert
+  IFT
+    LN     ML_Taste_geaendert
+    R      ML_XYZ45_Minus[KG_Achse_B]
+    R      ML_XYZ45_Plus[KG_Achse_B]
+  ELSE
+    L      ML_XYZ45_Minus[KG_Achse_B]
+    R      ML_XYZ45_Minus[KG_Achse_B]
+    S      ML_XYZ45_Minus[BG_Achse_Index_B]
+    S      ML_Taste_geaendert
+
+    L      ML_XYZ45_Plus[KG_Achse_B]
+    R      ML_XYZ45_Plus[KG_Achse_B]
+    S      ML_XYZ45_Plus[BG_Achse_Index_B]
+    S      ML_Taste_geaendert
+  ENDI
+
+  L      BG_Achse_Index_C
+  ==     KL_Rund_Achse_inaktiv
+  O      ML_Taste_geaendert
+  IFT
+    LN     ML_Taste_geaendert
+    R      ML_XYZ45_Minus[KG_Achse_C]
+    R      ML_XYZ45_Plus[KG_Achse_C]
+  ELSE
+    L      ML_XYZ45_Minus[KG_Achse_C]
+    R      ML_XYZ45_Minus[KG_Achse_C]
+    S      ML_XYZ45_Minus[BG_Achse_Index_C]
+    S      ML_Taste_geaendert
+
+    L      ML_XYZ45_Plus[KG_Achse_C]
+    R      ML_XYZ45_Plus[KG_Achse_C]
+    S      ML_XYZ45_Plus[BG_Achse_Index_C]
+    S      ML_Taste_geaendert
+  ENDI
+#endif
+
+  PS     KL_angewaehlte_Achse
+  CM     9035                          ;NC-Statusinformationen lesen
+  M_Modul_Fehler_anzeigen
+
+  PLW
+  =X
+
+  L      I_Taste_Achsen_Plus
+  O      MG_SK_Achsen_plus
+  S      ML_XYZ45_Plus[X]
+
+  L      I_Taste_Achsen_Minus
+  O      MG_SK_Achsen_minus
+  S      ML_XYZ45_Minus[X]
+
+EM
+
+;----------------------------
+LBL Achs_Endlagen
+
+#if CFG_Not_Halt_Endlagen_codiert = "aktiv"
+  L      MG_Not_Halt_entriegelt
+  AN     I_Endlage_X_nicht_ueberfahren
+  =      I_Endlage_Achse_X
+
+  L      I_Endlage_X_nicht_ueberfahren
+  AN     I_Endlage_X_Y_nicht_ueberfahren
+  =      I_Endlage_Achse_Y
+
+  L      I_Endlage_X_Y_nicht_ueberfahren
+  AN     I_Endlage_X_Y_Z_nicht_ueberfahren
+  =      I_Endlage_Achse_Z
+
+  L      I_Endlage_X_Y_Z_nicht_ueberfahren
+  AN     I_Endlage_X_Y_Z_4_nicht_ueberfahren
+  =      I_Endlage_Achse_4
+
+  L      I_Endlage_X_Y_Z_4_nicht_ueberfahren
+  AN     I_Endlage_X_Y_Z_4_5_nicht_ueberfahren
+  =      I_Endlage_Achse_5
+#endif
+
+  L      I_Endlage_Achse_X
+  IFT
+    L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+    BT     KG_Achse_X
+    IFT
+      LN     MG_Ref_Endlage[KG_Achse_X]
+      =      MG_Win_Endlage_Xp
+      R      ML_X_Plus
+
+      L      MG_Ref_Endlage[KG_Achse_X]
+      =      MG_Win_Endlage_Xn
+      R      ML_X_Minus
+    ELSE
+      L      MG_Ref_Endlage[KG_Achse_X]
+      =      MG_Win_Endlage_Xp
+      R      ML_X_Plus
+
+      LN     MG_Ref_Endlage[KG_Achse_X]
+      =      MG_Win_Endlage_Xn
+      R      ML_X_Minus
+    ENDI
+  ENDI
+
+  L      I_Endlage_Achse_Y
+  IFT
+    L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+    BT     KG_Achse_Y
+    IFT
+      LN     MG_Ref_Endlage[KG_Achse_Y]
+      =      MG_Win_Endlage_Yp
+      R      ML_Y_Plus
+
+      L      MG_Ref_Endlage[KG_Achse_Y]
+      =      MG_Win_Endlage_Yn
+      R      ML_Y_Minus
+    ELSE
+      L      MG_Ref_Endlage[KG_Achse_Y]
+      =      MG_Win_Endlage_Yp
+      R      ML_Y_Plus
+
+      LN     MG_Ref_Endlage[KG_Achse_Y]
+      =      MG_Win_Endlage_Yn
+      R      ML_Y_Minus
+    ENDI
+  ENDI
+
+  L      I_Endlage_Achse_Z
+  IFT
+    L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+    BT     KG_Achse_Z
+    IFT
+      LN     MG_Ref_Endlage[KG_Achse_Z]
+      =      MG_Win_Endlage_Zp
+      R      ML_Z_Plus
+
+      L      MG_Ref_Endlage[KG_Achse_Z]
+      =      MG_Win_Endlage_Zn
+      R      ML_Z_Minus
+    ELSE
+      L      MG_Ref_Endlage[KG_Achse_Z]
+      =      MG_Win_Endlage_Zp
+      R      ML_Z_Plus
+
+      LN     MG_Ref_Endlage[KG_Achse_Z]
+      =      MG_Win_Endlage_Zn
+      R      ML_Z_Minus
+    ENDI
+  ENDI
+
+  L      I_Endlage_Achse_4
+  IFT
+    L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+    BT     KG_Achse_4
+    IFT
+      LN     MG_Ref_Endlage[KG_Achse_4]
+      =      MG_Win_Endlage_4p
+      R      ML_4_Plus
+
+      L      MG_Ref_Endlage[KG_Achse_4]
+      =      MG_Win_Endlage_4n
+      R      ML_4_Minus
+    ELSE
+      L      MG_Ref_Endlage[KG_Achse_4]
+      =      MG_Win_Endlage_4p
+      R      ML_4_Plus
+
+      LN     MG_Ref_Endlage[KG_Achse_4]
+      =      MG_Win_Endlage_4n
+      R      ML_4_Minus
+    ENDI
+  ENDI
+
+  L      I_Endlage_Achse_5
+  IFT
+    L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+    BT     KG_Achse_5
+    IFT
+      LN     MG_Ref_Endlage[KG_Achse_5]
+      =      MG_Win_Endlage_5p
+      R      ML_5_Plus
+
+      L      MG_Ref_Endlage[KG_Achse_5]
+      =      MG_Win_Endlage_5n
+      R      ML_5_Minus
+    ELSE
+      L      MG_Ref_Endlage[KG_Achse_5]
+      =      MG_Win_Endlage_5p
+      R      ML_5_Plus
+
+      LN     MG_Ref_Endlage[KG_Achse_5]
+      =      MG_Win_Endlage_5n
+      R      ML_5_Minus
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Achsen_manu_Posit
+
+  L      MG_Inbetriebnahme
+  IFT
+    L      K+0
+    =      DL_WZM_Achsen_aktiv
+  ELSE
+    L      DG_WZM_Achsen
+    =      DL_WZM_Achsen_aktiv
+  ENDI
+
+  LD     ML_XYZ45_Plus
+  AN     DG_Tasten_sperren
+  AN     DL_WZM_Achsen_aktiv
+  =      PN_D1144_Manuelles_Verfahren_plus
+
+  LD     ML_XYZ45_Minus
+  AN     DG_Tasten_sperren
+  AN     DL_WZM_Achsen_aktiv
+  =      PN_D1148_Manuelles_Verfahren_minus
+
+EM
+
+;----------------------------
+LBL LED_Test
+
+  L      ML_debug
+  S      MG_LED_Test
+
+  M_Pos_Flanke(MG_LED_Test,ML_LED_Test_P_Impuls,ML_LED_Test_Aux_P_Impuls)
+  M_Neg_Flanke(MG_LED_Test,ML_LED_Test_N_Impuls,ML_LED_Test_Aux_N_Impuls)
+
+  L      MG_LED_Test
+  O      ML_LED_Test_N_Impuls
+  IFT
+    L      ML_LED_Test_P_Impuls
+    IFT
+      L      K +0
+      =      BL_LED_Index
+    ELSE
+      L      BL_LED_Index
+      =X
+
+      L      KF Adr_O_LED[X]
+      >=     K +0
+      IFT
+        INC    BL_LED_Index
+      ENDI
+    ENDI
+
+    L      K+0
+    =X
+    REPEAT
+      L      KF Adr_O_LED[X]
+      =      WL_Adr_O_LED
+
+      L      WL_Adr_O_LED
+      >=     K +0
+      IFT
+        LX
+        ==     BL_LED_Index
+        S      ML_LED_Test[X]
+
+        L      ML_LED_Test_N_Impuls
+        R      ML_LED_Test[X]
+
+        L      WL_Adr_O_LED
+        >=     KG_Output_Speicherbereich
+        IFT
+          L      ML_LED_Test[X]
+          =      M_0[WL_Adr_O_LED]
+        ELSE
+          L      ML_LED_Test[X]
+          =      O_0[WL_Adr_O_LED]
+        ENDI
+      ENDI
+
+      INCX
+
+      L      WL_Adr_O_LED
+      <      K +0
+    UNTILT
+  ENDI
+
+EM
+
+;----------------------------
+KFIELD Adr_I_Achse_Plus                ;Änderung Symbolnamen wegen FS
+  K &I_Taste_Ax01_Plus                 ;I_Taste_Achse_X_Plus
+  K &I_Taste_Ax02_Plus                 ;I_Taste_Achse_Y_Plus
+  K &I_Taste_Ax03_Plus                 ;I_Taste_Achse_Z_Plus
+  K &I_Taste_Ax04_Plus                 ;I_Taste_Achse_4_Plus
+  K &I_Taste_Ax05_Plus                 ;I_Taste_Achse_5_Plus
+  K &I_Taste_Ax06_Plus                 ;I_Taste_Achse_6_Plus
+  K &I_Taste_Ax07_Plus                 ;I_Taste_Achse_7_Plus
+  K &I_Taste_Ax08_Plus                 ;I_Taste_Achse_8_Plus
+  K &I_Taste_Ax09_Plus                 ;I_Taste_Achse_9_Plus
+  K &I_Taste_Ax10_Plus                 ;I_Taste_Achse_10_Plus
+  K &I_Taste_Ax11_Plus                 ;I_Taste_Achse_11_Plus
+  K &I_Taste_Ax12_Plus                 ;I_Taste_Achse_12_Plus
+  K &I_Taste_Ax13_Plus                 ;I_Taste_Achse_13_Plus
+  K &I_Taste_Ax14_Plus                 ;I_Taste_Achse_14_Plus
+  K &I_Taste_Ax15_Plus                 ;I_Taste_Achse_15_Plus
+  K &I_Taste_Ax16_Plus                 ;I_Taste_Achse_16_Plus
+  K &I_Taste_Ax17_Plus                 ;I_Taste_Achse_17_Plus
+  K &I_Taste_Ax18_Plus                 ;I_Taste_Achse_18_Plus
+  K &I_Taste_Ax19_Plus                 ;I_Taste_Achse_19_Plus
+  K &I_Taste_Ax20_Plus                 ;I_Taste_Achse_20_Plus
+  K &I_Taste_Ax21_Plus                 ;I_Taste_Achse_21_Plus
+  K &I_Taste_Ax22_Plus                 ;I_Taste_Achse_22_Plus
+ENDK
+
+;----------------------------
+KFIELD Adr_I_Achse_Minus               ;Änderung Symbolnamen wegen FS
+  K &I_Taste_Ax01_Minus                ;I_Taste_Achse_X_Minus
+  K &I_Taste_Ax02_Minus                ;I_Taste_Achse_Y_Minus
+  K &I_Taste_Ax03_Minus                ;I_Taste_Achse_Z_Minus
+  K &I_Taste_Ax04_Minus                ;I_Taste_Achse_4_Minus
+  K &I_Taste_Ax05_Minus                ;I_Taste_Achse_5_Minus
+  K &I_Taste_Ax06_Minus                ;I_Taste_Achse_6_Minus
+  K &I_Taste_Ax07_Minus                ;I_Taste_Achse_7_Minus
+  K &I_Taste_Ax08_Minus                ;I_Taste_Achse_8_Minus
+  K &I_Taste_Ax09_Minus                ;I_Taste_Achse_9_Minus
+  K &I_Taste_Ax10_Minus                ;I_Taste_Achse_10_Minus
+  K &I_Taste_Ax11_Minus                ;I_Taste_Achse_11_Minus
+  K &I_Taste_Ax12_Minus                ;I_Taste_Achse_12_Minus
+  K &I_Taste_Ax13_Minus                ;I_Taste_Achse_13_Minus
+  K &I_Taste_Ax14_Minus                ;I_Taste_Achse_14_Minus
+  K &I_Taste_Ax15_Minus                ;I_Taste_Achse_15_Minus
+  K &I_Taste_Ax16_Minus                ;I_Taste_Achse_16_Minus
+  K &I_Taste_Ax17_Minus                ;I_Taste_Achse_17_Minus
+  K &I_Taste_Ax18_Minus                ;I_Taste_Achse_18_Minus
+  K &I_Taste_Ax19_Minus                ;I_Taste_Achse_19_Minus
+  K &I_Taste_Ax20_Minus                ;I_Taste_Achse_20_Minus
+  K &I_Taste_Ax21_Minus                ;I_Taste_Achse_21_Minus
+  K &I_Taste_Ax22_Minus                ;I_Taste_Achse_22_Minus
+ENDK
+
+;----------------------------
+KFIELD Adr_O_LED
+  K &O_LED_Steuerspannung_ein
+  K &O_LED_Achse_4_Plus
+  K &O_LED_Achse_Z_Plus
+  K &O_LED_Achse_Y_Plus
+  K &O_LED_Achse_5_Plus
+  K &O_LED_Achse_6_Plus
+  K &O_LED_S6
+  K &O_LED_WZW_Anwahl
+  K &O_LED_WZ_entspannt
+  K &O_LED_S9
+  K &O_LED_FN1
+  K &O_LED_Kuehlmittel_M07
+  K &O_LED_Spaenefoerderer
+  K &O_LED_Achse_X_Minus
+  K &O_LED_Eilgang
+  K &O_LED_Achse_X_Plus
+  K &O_LED_Achsen_Freifahren
+  K &O_LED_MB_Zustimmbetrieb
+  K &O_LED_S19
+  K &O_LED_S_M4_tippen
+  K &O_LED_S_M3_tippen
+  K &O_LED_S22
+  K &O_LED_FN2
+  K &O_LED_Kuehlmittel_M08
+  K &O_LED_Spaenefoerderer_zurueck
+  K &O_LED_Achse_Y_Minus
+  K &O_LED_Achse_Z_Minus
+  K &O_LED_Achse_4_Minus
+  K &O_LED_Achse_5_Minus
+  K &O_LED_Achse_6_Minus
+  K &O_LED_S32
+  K &O_LED_S_M5
+  K &O_LED_S_M3_M4
+  K &O_LED_S35
+  K &O_LED_FN3
+  K &O_LED_Kuehlmittel_M17
+  K &O_LED_Arbeitsraum_entriegeln
+  K &O_LED_NC_Stop
+  K &O_LED_NC_Start
+  K -1
+ENDK

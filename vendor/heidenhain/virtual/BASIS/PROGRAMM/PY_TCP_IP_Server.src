@@ -1,0 +1,296 @@
+*-----------------------------------------------------------------------------
+* PLC SERVER: Daten Austausch über TCP/IP (jh.TCPcomm)
+*-----------------------------------------------------------------------------
+*  Modul Beschreibung
+*
+*  Startet einen PLC Servers der über TCP-IP Port angesprochen werden kann.
+*  Die Daten werden über den angegeben Port vom Python Skript empfangen.
+*  Dieses schreibt die Daten in die PLC-Empfangsstruktur.
+*  Die PLC liest die Struktur mit dem Modul 9373 aus und ruft die angegebene Funktion.
+*  In der Funktion kann die Sendestruktur beschrieben werden,
+*  die zum Abschluss an den Absender zurückgesendet wird.
+*
+*  - Anmelden der Sende- und Empfangsstrukturen zur PLC<->Python Kommunikation.
+*
+*  - Starten des Python Skript PLC_server.py.
+*    Parameter:
+*      -s:<Namen der Sendestruktur>
+*      -r:<Namen der Empfangsstruktur>
+*      -p:<Nummer des TCP-IP Port>
+*    Beispiel: #define /s KS_Prozess_Parameter S"-s:STG_PLC_Server_Senden -r:STG_PLC_Server_Empfang -p:8076"
+*
+*  - Auswertung der einkommenden Datenpacket und Aufruf des hinterlegten Labels
+*
+*  - Rücksenden der Daten an den Absender
+*-----------------------------------------------------------------------------
+
+#define /s    KS_Prozess_Pfad                          S"PLC:\\Python\\plcServer.py"
+#define /s    KS_Prozess_Parameter                     S"-s:STG_PLC_Server_Senden -r:STG_PLC_Server_Empfang -p:8076"
+#define /s    KS_Prozess_Name                          S"PLC_SERVER"
+
+#define /s    ML_TCP_IP_Server_gestartet               M
+
+#define /s    BL_Return_Wert                           B
+#define /s    BL_Submit_Ident_Start                    B
+#define /s    BL_Submit_Ident_Monitor                  B
+
+#define /s    DL_Fehler_9295                           D
+#define /s    DL_Exit_9295                             D
+#define /s    DL_Spawn_Empfangen_Ident                 D
+
+#include Mac_Lib.inc
+
+GLOBAL TCP_IP_Server
+
+;----------------------------
+LBL TCP_IP_Server
+;----------------------------
+
+; Verbindungsaufbau vom Server
+
+  LN     ML_TCP_IP_Server_gestartet
+  AN     PN_Fehler_TCP_Server_Verbindungsfehler
+  AN     PN_Fehler_Submit_Spawn_Queue_voll
+  A      MG_Impuls_500_ms
+  IFT
+    RPLY   BL_Submit_Ident_Start
+    ==     K+0
+    IFT
+      SUBM   Server_Start
+      =      BL_Submit_Ident_Start
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+  L      ML_TCP_IP_Server_gestartet
+  A      MG_Impuls_1_min
+  IFT
+    RPLY   BL_Submit_Ident_Monitor
+    ==     K+0
+    IFT
+      SUBM   Prozess_Monitor
+      =      BL_Submit_Ident_Monitor
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+
+EM
+
+;----------------------------
+LBL Server_Start
+
+  ; Anmelden der PLC Strukturen
+  PS     STG_PLC_Server_Status_Senden.Handle
+  PS     KG_Py_Lese_Schreibstatus
+  CM     9372                          ;Statusabfrage einer Daten-Struktur
+  PLW
+  <      K+0                           ;ungueltiges Handle (nicht eingerichtet)
+  IFT
+    PS     S"STG_PLC_Server_Senden"
+    PS     KG_Py_SchreibenDurchPLC
+    PS     STG_PLC_Server_Status_Senden.Event
+    CM     9370                        ;Daten-Struktur für Client-Behandlung anmelden
+    PL     STG_PLC_Server_Status_Senden.Handle
+    PL     STG_PLC_Server_Status_Senden.LogOnReturn
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  PS     STG_PLC_Server_Status_Empfangen.Handle
+  PS     KG_Py_Lese_Schreibstatus
+  CM     9372                          ;Statusabfrage einer Daten-Struktur
+  PLW
+  <      K+0                           ;ungueltiges Handle (nicht eingerichtet)
+  IFT
+    PS     S"STG_PLC_Server_Empfang"
+    PS     KG_Py_LesenDurchPlc
+    PS     STG_PLC_Server_Status_Empfangen.Event
+    CM     9370                        ;Daten-Struktur für Client-Behandlung anmelden
+    PL     STG_PLC_Server_Status_Empfangen.Handle
+    PL     STG_PLC_Server_Status_Empfangen.LogOnReturn
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  ; Python Skript starten
+  PS     KS_Prozess_Name               ;Prozess Name
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_aktiv
+  IFF
+    PS     KG_Py_Mode_asynchron
+    PS     KG_Py_Speicher_8_MB
+    PS     KS_Prozess_Pfad
+    PS     KS_Prozess_Name
+    PS     KS_Prozess_Parameter
+    CM     9295                        ;Starten eines Python-Prozesses
+    PL     DL_Fehler_9295
+    PL     DL_Exit_9295
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  ; Spawn Empfangen starten
+  L      DL_Spawn_Empfangen_Ident
+  ==     K+0
+  IFT
+    SPAWN  Spawn_Server_Empfangen
+    =      DL_Spawn_Empfangen_Ident
+    ==     K-1
+    S      PN_Fehler_Submit_Spawn_Queue_voll
+  ENDI
+
+  L      DL_Spawn_Empfangen_Ident
+  >      K+0
+  S      ML_TCP_IP_Server_gestartet
+
+
+
+EM
+
+;--------------------------------------------------------
+; Server Funktionen
+;--------------------------------------------------------
+
+; Endlos Schleife für Spawn (warten auf Event)
+LBL Spawn_Server_Empfangen
+
+  REPEAT
+    PS     STG_PLC_Server_Status_Empfangen.Handle
+    PS     KG_Py_mit_Warten
+    CM     9373                        ;Daten-Struktur von Clients in die PLC übertragen
+    PL     STG_PLC_Server_Status_Empfangen.AccessReturn
+
+    L      STG_PLC_Server_Empfang.Client
+    >      K+0
+    IFT
+
+      L      STG_PLC_Server_Empfang.Client
+      =      STG_PLC_Server_Senden.Client
+
+      L      STG_PLC_Server_Empfang.Funktion
+      =      STG_PLC_Server_Senden.Funktion
+
+      CASE   STG_PLC_Server_Empfang.Funktion
+        CM     Ping                    ;00
+        CM     Achs_Positionen         ;01
+        CM     Maschinenstatus         ;02
+        CM     Funktion_03             ;03
+        CM     Funktion_04             ;04
+      ENDC
+
+      CM     Server_Senden
+    ENDI
+
+    L      STG_PLC_Server_Status_Empfangen.AccessReturn
+    >      K+0
+    O      PN_Fehler_Submit_Spawn_Queue_voll
+  UNTILT
+
+  L      K+0
+  =      DL_Spawn_Empfangen_Ident
+EM
+
+
+;----------------------------
+LBL Ping
+
+EM
+
+;----------------------------
+LBL Achs_Positionen
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  =      STG_PLC_Server_Senden.D_1
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Y]
+  =      STG_PLC_Server_Senden.D_2
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  =      STG_PLC_Server_Senden.D_3
+
+EM
+
+;----------------------------
+LBL Maschinenstatus
+
+  L      MG_Steuerung_betriebsbereit
+  =      STG_PLC_Server_Senden.M_1
+
+  L      MG_Spindel_steht
+  =      STG_PLC_Server_Senden.M_2
+
+  L      MG_BA_Automatik
+  =      STG_PLC_Server_Senden.M_3
+
+  L      MG_WZW_Auto_aktiv
+  =      STG_PLC_Server_Senden.M_4
+
+  L      MG_Arbeitsraum_offen
+  =      STG_PLC_Server_Senden.M_5
+
+  L      PN_W524_Antriebsfreigabe_Achsgruppen
+  =      STG_PLC_Server_Senden.D_1
+
+  L      NP_D1104_Achsen_in_Position
+  =      STG_PLC_Server_Senden.D_2
+
+EM
+
+;----------------------------
+LBL Funktion_03
+
+;; Daten vervollständigen
+;  L
+;  =      STG_PLC_Server_Senden.M_1
+;
+;  L
+;  =      STG_PLC_Server_Senden.D_1
+
+EM
+
+;----------------------------
+LBL Funktion_04
+
+;; Daten vervollständigen
+;  L
+;  =      STG_PLC_Server_Senden.M_1
+;
+;  L
+;  =      STG_PLC_Server_Senden.D_1
+
+EM
+
+
+;----------------------------
+LBL Server_Senden
+
+  PS     STG_PLC_Server_Status_Senden.Handle
+  PS     KG_Py_ohne_Warten_Daten_nicht_ueberschreiben
+  CM     9374                          ;Daten-Struktur von der PLC an Client übertragen
+  PL     STG_PLC_Server_Status_Senden.AccessReturn
+
+  L      STG_PLC_Server_Status_Senden.AccessReturn
+  >      K+0
+  S      PN_Fehler_TCP_Server_Verbindungsfehler
+  RN     PN_Fehler_TCP_Server_Verbindungsfehler
+
+EM
+
+;----------------------------
+LBL Prozess_Monitor
+
+  PS     KS_Prozess_Name
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_nicht_aktiv
+  IFT
+    L      MG_Eins_Merker
+    R      ML_TCP_IP_Server_gestartet
+    S      PN_Fehler_TCP_Server_Verbindungsfehler
+  ENDI
+
+EM

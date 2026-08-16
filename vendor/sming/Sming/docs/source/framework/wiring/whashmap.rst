@@ -1,0 +1,5 @@
+HashMap
+=======
+
+.. doxygenclass:: HashMap
+   :members:

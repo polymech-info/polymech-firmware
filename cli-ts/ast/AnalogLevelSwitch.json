@@ -1,0 +1,2373 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "comment",
+      "text": "/**\r\n * @file AnalogLevelSwitch.h\r\n * @brief Component to read an analog input as a multi-position switch.\r\n *\r\n * --- Resistor Selection for Voltage Divider Setup ---\r\n *\r\n * This component is designed to interpret an analog voltage as a discrete position or slot.\r\n * It allows for an initial ADC offset (adcValueOffset), meaning the first slot does not\r\n * necessarily start at an ADC reading of 0.\r\n *\r\n * Principle:\r\n * A common way to achieve this is with a voltage divider. You'll have one analog input pin.\r\n * The circuit typically involves one fixed resistor (R_fixed) and a set of switched resistors\r\n * (R_sw0, R_sw1, ..., R_swN-1), one for each of the N slots.\r\n *\r\n * Example Case:\r\n * - Number of slots (numLevels): 4\r\n * - ADC Value Offset (adcValueOffset): 200 (e.g., readings 0-199 are effectively below the first slot)\r\n * - Slot Width (levelStep): 800 ADC counts per slot.\r\n * - System Voltage (V_in): 5V\r\n * - ADC Range: 0-4095 (0V -> 0, 5V -> 4095)\r\n *\r\n * Component Constructor Parameters:\r\n * - numLevels: 4\r\n * - levelStep: 800\r\n * - adcValueOffset: 200\r\n *\r\n *   This means the ADC windows for slots are:\r\n *     - Slot 0: ADC readings from 200 to (200 + 800 - 1) = 999\r\n *     - Slot 1: ADC readings from (200 + 800) = 1000 to (200 + 2*800 - 1) = 1799\r\n *     - Slot 2: ADC readings from (200 + 2*800) = 1800 to (200 + 3*800 - 1) = 2599\r\n *     - Slot 3: ADC readings from (200 + 3*800) = 2600 to (200 + 4*800 - 1) = 3399\r\n *   The highest ADC value mapped to a slot is 3399. Readings above this (e.g. > 3399)\r\n *   will be clamped to the last slot (Slot 3). Readings below the offset (e.g. < 200)\r\n *   will be clamped to the first slot (Slot 0) by the component's logic.\r\n *\r\n * Circuit Configuration Example:\r\n * - R_fixed is connected from the Analog Input Pin to Ground (GND).\r\n * - For each slot, a different resistor (R_sw0, R_sw1, etc.) is connected from the\r\n *   Analog Input Pin to V_in (5V).\r\n * - The voltage at the Analog Input Pin (V_out) is given by:\r\n *   V_out = V_in * (R_fixed / (R_sw_current + R_fixed))  (if R_sw to V_in, R_fixed to GND)\r\n *   Alternatively, if R_fixed to V_in and R_sw to GND (less common for increasing voltage with switch):\r\n *   V_out = V_in * (R_sw_current / (R_fixed + R_sw_current))\r\n * - Assuming the first configuration (R_fixed to GND, R_sw to V_in):\r\n *   The ADC reading is: ADC_value = (V_out / V_in) * 4095 (for this example's V_in and ADC range)\r\n *\r\n * Target ADC Values & Resistor Calculation (Adjusted for offset):\r\n * Target midpoints for ADC windows:\r\n *   - Slot 0 (200-999):  Midpoint ~ (200+999)/2 = 599  => V_out = (599/4095)*5V  ~ 0.731V\r\n *   - Slot 1 (1000-1799): Midpoint ~ (1000+1799)/2 = 1399 => V_out = (1399/4095)*5V ~ 1.708V\r\n *   - Slot 2 (1800-2599): Midpoint ~ (1800+2599)/2 = 2199 => V_out = (2199/4095)*5V ~ 2.685V\r\n *   - Slot 3 (2600-3399): Midpoint ~ (2600+3399)/2 = 2999 => V_out = (2999/4095)*5V ~ 3.662V\r\n *\r\n * Let R_fixed = 10 kOhm (to GND). R_sw_current connects Analog Pin to 5V.\r\n * V_out / V_in = R_fixed / (R_sw_current + R_fixed)  => This formula gives decreasing V_out for increasing R_sw.\r\n * For increasing V_out with slots, it's usually R_fixed to VCC and R_sw_current to GND for each slot,\r\n * where V_out = VCC * (R_sw_current / (R_fixed + R_sw_current)).\r\n * Or, a ladder network. The example below assumes R_fixed to GND, and R_sw to V_in, which creates HIGHER voltages for LOWER R_sw.\r\n * This means R_sw needs to DECREASE to get higher voltages / higher slot numbers.\r\n * V_out = V_in * R_fixed / (R_sw + R_fixed) is not what we want if R_sw is the switched part to V_in for *increasing* voltage steps.\r\n * Let's re-evaluate the voltage divider formula application for this common use case:\r\n *\r\n * Corrected Circuit Configuration for Increasing Voltage with Slot Index:\r\n * A simple way is multiple resistors (R0, R1, R2, R3) connected via a rotary switch to the analog pin.\r\n * The other end of these resistors goes to V_in (5V). A single resistor R_pull_down goes from analog pin to GND.\r\n * V_out = V_in * (R_pull_down / (R_current_switched_to_Vin + R_pull_down)).\r\n * This means R_current_switched_to_Vin must DECREASE for V_out to INCREASE.\r\n * Example Values (R_pull_down = 10k Ohm from Analog Pin to GND):\r\n *\r\n *   - Slot 0 (V_out ~ 0.731V -> R_sw0 to 5V should be large):\r\n *     0.731V = 5V * (10k / (R_sw0 + 10k)) => R_sw0 + 10k = 5V/0.731V * 10k = 68.4k => R_sw0 ~ 58.4 kOhm. (Std: 56k)\r\n *     Using 56k: V_out = 5V * (10k / (56k+10k)) ~ 0.757V; ADC ~ 620. (Slot 0: 200-999)\r\n *\r\n *   - Slot 1 (V_out ~ 1.708V -> R_sw1 to 5V should be smaller):\r\n *     1.708V = 5V * (10k / (R_sw1 + 10k)) => R_sw1 + 10k = 5V/1.708V * 10k = 29.27k => R_sw1 ~ 19.27 kOhm. (Std: 20k or 18k)\r\n *     Using 20k: V_out = 5V * (10k / (20k+10k)) ~ 1.667V; ADC ~ 1365. (Slot 1: 1000-1799)\r\n *\r\n *   - Slot 2 (V_out ~ 2.685V -> R_sw2 to 5V should be smaller still):\r\n *     2.685V = 5V * (10k / (R_sw2 + 10k)) => R_sw2 + 10k = 5V/2.685V * 10k = 18.62k => R_sw2 ~ 8.62 kOhm. (Std: 8.2k)\r\n *     Using 8.2k: V_out = 5V * (10k / (8.2k+10k)) ~ 2.747V; ADC ~ 2250. (Slot 2: 1800-2599)\r\n *\r\n *   - Slot 3 (V_out ~ 3.662V -> R_sw3 to 5V should be smallest):\r\n *     3.662V = 5V * (10k / (R_sw3 + 10k)) => R_sw3 + 10k = 5V/3.662V * 10k = 13.65k => R_sw3 ~ 3.65 kOhm. (Std: 3.6k)\r\n *     Using 3.6k: V_out = 5V * (10k / (3.6k+10k)) ~ 3.676V; ADC ~ 3011. (Slot 3: 2600-3399)\r\n *\r\n * Summary of example resistor values (R_pull_down = 10k to GND, V_in=5V, ADC Offset=200, Step=800):\r\n * Each R_swX is connected between 5V and the Analog Input pin when its slot is active.\r\n *   - Slot 0: R_sw0 = 56k\r\n *   - Slot 1: R_sw1 = 20k\r\n *   - Slot 2: R_sw2 = 8.2k\r\n *   - Slot 3: R_sw3 = 3.6k\r\n *\r\n * Important Considerations:\r\n * - Resistor Tolerances: Use 1% or better resistors if possible, or account for tolerances\r\n *   to ensure ADC readings for different slots don't overlap.\r\n * - ADC Linearity & Noise: Real-world ADCs have non-linearities and noise. Provide sufficient\r\n *   margin between the target ADC values for each slot.\r\n * - ADC Input Impedance: Ensure the equivalent resistance of the voltage divider is not too high,\r\n *   as it can affect ADC reading accuracy due to the ADC's input impedance and sample/hold capacitor charging.\r\n *   Typically, values in the 1k to 100k range for the overall divider are fine for many MCUs.\r\n * - Debouncing: If the switch is mechanical, you might need software or hardware debouncing,\r\n *   though this component reads periodically based on ANALOG_SWITCH_READ_INTERVAL.\r\n */"
+    },
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "ANALOG_LEVEL_SWITCH_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "ANALOG_LEVEL_SWITCH_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ArduinoLog.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            },
+            {
+              "type": "comment",
+              "text": "// For ANALOG_SWITCH_READ_INTERVAL if not overridden by ALS_READ_INTERVAL_MS\r"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<App.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Component.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusTCP.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config-modbus.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<stdint.h>"
+            },
+            {
+              "type": "comment",
+              "text": "// For uint16_t, uint32_t\r"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "text": "// ─────────────────────────────────────────────────────────────────────────────\r"
+        },
+        {
+          "type": "comment",
+          "text": "//  Compile‑time configuration (moved from .cpp)\r"
+        },
+        {
+          "type": "comment",
+          "text": "// ─────────────────────────────────────────────────────────────────────────────\r"
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ANALOG_LVL_SLOTS_MAX"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ANALOG_LVL_SLOTS_MAX"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "32      // upper bound enforced at runtime\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ALS_SMOOTHING_SIZE"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ALS_SMOOTHING_SIZE"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "8       // samples in moving‑average buffer\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ALS_DEBOUNCE_COUNT"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ALS_DEBOUNCE_COUNT"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "3       // identical detections before commit\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ALS_HYSTERESIS_CODES"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ALS_HYSTERESIS_CODES"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "4       // ±ADC codes guard‑band\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ALS_READ_INTERVAL_MS"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ALS_READ_INTERVAL_MS"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "25      // Override for ANALOG_SWITCH_READ_INTERVAL\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifndef",
+              "text": "#ifndef"
+            },
+            {
+              "type": "identifier",
+              "text": "ALS_USE_EMA"
+            },
+            {
+              "type": "comment",
+              "text": "// undef to keep simple moving average\r"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "ALS_USE_EMA"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "0       // 0 = MA, 1 = EMA(α = 1/ALS_SMOOTHING_SIZE)\r"
+                }
+              ]
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "text": "// ─────────────────────────────────────────────────────────────────────────────\r"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "Bridge"
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "AnalogLevelSwitch"
+            },
+            {
+              "type": "base_class_clause",
+              "children": [
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "Component"
+                }
+              ]
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "comment",
+                  "text": "// Removed old static const members, replaced by defines above\r"
+                },
+                {
+                  "type": "comment",
+                  "text": "// static const short SMOOTHING_ARRAY_SIZE = 10; \r"
+                },
+                {
+                  "type": "comment",
+                  "text": "// static const short MAX_ANALOG_LEVELS = 16;\r"
+                },
+                {
+                  "type": "comment",
+                  "text": "// static const short DEBOUNCE_CONFIRMATIONS_COUNT = 3;\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "enum_specifier",
+                      "children": [
+                        {
+                          "type": "enum",
+                          "text": "enum"
+                        },
+                        {
+                          "type": "class",
+                          "text": "class"
+                        },
+                        {
+                          "type": "type_identifier",
+                          "text": "AnalogLevelRegOffset"
+                        },
+                        {
+                          "type": ":",
+                          "text": ":"
+                        },
+                        {
+                          "type": "primitive_type",
+                          "text": "uint16_t"
+                        },
+                        {
+                          "type": "enumerator_list",
+                          "children": [
+                            {
+                              "type": "{",
+                              "text": "{"
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Changed underlying type to uint16_t\r"
+                            },
+                            {
+                              "type": "enumerator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "DETECTED_LEVEL"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "enumerator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "RAW_ANALOG_VALUE"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "enumerator",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "LEVEL_STATE_START"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "2"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "}",
+                              "text": "}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_pin"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_slotCount"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_adcStepPerSlot"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from int\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_adcOffset"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from int\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbusAddr"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_activeSlot"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_adcRaw"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Smoothing data (fixed array)\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "m_adcBuffer"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "identifier",
+                          "text": "ALS_SMOOTHING_SIZE"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Use new define\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_bufferIdx"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_bufferSum"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from long to uint32_t for consistency\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_adcSmoothed"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Debouncing data\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_proposedSlot"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_confirmCount"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Modbus definitions \r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "MB_Registers"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbusBlocks"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "binary_expression",
+                          "children": [
+                            {
+                              "type": "number_literal",
+                              "text": "2"
+                            },
+                            {
+                              "type": "+",
+                              "text": "+"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "ANALOG_LVL_SLOTS_MAX"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Use new define\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbusBlockCount"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbusView"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Private helpers\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "buildModbusBlocks"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Added declaration\r"
+                },
+                {
+                  "type": "comment",
+                  "text": "// Updated signature for determineSlotFromValue\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "determineSlotFromValue"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "adcVal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "currentSlot"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "UINT16_MAX"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "declaration",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "AnalogLevelSwitch"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "owner"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_analogPin"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_numLevels"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Changed from ushort/short\r"
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_levelStep"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Changed from int\r"
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_adcValueOffset"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "comment",
+                              "text": "// Changed from int\r"
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_id"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "uint16_t"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_modbusAddress"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from ushort\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setup"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "loop"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "info"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "val0"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "optional_parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "val1"
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "debug"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "info"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Return types adjusted\r"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getActiveSlot"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "m_activeSlot"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from ushort\r"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getRawAdc"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "m_adcRaw"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from ushort\r"
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint16_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getSmoothedAdc"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "m_adcSmoothed"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// Changed from ushort\r"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "networkValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusTCP"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "manager"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "pointer_declarator",
+                      "children": [
+                        {
+                          "type": "*",
+                          "text": "*"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_blocks"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "type_qualifier",
+                              "children": [
+                                {
+                                  "type": "const",
+                                  "text": "const"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "serial_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Bridge"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "protected",
+                      "text": "protected"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "notifyStateChange"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "unsigned",
+                          "text": "unsigned"
+                        },
+                        {
+                          "type": "long",
+                          "text": "long"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_lastReadMs"
+                    },
+                    {
+                      "type": "=",
+                      "text": "="
+                    },
+                    {
+                      "type": "number_literal",
+                      "text": "0"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// ANALOG_LEVEL_SWITCH_H "
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+\n  M20 - spindle orientation CYCL 13
+\n  M21 - start index table
+\n  M22 - reserved
+\n  M23 - air blast on
+\n  M24 - air blast off
+\n  M25 - coolant chip flush off
+\n  M26 - coolant water gun inactive
+\n  M27 - oil mist on
+\n  M28 - oil mist off
+\n  M29 - reserved
+\n  M30 - END program
+\n  M31 - machining without M3/M4
+\n  M32 - working area monitoring off
+\n  M33 - M03 for AFC function
+\n  M34 - M04 for AFC function
+\n  M35 - M05 for AFC function
+\n  M36 - reserved
+\n  M37 - reserved
+\n  M38 - reserved
+\n  M39 - reserved
+
+

@@ -1,0 +1,294 @@
+*-----------------------------------------------------------------------------
+*  Axis Limit - M71 M72 M73
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_axis_limit_init                       M
+#define /s    ML_mode_block_scan_active                M              *;EUMACH
+#define /s    ML_block_scan_active                     M              *;EUMACH
+#define /s    ML_block_scan_active_n_pulse             M              *;EUMACH
+
+GLOBAL Axis_limit
+
+;----------------------------
+LBL Axis_limit
+
+  LN     NP_M4157_mode_restore_position
+  AN     NP_M4158_mode_block_scan
+  AN     NP_M4176_control_in_operation_on_or_flashes
+  R      ML_mode_block_scan_active
+
+  L      NP_M4158_mode_block_scan
+  S      ML_mode_block_scan_active
+
+  LN     ML_mode_block_scan_active
+  A      ML_block_scan_active
+  =      ML_block_scan_active_n_pulse
+
+  L      ML_mode_block_scan_active
+  =      ML_block_scan_active
+
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02) or (Head = &S_head_type_06) or (Head = &S_head_type_09) or (Head = &S_head_type_10) *;EUMACH
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02) or (Head = &S_head_type_10) *;EUMACH
+ *;EUMACH Axis limits for universal head
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      ML_block_scan_active_n_pulse
+  A      MG_axis_limit_1
+  O[
+    LN     I_spindle_without_3D_head
+    A      I_V_H_head_in_vertical_pos
+    AN     I_V_H_head_in_horizontal_pos
+    AN     MG_axis_limit_1
+  ]
+  AN     ML_mode_block_scan_active
+  R      PN_M4574_axis_limit_Bit_0
+  R      PN_M4575_axis_limit_Bit_1
+  S      PN_M4135_strobe_axes_limit
+  S      MG_axis_limit_1
+  R      MG_axis_limit_2
+  R      MG_axis_limit_3
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      ML_block_scan_active_n_pulse
+  A      MG_axis_limit_2
+  O[
+    LN     I_spindle_without_3D_head
+    AN     I_V_H_head_in_vertical_pos
+    A      I_V_H_head_in_horizontal_pos
+    AN     MG_axis_limit_2
+  ]
+  AN     ML_mode_block_scan_active
+  S      PN_M4574_axis_limit_Bit_0
+  R      PN_M4575_axis_limit_Bit_1
+  S      PN_M4135_strobe_axes_limit
+  R      MG_axis_limit_1
+  S      MG_axis_limit_2
+  R      MG_axis_limit_3
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      ML_block_scan_active_n_pulse
+  A      MG_axis_limit_3
+  O[
+    L      I_spindle_without_3D_head
+    AN     I_V_H_head_in_vertical_pos
+    AN     I_V_H_head_in_horizontal_pos
+    AN     MG_axis_limit_3
+  ]
+  AN     ML_mode_block_scan_active
+  R      PN_M4574_axis_limit_Bit_0
+  S      PN_M4575_axis_limit_Bit_1
+  S      PN_M4135_strobe_axes_limit
+  R      MG_axis_limit_1
+  R      MG_axis_limit_2
+  S      MG_axis_limit_3
+
+  L      MG_M71_axis_limit_1
+  O      MG_M72_axis_limit_2
+  AN     MG_automatic_V_H_head_installed
+  O      MG_M73_axis_limit_3
+  S      PN_error_M_function_not_used
+ *;EUMACH Axis limits for universal head
+#endif                                                                *;EUMACH
+
+#if (Head = &S_head_type_06) or (Head = &S_head_type_09)              *;EUMACH
+ *;EUMACH Axis limits for universal head
+  L      NP_manual_head_rear_axis_0_pos_sensor
+  IFT
+    L      NP_M4172_1st_PLC_run_after_power_on
+    O      ML_block_scan_active_n_pulse
+    A      MG_axis_limit_1
+    O[
+      LN     I_spindle_without_3D_head
+      A      I_rear_head_in_0_pos
+      AN     MG_axis_limit_1
+    ]
+    AN     ML_mode_block_scan_active
+    R      PN_M4574_axis_limit_Bit_0
+    R      PN_M4575_axis_limit_Bit_1
+    S      PN_M4135_strobe_axes_limit
+    S      MG_axis_limit_1
+    R      MG_axis_limit_2
+    R      MG_axis_limit_3
+
+    L      NP_M4172_1st_PLC_run_after_power_on
+    O      ML_block_scan_active_n_pulse
+    A      MG_axis_limit_2
+    O[
+      LN     I_spindle_without_3D_head
+      AN     I_rear_head_in_0_pos
+      AN     MG_axis_limit_2
+    ]
+    AN     ML_mode_block_scan_active
+    S      PN_M4574_axis_limit_Bit_0
+    R      PN_M4575_axis_limit_Bit_1
+    S      PN_M4135_strobe_axes_limit
+    R      MG_axis_limit_1
+    S      MG_axis_limit_2
+    R      MG_axis_limit_3
+
+    L      NP_M4172_1st_PLC_run_after_power_on
+    O      ML_block_scan_active_n_pulse
+    A      MG_axis_limit_3
+    O[
+      L      I_spindle_without_3D_head
+      AN     I_rear_head_in_0_pos
+      AN     MG_axis_limit_3
+    ]
+    AN     ML_mode_block_scan_active
+    R      PN_M4574_axis_limit_Bit_0
+    S      PN_M4575_axis_limit_Bit_1
+    S      PN_M4135_strobe_axes_limit
+    R      MG_axis_limit_1
+    R      MG_axis_limit_2
+    S      MG_axis_limit_3
+
+    L      MG_M71_axis_limit_1
+    O      MG_M72_axis_limit_2
+    O      MG_M73_axis_limit_3
+    S      PN_error_M_function_not_used
+  ELSE
+    L      MG_machine_parameter_are_read
+    AN     ML_axis_limit_init
+    IFT
+      S      ML_axis_limit_init
+      S      PN_M4135_strobe_axes_limit
+
+      LN     MG_axis_limit_1
+      AN     MG_axis_limit_2
+      AN     MG_axis_limit_3
+      S      MG_axis_limit_1
+
+      L      BG_MP1350_reference_mode_X
+      ==     K+2
+      A      MG_alternating_table_on
+      R      MG_axis_limit_1
+      S      MG_axis_limit_2
+      R      MG_axis_limit_3
+
+      L      MG_axis_limit_2
+      =      PN_M4574_axis_limit_Bit_0
+
+      L      MG_axis_limit_3
+      =      PN_M4575_axis_limit_Bit_1
+    ENDI
+
+    L      MG_M71_axis_limit_1
+    S      MG_axis_limit_1
+    R      MG_axis_limit_2
+    R      MG_axis_limit_3
+    S      PN_M4092_quit_M_function
+
+    L      MG_M72_axis_limit_2
+    R      MG_axis_limit_1
+    S      MG_axis_limit_2
+    R      MG_axis_limit_3
+    S      PN_M4092_quit_M_function
+
+    L      MG_M73_axis_limit_3
+    R      MG_axis_limit_1
+    R      MG_axis_limit_2
+    S      MG_axis_limit_3
+    S      PN_M4092_quit_M_function
+  ENDI
+ *;EUMACH Axis limits for universal head
+#endif                                                                *;EUMACH
+#else                                                                 *;EUMACH
+ *;EUMACH Axis limits for tool measuring system
+ *;During PLC positioning axis limit cannot be switching, otherwise NC alarm occurs.
+#if (TLM_out_of_machining_traverse = &active) and (TLM_protected_by_ATC_door = &active)
+#if (MT = &MT_15) or (MT = &MT_15A) or (MT = &MT_16)
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      ML_block_scan_active_n_pulse
+  A      MG_axis_limit_1
+  O[
+    L      I_ATC_door_closed
+    ON     I_ATC_door_open
+    A      MG_M390_ATC_door_closing
+    O[
+      LN     MG_NP_BLUM_CYCLE_ACTIVE
+      AN     MG_service_operation
+    ]
+    AN     MG_axis_limit_1
+  ]
+  AN     ML_mode_block_scan_active
+  R      PN_M4574_axis_limit_Bit_0
+  R      PN_M4575_axis_limit_Bit_1
+  S      PN_M4135_strobe_axes_limit
+  S      MG_axis_limit_1
+  R      MG_axis_limit_2
+  R      MG_axis_limit_3
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      ML_block_scan_active_n_pulse
+  A      MG_axis_limit_3
+  O[
+    L      MG_service_operation
+    O      MG_NP_BLUM_CYCLE_ACTIVE
+    AN     I_ATC_door_closed
+    A      I_ATC_door_open
+    A      MG_M391_ATC_door_opening
+    AN     MG_axis_limit_3
+  ]
+  AN     ML_mode_block_scan_active
+  R      PN_M4574_axis_limit_Bit_0
+  S      PN_M4575_axis_limit_Bit_1
+  S      PN_M4135_strobe_axes_limit
+  R      MG_axis_limit_1
+  R      MG_axis_limit_2
+  S      MG_axis_limit_3
+
+  L      MG_M71_axis_limit_1
+  O      MG_M72_axis_limit_2
+  O      MG_M73_axis_limit_3
+  S      PN_error_M_function_not_used
+#endif
+ *;EUMACH Axis limits for tool measuring system
+#else                                                                 *;EUMACH
+  L      MG_machine_parameter_are_read
+  AN     ML_axis_limit_init
+  IFT
+    S      ML_axis_limit_init
+    S      PN_M4135_strobe_axes_limit
+
+    LN     MG_axis_limit_1
+    AN     MG_axis_limit_2
+    AN     MG_axis_limit_3
+    S      MG_axis_limit_1
+
+    L      BG_MP1350_reference_mode_X
+    ==     K+2
+    A      MG_alternating_table_on
+    R      MG_axis_limit_1
+    S      MG_axis_limit_2
+    R      MG_axis_limit_3
+
+    L      MG_axis_limit_2
+    =      PN_M4574_axis_limit_Bit_0
+
+    L      MG_axis_limit_3
+    =      PN_M4575_axis_limit_Bit_1
+  ENDI
+
+  L      MG_M71_axis_limit_1
+  S      MG_axis_limit_1
+  R      MG_axis_limit_2
+  R      MG_axis_limit_3
+  S      PN_M4092_quit_M_function
+
+  L      MG_M72_axis_limit_2
+  R      MG_axis_limit_1
+  S      MG_axis_limit_2
+  R      MG_axis_limit_3
+  S      PN_M4092_quit_M_function
+
+  L      MG_M73_axis_limit_3
+  R      MG_axis_limit_1
+  R      MG_axis_limit_2
+  S      MG_axis_limit_3
+  S      PN_M4092_quit_M_function
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+EM

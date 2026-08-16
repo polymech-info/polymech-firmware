@@ -1,0 +1,95 @@
+BEGIN kinelist.tab 
+#STRUCTBEGIN
+   NAME = MP7500
+     TYPE = N
+     WIDTH = 3
+     DEC = 0
+     DIA-ENGLISH = Value of MP7500?
+     DIA-GERMAN = Wert von MP7500?
+     DIA-CZECH = HODNOTA Z MP7500?
+     DIA-FRENCH = Value of MP7500?
+     DIA-ITALIAN = Value of MP7500?
+     DIA-SPANISH = Valor de MP7500?
+     DIA-PORTUGUE = Value of MP7500?
+     DIA-SWEDISH = Value of MP7500?
+     DIA-DANISH = Value of MP7500?
+     DIA-FINNISH = MP7500:n arvo?
+     DIA-DUTCH = Waarde van MP7500?
+     DIA-POLISH = Value of MP7500?
+     DIA-HUNGARIA = Az MP7500 erteke ?
+     DIA-RUSSIAN =
+   NAME = FILE
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = File with kinematic description?
+     DIA-GERMAN = Datei mit Kinematikbeschreibung?
+     DIA-CZECH = SOUBOR S POPISEM KINEMATIKY?
+     DIA-FRENCH = File with kinematic description?
+     DIA-ITALIAN = File with kinematic description?
+     DIA-SPANISH = Fich. con descrip. cinematica?
+     DIA-PORTUGUE = File with kinematic description?
+     DIA-SWEDISH = File with kinematic description?
+     DIA-DANISH = File with kinematic description?
+     DIA-FINNISH = Kinematiikkakuvauksen tiedosto?
+     DIA-DUTCH = Bestand met kinematica beschr.?
+     DIA-POLISH = File with kinematic description?
+     DIA-HUNGARIA = Fajl a kinematikai leirassal ?
+     DIA-RUSSIAN =
+   NAME = MPFILE
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = File with MPs?
+     DIA-GERMAN = Maschinenparameter-Teildatei?
+     DIA-CZECH = File with MPs?
+     DIA-FRENCH = File with MPs?
+     DIA-ITALIAN = File with MPs?
+     DIA-SPANISH = File with MPs?
+     DIA-PORTUGUE = File with MPs?
+     DIA-SWEDISH = File with MPs?
+     DIA-DANISH = File with MPs?
+     DIA-FINNISH = File with MPs?
+     DIA-DUTCH = File with MPs?
+     DIA-POLISH = File with MPs?
+     DIA-HUNGARIA = File with MPs?
+     DIA-RUSSIAN =
+   NAME = DOC
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = Comment?
+     DIA-GERMAN = Kommentar?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = Commentaire?
+     DIA-ITALIAN = Commento?
+     DIA-SPANISH = ¿Comentario?
+     DIA-PORTUGUE = Comentario?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = Commentaar?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzés ?
+     DIA-RUSSIAN =
+#STRUCTEND
+NR      MP7500 FILE                            MPFILE                          DOC
+0       0      PLC:\KINEMAT\KINEMAT0.TAB                                       Head inactive                   
+1       33     PLC:\KINEMAT\KINEMAT1.TAB                                       45 B&C head (axes)              
+2       1      PLC:\KINEMAT\KINEMAT2.TAB       PLC:\MP\KINEMAT2.MP             B head                          
+3       67     PLC:\KINEMAT\KINEMAT3.TAB                                       45 B head+360 C table (spatial) 
+4       35     PLC:\KINEMAT\KINEMAT1.TAB                                       45 B&C head (spatial)           
+5       67     PLC:\KINEMAT\KINEMAT4.TAB                                       Tilting A + C table (spatial)   
+6       33     PLC:\KINEMAT\KINEMAT5.TAB                                       45 B&A head + C table (axes)    
+7       65     PLC:\KINEMAT\KINEMAT3.TAB                                       45 B head+360 C table (axes)    
+8       33     PLC:\KINEMAT\KINEMAT6.TAB                                       45 C&A head (axes)              
+9       1      PLC:\KINEMAT\KINEMAT7.TAB                                       B head + A table (axes)         
+10      3      PLC:\KINEMAT\KINEMAT7.TAB                                       B head + A table (spatial)      
+11      33     PLC:\KINEMAT\KINEMAT8.TAB                                       B table (axes)                  
+12      65     PLC:\KINEMAT\KINEMAT9.TAB                                       B head + C table (axes)         
+13      67     PLC:\KINEMAT\KINEMAT9.TAB                                       B head + C table (spatial)      
+14      65     PLC:\KINEMAT\KINEMAT4.TAB                                       Tilting A + C table (axes)      
+15      65     PLC:\KINEMAT\KINEMAT10.TAB                                      A tilting table (axes)          
+16      67     PLC:\KINEMAT\KINEMAT5.TAB                                       45 B&A head + C table (spatial) 
+17      65     PLC:\KINEMAT\KINEMAT5.TAB                                       45 B&A head + C table (axes)    
+[END]

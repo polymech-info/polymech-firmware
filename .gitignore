@@ -1,0 +1,27 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# Oversized vendor binaries (GitHub 100MB limit)
+vendor/bigtree/BIGTREETECH-OCTOPUS-V1.0/Firmware/DFU Update bootloader/install software/SetupSTM32CubeProgrammer_win32.exe
+vendor/bigtree/BIGTREETECH-OCTOPUS-V1.0/Firmware/DFU Update bootloader/install software/SetupSTM32CubeProgrammer_win64.exe
+vendor/kuga/vika-350-6dof/cad/R-350.IGS
+vendor/bigtree/Octopus-Max-EZ/3D/BIGTREETECH Octopus MAX EZ V1.0.step

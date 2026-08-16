@@ -1,0 +1,317 @@
+*-----------------------------------------------------------------------------
+*  Hirth coupling X,Y,Z,4,5,6,7,8,9
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolute_with_software_limit_switch   K%010
+
+#define /s    ML_PLC_posit_necessery                   M[16]
+#define /c    ML_X_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 0
+#define /c    ML_Y_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 1
+#define /c    ML_Z_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 2
+#define /c    ML_4_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 3
+#define /c    ML_5_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 4
+#define /c    ML_6_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 5
+#define /c    ML_7_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 6
+#define /c    ML_8_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 7
+#define /c    ML_9_PLC_posit_necessery                 M &ML_PLC_posit_necessery + 8
+
+#define /s    ML_plus_active                           M[16]
+#define /c    ML_X_posit_plus_active                   M &ML_plus_active + 0
+#define /c    ML_Y_posit_plus_active                   M &ML_plus_active + 1
+#define /c    ML_Z_posit_plus_active                   M &ML_plus_active + 2
+#define /c    ML_4_posit_plus_active                   M &ML_plus_active + 3
+#define /c    ML_5_posit_plus_active                   M &ML_plus_active + 4
+#define /c    ML_6_posit_plus_active                   M &ML_plus_active + 5
+#define /c    ML_7_posit_plus_active                   M &ML_plus_active + 6
+#define /c    ML_8_posit_plus_active                   M &ML_plus_active + 7
+#define /c    ML_9_posit_plus_active                   M &ML_plus_active + 8
+
+#define /s    ML_minus_active                          M[16]
+#define /c    ML_X_posit_minus_active                  M &ML_minus_active + 0
+#define /c    ML_Y_posit_minus_active                  M &ML_minus_active + 1
+#define /c    ML_Z_posit_minus_active                  M &ML_minus_active + 2
+#define /c    ML_4_posit_minus_active                  M &ML_minus_active + 3
+#define /c    ML_5_posit_minus_active                  M &ML_minus_active + 4
+#define /c    ML_6_posit_minus_active                  M &ML_minus_active + 5
+#define /c    ML_7_posit_minus_active                  M &ML_minus_active + 6
+#define /c    ML_8_posit_minus_active                  M &ML_minus_active + 7
+#define /c    ML_9_posit_minus_active                  M &ML_minus_active + 8
+
+#define /s    BL_error_code                            B
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL Hirth
+
+;----------------------------
+LBL Hirth
+;----------------------------
+
+  L      K+0
+  =X
+
+  L      MG_marker_one
+  R      PN_error_hirth_position
+
+  REPEAT
+    L      WG_hirth_axes
+    AN     NP_W1032_reference_nesessary
+    BTX
+    A      MG_machine_parameter_are_read
+*;EUMACH Error 9221 & 9125
+*;       Without following PLC,
+*;       Case 1: If tool magazine axis MP420.x = 1 and MP4310.0 bit C = 0 -> error 9221
+*;       To solve case 1 problem -> MP420.x = 0, but if so and MP4310.0 bit C = 1 -> error 9125
+*;       To solve case1 & case 2 problem, modify following PLC -> MP420.x = 1, MP4310.0 bit C can be either 0 or 1.
+    CMT    Hirth_axis
+
+    INCX
+
+    LX
+    >=     KG_max_number_axes
+  UNTILT
+
+  LW     ML_X_PLC_posit_necessery
+  =      WG_PLC_posit_hirth_necessary
+
+EM
+
+;----------------------------
+LBL Hirth_axis
+
+  CM     Hirth_position
+
+  L      PN_W1046_manual_motion_plus
+;  A      NP_W1026_axes_in_position                                   *;EUMACH
+  A      NP_W1028_axes_in_motion                                      *;EUMACH
+  BTX
+  S      ML_X_posit_plus_active[X]
+
+  L      PN_W1048_manual_motion_minus
+;  A      NP_W1026_axes_in_position                                   *;EUMACH
+  A      NP_W1028_axes_in_motion                                      *;EUMACH
+  BTX
+  S      ML_X_posit_minus_active[X]
+
+;  LN     NP_W1026_axes_in_position                                   *;EUMACH
+  L      NP_W1028_axes_in_motion                                      *;EUMACH
+  BTX
+  A      MG_manual_mode
+  AN     PN_M4120_strobe_PLC_posit_axis_X[X]
+  AN     NP_M4155_mode_pass_over_reference
+  S      ML_X_PLC_posit_necessery[X]
+
+  L      NP_W1026_axes_in_position
+  BTX
+  A      ML_X_PLC_posit_necessery[X]
+  CMT    Posit_increment
+
+EM
+
+;----------------------------
+LBL Hirth_position
+
+  L      DG_position_axis_X_ref[X]
+  MOD    DG_MP430_hirth_increm_X[X]
+  PSW
+  CM     Absolute
+  PLW
+
+  PSW
+  >[
+    L      DG_MP430_hirth_increm_X[X]
+    /      K+2
+  ]
+  IFT
+    PLW
+    -      DG_MP430_hirth_increm_X[X]
+    X      K-1
+    PSW
+  ENDI
+
+  PLW
+  <      DG_MP1030_pos_window_X[X]
+  A[
+    LN     NP_W1032_reference_nesessary
+    BTX
+  ]
+  =      MG_X_in_hirth_position[X]
+
+#if 3D_head = &inactive                                               *;EUMACH
+  L      NP_W1026_axes_in_position
+  AN     WG_keys_inhibit
+  BTX
+  AN     PN_M4120_strobe_PLC_posit_axis_X[X]
+  AN     ML_X_PLC_posit_necessery[X]
+  AN     MG_X_in_hirth_position[X]
+  AN     MG_3D_head_active
+  AN     MG_3D_head_display
+  AN     MG_3D_head_enter
+  S      MG_win_axis_X[X]
+  S      PN_error_hirth_position
+#else                                                                 *;EUMACH
+*;EUMACH
+  LX
+  ==     KG_3D_head_axis_1
+  IFT
+    L      NP_W1026_axes_in_position
+    AN     WG_keys_inhibit
+    BTX
+    AN     PN_M4120_strobe_PLC_posit_axis_X[X]
+    AN     ML_X_PLC_posit_necessery[X]
+    AN     MG_X_in_hirth_position[X]
+    AN     MG_3D_head_active
+    AN     MG_3D_head_enter
+    A[
+      L      MG_3D_head_axis_1_unclamped
+      ON     MG_3D_head_axis_1_clamped
+      O      MG_3D_head_axis_1_output_unclamping
+      A[
+        LN     NP_W1024_axes_release
+        BT     KG_3D_head_axis_1
+      ]
+      O[
+        L      BG_step_axes[X]
+        ==     K+5
+        A[
+          L      NP_W1024_axes_release
+          BT     KG_3D_head_axis_1
+        ]
+      ]
+    ]
+    S      MG_win_axis_X[X]
+    S      PN_error_hirth_position
+  ELSE
+#if KG_3D_head_axis_2 ! &inactive
+    LX
+    ==     KG_3D_head_axis_2
+    IFT
+      L      NP_W1026_axes_in_position
+      AN     WG_keys_inhibit
+      BTX
+      AN     PN_M4120_strobe_PLC_posit_axis_X[X]
+      AN     ML_X_PLC_posit_necessery[X]
+      AN     MG_X_in_hirth_position[X]
+      AN     MG_3D_head_active
+      AN     MG_3D_head_enter
+      A[
+        L      MG_3D_head_axis_2_unclamped
+        ON     MG_3D_head_axis_2_clamped
+        O      MG_3D_head_axis_2_output_unclamping
+        A[
+          LN     NP_W1024_axes_release
+          BT     KG_3D_head_axis_2
+        ]
+        O[
+          L      BG_step_axes[X]
+          ==     K+5
+          A[
+            L      NP_W1024_axes_release
+            BT     KG_3D_head_axis_2
+          ]
+        ]
+      ]
+      S      MG_win_axis_X[X]
+      S      PN_error_hirth_position
+    ELSE
+#endif
+      L      NP_W1026_axes_in_position
+      AN     WG_keys_inhibit
+      BTX
+      AN     PN_M4120_strobe_PLC_posit_axis_X[X]
+      AN     ML_X_PLC_posit_necessery[X]
+      AN     MG_X_in_hirth_position[X]
+      AN     MG_3D_head_active
+      AN     MG_3D_head_enter
+      S      MG_win_axis_X[X]
+      S      PN_error_hirth_position
+#if KG_3D_head_axis_2 ! &inactive
+    ENDI
+#endif
+  ENDI
+*;EUMACH
+#endif                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL Posit_increment
+
+  PSX
+
+  L      ML_X_posit_minus_active[X]
+  O      ML_X_posit_plus_active[X]
+  A[
+    LN     NP_W1034_limit_switch_plus
+    AN     NP_W1036_limit_switch_minus
+    BTX
+  ]
+  CMT    Same_direction
+  CMF    Shortest_direction
+
+  L      NP_D768_feed_PLC_X[X]
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PL     BL_error_code
+  M_display_module_error(KG_error_module_9221)
+
+  L      MG_marker_one
+  R      ML_X_posit_minus_active[X]
+  R      ML_X_posit_plus_active[X]
+  R      ML_X_PLC_posit_necessery[X]
+
+EM
+
+;----------------------------
+LBL Same_direction
+
+  L      DG_position_axis_X_ref[X]
+  /      DG_MP430_hirth_increm_X[X]
+  X      DG_MP430_hirth_increm_X[X]
+  PSW                                  ;increment left
+
+  L      DG_position_axis_X_ref[X]
+  <      K+0
+  IFT
+    PLW
+    -      DG_MP430_hirth_increm_X[X]
+    PSW                                ;increment left
+  ENDI
+
+  L      ML_X_posit_plus_active[X]
+  IFT
+    PLW
+    +      DG_MP430_hirth_increm_X[X]
+    PSW                                ;increment right
+  ENDI
+
+EM
+
+;----------------------------
+LBL Shortest_direction
+
+  L      DG_MP430_hirth_increm_X[X]
+  /      K+2
+  +      DG_position_axis_X_ref[X]
+  /      DG_MP430_hirth_increm_X[X]
+  X      DG_MP430_hirth_increm_X[X]
+  PSW                                  ;increment left
+
+  L      DG_MP430_hirth_increm_X[X]
+  /      K+2
+  +      DG_position_axis_X_ref[X]
+  <      K+0
+  IFT
+    PLW
+    -      DG_MP430_hirth_increm_X[X]
+    PSW                                ;increment left
+  ENDI
+
+EM

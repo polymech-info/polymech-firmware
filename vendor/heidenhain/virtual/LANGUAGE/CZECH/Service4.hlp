@@ -1,0 +1,23 @@
+﻿************************************
+!!! POZOR !!!
+pouze pro zaškolené pracovníky
+Servis pro výmenu nástroju
+(Pickup)
+! Rucní režim aktivní !
+Aktivace: klávesa "NC start"
+************************************
+#401  S na pozici pro výmenu
+#402  Z na pozici pro výmenu nahoru
+#403  Z na pozici pro výmenu dolu
+#404 Otevrít kryt zásobníku
+#405 Zavrít kryt zásobníku
+#406  Pickup vysunout
+#407  Pickup zasunout
+#408  Uvolnit nástroj
+#409  Upnout nástroj
+#410  X na pozici výmeny predpolohovat
+#411  X na pozici pro výmenu
+#412  Y na pozici Pn
+#413  Y na pozici Pn+1
+#414  Y na pozici Pn-1
+#415  Vymazat registr vretena (T0)

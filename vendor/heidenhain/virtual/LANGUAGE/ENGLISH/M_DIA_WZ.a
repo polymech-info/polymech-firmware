@@ -1,0 +1,41 @@
+/* Diagnosis TC
+   ------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAG TOOL CHANGE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %-28s\n",$SG_WZW_Diagnose_Zeile_1$/c;
+CURSOR=ON;
+"CASE(%2d): %-28s\n",$BG_Schritt_WZW$/c,$SG_WZW_Diagnose_Zeile_2$/c;
+CURSOR=OFF;
+"(+1)    : %-28s\n\n",$SG_WZW_Diagnose_Zeile_3$/c;
+"Standby pocket    : %4D\n",$STG_WZM[0].WG_WZM_Ist_Platz$/c;
+"TOOL pocket       : %4D\n",$NP_W262_Werkzeug_Platz_Nummer$/c;
+"TOOL number  W264 : %4D\n\n",$NP_W264_Werkzeug_Nummer$/c;
+
+"T Strobe     M4073: %d   T2 M4520: %d\n",
+$NP_M4073_Strobe_TOOL_CALL$/c,$NP_M4520_TOOL_CALL_2_Strobe$/c;
+"T0           M4521: %d\n",
+$NP_M4521_TOOL_CALL_T_0_programmiert$/c;
+"T w Pocket   M4522: %d\n",
+$NP_M4522_TOOL_CALL_mit_Platznummer$/c;
+"T w/o Pocket M4523: %d\n\n",
+$NP_M4523_TOOL_CALL_ohne_Platznummer$/c;
+
+CURSOR=ON;
+"                    X Y Z 4 5 6 7 8 9  \n";
+CURSOR=OFF;
+"PLC-Positioning   : %d %d %d %d %d %d %d %d %d\n",
+$MG_PLC_Posit_aktiv[0]$/c,
+$MG_PLC_Posit_aktiv[1]$/c,
+$MG_PLC_Posit_aktiv[2]$/c,
+$MG_PLC_Posit_aktiv[3]$/c,
+$MG_PLC_Posit_aktiv[4]$/c,
+$MG_PLC_Posit_aktiv[5]$/c,
+$MG_PLC_Posit_aktiv[6]$/c,
+$MG_PLC_Posit_aktiv[7]$/c,
+$MG_PLC_Posit_aktiv[8]$/c;

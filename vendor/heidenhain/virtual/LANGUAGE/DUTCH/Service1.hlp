@@ -1,0 +1,21 @@
+﻿************************************
+!!! OPGELET !!!
+alleen voor geoefende machineoperator
+Service Gereedschapswisselaar
+(Enkelarm grijper)
+! Werkstand "Handbedrijf" actief !
+Activering: Toets "NC-Start"
+************************************
+#101  S naar T-wisselpositie
+#102  Z naar T-wisselpositie boven
+#103  Z naar T-wisselpositie onder
+#104  T-deur openen
+#105  T-deur sluiten
+#104  Magazijn naar spindel
+#105  Magazijn naar basispositie
+#106  Gereedschap ontklemmen
+#107  Gereedschap klemmen
+#108  Magazijn rechts draaien
+#109  Magazijn links draaien
+#110  Magazijn nulpunt
+#111  Spindel-register wissen (T0)

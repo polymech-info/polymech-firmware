@@ -1,0 +1,31 @@
+﻿************************************
+!!! ATTENZIONE !!!
+solo per personale esperto
+Disimpegno cambio utensile
+(doppio braccio Hydr.)
+! modo manuale attivo !
+Premere "NC start" per attivare
+************************************
+#201  Mandrino in pos. di CU
+#202  Z in posizione di CU
+#203  Y in posizione di CU
+#204  X in posizione di CU
+#205  Apre Blocco Utensile
+#206  Chiude blocco utensile
+#207  Pinze mandrino aperte
+#208  Pinze mandrino chiuse
+#209  Pinze magazzino aperte
+#210  Pinze magazzino chiuse
+#211  Sgancio Utensile
+#212  Bloccaggio Utensile
+#213  Braccio CU al mandrino
+#214  Braccio CU al magazzino
+#215  Braccio CU in pos. Base
+#216  Braccio CU in pos. fuori ut.
+#217  Braccio CU in pos. dentro ut.
+#218  Rotazione oraria braccio
+#219  Rotazione antioraria braccio
+#220  Rotazione oraria magazzino
+#221  Rotazione antioraria magazzino
+#222  Cercare ref. magazzino
+#223  Reset stato mandrino (T0)

@@ -1,0 +1,856 @@
+*-----------------------------------------------------------------------------
+*  Spindle
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_counter_1                             K+1
+#define /s    KL_1_percent                             K +100         *;EUMACH S% knob -> FMAX% knob
+#define /s    KL_5_percent                             K +500         *;EUMACH S% knob -> FMAX% knob
+#define /s    KL_100_percent                           K +10000       *;EUMACH S% knob -> FMAX% knob
+
+#define /s    ML_S_actual_rpm_0                        M
+#define /s    ML_S_nominal_rpm_reached                 M
+#define /s    ML_S_override_turned                     M
+#define /s    ML_guard_has_been_opened                 M
+#define /s    ML_S_0_volt_status_inverse               M
+#define /s    ML_axes_keys_memory_function             M
+#define /s    ML_spindle_delayed_stop                  M
+#define /s    ML_NC_stop_2_axes_spindle                M
+#define /s    ML_operating_time_on                     M
+#define /s    ML_operating_time_was_on                 M
+
+#define /s    ML_key_pressed                           M              *;EUMACH S% knob -> FMAX% knob
+#define /s    ML_S_override_initialized                M              *;EUMACH S% knob -> FMAX% knob
+
+#define /s    WL_S_override_old                        W
+#define /s    WL_S_override_plc                        W              *;EUMACH S% knob -> FMAX% knob
+#define /s    WL_factor_S_override                     W              *;EUMACH S% knob -> FMAX% knob
+
+#include Mac_Lib.inc
+
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+EXTERN Absolute                                                       *;EUMACH S% knob -> FMAX% knob
+#endif                                                                *;EUMACH S% knob -> FMAX% knob
+
+GLOBAL Spindle
+
+;----------------------------
+LBL Spindle
+;----------------------------
+
+  L      MG_spindle_orientation_active
+  AN     PN_M4011_S_speed_from_MP3520.0
+  O      MG_spindle_reference_active
+  O      NP_M4017_S_controlled_in_motion
+  O      NP_M4031_tapping_cycle_controlled
+;  O      NP_M4060_tool_measurement_active                            *;EUMACH Original PLC
+  O[                                                                  *;EUMACH
+    L      NP_M4060_tool_measurement_active                           *;EUMACH
+    AN     MG_NP_BLUM_CYCLE_ACTIVE                                    *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_spindle_with_ROD
+  A      I_servo_drive_release
+  A      MG_servo_drive_release_spindle
+  AN     MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  =N     PN_M4012_S_open_control_loop
+
+  L      MG_key_spindle_M3
+  AN     MG_control_in_operation_on
+  O      MG_M03_spindle_right_cw_on
+  O      MG_M13_Spindle_right_coolant_on
+#if Head = &S_head_type_05                                            *;EUMACH
+  A[                                                                  *;EUMACH
+    L      MG_soft_key_S_man_head                                     *;EUMACH
+    AN     O_S_head_coupling_unclamping                               *;EUMACH
+    ON     MG_soft_key_S_man_head                                     *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  S      PN_M4005_S_M03_nominal_and_status
+  R      PN_M4006_S_M04_nominal_and_status
+  R      PN_M4007_S_M05_nominal_0_and_status
+  R      ML_S_0_volt_status_inverse
+
+  L      MG_key_spindle_M4
+  AN     MG_control_in_operation_on
+  O      MG_M04_spindle_left_ccw_on
+  O      MG_M14_Spindle_left_coolant_on
+#if Head = &S_head_type_05                                            *;EUMACH
+  A[                                                                  *;EUMACH
+    L      MG_soft_key_S_man_head                                     *;EUMACH
+    AN     O_S_head_coupling_unclamping                               *;EUMACH
+    ON     MG_soft_key_S_man_head                                     *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  R      PN_M4005_S_M03_nominal_and_status
+  S      PN_M4006_S_M04_nominal_and_status
+  R      PN_M4007_S_M05_nominal_0_and_status
+  R      ML_S_0_volt_status_inverse
+
+  L      MG_key_spindle_M5
+  O      MG_TC_spindle_orientation_on
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  O      MG_TC2_spindle_orientation_on                                *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  AN     MG_control_in_operation_on
+  AN     ML_axes_keys_memory_function
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_pulse_internal_stop                                       *;EUMACH BASIC56 SP1
+  O      MG_M05_spindle_off
+  O      MG_M19_spindle_orientation_0_degree
+  O      MG_M20_spindle_orientation_CYCL_13
+;  O      MG_auto_manu_mode_change                                    *;EUMACH Original PLC
+  O[                                                                  *;EUMACH
+    L      MG_auto_manu_mode_change                                   *;EUMACH
+    AN     MG_S_warming_up_proceeding                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  O      NP_M4073_strobe_TOOL_CALL
+  O      MG_TC_help
+  O      MG_touch_probe_active
+;  O      MG_3D_head_active_p_pulse                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    LN     NP_M4157_mode_restore_position                             *;EUMACH
+    A      MG_3D_head_active_p_pulse                                  *;EUMACH
+  ]                                                                   *;EUMACH
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  O[                                                                  *;EUMACH
+    L      MG_M71_axis_limit_1                                        *;EUMACH
+    AN     I_V_H_head_in_vertical_pos                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    L      MG_M72_axis_limit_2                                        *;EUMACH
+    AN     I_V_H_head_in_horizontal_pos                               *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  O      MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  ON     MG_control_operational
+  R      PN_M4005_S_M03_nominal_and_status
+  R      PN_M4006_S_M04_nominal_and_status
+  S      PN_M4007_S_M05_nominal_0_and_status
+
+  L      MG_spindle_off
+  O      NP_M4030_tapping_cycle_active
+  ON     PN_M4012_S_open_control_loop
+  A      MG_M05_spindle_off
+  O[
+    L      MG_M03_spindle_right_cw_on
+    O      MG_M04_spindle_left_ccw_on
+    O      MG_M13_Spindle_right_coolant_on
+    O      MG_M14_Spindle_left_coolant_on
+    AN     MG_touch_probe_active
+  ]
+  S      PN_M4092_quit_M_function
+
+  LN     MG_spindle_active
+  EMT
+
+  L      MG_control_in_operation_on
+  A      MG_automatic_mode
+  AN     MG_NC_stop_active
+  O      MG_key_spindle_M3
+  O      MG_key_spindle_M4                                            *;EUMACH
+  O      PN_M4007_S_M05_nominal_0_and_status
+  O      MG_spindle_on_after_gear_change
+  O      MG_key_spindle_start                                         *;EUMACH
+  R      ML_S_0_volt_status_inverse
+
+  L      MG_spindle_on_axes
+  AN     MG_3D_head_active
+  R      MG_spindle_on_axes
+  R      ML_S_0_volt_status_inverse
+
+  L      I_key_NC_stop_2_axes_spindle
+  S      ML_NC_stop_2_axes_spindle
+
+  L      NP_M4221_PET_table_NC_stop
+  O      NP_M4223_PET_table_NC_cancel                                 *;EUMACH BASIC55
+  O      ML_NC_stop_2_axes_spindle
+  O      PN_error_unit_error_S_oil_air_lube                           *;EUMACH
+  O      PN_error_pressure_S_oil_air_lube                             *;EUMACH
+  O      PN_error_MIXER_pressure_S_oil_air_lube                       *;EUMACH
+  O      PN_error_alarm_level_S_oil_air_lubricant                     *;EUMACH
+  ON     NP_key_NC_stop_without_spindle_stop
+  IFT
+    L      PN_M4562_axes_keys_memory_function
+    S      ML_axes_keys_memory_function
+
+    L      MG_axes_in_position
+    R      ML_axes_keys_memory_function
+
+    L      MG_NC_stop_active
+    O      MG_NC_stop_in_manual_mode
+    O      NP_M4221_PET_table_NC_stop
+    O      NP_M4223_PET_table_NC_cancel                               *;EUMACH BASIC55
+    O      PN_error_unit_error_S_oil_air_lube                         *;EUMACH
+    O      PN_error_pressure_S_oil_air_lube                           *;EUMACH
+    O      PN_error_MIXER_pressure_S_oil_air_lube                     *;EUMACH
+    O      PN_error_alarm_level_S_oil_air_lubricant                   *;EUMACH
+;    A[                                                               *;EUMACH
+;      L      MG_axes_in_position                                     *;EUMACH
+;      O      NP_M4151_mode_electronic_handwheel                      *;EUMACH
+;    ]                                                                *;EUMACH
+    AN     MG_axes_in_motion                                          *;EUMACH
+    AN     ML_axes_keys_memory_function
+    =N     TS_delayed_spindle_stop
+
+    LN     TS_delayed_spindle_stop
+    AN     TR_delayed_spindle_stop
+    S      ML_S_0_volt_status_inverse
+
+    L      MG_spindle_stand_still
+    R      ML_NC_stop_2_axes_spindle
+
+    LN     NP_M4176_control_in_operation_on_or_flashes                *;EUAMCH
+    O      NP_M4175_control_in_operation_flashes                      *;EUMACH
+    AN     MG_axes_in_motion                                          *;EUMACH
+    O      MG_manual_mode                                             *;EUMACH
+    A      MG_key_spindle_stop                                        *;EUMACH
+    S      ML_S_0_volt_status_inverse                                 *;EUMACH
+  ELSE                                                                *;EUMACH
+    LN     NP_M4176_control_in_operation_on_or_flashes                *;EUAMCH
+    O      NP_M4175_control_in_operation_flashes                      *;EUMACH
+    AN     MG_axes_in_motion                                          *;EUMACH
+    O      MG_manual_mode                                             *;EUMACH
+    A      MG_key_spindle_stop                                        *;EUMACH
+    S      ML_S_0_volt_status_inverse                                 *;EUMACH
+  ENDI
+
+  L      MG_programmed_stop_active
+  O      MG_conditional_stop_active
+  O      PN_error_guard_open
+  O      NP_M4070_strobe_G_code
+  O      NP_M4158_mode_block_scan
+  O      MG_TC_manual
+  O      MG_spindle_C_axis_mode_active
+  ON     MG_gear_range_ok
+  O      I_tool_unclamped
+  ON     I_tool_clamped
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  O[                                                                  *;EUMACH CYCON K11
+    L      PN_error_tool_clamping_line_pressure                       *;EUMACH CYCON K11
+    AN     MG_axes_in_motion                                          *;EUMACH CYCON K11
+  ]                                                                   *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  O      O_tool_unclamping                                            *;EUMACH
+  O      O_tool_clamping                                              *;EUMACH
+#endif                                                                *;EUMACH
+  O      PN_error_secondary_guards_open                               *;EUMACH
+  O      MG_3D_head_axis_not_clamped                                  *;EUMACH
+  O[                                                                  *;EUMACH
+    L      NP_M4157_mode_restore_position                             *;EUMACH
+    A      MG_3D_head_active_p_pulse                                  *;EUMACH
+  ]                                                                   *;EUMACH
+#if (HSS = &HS_type_61) or (HSS = &HS_type_62) or (HSS = &HS_type_80) or (HSS = &HS_type_81) *;EUMACH
+  O[                                                                  *;EUMACH CYTEC HSK taper motor spindle uses the same channel for tool change air blow (107.21) & spindle bearing seal air clean (107.23).
+    L      NP_S_and_CTS_blow_clean_valve_separated                    *;EUMACH Without tool change air blow, no air to docking seal channel (107.1) and 0.5 bar air to spindle bearing seal air clean channel (107.21).
+    A      O_spindle_blow_clean                                       *;EUMACH During tool change air blow, 6 bar air to docking seal channel (107.1) and also 6 bar air to spindle bearing seal air clean channel (107.21).
+  ]                                                                   *;EUMACH At this moment, spindle rotation is prohibited.
+#endif                                                                *;EUMACH
+  S      ML_S_0_volt_status_inverse
+
+  L      PN_M4007_S_M05_nominal_0_and_status
+  R      ML_S_0_volt_status_inverse
+
+  CM     override_turned
+  CM     Spindle_lamps
+  CM     Spindle_jogging
+
+;Servo drive release
+
+  LN     PN_M4007_S_M05_nominal_0_and_status
+  AN     ML_S_0_volt_status_inverse
+  O      PN_M4009_S_rotation_left
+  O      PN_M4010_S_rotation_right
+  O      PN_M4011_S_speed_from_MP3520.0
+  ON     PN_M4012_S_open_control_loop
+;  O      MG_3D_head_current_control_S_on
+  S      O_servo_drive_release_S
+
+  L      PN_M4007_S_M05_nominal_0_and_status
+  O      ML_S_0_volt_status_inverse
+  A      PN_M4012_S_open_control_loop
+  A      MG_spindle_stand_still
+*$WS Unterbrechung sollte ausschalten
+  A[
+    LN     NP_M4030_tapping_cycle_active
+    O      MG_NC_stop_active
+  ]
+  AN     PN_M4009_S_rotation_left
+  AN     PN_M4010_S_rotation_right
+;  AN     MG_3D_head_current_control_S_on
+  ON     MG_power_delayed_on
+  ON     I_servo_drive_release
+  ON     MG_servo_drive_release_spindle
+  R      O_servo_drive_release_S
+
+  L      ML_S_0_volt_status_inverse                                   *;EUMACH
+  =      MG_S_0_volt_status_inverse                                   *;EUMACH
+
+  L      MG_spindle_digital
+  IFT
+    LN     PN_M4007_S_M05_nominal_0_and_status
+    AN     MG_servo_drive_ready_S
+    O      ML_S_0_volt_status_inverse
+    =      PN_M4008_S_nominal_off_status_inverse
+  ELSE
+    LN     PN_M4007_S_M05_nominal_0_and_status
+    A      TR_servo_drive_release_S
+    O      ML_S_0_volt_status_inverse
+    =      PN_M4008_S_nominal_off_status_inverse
+  ENDI
+
+  L      PN_M4012_S_open_control_loop
+  O      NP_M4030_tapping_cycle_active                                *;EUMACH BASIC 54
+  O      NP_M4031_tapping_cycle_controlled
+  A      O_servo_drive_release_S
+  =      ML_operating_time_on
+
+  L      ML_operating_time_on
+  AN     ML_operating_time_was_on
+  IFT
+    PS     KL_counter_1
+    CM     9190
+    M_display_module_error(KG_error_module_9190)
+  ENDI
+
+  LN     ML_operating_time_on
+  A      ML_operating_time_was_on
+  IFT
+    PS     KL_counter_1
+    CM     9191
+    M_display_module_error(KG_error_module_9191)
+  ENDI
+
+  L      ML_operating_time_on
+  =      ML_operating_time_was_on
+
+  L      MG_S_actual_equal_nominal_rpm
+;  A      NP_M4001_S_nominal_not_in_ramp                              *;EUMACH BASIC55
+;  O      ML_S_override_turned                                        *;EUMACH BASIC55
+  AN     ML_S_actual_rpm_0
+  AN     NP_M4002_S_nominal_0
+  =      MG_spindle_nominal_rpm_reached
+
+  L      ML_S_actual_rpm_0
+  O      MG_spindle_C_axis_mode_active
+  A      MG_S_actual_equal_nominal_rpm
+  A      NP_M4001_S_nominal_not_in_ramp
+  A      NP_M4002_S_nominal_0
+  =      MG_spindle_stand_still
+
+  L      PN_M4007_S_M05_nominal_0_and_status
+  O      PN_M4008_S_nominal_off_status_inverse
+  A      MG_spindle_stand_still
+  AN     MG_servo_drive_ready_S
+  =      MG_spindle_off
+
+  CM     Spindle_diagnosis
+  CM     Error_messages
+  CM     S_reduction
+  CM     Spindle_override                                             *;EUMACH S% knob -> FMAX% knob
+
+EM
+
+;----------------------------
+LBL S_reduction
+
+  LN     MG_axes_in_motion
+;  AN     MG_NC_stop_active                                           *;EUMACH Original PLC, if not comment out, PGM running->NC STOP->guard open->guard close->NC START->S running with 50 rpm
+  O      MG_safety_mode_4                                             *;EUMACH If this line is missing, PGM running->NC stop->S stop->guard open->safety mode 4->guard close-> S running with 800 rpm
+  R      ML_guard_has_been_opened
+
+  LN     I_guard_1_closed_locked
+  ON     I_guard_2_closed_locked
+  AN     MG_alternating_table_on
+  O[
+    LN     I_guard_1_closed_locked
+    A      MG_axis_limit_1
+    O[
+;      ON     I_guard_2_closed_locked                                 *;EUMACH
+      LN     I_guard_2_closed_locked                                  *;EUMACH
+      A      MG_axis_limit_2
+    ]
+  ]
+  AN     NP_guard_inactive
+  S      ML_guard_has_been_opened
+
+  L      ML_guard_has_been_opened
+  O      MG_TC_help
+  IFT
+    L      O_release_special_mode
+    IFT
+#if SFM = &inactive                                                  *;EUMACH safety mode 4
+      L      NP_D884_special_mode_rpm
+      /      K+10
+      =      PN_D604_max_S_rpm_PLC
+#endif                                                               *;EUMACH safety mode 4
+    ELSE
+#if SFM = &inactive                                                  *;EUMACH safety mode 4
+      L      NP_D876_S_service_rpm
+      /      K+10
+      =      PN_D604_max_S_rpm_PLC
+#else                                                                *;EUMACH safety mode
+      L      MG_safety_mode_4
+      IFT
+        L      NP_D884_special_mode_rpm
+        /      K+10
+        =      PN_D604_max_S_rpm_PLC
+      ENDI
+
+      L      PN_error_safety_mode_2
+      IFT
+        L      NP_D876_S_service_rpm
+        /      K+10
+        =      PN_D604_max_S_rpm_PLC
+      ENDI
+#endif                                                               *;EUMACH safety mode 4
+    ENDI
+  ELSE
+    L      K+99999999
+    =      PN_D604_max_S_rpm_PLC
+  ENDI
+
+EM
+
+;----------------------------
+LBL override_turned
+
+*;EUMACH BASIC51
+;  L      NP_W492_S_override_NC
+;  ==     WL_S_override_old
+;  A      MG_S_actual_equal_nominal_rpm
+;  A      NP_M4001_S_nominal_not_in_ramp
+;  R      ML_S_override_turned
+
+;  L      NP_W492_S_override_NC
+;  <>     WL_S_override_old
+;  A      ML_S_nominal_rpm_reached
+;  S      ML_S_override_turned
+
+;  L      MG_spindle_nominal_rpm_reached
+;  S      ML_S_nominal_rpm_reached
+
+;  L      MG_spindle_stand_still
+;  O      PN_M4007_S_M05_nominal_0_and_status
+;  O      PN_M4008_S_nominal_off_status_inverse
+;  R      ML_S_nominal_rpm_reached
+;  R      ML_S_override_turned
+
+;  L      MG_pulse_1_s
+;  IFT
+;   L      NP_W492_S_override_NC
+;    =      WL_S_override_old
+;  ENDI
+*;EUMACH BASIC51
+
+EM
+
+;----------------------------
+LBL Spindle_diagnosis
+
+  L      MG_spindle_digital
+  IFT
+    L      MG_spindle_in_Uf_control_mode
+    IFT
+      L      DG_actual_drive_rpm_S
+      /      K+1000
+      =      DG_spindle_actual_rpm
+    ELSE
+      L      NP_D368_S_actual_rpm
+      =      DG_spindle_actual_rpm
+    ENDI
+
+;    L      NP_D364_S_nominal_rpm                                     *;EUMACH BASIC51
+    L      NP_D372_S_end_speed                                        *;EUMACH BASIC55
+    <=     K+100
+    IFT
+ ;     L      NP_D364_S_nominal_rpm                                   *;EUMACH BASIC51
+      L      NP_D372_S_end_speed                                      *;EUMACH BASIC55
+      -      DG_spindle_actual_rpm
+      <[
+        L      NP_D856_S_rpm_distance_100
+        /      K+10000
+      ]
+      =      MG_S_actual_equal_nominal_rpm
+    ELSE
+      L      DG_spindle_actual_rpm
+      X      K+100
+;      /      NP_D364_S_nominal_rpm                                   *;EUMACH BASIC51
+      /      NP_D372_S_end_speed                                      *;EUMACH BASIC55
+      >[
+        L      NP_D860_S_rpm_nominal
+        /      K+10000
+      ]
+      =      MG_S_actual_equal_nominal_rpm
+    ENDI
+
+    L      DG_spindle_actual_rpm
+    <[
+      L      NP_D852_S_rpm_min
+      /      K+10000
+    ]
+    A[                                                                *;EUMACH BASIC55
+      L      PN_M4007_S_M05_nominal_0_and_status                      *;EUMACH BASIC55
+      O      ML_S_0_volt_status_inverse                               *;EUMACH BASIC55
+    ]                                                                 *;EUMACH BASIC55
+    =      ML_S_actual_rpm_0
+    S      MG_S_actual_equal_nominal_rpm
+
+  ELSE
+
+    L      I_S_actual_equal_nominal_rpm
+    =      MG_S_actual_equal_nominal_rpm
+
+    L      MG_spindle_with_ROD
+    IFT
+      L      NP_D368_S_actual_rpm
+      =      DG_spindle_actual_rpm
+
+      L      NP_D852_S_rpm_min
+      /      K+10000
+      >=     NP_D368_S_actual_rpm
+      A      I_S_actual_lower_nominal_rpm
+      =      ML_S_actual_rpm_0
+    ELSE
+      L      I_S_actual_lower_nominal_rpm
+      =      ML_S_actual_rpm_0
+    ENDI
+
+    L      NP_W480_voltage_input_0_on_LE
+    X      NP_D892_S_factor_utilization_display
+;    /      K+10000                                                   *;EUMACH
+    /      K+1000000                                                  *;EUMACH
+    =      WG_drive_utilization_S
+
+    LN     I_spindle_temperature_ok
+    S      MG_win_spindle
+    S      PN_error_drive_temp_max
+
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spindle_jogging
+
+  LN     PN_M4007_S_M05_nominal_0_and_status
+  AN     PN_M4008_S_nominal_off_status_inverse
+  ON     MG_manual_mode
+  O[                                                                  *;EUMACH
+    L      MG_spindle_orientation_active                              *;EUMACH
+    A      PN_M4011_S_speed_from_MP3520.0                             *;EUMACH
+  ]                                                                   *;EUMACH
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  O      MG_V_H_head_Help_jog_ccw                                     *;EUMACH
+  O      MG_V_H_head_Help_jog_cw                                      *;EUMACH
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_06                                            *;EUMACH
+#if (MT = &MT_12) or (MT = &MT_13) or (MT = &MT_21) or (MT = &MT_32)  *;EUMACH
+  O      MG_soft_key_S_man_head                                       *;EUMACH
+#else                                                                 *;EUMACH
+  O      MG_manual_V_H_head_installed                                 *;EUMACH
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_09                                            *;EUMACH
+  O      MG_manual_V_H_head_installed                                 *;EUMACH
+#endif                                                                *;EUMACH
+  O      MG_manual_head_on_off_processing                             *;EUMACH
+  O      I_tool_unclamped                                             *;EUMACH
+  ON     I_tool_clamped                                               *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  ON     I_tool_clamp_line_hydraulic_pressure_0                       *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+#if (HSS = &HS_type_61) or (HSS = &HS_type_62) or (HSS = &HS_type_80) or (HSS = &HS_type_81) *;EUMACH
+  O[                                                                  *;EUMACH CYTEC HSK taper motor spindle uses the same channel for tool change air blow (107.21) & spindle bearing seal air clean (107.23).
+    L      NP_S_and_CTS_blow_clean_valve_separated                    *;EUMACH Without tool change air blow, no air to docking seal channel (107.1) and 0.5 bar air to spindle bearing seal air clean channel (107.21).
+    A      O_spindle_blow_clean                                       *;EUMACH During tool change air blow, 6 bar air to docking seal channel (107.1) and also 6 bar air to spindle bearing seal air clean channel (107.21).
+  ]                                                                   *;EUMACH At this moment, spindle rotation is prohibited.
+#endif                                                                *;EUMACH
+  EMT
+
+  L      MG_3D_head_axis_1_service_unclamping
+  O      MG_3D_head_axis_2_service_unclamping
+  IFT
+*;EUMACH
+#if 3D_head = &active
+    L      MG_soft_key_S_jog_right_cw
+    O      MG_soft_key_S_jog_left_ccw
+    A[
+      LN     I_gear_range_1
+      O      I_gear_range_2
+    ]
+    S      PN_error_3D_head_G_range
+#endif
+*;EUMACH
+
+    L      MG_soft_key_S_jog_right_cw
+#if 3D_head = &active                                                 *;EUMACH
+    AN     PN_error_3D_head_G_range                                   *;EUMACH
+#endif                                                                *;EUMACH
+    =      PN_M4010_S_rotation_right                                  *;EUMACH
+
+    L      MG_soft_key_S_jog_left_ccw                                 *;EUMACH
+#if 3D_head = &active                                                 *;EUMACH
+    AN     PN_error_3D_head_G_range                                   *;EUMACH
+#endif                                                                *;EUMACH
+    =      PN_M4009_S_rotation_left
+  ELSE
+    L      MG_soft_key_S_jog_right_cw
+    O      MG_soft_key_S_jog_left_ccw
+#if 3D_head = &active                                                 *;EUMACH
+    AN     MG_3D_head_active                                          *;EUMACH
+    AN     MG_3D_head_axis_not_clamped                                *;EUMACH
+#endif                                                                *;EUMACH
+    =      PN_M4011_S_speed_from_MP3520.0
+
+    L      MG_soft_key_S_jog_left_ccw
+#if 3D_head = &active                                                 *;EUMACH
+    AN     MG_3D_head_active                                          *;EUMACH
+    AN     MG_3D_head_axis_not_clamped                                *;EUMACH
+#endif                                                                *;EUMACH
+    =      PN_M4014_S_reverse_direction_of_rotation
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spindle_lamps
+
+  L      PN_M4005_S_M03_nominal_and_status
+  O      MG_test_lamps
+  =      O_lamp_spindle_M3
+
+  L      PN_M4006_S_M04_nominal_and_status
+  O      MG_test_lamps
+  =      O_lamp_spindle_M4
+
+  L      PN_M4008_S_nominal_off_status_inverse
+  A      MG_clock_1_s
+  R      O_lamp_spindle_M3
+  R      O_lamp_spindle_M4
+
+*;  L      ML_S_actual_rpm_0                                        *EUMACH Original PLC
+  L      DG_spindle_actual_rpm
+  <[
+    L      NP_D852_S_rpm_min
+    /      K+10000
+  ]
+  A      PN_M4007_S_M05_nominal_0_and_status                        *;EUMACH BASIC55
+  O      MG_test_lamps
+  =      O_lamp_spindle_M5
+
+  L      PN_M4005_S_M03_nominal_and_status                            *;EUMACH
+  O      PN_M4006_S_M04_nominal_and_status                            *;EUMACH
+  O      MG_test_lamps                                                *;EUMACH
+  =      O_lamp_spindle_start                                         *;EUMACH
+
+  L      PN_M4008_S_nominal_off_status_inverse                        *;EUMACH
+  A      MG_clock_1_s                                                 *;EUMACH
+  AN     MG_test_lamps                                                *;EUMACH
+  R      O_lamp_spindle_start                                         *;EUMACH
+
+  L      PN_M4008_S_nominal_off_status_inverse                        *;EUMACH
+  O      MG_test_lamps                                                *;EUMACH
+  =      O_lamp_spindle_stop                                          *;EUMACH
+
+EM
+
+;----------------------------
+LBL Error_messages
+
+  LN     MG_power_delayed_on
+  S      TS_spindle_rpm_change
+  EMT
+
+  L      MG_S_actual_equal_nominal_rpm
+;  O      ML_S_override_turned                                        *;EUMACH BASIC55
+  O      MG_spindle_stand_still
+  O      MG_key_NC_start
+  =      TS_spindle_rpm_change
+
+  LN     TR_spindle_rpm_change
+  AN     NP_M4002_S_nominal_0
+  S      PN_error_S_actual_equal_nominal_rpm
+
+  LN     TR_spindle_rpm_change
+  AN     TS_spindle_rpm_change
+  A      NP_M4002_S_nominal_0
+  S      PN_error_S_actual_lower_nominal_rpm
+
+*;EUMACH BASIC51
+;  LN     NP_M4001_S_nominal_not_in_ramp                               *;EUMACH
+;  =      TS_M4001_S_nominal_not_in_ramp                               *;EUMACH
+
+;  L      ML_S_nominal_rpm_reached
+;  AN     ML_S_override_turned
+;  IFT
+;    LN     MG_S_actual_equal_nominal_rpm
+;    A      NP_M4001_S_nominal_not_in_ramp
+;    AN     TS_M4001_S_nominal_not_in_ramp                             *;EUMACH
+;    AN     TR_M4001_S_nominal_not_in_ramp                             *;EUMACH
+;    A      PN_M4012_S_open_control_loop
+;    S      PN_error_S_actual_equal_nominal_rpm
+;  ENDI
+*;EUMACH BASIC51
+
+  L      MG_spindle_digital
+  EMT
+
+  L      I_spindle_I_max
+  =      PN_error_spindle_I_max
+
+  LN     O_servo_drive_release_S
+  =      TS_servo_drive_release_S
+
+  LN     I_spindle_operational
+  AN     TR_servo_drive_release_S
+  AN     TS_servo_drive_release_S
+  S      PN_error_spindle_operational
+
+EM
+
+*;EUMACH S% knob -> FMAX% knob
+;----------------------------
+LBL Spindle_override
+
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &active)
+  L      MG_MP7620_TE_Fmax_instead_S_override
+  IFT
+*;EUMACH Original PLC -> When S% knob is replaced by FMAX% knob, S+%/S100%/S-% key will be used.
+*;       In this case, it will be very strange if I_key_override_S_100 will turn on MG_soft_key_S100_percent
+*;       by one-touch on and one-touch off.
+;    L      I_key_override_S_100
+;    AN     ML_key_pressed
+;    XO     MG_soft_key_S100_percent
+;    =      MG_soft_key_S100_percent
+    L      I_key_override_S_100
+    S      MG_soft_key_S100_percent
+
+    L      MG_soft_key_S100_percent
+    ON     ML_S_override_initialized
+    IFT
+      S      ML_S_override_initialized
+
+      L      KL_100_percent
+      =      WL_S_override_plc
+    ENDI
+
+    L      I_key_override_S_plus
+    IFT
+      R      MG_soft_key_S100_percent
+
+      LN     ML_key_pressed
+      IFT
+        L      WL_S_override_plc
+        +      KL_1_percent
+        =      WL_S_override_plc
+      ENDI
+
+      LN     TR_keys_pulse_identifier
+      A      MG_pulse_250_ms
+      IFT
+        L      WL_S_override_plc
+        +      KL_5_percent
+        /      KL_5_percent
+        X      KL_5_percent
+        =      WL_S_override_plc
+      ENDI
+    ENDI
+
+    L      I_key_override_S_minus
+    IFT
+      R      MG_soft_key_S100_percent
+
+      LN     ML_key_pressed
+      IFT
+        L      WL_S_override_plc
+        -      KL_1_percent
+        =      WL_S_override_plc
+      ENDI
+
+      LN     TR_keys_pulse_identifier
+      A      MG_pulse_250_ms
+      IFT
+        L      WL_S_override_plc
+        -      KL_1_percent
+        /      KL_5_percent
+        X      KL_5_percent
+        =      WL_S_override_plc
+      ENDI
+    ENDI
+
+    L      WL_S_override_plc
+    =      PN_W764_S_override_PLC
+
+    L      I_key_override_S_plus
+    O      I_key_override_S_minus
+    O      I_key_override_S_100
+    =      ML_key_pressed
+    R      TS_keys_pulse_identifier
+  ENDI
+
+  L      I_key_override_S_plus
+  =      O_lamp_override_S_plus
+
+  L      MG_soft_key_S100_percent
+  =      O_lamp_override_S_100
+
+  L      I_key_override_S_minus
+  =      O_lamp_override_S_minus
+#else
+  L      MG_soft_key_S100_percent
+  IFT
+    L      WG_MP7620_F_S_override
+    BT     K+3
+    IFT
+      L      K+10000
+      =      PN_W764_S_override_PLC
+
+      L      NP_W492_S_override_NC
+      -      WL_factor_S_override
+      PSW
+      CM     Absolute
+      PLW
+      >=     K+1000
+      R      MG_soft_key_S100_percent
+    ELSE
+      L      K+100
+      =      PN_W764_S_override_PLC
+
+      L      NP_W492_S_override_NC
+      -      WL_factor_S_override
+      PSW
+      CM     Absolute
+      PLW
+      >=     K+10
+      R      MG_soft_key_S100_percent
+    ENDI
+  ELSE
+    L      NP_W492_S_override_NC
+    =      WL_factor_S_override
+  ENDI
+#endif
+
+  L      PN_W764_S_override_PLC
+  /      K+100
+  >      WG_MP3310_0_S_override_max
+  IFT
+    L      WG_MP3310_0_S_override_max
+    X      K+100
+    =      PN_W764_S_override_PLC
+    =      WL_S_override_plc
+  ENDI
+
+  L      PN_W764_S_override_PLC
+  /      K+100
+  <      WG_MP3310_1_S_override_min
+  IFT
+    L      WG_MP3310_1_S_override_min
+    X      K+100
+    =      PN_W764_S_override_PLC
+    =      WL_S_override_plc
+  ENDI
+EM
+*;EUMACH S% knob -> FMAX% knob

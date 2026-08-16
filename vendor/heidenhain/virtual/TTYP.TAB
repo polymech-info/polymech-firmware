@@ -1,0 +1,77 @@
+BEGIN TTYP   .TAB 
+#STRUCTBEGIN
+   NAME = NAME
+     TYPE = C
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = NAME ?
+     DIA-GERMAN = NAME ?
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿ NOMBRE ?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NAME?
+   NAME = DOC
+     TYPE = C
+     WIDTH = 24
+     DEC = 0
+     DIA-ENGLISH = COMMENT ?
+     DIA-GERMAN = KOMMENTAR ?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = ¿ COMENTARIO ?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = DOC_DE
+     TYPE = C
+     WIDTH = 24
+     DEC = 0
+     DIA-ENGLISH = COMMENT ?
+     DIA-GERMAN = KOMMENTAR ?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = ¿ COMENTARIO ?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = Megjegyzes ?
+#STRUCTEND
+NR      NAME         DOC                      DOC_DE
+0       BOR          Boring tool              Ausdreh-Werkzeug         
+1       BCKBOR       Back borer               Rückwärtssenker          
+2       CENT         NC spot / center drill   NC-Anbohrer/Zentrierer   
+3       CSINK        Countersink              Kegelsenker              
+4       DRILL        Drilling tool            Bohrer                   
+5       MILL         Milling tool             Fräser                   
+6       MILL_R       Roughing cutter          Schruppfräser            
+7       MILL_F       Finishing cutter         Schlichtfräser           
+8       MILL_RF      Roughing/finishing cut   Schrupp-/Schlichtfräs.   
+9       MILL_FD      Floor finishing cutter   Schlichtfräs. Tiefe      
+10      MILL_FS      Side finishing cutter    Schlichtfräs. Seite      
+11      MILL_FACE    Face-milling cutter      Messerkopf               
+12      REAM         Reamer                   Reibahle                 
+13      TAP          Tapping tool             Gewindeschneider         
+14      GF           Thread milling           Gewindefräser            
+15      GSF          Thread mil., chamfer     Gewindef. mit Senkfase   
+16      EP           Thread mil., singl-pt.   Gewindef. mit Einzelsch. 
+17      WSP          Thread mil., indexable   Gewindef. mit Wendeplat. 
+18      BGF          Thriller                 Bohrgewindefräser        
+19      ZBGF         Circular thread miller   Zirkular-Gewindefräser   
+20      TSINK        Piloted counterbore      Zapfensenker             
+[END]

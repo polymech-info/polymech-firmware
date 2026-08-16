@@ -1,0 +1,461 @@
+*-----------------------------------------------------------------------------
+*  Paletten Wechsler 3R
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_Stack_synchronisieren                 M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_PW_fertig                             M
+
+#include Mac_Lib.inc
+
+EXTERN In_Posit
+EXTERN Start_Posit
+
+GLOBAL Pal_Wechsler
+
+;----------------------------
+LBL Pal_Wechsler
+;----------------------------
+
+  L      MG_Arbeitsraum_offen
+  O      O_Werkstueck_entspannen
+  A      MG_Taste_Werkstueck_Spannung_ein_aus
+  AN     ML_Taste_betaetigt
+  XO     O_Werkstueck_entspannen
+  =      O_Werkstueck_entspannen
+
+  L      MG_Taste_Werkstueck_Spannung_ein_aus
+  =      ML_Taste_betaetigt
+
+  L      MG_Taste_Werkstueck_Spannung_ein_aus
+  AN     MG_Stern_ein
+  R      PN_Fehler_Werkstueck_nicht_gespannt
+
+  L      I_Werkstueck_entspannt
+  O      O_Werkstueck_entspannen
+*$WS I_PW_Tischaufnahme_leer (dieses sollte ein Signal von 3R zur
+*                             Verfügung gestellt werden)
+  AN     MG_PW_Tischaufnahme_leer
+  AN     MG_M60_Paletten_Wechsel
+  S      PN_Fehler_Werkstueck_nicht_gespannt
+
+  L      MG_PW_aktiv
+  A      MG_Impuls_Internal_STOP
+  S      MG_PW_pruefen
+
+  LN     I_PW_Kabine_zu
+  R      MG_PW_pruefen
+
+  L      MG_PW_pruefen
+  =      PN_Fehler_PW_Timeout
+  =      MG_Win_PW_Alarm
+
+  L      MG_Taste_PW_Kabine_oeffnen
+  AN     MG_PW_aktiv
+  S      O_PW_Kabine_oeffnen
+
+  L      I_PW_Kabine_auf
+  R      O_PW_Kabine_oeffnen
+
+  LN     I_PW_Kabine_zu_verriegelt
+  A      MG_Steuer_Spannung_verzoegert_ein
+  =      PN_Fehler_PW_Beladetuer_offen
+  EMT
+
+  L      MG_PW_aktiv
+  R      TS_PW_Timeout
+  S      TS_PW_Timer_allgemein
+
+  CASE   BG_Schritt_PW
+    CM     PW_Aktivierung              ;00
+    CM     PW_Automatik                ;01
+    CM     Z_Start                     ;02
+    CM     Z_in_PW_Posit               ;03
+    CM     X_Y_Start                   ;04
+    CM     X_in_PW_Posit               ;05
+    CM     Y_in_PW_Posit               ;06
+    CM     P_Schleuse_auf              ;07
+    CM     P_Schleuse_ist_auf          ;08
+    CM     PW_Zielposition             ;09
+    CM     PW_Time                     ;10
+    CM     PW_Start                    ;11
+    CM     PW_Time                     ;12
+    CM     PW_Time                     ;13
+    CM     PW_Time                     ;14
+    CM     PW_Start_ok                 ;15
+    CM     P_Schleuse_zu               ;16
+    CM     P_Schleuse_ist_zu           ;17
+    CM     PW_Quit                     ;18
+    CM     PW_Ende                     ;19
+  ENDC
+
+  PLL
+  S      TS_PW_Timeout
+  IFT
+    INC    BG_Schritt_PW
+  ENDI
+
+*  L      MG_PW_Diagnose
+*  IFT
+*    L      KL_Offset_PW_3R
+*    +      BG_Schritt_PW
+*    =X
+*
+*    L      S#D0[X]
+*    =      SG_Diagnose_Zeile_1
+*    INCX
+*
+*    L      S#D0[X]
+*    =      SG_Diagnose_Zeile_2
+*    INCX
+*
+*    L      S#D0[X]
+*    =      SG_Diagnose_Zeile_3
+*  ENDI
+
+  LN     MG_PW_aktiv
+  EMT
+
+  L      I_PW_fertig
+  S      ML_PW_fertig
+
+  L      MG_Impuls_NC_Start
+  R      MG_PW_Unterbrechung
+
+  L      MG_Taste_NC_Start
+  O      MG_Impuls_CE_Taste
+  S      TS_PW_Timeout
+
+  LN     TR_PW_Timeout
+  AN     TS_PW_Timeout
+  =      PN_Fehler_PW_Timeout
+  S      MG_PW_Unterbrechung
+
+  L      MG_Taste_NC_Stop
+  O      MG_Impuls_External_STOP
+  O      I_PW_Alarm
+  S      MG_PW_Unterbrechung
+
+  L      I_PW_Alarm
+  S      PN_Fehler_PW_Timeout
+  S      MG_Win_PW_Alarm
+
+  L      MG_Impuls_Internal_STOP
+  O      MG_BA_Wechsel_Auto_Manu
+  ON     MG_Steuerung_betriebsbereit
+  CMT    PW_Reset
+
+EM
+
+;----------------------------
+LBL PW_Aktivierung                     ;00
+
+  L      MG_M60_Paletten_Wechsel
+  O      MG_M59_Palettenaufnahme_leeren
+  A      I_PW_Kabine_zu_verriegelt
+  AN     I_PW_Alarm
+  AN     MG_PW_Unterbrechung
+  S      MG_PW_aktiv
+  PSL
+  EMF
+
+  LN     MG_M60_Paletten_Wechsel
+  EMT
+
+  L      NP_D280_FN19_Zahlenwert_1
+  <      K+0
+  O[
+    L      NP_D280_FN19_Zahlenwert_1
+    >      DG_PW_Anzahl_Plaetze
+  ]
+  IFT
+    S      MG_PW_Unterbrechung
+    S      MG_Win_PW_Pal_Nr_nicht_zulaessig
+
+    PLL
+    A      MG_Null_Merker
+    PSL
+  ENDI
+
+EM
+;----------------------------
+LBL PW_Automatik                       ;01
+
+  LN     I_PW_3R_Wahlschalter_in_Auto_Modus
+  O      MG_PW_Unterbrechung
+  =      MG_Win_PW_Automatik
+
+  L      I_PW_3R_Wahlschalter_in_Auto_Modus
+  AN     MG_PW_Unterbrechung
+  PSL
+  EMF
+
+;----------------------------
+LBL PW_Zielposition                    ;09
+
+  PS     MG_Eins_Merker
+
+  L      NP_D280_FN19_Zahlenwert_1
+  /      K+10000
+  -      K+1
+  =      BG_Paletten_Nr
+
+  L      BG_Paletten_Nr
+  <      K+0
+  O      MG_M59_Palettenaufnahme_leeren
+  IFT
+    LB     O_PW_Bit_0
+    A      K%11000000
+    B=     O_PW_Bit_0
+  ELSE
+    LB     O_PW_Bit_0
+    A      K%11000000
+    O      BG_Paletten_Nr
+    B=     O_PW_Bit_0
+  ENDI
+
+EM
+
+;----------------------------
+LBL PW_Start                           ;11
+
+  L      BG_Paletten_Nr
+  <      K+0
+  O      MG_M59_Palettenaufnahme_leeren
+  IFT
+    LN     MG_PW_Unterbrechung
+    S      O_PW_Tisch_leeren
+    S      MG_PW_Tischaufnahme_leer
+    PSL
+  ELSE
+    LN     MG_PW_Unterbrechung
+    S      O_PW_Start
+    R      MG_PW_Tischaufnahme_leer
+    PSL
+  ENDI
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Start
+
+EM
+
+;----------------------------
+LBL PW_Start_ok                        ;15
+
+  L      MG_Eins_Merker
+  R      O_PW_Tisch_leeren
+  R      O_PW_Start
+
+  LN     MG_PW_Unterbrechung
+  PSL
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Start
+
+EM
+
+;----------------------------
+LBL P_Schleuse_auf                     ;07
+
+  L      MG_Eins_Merker
+  S      O_PW_Schleuse_auf
+  R      O_PW_Schleuse_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL P_Schleuse_ist_auf                 ;08
+
+  L      I_PW_Schleuse_auf
+  AN     I_PW_Schleuse_zu
+  AN     MG_PW_Unterbrechung
+  PSL
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Schleuse_auf
+
+EM
+
+;----------------------------
+LBL P_Schleuse_zu                      ;18
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Schleuse_zu
+
+  L      ML_PW_fertig
+  AN     MG_PW_Unterbrechung
+  R      O_PW_Schleuse_auf
+  S      O_PW_Schleuse_zu
+
+  L      ML_PW_fertig
+  AN     MG_PW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL P_Schleuse_ist_zu                  ;19
+
+  LN     I_PW_Schleuse_auf
+  A      I_PW_Schleuse_zu
+  AN     MG_PW_Unterbrechung
+  PSL
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Schleuse_zu
+
+EM
+
+;----------------------------
+LBL X_Y_Start                          ;04
+
+  CM     PW_X_Start
+  CM     PW_Y_Start
+  PL     ML_Stack_synchronisieren
+
+EM
+
+
+;----------------------------
+LBL Z_Start                            ;02
+
+  L      MG_PW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_PW_Posit_Z
+    CM     Start_Posit
+    PLL
+    SN     MG_PW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_PW_Posit                      ;03
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Posit_Z
+
+  PS     KG_Achse_Z
+  PS     DG_PW_Posit_Z
+  CM     In_Posit
+  PLL
+  AN     MG_PW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL PW_X_Start                         ;02
+
+  L      MG_PW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_PW_Posit_X
+    CM     Start_Posit
+    PLL
+    SN     MG_PW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_PW_Posit                      ;05
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Posit_X
+
+  PS     KG_Achse_X
+  PS     DG_PW_Posit_X
+  CM     In_Posit
+  PLL
+  AN     MG_PW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL PW_Y_Start                         ;12
+
+  L      MG_PW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Y
+    PS     DG_PW_Posit_Y
+    CM     Start_Posit
+    PLL
+    SN     MG_PW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_in_PW_Posit                      ;06
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_Posit_Y
+
+  PS     KG_Achse_Y
+  PS     DG_PW_Posit_Y
+  CM     In_Posit
+  PLL
+  AN     MG_PW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL PW_Quit                            ;17
+
+  L      MG_PW_Unterbrechung
+  =      MG_Win_PW_beenden
+
+  LN     NP_M4072_Strobe_M_Funktion
+  AN     MG_PW_Unterbrechung
+  PSL
+
+  L      ML_PW_fertig
+  AN     MG_PW_Unterbrechung
+  S      PN_M4092_Quit_M_Funktion
+
+EM
+
+;----------------------------
+LBL PW_Ende                            ;20
+
+  PS     MG_Null_Merker
+
+LBL PW_Reset
+
+  L      MG_Eins_Merker
+  R      ML_PW_fertig
+  R      MG_PW_aktiv
+  R      MG_PW_Unterbrechung
+  R      O_PW_Start
+  R      O_PW_Tisch_leeren
+
+  L      K+0
+  =      BG_Schritt_PW
+
+EM
+
+;----------------------------
+LBL PW_Time                            ;10 ;12 ;13 ;14
+
+  LN     TR_PW_Timer_allgemein
+  =      TS_PW_Timer_allgemein
+  PSL
+
+EM

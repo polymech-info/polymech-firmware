@@ -1,0 +1,28 @@
+/* STATUS AXES
+   -----------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS EJES";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"Ejes habilitados  :  %04X\n",D1100/c;
+"en posicion       :  %04X\n",D1104/c;
+"en movimiento     :  %04X\n",D1108/c;
+"sin referenciar   :  %04X\n",D1116/c;
+"En limites +      :  %04X\n",D1120/c;
+"En limites -      :  %04X\n",D1124/c;
+"permiso abrir lazo:  %04X\n",D1128/c;
+"en lazo abierto   :  %04X\n",D1132/c;
+"sin supervision   :  %04X\n",D1136/c;
+"Actl/noml transfer:  %04X\n",D1140/c;
+"Invertir busq.Ref.:  %04X\n",D1160/c;
+"Liberacion avance :  %04X\n",D1172/c;
+"Movim. Manual +   :  %04X\n",D1144/c;
+"Movim. Manual -   :  %04X\n",D1148/c;
+
+

@@ -1,0 +1,57 @@
+NAME = BL_Q350
+CAPTION = Q350 Messen / Prüfen / Kontrolle
+CAPTION-EN = Q350 Measure / Check / Controle
+PARA-NR = 350
+TYPE = NUMBER
+RANGE = 0...2
+DEFAULT = 0
+Q-ALLOWED = YES
+GLOBAL-ALLOWED = NO
+INCH-CONVERT = NO
+FEED-PARA = NO
+
+DIA-ENGLISH = Measure=0/ Check=1/ Controle=2?
+DIA-GERMAN = Messen=0/ Prüfen=1/ Kontrolle=2?
+DIA-CZECH = Merení=0/ Test.=1/ Kontrol=2?
+DIA-FRENCH = Mesure=0/ Verifier=1/ Contrôle=2?
+DIA-ITALIAN = Misura=0/ Verifica=1/ Controlla=2?
+DIA-SPANISH = Medir=0/ Revisar=1/ Control=2?
+DIA-PORTUGUE = Medição=0/ Verifique=1/ Control=2?
+DIA-SWEDISH = Mätning=0/ Test=1/ Kontroll=2?
+DIA-DANISH = Måle=0/ Test=1/ Kontrol=2?
+DIA-FINNISH = Measure=0/ Check=1/ Controle=2?
+DIA-DUTCH = Meten=0/ Test=1/ Controle=2?
+DIA-POLISH = Pomiar=0/ Sprawdz.=1/Kontrol=2?
+DIA-HUNGARIA = Measure=0/ Check=1/Controle=2?
+DIA-RUSSIAN = Measure=0/ Check=1/Controle=2?
+DIA-SLOVENIAN = Measure=0/ Check=1/Controle=2?
+DIA-CHINESE = Measure=0/ Check=1/Controle=2?
+DIA-ZH_TW = Measure=0/ Check=1/Controle=2?
+DIA-NORWEGIAN = Measure=0/ Check=1/Controle=2?
+DIA-SLOVAK = Measure=0/ Check=1/Controle=2?
+DIA-LATVIAN = Measure=0/ Check=1/ Controle=2?
+DIA-ESTONIA = Measure=0/ Check=1/Controle=2?
+DIA-ID = OEMCY3:Measure=0/ Check=1/ Controle=2?
+
+COM-ENGLISH = MEASURING TYPE
+COM-GERMAN = MESSART
+COM-CZECH = TYP MERENI
+COM-FRENCH = TYPE DE MESURE
+COM-ITALIAN = TIPO MISURAZIONE
+COM-SPANISH = TIPO DE MEDICION
+COM-PORTUGUE = TIPO DE MEDICAO
+COM-SWEDISH = MAETFORM
+COM-DANISH = MALETYPE
+COM-FINNISH = MEASURING TYPE
+COM-DUTCH = MEETTYPE
+COM-POLISH = Rodzaj pomiaru
+COM-HUNGARIA = MEASURING TYPE
+COM-RUSSIAN = MEASURING TYPE
+COM-SLOVENIAN = MEASURING TYPE
+COM-CHINESE = MEASURING TYPE
+COM-ZH_TW = MEASURING TYPE
+COM-NORWEGIAN = MEASURING TYPE
+COM-SLOVAK = MEASURING TYPE
+COM-LATVIAN = MEASURING TYPE
+COM-ESTONIA = MEASURING TYPE
+COM-ID = OEMCY3:MEASURING TYPE

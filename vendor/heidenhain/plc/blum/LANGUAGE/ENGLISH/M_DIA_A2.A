@@ -1,0 +1,73 @@
+/* Diagnosis axes/spindle
+   ----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"DIAG AXES/SPINDLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"    7    8    9   10   11   12      S \n";
+CURSOR=OFF;
+"Motor Temperature [Degree] \n";
+" %4D %4D %4D %4D %4D %4D   %4D\n",
+$WG_drive_temperature_7$/c,$WG_drive_temperature_8$/c,
+$WG_drive_temperature_9$/c,$WG_drive_temperature_10$/c,
+$WG_drive_temperature_11$/c,$WG_drive_temperature_12$/c,
+$WG_drive_temperature_S$/c;
+"Motor Utilization [%%] \n";
+" %4D %4D %4D %4D %4D %4D   %4D\n",
+$WG_drive_utilization_7$/c,$WG_drive_utilization_8$/c,
+$WG_drive_utilization_9$/c,$WG_drive_utilization_10$/c,
+$WG_drive_utilization_11$/c,$WG_drive_utilization_12$/c,
+$WG_drive_utilization_S$/c;
+"Motor rpm [1/min] \n";
+"%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F %+6.0F\n",
+$DG_actual_drive_rpm_7$/n=3/c,$DG_actual_drive_rpm_8$/n=3/c,
+$DG_actual_drive_rpm_9$/n=3/c,$DG_actual_drive_rpm_10$/n=3/c,
+$DG_actual_drive_rpm_11$/n=3/c,$DG_actual_drive_rpm_12$/n=3/c,
+$DG_actual_drive_rpm_S$/n=3/c;
+"S Front Bearing Temp [Degree]  %+6.1F\n",
+$WG_S_front_bearing_temperature$/n=1/c;
+"S Rear Bearing Temp  [Degree]  %+6.1F\n",
+$WG_S_rear_bearing_temperature$/n=1/c;
+"Machine Base Temp    [Degree]  %+6.1F\n",
+$WG_machine_base_temperature$/n=1/c;
+CURSOR=ON;
+"                 S  7  8  9 10 11 12  \n";
+CURSOR=OFF;
+"I2T Warning   :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_I2t_S_pre_warning$/c,$MG_I2t_7_pre_warning$/c,
+$MG_I2t_8_pre_warning$/c,$MG_I2t_9_pre_warning$/c,
+$MG_I2t_10_pre_warning$/c,$MG_I2t_11_pre_warning$/c,
+$MG_I2t_12_pre_warning$/c;
+"I2T Limitation:  -  %D  %D  %D  %D  %D  %D\n",
+$MG_I2t_7_limitation$/c,$MG_I2t_8_limitation$/c,
+$MG_I2t_9_limitation$/c,$MG_I2t_10_limitation$/c,
+$MG_I2t_11_limitation$/c,$MG_I2t_12_limitation$/c;
+"Inverter Tmax :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_inverter_S_Tmax$/c,$MG_inverter_12_Tmax$/c,
+$MG_inverter_11_Tmax$/c,$MG_inverter_10_Tmax$/c,
+$MG_inverter_9_Tmax$/c,$MG_inverter_8_Tmax$/c,
+$MG_inverter_7_Tmax$/c;
+"Drives ready  :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_servo_drive_ready_S$/c,$MG_servo_drive_ready_7$/c,
+$MG_servo_drive_ready_8$/c,$MG_servo_drive_ready_9$/c,
+$MG_servo_drive_ready_10$/c,$MG_servo_drive_ready_11$/c,
+$MG_servo_drive_ready_12$/c;
+"no Reference  :  %D  %D  %D  %D  %D  %D  %D\n",
+$NP_M4018_S_no_reference$/c,$MG_reference_7_necessary_bit$/c,
+$MG_reference_8_necessary_bit$/c,$MG_reference_9_necessary_bit$/c,
+$MG_reference_10_necessary_bit$/c,$MG_reference_11_necessary_bit$/c,
+$MG_reference_12_necessary_bit$/c;
+"Axes Release  :  -  %D  %D  %D  %D  %D  %D\n",
+$MG_axis_release_7_bit$/c,$MG_axis_release_8_bit$/c,
+$MG_axis_release_9_bit$/c,$MG_axis_release_10_bit$/c,
+$MG_axis_release_11_bit$/c,$MG_axis_release_12_bit$/c;
+"in Motion     :  %D  %D  %D  %D  %D  %D  %D\n",
+$NP_M4017_S_controlled_in_motion$/c,$MG_axis_7_in_motion_bit$/c,
+$MG_axis_8_in_motion_bit$/c,$MG_axis_9_in_motion_bit$/c,
+$MG_axis_10_in_motion_bit$/c,$MG_axis_11_in_motion_bit$/c,
+$MG_axis_12_in_motion_bit$/c;

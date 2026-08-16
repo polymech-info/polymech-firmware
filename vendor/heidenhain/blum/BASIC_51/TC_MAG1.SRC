@@ -1,0 +1,1094 @@
+*-----------------------------------------------------------------------------
+*  TC Magazine controlled by PLC axis
+*-----------------------------------------------------------------------------
+*  Module Description
+*    PLC status (tool table):
+*    #Bit 1 (%00000010) - pocket in/out control after TOOL DEF
+*                       - (defining in Mag_pocket_out of CONFIG_xx.DEF)
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolute                              K+0
+#define /s    KL_offset_toolmag_1                      K+50
+
+#define /s    ML_posit_0_degree                        M
+#define /s    ML_TC_magazine_start_manual              M
+#define /s    ML_posit_has_been_active_Tmag            M			  *;EUMACH
+#define /s    ML_TC_magazine_cw                        M              *;EUMACH
+#define /s    ML_TC_magazine_ccw                       M              *;EUMACH
+#define /s    ML_TC_mag_start_manual_temp              M              *;EUMACH
+#define /s    ML_TC_mag_start_manual_p_pulse           M              *;EUMACH
+
+#define /s    WL_Tool_Def_pocket_number                W
+#define /s    WL_Tool_Def_tool_number                  W
+
+EXTERN Absolute
+
+GLOBAL TC_mag_cw_turn
+GLOBAL TC_mag_ccw_turn
+GLOBAL TC_mag_stop
+GLOBAL Tool_magazine
+GLOBAL Status_axis
+GLOBAL Decode_P_number                                                *;EUMACH
+GLOBAL Mag_axis_in_pos
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL Tool_magazine
+;----------------------------
+
+  LN     MG_TC_auto_active
+  ON     MG_TC_magazine_1_active                                      *;EUMACH Dual TC
+  EMT
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;  LN     NP_M4074_strobe_TOOL_DEF
+;  R      PN_M4094_quit_TOOL_DEF
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+  L      MG_mag_axis_encoder_incremental                              *;EUMACH
+  IFT                                                                 *;EUMACH After magazine referenced, go to pocket number 1 position.
+    LN     MG_reference_OK_TC_magazine
+    S      ML_posit_0_degree
+
+    L      MG_reference_OK_TC_magazine
+    AN     MG_posit_active_TC_magazine
+    A      ML_posit_0_degree
+    R      ML_posit_0_degree
+    IFT
+      L      DG_TC_magazine_pocket_distance
+      =      DG_TC_magazine_nominal_posit
+
+      CM     TC_mag_start
+    ENDI
+  ENDI                                                                *;EUMACH
+
+  LN     MG_posit_active_TC_magazine                                  *;EUMACH
+  A      ML_posit_has_been_active_Tmag                                *;EUMACH
+  CMT    Decode_P_number                                              *;EUMACH
+
+  L      MG_posit_active_TC_magazine                                  *;EUMACH
+  =      ML_posit_has_been_active_Tmag                                *;EUMACH
+
+  L      MG_PLC_axis_TC_magazine
+  A      NP_commissioning
+  CMT    Override
+
+  LN     MG_control_operational
+  CMT    TC_mag_stop
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;#if TC_quit_while_tool_returning = &active                            *;EUMACH
+;*;Without the following PLC, the following situation will occur.
+;*;1. TOOL CALL XX
+;*;2. TOOL DEF YY  <- Wait until tool on arm unit returing back to magazine pocket.
+;*;3. L Xxxx Yxxx Fxxx .....
+;  L      NP_M4074_strobe_TOOL_DEF                                     *;EUMACH
+;  A      MG_TC_automatic                                              *;EUMACH
+;  S      PN_M4094_quit_TOOL_DEF                                       *;EUMACH
+;#endif                                                                *;EUMACH
+
+;  L      NP_W268_tool_magazine_number                                 *;EUMACH Dual TC
+;  DECW                                                                *;EUMACH Dual TC
+;  <=     KL_magazine_1                                                *;EUMACH Dual TC
+;  A      NP_M4074_strobe_TOOL_DEF
+;  AN     MG_T_mag_interruption
+;;  AN     MG_soft_key_TC_mag_load_active                              *;EUMACH
+;  AN     MG_TM_started_by_Tool_Def
+;  AN     MG_TM_loading_active                                         *;EUMACH
+;  A      I_TC_magazine_guard_locked_closed                            *;EUMACH
+;  S      MG_TM_started_by_Tool_Def
+;  IFT
+;    L      NP_W262_tool_pocket_number
+;    =      WL_Tool_Def_pocket_number
+;    L      NP_W264_tool_number
+;    =      WL_Tool_Def_tool_number
+;  ENDI
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+  LN     MG_TC_magazine_start
+  =      TS_TC_magazine_timeout
+
+  CASE   BG_step_magazine
+    CM     Magazine_start              ;00
+;    CM     Tool_def_quit               ;01
+    CM     Pocket_put_in               ;01
+    CM     Pocket_pos_in               ;02
+    CM     T_chain_pin_out             ;03                            *;EUMACH
+    CM     T_chain_pin_out_pos         ;04                            *;EUMACH
+    CM     T_magazine_start            ;05                            *;EUMACH BG_step_magazine assignment
+    CM     T_mag_in_position           ;06
+    CM     Decode_P_no                 ;07
+    CM     T_chain_pin_in              ;08                            *;EUMACH
+    CM     T_chain_pin_in_pos          ;09                            *;EUMACH
+    CM     Standby_T_read              ;10
+    CM     Pocket_in_out               ;11
+    CM     Pocket_posit                ;12
+    CM     TC_magazine_end             ;13
+  ENDC
+
+  PLL
+  AN     MG_T_mag_interruption
+  S      TS_TC_magazine_timeout
+  IFT
+    INC    BG_step_magazine
+  ENDI
+
+  L      MG_TC_magazine_diagnosis
+  IFT
+    L      KL_offset_toolmag_1
+    +      BG_step_magazine
+    =X
+
+    L      S#D0[X]
+    =      S1
+    INCX
+
+    L      S#D0[X]
+    =      S2
+    INCX
+
+    L      S#D0[X]
+    =      S3
+
+;    CM     Decode_P_number											  *;EUMACH Original PLC
+
+  ENDI
+
+*;EUMACH
+#if Tool_chain_pin = &active
+  LN     I_TC_mag_toolchain_pin_in
+  O      I_TC_mag_toolchain_pin_out
+  AN     O_TC_mag_tool_chain_pin_out
+  AN     MG_TC_magazine_start
+  AN     PN_error_positioning_TC_magacine
+  =      PN_error_T_chain_pin_in
+#endif
+*;EUMACH
+
+  LN     MG_TC_magazine_start
+  EMT
+
+  L      MG_posit_error_TC_magazine
+  =      PN_error_positioning_TC_magacine
+
+  L      MG_key_NC_start_p_pulse
+  R      MG_T_mag_interruption
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_TC_magazine_timeout
+
+  LN     TS_TC_magazine_timeout
+  AN     TR_TC_magazine_timeout
+  =      PN_error_TC_magazine_timeout
+  R      MG_T_back_to_mag_by_Tool_Call                                *;EUMACH TC AUTO replaced tool returning to magazine pocket
+  S      MG_T_mag_interruption
+
+*;EUMACH Original PLC --- When the following PLC is deleted, no magazine stop while NC stop
+;  L      MG_pulse_external_stop
+;  AN     NP_M4157_mode_restore_position
+;  O      MG_key_NC_stop
+;  S      MG_T_mag_interruption
+*;EUMACH Original PLC
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;  L      MG_T_mag_interruption
+;  O      MG_pulse_END_PGM_M02_M30
+;  O      MG_guard_open
+;  R      MG_TM_started_by_Tool_Def
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+*;Without modifying the following PLC, the following problem will occur.
+*;1. TOOL DEF in MDI/SBK mode, switch from automatic mode to manual mode
+*;   -> magazine stops.
+*;2. TOOL CALL with magazine rotating in SBK mode, switch from automatic mode
+*;   to manual mode -> magazine stops.
+*;3. Magazine rotating and internal stop
+  L      MG_auto_manu_mode_change
+  AN     MG_TC_magazine_start                                         *;EUMACH
+;  O      MG_pulse_internal_stop                                      *;EUMACH Original PLC
+  O      MG_error_magazine_pocket_pos                                 *;EUMACH Condition from SHFT_P_TO_MAG.SRC/SHFT_P_TO_TC.SRC
+  O      MG_error_TC_pocket_on_mag_standby_pos                        *;EUMACH Condition from SHFT_P_TO_MAG.SRC
+  ON     MG_control_operational
+  CMT    TC_magazine_reset
+
+EM
+
+;----------------------------
+LBL Magazine_start                     ;00
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;  L      MG_TM_started_by_Tool_Def
+;  A      MG_TC_standby_position
+;  AN     MG_TC_automatic
+;  O      MG_TM_started_by_Tool_Call
+;  O      ML_TC_magazine_start_manual
+;  S      MG_TC_magazine_start
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+  L      MG_TC_STDT_pocket_by_T_select                                *;EUMACH standby tool loading/unloading
+  O      MG_TC_nom_pocket_by_T_select                                 *;EUMACH standby tool loading/unloading
+  O      ML_TC_magazine_start_manual
+  S      MG_TC_magazine_start
+
+#if TC_magazine_load_position_sensor = &active                        *;EUMACH
+  L      MG_TC_magazine_start                                         *;EUMACH
+  A      I_TC_magazine_guard_locked_closed                            *;EUMACH
+  AN     MG_TM_loading_active                                         *;EUMACH
+  AN     I_TC_mag_load_position_locked                                *;EUMACH
+  S      PN_error_TC_mag_load_pos_lock_necessary                      *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_TC_magazine_start
+#if TC_magazine_load_position_sensor = &active                        *;EUMACH
+  A      I_TC_mag_load_position_locked                                *;EUMACH
+#endif                                                                *;EUMACH
+  AN     MG_error_mag_grp_to_standby_pos                              *;EUMACH
+  AN     MG_error_mag_grp_to_in_pos                                   *;EUMACH
+  PSL
+  EMF
+
+  L      ML_TC_magazine_start_manual
+  EMT
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;  L      MG_TM_started_by_Tool_Def
+;  AN     MG_TM_started_by_Tool_Call
+;  R      MG_TM_started_by_Tool_Def									  *;EUMACH
+;  IFT
+;    L      WL_Tool_Def_pocket_number
+;    =      WG_TC_magazine_nominal_pocket
+
+;    CM     Decode_P_number                                            *;EUMACH
+;  ENDI
+
+;  L      MG_TM_started_by_Tool_Call
+;  R      MG_TM_started_by_Tool_Call
+;  IFT
+;    L      WG_TC_pocket_number
+;    =      WG_TC_magazine_nominal_pocket
+
+;    CM     Decode_P_number                                            *;EUMACH
+;  ENDI
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+  L      WG_TC_magazine_actual_pocket								  *;EUMACH
+  ==     WG_TC_magazine_nominal_pocket								  *;EUMACH
+  IFT																  *;EUMACH
+;    L      NP_M4074_strobe_TOOL_DEF                                  *;EUMACH Original PLC --- standby tool loading/unloading
+;    S      PN_M4094_quit_TOOL_DEF                                    *;EUMACH Original PLC --- standby tool loading/unloading
+
+    PLL																  *;EUMACH
+    A      MG_marker_zero											  *;EUMACH
+    PSL																  *;EUMACH
+
+;    LN     NP_M4074_strobe_TOOL_DEF                                  *;EUMACH Original PLC --- standby tool loading/unloading
+    L      MG_marker_one                                              *;EUMACH standby tool loading/unloading
+    JPT    TC_magazine_reset										  *;EUMACH
+  ENDI																  *;EUMACH
+
+  L      WG_TC_magazine_nominal_pocket
+  X      DG_TC_magazine_pocket_distance
+  =      DG_TC_magazine_nominal_posit
+
+EM
+
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+;----------------------------
+;LBL Tool_def_quit                      ;01
+
+;  L      NP_TC_mag_guard_and_panel                                    *;EUMACH
+;  A      MG_TM_loading_active                                         *;EUMACH
+;  IFT                                                                 *;EUMACH
+;    PS     MG_marker_one                                              *;EUMACH
+;  ELSE                                                                *;EUMACH
+;    L      NP_M4074_strobe_TOOL_DEF
+;    S      PN_M4094_quit_TOOL_DEF
+
+;    LN     NP_M4074_strobe_TOOL_DEF
+;    AN     MG_T_mag_interruption
+;    R      MG_TM_started_by_Tool_Def
+;    PSL
+;  ENDI                                                                *;EUMACH
+
+;EM
+*;EUMACH standby tool loading/unloading
+*;Original PLC -> moving to T_SELECT.SRC
+
+;----------------------------
+LBL Pocket_put_in                      ;01
+
+#if TC_pocket_90_degree_shift = &active
+  L      MG_marker_one
+  S      O_TC_pocket_put_in
+  R      O_TC_pocket_put_out
+  PSL
+#else
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH shifting pocket
+  LN     I_TC_pocket_clamped                                          *;EUMACH shifting pocket
+  A      I_TC_pocket_unclamped                                        *;EUMACH shifting pocket
+  A      I_TC_pocket_in_magazine_position                             *;EUMACH shifting pocket
+  AN     I_TC_pocket_in_TC_position                                   *;EUMACH shifting pocket
+  A[                                                                  *;EUMACH shifting pocket
+    LN     O_TC_pocket_clamp                                          *;EUMACH shifting pocket
+    A      O_TC_pocket_unclamp                                        *;EUMACH shifting pocket
+    A      O_TC_pocket_to_magazine_position                           *;EUMACH shifting pocket
+    AN     O_TC_pocket_to_TC_position                                 *;EUMACH shifting pocket
+    ON     I_TC_magazine_counter                                      *;EUMACH shifting pocket
+    ON     I_TC_magazine_exact_position                               *;EUMACH shifting pocket
+  ]                                                                   *;EUMACH shifting pocket
+  SN     MG_SFT_P_to_mag_by_TC_MAG1                                   *;EUMACH shifting pocket
+
+  PS     MG_marker_one                                                *;EUMACH shifting pocket
+#else                                                                 *;EUMACH shifting pocket
+  PS     MG_marker_one
+#endif                                                                *;EUMACH shifting pocket
+#endif
+
+EM
+
+;----------------------------
+LBL Pocket_pos_in                      ;02
+
+#if TC_pocket_90_degree_shift = &active
+  LN     I_TC_pocket_out
+  A      I_TC_pocket_in
+  AN     MG_T_mag_interruption
+  PSL
+
+  L      MG_T_mag_interruption
+  =      MG_win_TC_pocket_put_in
+#else
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH shifting pocket
+  LN     MG_SFT_P_to_mag_by_TC_MAG1                                   *;EUMACH shifting pocket
+  AN     MG_SFT_P_to_mag_start                                        *;EUMACH shifting pocket
+  AN     I_TC_pocket_clamped                                          *;EUMACH shifting pocket
+  A      I_TC_pocket_unclamped                                        *;EUMACH shifting pocket
+  A      I_TC_pocket_in_magazine_position                             *;EUMACH shifting pocket
+  AN     I_TC_pocket_in_TC_position                                   *;EUMACH shifting pocket
+  AN     MG_T_mag_interruption                                        *;EUMACH shifting pocket
+  PSL                                                                 *;EUMACH shifting pocket
+
+  L      MG_T_mag_interruption                                        *;EUMACH shifting pocket
+  =      MG_win_TC_pocket_to_magazine_pos                             *;EUMACH shifting pocket
+#else                                                                 *;EUMACH shifting pocket
+  PS     MG_marker_one
+#endif                                                                *;EUMACH shifting pocket
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL T_chain_pin_out                    ;03
+
+#if Tool_chain_pin = &active
+  L      MG_marker_one
+  S      O_TC_mag_tool_chain_pin_out
+  PSL
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL T_chain_pin_out_pos                ;04
+
+#if Tool_chain_pin = &active
+  LN     I_TC_mag_toolchain_pin_in
+  A      I_TC_mag_toolchain_pin_out
+  AN     MG_T_mag_interruption
+  PSL
+
+  L      MG_T_mag_interruption
+  =      MG_win_toolchain_pin_out
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL T_magazine_start                   ;05
+
+*;EUMACH Original PLC
+;  PS     MG_marker_one
+;  CM     TC_mag_start
+*;EUMACH Original PLC
+
+*;EUMACH
+  LN     ML_TC_magazine_cw
+  AN     ML_TC_magazine_ccw
+  IFT
+    PS     MG_marker_one
+    CM     TC_mag_start
+  ELSE
+    LN     MG_posit_active_TC_magazine
+    CMT    TC_mag_start
+
+    LN     ML_TC_magazine_start_manual
+    O      MG_T_mag_interruption                                      *;Mag cw/ccw -> AL55
+    IFT
+      L      NP_TC_mag_loading_continuous__motion
+      IFT
+        PS     KG_Tool_magazine_axis
+        CM     9125
+        PLW
+        <>     K+0
+        M_error_display(KG_error_module_9125)
+      ENDI
+
+      L      MG_T_mag_interruption                                    *;Mag cw/ccw -> AL55
+      R      ML_TC_magazine_start_manual                              *;Mag cw/ccw -> AL55
+      IFT                                                             *;Mag cw/ccw -> AL55
+        INC    BG_step_magazine                                       *;Mag cw/ccw -> AL55
+      ENDI                                                            *;Mag cw/ccw -> AL55
+
+      L      MG_marker_one
+      PSL
+      EMT
+    ENDI
+
+    PS     MG_marker_zero
+
+    L      ML_TC_magazine_start_manual
+    R      ML_TC_magazine_start_manual
+  ENDI
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL T_mag_in_position                  ;06
+
+  L      KG_Tool_magazine_axis
+  =X
+
+  L      MG_T_mag_interruption
+  IFT
+    L      WG_feed_stop_PLC_axes
+    BSX
+    =      WG_feed_stop_PLC_axes
+  ELSE
+    L      WG_feed_stop_PLC_axes
+    BCX
+    =      WG_feed_stop_PLC_axes
+  ENDI
+
+  LN     ML_TC_magazine_cw                                            *;EUMACH
+  AN     ML_TC_magazine_ccw                                           *;EUMACH
+  IFT                                                                 *;EUMACH
+*;EUMACH Original PLC
+;    L      ML_TC_magazine_start_manual
+;    AN     MG_posit_active_TC_magazine
+;    CMT    TC_mag_start
+;    S      TS_TC_magazine_timeout
+;    R      MG_T_mag_interruption
+
+;    L      ML_TC_magazine_start_manual
+;    R      ML_TC_magazine_start_manual
+*;EUMACH Original PLC
+
+    L      DG_TC_magazine_nominal_posit
+    -      DG_position_axis_X_ref[X]
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_X[X]
+    O[
+      L      DG_TC_magazine_nominal_posit
+      ==     K+0
+      A[
+        L      DG_MP810_modulo_value_X[X]
+        -      DG_position_axis_X_ref[X]
+        <      DG_MP1030_pos_window_X[X]
+      ]
+    ]
+    AN     MG_posit_active_TC_magazine
+    AN     PN_error_TC_magazine_timeout
+    PSL
+
+    L      KG_clamping_mode_active
+    AN     KG_power_on_clamping_mode_off
+    A      NP_W1024_axes_release
+    BTX
+    IFT
+      PLL
+      A      MG_marker_zero
+      PSL
+    ENDI
+*;EUMACH
+  ELSE
+    L      ML_TC_magazine_start_manual                                *;Mag cw/ccw -> AL55
+    AN     ML_TC_mag_start_manual_temp                                *;Mag cw/ccw -> AL55
+    =      ML_TC_mag_start_manual_p_pulse                             *;Mag cw/ccw -> AL55
+
+    L      ML_TC_magazine_start_manual                                *;Mag cw/ccw -> AL55
+    =      ML_TC_mag_start_manual_temp                                *;Mag cw/ccw -> AL55
+
+    LN     PN_error_TC_magazine_timeout                               *;Mag cw/ccw -> AL55
+    A      ML_TC_mag_start_manual_p_pulse                             *;Mag cw/ccw -> AL55
+    A      MG_T_mag_interruption                                      *;Mag cw/ccw -> AL55
+    S      TS_TC_magazine_timeout                                     *;Mag cw/ccw -> AL55
+    R      MG_T_mag_interruption                                      *;Mag cw/ccw -> AL55
+
+    L      ML_TC_magazine_start_manual                                *;Mag cw/ccw -> AL55
+    R      ML_TC_magazine_start_manual                                *;Mag cw/ccw -> AL55
+
+    LN     NP_TC_mag_loading_continuous__motion
+    IFT
+      L      DG_TC_magazine_nominal_posit
+      -      DG_position_axis_X_ref[X]
+      PSW
+      CM     Absolute
+      PLW
+      <      DG_MP1030_pos_window_X[X]
+      O[
+        L      DG_TC_magazine_nominal_posit
+        ==     K+0
+        A[
+          L      DG_MP810_modulo_value_X[X]
+          -      DG_position_axis_X_ref[X]
+          <      DG_MP1030_pos_window_X[X]
+        ]
+      ]
+      AN     MG_posit_active_TC_magazine
+      AN     PN_error_TC_magazine_timeout
+      R      ML_TC_magazine_cw
+      R      ML_TC_magazine_ccw
+      PSL
+
+      L      KG_clamping_mode_active
+      AN     KG_power_on_clamping_mode_off
+      A      NP_W1024_axes_release
+      BTX
+      IFT
+        PLL
+        A      MG_marker_zero
+        PSL
+      ENDI
+    ELSE
+      L      DG_position_axis_X_ref[X]
+      MOD    DG_TC_magazine_pocket_distance
+      <      DG_MP1030_pos_window_X[X]
+      O[
+        L      DG_position_axis_X_ref[X]
+        +      DG_MP1030_pos_window_X[X]
+        MOD    DG_TC_magazine_pocket_distance
+        <      DG_MP1030_pos_window_X[X]
+      ]
+      AN     MG_posit_active_TC_magazine
+      AN     PN_error_TC_magazine_timeout
+      R      ML_TC_magazine_cw
+      R      ML_TC_magazine_ccw
+      PSL
+
+      L      KG_clamping_mode_active
+      AN     KG_power_on_clamping_mode_off
+      A      NP_W1024_axes_release
+      BTX
+      IFT
+        PLL
+        A      MG_marker_zero
+        PSL
+      ENDI
+    ENDI
+  ENDI
+*;EUMACH
+EM
+
+;----------------------------
+LBL Decode_P_no                        ;07
+
+  PS     MG_marker_one
+
+  CM     Decode_P_number
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL T_chain_pin_in                     ;08
+
+#if Tool_chain_pin = &active
+  L      MG_marker_one
+  R      O_TC_mag_tool_chain_pin_out
+  PSL
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL T_chain_pin_in_pos                 ;09
+
+#if Tool_chain_pin = &active
+  L      I_TC_mag_toolchain_pin_in
+  AN     I_TC_mag_toolchain_pin_out
+  AN     MG_T_mag_interruption
+  PSL
+
+  L      MG_T_mag_interruption
+  =      MG_win_toolchain_pin_in
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Standby_T_read                     ;10
+
+*;EUMACH Original PLC
+;  L      MG_marker_one
+;#if TC_pocket_90_degree_shift = &active
+;  S      MG_standby_tool_status_reading                              *;EUMACH magazine standby pocket tool status
+;#endif
+;  PSL
+*;EUMACH Original PLC
+
+*;EUMACH
+  PS     MG_marker_one
+
+#if TC_pocket_90_degree_shift = &active
+  L      MG_automatic_mode
+  AN     MG_TM_loading_active                                         *;EUMACH
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  S      MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  S      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+#endif                                                                *;EUMACH Dual TC
+#endif
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL Pocket_in_out                      ;11
+
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  LN     MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  LN     MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+#endif                                                                *;EUMACH Dual TC
+  PSL
+  EMF
+
+#if (TC_pocket_90_degree_shift = &active) or (TC_shifting_pocket_random_selection = &active) *;EUMACH shifting pocket
+  L      MG_manual_mode
+  O      NP_commissioning
+  O      MG_TM_loading_active                                         *;EUMACH
+  EMT
+
+#if TC_pocket_90_degree_shift = &active                               *;EUMACH shifting pocket
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  L      BG_TC1_standby_tool_status                                   *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  L      BG_standby_tool_status
+#endif                                                                *;EUMACH Dual TC
+  BT     K+1
+#if Mag_pocket_out = &active                                          *;EUMACH
+  =      MG_tool_oversized
+#else                                                                 *;EUMACH
+  =N     MG_tool_oversized                                            *;EUMACH
+#endif                                                                *;EUMACH
+
+  LN     MG_tool_oversized
+  R      O_TC_pocket_put_in
+  S      O_TC_pocket_put_out
+#endif                                                                *;EUMACH shifting pocket
+
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH shifting pocket
+  L      MG_marker_one                                                *;EUMACH shifting pocket
+  S      MG_SFT_P_to_TC_by_TC_MAG1                                    *;EUMACH shifting pocket
+#endif                                                                *;EUMACH shifting pocket
+#endif
+
+EM
+
+;----------------------------
+LBL Pocket_posit                       ;12
+
+  L      MG_tool_oversized
+  O      MG_manual_mode
+  O      NP_commissioning
+  O      MG_TM_loading_active                                         *;EUMACH
+  CMT    Pocket_pos_in
+  CMF    Pocket_pos_out
+
+EM
+
+;----------------------------
+LBL Pocket_pos_out
+
+#if TC_pocket_90_degree_shift = &active
+  L      I_TC_pocket_out
+  AN     I_TC_pocket_in
+  AN     MG_T_mag_interruption
+  PSL
+
+  L      MG_T_mag_interruption
+  =      MG_win_TC_pocket_put_out
+#else
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH shifting pocket
+  LN     MG_SFT_P_to_TC_by_TC_MAG1                                    *;EUMACH shifting pocket
+  AN     MG_SFT_P_to_TC_start                                         *;EUMACH shifting pocket
+  A      I_TC_pocket_clamped                                          *;EUMACH shifting pocket
+  AN     I_TC_pocket_unclamped                                        *;EUMACH shifting pocket
+  A      I_TC_pocket_brace_on_at_TC_position                          *;EUMACH shifting pocket
+  AN     I_TC_pocket_brace_off_at_TC_position                         *;EUMACH shifting pocket
+  AN     I_TC_pocket_in_magazine_position                             *;EUMACH shifting pocket
+  A      I_TC_pocket_in_TC_position                                   *;EUMACH shifting pocket
+  AN     MG_T_mag_interruption                                        *;EUMACH shifting pocket
+  PSL                                                                 *;EUMACH shifting pocket
+
+  L      MG_T_mag_interruption                                        *;EUMACH shifting pocket
+  =      MG_win_TC_pocket_to_TC_pos                                   *;EUMACH shifting pocket
+#else                                                                 *;EUMACH shifting pocket
+  PS     MG_marker_one
+#endif                                                                *;EUMACH shifting pocket
+#endif
+
+EM
+
+;----------------------------
+LBL TC_magazine_end                    ;13
+
+  PS     MG_marker_zero
+
+LBL TC_magazine_reset
+
+  L      MG_marker_one
+  R      MG_TC_magazine_start
+  R      ML_TC_magazine_start_manual
+  R      MG_T_mag_interruption
+  R      ML_TC_magazine_cw                                            *;EUMACH
+  R      ML_TC_magazine_ccw                                           *;EUMACH
+  R      MG_TC_STDT_pocket_by_T_select                                *;EUMACH standby tool loading/unloading
+  R      MG_TC_nom_pocket_by_T_select                                 *;EUMACH standby tool loading/unloading
+  R      MG_SFT_P_to_mag_by_TC_MAG1                                   *;EUMACH shifting pocket
+  R      MG_SFT_P_to_TC_by_TC_MAG1                                    *;EUMACH shifting pocket
+
+  L      K+0
+  =      BG_step_magazine
+
+  L      WG_feed_stop_PLC_axes
+  BC     KG_Tool_magazine_axis
+  =      WG_feed_stop_PLC_axes
+
+  CM     TC_mag_stop
+
+EM
+
+;----------------------------
+LBL Override
+
+  PS     KG_Tool_magazine_axis
+
+  L      NP_W494_factor_feed_override_NC
+  <      K+10000
+  IFT
+    PS     NP_W494_factor_feed_override_NC
+  ELSE
+    PS     K+10000
+  ENDI
+
+  CM     9124
+  PLX
+  M_display_module_error(KG_error_module_9124)
+
+EM
+
+;----------------------------
+LBL TC_mag_cw_turn
+
+*;EUMACH Original PLC
+;  L      MG_posit_active_TC_magazine
+;  AN     ML_TC_magazine_start_manual
+;  EMT
+
+;  CM     Decode_P_number
+
+;  L      WG_TC_magazine_actual_pocket
+;  X      DG_TC_magazine_pocket_distance
+;  +      DG_TC_magazine_pocket_distance
+;  MOD    DG_MP810_modulo_value_X[X]
+;  =      DG_TC_magazine_nominal_posit
+
+;  LN     WG_keys_inhibit
+;  BT     KG_Tool_magazine_axis
+;  S      ML_TC_magazine_start_manual
+*;EUMACH Original PLC
+
+*;EUMACH
+  L      MG_T_unload_from_mag_start                                   *;EUMACH standby tool loading/unloading
+  O      MG_T_load_to_mag_start                                       *;EUMACH standby tool loading/unloading
+  EMT                                                                 *;EUMACH standby tool loading/unloading
+
+  LN     NP_TC_mag_loading_continuous__motion
+  IFT
+    L      MG_posit_active_TC_magazine
+    S      ML_TC_magazine_start_manual
+    EMT
+
+    CM     Decode_P_number
+
+    L      WG_TC_magazine_actual_pocket
+    X      DG_TC_magazine_pocket_distance
+    +      DG_TC_magazine_pocket_distance
+    MOD    DG_MP810_modulo_value_X[X]
+    =      DG_TC_magazine_nominal_posit
+
+    LN     WG_keys_inhibit
+    BT     KG_Tool_magazine_axis
+    S      ML_TC_magazine_start_manual
+    S      ML_TC_magazine_cw
+  ELSE
+    L      MG_posit_active_TC_magazine
+    S      ML_TC_magazine_start_manual
+    EMT
+
+    CM     Decode_P_number
+
+    L      WG_MP7261_TC_magazine_max_pocket
+    /      K+2
+    +      WG_TC_magazine_actual_pocket
+    -      K+1
+    X      DG_TC_magazine_pocket_distance
+    MOD    DG_MP810_modulo_value_X[X]
+    =      DG_TC_magazine_nominal_posit
+
+    LN     NP_TC_mag_guard_and_panel
+    O[
+      LN     I_key_TC_mag_automatic_control_mode
+      AN     MG_TC_help
+      O      MG_TC_help
+      A      NP_TC_mag_guard_and_panel
+    ]
+    A[
+      LN     WG_keys_inhibit
+      BT     KG_Tool_magazine_axis
+    ]
+    S      ML_TC_magazine_start_manual
+    S      ML_TC_magazine_cw
+  ENDI
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL TC_mag_ccw_turn
+
+*;EUMACH Original PLC
+;  L      MG_posit_active_TC_magazine
+;  AN     ML_TC_magazine_start_manual
+;  EMT
+
+;  CM     Decode_P_number
+
+;  L      WG_TC_magazine_actual_pocket
+;  X      DG_TC_magazine_pocket_distance
+;  -      DG_TC_magazine_pocket_distance
+;  =      DG_TC_magazine_nominal_posit
+
+;  LN     WG_keys_inhibit
+;  BT     KG_Tool_magazine_axis
+;  S      ML_TC_magazine_start_manual
+*;EUMACH Original PLC
+
+*;EUMACH
+  L      MG_T_unload_from_mag_start                                   *;EUMACH standby tool loading/unloading
+  O      MG_T_load_to_mag_start                                       *;EUMACH standby tool loading/unloading
+  EMT                                                                 *;EUMACH standby tool loading/unloading
+
+  LN     NP_TC_mag_loading_continuous__motion
+  IFT
+    L      MG_posit_active_TC_magazine
+    S      ML_TC_magazine_start_manual
+    EMT
+
+    CM     Decode_P_number
+
+    L      WG_TC_magazine_actual_pocket
+    X      DG_TC_magazine_pocket_distance
+    -      DG_TC_magazine_pocket_distance
+    =      DG_TC_magazine_nominal_posit
+
+    LN     WG_keys_inhibit
+    BT     KG_Tool_magazine_axis
+    S      ML_TC_magazine_start_manual
+    S      ML_TC_magazine_ccw
+  ELSE
+    L      MG_posit_active_TC_magazine
+    S      ML_TC_magazine_start_manual
+    EMT
+
+    CM     Decode_P_number
+
+    L      WG_TC_magazine_actual_pocket
+    +      K+1
+    +      WG_MP7261_TC_magazine_max_pocket
+    -[
+      L    WG_MP7261_TC_magazine_max_pocket
+      /    K+2
+    ]
+    X      DG_TC_magazine_pocket_distance
+    MOD    DG_MP810_modulo_value_X[X]
+    =      DG_TC_magazine_nominal_posit
+
+    LN     NP_TC_mag_guard_and_panel
+    O[
+      LN     I_key_TC_mag_automatic_control_mode
+      AN     MG_TC_help
+      O      MG_TC_help
+      A      NP_TC_mag_guard_and_panel
+    ]
+    A[
+      LN     WG_keys_inhibit
+      BT     KG_Tool_magazine_axis
+    ]
+    S      ML_TC_magazine_start_manual
+    S      ML_TC_magazine_ccw
+  ENDI
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL TC_mag_start
+
+  CM     Status_axis
+
+  L      MG_posit_active_TC_magazine
+  ON     MG_power_delayed_on
+  ON     MG_servo_drive_release_2nd_axes_group
+  ON     I_servo_drive_release
+  ON     I_drives_operational
+  EMT
+
+  L      KG_Tool_magazine_axis
+  =X
+
+  PS     KG_Tool_magazine_axis
+
+  L      DG_TC_magazine_nominal_posit
+  >=     DG_MP810_modulo_value_X[X]
+  IFT
+    L      DG_TC_magazine_nominal_posit
+    MOD    DG_MP810_modulo_value_X[X]
+    =      DG_TC_magazine_nominal_posit
+  ENDI
+
+  PS     DG_TC_magazine_nominal_posit
+
+  L      NP_D768_feed_PLC_X[X]
+  /      K+10000
+  PSW
+
+  PS     KL_absolute
+
+  CM     9120
+  PLW
+  <>     K+0
+  M_error_display(KG_error_module_9120)
+
+EM
+
+;----------------------------
+LBL TC_mag_stop
+
+  CM     Status_axis
+
+  LN     MG_posit_active_TC_magazine
+  EMT
+
+  PS     KG_Tool_magazine_axis
+  CM     9121
+  PLW
+  <>     K+0
+  M_error_display(KG_error_module_9121)
+
+EM
+
+;----------------------------
+LBL Status_axis
+
+  PS     KG_Tool_magazine_axis
+  CM     9122
+  PLW
+  B=     MG_PLC_axis_TC_magazine
+  M_display_module_error(KG_error_module_9122)
+
+EM
+
+;----------------------------
+LBL Decode_P_number
+
+  L      KG_Tool_magazine_axis
+  =X
+
+  L      DG_TC_magazine_pocket_distance
+  /      K+2
+  +      DG_position_axis_X_ref[X]
+  /      DG_TC_magazine_pocket_distance
+  =      WG_TC_magazine_actual_pocket
+  ==     K+0
+  IFT
+    L      WG_MP7261_TC_magazine_max_pocket
+    =      WG_TC_magazine_actual_pocket
+  ENDI
+
+EM
+
+;----------------------------
+LBL Mag_axis_in_pos
+
+  CM     Decode_P_number
+
+  L      KG_Tool_magazine_axis
+  =X
+
+  L      WG_TC_magazine_actual_pocket
+  X      DG_TC_magazine_pocket_distance
+  -      DG_position_axis_X_ref[X]
+  PSW
+  CM     Absolute
+  PLW
+  PSW
+  <      DG_MP1030_pos_window_X[X]
+  O[
+    PLW
+    -      DG_MP710_magazine_axis_backlash
+    <      DG_MP1030_pos_window_X[X]
+    A      MG_magazine_pos_backlash_ignored_at_power_on
+  ]
+  O[
+    L      DG_position_axis_X_ref[X]
+    <      DG_MP1030_pos_window_X[X]
+    O[
+      L      DG_position_axis_X_ref[X]
+      -      DG_MP710_magazine_axis_backlash
+      <      DG_MP1030_pos_window_X[X]
+      A      MG_magazine_pos_backlash_ignored_at_power_on
+    ]
+    A[
+      L      WG_TC_magazine_actual_pocket
+      ==     WG_MP7261_TC_magazine_max_pocket
+    ]
+  ]
+  AN     MG_posit_active_TC_magazine
+  =      MG_magazine_axis_in_position
+
+EM

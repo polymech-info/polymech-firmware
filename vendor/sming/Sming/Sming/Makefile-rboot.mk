@@ -1,0 +1,1 @@
+include $(SMING_HOME)/project.mk

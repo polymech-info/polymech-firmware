@@ -1,0 +1,36 @@
+*######################################################################
+* HEIDENHAIN IOconfig   Fri Oct 28 09:21:42 2011   (1319764902)
+*######################################################################
+
+#TYPE
+CONF_TIME_STAMP     K  1319764902
+
+
+
+* PROFIBUS:
+#TYPE
+   I_PC_door_opened                         I   999
+   I_PC_door_closed                         I   998
+   I_PC_position_1_occupy                   I   997
+   I_PC_position_2_occupy                   I   996
+   I_PC_1_in_stop_position                  I   995
+   I_PC_2_in_stop_position                  I   994
+   I_PC_1_in_load_position                  I   993
+   I_PC_2_in_load_position                  I   992
+   I_PC_1_in_machine_position               I   991
+   I_PC_2_in_machine_position               I   990
+   I_PC_load_door_closed                    I   989
+   I_pallet_in_machine_unclamped            I   988
+   I_pallet_in_machine_clamped              I   987
+   I_key_workpiece_clamping_on_off          I   986
+   I_key_PC_cabin_open                      I   985
+   I_workpiece_unclamped                    I   984
+   O_PC_door_open                           O   999
+   O_PC_door_close                          O   998
+   O_PC_1_to_load_position                  O   997
+   O_PC_1_to_machine_position               O   996
+   O_PC_2_to_load_position                  O   995
+   O_PC_2_to_machine_position               O   994
+   O_PC_1_rapid_traverse                    O   993
+   O_PC_2_rapid_traverse                    O   992
+

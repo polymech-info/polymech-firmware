@@ -1,0 +1,41 @@
+diff --git a/src/defs.h b/src/defs.h
+index 54347e9..b977b19 100644
+--- a/src/defs.h
++++ b/src/defs.h
+@@ -1,6 +1,8 @@
+ #pragma once
+ 
+-#include <Arduino.h>
++#include <Stream.h>
++#include <algorithm>
++using std::min;
+ 
+ char const PROTOCOL_[] {"simpleRPC"};
+ char const VERSION_[] {"\x03\x00\x00"};
+diff --git a/src/simpleRPC.h b/src/simpleRPC.h
+index dea278c..da3394e 100644
+--- a/src/simpleRPC.h
++++ b/src/simpleRPC.h
+@@ -1,6 +1,10 @@
+ #pragma once
+ 
++namespace simpleRPC
++{
+ #include "interface.tcc"
+ 
+ // I/O plugins.
+ #include "plugins/half_duplex/stream.h"
++
++} // namespace simpleRPC
+diff --git a/src/vector.tcc b/src/vector.tcc
+index 49e1d27..a2d6352 100644
+--- a/src/vector.tcc
++++ b/src/vector.tcc
+@@ -1,7 +1,5 @@
+ #pragma once
+ 
+-#include <Arduino.h>
+-
+ 
+ template <class T>
+ void swap_(T& a, T& b) noexcept {

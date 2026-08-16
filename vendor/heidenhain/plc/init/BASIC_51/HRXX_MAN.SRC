@@ -1,0 +1,1509 @@
+*-----------------------------------------------------------------------------
+*  Axes manual and with handwheel positioning
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*    Axes manual (tip) positioning
+*    Jogging (incremental) positioning
+*    Memory key (conventional) positioning
+*    Rapid traverse
+*    Handwheel
+*    Machine control panel MB 420 (Ident-Nr. 393757-45)
+*
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Handwheel HR 330
+*-----------------------------------------------------------------------------
+*  Module Description
+*    MP 7640: 3
+*
+*    input and output assignment
+*    -----     -----
+*      +  I160   -  I161
+*    -----     -----
+*    -----     -----
+*      ~  I162   ~  I162
+*    -----     -----
+*    The input I162 are only set if plus or minus and the rapid traverse key
+*    are operated.
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Handwheel HR 410 (Id-No. 296 469-45)
+*-----------------------------------------------------------------------------
+*  Module Description
+*    MP 7640: 6
+*    MP 7645: 0
+*
+*    input and output assignment
+*
+*    -----               -----
+*      X                  IV
+*    -----               -----
+*    -----               -----
+*      Y                   V
+*    -----               -----
+*    -----               -----
+*      Z                  Ist
+*    -----               -----
+*    -----     -----     -----
+*     F1        F2        F3         Ist: actual nominal transfer
+*    -----     -----     -----       F1:  low speed
+*    -----               -----       F2:  medium speed
+*      -                   +         F3:  high speed
+*    -----               -----       F/A: function A - spindle start
+*    -----     -----     -----       F/B: function B - NC start
+*     F/A O109  F/B O110  F/C O111   F/C: function C - NC stop
+*    -----I173 -----I174 -----I175
+*-----------------------------------------------------------------------------
+
+#define /s    KL_active_axis                           K+8
+#define /s    KL_HR_axis                               K+9
+#define /s    KL_handwheel_axis_bitcoded               K+10           *;EUMACH
+
+#define /s    ML_XYZ45_plus                            M[16]
+#define /c    ML_X_plus                                M &ML_XYZ45_plus + 0
+#define /c    ML_Y_plus                                M &ML_XYZ45_plus + 1
+#define /c    ML_Z_plus                                M &ML_XYZ45_plus + 2
+#define /c    ML_4_plus                                M &ML_XYZ45_plus + 3
+#define /c    ML_5_plus                                M &ML_XYZ45_plus + 4
+#define /c    ML_6_plus                                M &ML_XYZ45_plus + 5
+#define /c    ML_7_plus                                M &ML_XYZ45_plus + 6
+#define /c    ML_8_plus                                M &ML_XYZ45_plus + 7
+#define /c    ML_9_plus                                M &ML_XYZ45_plus + 8
+#define /c    ML_10_plus                               M &ML_XYZ45_plus + 9
+#define /c    ML_11_plus                               M &ML_XYZ45_plus + 10
+#define /c    ML_12_plus                               M &ML_XYZ45_plus + 11
+#define /c    ML_13_plus                               M &ML_XYZ45_plus + 12
+#define /c    ML_14_plus                               M &ML_XYZ45_plus + 13
+#define /c    ML_15_plus                               M &ML_XYZ45_plus + 14
+#define /c    ML_16_plus                               M &ML_XYZ45_plus + 15
+
+#define /s    ML_XYZ45_minus                           M[16]
+#define /c    ML_X_minus                               M &ML_XYZ45_minus + 0
+#define /c    ML_Y_minus                               M &ML_XYZ45_minus + 1
+#define /c    ML_Z_minus                               M &ML_XYZ45_minus + 2
+#define /c    ML_4_minus                               M &ML_XYZ45_minus + 3
+#define /c    ML_5_minus                               M &ML_XYZ45_minus + 4
+#define /c    ML_6_minus                               M &ML_XYZ45_minus + 5
+#define /c    ML_7_minus                               M &ML_XYZ45_minus + 6
+#define /c    ML_8_minus                               M &ML_XYZ45_minus + 7
+#define /c    ML_9_minus                               M &ML_XYZ45_minus + 8
+#define /c    ML_10_minus                              M &ML_XYZ45_minus + 9
+#define /c    ML_11_minus                              M &ML_XYZ45_minus + 10
+#define /c    ML_12_minus                              M &ML_XYZ45_minus + 11
+#define /c    ML_13_minus                              M &ML_XYZ45_minus + 12
+#define /c    ML_14_minus                              M &ML_XYZ45_minus + 13
+#define /c    ML_15_minus                              M &ML_XYZ45_minus + 14
+#define /c    ML_16_minus                              M &ML_XYZ45_minus + 15
+
+#define /s    ML_I_key_axis_4_plus                     M              *;EUMACH
+#define /s    ML_I_key_axis_5_plus                     M              *;EUMACH
+#define /s    ML_I_key_axis_6_plus                     M              *;EUMACH
+#define /s    ML_I_key_axis_4_minus                    M              *;EUMACH
+#define /s    ML_I_key_axis_5_minus                    M              *;EUMACH
+#define /s    ML_I_key_axis_6_minus                    M              *;EUMACH
+#define /s    ML_2_more_axis_dir_key_been_pressed      M              *;EUMACH CE 2008
+#define /s    BL_axis_dir_key_pressed                  B              *;EUMACH CE 2008
+#define /s    BL_bit_test                              B              *;EUMACH CE 2008
+
+#define /s    DL_W1046_W1048_manual_motion             D              *;EUMACH CE 2008
+
+#include Mac_Lib.inc
+
+GLOBAL Manual_handwheel
+
+;----------------------------
+LBL Manual_handwheel
+;----------------------------
+
+  LN     MG_machine_parameter_are_read
+  EMT
+
+  CASE   BG_MP7640_handwheel_type
+    CM     Machine_control_panel       ;0  No HR
+    CM     Machine_control_panel       ;1  HR330 all keys evaluated by NC
+    CM     Machine_control_panel       ;2  HR130 or HR330
+    CM     HR330_Handwheel             ;3  HR330 +,- rapid traverse keys
+    CM     Machine_control_panel       ;4  HR332 not available
+    CM     Machine_control_panel       ;5  HRA110 HR 150 + HRA110
+    CM     HR410_handwheel             ;6  HR410 keys FCT A..C evaluated by PLC
+    CM     reserved                    ;7  reserved
+    CM     reserved                    ;8  reserved
+    CM     reserved                    ;9  reserved
+    CM     reserved                    ;10 reserved
+    CM     HR420_handwheel             ;11 HR420
+    CM     HR5x0_handwheel             ;12 HR550
+    CM     HR5x0_handwheel             ;13 HR520
+  ENDC
+
+  L      MG_manual_mode
+  ON     I_control_operational
+  CMT    axes_keys
+  CMT    axes_end_position
+  CMT    axes_manu_posit
+
+  LN     I_HR4x0_key_permissive_mode
+  A      MG_automatic_mode
+#if Door_lock_safety_confirmation_panel = &active
+  O[
+    L      MG_TC_auto_active
+    AN     I_key_TC_mag_automatic_control_mode
+  ]
+#endif
+  =      PN_M4576_suppress_handwheel_pulses
+
+*;EUMACH
+  PS     KL_handwheel_axis_bitcoded
+  CM     9035
+  PL     WG_selected_handwheel_axis
+  M_display_module_error(KG_error_module_9035)
+*;EUMACH
+
+  LN     MG_manu_auto_mode_change
+  AN     PN_error_key_for_torque_motor_brake_releasing                *;EUMACH
+  EMT
+
+  L      K+0
+  =      PN_W1046_manual_motion_plus
+  =      PN_W1048_manual_motion_minus
+
+EM
+
+;----------------------------
+LBL reserved
+
+  L      MG_marker_one
+  S      PN_error_check_machine_parameter
+  =      MG_win_MP7640_HR_type_not_supported
+
+  CM     Machine_control_panel
+
+EM
+
+;----------------------------
+LBL Machine_control_panel
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A      I_key_rapid_traverse
+*;EUMACH CE 2008
+  AN     PN_error_safety_mode_2
+#if SFM = &DMx
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      PN_M4561_rapid_traverse
+
+*;EUMACH MB720/TE745
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A      PN_M4561_rapid_traverse
+  O      MG_test_lamps
+  =      O_lamp_rapid_traverse
+*;EUMACH MB720/TE745
+
+  L      I_key_NC_start
+  O      MG_soft_key_NC_start
+  =      MG_key_NC_start
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  >      K+0
+  A      MG_key_NC_start
+  AN     PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  =      PN_M4562_axes_keys_memory_function
+
+  LN     I_key_NC_stop
+  O      I_key_NC_stop_2_axes_spindle
+  O      MG_soft_key_NC_stop
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B) *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_M61_alternating_table_1                                 *;EUMACH
+    O      MG_M62_alternating_table_2                                 *;EUMACH
+    O      MG_enable_alternating_table                                *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_key_NC_stop
+
+  L      I_key_spindle_M3
+  O      MG_soft_key_spindle_M3
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M3
+
+  L      I_key_spindle_M4
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M4
+
+  L      I_key_spindle_M5
+  O      MG_soft_key_spindle_M5
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M5
+
+EM
+
+;----------------------------
+LBL HR330_Handwheel
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A[
+    L      I_key_rapid_traverse
+    O      I_HR330_key_rapid_traverse
+  ]
+*;EUMACH CE 2008
+  AN     PN_error_safety_mode_2
+#if SFM = &DMx
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      PN_M4561_rapid_traverse
+
+  L      I_key_NC_start
+  O      MG_soft_key_NC_start
+  =      MG_key_NC_start
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  >      K+0
+  A      MG_key_NC_start
+  AN     PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  =      PN_M4562_axes_keys_memory_function
+
+  LN     I_key_NC_stop
+  O      I_key_NC_stop_2_axes_spindle
+  O      MG_soft_key_NC_stop
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B) *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_M61_alternating_table_1                                 *;EUMACH
+    O      MG_M62_alternating_table_2                                 *;EUMACH
+    O      MG_enable_alternating_table                                *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_key_NC_stop
+
+  L      I_key_spindle_M3
+  O      MG_soft_key_spindle_M3
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M3
+
+  L      I_key_spindle_M4
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M4
+
+  L      I_key_spindle_M5
+  O      MG_soft_key_spindle_M5
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M5
+
+EM
+
+;----------------------------
+LBL HR410_handwheel
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A      I_key_rapid_traverse
+*;EUMACH CE 2008
+  AN     PN_error_safety_mode_2
+#if SFM = &DMx
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      PN_M4561_rapid_traverse
+
+*;EUMACH MB720/TE745
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A      PN_M4561_rapid_traverse
+  O      MG_test_lamps
+  =      O_lamp_rapid_traverse
+*;EUMACH MB720/TE745
+
+  L      I_key_NC_start
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  O      I_HR410_key_NC_start
+#else                                                                 *;EUMACH Safety confirmation
+  O[                                                                  *;EUMACH Safety confirmation
+    L      I_HR410_key_NC_start                                       *;EUMACH Safety confirmation
+    A      I_1st_panel_key_switch_in_control                          *;EUMACH Safety confirmation
+  ]                                                                   *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+  O      MG_soft_key_NC_start
+  =      MG_key_NC_start
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  >      K+0
+  A      MG_key_NC_start
+  AN     PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  =      PN_M4562_axes_keys_memory_function
+
+  LN     I_key_NC_stop
+  O      I_key_NC_stop_2_axes_spindle
+  O      I_HR410_key_NC_stop
+  O      MG_soft_key_NC_stop
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B) *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_M61_alternating_table_1                                 *;EUMACH
+    O      MG_M62_alternating_table_2                                 *;EUMACH
+    O      MG_enable_alternating_table                                *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_key_NC_stop
+
+  L      I_key_spindle_M3
+  O      I_HR410_key_spindle_M3
+  O      MG_soft_key_spindle_M3
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M3
+
+  L      I_key_spindle_M4
+  O      I_HR410_key_spindle_M4
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M4
+
+  L      I_key_spindle_M5
+  O      I_HR410_key_spindle_M5
+  O      MG_soft_key_spindle_M5
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M5
+
+  L      O_lamp_NC_stop
+  =      O_HR410_lamp_NC_stop
+
+  L      O_lamp_NC_start
+  =      O_HR410_lamp_NC_start
+
+  L      O_lamp_spindle_M3
+  =      O_HR410_lamp_spindle_M3
+
+  L      O_lamp_spindle_M4
+  =      O_HR410_lamp_spindle_M4
+
+  L      O_lamp_spindle_M5
+  =      O_HR410_lamp_spindle_M5
+
+  L      O_lamp_spindle_start                                         *;EUMACH
+  =      O_HR410_lamp_spindle_start                                   *;EUMACH
+
+  L      O_lamp_spindle_stop                                          *;EUMACH
+  =      O_HR410_lamp_spindle_stop                                    *;EUMACH
+
+EM
+
+;----------------------------
+LBL HR420_handwheel
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  A      I_key_rapid_traverse                                         *;EUMACH
+;  A[                                                                 *;EUMACH Original PLC
+;    L      I_key_rapid_traverse                                      *;EUMACH Original PLC
+;    O      NP_M4663_HR420_key_rapid_traverse                         *;EUMACH Original PLC
+;  ]                                                                  *;EUMACH Original PLC
+*;EUMACH CE 2008
+  AN     PN_error_safety_mode_2
+#if SFM = &DMx
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      PN_M4561_rapid_traverse
+
+  L      I_key_NC_start
+  O      NP_M4661_HR420_key_NC_start
+  O      MG_soft_key_NC_start
+  =      MG_key_NC_start
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  >      K+0
+  O      NP_M4666_HR420_key_axis_direction_plus
+  O      NP_M4667_HR420_key_axis_direction_minus
+  A      MG_key_NC_start
+  AN     PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  =      PN_M4562_axes_keys_memory_function
+
+  LN     I_key_NC_stop
+  O      I_key_NC_stop_2_axes_spindle
+  O      NP_M4662_HR420_key_NC_stop
+  O      MG_soft_key_NC_stop
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B) *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_M61_alternating_table_1                                 *;EUMACH
+    O      MG_M62_alternating_table_2                                 *;EUMACH
+    O      MG_enable_alternating_table                                *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_key_NC_stop
+
+  L      I_key_spindle_M3
+  O      NP_M4664_HR420_key_spindle_start
+  O      MG_soft_key_spindle_M3
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M3
+
+  L      I_key_spindle_M4
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M4
+
+  L      I_key_spindle_M5
+  O      NP_M4665_HR420_key_spindle_stop
+  O      MG_soft_key_spindle_M5
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M5
+
+*;EUMACH BASIC 54
+  L      MG_HW_SK_coolant_M07
+  XO     PN_M4041_M07_MK_status
+  =      PN_M4041_M07_MK_status
+
+  L      MG_HW_SK_coolant_M08
+  XO     PN_M4042_M08_MK_status
+  =      PN_M4042_M08_MK_status
+
+;  L      MG_HW_SK_lubrication
+;  XO     MG_soft_key_lubrication
+;  =      MG_soft_key_lubrication
+
+  L      MG_HW_SK_chip_conveyor
+  XO     MG_soft_key_chip_conveyor
+  =      MG_soft_key_chip_conveyor
+
+;  L      MG_HW_SK_TC_unclamp
+;  A      MG_soft_key_enable_tool_unclamp
+;  XO     MG_soft_key_tool_unclamp
+;  =      MG_soft_key_tool_unclamp
+
+;  L      MG_HW_SK_TC_release
+;  A      MG_soft_key_enable_release_toolchange
+;  XO     MG_soft_key_release_toolchange
+;  =      MG_soft_key_release_toolchange
+
+;  L      MG_HW_SK_TC_load                                            *;EUMACH Cannot use this
+;  XO     MG_soft_key_TC_mag_load_active
+;  =      MG_soft_key_TC_mag_load_active
+*;EUMACH BASIC 54
+
+EM
+
+;----------------------------
+LBL HR5x0_handwheel
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+;  A      I_key_rapid_traverse                                         *;EUMACH
+  A[                                                                 *;EUMACH Original PLC
+    L      I_key_rapid_traverse                                      *;EUMACH Original PLC
+    O      NP_M4663_HR5x0_key_rapid_traverse                         *;EUMACH Original PLC
+  ]                                                                  *;EUMACH Original PLC
+*;EUMACH CE 2008
+  AN     PN_error_safety_mode_2
+#if SFM = &DMx
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      PN_M4561_rapid_traverse
+
+  L      I_key_NC_start
+  O      NP_M4661_HR5x0_key_NC_start
+  O      MG_soft_key_NC_start
+  =      MG_key_NC_start
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  >      K+0
+  O      NP_M4666_HR5x0_key_axis_direction_plus
+  O      NP_M4667_HR5x0_key_axis_direction_minus
+  A      MG_key_NC_start
+  AN     PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  =      PN_M4562_axes_keys_memory_function
+
+  LN     I_key_NC_stop
+  O      I_key_NC_stop_2_axes_spindle
+  O      NP_M4662_HR5x0_key_NC_stop
+  O      MG_soft_key_NC_stop
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B) *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_M61_alternating_table_1                                 *;EUMACH
+    O      MG_M62_alternating_table_2                                 *;EUMACH
+    O      MG_enable_alternating_table                                *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_key_NC_stop
+
+  L      I_key_spindle_M3
+  O      NP_M4664_HR5x0_key_spindle_start
+  O      MG_soft_key_spindle_M3
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M3
+
+  L      I_key_spindle_M4
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M4
+
+  L      I_key_spindle_M5
+  O      NP_M4665_HR5x0_key_spindle_stop
+  O      MG_soft_key_spindle_M5
+*;EUMACH
+  A[
+    L      NP_M4150_mode_manual
+    O      NP_M4151_mode_electronic_handwheel
+    O      NP_M4155_mode_pass_over_reference
+  ]
+*;EUMACH
+  =      MG_key_spindle_M5
+
+*;EUMACH BASIC 54
+  L      MG_HW_SK_coolant_M07
+  XO     PN_M4041_M07_MK_status
+  =      PN_M4041_M07_MK_status
+
+  L      MG_HW_SK_coolant_M08
+  XO     PN_M4042_M08_MK_status
+  =      PN_M4042_M08_MK_status
+
+;  L      MG_HW_SK_lubrication
+;  XO     MG_soft_key_lubrication
+;  =      MG_soft_key_lubrication
+
+  L      MG_HW_SK_chip_conveyor
+  XO     MG_soft_key_chip_conveyor
+  =      MG_soft_key_chip_conveyor
+
+;  L      MG_HW_SK_TC_unclamp
+;  A      MG_soft_key_enable_tool_unclamp
+;  XO     MG_soft_key_tool_unclamp
+;  =      MG_soft_key_tool_unclamp
+
+;  L      MG_HW_SK_TC_release
+;  A      MG_soft_key_enable_release_toolchange
+;  XO     MG_soft_key_release_toolchange
+;  =      MG_soft_key_release_toolchange
+
+;  L      MG_HW_SK_TC_load                                            *;EUMACH Cannot use this
+;  XO     MG_soft_key_TC_mag_load_active
+;  =      MG_soft_key_TC_mag_load_active
+*;EUMACH BASIC 54
+
+  L      O_lamp_NC_stop
+  =      PN_M4682_HR5x0_LED_key_NC_stop
+
+  L      O_lamp_NC_start
+  =      PN_M4681_HR5x0_LED_key_NC_start
+
+  L      O_lamp_spindle_M3
+  =      PN_M4684_HR5x0_LED_key_spindle_start
+
+  L      O_lamp_spindle_M5
+  =      PN_M4685_HR5x0_LED_key_spindle_stop
+
+  L      NP_M4668_HR5x0_key_Ctrl
+  =      PN_M4688_HR5x0_LED_key_Ctrl
+
+  L      NP_M4669_HR5x0_key_actual_value
+  =      PN_M4689_HR5x0_LED_key_actual_value
+
+EM
+
+;----------------------------
+LBL axes_keys
+
+  L      I_key_axis_1_plus
+  =      ML_X_plus
+  L      I_key_axis_2_plus
+  =      ML_Y_plus
+  L      I_key_axis_3_plus
+  =      ML_Z_plus
+
+*;EUMACH
+;  L      I_key_axis_4_plus                                           *;EUAMCH Original PLC
+;  =      ML_4_plus                                                   *;EUAMCH Original PLC
+;  L      I_key_axis_5_plus                                           *;EUAMCH Original PLC
+;  =      ML_5_plus                                                   *;EUAMCH Original PLC
+;  L      I_key_axis_6_plus                                           *;EUAMCH Original PLC
+;  =      ML_6_plus                                                   *;EUAMCH Original PLC
+
+  L      WG_hirth_axes
+  BT     KG_axis_4
+  A      MG_manual_mode
+  A      NP_M4579_incremental_jog_posit_on_softkey
+  IFT
+    L      I_key_axis_4_plus
+    AN     ML_I_key_axis_4_plus
+    =      ML_4_plus
+
+    L      I_key_axis_4_plus
+    =      ML_I_key_axis_4_plus
+  ELSE
+    L      I_key_axis_4_plus
+    =      ML_4_plus
+  ENDI
+
+  LN     NP_magazine_servo_commissioning
+  IFT
+    L      WG_hirth_axes
+    BT     KG_axis_5
+    A      MG_manual_mode
+    A      NP_M4579_incremental_jog_posit_on_softkey
+    IFT
+      L      I_key_axis_5_plus
+      AN     ML_I_key_axis_5_plus
+      =      ML_5_plus
+
+      L      I_key_axis_5_plus
+      =      ML_I_key_axis_5_plus
+    ELSE
+      L      I_key_axis_5_plus
+      =      ML_5_plus
+    ENDI
+  ELSE
+    L      MG_marker_zero
+    =      ML_5_plus
+  ENDI
+
+  L      WG_hirth_axes
+  BT     KG_axis_6
+  A      MG_manual_mode
+  A      NP_M4579_incremental_jog_posit_on_softkey
+  IFT
+    L      I_key_axis_6_plus
+    AN     ML_I_key_axis_6_plus
+    =      ML_6_plus
+
+    L      I_key_axis_6_plus
+    =      ML_I_key_axis_6_plus
+  ELSE
+    L      I_key_axis_6_plus
+    =      ML_6_plus
+  ENDI
+*;EUMACH
+
+  L      I_key_axis_7_plus
+  =      ML_7_plus
+
+  L      I_key_axis_8_plus
+  =      ML_8_plus
+
+;  L      I_key_axis_9_plus                                           *;EUMACH Original PLC
+;  =      ML_9_plus                                                   *;EUMACH Original PLC
+*;EUMACH
+  LN     NP_magazine_servo_commissioning
+  IFT
+    L      MG_marker_zero
+    =      ML_9_plus
+  ELSE
+    L      I_key_axis_5_plus
+    =      ML_9_plus
+  ENDI
+*;EUMACH
+
+  L      I_key_axis_10_plus
+  =      ML_10_plus
+  L      I_key_axis_11_plus
+  =      ML_11_plus
+  L      I_key_axis_12_plus
+  =      ML_12_plus
+  L      I_key_axis_13_plus
+  =      ML_13_plus
+  L      I_key_axis_14_plus
+  =      ML_14_plus
+  L      I_key_axis_15_plus
+  =      ML_15_plus
+  L      I_key_axis_16_plus
+  =      ML_16_plus
+
+  L      I_key_axis_1_minus
+  =      ML_X_minus
+
+  L      I_key_axis_2_minus
+  =      ML_Y_minus
+
+  L      I_key_axis_3_minus
+  =      ML_Z_minus
+
+*;EUMACH
+;  L      I_key_axis_4_minus                                          *;EUMACH Original PLC
+;  =      ML_4_minus                                                  *;EUMACH Original PLC
+;  L      I_key_axis_5_minus                                          *;EUMACH Original PLC
+;  =      ML_5_minus                                                  *;EUMACH Original PLC
+;  L      I_key_axis_6_minus                                          *;EUMACH Original PLC
+;  =      ML_6_minus                                                  *;EUMACH Original PLC
+
+  L      WG_hirth_axes
+  BT     KG_axis_4
+  A      MG_manual_mode
+  A      NP_M4579_incremental_jog_posit_on_softkey
+  IFT
+    L      I_key_axis_4_minus
+    AN     ML_I_key_axis_4_minus
+    =      ML_4_minus
+
+    L      I_key_axis_4_minus
+    =      ML_I_key_axis_4_minus
+  ELSE
+    L      I_key_axis_4_minus
+    =      ML_4_minus
+  ENDI
+
+  LN     NP_magazine_servo_commissioning
+  IFT
+    L      WG_hirth_axes
+    BT     KG_axis_5
+    A      MG_manual_mode
+    A      NP_M4579_incremental_jog_posit_on_softkey
+    IFT
+      L      I_key_axis_5_minus
+      AN     ML_I_key_axis_5_minus
+      =      ML_5_minus
+
+      L      I_key_axis_5_minus
+      =      ML_I_key_axis_5_minus
+    ELSE
+      L      I_key_axis_5_minus
+      =      ML_5_minus
+    ENDI
+  ELSE
+    L      MG_marker_zero
+    =      ML_5_minus
+  ENDI
+
+  L      WG_hirth_axes
+  BT     KG_axis_6
+  A      MG_manual_mode
+  A      NP_M4579_incremental_jog_posit_on_softkey
+  IFT
+    L      I_key_axis_6_minus
+    AN     ML_I_key_axis_6_minus
+    =      ML_6_minus
+
+    L      I_key_axis_6_minus
+    =      ML_I_key_axis_6_minus
+  ELSE
+    L      I_key_axis_6_minus
+    =      ML_6_minus
+  ENDI
+*;EUMACH
+
+  L      I_key_axis_7_minus
+  =      ML_7_minus
+
+  L      I_key_axis_8_minus
+  =      ML_8_minus
+
+;  L      I_key_axis_9_minus                                          *;EUMACH Original PLC
+;  =      ML_9_minus                                                  *;EUMACH Original PLC
+*;EUMACH
+  LN     NP_magazine_servo_commissioning
+  IFT
+    L      MG_marker_zero
+    =      ML_9_minus
+  ELSE
+    L      I_key_axis_5_minus
+    =      ML_9_minus
+  ENDI
+*;EUMACH
+  L      I_key_axis_10_minus
+  =      ML_10_minus
+  L      I_key_axis_11_minus
+  =      ML_11_minus
+  L      I_key_axis_12_minus
+  =      ML_12_minus
+  L      I_key_axis_13_minus
+  =      ML_13_minus
+  L      I_key_axis_14_minus
+  =      ML_14_minus
+  L      I_key_axis_15_minus
+  =      ML_15_minus
+  L      I_key_axis_16_minus
+  =      ML_16_minus
+
+  PS     KL_active_axis
+  CM     9035
+  M_display_module_error(KG_error_module_9035)
+
+  PLW
+  =X
+
+  L      I_key_axes_plus
+  O      I_HR330_key_plus
+  O      MG_soft_key_axes_plus
+  S      ML_XYZ45_plus[X]
+
+  L      I_key_axes_minus
+  O      I_HR330_key_minus
+  O      MG_soft_key_axes_minus
+  S      ML_XYZ45_minus[X]
+
+*;EUMACH MB720/TE745
+  L      I_key_axis_1_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_1_minus
+
+  L      I_key_axis_2_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_2_minus
+
+  L      I_key_axis_3_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_3_minus
+
+  L      I_key_axis_4_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_4_minus
+
+  L      I_key_axis_5_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_5_minus
+
+  L      I_key_axis_6_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_6_minus
+
+  L      I_key_axis_7_minus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_7_minus
+
+  L      I_key_axis_1_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_1_plus
+
+  L      I_key_axis_2_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_2_plus
+
+  L      I_key_axis_3_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_3_plus
+
+  L      I_key_axis_4_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_4_plus
+
+  L      I_key_axis_5_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_5_plus
+
+  L      I_key_axis_6_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_6_plus
+
+  L      I_key_axis_7_plus
+  A      MG_manual_mode
+  O      MG_test_lamps
+  =      O_lamp_axis_7_plus
+*;EUMACH MB720/TE745
+
+EM
+
+;----------------------------
+LBL axes_end_position
+
+#if Emergency_end_position_axes_coded = &active
+
+*;EUMACH Original PLC
+;  L      I_emergency_button_unlocked
+;  AN     I_X_not_overtravelled
+;  =      I_end_posit_axis_X
+
+;  L      I_X_not_overtravelled
+;  AN     I_X_Y_not_overtravelled
+;  =      I_end_posit_axis_Y
+
+;  L      I_X_Y_not_overtravelled
+;  AN     I_X_Y_Z_not_overtravelled
+;  =      I_end_posit_axis_Z
+*;EUMACH Original PLC
+
+*;EUMACH
+;  L      I_emergency_button_unlocked                                 *;HI4xxx and before
+;  AN     I_Z_not_overtravelled                                       *;HI4xxx and before
+  LN     I_Z_not_overtravelled                                        *;HI5000 and after
+  =      I_end_posit_axis_Z
+
+#if Pallet_changer = &Alternat_table
+  L      I_alternat_table_partition_removed
+  IFT
+    L      I_Z_not_overtravelled
+    AN     I_X_Z_not_overtravelled
+    =      I_end_posit_axis_X
+  ELSE
+    LN     I_X_Z_not_overtravelled
+    ON     I_X_Z_partition_not_overtravelled
+    A      I_Z_not_overtravelled
+    =      I_end_posit_axis_X
+  ENDI
+#else
+  L      I_Z_not_overtravelled
+  AN     I_X_Z_not_overtravelled
+  =      I_end_posit_axis_X
+#endif
+
+#if Pallet_changer = &Alternat_table
+  L      I_X_Z_partition_not_overtravelled
+#else
+  L      I_X_Z_not_overtravelled
+#endif
+  AN     I_X_Y_Z_not_overtravelled
+  =      I_end_posit_axis_Y
+*;EUMACH
+
+  LN     I_X_Y_Z_4_not_overtravelled
+  A      I_X_Y_Z_not_overtravelled
+  =      I_end_posit_axis_4
+
+  L      NP_5_end_position_by_proximity_sensor                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      I_5_plus_overtravelled                                 *;EUMACH
+    O      I_5_minus_overtravelled                                *;EUMACH
+    =      I_end_posit_axis_5                                         *;EUMACH
+    =      O_end_posit_axis_5                                         *;EUMACH
+  ELSE                                                                *;EUMACH
+    LN     I_X_Y_Z_4_5_plus_not_overtravelled                         *;EUMACH
+    ON     I_X_Y_Z_4_5_minus_not_overtravelled                        *;EUMACH
+    A      I_X_Y_Z_4_not_overtravelled
+    =      I_end_posit_axis_5
+  ENDI                                                                *;EUMACH
+
+#if MT = &MT_2MV                                                      *;EUMACH
+  LN     I_X_Y_Z_4_5_7_not_overtravelled                              *;EUMACH
+  A      I_X_Y_Z_4_5_plus_not_overtravelled                           *;EUMACH
+  A      I_X_Y_Z_4_5_minus_not_overtravelled                          *;EUMACH
+  =      I_end_posit_axis_7                                           *;EUMACH
+#endif                                                                *;EUMACH
+#endif
+
+*;EUMACH
+#if Pallet_changer = &Alternat_table
+  L      I_end_posit_axis_X
+  IFT
+    L      I_alternat_table_partition_removed
+    IFT
+      L      WG_MP1320_direction_traverse_ref_negative
+      BT     KG_axis_X
+      IFT
+        LN     MG_ref_end_position_X
+        =      MG_win_end_position_Xp
+        R      ML_X_plus
+
+        L      MG_ref_end_position_X
+        =      MG_win_end_position_Xn
+        R      ML_X_minus
+      ELSE
+        L      MG_ref_end_position_X
+        =      MG_win_end_position_Xp
+        R      ML_X_plus
+
+        LN     MG_ref_end_position_X
+        =      MG_win_end_position_Xn
+        R      ML_X_minus
+      ENDI
+    ELSE
+      L      WG_MP1320_direction_traverse_ref_negative
+      BT     KG_axis_X
+      IFT
+        LN     MG_ref_end_position_X
+        AN     I_X_Z_not_overtravelled
+        O[
+          LN     MG_machine_in_table_1
+          A      I_X_Z_not_overtravelled
+          AN     I_X_Z_partition_not_overtravelled
+        ]
+        =      MG_win_end_position_Xp
+        R      ML_X_plus
+
+        L      MG_ref_end_position_X
+        AN     I_X_Z_not_overtravelled
+        O[
+          L      MG_machine_in_table_1
+          A      I_X_Z_not_overtravelled
+          AN     I_X_Z_partition_not_overtravelled
+        ]
+        =      MG_win_end_position_Xn
+        R      ML_X_minus
+      ELSE
+        L      MG_ref_end_position_X
+        AN     I_X_Z_not_overtravelled
+        O[
+          LN     MG_machine_in_table_1
+          A      I_X_Z_not_overtravelled
+          AN     I_X_Z_partition_not_overtravelled
+        ]
+        =      MG_win_end_position_Xp
+        R      ML_X_plus
+
+        LN     MG_ref_end_position_X
+        AN     I_X_Z_not_overtravelled
+        O[
+          L      MG_machine_in_table_1
+          A      I_X_Z_not_overtravelled
+          AN     I_X_Z_partition_not_overtravelled
+        ]
+        =      MG_win_end_position_Xn
+        R      ML_X_minus
+      ENDI
+    ENDI
+  ENDI
+*;EUMACH
+#else                                                                 *;EUMACH
+  L      I_end_posit_axis_X
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_X
+    IFT
+      LN     MG_ref_end_position_X
+      =      MG_win_end_position_Xp
+      R      ML_X_plus
+
+      L      MG_ref_end_position_X
+      =      MG_win_end_position_Xn
+      R      ML_X_minus
+    ELSE
+      L      MG_ref_end_position_X
+      =      MG_win_end_position_Xp
+      R      ML_X_plus
+
+      LN     MG_ref_end_position_X
+      =      MG_win_end_position_Xn
+      R      ML_X_minus
+    ENDI
+  ENDI
+#endif                                                                *;EUMACH
+
+  L      I_end_posit_axis_Y
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_Y
+    IFT
+#if MT ! &MT_3A                                                       *;EUMACH
+      LN     MG_ref_end_position_Y
+      =      MG_win_end_position_Yp
+      R      ML_Y_plus
+
+      L      MG_ref_end_position_Y
+      =      MG_win_end_position_Yn
+      R      ML_Y_minus
+#else                                                                 *;EUMACH
+*;EUMACH
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      AN     MG_ref_end_position_Y
+      =      MG_win_end_position_Yp
+      R      ML_Y_plus
+
+      LN     MG_ref_end_position_Y
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Zp
+      R      ML_Y_plus
+
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      A      MG_ref_end_position_Y
+      =      MG_win_end_position_Yn
+      R      ML_Y_minus
+
+      L      MG_ref_end_position_Y
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Zn
+      R      ML_Y_minus
+*;EUMACH
+#endif                                                                *;EUMACH
+    ELSE
+#if MT ! &MT_3A                                                       *;EUMACH
+      L      MG_ref_end_position_Y
+      =      MG_win_end_position_Yp
+      R      ML_Y_plus
+
+      LN     MG_ref_end_position_Y
+      =      MG_win_end_position_Yn
+      R      ML_Y_minus
+#else                                                                 *;EUMACH
+*;EUMACH
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      A      MG_ref_end_position_Y
+      =      MG_win_end_position_Yp
+      R      ML_Y_plus
+
+      L      MG_ref_end_position_Y
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Zp
+      R      ML_Y_plus
+
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      AN     MG_ref_end_position_Y
+      =      MG_win_end_position_Yn
+      R      ML_Y_minus
+
+      LN     MG_ref_end_position_Y
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Zn
+      R      ML_Y_minus
+*;EUMACH
+#endif                                                                *;EUMACH
+    ENDI
+  ENDI
+
+  L      I_end_posit_axis_Z
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_Z
+    IFT
+#if MT ! &MT_3A                                                       *;EUMACH
+      LN     MG_ref_end_position_Z
+      =      MG_win_end_position_Zp
+      R      ML_Z_plus
+
+      L      MG_ref_end_position_Z
+      =      MG_win_end_position_Zn
+      R      ML_Z_minus
+#else                                                                 *;EUMACH
+*;EUMACH
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      AN     MG_ref_end_position_Z
+      =      MG_win_end_position_Zp
+      R      ML_Z_plus
+
+      LN     MG_ref_end_position_Z
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Yp
+      R      ML_Z_plus
+
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      A      MG_ref_end_position_Z
+      =      MG_win_end_position_Zn
+      R      ML_Z_minus
+
+      L      MG_ref_end_position_Z
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Yn
+      R      ML_Z_minus
+*;EUMACH
+#endif                                                                *;EUMACH
+    ELSE
+#if MT ! &MT_3A                                                       *;EUMACH
+      L      MG_ref_end_position_Z
+      =      MG_win_end_position_Zp
+      R      ML_Z_plus
+
+      LN     MG_ref_end_position_Z
+      =      MG_win_end_position_Zn
+      R      ML_Z_minus
+#else                                                                 *;EUMACH
+*;EUMACH
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      A      MG_ref_end_position_Z
+      =      MG_win_end_position_Zp
+      R      ML_Z_plus
+
+      L      MG_ref_end_position_Z
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Yp
+      R      ML_Z_plus
+
+      LN     NP_DCM_option_purchased
+      O      MG_automatic_V_H_head_installed
+      AN     MG_ref_end_position_Z
+      =      MG_win_end_position_Zn
+      R      ML_Z_minus
+
+      LN     MG_ref_end_position_Z
+      A      NP_DCM_option_purchased
+      AN     MG_automatic_V_H_head_installed
+      =      MG_win_end_position_Yn
+      R      ML_Z_minus
+*;EUMACH
+#endif                                                                *;EUMACH
+    ENDI
+  ENDI
+
+  L      I_end_posit_axis_4
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_4
+    IFT
+      LN     MG_ref_end_position_4
+      =      MG_win_end_position_4p
+      R      ML_4_plus
+
+      L      MG_ref_end_position_4
+      =      MG_win_end_position_4n
+      R      ML_4_minus
+    ELSE
+      L      MG_ref_end_position_4
+      =      MG_win_end_position_4p
+      R      ML_4_plus
+
+      LN     MG_ref_end_position_4
+      =      MG_win_end_position_4n
+      R      ML_4_minus
+    ENDI
+  ENDI
+
+*;EUMACH
+#if (MT = &MT_15A) or (MT = &MT_31C) or (MT = &MT_34A)
+  L      I_end_posit_axis_5
+  IFT
+    L      NP_5_end_position_by_proximity_sensor
+    IFT
+      L      I_5_plus_overtravelled
+      =      MG_win_end_position_5p
+      R      ML_5_plus
+
+      L      I_5_minus_overtravelled
+      =      MG_win_end_position_5n
+      R      ML_5_minus
+    ELSE
+      LN     I_X_Y_Z_4_5_plus_not_overtravelled
+      =      MG_win_end_position_5p
+      R      ML_5_plus
+
+      L      I_X_Y_Z_4_5_plus_not_overtravelled
+      AN     I_X_Y_Z_4_5_minus_not_overtravelled
+      =      MG_win_end_position_5n
+      R      ML_5_minus
+    ENDI
+  ENDI
+#else
+*;EUMACH
+  L      I_end_posit_axis_5
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_5
+    IFT
+      LN     MG_ref_end_position_5
+      =      MG_win_end_position_5p
+      R      ML_5_plus
+
+      L      MG_ref_end_position_5
+      =      MG_win_end_position_5n
+      R      ML_5_minus
+    ELSE
+      L      MG_ref_end_position_5
+      =      MG_win_end_position_5p
+      R      ML_5_plus
+
+      LN     MG_ref_end_position_5
+      =      MG_win_end_position_5n
+      R      ML_5_minus
+    ENDI
+  ENDI
+#endif                                                                *;EUMACH
+
+*;EUMACH
+#if MT = &MT_2MV
+  L      I_end_posit_axis_7
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_7
+    IFT
+      LN     MG_ref_end_position_7
+      =      MG_win_end_position_7p
+      R      ML_7_plus
+
+      L      MG_ref_end_position_7
+      =      MG_win_end_position_7n
+      R      ML_7_minus
+    ELSE
+      L      MG_ref_end_position_7
+      =      MG_win_end_position_7p
+      R      ML_7_plus
+
+      LN     MG_ref_end_position_7
+      =      MG_win_end_position_7n
+      R      ML_7_minus
+    ENDI
+  ENDI
+#endif
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL axes_manu_posit
+
+  LN     NP_magazine_servo_commissioning                              *;EUMACH
+  IFT                                                                 *;EUMACH
+    LW     ML_XYZ45_plus
+    AN     WG_keys_inhibit
+    AN     WG_TC_magazine_axis
+    =      PN_W1046_manual_motion_plus
+
+    LW     ML_XYZ45_minus
+    AN     WG_keys_inhibit
+    AN     WG_TC_magazine_axis
+    =      PN_W1048_manual_motion_minus
+  ELSE                                                                *;EUMACH
+    LW     ML_XYZ45_plus                                              *;EUMACH
+    AN     WG_keys_inhibit                                            *;EUMACH
+    =      PN_W1046_manual_motion_plus                                *;EUMACH
+
+    LW     ML_XYZ45_minus                                             *;EUMACH
+    AN     WG_keys_inhibit                                            *;EUMACH
+    =      PN_W1048_manual_motion_minus                               *;EUMACH
+  ENDI                                                                *;EUMACH
+
+*;EUMACH CE 2008
+  L      PN_error_safety_mode_2
+  IFT
+    LW     ML_XYZ45_plus
+    AN     WG_TC_magazine_axis
+    ==     K+0
+    A[
+      LW     ML_XYZ45_minus
+      AN     WG_TC_magazine_axis
+      ==     K+0
+    ]
+    R      ML_2_more_axis_dir_key_been_pressed
+
+    L      PN_W1046_manual_motion_plus
+    <<     K+16
+    O      PN_W1048_manual_motion_minus
+    =      DL_W1046_W1048_manual_motion
+
+    L      K+0
+    =      BL_axis_dir_key_pressed
+
+    L      K+0
+    =      BL_bit_test
+
+    REPEAT
+      L      DL_W1046_W1048_manual_motion
+      BT     BL_bit_test
+      IFT
+       INC     BL_axis_dir_key_pressed
+      ENDI
+
+      INC    BL_bit_test
+
+      L      BL_bit_test
+      >=     K+32
+    UNTILT
+
+    L      BL_axis_dir_key_pressed
+    >      K+1
+    S      ML_2_more_axis_dir_key_been_pressed
+
+    L      ML_2_more_axis_dir_key_been_pressed
+    IFT
+      L      K+0
+      =      PN_W1046_manual_motion_plus
+      =      PN_W1048_manual_motion_minus
+    ENDI
+  ENDI
+*;EUMACH CE 2008
+
+EM
+

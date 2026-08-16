@@ -1,0 +1,1136 @@
+*-----------------------------------------------------------------------------
+*  WZW Automatik Pickup
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    X-Position: DG_WZ_Platz_Tabelle_P1 -> DG_WZW_Pos_X
+*    Y-Position: DG_WZ_Platz_Tabelle_P2 -> DG_WZW_Pos_Y
+*    Z-Position: DG_WZ_Platz_Tabelle_P3 -> DG_WZW_Pos_Z_einsetzen
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_WZ_ohne_Platz                         K -1
+#define /s    KL_WZ_mit_Platz                          K +1
+#define /s    KL_Werkzeug_in_Spindel                   K +0
+#define /s    KL_Magazin_1                             K +1
+#define /s    KL_Magazin_2                             K +2
+#define /s    KL_Anzahl_Pickup_Positionen              K +3
+#define /s    KL_Platz_Tabelle                         K +2
+#define /s    KL_Wert_P1                               K +7
+#define /s    KL_String_Anzahl                         K +3
+
+#define /s    ML_2nd_TOOL_CALL_folgt                   M
+#define /s    ML_TOOL_CALL_alt                         M
+#define /s    ML_Stack_synchronisieren                 M
+#define /s    ML_WZ_Platz_Tabelle_gelesen              M
+#define /s    ML_Modul_Fehler                          M
+#define /s    ML_WZW_Diagnose                          M
+#define /s    ML_Schritt_Start                         M
+
+#define /s    BL_Identifier                            B
+#define /s    BL_Schritt_WZW                           B
+#define /s    BL_String_Index                          B
+
+#define /s    WL_Zeile_Dialog_Datei                    W
+#define /s    WL_Stack_synchronisieren                 W
+
+#include Mac_Lib.inc
+
+EXTERN Absolut
+GLOBAL WZW_auto
+
+;----------------------------
+LBL WZW_auto
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  EMT
+
+  L      PN_M4540_T_neu_zuerst_Festplatzwechsel
+  R      PN_M4540_T_neu_zuerst_Festplatzwechsel
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  A      NP_M4520_TOOL_CALL_2_Strobe
+  A      NP_M4073_Strobe_TOOL_CALL
+  A      MG_WZW_T0_auto_manu_notwendig
+  S      PN_Fehler_TOOL_CALL_T0
+  EMT
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  IFT
+*$WS Pickup als 2. Magazin (in Vorbereitung)
+    L      NP_W262_Werkzeug_Platz_Nummer
+    >=     KL_WZ_mit_Platz
+    A[
+      L      NP_W268_Werkzeug_Magazin_Nummer
+      <>     KL_Magazin_1
+      XO     I_S2_Spindel_aktiv
+    ]
+    A      MG_2_Spindel_Betrieb_aktiv
+    S      PN_Fehler_WZ_aus_falschem_Magazin
+    EMT
+
+    L      NP_W262_Werkzeug_Platz_Nummer
+    >=     KL_WZ_mit_Platz
+    AN     NP_M4175_Stern_blinkt
+    AN     MG_WZW_automatisch
+    S      MG_WZW_automatisch
+    IFT
+      L      NP_W262_Werkzeug_Platz_Nummer
+      =      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+
+      L      NP_W264_Werkzeug_Nummer
+      =      WG_WZW_auto_Werkzeug_Nummer
+    ENDI
+  ENDI
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+  >=     KL_WZ_mit_Platz
+  A      MG_WZW_manuell
+  A      NP_M4073_Strobe_TOOL_CALL
+  O      MG_WZW_automatisch
+  A[
+    L      MG_Impuls_Internal_STOP
+    ON     MG_Steuerung_betriebsbereit
+  ]
+  S      MG_Platz_Tabelle_pruefen
+
+  L      MG_Platz_Tabelle_angewaehlt
+  A      MG_WZW_Grund_Stellung
+  AN     MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  R      MG_Platz_Tabelle_pruefen
+
+  L      MG_Platz_Tabelle_pruefen
+  AN     MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  AN     MG_WZW_Help
+  A      MG_WZW_Grund_Stellung
+  =      PN_Fehler_Platz_Tabelle_pruefen
+
+  L      MG_WZW_automatisch
+  R      TS_WZW_Timeout
+  S      TS_WZW_Timer_allgemein
+
+  CASE   BG_Schritt_WZW
+    CM     WZW_auto_Start              ;00
+    CM     WZ_in_Spindel_OK            ;01
+    CM     Z_Start_sicher              ;02
+    CM     Z_in_Pos_sicher             ;03
+    CM     Mag_voll_leer               ;04
+    CM     Spi_voll_leer               ;05
+    CM     S_Start                     ;06
+    CM     T_Schleuse_auf              ;07
+    CM     X_Start_vor                 ;08
+    CM     T_Schleuse_ist_auf          ;09
+    CM     Pickup_Werte_lesen          ;10
+    CM     X_in_vor_Pos                ;11
+    CM     Y_Start                     ;12
+    CM     Y_in_WZW_Pos                ;13
+    CM     Z1_ein_aus_Start            ;14
+    CM     Z1_in_Pos_e_a               ;15
+    CM     S_in_WZW_Posit              ;16
+    CM     Pickup_ausfahren            ;17
+    CM     Pickup_ausgefahren          ;18
+    CM     X_Start                     ;19
+    CM     X_in_WZW_Pos                ;20
+    CM     WZ_entspannen               ;21
+    CM     WZ_entspannt                ;22
+    CM     Time_ausheben               ;23
+    CM     Z2_ein_aus_Start            ;24
+    CM     T0_Tneu_Status              ;25
+    CM     T_Status_ok                 ;26
+    CM     Z2_in_Pos_e_a               ;27
+    CM     Tool_Call_2nd               ;28
+    CM     Tool_Call_Wait              ;29
+    CM     WZ_Status_lesen             ;30
+    CM     Sprung_spannen              ;31 ---> (1)
+    CM     Pickup_Werte_lesen          ;32
+    CM     XY_Start                    ;33
+    CM     X_in_WZW_Pos                ;34
+    CM     Y_in_WZW_Pos                ;35
+    CM     Mag_voll                    ;36
+    CM     Z3_ein_Start                ;37
+    CM     Z3_in_Pos_ein               ;38
+    CM     WZ_spannen                  ;39 <--- (1)
+    CM     WZ_gespannt                 ;40
+    CM     X_Start_vor                 ;41
+    CM     Pickup_einfahren            ;42
+    CM     Tneu_in_Status              ;43
+    CM     T_Status_ok                 ;44
+    CM     X_in_vor_Pos                ;45
+    CM     Pickup_eingefahren          ;46
+    CM     T_Schleuse_zu               ;47
+    CM     Z_Start_sicher              ;48
+    CM     T_Schleuse_ist_zu           ;49
+    CM     Z_in_Pos_sicher             ;50
+    CM     Spi_leer_voll               ;51
+    CM     Tool_Call_quitt             ;52
+    CM     WZW_auto_Ende               ;53
+    CM     Time                        ;reserviert
+  ENDC
+
+  PLL
+  S      TS_WZW_Timeout
+  =      ML_Schritt_Start
+  IFT
+    INC    BG_Schritt_WZW
+  ENDI
+
+  L      BG_Schritt_WZW
+  <>     BL_Schritt_WZW
+  ON     ML_WZW_Diagnose
+  A      MG_WZW_Diagnose
+  IFT
+    L      K +0
+    =      BL_String_Index
+
+    L      BG_Schritt_WZW
+    =      BL_Schritt_WZW
+    REPEAT
+      L      BL_Schritt_WZW
+      =X
+
+      L      KF Diagnose[X]
+      =      WL_Zeile_Dialog_Datei
+      =X
+
+      L      S#D0[X]
+      =      SG_WZW_Diagnose_Zeile_1[BL_String_Index]
+
+      INC    BL_Schritt_WZW
+      INC    BL_String_Index
+      INCX
+
+      L      BL_String_Index
+      >=     KL_String_Anzahl
+    UNTILT
+  ENDI
+
+  L      BG_Schritt_WZW
+  =      BL_Schritt_WZW
+
+  L      MG_WZW_Diagnose
+  =      ML_WZW_Diagnose
+
+  LN     MG_WZW_automatisch
+  EMT
+
+  L      MG_Impuls_NC_Start
+  R      MG_WZW_Unterbrechung
+
+  L      MG_Taste_NC_Start
+  O      MG_Impuls_CE_Taste
+  S      TS_WZW_Timeout
+
+  LN     TR_WZW_Timeout
+  AN     TS_WZW_Timeout
+  =      PN_Fehler_WZW_Timeout
+  S      MG_WZW_Unterbrechung
+
+  L      MG_Taste_NC_Stop
+  O      MG_Impuls_External_STOP
+  S      MG_WZW_Unterbrechung
+
+  L      MG_Impuls_Internal_STOP
+  O      MG_BA_Wechsel_Auto_Manu
+  ON     MG_Steuerung_betriebsbereit
+  CMT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Sprung_spannen                     ;31
+
+  PS     MG_Eins_Merker
+
+  LN     ML_2nd_TOOL_CALL_folgt
+  O      NP_M4523_TOOL_CALL_ohne_Platznummer
+  IFT
+    L      BG_Schritt_WZW
+    +      K+7
+    =      BG_Schritt_WZW
+  ENDI
+
+EM
+
+;----------------------------
+LBL WZW_auto_Start                     ;00
+
+  LN     MG_WZW_Grund_Stellung
+  A      MG_WZW_automatisch
+  S      PN_Fehler_WZW_Grund_Stellung
+  S      MG_WZW_Unterbrechung
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+  S      TS_WZW_Timeout
+
+  L      MG_WZW_automatisch
+  AN     MG_WZW_manuell
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+  A      MG_WZW_Grund_Stellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Pickup_Werte_lesen                 ;08 ;32
+
+  L      ML_WZ_Platz_Tabelle_gelesen
+  R      ML_WZ_Platz_Tabelle_gelesen
+  PSL
+  EMT
+
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   WZ_Pickup_Position
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL WZ_Pickup_Position
+
+  PS     NP_W268_Werkzeug_Magazin_Nummer
+  PS     STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+  PS     K&DG_WZ_Platz_Tabelle_P1
+  CM     9304                          ;Kopieren von OEM-Werten aus der Platztabelle
+  M_Modul_Fehler_anzeigen
+
+  L      DG_WZ_Platz_Tabelle_P1
+  =      DG_WZW_Pos_X
+
+  L      DG_WZ_Platz_Tabelle_P2
+  =      DG_WZW_Pos_Y
+
+  L      DG_WZ_Platz_Tabelle_P3
+  =      DG_WZW_Pos_Z_einsetzen
+
+  L      NP_M4203_Fehler_Modul_9xxx
+  SN     ML_WZ_Platz_Tabelle_gelesen
+  IFT
+    L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+    =      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+  ENDI
+
+EM
+
+;----------------------------
+LBL WZ_in_Spindel_OK                   ;01
+
+  L      MG_Taste_NC_Start_P_Impuls
+  A      MG_BA_Automatik
+  R      MG_WZW_ohne_Tool_Call
+
+  L      MG_WZW_ohne_Tool_Call
+  =      PN_Fehler_WZ_Spindel_ok
+  =      MG_Win_Window_JA_Nein
+  S      TS_WZW_Timeout
+
+  LN     MG_Referenz_Achsen_aufgenommen
+  S      PN_Fehler_Referenz_notwendig
+
+  LN     MG_WZW_ohne_Tool_Call
+  AN     PN_Fehler_Referenz_notwendig
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Spi_voll_leer                      ;16
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMT    Spi_voll
+  CMF    Spi_leer
+
+EM
+
+;----------------------------
+LBL Spi_leer_voll                      ;40
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  ==     KL_WZ_ohne_Platz
+  O      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMF    Spi_voll
+  CMT    Spi_leer
+
+EM
+
+;----------------------------
+LBL Spi_voll
+
+  LN     MG_Sn_I_WZ_ist_in_Spindel
+  AN     MG_Inbetriebnahme
+  AN     STG_Spindel[BG_Index_Sn].MG_WZ_Ueberwachung_inaktiv
+  S      PN_Fehler_Spindel_leer
+
+  LN     PN_Fehler_Spindel_leer
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Spi_leer
+
+  L      MG_Sn_I_WZ_ist_in_Spindel
+  AN     MG_Inbetriebnahme
+  AN     STG_Spindel[BG_Index_Sn].MG_WZ_Ueberwachung_inaktiv
+  S      PN_Fehler_Spindel_nicht_leer
+
+  LN     PN_Fehler_Spindel_nicht_leer
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Mag_voll_leer                      ;15
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMT    Mag_leer
+  CMF    Mag_voll
+
+EM
+
+;----------------------------
+LBL Mag_leer
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_belegt
+  AN     MG_Inbetriebnahme
+  AN     MG_Mag_1_Ueberwachung_inaktiv[BG_WZM_Index_Tool_Call]
+  S      PN_Fehler_WZM_Platz_belegt
+
+  LN     PN_Fehler_WZM_Platz_belegt
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Mag_voll                           ;35
+
+  LN     STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_belegt
+  AN     MG_Inbetriebnahme
+  AN     MG_Mag_1_Ueberwachung_inaktiv[BG_WZM_Index_Tool_Call]
+  S      PN_Fehler_WZM_Werkzeug_fehlt
+
+  LN     PN_Fehler_WZM_Werkzeug_fehlt
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL S_Start                            ;04
+
+  LN     MG_WZW_Unterbrechung
+  PSL
+  EMF
+
+  L      MG_Spindel_mit_Messgeraet
+  S      MG_WZW_Spindel_Richten_ein
+
+EM
+
+;----------------------------
+LBL S_in_WZW_Posit                     ;14
+
+  LN     MG_Spindel_mit_Messgeraet
+  A      MG_Spindel_aus
+  O      MG_Spindel_in_WZW_Position
+  AN     MG_WZW_Spindel_Richten_ein
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Position_S
+
+EM
+
+;----------------------------
+LBL Z1_ein_aus_Start                   ;12
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMT    Z_ein_Start
+  CMF    Z_aus_Start
+
+EM
+
+;----------------------------
+LBL Z1_in_Pos_e_a                      ;13
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMT    Z_in_Pos_ein
+  CMF    Z_in_Pos_aus
+
+EM
+
+;----------------------------
+LBL Z2_ein_aus_Start                   ;24
+
+  L      NP_M4522_TOOL_CALL_mit_Platznummer
+  CMT    Z_ein_Start
+  CMF    Z_aus_Start
+
+EM
+
+;----------------------------
+LBL Z2_in_Pos_e_a                      ;27
+
+  L      NP_M4522_TOOL_CALL_mit_Platznummer
+  CMT    Z_in_Pos_ein
+  CMF    Z_in_Pos_aus
+
+EM
+
+;----------------------------
+LBL Z3_ein_Start                       ;36
+
+  CM     Z_ein_Start
+
+EM
+
+;----------------------------
+LBL Z3_in_Pos_ein                      ;37
+
+  CM     Z_in_Pos_ein
+
+EM
+
+;----------------------------
+LBL Z_Start_sicher                     ;02 ;48
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_sicher
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_sicher
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_ein_Start
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_einsetzen
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_einsetzen
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_aus_Start
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_ausheben
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_ausheben
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_Pos_sicher                    ;03 ;50
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  -      DG_WZW_Pos_Z_sicher
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_Z
+  AN     PN_M4122_Strobe_PLC_Posit_Achse_Z
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_sicher
+
+EM
+
+;----------------------------
+LBL Z_in_Pos_ein
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_einsetzen
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  -      DG_WZW_Pos_X
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_X
+  S      MG_Sn_O_Spindel_ausblasen
+
+  L      MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  -      DG_WZW_Pos_Z_einsetzen
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_Z
+  AN     PN_M4122_Strobe_PLC_Posit_Achse_Z
+  AN     MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+EM
+
+;----------------------------
+LBL Z_in_Pos_aus
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Z_ausheben
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  -      DG_WZW_Pos_X
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_X
+  S      MG_Sn_O_Spindel_ausblasen
+
+  L      MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  -      DG_WZW_Pos_Z_ausheben
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_Z
+  AN     PN_M4122_Strobe_PLC_Posit_Achse_Z
+  AN     MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+EM
+
+;----------------------------
+LBL XY_Start
+
+  CM     X_Start
+  CM     Y_Start
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Y_Start                            ;10 ;33
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Y
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Y
+    PS     DG_WZW_Pos_Y
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_in_WZW_Pos                       ;11 ;34
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_Y
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Y]
+  -      DG_WZW_Pos_Y
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_Y
+  AN     PN_M4121_Strobe_PLC_Posit_Achse_Y
+  AN     MG_WZW_Unterbrechung
+  PSL
+  EMF
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+  =      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+
+EM
+
+;----------------------------
+LBL X_Start_vor                        ;06 ;41
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_X_vor
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_WZW_Pos_X_vor
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_vor_Pos                       ;09 ;45
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_X_vor
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  -      DG_WZW_Pos_X_vor
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_X
+  AN     PN_M4120_Strobe_PLC_Posit_Achse_X
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL X_Start                            ;19
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  -      K+1
+  =X
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_X
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_WZW_Pos_X
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_WZW_Pos                       ;20
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  -      K+1
+  =X
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZW_Pos_X
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  -      DG_WZW_Pos_X
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster_X
+  AN     PN_M4120_Strobe_PLC_Posit_Achse_X
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Pickup_ausfahren                   ;17
+
+#if &O_WZ_Pickup_ausfahren > 999
+  PS     MG_Eins_Merker
+#else
+  L      MG_Eins_Merker
+  R      O_WZ_Pickup_einfahren
+  S      O_WZ_Pickup_ausfahren
+  PSL
+#endif
+
+EM
+
+;----------------------------
+LBL Pickup_ausgefahren                 ;18
+
+#if &O_WZ_Pickup_ausfahren > 999
+  PS     MG_Eins_Merker
+#else
+  LN     I_WZ_Pickup_eingefahren
+  A      I_WZ_Pickup_ausgefahren
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_Pickup_ausfahren
+#endif
+
+EM
+
+;----------------------------
+LBL Pickup_einfahren                   ;42
+
+#if &O_WZ_Pickup_ausfahren > 999
+  PS     MG_Eins_Merker
+#else
+  L      MG_Eins_Merker
+  S      O_WZ_Pickup_einfahren
+  R      O_WZ_Pickup_ausfahren
+  PSL
+#endif
+
+EM
+
+;----------------------------
+LBL Pickup_eingefahren                 ;46
+
+#if &O_WZ_Pickup_ausfahren > 999
+  PS     MG_Eins_Merker
+#else
+  L      I_WZ_Pickup_eingefahren
+  AN     I_WZ_Pickup_ausgefahren
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_Pickup_einfahren
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Status_lesen                    ;30
+
+  L      MG_Eins_Merker
+  S      MG_WZ_Status_lesen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_entspannen                      ;21
+
+  L      MG_Eins_Merker
+  S      MG_Sn_O_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_spannen                         ;38
+
+  L      MG_Eins_Merker
+  R      MG_Sn_O_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_entspannt                       ;22
+
+  LN     MG_Sn_I_WZ_gespannt
+  A      MG_Sn_I_WZ_entspannt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_entspannen
+
+EM
+
+;----------------------------
+LBL WZ_gespannt                        ;39
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_spannen
+
+EM
+
+;----------------------------
+LBL T_Schleuse_auf                     ;05
+
+  L      MG_Eins_Merker
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Schleuse_zu                      ;47
+
+  L      MG_Eins_Merker
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Schleuse_ist_auf                 ;07
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      I_WZ_Schleuse_auf
+  AN     I_WZ_Schleuse_zu
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_Schleuse_auf
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL T_Schleuse_ist_zu                  ;49
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  LN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  =      MG_Win_WZ_Schleuse_zu
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL T0_Tneu_Status                     ;25
+
+  LN     MG_WZW_Unterbrechung
+  S      PN_M4538_Vorwahl_Werkzeug
+  PSL
+
+EM
+
+;----------------------------
+LBL Tneu_in_Status                     ;43
+
+  LN     MG_WZ_Status_lesen
+  AN     MG_WZW_Unterbrechung
+  PSL
+  EMF
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  >=     KL_WZ_mit_Platz
+  S      PN_M4538_Vorwahl_Werkzeug
+  EMF
+
+  L      NP_W264_Werkzeug_Nummer
+  =      WG_Werkzeug_in_Spindel
+
+EM
+
+;----------------------------
+LBL T_Status_ok                        ;26 ;44
+
+  LN     PN_M4538_Vorwahl_Werkzeug
+  PSL
+
+EM
+
+;----------------------------
+LBL Tool_Call_2nd                      ;28
+
+  LN     NP_M4520_TOOL_CALL_2_Strobe
+  ON     NP_M4073_Strobe_TOOL_CALL
+  PSL
+  EMT
+
+  L      NP_M4520_TOOL_CALL_2_Strobe
+  AN     MG_WZW_Unterbrechung
+  S      ML_2nd_TOOL_CALL_folgt
+  S      PN_M4093_Quit_TOOL_CALL
+
+EM
+
+;----------------------------
+LBL Tool_Call_Wait                     ;29
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  PSL
+  EMF
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  >=     KL_WZ_mit_Platz
+  IFT
+    L      NP_W262_Werkzeug_Platz_Nummer
+    =      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+
+    L      NP_W264_Werkzeug_Nummer
+    =      WG_WZW_auto_Werkzeug_Nummer
+  ENDI
+
+EM
+
+;----------------------------
+LBL Tool_Call_quitt                     ;51
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  ==     KL_WZ_ohne_Platz
+  ON     NP_M4073_Strobe_TOOL_CALL
+  S      MG_WZ_Vorwahl_Status_lesen
+  PSL
+  EMT
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  AN     MG_WZW_Unterbrechung
+  S      PN_M4093_Quit_TOOL_CALL
+
+EM
+
+;----------------------------
+LBL WZW_auto_Ende                      ;52
+
+  PS     MG_Null_Merker
+
+;----------------------------
+LBL WZW_auto_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Sn_O_Spindel_ausblasen
+  R      O_WZ_Pickup_einfahren
+  R      O_WZ_Pickup_ausfahren
+  R      MG_WZW_automatisch
+  R      MG_WZW_Unterbrechung
+  R      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Tool_Call
+  R      MG_WZW_Spindel_Richten_ein
+  R      PN_Fehler_WZ_Spindel_ok
+  R      MG_Win_Window_JA_Nein
+  R      ML_2nd_TOOL_CALL_folgt
+  R      ML_WZ_Platz_Tabelle_gelesen
+
+  L      K+0
+  =      BG_Schritt_WZW
+
+EM
+
+;----------------------------
+LBL Time_ausheben                      ;23
+
+  L      NP_M4522_TOOL_CALL_mit_Platznummer
+  PSL
+  EMT
+
+  PLL
+  CMF    Time
+
+EM
+
+;----------------------------
+LBL Time
+
+  LN     TR_WZW_Timer_allgemein
+  =      TS_WZW_Timer_allgemein
+  PSL
+
+EM
+
+KFIELD Diagnose
+  KG_Dia_WZW_Automatik_Pickup          ;-1
+  KG_Dia_WZW_auto_Start                ;00
+  KG_Dia_WZ_in_Spindel_OK              ;01
+  KG_Dia_Z_Start_sicher                ;02
+  KG_Dia_Z_in_Pos_sicher               ;03
+  KG_Dia_Mag_voll_leer                 ;04
+  KG_Dia_Spi_voll_leer                 ;05
+  KG_Dia_S_Start                       ;06
+  KG_Dia_T_Schleuse_auf                ;07
+  KG_Dia_X_Start_vor                   ;08
+  KG_Dia_T_Schleuse_ist_auf            ;09
+  KG_Dia_Pickup_Werte_lesen            ;10
+  KG_Dia_X_in_vor_Pos                  ;11
+  KG_Dia_Y_Start                       ;12
+  KG_Dia_Y_in_WZW_Pos                  ;13
+  KG_Dia_Z1_ein_aus_Start              ;14
+  KG_Dia_Z1_in_Pos_e_a                 ;15
+  KG_Dia_S_in_WZW_Pos                  ;16
+  KG_Dia_Pickup_ausfahren              ;17
+  KG_Dia_Pickup_ausgefahren            ;18
+  KG_Dia_X_Start                       ;19
+  KG_Dia_X_in_WZW_Pos                  ;20
+  KG_Dia_WZ_entspannen                 ;21
+  KG_Dia_WZ_entspannt                  ;22
+  KG_Dia_Time_ausheben                 ;23
+  KG_Dia_Z2_ein_aus_Start              ;24
+  KG_Dia_T0_Tneu_Status                ;25
+  KG_Dia_T_Status_ok                   ;26
+  KG_Dia_Z2_in_Pos_e_a                 ;27
+  KG_Dia_Tool_Call_2nd                 ;28
+  KG_Dia_Tool_Call_Wait                ;29
+  KG_Dia_WZ_Status_lesen               ;30
+  KG_Dia_Sprung_spannen                ;31 ---> (1)
+  KG_Dia_Pickup_Werte_lesen            ;32
+  KG_Dia_XY_Start                      ;33
+  KG_Dia_X_in_WZW_Pos                  ;34
+  KG_Dia_Y_in_WZW_Pos                  ;35
+  KG_Dia_Mag_voll                      ;36
+  KG_Dia_Z3_ein_Start                  ;37
+  KG_Dia_Z3_in_Pos_ein                 ;38
+  KG_Dia_WZ_spannen                    ;39 <--- (1)
+  KG_Dia_WZ_gespannt                   ;40
+  KG_Dia_X_Start_vor                   ;41
+  KG_Dia_Pickup_einfahren              ;42
+  KG_Dia_Tneu_in_Status                ;43
+  KG_Dia_T_Status_ok                   ;44
+  KG_Dia_X_in_vor_Pos                  ;45
+  KG_Dia_Pickup_eingefahren            ;46
+  KG_Dia_T_Schleuse_zu                 ;47
+  KG_Dia_Z_Start_sicher                ;48
+  KG_Dia_T_Schleuse_ist_zu             ;49
+  KG_Dia_Z_in_Pos_sicher               ;50
+  KG_Dia_Spi_leer_voll                 ;51
+  KG_Dia_Tool_Call_quitt               ;52
+  KG_Dia_WZW_auto_Ende                 ;53
+  KG_Dia_leer                          ;54
+ENDK

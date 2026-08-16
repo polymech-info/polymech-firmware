@@ -1,0 +1,788 @@
+*-----------------------------------------------------------------------------
+*  Pallet change help - service
+*-----------------------------------------------------------------------------
+*  Module Description
+*    In manual mode it is possible to start several tool changer functions
+*    by using a selected help file (SERVICE.HLP>.
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolute_with_software_limit_switch   K%010
+
+#define /s    ML_PC_posit_X                            M
+#define /s    ML_PC_posit_4                            M
+#define /s    ML_PC_1_was_in_load_position             M
+#define /s    ML_PC_2_was_in_load_position             M
+#define /s    ML_PC_1_was_in_machine_position          M
+#define /s    ML_PC_2_was_in_machine_position          M
+#define /s    ML_PC_1_was_in_stop_position             M
+#define /s    ML_PC_2_was_in_stop_position             M
+
+#define /s /r ML_PC_door_open_opened                   M
+#define /s /r ML_PC_door_open_closed                   M
+#define /s /r ML_pallet_in_machine_unclamping          M
+#define /s /r ML_pallet_in_machine_clamping            M
+
+#define /s    BL_step_PC_help                          B
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL PC_help
+GLOBAL PC_output_restore
+GLOBAL PC_output_backup
+
+;----------------------------
+LBL PC_help
+;----------------------------
+
+  L      NP_pallet_change_alternat_table_inactive
+  EMT
+
+  LN     I_PC_1_in_load_position
+  AN     I_PC_1_in_machine_position
+  AN     I_PC_1_in_stop_position
+  =      O_PC_1_rapid_traverse
+
+  LN     I_PC_2_in_load_position
+  AN     I_PC_2_in_machine_position
+  AN     I_PC_2_in_stop_position
+  =      O_PC_2_rapid_traverse
+
+  CM     PC_basic_position
+
+  L      PN_error_function_ok
+  A      MG_PC_help
+  R      PN_error_function_ok
+
+  L      NP_W270_help_file_line_number
+  /      K+100
+  <>     K+6
+  A      MG_PC_help
+  CMT    PC_service_reset
+
+  L      NP_W270_help_file_line_number
+  /      K+100
+  ==     K+6
+  A[
+    L      MG_manual_mode
+    AN     MG_edit_mode
+    O      NP_commissioning
+  ]
+  =      MG_PC_help
+  R      PN_error_PC_standby_position
+  EMF
+
+  L      NP_W270_help_file_line_number
+  MOD    K+100
+  <>     BL_step_PC_help
+  ON     MG_control_operational
+  CMT    PC_service_reset
+
+  L      NP_W270_help_file_line_number
+  MOD    K+100
+  =      BL_step_PC_help
+
+  LN     MG_control_operational
+  EMT
+
+  CASE   BL_step_PC_help
+    CM     PC_EndOfModule              ;00
+    CM     B_to_0_degree               ;01
+    CM     X_to_pallet_1               ;02
+    CM     X_to_pallet_2               ;03
+    CM     PC_door_open                ;04
+    CM     PC_door_close               ;05
+    CM     PC_pallet_unclamp           ;06
+    CM     PC_pallet_clamp             ;07
+    CM     PC_1_to_stop_pos            ;08
+    CM     PC_1_to_load_pos            ;09
+    CM     PC_1_to_machine_pos         ;10
+    CM     PC_2_to_stop_pos            ;11
+    CM     PC_2_to_load_pos            ;12
+    CM     PC_2_to_machine_pos         ;13
+  ENDC
+
+LBL PC_EndOfModule
+
+EM
+
+;----------------------------
+LBL B_to_0_degree                      ;01
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_4
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     B_in_0_degree
+
+  L      ML_PC_posit_4
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4123_strobe_PLC_posit_axis_4
+  EMT
+
+  PS     KG_axis_4
+  PS     K+0
+  L      NP_D780_feed_PLC_4
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL B_in_0_degree
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_4
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_4_ref
+  <      DG_MP1030_pos_window_4
+  O[
+    L      K+3600000
+    -      DG_position_axis_4_ref
+    <      DG_MP1030_pos_window_4
+  ]
+
+  AN     PN_M4123_strobe_PLC_posit_axis_4
+  =      ML_PC_posit_4
+
+EM
+
+;----------------------------
+LBL X_to_pallet_1                      ;02
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     X_in_pallet_1
+
+  L      ML_PC_posit_X
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4120_strobe_PLC_posit_axis_X
+  EMT
+
+  PS     KG_axis_X
+  PS     NP_D944_posit_1_X_alternating_table
+  L      NP_D768_feed_PLC_X
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL X_in_pallet_1
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_X_ref
+  -      NP_D944_posit_1_X_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  =      ML_PC_posit_X
+
+EM
+
+;----------------------------
+LBL X_to_pallet_2                      ;03
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     X_in_pallet_2
+
+  L      ML_PC_posit_X
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4120_strobe_PLC_posit_axis_X
+  EMT
+
+  PS     KG_axis_X
+  PS     NP_D948_posit_2_X_alternating_table
+  L      NP_D768_feed_PLC_X
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL X_in_pallet_2
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_X_ref
+  -      NP_D948_posit_2_X_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  =      ML_PC_posit_X
+
+EM
+
+;----------------------------
+LBL PC_door_open                       ;04
+
+  CM     B_in_0_degree
+
+  LN     ML_PC_posit_4
+  =      MG_win_PC_posit_4
+
+  LN     MG_win_PC_posit_4
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  S      O_PC_door_open
+  R      O_PC_door_close
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_door_open
+  R      O_PC_door_close
+
+  L      I_PC_door_opened
+  AN     I_PC_door_closed
+  S      O_PC_door_open
+  R      O_PC_door_close
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_door_close                      ;05
+
+  L      I_PC_position_1_occupy
+  AN     I_PC_1_in_load_position
+  O[
+    LN     I_PC_position_1_occupy
+    AN     I_PC_1_in_machine_position
+  ]
+  =      MG_win_PC_1_in_standby_position
+
+  L      I_PC_position_2_occupy
+  AN     I_PC_2_in_load_position
+  O[
+    LN     I_PC_position_2_occupy
+    AN     I_PC_2_in_machine_position
+  ]
+  =      MG_win_PC_2_in_standby_position
+
+  LN     MG_win_PC_1_in_standby_position
+  AN     MG_win_PC_2_in_standby_position
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  R      O_PC_door_open
+  S      O_PC_door_close
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_door_close
+  R      O_PC_door_open
+
+  LN     I_PC_door_opened
+  A      I_PC_door_closed
+  R      O_PC_door_open
+  S      O_PC_door_close
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_pallet_unclamp                  ;06
+
+  L      MG_key_NC_start
+  S      O_pallet_in_machine_unclamping
+  R      O_pallet_in_machine_clamping
+
+  L      I_pallet_in_machine_unclamped
+  AN     I_pallet_in_machine_clamped
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_pallet_clamp                    ;07
+
+  L      MG_key_NC_start
+  R      O_pallet_in_machine_unclamping
+  S      O_pallet_in_machine_clamping
+
+  LN     I_pallet_in_machine_unclamped
+  A      I_pallet_in_machine_clamped
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_1_to_stop_pos                   ;08
+
+  CM     X_in_pallet_1
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_1_pos_X
+
+  L      I_PC_1_in_load_position
+  S      ML_PC_1_was_in_load_position
+
+  L      I_PC_1_in_machine_position
+  S      ML_PC_1_was_in_machine_position
+
+  L      I_PC_1_in_stop_position
+  S      ML_PC_1_was_in_stop_position
+
+  LN     I_pallet_in_machine_unclamped
+  O      I_pallet_in_machine_clamped
+  AN     ML_PC_1_was_in_machine_position
+  AN     ML_PC_1_was_in_stop_position
+  =      MG_win_pal_in_machine_unclamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  LN     ML_PC_1_was_in_load_position
+  AN     ML_PC_1_was_in_machine_position
+  AN     ML_PC_1_was_in_stop_position
+  =      MG_win_PC_no_standby_position
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_unclamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_1_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  IFT
+    L      ML_PC_1_was_in_load_position
+    R      O_PC_1_to_load_position
+    S      O_PC_1_to_machine_position
+
+    L      ML_PC_1_was_in_machine_position
+    S      O_PC_1_to_load_position
+    R      O_PC_1_to_machine_position
+  ENDI
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+
+  L      I_PC_1_in_stop_position
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_1_to_load_pos                   ;09
+
+  CM     X_in_pallet_1
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_1_pos_X
+
+  LN     I_pallet_in_machine_unclamped
+  O      I_pallet_in_machine_clamped
+  =      MG_win_pal_in_machine_unclamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_unclamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_1_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  S      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+
+  L      I_PC_1_in_load_position
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_1_to_machine_pos                ;10
+
+  CM     X_in_pallet_1
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_1_pos_X
+
+  L      I_pallet_in_machine_unclamped
+  ON     I_pallet_in_machine_clamped
+  =      MG_win_pal_in_machine_clamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_clamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_1_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  R      O_PC_1_to_load_position
+  S      O_PC_1_to_machine_position
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+
+  L      I_PC_1_in_machine_position
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_2_to_stop_pos                   ;11
+
+  CM     X_in_pallet_2
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_2_pos_X
+
+  L      I_PC_2_in_load_position
+  S      ML_PC_2_was_in_load_position
+
+  L      I_PC_2_in_machine_position
+  S      ML_PC_2_was_in_machine_position
+
+  L      I_PC_2_in_stop_position
+  S      ML_PC_2_was_in_stop_position
+
+  LN     I_pallet_in_machine_unclamped
+  O      I_pallet_in_machine_clamped
+  AN     ML_PC_2_was_in_machine_position
+  AN     ML_PC_2_was_in_stop_position
+  =      MG_win_pal_in_machine_unclamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  LN     ML_PC_2_was_in_load_position
+  AN     ML_PC_2_was_in_machine_position
+  AN     ML_PC_2_was_in_stop_position
+  =      MG_win_PC_no_standby_position
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_unclamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_2_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  IFT
+    L      ML_PC_2_was_in_load_position
+    R      O_PC_2_to_load_position
+    S      O_PC_2_to_machine_position
+
+    L      ML_PC_2_was_in_machine_position
+    S      O_PC_2_to_load_position
+    R      O_PC_2_to_machine_position
+  ENDI
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+
+  L      I_PC_2_in_stop_position
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_2_to_load_pos                   ;12
+
+  CM     X_in_pallet_2
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_2_pos_X
+
+  LN     I_pallet_in_machine_unclamped
+  O      I_pallet_in_machine_clamped
+  =      MG_win_pal_in_machine_unclamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_unclamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_2_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  S      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+
+  L      I_PC_2_in_load_position
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_2_to_machine_pos                ;13
+
+  CM     X_in_pallet_2
+
+  LN     ML_PC_posit_X
+  =      MG_win_PC_2_pos_X
+
+  L      I_pallet_in_machine_unclamped
+  ON     I_pallet_in_machine_clamped
+  =      MG_win_pal_in_machine_clamping
+
+  LN     I_PC_door_opened
+  O      I_PC_door_closed
+  =      MG_win_PC_door_open
+
+  L      MG_key_NC_start
+  AN     MG_win_pal_in_machine_clamping
+  AN     MG_win_PC_door_open
+  AN     MG_win_PC_2_pos_X
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  R      O_PC_2_to_load_position
+  S      O_PC_2_to_machine_position
+
+  L      MG_key_NC_start_n_pulse
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+
+  L      I_PC_2_in_machine_position
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL PC_basic_position
+
+  L      I_PC_position_1_occupy
+  A      I_PC_1_in_load_position
+  O[
+    LN     I_PC_position_1_occupy
+    A      I_PC_1_in_machine_position
+  ]
+  A[
+    L      I_PC_2_in_load_position
+    A      I_PC_position_2_occupy
+    O[
+      L      I_PC_2_in_machine_position
+      AN     I_PC_position_2_occupy
+    ]
+  ]
+  =      MG_PC_drives_in_standby_position
+
+  L      MG_PC_drives_in_standby_position
+  AN     I_PC_door_opened
+  A      I_PC_door_closed
+  AN     I_pallet_in_machine_unclamped
+  A      I_pallet_in_machine_clamped
+  =      MG_PC_standby_position
+
+  L      MG_PC_active
+  O      MG_PC_help
+  EMT
+
+  LN     MG_PC_standby_position
+  A      MG_power_delayed_on
+  S      PN_error_PC_standby_position
+  EMF
+
+  L      I_PC_position_1_occupy
+  AN     I_PC_1_in_load_position
+  O[
+    LN     I_PC_position_1_occupy
+    AN     I_PC_1_in_machine_position
+  ]
+  =      MG_win_PC_1_in_standby_position
+
+  L      I_PC_position_2_occupy
+  AN     I_PC_2_in_load_position
+  O[
+    LN     I_PC_position_2_occupy
+    AN     I_PC_2_in_machine_position
+  ]
+  =      MG_win_PC_2_in_standby_position
+
+  L      I_pallet_in_machine_unclamped
+  ON     I_pallet_in_machine_clamped
+  =      MG_win_pal_in_machine_clamping
+
+  L      I_PC_door_opened
+  ON     I_PC_door_closed
+  =      MG_win_PC_door_close
+
+EM
+
+;----------------------------
+LBL PC_service_reset
+
+  L      MG_marker_one
+  R      O_PC_1_to_load_position
+  R      O_PC_1_to_machine_position
+  R      O_PC_2_to_load_position
+  R      O_PC_2_to_machine_position
+  R      PN_M4120_strobe_PLC_posit_axis_X
+  R      PN_error_function_ok
+  R      ML_PC_1_was_in_load_position
+  R      ML_PC_2_was_in_load_position
+  R      ML_PC_1_was_in_machine_position
+  R      ML_PC_2_was_in_machine_position
+  R      ML_PC_1_was_in_stop_position
+  R      ML_PC_2_was_in_stop_position
+  R      MG_win_PC_1_pos_X
+  R      MG_win_PC_2_pos_X
+  R      MG_win_PC_door_open
+  R      MG_win_PC_door_close
+  R      MG_win_pal_in_machine_unclamping
+  R      MG_win_pal_in_machine_clamping
+  R      MG_win_PC_no_standby_position
+  R      MG_win_PC_1_in_standby_position
+  R      MG_win_PC_2_in_standby_position
+
+EM
+
+;----------------------------
+LBL PC_output_restore
+
+  L      NP_pallet_change_alternat_table_inactive
+  EMT
+
+  LN     I_PC_1_in_stop_position
+  AN     I_PC_2_in_stop_position
+  R      O_PC_release_stop_position
+
+  LN     I_PC_1_in_machine_position
+  AN     I_PC_2_in_machine_position
+  R      O_PC_release_machine_position
+
+  L      ML_pallet_in_machine_unclamping
+  =      O_pallet_in_machine_unclamping
+
+  L      ML_pallet_in_machine_clamping
+  =      O_pallet_in_machine_clamping
+
+  L      ML_PC_door_open_opened
+  =      O_PC_door_open
+
+  L      ML_PC_door_open_closed
+  =      O_PC_door_close
+
+EM
+
+;----------------------------
+LBL PC_output_backup
+
+  L      NP_pallet_change_alternat_table_inactive
+  EMT
+
+  L      O_PC_1_to_load_position
+  O      O_PC_1_to_machine_position
+  A      I_PC_1_in_stop_position
+  S      O_PC_release_stop_position
+
+  L      O_PC_2_to_load_position
+  O      O_PC_2_to_machine_position
+  A      I_PC_2_in_stop_position
+  S      O_PC_release_stop_position
+
+  L      O_PC_1_to_load_position
+  O      O_PC_1_to_machine_position
+  A      I_PC_1_in_machine_position
+  S      O_PC_release_machine_position
+
+  L      O_PC_2_to_load_position
+  O      O_PC_2_to_machine_position
+  A      I_PC_2_in_machine_position
+  S      O_PC_release_machine_position
+
+  LN     MG_control_operational
+  R      O_pallet_in_machine_unclamping
+  R      O_pallet_in_machine_clamping
+  R      O_PC_door_open
+  R      O_PC_door_close
+  EMT
+
+  L      O_pallet_in_machine_unclamping
+  =      ML_pallet_in_machine_unclamping
+
+  L      O_pallet_in_machine_clamping
+  =      ML_pallet_in_machine_clamping
+
+  L      O_PC_door_open
+  =      ML_PC_door_open_opened
+
+  L      O_PC_door_close
+  =      ML_PC_door_open_closed
+
+EM

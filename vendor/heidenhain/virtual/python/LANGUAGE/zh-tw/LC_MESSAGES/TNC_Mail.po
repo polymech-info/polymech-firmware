@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "設定"
+
+msgid "MAIL"
+msgstr "電子郵件"
+
+msgid "EVENTS"
+msgstr "事件"
+
+msgid "FROM"
+msgstr "從"
+
+msgid "TO"
+msgstr "至"
+
+msgid "CC"
+msgstr "副本"
+
+msgid "BCC"
+msgstr "密件副本"
+
+msgid "SUBJECT"
+msgstr "主旨"
+
+msgid "PLC_EVENTS"
+msgstr "PLC事件"
+
+msgid "NAME"
+msgstr "名稱"
+
+msgid "PLC_ADDRESS"
+msgstr "PLC 位址"
+
+msgid "TRIGGER"
+msgstr "觸發"
+
+msgid "SERVER"
+msgstr "伺服器"
+
+msgid "USER"
+msgstr "使用者"
+
+msgid "PASSWORD"
+msgstr "密碼"
+
+msgid "MAIL_TEXT"
+msgstr "電子郵件 文字"
+
+msgid "HEADLINE"
+msgstr "標題"
+
+msgid "FOOTER"
+msgstr "註腳"
+

@@ -1,0 +1,48 @@
+; ==================================================================================
+;
+; Diese Datei verbindet Softkey-Funktionalitaet mit einem Python-Skript.
+; Weiter sind bis zu vier TOKEN verfuegbar,
+; ueber die jeweils ein Python-Prozess mit dem Booten der PLC gestartet werden kann.
+;
+; ==================================================================================
+;
+; Among other things, the PLC:\PYTHON.SYS file links soft key functions with
+; a Python script and is also read by the soft-key process.
+;
+; ==================================================================================
+
+; Zur aktivierung der neune Werkzeugverwaltung nur einen Block (A, B oder C) aktivieren!
+; To activate the new Toolmanagement activate only  one block (A,B or C)!
+
+; A: Start / Aktivierung Werkzeugtabelle direkt über Softkey
+;SK_NC_TOOL_TABLE = SYS:\Python\tool\ToolMgt.py tool_table 15 tool
+
+; B: Start neue Werkzeugverwaltung beim Reset
+;    Aktivierung über Softkey Werkzeugtabelle
+;START_PY1 = SYS:\Python\tool\Client.py tool_init 15 init
+;SK_NC_TOOL_TABLE = SYS:\Python\tool\Client.py tool_cl 15 tool
+
+; C: Start neue Werkzeugverwaltung beim Reset
+;    Aktivierung über Softkey Werkzeugverwaltung aus den alten Ansichten
+;    der Werkzeugtabelle , Platztabelle oder Satzfolge
+;START_PY1 = SYS:\Python\tool\Client.py tool_init 15 init
+;SK_NC_TOOL_TABLE_TOOL = SYS:\Python\tool\Client.py tool_tool 15 tool
+;SK_NC_TOOL_TABLE_ATC = SYS:\Python\tool\Client.py tool_pocket 15 pocket
+;SK_NC_TOOL_TABLE_USAGE = SYS:\Python\tool\Client.py tool_usage 15 last
+
+; Start der Bestückungsliste in der Betriebsart "Programm Test" 
+;SK_NC_Program_run_TOOL_USAGE_TEST = JH_STANDARD
+
+; ==================================================================================
+
+;START_PY2 = PLC:\Python\pysel.py pysel 5
+
+; ==================================================================================
+
+;START_PY3 = <Parameter fuer Python Prozess>
+
+; ==================================================================================
+
+;START_PY4 = <Parameter fuer Python Prozess>
+
+; ==================================================================================

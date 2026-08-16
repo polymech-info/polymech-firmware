@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "安装"
+
+msgid "MAIL"
+msgstr "E-Mail"
+
+msgid "EVENTS"
+msgstr "事件"
+
+msgid "FROM"
+msgstr "从"
+
+msgid "TO"
+msgstr "到"
+
+msgid "CC"
+msgstr "Cc"
+
+msgid "BCC"
+msgstr "Bcc"
+
+msgid "SUBJECT"
+msgstr "主题"
+
+msgid "PLC_EVENTS"
+msgstr "PLC 事件"
+
+msgid "NAME"
+msgstr "名称"
+
+msgid "PLC_ADDRESS"
+msgstr "PLC 地址"
+
+msgid "TRIGGER"
+msgstr "触发"
+
+msgid "SERVER"
+msgstr "服务器"
+
+msgid "USER"
+msgstr "用户"
+
+msgid "PASSWORD"
+msgstr "密码"
+
+msgid "MAIL_TEXT"
+msgstr "E-Mail 文本"
+
+msgid "HEADLINE"
+msgstr "标题"
+
+msgid "FOOTER"
+msgstr "页脚"
+

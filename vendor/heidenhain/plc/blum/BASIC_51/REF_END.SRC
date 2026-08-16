@@ -1,0 +1,579 @@
+*-----------------------------------------------------------------------------
+*  Reference End Position
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolute_with_soft_limit_no_DCM       K %1010        *;EUMACH BASIC 54
+#define /s    KL_absolute_with_software_limit_switch   K%010
+#define /s    KL_inactive                              K-1
+
+#define /s    ML_PLC_posit_active                      M
+#define /s    ML_reference_auto_start                  M
+#define /s    ML_control_loop_open                     M
+#define /s    ML_axes_torque_limited                   M
+
+#define /s    WL_pos_0_degree_necessary                W
+
+#include Mac_Lib.inc
+
+GLOBAL Ref_End_Position
+
+;----------------------------
+LBL Ref_End_Position
+;----------------------------
+
+#if (KG_reference_end_position_software & %0000000000000001) = %0000000000000001
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_X
+    IFT
+      L      DG_position_axis_X_ref
+      <      K+0
+      =      MG_ref_end_position_X
+    ELSE
+      L      DG_position_axis_X_ref
+      >      K+0
+      =      MG_ref_end_position_X
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000000010) = %0000000000000010
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_Y
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_Y
+    IFT
+      L      DG_position_axis_Y_ref
+      <      K+0
+      =      MG_ref_end_position_Y
+    ELSE
+      L      DG_position_axis_Y_ref
+      >      K+0
+      =      MG_ref_end_position_Y
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000000100) = %0000000000000100
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_Z
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_Z
+    IFT
+      L      DG_position_axis_Z_ref
+      <      K+0
+      =      MG_ref_end_position_Z
+    ELSE
+      L      DG_position_axis_Z_ref
+      >      K+0
+      =      MG_ref_end_position_Z
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000001000) = %0000000000001000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_4
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_4
+    IFT
+      L      DG_position_axis_4_ref
+      <      K+0
+      =      MG_ref_end_position_4
+    ELSE
+      L      DG_position_axis_4_ref
+      >      K+0
+      =      MG_ref_end_position_4
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000010000) = %0000000000010000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_5
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_5
+    IFT
+      L      DG_position_axis_5_ref
+      <      K+0
+      =      MG_ref_end_position_5
+    ELSE
+      L      DG_position_axis_5_ref
+      >      K+0
+      =      MG_ref_end_position_5
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000100000) = %0000000000100000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_6
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_6
+    IFT
+      L      DG_position_axis_6_ref
+      <      K+0
+      =      MG_ref_end_position_6
+    ELSE
+      L      DG_position_axis_6_ref
+      >      K+0
+      =      MG_ref_end_position_6
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000001000000) = %0000000001000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_7
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_7
+    IFT
+      L      DG_position_axis_7_ref
+      <      K+0
+      =      MG_ref_end_position_7
+    ELSE
+      L      DG_position_axis_7_ref
+      >      K+0
+      =      MG_ref_end_position_7
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000010000000) = %0000000010000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_8
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_8
+    IFT
+      L      DG_position_axis_8_ref
+      <      K+0
+      =      MG_ref_end_position_8
+    ELSE
+      L      DG_position_axis_8_ref
+      >      K+0
+      =      MG_ref_end_position_8
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000100000000) = %0000000100000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_9
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_9
+    IFT
+      L      DG_position_axis_9_ref
+      <      K+0
+      =      MG_ref_end_position_9
+    ELSE
+      L      DG_position_axis_9_ref
+      >      K+0
+      =      MG_ref_end_position_9
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000001000000000) = %0000001000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_10
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_10
+    IFT
+      L      DG_position_axis_10_ref
+      <      K+0
+      =      MG_ref_end_position_10
+    ELSE
+      L      DG_position_axis_10_ref
+      >      K+0
+      =      MG_ref_end_position_10
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000010000000000) = %0000010000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_11
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_11
+    IFT
+      L      DG_position_axis_11_ref
+      <      K+0
+      =      MG_ref_end_position_11
+    ELSE
+      L      DG_position_axis_11_ref
+      >      K+0
+      =      MG_ref_end_position_11
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000100000000000) = %0000100000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_12
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_12
+    IFT
+      L      DG_position_axis_12_ref
+      <      K+0
+      =      MG_ref_end_position_12
+    ELSE
+      L      DG_position_axis_12_ref
+      >      K+0
+      =      MG_ref_end_position_12
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0001000000000000) = %0001000000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_13
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_13
+    IFT
+      L      DG_position_axis_13_ref
+      <      K+0
+      =      MG_ref_end_position_13
+    ELSE
+      L      DG_position_axis_13_ref
+      >      K+0
+      =      MG_ref_end_position_13
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0010000000000000) = %0010000000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_14
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_14
+    IFT
+      L      DG_position_axis_14_ref
+      <      K+0
+      =      MG_ref_end_position_14
+    ELSE
+      L      DG_position_axis_14_ref
+      >      K+0
+      =      MG_ref_end_position_14
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0100000000000000) = %0100000000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_15
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_15
+    IFT
+      L      DG_position_axis_15_ref
+      <      K+0
+      =      MG_ref_end_position_15
+    ELSE
+      L      DG_position_axis_15_ref
+      >      K+0
+      =      MG_ref_end_position_15
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %1000000000000000) = %1000000000000000
+  LN     NP_W1032_reference_nesessary
+  BT     KG_axis_16
+  IFT
+    L      WG_MP1320_direction_traverse_ref_negative
+    BT     KG_axis_16
+    IFT
+      L      DG_position_axis_16_ref
+      <      K+0
+      =      MG_ref_end_position_16
+    ELSE
+      L      DG_position_axis_16_ref
+      >      K+0
+      =      MG_ref_end_position_16
+    ENDI
+  ENDI
+#endif
+
+#if (KG_reference_end_position_software & %0000000000000001) = 0
+*;EUMACH
+#if Pallet_changer = &Alternat_table
+  L      WG_MP1320_direction_traverse_ref_negative
+  BT     KG_axis_X
+  IFT
+    LN     I_alternat_table_partition_removed
+    A      MG_alternating_table_on
+    A[
+      L      DG_position_axis_X_ref
+      >      NP_D940_limit_X_alternating_table
+    ]
+    IFT
+      L      I_alternating_table_zone_overtravel
+      =      MG_ref_end_position_X
+    ELSE
+      LN     I_not_ref_end_posit_X
+      =      MG_ref_end_position_X
+    ENDI
+  ELSE
+    LN     I_alternat_table_partition_removed
+    A      MG_alternating_table_on
+    A[
+      L      DG_position_axis_X_ref
+      <=     NP_D940_limit_X_alternating_table
+    ]
+    IFT
+      L      I_alternating_table_zone_overtravel
+      =      MG_ref_end_position_X
+    ELSE
+      LN     I_not_ref_end_posit_X
+      =      MG_ref_end_position_X
+    ENDI
+  ENDI
+*;EUMACH
+#else                                                                 *;EUMACH
+  LN     I_not_ref_end_posit_X
+  =      MG_ref_end_position_X
+#endif                                                                *;EUMACH
+#endif
+
+#if (KG_reference_end_position_software & %0000000000000010) = 0
+  LN     I_not_ref_end_posit_Y
+  =      MG_ref_end_position_Y
+#endif
+
+#if (KG_reference_end_position_software & %0000000000000100) = 0
+  LN     I_not_ref_end_posit_Z
+  =      MG_ref_end_position_Z
+#endif
+
+#if (KG_reference_end_position_software & %0000000000001000) = 0
+  LN     I_not_ref_end_posit_4
+  =      MG_ref_end_position_4
+#endif
+
+#if (KG_reference_end_position_software & %0000000000010000) = 0
+  LN     I_not_ref_end_posit_5
+  =      MG_ref_end_position_5
+#endif
+
+#if (KG_reference_end_position_software & %0000000000100000) = 0
+  LN     I_not_ref_end_posit_6
+  =      MG_ref_end_position_6
+#endif
+
+#if (KG_reference_end_position_software & %0000000001000000) = 0
+  LN     I_not_ref_end_posit_7
+  =      MG_ref_end_position_7
+#endif
+
+#if (KG_reference_end_position_software & %0000000010000000) = 0
+  LN     I_not_ref_end_posit_8
+  =      MG_ref_end_position_8
+#endif
+
+#if (KG_reference_end_position_software & %0000000100000000) = 0
+  LN     I_not_ref_end_posit_9
+  =      MG_ref_end_position_9
+#endif
+
+#if (KG_reference_end_position_software & %0000001000000000) = 0
+  LN     I_not_ref_end_posit_10
+  =      MG_ref_end_position_10
+#endif
+
+#if (KG_reference_end_position_software & %0000010000000000) = 0
+  LN     I_not_ref_end_posit_11
+  =      MG_ref_end_position_11
+#endif
+
+#if (KG_reference_end_position_software & %0000100000000000) = 0
+  LN     I_not_ref_end_posit_12
+  =      MG_ref_end_position_12
+#endif
+
+#if (KG_reference_end_position_software & %0001000000000000) = 0
+  LN     I_not_ref_end_posit_13
+  =      MG_ref_end_position_13
+#endif
+
+#if (KG_reference_end_position_software & %0010000000000000) = 0
+  LN     I_not_ref_end_posit_14
+  =      MG_ref_end_position_14
+#endif
+
+#if (KG_reference_end_position_software & %0100000000000000) = 0
+  LN     I_not_ref_end_posit_15
+  =      MG_ref_end_position_15
+#endif
+
+#if (KG_reference_end_position_software & %1000000000000000) = 0
+  LN     I_not_ref_end_posit_16
+  =      MG_ref_end_position_16
+#endif
+
+  L      NP_W1032_reference_nesessary
+  O      WG_PLC_reference_necessary
+  AN     WG_MP12_simulated_axes                                       *;EUMACH MP12
+  ==     K+0
+  R      ML_reference_auto_start
+  EMT
+
+  LW     MG_ref_end_positions
+  =      PN_W1054_reference_end_position
+
+;Special functions
+
+  LN     NP_W1032_reference_nesessary
+  A      WL_pos_0_degree_necessary
+  A      KG_0_degree_positioning
+  AN     WG_PLC_axes
+  <>     K+0
+  A      MG_axes_in_position
+  A      ML_reference_auto_start
+  CMT    Posit_0_degree
+
+  L      PN_W1046_manual_motion_plus
+  O      PN_W1048_manual_motion_minus
+  A      WG_controlled_axes                                           *;EUMACH
+  >      K+0
+  =      MG_manual_motion_in_reference_mode
+
+  L      MG_key_NC_start
+  AN     NP_ref_autostart_inactive
+  S      ML_reference_auto_start
+
+  L      MG_manual_motion_in_reference_mode
+  O      MG_key_NC_stop
+  O      MG_TC_help
+  O      MG_PC_help
+  O      PN_error_safety_mode_2                                       *;EUMACH CE 2008
+  ON     MG_control_operational
+  R      ML_reference_auto_start
+
+  LW     PN_M4120_strobe_PLC_posit_axis_X
+  A      K$1FF
+  >      K+0
+  =      ML_PLC_posit_active
+
+  L      PN_W1038_activate_control_loop_open
+  ==     PN_W1040_control_loop_open
+  =      ML_control_loop_open
+
+  L      NP_W1032_reference_nesessary
+  <>     WG_PLC_reference_necessary
+  A[
+    L      NP_W1032_reference_nesessary
+    >      K+0
+  ]
+  A      ML_reference_auto_start
+  A      MG_axes_in_position
+  A      ML_control_loop_open
+  AN     ML_PLC_posit_active
+  A      NP_M4155_mode_pass_over_reference
+  =      MG_NC_start_from_reference
+
+  L      MG_axes_in_position
+  IFT
+    L      NP_W1032_reference_nesessary
+    =      WL_pos_0_degree_necessary
+  ENDI
+
+*$WS
+;  L      NP_W1032_Referenz_notwendig
+;  >      WG_PLC_Referenz_notwendig
+;  AN     ML_Achsen_Moment_reduziert
+;  IFT
+;    S     ML_Achsen_Moment_reduziert
+;    L      K+0
+;    =X
+;    REPEAT
+;      PSX
+;      L      NP_MP4230_10_Moment_reduziert_X[X]
+;      /      K+10
+;      PSW
+;      CM     9158
+;       M_Modul_Fehler_anzeigen(KG_Fehler_Modul_9158)
+;
+;      INCX
+;      LX
+;      >=     KG_max_Achs_Anzahl
+;    UNTILT
+;  ENDI
+;
+  LN     ML_PLC_posit_active
+  A      MG_axes_in_position
+  A      ML_control_loop_open
+  IFT
+    L      NP_W1032_reference_nesessary
+    =      WG_PLC_reference_necessary
+  ENDI
+
+*$WS
+;  L      NP_W1032_Referenz_notwendig
+;  O      WG_PLC_Referenz_notwendig
+;  ==     K+0
+;  IFT
+;    R     ML_Achsen_Moment_reduziert
+;
+;    L      K+0
+;    =X
+;    REPEAT
+;      PSX
+;      PS     KL_inaktiv
+;      CM     9158
+;       M_Modul_Fehler_anzeigen(KG_Fehler_Modul_9158)
+;      INCX
+;      LX
+;      >=     KG_max_Achs_Anzahl
+;    UNTILT
+;  ENDI
+;
+EM
+
+;----------------------------
+LBL Posit_0_degree
+
+  L      K-1
+  =X
+
+  REPEAT
+    INCX
+
+    LN     NP_W1032_reference_nesessary
+    A      WL_pos_0_degree_necessary
+    BTX
+  UNTILT
+
+  PSX
+  PS     NP_MP4230_12_posit_after_reference_X[X]
+  PS     WG_MP1330_feed_X_ref[X]
+*;EUMACH BASIC 54
+  L      MG_DCM_active
+  IFT
+    PS     KL_absolute_with_soft_limit_no_DCM
+  ELSE
+    PS     KL_absolute_with_software_limit_switch
+  ENDI
+*;EUMACH BASIC 54
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM

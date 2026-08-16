@@ -1,0 +1,291 @@
+{
+  "pages": {
+    "dashboard-slot-after-connection": {
+      "id": "dashboard-slot-after-connection",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768665967666-gc81al9y2",
+          "type": "container",
+          "columns": 2,
+          "gap": 16,
+          "widgets": [
+            {
+              "id": "widget-1768665986631-pnyqaf1ji",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 801,
+                "selectedSource": "coil"
+              },
+              "order": 0
+            },
+            {
+              "id": "widget-1768665997339-vf12a4kzu",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 710,
+                "selectedSource": "coil"
+              },
+              "order": 1
+            },
+            {
+              "id": "widget-1768666032419-8wgg36t7w",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 4104,
+                "selectedSource": "register"
+              },
+              "order": 2
+            },
+            {
+              "id": "widget-1768666072997-aii4lpce7",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 56,
+                "selectedSource": "coil"
+              },
+              "order": 3
+            },
+            {
+              "id": "widget-1768666088097-hl2q6w5og",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 80,
+                "selectedSource": "coil"
+              },
+              "order": 4
+            },
+            {
+              "id": "widget-1768733409630-2ljum5c9d",
+              "widgetId": "address-picker",
+              "props": {
+                "slaveId": 0,
+                "selectedAddress": 706,
+                "selectedSource": "register"
+              },
+              "order": 5
+            }
+          ],
+          "children": [],
+          "order": 0,
+          "settings": {
+            "collapsible": true,
+            "collapsed": false,
+            "title": "Main Controls",
+            "showTitle": true
+          }
+        },
+        {
+          "id": "container-1760249904555-8u9wr1616",
+          "type": "container",
+          "columns": 2,
+          "gap": 16,
+          "widgets": [
+            {
+              "id": "widget-1760249914835-0r1hptraq",
+              "widgetId": "profile-playback",
+              "props": {},
+              "order": 0
+            },
+            {
+              "id": "widget-1760249933648-7y0vhqug9",
+              "widgetId": "press-cylinder",
+              "props": {},
+              "order": 1
+            }
+          ],
+          "children": [],
+          "order": 1,
+          "settings": {
+            "collapsible": true,
+            "collapsed": false,
+            "title": "Profile Controls",
+            "showTitle": true
+          }
+        },
+        {
+          "id": "container-1768253004402-6kfu3sv6c",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [
+            {
+              "id": "widget-1768253010858-6jyqlriy9",
+              "widgetId": "chart-widget",
+              "props": {
+                "seriesData": "[{\"id\":\"register-1181-1768253019821\",\"address\":1181,\"source\":\"register\",\"color\":\"#00FF00\",\"title\":\"\"},{\"id\":\"register-1199-1768253026183\",\"address\":1199,\"source\":\"register\",\"color\":\"#FFFF00\",\"title\":\"\"},{\"id\":\"register-1217-1768300140574\",\"address\":1217,\"source\":\"register\",\"color\":\"#0000FF\",\"title\":\"\"},{\"id\":\"register-1235-1768300150374\",\"address\":1235,\"source\":\"register\",\"color\":\"#FF0000\",\"title\":\"\"}]"
+              },
+              "order": 0
+            },
+            {
+              "id": "widget-1768816449838-1l8ghai4q",
+              "widgetId": "chart-widget",
+              "props": {
+                "seriesData": "[{\"id\":\"register-361-1768816458019\",\"address\":361,\"source\":\"register\",\"color\":\"#00FF00\",\"title\":\"\"},{\"id\":\"register-367-1768816468818\",\"address\":367,\"source\":\"register\",\"color\":\"#FFFF00\",\"title\":\"\"}]",
+                "height": 300,
+                "duration": 300,
+                "yMax": 2500,
+                "yMin": 0,
+                "refreshRateMs": 1000
+              },
+              "order": 1
+            }
+          ],
+          "children": [],
+          "order": 2,
+          "settings": {
+            "collapsible": true,
+            "collapsed": false,
+            "title": "Monitors",
+            "showTitle": true
+          }
+        }
+      ],
+      "createdAt": 1760176922064,
+      "updatedAt": 1768816484372
+    },
+    "dashboard-slot-page-bottom": {
+      "id": "dashboard-slot-page-bottom",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768299954893-oicrx3gpf",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1768299954893,
+      "updatedAt": 1768299954893
+    },
+    "playground-layout": {
+      "id": "playground-layout",
+      "name": "Page playground-layout",
+      "containers": [
+        {
+          "id": "container-1760252883259-0mlxqj84v",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1760252883259,
+      "updatedAt": 1760252883259
+    },
+    "profile-layout": {
+      "id": "profile-layout",
+      "name": "Page profile-layout",
+      "containers": [
+        {
+          "id": "container-1760252867711-e0um6x5uu",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1760252867711,
+      "updatedAt": 1760252867711
+    },
+    "dashboard-layout": {
+      "id": "dashboard-layout",
+      "name": "Page dashboard-layout",
+      "containers": [
+        {
+          "id": "container-1760252873294-ljnit8v9u",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1760252873294,
+      "updatedAt": 1760252873294
+    },
+    "signals-slot-after-connection": {
+      "id": "signals-slot-after-connection",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768665695177-338cub7e5",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1768665695177,
+      "updatedAt": 1768665695177
+    },
+    "profile-slot-after-connection": {
+      "id": "profile-slot-after-connection",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768665795342-tylwjuy0o",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1768665795342,
+      "updatedAt": 1768665795342
+    },
+    "profile-slot-page-bottom": {
+      "id": "profile-slot-page-bottom",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768665798019-6oi1ux1zn",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1768665798019,
+      "updatedAt": 1768665798019
+    },
+    "signals-slot-page-bottom": {
+      "id": "signals-slot-page-bottom",
+      "name": "Canvas",
+      "containers": [
+        {
+          "id": "container-1768672552114-t8ay2arzh",
+          "type": "container",
+          "columns": 1,
+          "gap": 16,
+          "widgets": [],
+          "children": [],
+          "order": 0
+        }
+      ],
+      "createdAt": 1768672552114,
+      "updatedAt": 1768672552114
+    }
+  },
+  "version": "1.0.0",
+  "lastUpdated": 1768816492699
+}

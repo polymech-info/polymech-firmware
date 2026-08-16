@@ -1,0 +1,22 @@
+﻿************************************
+!!! FIGYELEM !!!
+csak szakembereknek
+X, Y, Z mozgatható az
+X+, X-, Y+, Y-, Z+, Z-
+gombbal vagy kézikerékkel
+szerszámcserélö szerviz
+(egy karos)
+************************************
+#101  Föorsót cserepozícióba
+#102  Z kirakási pozícióba
+#103  Z berakási pozícióba
+#104  Szerszámtár ajtót nyit
+#105  Szerszámtár ajtót zár
+#106  Szerszámtár a föorsóhoz
+#107  Szerszámtár alaphelyzetbe
+#108  Szerszámot old
+#109  Szerszámot rögzít
+#110  Szerszámtár órairányba forog
+#111  Szerszámtár órairány ellen forog
+#112  Szerszámtár referencia
+#113  Föorsó státuszt töröl (T0)

@@ -1,0 +1,24 @@
+PLC SOFTKEY Project File - Version 1.0
+
+SKPATH PLC:\Python\SOFTKEYS\BMX
+SOFTKEY TNC_Mail_On.bmx SK_TncMailOn
+SOFTKEY Edit.bmx SK_TncMailEdit
+SOFTKEY TNC_Mail_Send.bmx SK_TncMailSend
+SOFTKEY End.bmx SK_TncMailEnd
+
+SKMENU Menu_1 VROOT Ident:Menu_1
+CHECK SK_TncMailOn       Ident:TncMailOn    
+CHECK SK_TncMailEdit       Ident:TncMailEdit    
+ACTION SK_TncMailSend       Ident:TncMailSend     
+BLANK
+BLANK
+
+#ifdef SXGA
+BLANK
+BLANK
+BLANK
+#endif
+
+ACTION SK_TncMailEnd       Ident:TncMailEnd     
+ENDSKMENU
+

@@ -1,0 +1,3 @@
+Register.name               max_size: 40
+Register.component          max_size: 40
+Register.group              max_size: 40 

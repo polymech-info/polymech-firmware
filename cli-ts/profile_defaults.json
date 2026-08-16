@@ -1,0 +1,46 @@
+
+  {
+    "slot": 0,
+    "duration": 20000,
+    "status": 0,
+    "currentTemp": 0,
+    "name": "Default Temperature Profile2",
+    "max": 150,
+    "enabled": true,
+    "elapsed": 0,
+    "remaining": 0,
+    "signalPlot": -1,
+    "description": "",
+    "controlPoints": [
+      {
+        "x": 0,
+        "y": 200
+      },
+      {
+        "x": 500,
+        "y": 800
+      },
+      {
+        "x": 700,
+        "y": 400
+      },
+      {
+        "x": 900,
+        "y": 300
+      },
+      {
+        "x": 1000,
+        "y": 200
+      }
+    ],
+    "targetRegisters": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }

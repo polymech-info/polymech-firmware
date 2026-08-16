@@ -1,0 +1,2498 @@
+ - Check electrical cabinet
+ - Electrical motor check
+1                                                         |
+ - Check motor temperature
+ - Change filter
+ - Check if the fan functions
+2                                                         |
+ - Visual inspection for oil loss
+ - Electrical connection of pressure switch
+3                                                         |
+ - Visual inspection of pressure tubings
+ - Check the pressure switch
+4                                                         |
+ - Optimize machine parameters
+ - Reduce feed rate
+5                                                         |
+ - Change filter
+ - Visual inspection of pressure tubings
+ - Check the pressure switch
+6                                                         |
+ - Check supply and recover unit
+ - Check connection PLC input
+ - Siemens SIMODRIVE 611 ER module (X111 72-73.1)
+ - Indramat Power Drive supply unit HVE (X7 3-4)
+ - Turn off main power and turn it back on.
+7                                                         |
+ - CAUTION !
+ - Axes may collide
+8                                                         |
+ -
+9                                                         |
+ - Open guards
+ - Check sensors
+10                                                        |
+ - Close guards
+ - Check sensors
+11                                                        |
+ - Refill coolant
+12                                                        |
+ - Visual inspection for oil loss
+ - Electrical connection of pressure switch
+13                                                        |
+ - Refill oil
+ - Check the level switch
+14                                                        |
+ - Check wiring X9/7b of PLB62xx
+15                                                        |
+ - Check wiring 
+   Group 1: X11-9 of PLD-2 on PLB62xx module
+   Group 2 - 8: Refer to circuit diagram
+16                                                        |
+
+17                                                        |
+ - Change NC program
+ - Each NC block must include only one axis with central 
+   drive.
+ - Axis keys for central drive axes should not be pressed
+   simultaneously.
+18                                                        |
+ - Check tool availability
+ - Optimize axes
+19                                                        |
+ - (1) Select Manual operating mode
+ - (2) Press "Retract" button
+ - (3) Switch control on
+ - (4) Clear error message Emergency stop (CE key)
+ - (5) Retract with direction keys (see note)
+20                                                        |
+ - Check sensors and re-adjust them if required
+ - Check compressed-air and hydraulic pressure
+21                                                        |
+ - Encoder loose
+ - Compensate reference mismatch via MP960
+ - Position the axis in manual operating mode on Hirth grid
+22                                                        |
+ - Compensate NC program
+23                                                        |
+ - Check hardware of axis drive, regard diagnosis LED
+ - Switch unit on/off
+24                                                        |
+ - Reduce feed rate
+ - Check / change filter cloth
+25                                                        |
+ - Check temperature of motors
+ - Reduce feed rate
+ - Switch unit on/off
+26                                                        |
+ - Reduce feed rate
+ - Select smaller tools
+27                                                        |
+ - Reduce feed rate
+ - Select smaller tools
+28                                                        |
+ - Reduce feed rate
+ - Check controller expansion
+ - Check spindle motor
+ - Check cable / screwed connection
+29                                                        |
+ - Reduce feed rate
+ - Select smaller tools
+ - Check speed with oscilloscope
+ - Optimize machine parameters
+30                                                        |
+ - Compensate offset (analog)
+ - Check encoder (oscilloscope)
+ - Check cable
+ - Optimize machine parameters
+31                                                        |
+ - Reduce cutting values
+ - Clean the fan of spindle motor
+32                                                        |
+ - Reduce spindle speed
+ - Check Pt 100 temperature sensor
+33                                                        |
+ - Reduce feed rate
+ - Increase spindle speed
+ - Select smaller tools
+ - Optimize machine parameters
+34                                                        |
+ - Change the tool (with PLC status %00000000)
+   PLC status for code of tool type
+   - %00000000 = normal tool
+   - %00000001 = touch probe
+35                                                        |
+ - Change the touch probe
+   PLC status for code of tool type
+   - %00000000 = normal tool
+   - %00000001 = touch probe
+36                                                        |
+
+37                                                        |
+ - If screen displays "GR1"
+   EMG -> TOOL CALL S100 -> AL37 -> EMG -> TOOL CALL S3000
+ - If screen displays "GR2"
+   EMG -> TOOL CALL S3000 -> AL37 -> EMG -> TOOL CALL S100
+ - Check sensors for the gear ranges
+ - Clear error message (CE key) and retry
+38                                                        |
+ - Press the key "Clamp tool"
+ - Check the sensors
+39                                                        |
+ - Press the key "Unclamp tool"
+ - Remove the tool
+40                                                        |
+ - Press the key "Clamp tool"
+ - Insert the tool
+41                                                        |
+ - Press the key "Confirm tool change"
+42                                                        |
+ - Close the guard
+ - Press the key "Confirm tool change"
+43                                                        |
+ - Press the key NC start
+44                                                        |
+ - Check/correct the pocket table
+45                                                        |
+ - Check if the tool stated in the status is in the
+   spindle and if it may be placed in the magazine
+ - NC start to carry out the tool change
+ - NC stop to interrupt the tool change
+46                                                        |
+ - Insert the tool
+ - Check the sensor
+47                                                        |
+ - Remove the tool from the spindle
+ - Check the sensor
+48                                                        |
+ - Press the CE key to clear the error and modify the part
+   program as follows.
+ - Case 1
+   -- Position the spindle to a proper position where is
+      convenient to unload the spindle tool manually.
+   -- Program a TOOL CALL 0 command block.
+   -- Program a TOOL CALL XX command block.
+ - Case 2
+   -- Program a TOOL CALL 0 command block.
+   -- Position the spindle to a proper position where is
+      convenient to unload the spindle tool manually.
+   -- Program a TOOL CALL XX command block.
+49                                                        |
+ - Check the tool
+50                                                        |
+ - Check the tool
+ - Set the current tool live to 0
+51                                                        |
+ - Bring the tool in the manual operating mode in normal 
+   position by means of the service function (Help)
+ - Test the inputs
+52                                                        |
+ - Press NC start key to continue the tool change
+ - Press internal stop soft key to stop the tool change
+53                                                        |
+ - Close the tool magazine guard
+54                                                        |
+ - NC start to reference the tool magazine
+55                                                        |
+ During TOOL DEF/TOOL CALL
+ (select one of the following operations)
+ 1)Press NC start key to continue magazine tool selection.
+ 2)Press emergency stop button -> release emergency stop 
+   button -> press machine on button -> use manual magazine
+   tool selection to rotate the magazine.
+
+During manual magazine tool selection
+ (select one of the following operations)
+ 1)Press NC start key to continue manual magazine tool
+   selection.
+ 2)Press CE key -> press machine on button -> use manual
+   magazine tool selection to rotate the magazine.
+56                                                        |
+ - Only note
+57                                                        |
+ - Load the tool magazine/tool change standby tool correctly
+ - Check the pocket table
+ - Check the sensor
+58                                                        |
+ - Load the tool magazine/tool change standby tool correctly
+ - Check the pocket table
+ - Check the sensor
+59                                                        |
+ - In the MDI operating mode, insert the tool displayed in 
+   the status line
+60                                                        |
+ - Press NC start key to continue the alternating table 
+   cycle
+ - Press internal stop soft key to interrupt the 
+   alternating table cycle
+61                                                        |
+ - Press the key Alternating table mode on page 1 (left)
+62                                                        |
+ - Press the key Alternating table mode on page 2 (right)
+63                                                        |
+ - Activate the alternating operation by means of soft key 
+   or mounted dividing wall
+64                                                        |
+ - Traverse the X-axis from the partition zone to one of
+   the machining areas.
+65                                                        |
+ - NC start key to continue the 3D head positioning
+ - Internal stop soft key to stop the 3D head positioning
+ - Service menue 3D head in manual mode
+66                                                        |
+ - Set the reference position under "3D head Enter" service
+   mode.
+67                                                        |
+ - Select spindle rpm on 1st gear range
+   TOOL CALL Sxxx
+68                                                        |
+ - Use the universal head service mode to restore the head
+   back to vertical position (B=0, C/A=0)
+ - Correct the corresponding 3D head axis position = 0.
+69                                                        |
+
+70                                                        |
+ - Select the manual operation (Manual/Handwheel mode). 
+ - Partition installing:
+   Install the partition and press the "TABLE 1/2 OFF" soft
+   key.  The soft key becomes "TABLE 1/2 ON".
+ - Partition removing:
+   Remove the partition and press the "TABLE 1/2 ON" soft
+   key.  The soft key becomes "TABLE 1/2 OFF".
+ - Press the CE key to clear the error message.
+71                                                        |
+
+72                                                        |
+
+73                                                        |
+
+74                                                        |
+
+75                                                        |
+ - Locate the magazine 2 control mode switch to manual
+   control position.
+76                                                        |
+ - Only note
+77                                                        |
+ - Close the tool magazine 2 guard
+78                                                        |
+ - Remove the obstacle which blocks the light beam.
+ - Press the safety confirmation key.
+79                                                        |
+ - Press safety confirmation key.
+80                                                        |
+ - Check air conditioner unit
+ - Check sensor
+ - (Only for 3-phase power air conditioner) Check electrical
+   cabinet air conditioner unit circuit breaker
+81                                                        |
+ - Only note
+82                                                        |
+ HMC rectangular rotary table protection:
+ - In manual operation, use Z+ key to move the rotary table
+   away from the column.
+ - In automatic operation, modify the program target
+   position.
+83                                                        |
+ - Only note
+84                                                        |
+ - Select the operating mode Reference via soft key
+85                                                        |
+ - Press NC start to continue
+ - Press NC stop to interrupt
+86                                                        |
+ - Observe the information regarding the error reason in the
+   small PLC window
+87                                                        |
+ - Change the PLC program
+88                                                        |
+ - Only note
+89                                                        |
+ - Only note
+90                                                        |
+ - Only note
+91                                                        |
+ - Press NC stop / TNC stop
+ - Correct the NC program
+92                                                        |
+ - Press NC stop / TNC stop
+ - Correct NC program
+93                                                        |
+ - Increase the feed rate on the corresponding override
+   potentiometer.
+94                                                        |
+ - Only note
+95                                                        |
+ - Change the machine parameter
+ - Observe the information regarding the error reason in the
+   small PLC window
+96                                                        |
+ - Edit config.def (SPG &inactive)
+97                                                        |
+ - Contact your machine tool builder
+98                                                        |
+ Special functions key combination TExx0
+ - Keys [Ctrl] + S            -> NC start
+ - Keys [Ctrl] + X            -> NC stop
+ - Keys [Ctrl] + Cursor up    -> axes plus
+ - Keys [Ctrl] + Cursor down  -> axes minus
+ - Keys [Alt] + X             -> Emergency stop
+ PC keyboard (mouse support in preparation)
+ - Keys [Shift]+[Ctrl]+[Alt]+1 -> vertical soft key 1 
+   ...
+ - Keys [Shift]+[Ctrl]+[Alt]+6 -> vertical soft key 6
+99                                                        |
+ - Press CE to clear the display
+ - Press CE to display the next information (if available)
+100                                                       |
+ - Too much submit jobs active
+ - Create data buffer in PLC memory (PLC application)
+101                                                       |
+ - Check FN19, M-function and modify values.
+102                                                       |
+ During TOOL DEF/TOOL CALL
+ (select one of the following operations)
+ 1)Press NC start key to continue magazine tool selection.
+ 2)Press emergency stop button -> release emergency stop 
+   button -> press machine on button -> use manual magazine
+   tool selection to rotate the magazine.
+
+During manual magazine tool selection
+ (select one of the following operations)
+ 1)Press NC start key to continue manual magazine tool
+   selection.
+ 2)Press CE key -> press machine on button -> use manual
+   magazine tool selection to rotate the magazine.
+103                                                       |
+ - Reducing the spindle speed under the speed limitation of
+   air through spindle function (M17)
+104                                                       |
+ - Before using NC START key to reference the tilting axis,
+   follow the axis direction message in PLC window to make
+   sure the tilting axis is in the correct position (if not,
+   using the axis motion key). Otherwise, tilting axis will
+   run into software overtravel limit during reference point
+   traversing.
+ - After tilting axis reference point has been traversed,
+   the message disappears automatically.
+105                                                       |
+ - Exchange a new paper roll.
+106                                                       |
+ - C-axis feed is enabled by M401 command.
+107                                                       |
+ - Check the tool clamping hydraulic line.
+108                                                       |
+ - Try to reconnect by key <Connect>
+ - Check ethernet interface
+109                                                       |
+ - Check SM1xx module
+ - Inspect SM1xx temperature signal
+110                                                       |
+ - Move Y-axis to traverse range.
+111                                                       |
+ - Check tool clamping system
+ - Check tool clamped sensor
+112                                                       |
+ - Switch safety mode swtich back to normal mode position.
+113                                                       |
+ - Fill up the oil to the pneumatic to hydraulic unit.
+ - Check the oil level sensor.
+114                                                       |
+ - Switch safety mode swtich back to normal mode position.
+115                                                       |
+ - Switch safety mode swtich back to normal mode position.
+116                                                       |
+ - Check the switch signal of the safety mode(s).
+117                                                       |
+ - Check the returning flow from CTS tank to main coolant
+   tank.
+ - Check CTS tank high level switch.  When coolant in high
+   level position, the coolant should stop flowing from main
+   coolant tank to CTS tank.
+ - Check CTS tank overflow level switch.
+118                                                       |
+ - Press CE key to clear the message.
+119                                                       |
+ - The part program stops and aborts.
+120                                                       |
+ - Switch off the safety mode.
+ - Close the guard.
+ - Execute the TOOL CALL command block.
+121                                                       |
+ - Replace the hydraulic oil filter
+ - Check the pressure switch
+122                                                       |
+ - Turn off the machine main power.
+ - Plug/unplug the power cable & encoder signal cable.
+123                                                       |
+- Check the automatic door 1 open/closed sensor signal.
+- Check the automatic door 1 opening/closing valve.
+- Press CE to clear the error.
+124                                                       |
+- Check the automatic door 2 open/closed sensor signal.
+- Check the automatic door 2 opening/closing valve.
+- Press CE to clear the error.
+125                                                       |
+ - Replace the CTS tank inlet filter
+ - Check the pressure switch
+126                                                       |
+ - Check the coolant flow from the main coolant tank to CTS
+   tank.
+ - Check the CTS tank low level switch.
+127                                                       |
+ - Visual inspection of tool clamping pressure tubings
+ - Check the tool clamping pressure switch
+128                                                       |
+ - Spindle cooling liquid flow blocked 
+ - Spindle cooling liquid pressure sensor defective
+129                                                       |
+ - Check the temp. control setting of the spindle cooling
+   system.
+ - Check the sensor and its wiring.
+130                                                       |
+ - All the following conditions must be satisfied to use the
+   "TABLE 1/2" soft key to turn on the alternating table.
+   1. Manual operation or Handwheel operation must be
+      selected.
+   2. All the axes must be in standstill state.
+   3. Release the EMG button and press the [I] button to
+      start the machine.
+131                                                       |
+ - Press CE key to clear the error.
+ - Execute M18 command to reference the spindle before
+   executing a workpiece measuring cycle.
+132                                                       |
+
+133                                                       |
+ - Check the spindle rotary joint cooling circulation
+   circuit.
+ - Check the fluid flow sensor of spindle rotary joint
+   cooling circulation.
+134                                                       |
+Machining area with dual tool changer + partition installed
+ - Machine in area 1 only allowed to TOOL CALL a tool in
+   magazine of area 1
+ - Machine in area 2 only allowed to TOOL CALL a tool in
+   magazine of area 2
+135                                                       |
+ - Press NC start key to continue the tool unloaing from
+   magazine unit to standby tool change position.
+ - In automatic operation, press internal stop soft key to
+   stop the tool unloading from magazine unit to standby
+   tool change position.
+ - In manual operation, press the emergency stop button.
+136                                                       |
+ - Press NC start key to continue the tool loaing from
+   standby tool change position to magazine unit.
+ - In automatic operation, press internal stop soft key to
+   stop the tool loading from standby tool change position
+   to magazine unit.
+ - In manual operation, press the emergency stop button.
+137                                                       |
+- MP4310.0 bit D = 0
+138                                                       |
+ - Replace the pneumatic filter
+ - Check the pressure switch
+139                                                       |
+ - Replace the filter in front of CTS motor.
+ - Check the pressure switch.
+140                                                       |
+ PMC thermal compensation unit
+ - Check PMC thermal compensation unit.
+141                                                       |
+ PMC thermal compensation unit
+ - Check PMC thermal compensation unit.
+142                                                       |
+ - Visual inspection of tool clamping pressure tubings
+ - Check the tool clamping pressure switch
+143                                                       |
+ - Refill oil
+ - Check the level switch
+144                                                       |
+ - Refill oil
+ - Check the level switch
+145                                                       |
+ - Close guards tight
+ - Check sensors
+146                                                       |
+ - Close guard of alternating table 2
+ - Check sensors
+147                                                       |
+ - Check the level switches/sensors.
+148                                                       |
+ - Visual inspection of pressure tubings
+ - Check the pressure switch
+149                                                       |
+ - Replace the CTS filter
+ - Check the pressure switch
+150                                                       |
+ - Close all the secondary guards
+ - Check the sensor
+151                                                       |
+ Rotary Axis
+ - Find out the reason for torque motor temperature error.
+
+ High-speed motor spindle
+ - Find out the reason for spindle motor temperature error.
+152                                                       |
+ - Visual inspection for oil loss
+ - Electrical connection of pressure switch
+153                                                       |
+ - Refill oil
+ - Check the level switch
+154                                                       |
+ - Visual inspection for oil loss
+ - Electrical connection of valve high/low pressure switch
+155                                                       |
+
+156                                                       |
+ - Refill oil
+ - Check the level switch
+157                                                       |
+ - (1) Select Manual operating mode
+ - (2) Retract with V- direction key
+158                                                       |
+ - (1) Select Manual operating mode
+ - (2) Retract with V+ direction key
+159                                                       |
+ - Check ball screw cooling unit
+ - Check ball screw cooling motor protective circuit breaker
+ - Check sensors
+160                                                       |
+ - Check spindle cooling unit
+ - Check spindle cooling motor protective circuit breaker
+ - Check sensors
+161                                                       |
+ - Check tool clamping/unclamping hydraulic system.
+ - Check CYCON K11 controller setting.
+162                                                       |
+
+163                                                       |
+
+164                                                       |
+ - Check spindle gear cooling unit
+ - Check spindle gear cooling motor protective circuit
+   breaker
+ - Check sensors
+165                                                       |
+
+166                                                       |
+
+167                                                       |
+ - Check spindle oil-air lubrication unit
+ - Check sensor
+168                                                       |
+ - Check spindle oil-air lubricant micro-pumps.
+ - Check sensor
+169                                                       |
+ - Check spindle oil-air lubrication pneumatic system
+ - Check spindle air dryer circuit breaker, if available.
+ - Check sensor
+170                                                       |
+ - Close ATC door
+ - Check sensors
+171                                                       |
+ - If there is any tool on the arm unit, use the service
+   mode (HELP) to return the tool back to the corresponding
+   magazine pocket.
+ - Press the NC STOP key and overtravel releasing (|->) key
+   on the machine panel simultaneously to clear the message.
+172                                                       |
+ - For TVMC series
+   1. Move Z-axis away from cover interference area in Z+ 
+      direction.
+173                                                       |
+ - Select Manual/Handwheel mode.
+ - Press the MOD key.
+ - Press the HELP softkey.
+ - Locate the cursor in "#" command line.
+ - Press the CE key to clear error 173.
+ - Move the corresponding axis back to the travel range.
+174                                                       |
+ - The head lubrication tag is on the spindle head. 
+ - Run the spindle in 2 rpm.
+ - Grease the spindle head (circle marks) according to the
+   tag (grease volume and locations).
+ - Select the "Programming and editing" mode.
+ - Press the MOD key.
+ - Key in "147456369" as the code number to clear the error.
+175                                                       |
+
+176                                                       |
+
+177                                                       |
+
+178                                                       |
+
+179                                                       |
+ - locate the magazine control mode switch on magazine operation panel
+   in manual control position
+180                                                       |
+
+181                                                       |
+
+182                                                       |
+
+183                                                       |
+
+184                                                       |
+
+185                                                       |
+
+186                                                       |
+
+187                                                       |
+
+188                                                       |
+ - For ITRI automatic vertical/horizontal universal head
+   equipped with a displaying encoder, confirm the screen
+   position display and the actual mechanical position of
+   the head rear axis after power-on.
+ - For ITRI universal head with front axis 0¢X/180¢X, confirm
+   the screen display and the actual mechanical position of
+   the universal head front axis after power-on.
+ - For EMENA universal head with rear axis/front axis 2.5¢X,
+   confirm the screen display and the actual mechanical
+   position of each universal head axis (rear  and front)
+   after power-on.
+ - After confirm the head position, press CE key to clear
+   the message.
+189                                                       |
+ - A head lubrication tag is on the spindle head. 
+ - Run the spindle in 2 rpm.
+ - SEMPUCO/ITRI head: Grease the spindle head according to
+   the the tag (grease volume and locations).
+ - EMENA head: Grease the spindle head (triangle marks)
+   according to the the tag (grease volume and locations).
+ - Select the "Programming and editing" mode.
+ - Press the MOD key.
+ - Key in "741456963" as the code number to clear the error.
+190                                                       |
+ - Find out the reason.
+191                                                       |
+ - For ITRI universal head with rear axis 5¢X and front
+   axis 0¢X/180¢X, the universal head front axis (C-axis
+   or A-axis) motion command must = 0¢X or 180¢X.
+ - Press CE key to clear the error.
+192                                                       |
+ - Press CE key to clear the error.
+ - For ITRI universal head with rear axis 5¢X and front axis
+   0¢X/180¢X, position the front axis (C-axis or A-axis) in
+   0¢X position, and then execute the rear axis (B-axis)
+   motion block.
+ - For ITRI universal head with rear axis 5¢X and front axis
+   0¢X/180¢X, position the rear axis (B-axis) in 0¢X position,
+   and then execute the front axis (C-axis or A-axis) motion
+   block.
+ - Move Y-axis to ensure Y-axis REF position < MP4231.10,
+   and then execute universal head rear axis (B-axis) motion
+   block.
+ - Move Y-axis to ensure Y-axis REF position < MP4231.6, and
+   then execute universal head front axis (C-axis or A-axis)
+   motion block.
+193                                                       |
+ - Clamp the tool and check the sensor signal. 
+ - Check if the gap between the tool unclamping rod and the
+   spindle shaft is wide enough.
+194                                                       |
+ - Close service door
+ - Check door sensor
+195                                                       |
+ - Locate the position within the desired traverse range,
+   and then perform the desired traverse range command
+   (M71/M72/M73).
+
+ - During universal head axis motion, locate X/Y/Z position
+   within traverse range 1 (LIMIT 1) and then perform head
+   axis positioning.
+196                                                       |
+ - After torque motor field angle commissioning has been
+   finished, set MP4310.0 bit F = 0 to disable overtravel
+   key + axis key for torque motor axis brake releasing.
+197                                                       |
+ - Press NC START key to perform the anti-backlash traverse
+   motion in IV/V axis.
+ - If the anti-backlash motion is hanging, press the
+   emergency stop button to reset the anti-backlash motion
+   and start the procedure again.  
+ - After anti-backlash traverse motion has been performed,
+   the error message will be cleared.
+198                                                       |
+ - Press INTERNAL STOP soft key to terminate the program.
+ - Press CE key to clear the error message.
+ - Rotate all the rotary axes to the tool measuring position
+   and perform the tool measurement cycle again.
+199                                                       |
+
+200                                                       |
+
+201                                                       |
+
+202                                                       |
+
+203                                                       |
+
+204                                                       |
+
+205                                                       |
+
+206                                                       |
+
+207                                                       |
+
+208                                                       |
+
+209                                                       |
+
+210                                                       |
+
+211                                                       |
+
+212                                                       |
+
+213                                                       |
+
+214                                                       |
+
+215                                                       |
+
+216                                                       |
+
+217                                                       |
+
+218                                                       |
+
+219                                                       |
+
+220                                                       |
+
+221                                                       |
+
+222                                                       |
+
+223                                                       |
+
+224                                                       |
+
+225                                                       |
+
+226                                                       |
+
+227                                                       |
+
+228                                                       |
+
+229                                                       |
+
+230                                                       |
+
+231                                                       |
+
+232                                                       |
+
+233                                                       |
+
+234                                                       |
+
+235                                                       |
+
+236                                                       |
+
+237                                                       |
+
+238                                                       |
+
+239                                                       |
+
+240                                                       |
+
+241                                                       |
+
+242                                                       |
+
+243                                                       |
+
+244                                                       |
+
+245                                                       |
+
+246                                                       |
+
+247                                                       |
+
+248                                                       |
+
+249                                                       |
+
+250                                                       |
+
+251                                                       |
+
+252                                                       |
+
+253                                                       |
+
+254                                                       |
+
+255                                                       |
+
+256                                                       |
+
+257                                                       |
+
+258                                                       |
+
+259                                                       |
+
+260                                                       |
+
+261                                                       |
+
+262                                                       |
+
+263                                                       |
+
+264                                                       |
+
+265                                                       |
+
+266                                                       |
+
+267                                                       |
+
+268                                                       |
+
+269                                                       |
+
+270                                                       |
+
+271                                                       |
+
+272                                                       |
+
+273                                                       |
+
+274                                                       |
+
+275                                                       |
+
+276                                                       |
+
+277                                                       |
+
+278                                                       |
+
+279                                                       |
+
+280                                                       |
+
+281                                                       |
+
+282                                                       |
+
+283                                                       |
+
+284                                                       |
+
+285                                                       |
+
+286                                                       |
+
+287                                                       |
+
+288                                                       |
+
+289                                                       |
+
+290                                                       |
+
+291                                                       |
+
+292                                                       |
+
+293                                                       |
+
+294                                                       |
+
+295                                                       |
+
+296                                                       |
+
+297                                                       |
+
+298                                                       |
+
+299                                                       |
+
+300                                                       |
+
+301                                                       |
+
+302                                                       |
+
+303                                                       |
+
+304                                                       |
+
+305                                                       |
+
+306                                                       |
+
+307                                                       |
+
+308                                                       |
+
+309                                                       |
+
+310                                                       |
+
+311                                                       |
+
+312                                                       |
+
+313                                                       |
+
+314                                                       |
+
+315                                                       |
+
+316                                                       |
+
+317                                                       |
+
+318                                                       |
+
+319                                                       |
+
+320                                                       |
+
+321                                                       |
+
+322                                                       |
+
+323                                                       |
+
+324                                                       |
+
+325                                                       |
+
+326                                                       |
+
+327                                                       |
+
+328                                                       |
+
+329                                                       |
+
+330                                                       |
+
+331                                                       |
+
+332                                                       |
+
+333                                                       |
+
+334                                                       |
+
+335                                                       |
+
+336                                                       |
+
+337                                                       |
+
+338                                                       |
+
+339                                                       |
+
+340                                                       |
+
+341                                                       |
+
+342                                                       |
+
+343                                                       |
+
+344                                                       |
+
+345                                                       |
+
+346                                                       |
+
+347                                                       |
+
+348                                                       |
+
+349                                                       |
+
+350                                                       |
+
+351                                                       |
+
+352                                                       |
+
+353                                                       |
+
+354                                                       |
+
+355                                                       |
+
+356                                                       |
+
+357                                                       |
+
+358                                                       |
+
+359                                                       |
+
+360                                                       |
+
+361                                                       |
+
+362                                                       |
+
+363                                                       |
+
+364                                                       |
+
+365                                                       |
+
+366                                                       |
+
+367                                                       |
+
+368                                                       |
+
+369                                                       |
+
+370                                                       |
+
+371                                                       |
+
+372                                                       |
+
+373                                                       |
+
+374                                                       |
+
+375                                                       |
+
+376                                                       |
+
+377                                                       |
+
+378                                                       |
+
+379                                                       |
+
+380                                                       |
+
+381                                                       |
+
+382                                                       |
+
+383                                                       |
+
+384                                                       |
+
+385                                                       |
+
+386                                                       |
+
+387                                                       |
+
+388                                                       |
+
+389                                                       |
+
+390                                                       |
+
+391                                                       |
+
+392                                                       |
+
+393                                                       |
+
+394                                                       |
+
+395                                                       |
+
+396                                                       |
+
+397                                                       |
+
+398                                                       |
+
+399                                                       |
+
+400                                                       |
+
+401                                                       |
+
+402                                                       |
+
+403                                                       |
+
+404                                                       |
+
+405                                                       |
+
+406                                                       |
+
+407                                                       |
+
+408                                                       |
+
+409                                                       |
+
+410                                                       |
+
+411                                                       |
+
+412                                                       |
+
+413                                                       |
+
+414                                                       |
+
+415                                                       |
+
+416                                                       |
+
+417                                                       |
+
+418                                                       |
+
+419                                                       |
+
+420                                                       |
+
+421                                                       |
+
+422                                                       |
+
+423                                                       |
+
+424                                                       |
+
+425                                                       |
+
+426                                                       |
+
+427                                                       |
+
+428                                                       |
+
+429                                                       |
+
+430                                                       |
+
+431                                                       |
+
+432                                                       |
+
+433                                                       |
+
+434                                                       |
+
+435                                                       |
+
+436                                                       |
+
+437                                                       |
+
+438                                                       |
+
+439                                                       |
+
+440                                                       |
+
+441                                                       |
+
+442                                                       |
+
+443                                                       |
+
+444                                                       |
+
+445                                                       |
+
+446                                                       |
+
+447                                                       |
+
+448                                                       |
+
+449                                                       |
+
+450                                                       |
+
+451                                                       |
+
+452                                                       |
+
+453                                                       |
+
+454                                                       |
+
+455                                                       |
+
+456                                                       |
+
+457                                                       |
+
+458                                                       |
+
+459                                                       |
+
+460                                                       |
+
+461                                                       |
+
+462                                                       |
+
+463                                                       |
+
+464                                                       |
+
+465                                                       |
+
+466                                                       |
+
+467                                                       |
+
+468                                                       |
+
+469                                                       |
+
+470                                                       |
+
+471                                                       |
+
+472                                                       |
+
+473                                                       |
+
+474                                                       |
+
+475                                                       |
+
+476                                                       |
+
+477                                                       |
+
+478                                                       |
+
+479                                                       |
+
+480                                                       |
+
+481                                                       |
+
+482                                                       |
+
+483                                                       |
+
+484                                                       |
+
+485                                                       |
+
+486                                                       |
+
+487                                                       |
+
+488                                                       |
+
+489                                                       |
+
+490                                                       |
+
+491                                                       |
+
+492                                                       |
+
+493                                                       |
+
+494                                                       |
+
+495                                                       |
+
+496                                                       |
+
+497                                                       |
+
+498                                                       |
+
+499                                                       |
+
+500                                                       |
+
+501                                                       |
+
+502                                                       |
+
+503                                                       |
+
+504                                                       |
+
+505                                                       |
+
+506                                                       |
+
+507                                                       |
+
+508                                                       |
+
+509                                                       |
+
+510                                                       |
+
+511                                                       |
+
+512                                                       |
+
+513                                                       |
+
+514                                                       |
+
+515                                                       |
+
+516                                                       |
+
+517                                                       |
+
+518                                                       |
+
+519                                                       |
+
+520                                                       |
+
+521                                                       |
+
+522                                                       |
+
+523                                                       |
+
+524                                                       |
+
+525                                                       |
+
+526                                                       |
+
+527                                                       |
+
+528                                                       |
+
+529                                                       |
+
+530                                                       |
+
+531                                                       |
+
+532                                                       |
+
+533                                                       |
+
+534                                                       |
+
+535                                                       |
+
+536                                                       |
+
+537                                                       |
+
+538                                                       |
+
+539                                                       |
+
+540                                                       |
+
+541                                                       |
+
+542                                                       |
+
+543                                                       |
+
+544                                                       |
+
+545                                                       |
+
+546                                                       |
+
+547                                                       |
+
+548                                                       |
+
+549                                                       |
+
+550                                                       |
+
+551                                                       |
+
+552                                                       |
+
+553                                                       |
+
+554                                                       |
+
+555                                                       |
+
+556                                                       |
+
+557                                                       |
+
+558                                                       |
+
+559                                                       |
+
+560                                                       |
+
+561                                                       |
+
+562                                                       |
+
+563                                                       |
+
+564                                                       |
+
+565                                                       |
+
+566                                                       |
+
+567                                                       |
+
+568                                                       |
+
+569                                                       |
+
+570                                                       |
+
+571                                                       |
+
+572                                                       |
+
+573                                                       |
+
+574                                                       |
+
+575                                                       |
+
+576                                                       |
+
+577                                                       |
+
+578                                                       |
+
+579                                                       |
+
+580                                                       |
+
+581                                                       |
+
+582                                                       |
+
+583                                                       |
+
+584                                                       |
+
+585                                                       |
+
+586                                                       |
+
+587                                                       |
+
+588                                                       |
+
+589                                                       |
+
+590                                                       |
+
+591                                                       |
+
+592                                                       |
+
+593                                                       |
+
+594                                                       |
+
+595                                                       |
+
+596                                                       |
+
+597                                                       |
+
+598                                                       |
+
+599                                                       |
+
+600                                                       |
+
+601                                                       |
+
+602                                                       |
+
+603                                                       |
+
+604                                                       |
+
+605                                                       |
+
+606                                                       |
+
+607                                                       |
+
+608                                                       |
+
+609                                                       |
+
+610                                                       |
+Re-run one of the alignment cycles (500 or 501) and the 
+calibration cycle (502) from where this input may be set to
+a valid value.
+611                                                       |
+When programming the cutter profile checking cycle (508),
+check that Q374 is correctly entered as either +1 (external)
+, -1 (internal), or 0 (both).
+612                                                       |
+Re-run the measuring cycle that resulted in this error, 
+setting Q365/ROFFS to a value smaller than that specified as
+the maximum tool radius within the Renishaw set-up table.
+Alternatively, increase the value of the maximum tool
+radius.
+613                                                       |
+Re-run one of the alignment cycles (500 or 501) and the
+calibration cycle (502) from where this input may be set to 
+a valid value.
+614                                                       |
+
+615                                                       |
+Review the sample size and scatter tolerance requirements.
+Check the reason for poor measurement performance and/or
+check the sample size and scatter tolerance values entered
+in the Renishaw set-up table, defined as number of retries
+and scatter tolerance respectively. Poor measurement 
+performance can be caused by excessive coolant or swarf on
+or around the tool.
+616                                                       |
+Check the electrical installation.
+617                                                       |
+Check the maximum tool length specified in the Renishaw
+set-up table and the length of the active tool in the tool
+table. It may be necessary to alter these, within the limits
+of the machine tool.
+618                                                       |
+Check the minimum tool length specified in the Renishaw
+set-up table and the length of the active tool in the tool
+table. It may be necessary to alter these, within the limits
+of the machine tool.
+619                                                       |
+Check the minimum tool length specified in the Renishaw
+set-up table and the length of the active tool in the tool
+table. It may be necessary to alter these, within the limits
+of the machine tool.
+620                                                       |
+If a sister tool is specified for the broken tool, within
+the tool table, the broken tool is replaced automatically
+when next called. If no sister tool is specified, replace
+the tool and establish its new correct dimensions with one
+of the length or radius measuring cycles (cycles 503, 504,
+505, or 512).
+621                                                       |
+If the tool is missing or its approximate length
+(where required) in the tool table is incorrectly short,
+correct this and retry the cycle.
+If the NC system has been moved, re-run the alignment and
+calibration cycles (500 or 501, and 502) to reset the 
+positional values. If the NC system has been moved as the
+result of a collision, check it is operating correctly
+before running any cycles (see "NC1 installation guide and
+parts list", Part No. H-2000-5048).
+622                                                       |
+If a sister tool is specified for the broken tool, within
+the tool table, the broken tool is replaced automatically
+when next called. If no sister tool is specified, replace
+the tool and establish its new correct basic dimensions with
+one of the length or radius measuring cycles (cycles 503,
+504, 505, or 512). If the tool does not appear to be broken,
+check the tool and holder for eccentric / runout.
+623                                                       |
+Check that nothing is interfering with the beam and retry
+the cycle. If the beam is not cut but the alarm persists,
+check the electrical installation.
+624                                                       |
+M code out of range
+625                                                       |
+Where the wiring has not been provided for extended cycles,
+do not attempt to use these cycles. If wiring connections
+and Input / M-code assignment has been carried out, check
+the Cycles supported parameter in the Renishaw set-up table.
+626                                                       |
+Spindle speed > maximum
+627                                                       |
+Re-run the measuring cycle that resulted in this error,
+setting Q365 to a value smaller than that of the active tool
+radius (R) in the tool table.
+628                                                       |
+Re-run the measuring cycle that resulted in this error,
+after correcting the Q371 value. If the maximum value
+defined in the tool table is in question, contact your
+equipment provider for advice.
+629                                                       |
+If a sister tool is specified for the tool, within the tool 
+table, the tool is replaced automatically when next called.
+If no sister tool is specified, replace the tool and
+establish its new correct dimensions with one of the length
+or radius measuring cycles (cycles 503, 504 or 505 ) and
+using parameter Q380 (0).
+630                                                       |
+No further action is required because all the system tests
+are good. Prior to this message however, corrective actions
+may have been necessary to progress this far.
+631                                                       |
+
+632                                                       |
+
+633                                                       |
+
+634                                                       |
+
+635                                                       |
+
+636                                                       |
+
+637                                                       |
+
+638                                                       |
+
+639                                                       |
+
+640                                                       |
+
+641                                                       |
+
+642                                                       |
+
+643                                                       |
+
+644                                                       |
+
+645                                                       |
+
+646                                                       |
+
+647                                                       |
+
+648                                                       |
+
+649                                                       |
+
+650                                                       |
+- Check the function of the pollution protector/shutter
+- Check the function of the transmitter/receiver
+- Check if the laser beam is interrupted anywhere
+- Check the signal amplification of the receiver
+- Check the alignment of the beam betw. transmitter-receiver
+651                                                       |
+- Check the function of the pollution protector/shutter
+- Check the function of the transmitter/receiver
+- Check if the beam shutter/pollution protector is closed
+652                                                       |
+- Check measuring position and parameter values
+- Repeat the cycle possibly with modified parameters
+653                                                       |
+- Check and modify the tolerance limit
+- Check the tool pollution and clean the tool
+- Repeat the cycle possibly with modified parameters
+654                                                       |
+- Preset the parameter approach side to value +1 or -1
+655                                                       |
+- Machine not yet warmed up
+- Check measuring position and parameter values
+- Repeat the calibration cycle
+656                                                       |
+- Check measuring position and parameter values
+- Check the function of the laser system
+- Check the tool/machine pollution
+- Repeat the cycle possibly with modified parameters
+657                                                       |
+- Check and repeat the last TOOL CALL command
+- Load the correct tool into the spindle
+- Preset a valid tool number
+658                                                       |
+- Compare the value L and R in TOOL.T with the max. allowed
+  tool dimension data in file BLUM_000.TAB and correct them
+- Measure actual tool dimensions with laser system again
+659                                                       |
+- Limit the measuring mode Q350 at values 0, 1, 2
+660                                                       |
+- Machine not yet warmed up
+- Check the nominal value L/R and measuring value
+- Check if the tolerance values LTOL/RTOL are wise
+- Clean the tool
+- Repeat the cycle to confirm the measured deviation
+661                                                       |
+- Check and reduce the parameters listed
+- Check edge radius R2
+- Reduce scanning stroke Q353 at the tool shaft
+662                                                       |
+- Check and repeat the last TOOL CALL command with the
+  correct tool axis
+- Check parameter length axis in file BLUM_000.TAB
+663                                                       |
+- Check and possibly correct parameter CUT>0 in TOOL.T/Q368
+664                                                       |
+- Check and possibly correct parameter LTOL>=0.001mm
+- Check and possibly correct parameter RTOL>=0.001mm
+- Check and possibly correct parameter RBREAK>=0.001mm
+- Check and possibly correct parameter CUT>=1
+- Check and possibly correct parameter R-OFFS<>R
+665                                                       |
+- Check all call parameters concerning valid values
+666                                                       |
+- Check status of PLC-marker M1204, M1206, M1210 and M1215
+- Check existence of the parameter table
+- Check parameter values in parameter table
+667                                                       |
+- Repeat cycle with changed parameters
+668                                                       |
+- Preset max. check speed with TOOL CALL
+- Select measuring speed for cycle 584 so that no gear
+  must be changed.
+669                                                       |
+- Please contact Blum and the Machine tool builder
+- Reboot the control
+- Don't use the Blum measuring cycles any more, until
+  the problem is solved
+670                                                       |
+
+671                                                       |
+
+672                                                       |
+
+673                                                       |
+
+674                                                       |
+
+675                                                       |
+
+676                                                       |
+
+677                                                       |
+
+678                                                       |
+
+679                                                       |
+
+680                                                       |
+
+681                                                       |
+
+682                                                       |
+
+683                                                       |
+
+684                                                       |
+
+685                                                       |
+
+686                                                       |
+
+687                                                       |
+
+688                                                       |
+
+689                                                       |
+
+690                                                       |
+
+691                                                       |
+
+692                                                       |
+
+693                                                       |
+
+694                                                       |
+
+695                                                       |
+
+696                                                       |
+
+697                                                       |
+
+698                                                       |
+
+699                                                       |
+
+700                                                       |
+
+701                                                       |
+
+702                                                       |
+
+703                                                       |
+
+704                                                       |
+
+705                                                       |
+
+706                                                       |
+
+707                                                       |
+
+708                                                       |
+
+709                                                       |
+
+710                                                       |
+
+711                                                       |
+
+712                                                       |
+
+713                                                       |
+
+714                                                       |
+
+715                                                       |
+
+716                                                       |
+
+717                                                       |
+
+718                                                       |
+
+719                                                       |
+
+720                                                       |
+
+721                                                       |
+
+722                                                       |
+
+723                                                       |
+
+724                                                       |
+
+725                                                       |
+
+726                                                       |
+
+727                                                       |
+
+728                                                       |
+
+729                                                       |
+
+730                                                       |
+
+731                                                       |
+
+732                                                       |
+
+733                                                       |
+
+734                                                       |
+
+735                                                       |
+
+736                                                       |
+
+737                                                       |
+
+738                                                       |
+
+739                                                       |
+
+740                                                       |
+
+741                                                       |
+
+742                                                       |
+
+743                                                       |
+
+744                                                       |
+
+745                                                       |
+
+746                                                       |
+
+747                                                       |
+
+748                                                       |
+
+749                                                       |
+
+750                                                       |
+
+751                                                       |
+
+752                                                       |
+
+753                                                       |
+
+754                                                       |
+
+755                                                       |
+
+756                                                       |
+
+757                                                       |
+
+758                                                       |
+
+759                                                       |
+
+760                                                       |
+
+761                                                       |
+
+762                                                       |
+
+763                                                       |
+
+764                                                       |
+
+765                                                       |
+
+766                                                       |
+
+767                                                       |
+
+768                                                       |
+
+769                                                       |
+
+770                                                       |
+
+771                                                       |
+
+772                                                       |
+
+773                                                       |
+
+774                                                       |
+
+775                                                       |
+
+776                                                       |
+
+777                                                       |
+
+778                                                       |
+
+779                                                       |
+
+780                                                       |
+
+781                                                       |
+
+782                                                       |
+
+783                                                       |
+
+784                                                       |
+
+785                                                       |
+
+786                                                       |
+
+787                                                       |
+
+788                                                       |
+
+789                                                       |
+
+790                                                       |
+
+791                                                       |
+
+792                                                       |
+
+793                                                       |
+
+794                                                       |
+
+795                                                       |
+
+796                                                       |
+
+797                                                       |
+
+798                                                       |
+
+799                                                       |
+
+800                                                       |
+
+801                                                       |
+ - Check the pneumatic counter-weight balancing system.
+802                                                       |
+ - Check electrical cabinet
+ - Electrical motor check
+803                                                       |
+
+804                                                       |
+
+805                                                       |
+ - Visual inspection for oil loss
+ - Electrical connection of pressure switch
+806                                                       |
+ - Refill oil
+ - Check the level switch
+807                                                       |
+ - Visual inspection for oil loss
+ - Electrical connection of pressure switch
+808                                                       |
+ - Refill oil
+ - Check the level switch
+809                                                       |
+
+810                                                       |
+ - Grease the axis with the specified volumn.
+ - Select the "Programming and editing" mode.
+ - Press the MOD key.
+ - Key in code number "12210224" to clear X-axis error.
+ - Key in code number "12210225" to clear Y-axis error.
+ - Key in code number "12210226" to clear Z-axis error.
+811                                                       |
+
+812                                                       |
+
+813                                                       |
+
+814                                                       |
+
+815                                                       |
+
+816                                                       |
+
+817                                                       |
+
+818                                                       |
+
+819                                                       |
+ - Program continues until PGM END.
+ - Check gravity axis balancing system (including pressure
+   sensor & valve).
+820                                                       |
+
+821                                                       |
+
+822                                                       |
+
+823                                                       |
+
+824                                                       |
+
+825                                                       |
+
+826                                                       |
+
+827                                                       |
+
+828                                                       |
+
+829                                                       |
+
+830                                                       |
+
+831                                                       |
+
+832                                                       |
+
+833                                                       |
+
+834                                                       |
+
+835                                                       |
+
+836                                                       |
+
+837                                                       |
+
+838                                                       |
+
+839                                                       |
+ - Replace the filter in front of M08 motor.
+ - Check the pressure switch.
+840                                                       |
+
+841                                                       |
+
+842                                                       |
+
+843                                                       |
+
+844                                                       |
+ - If the TC standby tool number is different from STDT
+   value, use the service mode (HELP) to load the tool from
+   the TC standby position to the magazine pocket and 
+   execute "#xxx Delete standby tool status (STDT=0)"
+   command line to reset the TC standby tool status.
+ - Press the NC STOP key and overtravel releasing (|->) key
+   on the machine panel simultaneously to clear the message.
+845                                                       |
+
+846                                                       |
+ - Check why tool selection cannot be finished.
+ - Press CE key after problem solved.
+847                                                       |
+ - Inform machine service.
+ - Tool/pocket numbers displays on the magazine panel may be
+   incorrect.
+848                                                       |
+ - Check the wiring between NC I/O PLB module and magazine
+   panel display I/O unit.
+ - Tool/pocket numbers displays on the magazine panel may be
+   incorrect.
+849                                                       |
+
+850                                                       |
+
+851                                                       |
+ - Bring the tool in the manual operating mode in normal 
+   position by means of the service function (Help)
+ - Test the inputs
+852                                                       |
+ - Press NC start key to continue the tool change
+ - Press internal stop soft key to stop the tool change
+853                                                       |
+ - Close the tool magazine 2 guard
+854                                                       |
+ - NC start to reference the tool magazine 2
+855                                                       |
+ During TOOL DEF/TOOL CALL
+ (select one of the following operations)
+ 1)Press NC start key to continue magazine 2 tool selection.
+ 2)Press emergency stop button -> release emergency stop 
+   button -> press machine on button -> use manual magazine
+   2 tool selection to rotate the magazine 2.
+
+During manual magazine 2 tool selection
+ (select one of the following operations)
+ 1)Press NC start key to continue manual magazine 2 tool
+   selection.
+ 2)Press CE key -> press machine on button -> use manual
+   magazine 2 tool selection to rotate the magazine 2.
+856                                                       |
+ - Only note
+857                                                       |
+ - Load the tool magazine 2 correctly
+ - Check the pocket table
+ - Check the sensor
+858                                                       |
+ - Load the tool magazine 2 correctly
+ - Check the pocket table
+ - Check the sensor
+859                                                       |
+
+860                                                       |
+
+861                                                       |
+
+862                                                       |
+
+863                                                       |
+
+864                                                       |
+
+865                                                       |
+
+866                                                       |
+
+867                                                       |
+
+868                                                       |
+
+869                                                       |
+
+870                                                       |
+
+871                                                       |
+
+872                                                       |
+
+873                                                       |
+
+874                                                       |
+
+875                                                       |
+
+876                                                       |
+
+877                                                       |
+
+878                                                       |
+
+879                                                       |
+
+880                                                       |
+
+881                                                       |
+
+882                                                       |
+
+883                                                       |
+
+884                                                       |
+
+885                                                       |
+
+886                                                       |
+
+887                                                       |
+ - Check the tool measurement unit cover open/close solenoid
+   connection.
+ - Check the tool measurement unit cover open/closed sensor
+   signal.
+888                                                       |
+
+889                                                       |
+
+890                                                       |
+
+891                                                       |
+
+892                                                       |
+
+893                                                       |
+
+894                                                       |
+
+895                                                       |
+
+896                                                       |
+
+897                                                       |
+
+898                                                       |
+
+899                                                       |
+
+900                                                       |
+ - Check values in PLC:\CORRECT\Ext_sag_comp.tab
+901                                                       |
+
+902                                                       |
+
+903                                                       |
+
+904                                                       |
+
+905                                                       |
+
+906                                                       |
+
+907                                                       |
+
+908                                                       |
+
+909                                                       |
+
+910                                                       |
+
+911                                                       |
+
+912                                                       |
+
+913                                                       |
+
+914                                                       |
+
+915                                                       |
+
+916                                                       |
+
+917                                                       |
+
+918                                                       |
+
+919                                                       |
+
+920                                                       |
+
+921                                                       |
+
+922                                                       |
+
+923                                                       |
+
+924                                                       |
+
+925                                                       |
+
+926                                                       |
+
+927                                                       |
+
+928                                                       |
+
+929                                                       |
+
+930                                                       |
+
+931                                                       |
+
+932                                                       |
+
+933                                                       |
+
+934                                                       |
+
+935                                                       |
+ - Press NC start key to continue the tool loaing to arm 2
+   unit.
+ - Press internal stop soft key to stop the tool loading to
+   arm 2 unit.
+936                                                       |
+ - Press NC start key to continue the tool loaing to
+   magazine 2 unit.
+ - Press internal stop soft key to stop the tool loading to
+   magazine 2 unit.
+937                                                       |
+
+938                                                       |
+
+939                                                       |
+
+940                                                       |
+
+941                                                       |
+
+942                                                       |
+
+943                                                       |
+
+944                                                       |
+
+945                                                       |
+
+946                                                       |
+
+947                                                       |
+
+948                                                       |
+
+949                                                       |
+
+950                                                       |
+
+951                                                       |
+
+952                                                       |
+
+953                                                       |
+
+954                                                       |
+
+955                                                       |
+
+956                                                       |
+
+957                                                       |
+
+958                                                       |
+
+959                                                       |
+
+960                                                       |
+
+961                                                       |
+
+962                                                       |
+
+963                                                       |
+
+964                                                       |
+
+965                                                       |
+
+966                                                       |
+
+967                                                       |
+
+968                                                       |
+
+969                                                       |
+
+970                                                       |
+
+971                                                       |
+ - If there is any tool on the arm 2 unit, use the service
+   mode (HELP) to return the tool back to the corresponding
+   magazine 2 pocket.
+ - Press the NC STOP key and overtravel releasing (|->) key
+   on the machine panel simultaneously to clear the message.
+972                                                       |
+
+973                                                       |
+
+974                                                       |
+
+975                                                       |
+
+976                                                       |
+
+977                                                       |
+
+978                                                       |
+
+979                                                       |
+ - locate the magazine 2 control mode switch on magazine 2
+   operation panel in manual control position
+980                                                       |
+
+981                                                       |
+ - Use the service mode (HELP) to move the magazine gripper
+   to the standby position.
+982                                                       |
+ - Use the service mode (HELP) to move the magazine gripper
+   to the put-in position.
+983                                                       |
+ - Press the emergency stop button to terminate the pocket
+   shifting.
+ - Find out the cause for not shifting the pocket to
+   magazine position.
+984                                                       |
+ - Press the emergency stop button to terminate the pocket
+   shifting.
+ - Find out the cause for not shifting the pocket to TC
+   position.
+985                                                       |
+ - If there is no pocket on the magazine standby position,
+   check the pocket detection sensor signal on the magazine
+   standby position.
+ - If there is a pocket on the magazine standby position,
+   rotate the magazine until no pocket on the magazine
+   standby position.
+986                                                       |
+ - Use the service mode (HELP) to move the magazine pocket
+   to the correct position.
+987                                                       |
+ - Inform machine tool builder.
+988                                                       |
+ - No magazine pocket assigned for TC standby tool
+ - Inform machine tool builder.
+989                                                       |
+
+990                                                       |
+
+991                                                       |
+
+992                                                       |
+
+993                                                       |
+
+994                                                       |
+
+995                                                       |
+
+996                                                       |
+
+997                                                       |
+
+998                                                       |
+
+999                                                       |
+ - Inform your machine service agent.
+1000                                                      |

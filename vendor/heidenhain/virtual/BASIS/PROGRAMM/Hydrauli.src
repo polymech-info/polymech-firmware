@@ -1,0 +1,70 @@
+*-----------------------------------------------------------------------------
+*  Hydraulik
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_Betriebsstundenzaehler_ein            M
+
+#include Mac_Lib.inc
+
+GLOBAL Hydraulik
+
+;----------------------------
+LBL Hydraulik
+;----------------------------
+
+;Variante 1 (Hydraulik Pumpe läuft bis Druck erreicht)
+
+  LN     I_Hydraulik_Druck_ok
+  A      MG_Steuerung_betriebsbereit
+  AN     PN_Fehler_Hydraulik_Druck
+  =      O_Hydraulik_ein
+  =N     TS_Hydraulik_Druck_ok
+
+  LN     TR_Hydraulik_Druck_ok
+  A      MG_Steuerung_betriebsbereit
+  S      PN_Fehler_Hydraulik_Druck
+
+;Variante 2 (Hydraulik Pumpe läuft ständig, Überwachung Druck Sensor)
+;
+;  L      MG_Steuerung_betriebsbereit
+;  A      O_Hydraulik_ein
+;  AN     I_Hydraulik_Druck_ok
+;  S      PN_Fehler_Hydraulik_Druck
+;
+;  LN     TR_Hydraulik_Druck_ok
+;  A      O_Hydraulik_ein
+;  S      PN_Fehler_Hydraulik_Druck
+;
+;  L      I_Hydraulik_Druck_ok
+;  O      MG_Impuls_CE_Taste
+;  O      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+;  =      TS_Hydraulik_Druck_ok
+;  R      PN_Fehler_Hydraulik_Druck
+;
+;  L      I_Not_Halt_entriegelt
+;  A      TR_Hydraulik_Druck_ok
+;  =      O_Hydraulik_ein
+
+  L      O_Hydraulik_ein
+  AN     ML_Betriebsstundenzaehler_ein
+  IFT
+    PS     KG_Betriebsstunden_Hydraulik
+    CM     9190                        ;Starten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  LN     O_Hydraulik_ein
+  A      ML_Betriebsstundenzaehler_ein
+  IFT
+    PS     KG_Betriebsstunden_Hydraulik
+    CM     9191                        ;Anhalten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      O_Hydraulik_ein
+  =      ML_Betriebsstundenzaehler_ein
+
+EM

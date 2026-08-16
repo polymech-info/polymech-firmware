@@ -1,0 +1,139 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Föorsó"
+
+msgid "AXIS"
+msgstr "Tengely"
+
+msgid "SCREEN"
+msgstr "Képernyö"
+
+msgid "MACHINE"
+msgstr "Gép"
+
+msgid "CONTROL"
+msgstr "Vezérlö"
+
+msgid "LIGHT"
+msgstr "Lámpa"
+
+msgid "LIGHT_1"
+msgstr "Lámpa 1"
+
+msgid "LIGHT_2"
+msgstr "Lámpa 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Levegö aggregátor"
+
+msgid "OEL_AGGREGATE"
+msgstr "Olaj aggregátor"
+
+msgid "DRIVES"
+msgstr "Hajtások"
+
+msgid "MONDAY_SHORT"
+msgstr "H"
+
+msgid "TUESDAY_SHORT"
+msgstr "K"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Sze"
+
+msgid "THURSDAY_SHORT"
+msgstr "Cs"
+
+msgid "FRIDAY_SHORT"
+msgstr "P"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Szo"
+
+msgid "SUNDAY_SHORT"
+msgstr "V"
+
+msgid "SETUP"
+msgstr "Beállít"
+
+msgid "ADVANCED"
+msgstr "Haladó"
+
+msgid "INFO"
+msgstr "Infó"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Melegítö program"
+
+msgid "STANDBY"
+msgstr "Készenlét"
+
+msgid "SWITCH_OFF"
+msgstr "Kikapcsol"
+
+msgid "TIME"
+msgstr "Idö"
+
+msgid "AXIS_FILTER"
+msgstr "Tengely szürö"
+
+msgid "SPINDLE_FILTER"
+msgstr "Föorsó szürö"
+
+msgid "SWITCH_ON"
+msgstr "Bekapcsol"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "A EnergyOpt optimalizálja a \n"
+"szerszámgép energiafelhaszná-\n"
+"lását. A nem használt elektro-\n"
+"nikus készülékeket készenléti\n"
+"üzemmódba lehet váltani,\n"
+"vagy teljesen kikapcsolni.\n"
+"- Használja a SZERKESZT funkciót\n"
+"- Aktiválja az eszközt és állít-\n"
+"  sa be az idöt.\n"
+"- A SZERKESZT funkciógombbal\n"
+"  zárja le szerkesztést.\n"
+"- Engedélyezze vagy tiltsa az\n"
+"  egyes opciókat a BE/KI funk-\n"
+"  ciógombbal."
+
+msgid "MILLISECOND"
+msgstr "ezredmásodperc"
+
+msgid "MILLISECONDS"
+msgstr "ezredmásodperc"
+
+msgid "SECOND"
+msgstr "másodperc"
+
+msgid "SECONDS"
+msgstr "másodperc"
+
+msgid "MINUTE"
+msgstr "perc"
+
+msgid "MINUTES"
+msgstr "perc"
+
+msgid "HOUR"
+msgstr "óra"
+
+msgid "HOURS"
+msgstr "óra"
+
+msgid "DAY"
+msgstr "nap"
+
+msgid "DAYS"
+msgstr "nap"
+
+msgid "WEEK"
+msgstr "hét"
+
+msgid "WEEKS"
+msgstr "hét"
+

@@ -1,0 +1,146 @@
+BEGIN Field_Angle.TAB 
+#STRUCTBEGIN
+   NAME = Symbol
+     TYPE = C
+     WIDTH = 24
+     DEC = 0
+     DIA-ENGLISH = Symbol name ?
+     DIA-GERMAN = Symbolname ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 36
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = Value
+     TYPE = N
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Parameter value ?
+     DIA-GERMAN = Parameter Wert ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+   NAME = Unit
+     TYPE = N
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Parameter unit ?
+     DIA-GERMAN = Parameter Einheit ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+   NAME = Default
+     TYPE = N
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Parameter default ?
+     DIA-GERMAN = Standardwert ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+   NAME = Min
+     TYPE = N
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Parameter value min ?
+     DIA-GERMAN = Parameter Minimalwert ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+   NAME = Max
+     TYPE = N
+     WIDTH = 12
+     DEC = 0
+     DIA-ENGLISH = Parameter value max ?
+     DIA-GERMAN = Parameter Maximalwert ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+#STRUCTEND
+NR      Symbol                   Comment                              Value        Unit         Default      Min          Max
+0       DG_Feldwinkel[0]         Feldwinkel Achse X                   +0           +0           +0           +0           +0           
+1       DG_Feldwinkel[1]         Feldwinkel Achse Y                   +0           +0           +0           +0           +0           
+2       DG_Feldwinkel[2]         Feldwinkel Achse Z                   +0           +0           +0           +0           +0           
+3       DG_Feldwinkel[3]         Feldwinkel Achse 4                   +0           +0           +0           +0           +0           
+4       DG_Feldwinkel[4]         Feldwinkel Achse 5                   +0           +0           +0           +0           +0           
+5       DG_Feldwinkel[5]         Feldwinkel Achse 6                   +0           +0           +0           +0           +0           
+6       DG_Feldwinkel[6]         Feldwinkel Achse 7                   +0           +0           +0           +0           +0           
+7       DG_Feldwinkel[7]         Feldwinkel Achse 8                   +0           +0           +0           +0           +0           
+8       DG_Feldwinkel[8]         Feldwinkel Achse 9                   +0           +0           +0           +0           +0           
+9       DG_Feldwinkel[9]         Feldwinkel Achse 10                  +0           +0           +0           +0           +0           
+10      DG_Feldwinkel[10]        Feldwinkel Achse 11                  +0           +0           +0           +0           +0           
+11      DG_Feldwinkel[11]        Feldwinkel Achse 12                  +0           +0           +0           +0           +0           
+12      DG_Feldwinkel[12]        Feldwinkel Achse 13                  +0           +0           +0           +0           +0           
+13      DG_Feldwinkel[13]        Feldwinkel Achse 14                  +0           +0           +0           +0           +0           
+14      DG_Feldwinkel[14]        Feldwinkel Achse 15                  +0           +0           +0           +0           +0           
+15      DG_Feldwinkel[15]        Feldwinkel Achse 16                  +0           +0           +0           +0           +0           
+16      DG_Feldwinkel[16]        Feldwinkel Achse 17                  +0           +0           +0           +0           +0           
+17      DG_Feldwinkel[17]        Feldwinkel Achse 18                  +0           +0           +0           +0           +0           
+18      DG_Feldwinkel[18]        Feldwinkel Achse 19                  +0           +0           +0           +0           +0           
+19      DG_Feldwinkel[19]        Feldwinkel Achse 20                  +0           +0           +0           +0           +0           
+20      DG_Feldwinkel[20]        Feldwinkel Achse 21                  +0           +0           +0           +0           +0           
+21      DG_Feldwinkel[21]        Feldwinkel Achse 22                  +0           +0           +0           +0           +0           
+[END]

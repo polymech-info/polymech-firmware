@@ -1,0 +1,19 @@
+\n  M50 - extractor virutas activo
+\n  M51 - extractor virutas inactivo
+\n  M55 - B/C cambio de cabezales
+\n  M56 - B cambio de cabezal
+\n  M57 - cambio de cabezales
+\n  M61 - sistema pendular mesa 1
+\n  M62 - sistema pendular mesa 2
+\n  M64 - bloqueo eje 4
+\n  M65 - bloqueo eje 5
+\n  M66 - bloqueo eje 6
+\n  M70 - PLC preset desactivo
+\n  M71 - limites ejes 1
+\n  M72 - limites ejes 2
+\n  M73 - limites ejes 3
+\n  M79 - PLC preset activo
+\n  M80 - contador piezas activo
+\n  M81 - contador de piezas inactivo
+\n  M82 - Control consumo htas. activo
+\n  M83 - Control consumo htas. inactivo

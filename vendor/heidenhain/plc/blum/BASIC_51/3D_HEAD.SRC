@@ -1,0 +1,1632 @@
+*-----------------------------------------------------------------------------
+*  3D head
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_actual_value_fixed                    K+0
+#define /s    KL_gear_range_1                          K+0
+#define /s    KL_torque_limitation                     K-1
+#define /s    KL_handwheel_axis_bitcoded               K+10
+#define /s    KL_inactive                              K-1
+#define /s    KL_mask_inactive                         K-1            *;EUMACH
+
+#define /s    KL_current_edit_field                    K+4
+#define /s    KL_3D_head                               K+16
+#define /s    KL_3D_head_edit                          K+17
+#define /s    KL_spindle_360_degree                    K+3600000      *;EUMACH
+#define /s    KL_G_code_range_1                        K+0            *;EUMACH
+#define /s    KL_G_code_range_2                        K+1            *;EUMACH
+
+#define /s    ML_3D_head_edit                          M
+#define /s    ML_stack_synchronize                     M
+#define /s    ML_timer_off                             M
+#define /s    ML_3D_head_display_has_been_active       M
+#define /s    ML_3D_head_enter_has_been_active         M
+#define /s    ML_3D_head_initial                       M
+#define /s    ML_selection_head_position               M
+#define /s    ML_3D_head_axis_not_clamped              M              *;EUMACH
+#define /s    ML_3D_head_axis_1_prepos_service         M              *;EUMACH
+#define /s    ML_3D_head_axis_2_prepos_service         M              *;EUMACH
+#define /s    ML_3D_head_S_pos_plus_360                M              *;EUMACH
+#define /s    ML_3D_head_S_pos_minus_360               M              *;EUMACH
+#define /s    ML_gear_was_in_range_2_3D_head           M              *;EUMACH
+#define /s    ML_save_spindle_position                 M              *;EUMACH
+#define /s    ML_3D_head_axis_1_no_monitoring          M              *;EUMACH
+#define /s    ML_3D_head_axis_2_no_monitoring          M              *;EUMACH
+
+#define /s    ML_head_pos                              M[16]
+#define /c    ML_head_pos_axis_1_selected              M &ML_head_pos + 0
+#define /c    ML_head_pos_axis_2_selected              M &ML_head_pos + 1
+#define /c    ML_spindle_pos_axis_1_selected           M &ML_head_pos + 2
+#define /c    ML_spindle_pos_axis_2_selected           M &ML_head_pos + 3
+#define /c    ML_axis_1_min_torque                     M &ML_head_pos + 4
+#define /c    ML_axis_2_min_torque                     M &ML_head_pos + 5
+#define /c    ML_axis_1_unclampig                      M &ML_head_pos + 6
+#define /c    ML_axis_2_unclampig                      M &ML_head_pos + 7
+
+#define /s    WL_current_edit_field                    W
+#define /s    WL_last_edit_field                       W
+#define /s    WL_active_handwheel_axis                 W
+
+#define /s    BL_active_3D_head_axis                   B
+
+#define /s    DL_previous_MP4230_10                    D              *;EUMACH
+#define /s    DL_previous_MP4230_11                    D              *;EUMACH
+#define /s    DL_3D_head_axis_1_position               D              *;EUMACH
+#define /s    DL_3D_head_axis_2_position               D              *;EUMACH
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL 3D_head
+
+;----------------------------
+LBL 3D_head
+;----------------------------
+
+  CM     Axis_assignment
+
+*;EUMACH
+#if KG_3D_head_axis_1 = &axis_5
+  L      MG_3D_head_axis_1_service_unclamping
+  S      ML_3D_head_axis_1_no_monitoring
+
+  LN     MG_3D_head_axis_1_service_unclamping
+  A      MG_3D_head_axis_1_clamped
+  R      ML_3D_head_axis_1_no_monitoring
+
+  L      BG_MP1350_ref_mode_5
+  ==     K+5
+  A      ML_3D_head_axis_1_no_monitoring
+  IFT
+    L    PN_W1042_no_axes_monitoring
+    BS   KG_axis_5
+    =    WG_3D_head_axis_5_monitoring_off
+  ELSE
+    L    PN_W1042_no_axes_monitoring
+    BC   KG_axis_5
+    =    WG_3D_head_axis_5_monitoring_off
+  ENDI
+#endif
+
+#if KG_3D_head_axis_2 = &axis_5
+  L      MG_3D_head_axis_2_service_unclamping
+  S      ML_3D_head_axis_2_no_monitoring
+
+  LN     MG_3D_head_axis_2_service_unclamping
+  A      MG_3D_head_axis_2_clamped
+  R      ML_3D_head_axis_2_no_monitoring
+
+  L      BG_MP1350_ref_mode_5
+  ==     K+5
+  A      ML_3D_head_axis_2_no_monitoring
+  IFT
+    L    PN_W1042_no_axes_monitoring
+    BS   KG_axis_5
+    =    WG_3D_head_axis_5_monitoring_off
+  ELSE
+    L    PN_W1042_no_axes_monitoring
+    BC   KG_axis_5
+    =    WG_3D_head_axis_5_monitoring_off
+  ENDI
+#endif
+
+  L      MG_3D_head_axis_1_unclamped
+  ON     MG_3D_head_axis_1_clamped
+  O      MG_3D_head_axis_1_output_unclamping
+  A[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_1
+  ]
+#if KG_3D_head_axis_2 ! &inactive
+  O[
+    L      MG_3D_head_axis_2_unclamped
+    ON     MG_3D_head_axis_2_clamped
+    O      MG_3D_head_axis_2_output_unclamping
+    A[
+      L      WG_controlled_axes
+      BT     KG_3D_head_axis_2
+    ]
+  ]
+#endif
+  =      MG_3D_head_axis_not_clamped
+
+  L      MG_3D_head_axis_1_unclamped
+  ON     MG_3D_head_axis_1_clamped
+  O      MG_3D_head_axis_1_output_unclamping
+  A      MG_3D_head_axis_1_active
+  A[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_1
+  ]
+#if KG_3D_head_axis_2 ! &inactive
+  O[
+    L      MG_3D_head_axis_2_unclamped
+    ON     MG_3D_head_axis_2_clamped
+    O      MG_3D_head_axis_2_output_unclamping
+    A      MG_3D_head_axis_2_active
+    A[
+      L      WG_controlled_axes
+      BT     KG_3D_head_axis_2
+    ]
+  ]
+#endif
+  =      ML_3D_head_axis_not_clamped
+
+  L      MG_3D_head_axis_1_prepos_service
+  AN     ML_3D_head_axis_1_prepos_service
+  O      MG_3D_head_spindle_orientation_on
+  ON     MG_3D_head_enter
+  R      MG_3D_head_axis_2_prepos_service
+
+  LN     MG_3D_head_axis_1_prepos_service
+  A      ML_3D_head_axis_1_prepos_service
+  =      MG_3D_head_axis_1_cancel_prepos_service
+
+  L      MG_3D_head_axis_1_prepos_service
+  =      ML_3D_head_axis_1_prepos_service
+
+  L      MG_3D_head_axis_2_prepos_service
+  AN     ML_3D_head_axis_2_prepos_service
+  O      MG_3D_head_spindle_orientation_on
+  ON     MG_3D_head_enter
+  R      MG_3D_head_axis_1_prepos_service
+
+  LN     MG_3D_head_axis_2_prepos_service
+  A      ML_3D_head_axis_2_prepos_service
+  =      MG_3D_head_axis_2_cancel_prepos_service
+
+  L      MG_3D_head_axis_2_prepos_service
+  =      ML_3D_head_axis_2_prepos_service
+
+#if Torque_limitation = &active
+  L      NP_MP4230_30_min_torque_axis_1
+  =      DG_3D_head_axis_1_min_torque
+
+  L      NP_MP4230_31_min_torque_axis_2
+  =      DG_3D_head_axis_2_min_torque
+#endif
+
+  L      MG_3D_head_active
+  AN     MG_3D_head_active_was_on
+  =      MG_3D_head_active_p_pulse
+
+  L      MG_3D_head_active
+  =      MG_3D_head_active_was_on
+
+#if (MT = &MT_22) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35B)
+  L      DG_position_axis_X_ref[KG_3D_head_axis_1]
+  -      DG_3D_head_axis_1_position
+  PSW
+  CM     Absolute
+  PLW
+  >      DG_MP1030_pos_window_X[KG_3D_head_axis_1]
+  AN     MG_3D_head_active
+  AN     PN_error_3D_head_setup
+  AN     PN_error_hirth_position
+  AN     PN_error_3D_head_pos_confirmation
+  A      MG_power_delayed_on
+  A[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_1
+  ]
+  S      PN_error_3D_head_NC_PLC_pos
+  S      MG_win_axis_X[KG_3D_head_axis_1]
+#endif
+
+#if KG_3D_head_axis_2 ! &inactive
+  L      DG_position_axis_X_ref[KG_3D_head_axis_2]
+  -      DG_3D_head_axis_2_position
+  PSW
+  CM     Absolute
+  PLW
+  >      DG_MP1030_pos_window_X[KG_3D_head_axis_2]
+  AN     MG_3D_head_active
+  AN     PN_error_3D_head_setup
+  AN     PN_error_hirth_position
+  AN     PN_error_3D_head_pos_confirmation
+  A      MG_power_delayed_on
+  A[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_2
+  ]
+  S      PN_error_3D_head_NC_PLC_pos
+  S      MG_win_axis_X[KG_3D_head_axis_2]
+#endif
+*;EUMACH
+
+#if Reference_value_selection   = active
+
+  LN     MG_3D_head_setup_ok
+  A[                                                                  *;EUMACH
+    L      WG_controlled_axes                                         *;EUMACH
+    BT     KG_3D_head_axis_1                                          *;EUMACH
+    O[                                                                *;EUMACH
+      L      WG_controlled_axes                                       *;EUMACH
+      BT     KG_3D_head_axis_2                                        *;EUMACH
+    ]                                                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  S      PN_error_3D_head_setup
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  S      ML_3D_head_initial
+
+*;EUMACH M33/M34/M35 used for AFC M03/M04/M05 MACRO
+;  L      MG_M33_3D_head_axes_on
+;  A      MG_pulse_M_function
+;  R      MG_machine_parameter_are_read
+;  S      ML_3D_head_initial
+
+;  L      MG_M34_3D_head_axes_off
+;  A      MG_pulse_M_function
+;  R      MG_machine_parameter_are_read
+
+;  L      MG_M34_3D_head_axes_off
+;  A      MG_machine_parameter_are_read
+;  S      PN_M4092_quit_M_function
+*;EUMACH M33/M34/M35 used for AFC M03/M04/M05 MACRO
+
+#if KG_3D_head_axis_1 ! &inactive
+
+#if (MT = &MT_22) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35B) *;EUMACH
+  L      ML_selection_head_position
+  O      ML_save_spindle_position                                     *;EUMACH
+  CMT    Save_spindle_position
+
+  L      MG_machine_parameter_are_read
+  A      ML_3D_head_initial
+  O      ML_head_pos_axis_1_selected
+  IFT
+    R      ML_head_pos_axis_1_selected
+    S      ML_selection_head_position
+
+*;EUMACH Power-on reference value trimmed to Hirth increments
+;    L      DG_3D_head_axis_1_position
+;    >=     K+0
+;    IFT
+;      L      DG_3D_head_axis_1_position
+;      +[
+;        L      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;        /      K+2
+;      ]
+;      /      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;      X      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;      =      DG_3D_head_axis_1_position
+;    ELSE
+;      L      DG_3D_head_axis_1_position
+;      -[
+;        L      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;        /      K+2
+;      ]
+;      /      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;      X      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+;      =      DG_3D_head_axis_1_position
+;    ENDI
+*;EUMACH
+
+    PS     KG_3D_head_axis_1
+    PS     DG_3D_head_axis_1_position
+    CM     9147
+    M_display_module_error(KG_error_module_9147)
+
+*    CM     Spindel_Position_speichern
+;    L      MG_M33_3D_head_axes_on                                    *;EUMACH Original PLC
+;    S      PN_M4092_quit_M_function                                  *;EUMACH Original PLC
+
+  ENDI
+
+*;EUMACH
+  L      NP_MP4230_10_3D_head_offset_axis_1_S_position
+  <>     DL_previous_MP4230_10
+  A      MG_3D_head_enter
+  S      ML_save_spindle_position
+
+  L      NP_MP4230_10_3D_head_offset_axis_1_S_position
+  =      DL_previous_MP4230_10
+*;EUMACH
+#endif
+#endif
+
+#if KG_3D_head_axis_2 ! &inactive
+
+  L      MG_machine_parameter_are_read
+  A      ML_3D_head_initial
+  O      ML_head_pos_axis_2_selected
+  IFT
+    R      ML_head_pos_axis_2_selected
+    S      ML_selection_head_position
+
+*;EUMACH Power-on reference value trimmed to Hirth increments
+;    L      DG_3D_head_axis_2_position
+;    >=     K+0
+;    IFT
+;      L      DG_3D_head_axis_2_position
+;      +[
+;        L      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;        /      K+2
+;      ]
+;      /      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;      X      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;      =      DG_3D_head_axis_2_position
+;
+;      L      DG_3D_head_axis_2_position
+;      ==     K+3600000
+;      IFT
+;        L      K+0
+;        =      DG_3D_head_axis_2_position
+;      ENDI
+;    ELSE
+;      L      DG_3D_head_axis_2_position
+;      -[
+;        L      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;        /      K+2
+;      ]
+;      /      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;      X      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+;      =      DG_3D_head_axis_2_position
+;    ENDI
+*;EUMACH
+
+    PS     KG_3D_head_axis_2
+    PS     DG_3D_head_axis_2_position
+    CM     9147
+    M_display_module_error(KG_error_module_9147)
+
+*    CM     Spindel_Position_speichern
+
+  ENDI
+
+*;EUMACH
+#if (MT = &MT_22) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35B)
+  L      NP_MP4230_11_3D_head_offset_axis_2_S_position
+  <>     DL_previous_MP4230_11
+  A      MG_3D_head_enter
+  S      ML_save_spindle_position
+
+  L      NP_MP4230_11_3D_head_offset_axis_2_S_position
+  =      DL_previous_MP4230_11
+#endif
+*;EUMACH
+#endif
+#endif
+
+  L      MG_machine_parameter_are_read
+  R      ML_3D_head_initial
+
+  L      NP_M4176_control_in_operation_on_or_flashes                  *;EUMACH
+  O      MG_soft_key_one_level_back                                   *;EUMACH
+  A      MG_3D_head_enter                                             *;EUMACH
+  R      MG_3D_head_enter                                             *;EUMACH
+  IFT                                                                 *;EUMACH
+    PS     KL_mask_inactive                                           *;EUMACH
+    CM     9210                                                       *;EUMACH
+    PLX                                                               *;EUMACH
+    M_display_module_error(KG_error_module_9210)                      *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  L      MG_3D_head_display
+  O      MG_3D_head_enter
+  IFT
+*$WS Problem still in NC software 340 422 04 available
+* (Softkey type Radio)
+*;EUMACH
+ ;Using CHECK type instead of RADIO type of softkey due to only display the
+ ;      3D head information when the softkey is pressed.
+    L      MG_3D_head_display
+    AN     ML_3D_head_display_has_been_active
+    R      MG_3D_head_enter
+
+    L      MG_3D_head_display
+    =      ML_3D_head_display_has_been_active
+
+    L      MG_3D_head_enter
+    AN     ML_3D_head_enter_has_been_active
+    R      MG_3D_head_display
+    L      MG_3D_head_enter
+    =      ML_3D_head_enter_has_been_active
+
+    L      PN_error_3D_head_setup
+    R      PN_error_3D_head_setup
+    IFT
+      L      K+0
+      W=     MG_win_axis_X
+    ENDI
+
+    L      NP_W274_code_pushed_key
+    ==     KG_key_enter
+    A      MG_3D_head_enter
+    IFT
+      S      MG_3D_head_setup_ok
+
+      L      WL_current_edit_field
+      W=     ML_head_pos
+
+*;EUMACH Original PLC
+;      L      MG_3D_head_enter
+;      R      MG_3D_head_enter
+;      S      MG_3D_head_display
+*;EUMACH Original PLC
+
+    ENDI
+
+    PS     KL_current_edit_field
+    CM     9211
+    PL     WL_current_edit_field
+    M_display_module_error(KG_error_module_9211)
+
+  ENDI
+
+  L      MG_marker_one
+  R      TS_3D_head_timeout
+  S      TS_3D_head_timer_universal
+
+  L      NP_M4151_mode_electronic_handwheel
+  O      NP_M4156_mode_soft_key_manual_operation
+*$WS HR420 ?
+  IFT
+    PS     KL_handwheel_axis_bitcoded
+    CM     9035
+    PL     WL_active_handwheel_axis
+    M_display_module_error(KG_error_module_9035)
+
+    L      WL_active_handwheel_axis
+    BT     KG_3D_head_axis_1
+    S      PN_M4576_suppress_handwheel_pulses
+
+    L      WL_active_handwheel_axis
+    BT     KG_3D_head_axis_2
+    S      PN_M4576_suppress_handwheel_pulses
+  ENDI
+
+  CASE   BG_step_3D_head
+    CM     Activate                    ;00
+    CM     G_range_1                   ;01
+    CM     G_range_1_ok                ;02
+    CM     S_start_3D_pos              ;03
+    CM     S_posit_ok                  ;04
+    CM     3D_head_time                ;05
+    CM     3D_release_on               ;06
+    CM     3D_in_position              ;07
+    CM     3D_head_time                ;08
+    CM     3D_torque_limited           ;09
+    CM     3D_head_time                ;10
+    CM     3D_release_off              ;11
+    CM     3D_inactive                 ;12
+    CM     G_range_old                 ;13
+    CM     G_range_old_ok              ;14
+    CM     3D_head_end                 ;15
+  ENDC
+
+  PLL
+  S      TS_3D_head_timeout
+  IFT
+    INC    BG_step_3D_head
+  ENDI
+
+  LN     MG_3D_head_active
+  EMT
+
+  L      MG_key_NC_start_p_pulse
+  R      MG_3D_head_interruption
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_3D_head_timeout
+
+  LN     TR_3D_head_timeout
+  AN     TS_3D_head_timeout
+  =      PN_error_3D_head_timeout
+  S      MG_3D_head_interruption
+
+  L      MG_key_NC_stop
+  O      MG_pulse_external_stop
+  S      MG_3D_head_interruption
+
+  LN     MG_control_operational
+  O      MG_manu_auto_mode_change
+  O      MG_auto_manu_mode_change
+  O      PN_error_protection_working_area
+  O      PN_error_3D_head_timeout                                     *;EUMACH
+  O      PN_error_3D_head_G_range                                     *;EUMACH
+  CMT    3D_head_reset
+
+EM
+
+;----------------------------
+LBL Activate                           ;00
+
+  L      MG_marker_one
+  S      TS_3D_head_timeout
+
+  PS     MG_marker_zero
+
+  L      WG_3D_head_activate
+  BT     KG_3D_head_axis_1
+  AN     I_tool_unclamped                                             *;EUMACH
+  A      I_tool_clamped                                               *;EUMACH
+  S      MG_3D_head_active
+  IFT
+    S      MG_3D_head_axis_1_active
+
+    PL     ML_stack_synchronize
+    PS     MG_marker_one
+
+    L      KG_3D_head_axis_1
+    =      BL_active_3D_head_axis
+
+    L      DG_3D_head_axis_1_S_position
+    <      K+0
+    IFT
+      L      K+3600000
+      +      DG_3D_head_axis_1_S_position
+;      =      DG_3D_head_S_position                                   *;EUMACH
+      =      DG_3D_head_axis_1_S_position                             *;EUMACH
+    ENDI
+
+    L      DG_3D_head_axis_1_S_position
+    =      DG_3D_head_S_position
+  ELSE
+    L      WG_3D_head_activate
+    BT     KG_3D_head_axis_2
+    AN     I_tool_unclamped                                           *;EUMACH
+    A      I_tool_clamped                                             *;EUMACH
+    S      MG_3D_head_active
+    IFT
+      S      MG_3D_head_axis_2_active
+
+      PL     ML_stack_synchronize
+      PS     MG_marker_one
+
+      L      KG_3D_head_axis_2
+      =      BL_active_3D_head_axis
+
+      L      DG_3D_head_axis_2_S_position
+      <      K+0
+      IFT
+        L      K+3600000
+        +      DG_3D_head_axis_2_S_position
+;        =      DG_3D_head_S_position                                 *;EUMACH
+        =      DG_3D_head_axis_2_S_position                           *;EUMACH
+      ENDI
+
+      L      DG_3D_head_axis_2_S_position
+      =      DG_3D_head_S_position
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL G_range_1                          ;01
+
+  PS     MG_marker_one
+
+*;EUMACH When 3D head is not clamped, 3D head gear change is prohibited.
+  L      ML_3D_head_axis_not_clamped
+  EMT
+*;EUMACH When 3D head is not clamped, 3D head gear change is prohibited.
+
+*;EUMACH When MP3010=6 and MP3143=3, if the gear is switched from high gear to
+*;       low gear but without changing W256 from 2 to 1, the spindle orientation
+*;       position will be incorrect (due to MP3450.x/MP3451.x and real gear range
+*;       mismatch).  Therefore, W256 must also be changed from 2 to 1.  However,
+*;       it is impossible to reset M4134 during L Bxxx/Cxxx Fxxx motion block.
+*;       An alarm must be issued to remind the operator switching to the low gear
+*;       range before executing L Bxxx/Cxxx Fxxx.  In OEM cycles, it will issue a
+*;       low gear range S code before executing L Bxxx/Cxxx Fxxx and recover back
+*;       to the original gear range at the end of the cycles.
+*;       If 1:1 S external encoder is used (MP3010=6, MP3143=0), there is no
+*;       problem to perform spindle orientation even when W256 and real gear range
+*;       are mismatched.  Therefore, PLC will switch to low gear range when a normal
+*;       L Bxxx/Cxxx Fxxx block is executed (bur without changing W256 from 2 to 1).
+*;       However, in OEM cycles, it will issue a low gear range S code before
+*;       executing L Bxxx/Cxxx Fxxx and recover back to the original gear range at
+*;       the end of the cycles.
+  L      MG_spindle_reference_using_sensor
+  IFT
+    L      NP_W256_G_code_spindle
+    <>     KL_gear_range_1
+    ON     I_gear_range_1
+    O      I_gear_range_2
+    S      PN_error_3D_head_G_range
+    R      MG_spindle_C_axis_mode_active
+    EMT
+  ELSE
+    L      NP_W256_G_code_spindle
+    <>     KL_gear_range_1
+    S      MG_gear_range_1_from_3D_head
+  ENDI
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL G_range_1_ok                       ;02
+
+*;EUMACH When 3D head is not clamped, 3D head gear change is prohibited.
+  L      ML_3D_head_axis_not_clamped
+  IFT
+    PS     MG_marker_one
+    EM
+  ENDI
+*;EUMACH When 3D head is not clamped, 3D head gear change is prohibited.
+
+  L      I_gear_range_1
+  AN     I_gear_range_2
+  AN     MG_gear_range_1_from_3D_head
+  AN     MG_3D_head_interruption
+  AN     PN_M4134_strobe_G_range_S_speed                              *;EUMACH
+  PSL
+
+  L      MG_3D_head_interruption
+  =      MG_win_3D_head_gear_range
+
+EM
+
+;----------------------------
+LBL S_start_3D_pos                     ;03
+
+*;EUMACH When 3D head is not clamped, S prepositioning is prohibited.
+  L      ML_3D_head_axis_not_clamped
+  IFT
+    PS     MG_marker_one
+    EM
+  ENDI
+*;EUMACH When 3D head is not clamped, S prepositioning is prohibited.
+
+  L      MG_marker_one
+  S      MG_3D_head_spindle_orientation_on
+  PSL
+
+EM
+
+;----------------------------
+LBL S_posit_ok                         ;04
+
+*;EUMACH When 3D head is not clamped, S prepositioning is prohibited.
+  L      ML_3D_head_axis_not_clamped
+  IFT
+    PS     MG_marker_one
+    EM
+  ENDI
+*;EUMACH When 3D head is not clamped, S prepositioning is prohibited.
+
+  L      MG_3D_head_interruption
+  =      MG_win_3D_head_spindle_position
+
+*;EUMACH Original PLC (bug existing)
+;  L      DG_3D_head_S_position
+;  -      DG_position_axis_S_actual
+;  PSW
+;  CM     Absolute
+;  PLW
+;  <      DG_MP3420_pos_window_S
+;  O[
+;    L      DG_3D_head_S_position
+;    ==     K+0
+;    A[
+;      L      K+3600000
+;      -      DG_position_axis_S_actual
+;      <      DG_MP3420_pos_window_S
+;    ]
+;  ]
+;  AN     MG_3D_head_spindle_orientation_on
+;  AN     MG_3D_head_interruption
+;  S      MG_spindle_off_orientation
+;  PSL
+;  EMF
+*;EUMACH Original PLC (bug existing)
+
+*;EUMACH (bug removing)
+  L      DG_position_axis_S_actual
+  +      KL_spindle_360_degree
+  -      DG_3D_head_S_position
+  PSW
+  CM     Absolute
+  PLW
+  <      NP_MP4231_5_3D_head_S_prepos_window
+  =      ML_3D_head_S_pos_plus_360
+
+  L      DG_position_axis_S_actual
+  -      KL_spindle_360_degree
+  -      DG_3D_head_S_position
+  PSW
+  CM     Absolute
+  PLW
+  <      NP_MP4231_5_3D_head_S_prepos_window
+  =      ML_3D_head_S_pos_minus_360
+
+  L      DG_position_axis_S_actual
+  -      DG_3D_head_S_position
+  PSW
+  CM     Absolute
+  PLW
+  <      NP_MP4231_5_3D_head_S_prepos_window
+  O      ML_3D_head_S_pos_plus_360
+  O      ML_3D_head_S_pos_minus_360
+  AN     MG_3D_head_spindle_orientation_on
+  AN     MG_3D_head_interruption
+  S      MG_spindle_off_orientation
+  PSL
+  EMF
+*;EUMACH (bug removing)
+
+  L      MG_marker_one
+  S      MG_3D_head_current_control_S_on
+
+#if Torque_limitation = &active
+  L      WG_3D_head_activate
+  BT     KG_3D_head_axis_1
+  IFT
+    L      NP_MP4230_8_max_torque_axis_1                              *;EUMACH
+    >      K+0                                                        *;EUMACH
+    IFT                                                               *;EUMACH
+      PS     KG_3D_head_axis_1
+      L      NP_MP4230_8_max_torque_axis_1
+      /      K+10
+      PSW
+      CM     9158
+      M_display_module_error(KG_error_module_9158)
+    ELSE                                                              *;EUMACH
+      PS     KG_3D_head_axis_1                                        *;EUMACH
+      PS     KL_torque_limitation                                     *;EUMACH
+      CM     9158                                                     *;EUMACH
+      M_display_module_error(KG_error_module_9158)                    *;EUMACH
+    ENDI                                                              *;EUMACH
+  ELSE
+    L      NP_MP4230_9_max_torque_axis_2                              *;EUMACH
+    >      K+0                                                        *;EUMACH
+    IFT                                                               *;EUMACH
+      PS     KG_3D_head_axis_2
+      L      NP_MP4230_9_max_torque_axis_2
+      /      K+10
+      PSW
+      CM     9158
+      M_display_module_error(KG_error_module_9158)
+    ELSE                                                              *;EUMACH
+      PS     KG_3D_head_axis_2                                        *;EUMACH
+      PS     KL_torque_limitation                                     *;EUMACH
+      CM     9158                                                     *;EUMACH
+      M_display_module_error(KG_error_module_9158)                    *;EUMACH
+    ENDI                                                              *;EUMACH
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL 3D_release_on                      ;06
+
+  L      WG_3D_head_release
+  BS     BL_active_3D_head_axis
+  =      WG_3D_head_release
+
+  L      MG_marker_one
+  PSL
+
+EM
+
+;----------------------------
+LBL 3D_in_position                     ;07
+
+  L      MG_marker_one
+  S      TS_3D_head_timeout
+
+  L      NP_W1024_axes_release
+  BT     BL_active_3D_head_axis
+  R      PN_M4576_suppress_handwheel_pulses
+
+  LW     MG_X_in_hirth_position
+  ON     WG_hirth_axes
+  A      WG_activate_control_loop_open
+  A      NP_W1026_axes_in_position
+  AN     WG_clamping_mode_off
+  AN     WG_PLC_posit_hirth_necessary
+  BT     BL_active_3D_head_axis
+  AN     MG_3D_head_interruption
+  PSL
+  EMF
+
+  L      BL_active_3D_head_axis
+  =X
+
+  L      WG_keys_inhibit
+  BSX
+  =      WG_keys_inhibit
+
+  L      BG_step_axes[X]
+  <>     K+5
+  IFT
+    PL     ML_stack_synchronize
+    PS     MG_marker_zero
+  ENDI
+
+  L      MG_marker_one
+  R      MG_3D_head_current_control_S_on
+
+EM
+
+;----------------------------
+LBL 3D_head_time                       ;05 ;08 ;10
+
+  LN     TR_3D_head_timer_universal
+  O      ML_timer_off
+  =      TS_3D_head_timer_universal
+  PSL
+
+EM
+
+;----------------------------
+LBL 3D_torque_limited                  ;09
+
+* Dependent on the 3D head mechanics it can be also necessary to store
+* spindle and axis position after clamping the 3D head axis.
+* (Step 12)
+
+;  CM     Save_axis_position                                          *;EUMACH Original PLC
+;  CM     Save_spindle_position                                       *;EUMACH Original PLC
+
+  PS     MG_marker_one
+
+#if Torque_limitation = &active
+  L      MG_3D_head_interruption
+  =      MG_win_3D_head_torque
+
+  L      BL_active_3D_head_axis
+  ==     KG_3D_head_axis_1
+  IFT
+    L      DG_3D_head_axis_1_min_torque
+    >      K+0
+    SN     ML_timer_off
+    IFT
+      PS     KG_3D_head_axis_1
+      L      DG_3D_head_axis_1_min_torque
+      /      K+10
+      PSW
+      CM     9158
+      M_display_module_error(KG_error_module_9158)
+    ENDI
+  ELSE
+    L      DG_3D_head_axis_2_min_torque
+    >      K+0
+    SN     ML_timer_off
+    IFT
+      PS     KG_3D_head_axis_2
+      L      DG_3D_head_axis_2_min_torque
+      /      K+10
+      PSW
+      CM     9158
+    M_display_module_error(KG_error_module_9158)
+    ENDI
+  ENDI
+#else
+  LN     ML_timer_off
+  S      ML_timer_off
+#endif
+
+EM
+
+;----------------------------
+LBL 3D_release_off                     ;11
+
+  PS     MG_marker_one
+
+  L      WG_3D_head_release
+  BC     BL_active_3D_head_axis
+  =      WG_3D_head_release
+
+EM
+
+;----------------------------
+LBL 3D_inactive                        ;12
+
+  LN     WG_3D_head_activate
+  BT     BL_active_3D_head_axis
+  PSL
+  EMF
+
+* Dependent on the 3D head mechanics it can be also necessary to store
+* spindle and axis position before clamping the 3D head axis.
+* (Step 9)
+
+  CM     Save_axis_position
+#if (MT = &MT_22) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35B) *;EUMACH
+  CM     Save_spindle_position
+#endif                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL G_range_old                        ;13
+
+  PS     MG_marker_one
+
+  L      NP_W256_G_code_spindle
+  <>     KL_gear_range_1
+  S      MG_gear_range_from_3D_head
+
+*;EUMACH Refer to CASE 01
+;  L      ML_gear_was_in_range_2_3D_head
+;  S      MG_gear_range_from_3D_head
+;  S      PN_M4134_strobe_G_range_S_speed
+;  IFT
+;    L      KL_G_code_range_2
+;    =      NP_W256_G_code_spindle
+;  ENDI
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL G_range_old_ok                     ;14
+
+  LN     MG_gear_range_from_3D_head
+  AN     MG_3D_head_interruption
+;  AN     PN_M4134_strobe_G_range_S_speed                              *;EUMACH
+;  R      ML_gear_was_in_range_2_3D_head                               *;EUMACH
+  PSL
+
+  L      MG_3D_head_interruption
+  =      MG_win_3D_head_gear_range
+
+EM
+
+;----------------------------
+LBL 3D_head_end                        ;15
+
+  PS     MG_marker_zero
+
+LBL 3D_head_reset
+
+#if Torque_limitation = &active
+  PS     KG_3D_head_axis_1
+  PS     KL_torque_limitation
+  CM     9158
+    M_display_module_error(KG_error_module_9158)
+
+  PS     KG_3D_head_axis_2
+  PS     KL_torque_limitation
+  CM     9158
+    M_display_module_error(KG_error_module_9158)
+#endif
+
+  L      MG_marker_one
+  R      MG_3D_head_interruption
+  R      MG_3D_head_active
+  R      MG_3D_head_axis_1_active
+  R      MG_3D_head_axis_2_active
+  R      MG_3D_head_current_control_S_on
+  R      ML_timer_off
+;  R      ML_gear_was_in_range_2_3D_head                               *;EUMACH
+
+  L      K+0
+  =      BG_step_3D_head
+  =      WG_3D_head_release
+  =      WG_3D_head_activate
+
+EM
+
+;----------------------------
+LBL Axis_assignment
+
+#if KG_3D_head_axis_1 = &axis_4
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_4                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_4
+    =      MG_3D_head_axis_1_output_unclamping
+
+    L      I_unclamped_axis_4
+    =      MG_3D_head_axis_1_unclamped
+
+    L      I_clamped_axis_4
+    =      MG_3D_head_axis_1_clamped
+
+    L      MG_3D_head_axis_1_service_unclamping
+    =      MG_3D_head_unclamp_4
+
+    L      BG_step_axis_4
+    =      BG_step_axis_1_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_1 = &axis_5
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_5                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_5
+    =      MG_3D_head_axis_1_output_unclamping
+
+    L      I_unclamped_axis_5
+    =      MG_3D_head_axis_1_unclamped
+
+    L      I_clamped_axis_5
+    =      MG_3D_head_axis_1_clamped
+
+    L      MG_3D_head_axis_1_service_unclamping
+    =      MG_3D_head_unclamp_5
+
+    L      BG_step_axis_5
+    =      BG_step_axis_1_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_1 = &axis_6
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_6                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_6
+    =      MG_3D_head_axis_1_output_unclamping
+
+    L      I_unclamped_axis_6
+    =      MG_3D_head_axis_1_unclamped
+
+    L      I_clamped_axis_6
+    =      MG_3D_head_axis_1_clamped
+
+    L      MG_3D_head_axis_1_service_unclamping
+    =      MG_3D_head_unclamp_6
+
+    L      BG_step_axis_6
+    =      BG_step_axis_1_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_1 = &axis_7
+  L      O_unclamping_7
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_7
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_7
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_7
+
+  L      BG_step_axis_7
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_8
+  L      O_unclamping_8
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_8
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_8
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_8
+
+  L      BG_step_axis_8
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_9
+  L      O_unclamping_9
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_9
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_9
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_9
+
+  L      BG_step_axis_9
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_10
+  L      O_unclamping_10
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_10
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_10
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_10
+
+  L      BG_step_axis_10
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_11
+  L      O_unclamping_11
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_11
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_11
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_11
+
+  L      BG_step_axis_11
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_12
+  L      O_unclamping_12
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_12
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_12
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_12
+
+  L      BG_step_axis_12
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_13
+  L      O_unclamping_13
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_13
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_13
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_13
+
+  L      BG_step_axis_13
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_14
+  L      O_unclamping_14
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_14
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_14
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_14
+
+  L      BG_step_axis_14
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_15
+  L      O_unclamping_15
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_15
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_15
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_15
+
+  L      BG_step_axis_15
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_1 = &axis_16
+  L      O_unclamping_16
+  =      MG_3D_head_axis_1_output_unclamping
+
+  L      I_unclamped_axis_16
+  =      MG_3D_head_axis_1_unclamped
+
+  L      I_clamped_axis_16
+  =      MG_3D_head_axis_1_clamped
+
+  L      MG_3D_head_axis_1_service_unclamping
+  =      MG_3D_head_unclamp_16
+
+  L      BG_step_axis_16
+  =      BG_step_axis_1_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_4
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_4                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_4
+    =      MG_3D_head_axis_2_output_unclamping
+
+    L      I_unclamped_axis_4
+    =      MG_3D_head_axis_2_unclamped
+
+    L      I_clamped_axis_4
+    =      MG_3D_head_axis_2_clamped
+
+    L      MG_3D_head_axis_2_service_unclamping
+    =      MG_3D_head_unclamp_4
+
+    L      BG_step_axis_4
+    =      BG_step_axis_2_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_2 = &axis_5
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_5                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_5
+    =      MG_3D_head_axis_2_output_unclamping
+
+    L      I_unclamped_axis_5
+    =      MG_3D_head_axis_2_unclamped
+
+    L      I_clamped_axis_5
+    =      MG_3D_head_axis_2_clamped
+
+    L      MG_3D_head_axis_2_service_unclamping
+    =      MG_3D_head_unclamp_5
+
+    L      BG_step_axis_5
+    =      BG_step_axis_2_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_2 = &axis_6
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_axis_6                                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      O_unclamping_6
+    =      MG_3D_head_axis_2_output_unclamping
+
+    L      I_unclamped_axis_6
+    =      MG_3D_head_axis_2_unclamped
+
+    L      I_clamped_axis_6
+    =      MG_3D_head_axis_2_clamped
+
+    L      MG_3D_head_axis_2_service_unclamping
+    =      MG_3D_head_unclamp_6
+
+    L      BG_step_axis_6
+    =      BG_step_axis_2_3D_head
+  ENDI                                                                *;EUMACH
+#endif
+
+#if KG_3D_head_axis_2 = &axis_7
+  L      O_unclamping_7
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_7
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_7
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_7
+
+  L      BG_step_axis_7
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_8
+  L      O_unclamping_8
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_8
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_8
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_8
+
+  L      BG_step_axis_8
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_9
+  L      O_unclamping_9
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_9
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_9
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_9
+
+  L      BG_step_axis_9
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_10
+  L      O_unclamping_10
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_10
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_10
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_10
+
+  L      BG_step_axis_10
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_11
+  L      O_unclamping_11
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_11
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_11
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_11
+
+  L      BG_step_axis_11
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_12
+  L      O_unclamping_12
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_12
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_12
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_12
+
+  L      BG_step_axis_12
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_13
+  L      O_unclamping_13
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_13
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_13
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_13
+
+  L      BG_step_axis_13
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_14
+  L      O_unclamping_14
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_14
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_14
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_14
+
+  L      BG_step_axis_14
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_15
+  L      O_unclamping_15
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_15
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_15
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_15
+
+  L      BG_step_axis_15
+  =      BG_step_axis_2_3D_head
+#endif
+
+#if KG_3D_head_axis_2 = &axis_16
+  L      O_unclamping_16
+  =      MG_3D_head_axis_2_output_unclamping
+
+  L      I_unclamped_axis_16
+  =      MG_3D_head_axis_2_unclamped
+
+  L      I_clamped_axis_16
+  =      MG_3D_head_axis_2_clamped
+
+  L      MG_3D_head_axis_2_service_unclamping
+  =      MG_3D_head_unclamp_16
+
+  L      BG_step_axis_16
+  =      BG_step_axis_2_3D_head
+#endif
+
+EM
+
+;----------------------------
+LBL Save_axis_position
+
+  L      BL_active_3D_head_axis
+  =X
+  ==     KG_3D_head_axis_1
+  IFT
+    L      DG_position_axis_X_ref[X]
+    =      DG_3D_head_axis_1_position
+  ELSE
+    L      DG_position_axis_X_ref[X]
+    =      DG_3D_head_axis_2_position
+  ENDI
+
+#if KG_3D_head_axis_2 ! &inactive
+  LN     WG_controlled_axes
+  BT     KG_3D_head_axis_2
+  IFT
+    L      K+0
+    =      DG_3D_head_axis_2_position
+  ENDI
+#endif
+
+EM
+
+#if (MT = &MT_22) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35B) *;EUMACH
+;----------------------------
+LBL Save_spindle_position
+
+  L      MG_marker_one
+  R      ML_selection_head_position
+
+  L      KG_3D_head_axis_1
+  =X
+
+  L      WG_hirth_axes
+  BTX
+  IFT
+    L      DG_MP430_hirth_increm_X[X]
+    /      K+2
+    +      K+3600000
+    +      DG_position_axis_X_ref[X]
+    /      DG_MP430_hirth_increm_X[X]
+    X      DG_MP430_hirth_increm_X[X]
+    MOD    K+3600000
+    =      DL_3D_head_axis_1_position                                 *;EUMACH
+;    =      DG_3D_head_axis_1_S_position                              *;EUMACH Original PLC
+  ELSE
+    L      DG_position_axis_S_actual
+    =      DG_3D_head_axis_1_S_position
+    =      DG_3D_head_axis_2_S_position
+  ENDI
+
+#if KG_3D_head_axis_2 ! &inactive
+  L      KG_3D_head_axis_2
+  =X
+
+  L      WG_hirth_axes
+  BTX
+  IFT
+    L      DG_MP430_hirth_increm_X[X]
+    /      K+2
+    +      K+3600000
+    +      DG_position_axis_X_ref[X]
+    /      DG_MP430_hirth_increm_X[X]
+    X      DG_MP430_hirth_increm_X[X]
+    MOD    K+3600000
+    =      DL_3D_head_axis_2_position                                 *;EUMACH
+;    =      DG_3D_head_axis_2_S_position                              *;EUMACH Original PLC
+  ELSE
+    L      DG_position_axis_S_actual
+    =      DG_3D_head_axis_1_S_position
+    =      DG_3D_head_axis_2_S_position
+  ENDI
+#endif
+
+#if KG_3D_head_axis_2 ! &inactive
+  LN     WG_controlled_axes
+  BT     KG_3D_head_axis_2
+  AN     ML_save_spindle_position                                     *;EUMACH
+  IFT
+    L      K+0
+    =      DG_3D_head_axis_2_S_position
+  ENDI
+#endif
+
+* If counting direction of the spindle and the head axis do not
+* correspond please use minus sign for DG_3D_head_axis_x_S_position.
+
+*;EUMACH
+;  L      K+3600000
+;  -      DG_3D_head_axis_1_S_position
+;  MOD    K+3600000
+;  PSW
+;  +      NP_MP4230_10_3D_head_offset_axis_1_S_position
+;  MOD    K+3600000
+;  =      DG_3D_head_axis_1_S_position
+
+;  PLW
+;  +      K+3600000
+;  +      DG_3D_head_axis_2_S_position
+;  +      NP_MP4230_11_3D_head_offset_axis_2_S_position
+;  MOD    K+3600000
+;  =      DG_3D_head_axis_2_S_position
+
+  L      K+3600000
+  -      DL_3D_head_axis_1_position
+  MOD    K+3600000
+  PSW
+  +      NP_MP4230_10_3D_head_offset_axis_1_S_position
+  MOD    K+3600000
+  =      DG_3D_head_axis_1_S_position
+
+  PLW
+  +      K+3600000
+  +      DL_3D_head_axis_2_position
+  +      NP_MP4230_11_3D_head_offset_axis_2_S_position
+  MOD    K+3600000
+  =      DG_3D_head_axis_2_S_position
+*;EUMACH
+
+*;EUMACH Original PLC
+;  L      K+7200000
+;  -      DG_3D_head_axis_1_S_position
+;  +      DG_3D_head_axis_2_S_position
+;  MOD    K+3600000
+;  PSW
+;  +      NP_MP4230_10_3D_head_offset_axis_1_S_position
+;  =      DG_3D_head_axis_1_S_position
+
+;  PLW
+;  +      NP_MP4230_11_3D_head_offset_axis_2_S_position
+;  =      DG_3D_head_axis_2_S_position
+*;EUMACH Original PLC
+
+#if KG_3D_head_axis_2 ! &inactive
+  LN     WG_controlled_axes
+  BT     KG_3D_head_axis_2
+  AN     ML_save_spindle_position                                     *;EUMACH
+  IFT
+    L      K+0
+    =      DG_3D_head_axis_2_S_position
+  ENDI
+#endif
+
+  L      MG_marker_one                                                *;EUMACH
+  R      ML_save_spindle_position                                     *;EUMACH
+
+EM
+#endif                                                                *;EUMACH

@@ -1,0 +1,15 @@
+{
+  "features": {
+    "ENABLE_PLUNGER": true,
+    "ENABLE_DELTA_VFD": true,
+    "ENABLE_POT0": true,
+    "ENABLE_POT1": true,
+    "ENABLE_JOYSTICK": true,
+    "ENABLE_OMRON_E5": true,
+    "NUM_OMRON_DEVICES": 2
+  },
+  "settings": 
+  {
+        
+  }
+} 

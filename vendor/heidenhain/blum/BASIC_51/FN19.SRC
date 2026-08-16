@@ -1,0 +1,502 @@
+*-----------------------------------------------------------------------------
+*  FN19 functions
+*-----------------------------------------------------------------------------
+*  Module Description
+*    The module has been introduced to start special PLC functions which can
+*    be modified by means of additional data.
+*    With FN19 two double words are transferred to the PLC. In the PLC basic
+*    program the first double word (D280) is used as identifier and the second
+*    one (D284) for data. The functions available in each case are part of the
+*    module description.
+*      Function                        Identifier (D280)  Data (D284)
+*        Axes clamping mode on         K+99990            axes bitcoded
+*        Axes clamping mode off        K+99991            axes bitcoded
+*        Tuning mode                   K+99993            0: light weight
+*                                                         1: middle weight
+*                                                         2: heavy weight
+*        Tool status                   K+99996            0: manual tool in S
+*        Tool clamping/unclamping      K+99998            0: mode inactive
+*                                                         10: tool clamping off
+*                                                             tool unclamping off
+*                                                         11: tool clamping on
+*                                                             tool unclamping off
+*                                                         21: tool clamping off
+*                                                             tool unclamping on
+*        Preselection PLC preset (M79) K+99999            line in Preset.tab
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_strobe_FN19                           M
+#define /s    ML_strobe_FN19_p_pulse                   M              *;EUMACH
+
+#define /s    BL_FN19_PLC_function                     B
+
+
+GLOBAL FN19
+
+;----------------------------
+LBL FN19
+;----------------------------
+
+  L      NP_M4075_strobe_transfer_FN19
+  AN     ML_strobe_FN19
+  =      ML_strobe_FN19_p_pulse
+  IFT
+    L      NP_D280_FN19_1st_value
+    /      K+10000
+    <=     K+99999
+    A[
+      L      NP_D280_FN19_1st_value
+      /      K+10000
+      >=     K+99990
+    ]
+    IFT
+      L      NP_D280_FN19_1st_value
+      /      K+10000
+      -      K+99990
+      =      BL_FN19_PLC_function
+    ELSE										                      *;EUMACH BASIC 54
+      L      NP_M4075_strobe_transfer_FN19		                      *;EUMACH BASIC 54
+      S      PN_M4095_quit_transfer_FN19		                      *;EUMACH BASIC 54
+    ENDI
+  ENDI
+
+  L      NP_M4075_strobe_transfer_FN19
+  =      ML_strobe_FN19
+  EMF
+
+  CASE   BL_FN19_PLC_function
+    CM     Clamping_mode_on            ;99990
+    CM     Clamping_mode_off           ;99991
+    CM     Tool_status                 ;99992                         *;EUMACH
+    CM     Tuning_mode                 ;99993		                  *;EUMACH BASIC 54
+    CM     4_clamping_on_off           ;99994                         *;EUMACH
+    CM     5_clamping_on_off           ;99995                         *;EUMACH
+    CM     6_clamping_on_off           ;99996                         *;EUMACH
+    CM     no_function                 ;99997
+    CM     T_clamping_on_off           ;99998                         *;EUMACH
+    CM     Preset_PLC                  ;99999
+  ENDC
+
+EM
+
+;----------------------------
+LBL no_function
+
+  L      MG_marker_one						                          *;EUMACH BASIC 54
+  S      PN_error_value_not_permissible		                          *;EUMACH BASIC 54
+
+EM
+
+;----------------------------
+LBL Clamping_mode_on                   ;99990
+
+* Evaluation in module axes.src
+
+EM
+
+;----------------------------
+LBL Clamping_mode_off                  ;99991
+
+* Evaluation in module axes.src
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL Tool_status                        ;99992
+
+  L      ML_strobe_FN19_p_pulse
+  S      MG_manual_tool_in_S_reading
+  R      MG_manual_tool_in_spindle
+
+  L      NP_M4075_strobe_transfer_FN19
+  AN     MG_manual_tool_in_S_reading
+  S      PN_M4095_quit_transfer_FN19
+
+EM
+
+;----------------------------			                              *;EUMACH BASIC 54
+LBL Tuning_mode                        ;99993
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  >      K+2
+  S      PN_error_value_not_permissible
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <      K+0
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    =      BG_tuning_mode
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      K+0
+    =      BG_tuning_mode
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 4_clamping_on_off                  ;99994
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <>     K+0
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+10
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+11
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+21
+  ]
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+0
+    R      MG_FN19_4_clamping_on_off_active
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+10
+    S      MG_FN19_4_clamping_on_off_active
+    R      O_clamping_unclamping_4
+    R      O_clamping_4_output
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+11
+    S      MG_FN19_4_clamping_on_off_active
+    S      O_clamping_4_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_4
+      IFT
+        L      MG_marker_one
+        R      O_clamping_unclamping_4
+      ELSE
+        L      NP_4_clamping_while_output=1
+        S      O_clamping_unclamping_4
+
+        LN     NP_4_clamping_while_output=1
+        R      O_clamping_unclamping_4
+      ENDI
+    ENDI
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+21
+    S      MG_FN19_4_clamping_on_off_active
+    R      O_clamping_4_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_4
+      IFT
+        L      MG_marker_one
+        S      O_clamping_unclamping_4
+      ELSE
+        L      NP_4_clamping_while_output=1
+        R      O_clamping_unclamping_4
+
+        LN     NP_4_clamping_while_output=1
+        S      O_clamping_unclamping_4
+      ENDI
+    ENDI
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      MG_marker_one
+    R      MG_FN19_4_clamping_on_off_active
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 5_clamping_on_off                  ;99995
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <>     K+0
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+10
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+11
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+21
+  ]
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+0
+    R      MG_FN19_5_clamping_on_off_active
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+10
+    S      MG_FN19_5_clamping_on_off_active
+    R      O_clamping_unclamping_5
+    R      O_clamping_5_output
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+11
+    S      MG_FN19_5_clamping_on_off_active
+    S      O_clamping_5_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_5
+      IFT
+        L      MG_marker_one
+        R      O_clamping_unclamping_5
+      ELSE
+        L      NP_5_clamping_while_output=1
+        S      O_clamping_unclamping_5
+
+        LN     NP_5_clamping_while_output=1
+        R      O_clamping_unclamping_5
+      ENDI
+    ENDI
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+21
+    S      MG_FN19_5_clamping_on_off_active
+    R      O_clamping_5_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_5
+      IFT
+        L      MG_marker_one
+        S      O_clamping_unclamping_5
+      ELSE
+        L      NP_5_clamping_while_output=1
+        R      O_clamping_unclamping_5
+
+        LN     NP_5_clamping_while_output=1
+        S      O_clamping_unclamping_5
+      ENDI
+    ENDI
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      MG_marker_one
+    R      MG_FN19_5_clamping_on_off_active
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 6_clamping_on_off                  ;99996
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <>     K+0
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+10
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+11
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+21
+  ]
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+0
+    R      MG_FN19_6_clamping_on_off_active
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+10
+    S      MG_FN19_6_clamping_on_off_active
+    R      O_clamping_unclamping_6
+    R      O_clamping_6_output
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+11
+    S      MG_FN19_6_clamping_on_off_active
+    S      O_clamping_6_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_6
+      IFT
+        L      MG_marker_one
+        R      O_clamping_unclamping_6
+      ELSE
+        L      NP_6_clamping_while_output=1
+        S      O_clamping_unclamping_6
+
+        LN     NP_6_clamping_while_output=1
+        R      O_clamping_unclamping_6
+      ENDI
+    ENDI
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+21
+    S      MG_FN19_6_clamping_on_off_active
+    R      O_clamping_6_output
+    IFT
+      L      WG_hirth_axes
+      BT     KG_axis_6
+      IFT
+        L      MG_marker_one
+        S      O_clamping_unclamping_6
+      ELSE
+        L      NP_6_clamping_while_output=1
+        R      O_clamping_unclamping_6
+
+        LN     NP_6_clamping_while_output=1
+        S      O_clamping_unclamping_6
+      ENDI
+    ENDI
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      MG_marker_one
+    R      MG_FN19_6_clamping_on_off_active
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL T_clamping_on_off                  ;99998
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <>     K+0
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+10
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+11
+  ]
+  A[
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    <>     K+21
+  ]
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+0
+    R      MG_FN19_tool_clamping_on_off_active
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+10
+    S      MG_FN19_tool_clamping_on_off_active
+    R      O_tool_clamping_valve
+    R      O_tool_unclamping_valve
+#if Head = &inactive
+    R      O_tool_clamping_without_head
+    R      O_tool_unclamping_without_head
+#endif
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+11
+    S      MG_FN19_tool_clamping_on_off_active
+    S      O_tool_clamping_valve
+    R      O_tool_unclamping_valve
+#if Head = &inactive
+    S      O_tool_clamping_without_head
+    R      O_tool_unclamping_without_head
+#endif
+
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    ==     K+21
+    S      MG_FN19_tool_clamping_on_off_active
+    R      O_tool_clamping_valve
+    S      O_tool_unclamping_valve
+#if Head = &inactive
+    R      O_tool_clamping_without_head
+    S      O_tool_unclamping_without_head
+#endif
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      MG_marker_one
+    R      MG_FN19_tool_clamping_on_off_active
+  ENDI
+
+EM
+
+;----------------------------
+LBL Preset_PLC                         ;99999
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  >      K$7F
+  S      PN_error_value_not_permissible
+
+  L      NP_D284_FN19_2st_value
+  /      K+10000
+  <=     K+0
+  S      PN_error_value_not_permissible
+
+  LN     PN_error_value_not_permissible
+  IFT
+    L      NP_D284_FN19_2st_value
+    /      K+10000
+    =      BG_FN19_PLC_preset
+
+    L      NP_M4075_strobe_transfer_FN19
+    S      PN_M4095_quit_transfer_FN19
+  ELSE
+    L      K+0
+    =      BG_FN19_PLC_preset
+  ENDI
+
+EM

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2025-06-12T00:00:00.000Z" agent="o3" version="20.8.9" etag="seq">
+  <diagram id="nvSync" name="NetworkValue Sync Sequence">
+    <mxGraphModel dx="1062" dy="591" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="826" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Lifelines -->
+        <mxCell id="2" value="SomeComponent" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=20;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="100" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="NetworkValue" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=20;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="160" y="40" width="100" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="OwnerComponent" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=20;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="300" y="40" width="120" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="ModbusTCP" style="swimlane;whiteSpace=wrap;html=1;horizontal=0;startSize=20;fillColor=#FFFFFF;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="460" y="40" width="100" height="400" as="geometry"/>
+        </mxCell>
+
+        <!-- Messages -->
+        <mxCell id="6" value="update(newVal)" style="endArrow=block;html=1;edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="2" target="3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="7" value="onMessage()" style="endArrow=block;html=1;edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="3" target="4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="8" value="mb_tcp_write() / mb_tcp_update" style="endArrow=block;html=1;edgeStyle=orthogonalEdgeStyle;strokeColor=#000000;" edge="1" parent="1" source="4" target="5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

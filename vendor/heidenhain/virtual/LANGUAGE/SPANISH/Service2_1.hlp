@@ -1,0 +1,34 @@
+﻿************************************
+!!! ATENCION !!!
+solo para personal cualificado
+X, Y, Z  pueden ser movidos por
+teclas   X+, X-, Y+, Y-, Z+, Z-
+o volante electronico
+Servicio para el cambiador htas
+de  doble brazo
+! Solo en modo MANUAL !
+Confirmar con tecla "NC start" de maquina
+************************************
+#201  S a posicion de cambio
+#202  Z a posicion de cambio
+#203  Y a posicion de cambio
+#204  X a posicion de cambio
+#205  Desbloquear herramienta
+#206  Bloquear herramienta
+#207  Abrir pinzas hta cabezal
+#208  Cerrar pinzas hta cabezal
+#209  Abrir pinzas hta almacen
+#210  Cerrar pinzas hta almacen
+#211  Soltar herramienta
+#212  Atar herramienta
+#213  Brazo cambiador a cabezal
+#214  Brazo cambiador a almacen
+#215  Brazo cambiador a reposo
+#216  Brazo cambiador fuera
+#217  Brazo cambiador dentro
+#218  Brazo cambiador giro dcha.
+#219  Brazo cambiador giro izda.
+#220  Almacen giro a dchas.
+#221  Almacen giro a izdas.
+#222  Referenciar almacen
+#223  Borrar datos de Hta. (T0)

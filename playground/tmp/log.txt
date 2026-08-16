@@ -1,0 +1,9 @@
+ I :Set target register 0 for Omron device 0 to 1011
+ I: Set target register 1 for Omron device 1 to 1018
+ I: Set target register 2 for Omron device 2 to 1025
+ I: Set target register 3 for Omron device 3 to 1032
+ I: Set target register 4 for Omron device 4 to 1039
+ I: Set target register 5 for Omron device 5 to 1046
+ I: Set target register 6 for Omron device 6 to 1053
+ I: Set target register 7 for Omron device 7 to 1060
+ 

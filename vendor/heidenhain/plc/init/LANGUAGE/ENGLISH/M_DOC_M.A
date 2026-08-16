@@ -1,0 +1,46 @@
+/* Documentation M Function
+   --------------------------
+*/
+KBD;
+CHARSIZE=AUTO;"\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_01.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page down   ";COLOUR=11;"                (Page 1/6)";
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_02.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down";COLOUR=11;"                (Page 2/6)";
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_03.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down";COLOUR=11;"                (Page 3/6)";
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_04.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down";COLOUR=11;"                (Page 4/6)";
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_05.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up/down";COLOUR=11;"                (Page 5/6)";
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M Function";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"machinespecific                      \n";CURSOR=OFF;
+TEXTFILE=DOC_M_06.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"Page up     ";COLOUR=11;"                (Page 6/6)";

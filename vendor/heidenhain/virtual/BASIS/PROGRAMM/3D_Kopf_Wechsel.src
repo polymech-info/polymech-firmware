@@ -1,0 +1,70 @@
+*-----------------------------------------------------------------------------
+*  3D Kopf Wechsel
+*-----------------------------------------------------------------------------
+*  Modul Beschreibung
+*    - in Vorbereitung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inaktiv                               K -1
+
+#define /s    ML_Maschinenparameter_gelesen            M
+
+#include Mac_Lib.inc
+
+GLOBAL Kopf_3D_Wechsel
+
+;----------------------------
+LBL Kopf_3D_Wechsel
+;----------------------------
+
+  L      MG_M52_AC_Tisch_1_aktivieren
+  O      MG_M53_AC_Tisch_2_aktivieren
+  O      MG_M56_B_Kopf_C_Tisch_aktivieren
+  O      MG_M57_AC_Gabelkopf_aktivieren
+  O      MG_M58_Kinematik_inaktiv
+  R      MG_Maschinenparameter_synchron
+  S      MG_3D_Kopf_Wechsel_aktiv
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M54_AB_Kopf_aktivieren
+  O      MG_M55_AB_Kopf_C_Tisch_aktivieren
+  R      MG_Maschinenparameter_synchron
+  S      MG_3D_Kopf_Wechsel_aktiv
+  IFT
+    LN     PN_D1132_Regelkreis_oeffnen
+    BT     KG_Achse_4
+    IFT
+      L      DG_Klemmbetrieb_Ein_extern
+      BS     KG_Achse_4
+      =      DG_Klemmbetrieb_Ein_extern
+    ENDI
+
+    LN     PN_D1132_Regelkreis_oeffnen
+    BT     KG_Achse_5
+    IFT
+      L      DG_Klemmbetrieb_Ein_extern
+      BS     KG_Achse_5
+      =      DG_Klemmbetrieb_Ein_extern
+    ENDI
+  ENDI
+
+  L      MG_M54_AB_Kopf_aktivieren
+  O      MG_M55_AB_Kopf_C_Tisch_aktivieren
+  AN     MG_Antrieb_bereit[KG_Achse_4]
+  AN     MG_Antrieb_bereit[KG_Achse_5]
+  S      PN_M4092_Quit_M_Funktion
+
+  L      WG_Nummer_aktives_NC_Macro
+  ==     KL_inaktiv
+  ON     MG_Steuerung_betriebsbereit
+  R      MG_3D_Kopf_Wechsel_aktiv
+
+  L      MG_Maschinenparameter_gelesen
+  AN     ML_Maschinenparameter_gelesen
+  S      MG_Maschinenparameter_synchron
+
+  L      MG_Maschinenparameter_gelesen
+  =      ML_Maschinenparameter_gelesen
+
+EM

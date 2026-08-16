@@ -1,0 +1,120 @@
+*-----------------------------------------------------------------------------
+*  Logbook
+*-----------------------------------------------------------------------------
+*  Module Description
+*    For diagnosis or error analysis of sporadic events there is the
+*    possibility of entering additional information into the log.
+*    In the example the tool-changer data are stored in each TOOL CALL.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_priority_information                  K+0
+#define /s    KL_datatype_word                         K+6
+#define /s    KL_number_4_operands                     K+4
+#define /s    KL_display_sign_right                    K+2
+#define /s    KL_0_digits_after_point                  K+0
+#define /s    KL_5_digits_before_point                 K+5
+#define /s    KL_string_0                              K+0
+#define /s    KL_string_1                              K+1
+
+#define /s    ML_strobe_TOOL_CALL                      M
+#define /s    ML_TC_info_in_logbook_writing            M
+
+#define /s    BL_identifier                            B
+
+
+#include Mac_Lib.inc
+
+GLOBAL Logbook
+
+;----------------------------
+LBL Logbook
+;----------------------------
+
+  LN     NP_additional_logbook_entry_active
+  EMT
+
+  L      NP_M4073_strobe_TOOL_CALL
+  AN     ML_strobe_TOOL_CALL
+  A      ML_TC_info_in_logbook_writing
+  S      PN_error_logbook_writing
+
+  L      NP_M4073_strobe_TOOL_CALL
+  AN     ML_strobe_TOOL_CALL
+  S      ML_TC_info_in_logbook_writing
+
+  L      NP_M4073_strobe_TOOL_CALL
+  =      ML_strobe_TOOL_CALL
+
+  LN     ML_TC_info_in_logbook_writing
+  EMT
+
+  RPLY   BL_identifier
+  <>     K+0
+  EMT
+
+  SUBM   Logbook_writing
+  =      BL_identifier
+  ==     K+0
+  S      PN_error_submit_spawn_queue_full
+
+EM
+
+;----------------------------
+LBL Logbook_writing
+
+  PS     NP_W262_tool_pocket_number
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_5_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  PS     NP_W264_tool_number
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_5_digits_before_point
+  PS     KL_string_1
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S"W262: "
+  +      S0
+  +      S" W264: "
+  +      S1
+  +      S" M4520..24:"
+  =      S0
+
+  L      K+0
+  =X
+
+  REPEAT
+    LB     NP_M4520_TOOL_CALL_2nd_strobe
+    BTX
+    IFT
+      L      S0
+      +      S" 1"
+      =      S0
+    ELSE
+      L      S0
+      +      S" 0"
+      =      S0
+    ENDI
+
+    INCX
+
+    LX
+    >      K+4
+  UNTILT
+
+  PS     KL_string_0
+  PS     S"TC"
+  PS     KL_priority_information
+  CM     9275
+  M_display_module_error(KG_error_module_9275)
+
+  L      ML_TC_info_in_logbook_writing
+  R      ML_TC_info_in_logbook_writing
+
+EM

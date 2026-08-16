@@ -1,0 +1,192 @@
+BEGIN 28_3-axes_KinematicsComp.TAB 
+#STRUCTBEGIN
+  NAME = DOC
+    TYPE = C
+    WIDTH = 24
+    DEC = 0
+    DIA-ENGLISH = Comment?
+    DIA-GERMAN = Kommentar?
+    DIA-CZECH = KOMENTAR ?
+    DIA-FRENCH = Commentaire?
+    DIA-ITALIAN = Commento?
+    DIA-SPANISH = ¿Comentario?
+    DIA-PORTUGUE = Comentario?
+    DIA-SWEDISH = KOMMENTAR ?
+    DIA-DANISH = KOMMENTAR ?
+    DIA-FINNISH = TULKKI ?
+    DIA-DUTCH = Commentaar?
+    DIA-POLISH = Komentarz?
+    DIA-HUNGARIA = Megjegyzés?
+  NAME = KEY
+    TYPE = C
+    WIDTH = 8
+    DEC = 0
+    DIA-ENGLISH = Code?
+    DIA-GERMAN = Schlüssel-Wort?
+    DIA-CZECH = CISLO KLICE - HESLO?
+    DIA-FRENCH = Code?
+    DIA-ITALIAN = Numero codice?
+    DIA-SPANISH = ¿Número de código?
+    DIA-PORTUGUE = Numero de codigo?
+    DIA-SWEDISH = KODNUMMER?
+    DIA-DANISH = KODE-NUMMER?
+    DIA-FINNISH = AVAINLUKU?
+    DIA-DUTCH = Sleutelgetal?
+    DIA-POLISH = Liczba klucza?
+    DIA-HUNGARIA = Kulcsszám?
+  NAME = AXIS
+    TYPE = C
+    WIDTH = 1
+    DEC = 0
+    DIA-ENGLISH = Axis?
+    DIA-GERMAN = Achse?
+    DIA-CZECH = OSA?
+    DIA-FRENCH = Axe?
+    DIA-ITALIAN = Asse?
+    DIA-SPANISH = ¿Eje?
+    DIA-PORTUGUE = Eixo?
+    DIA-SWEDISH = AXEL?
+    DIA-DANISH = AKSE?
+    DIA-FINNISH = Akseli ?
+    DIA-DUTCH = As?
+    DIA-POLISH = Osie?
+    DIA-HUNGARIA = Tengely ?
+  NAME = COORD
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Coordinate?
+    DIA-GERMAN = Koordinate?
+    DIA-CZECH = SOURADNICE?
+    DIA-FRENCH = Coordonnée?
+    DIA-ITALIAN = Coordinate?
+    DIA-SPANISH = ¿Coordenada?
+    DIA-PORTUGUE = Coordenada?
+    DIA-SWEDISH = KOORDINAT ?
+    DIA-DANISH = KOORDINAT ?
+    DIA-FINNISH = KOORDINAATIT?
+    DIA-DUTCH = Coördinaat?
+    DIA-POLISH = Wspolrzedne?
+    DIA-HUNGARIA = Koordináta?
+  NAME = FILE
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = File name?
+    DIA-GERMAN = Dateiname?
+    DIA-CZECH = File name?
+    DIA-FRENCH = Nom fichier?
+    DIA-ITALIAN = Nome file?
+    DIA-SPANISH = File name?
+    DIA-PORTUGUE = File name?
+    DIA-SWEDISH = File name?
+    DIA-DANISH = File name?
+    DIA-FINNISH = File name?
+    DIA-DUTCH = Bestandsnaam?
+    DIA-POLISH = File name?
+    DIA-HUNGARIA = File name?
+  NAME = DONTTEST
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Opponent?
+    DIA-GERMAN = Dateiname?
+    DIA-CZECH = File name?
+    DIA-FRENCH = Nom fichier?
+    DIA-ITALIAN = Nome file?
+    DIA-SPANISH = File name?
+    DIA-PORTUGUE = File name?
+    DIA-SWEDISH = File name?
+    DIA-DANISH = File name?
+    DIA-FINNISH = File name?
+    DIA-DUTCH = Bestandsnaam?
+    DIA-POLISH = File name?
+    DIA-HUNGARIA = File name?
+  NAME = ON/OFF
+    TYPE = N
+    WIDTH = 1
+    DEC = 0
+    DIA-ENGLISH = 0=CMO active / 1=CMO inactive
+    DIA-GERMAN = 0=CMO aktiv / 1=CMO inaktiv
+    DIA-CZECH = 0=CMO active / 1=CMO inactive
+    DIA-FRENCH = 0=CMO active / 1=CMO inactive
+    DIA-ITALIAN = 0=CMO active / 1=CMO inactive
+    DIA-SPANISH = 0=CMO active / 1=CMO inactive
+    DIA-PORTUGUE = 0=CMO active / 1=CMO inactive
+    DIA-SWEDISH = 0=CMO active / 1=CMO inactive
+    DIA-DANISH = 0=CMO active / 1=CMO inactive
+    DIA-FINNISH = 0=CMO active / 1=CMO inactive
+    DIA-DUTCH = 0=CMO active / 1=CMO inactive
+    DIA-POLISH = 0=CMO active / 1=CMO inactive
+    DIA-HUNGARIA = 0=CMO active / 1=CMO inactive
+  NAME = TEMPCOMP
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Temperature compensation?
+    DIA-GERMAN = Temperatur-Kompensation?
+    DIA-CZECH = Temperature compensation?
+    DIA-FRENCH = Temperature compensation?
+    DIA-ITALIAN = Temperature compensation?
+    DIA-SPANISH = Temperature compensation?
+    DIA-PORTUGUE = Temperature compensation?
+    DIA-SWEDISH = Temperature compensation?
+    DIA-DANISH = Temperature compensation?
+    DIA-FINNISH = Temperature compensation?
+    DIA-DUTCH = Temperature compensation?
+    DIA-POLISH = Temperature compensation?
+    DIA-HUNGARIA = Temperature compensation?
+  NAME = COMPTAB
+    TYPE = C
+    WIDTH = 8
+    DEC = 0
+    DIA-ENGLISH = KinematicComp.?
+    DIA-GERMAN = KinematicComp.?
+    DIA-CZECH = KinematicComp.?
+    DIA-FRENCH = KinematicComp.?
+    DIA-ITALIAN = KinematicComp.?
+    DIA-SPANISH = KinematicComp.?
+    DIA-PORTUGUE = KinematicComp.?
+    DIA-SWEDISH = KinematicComp.?
+    DIA-DANISH = KinematicComp.?
+    DIA-FINNISH = KinematicComp.?
+    DIA-DUTCH = KinematicComp.?
+    DIA-POLISH = KinematicComp.?
+    DIA-HUNGARIA = KinematicComp.?
+#STRUCTEND
+NR      DOC                      KEY      AXIS COORD      FILE                            DONTTEST                        ON/OFF TEMPCOMP                        COMPTAB
+0       Tool Carrier             TOOLFILE                                                                                                                                 
+1       Spindle                  CMO                      CMO\CMO_Spindle_HSK63.tab                                                                                       
+2       Head                     CMO                      CMO\CMO_Head4.tab                                                                                               
+3       Presetcompensation X     Trans    X    +0.0000                                                                                                                    
+4       Presetcompensation Y     Trans    Y    +0.0000                                                                                                                    
+5       Presetcompensation Z     Trans    Z    +0.0000                                                                                                                    
+6       ECZ errors Z-axis        Trans    C    +0.0000                                                                                                           A3C6     
+7       EBZ errors Z-axis        Trans    B    +0.0000                                                                                                           A3C5     
+8       EAZ errors Z-axis        Trans    A    +0.0000                                                                                                           A3C4     
+9       EZZ errors Z-axis        Trans    Z    +0.0000                                                                                                           A3C3     
+10      EYZ errors Z-axis        Trans    Y    +0.0000                                                                                                           A3C2     
+11      EXZ errors Z-axis        Trans    X    +0.0000                                                                                                           A3C1     
+12      Axis Z                   MachAxis Z                                                                                                                               
+13      ECX errors X-axis        Trans    C    +0.0000                                                                                                           A1C6     
+14      EBX errors X-axis        Trans    B    +0.0000                                                                                                           A1C5     
+15      EAX errors X-axis        Trans    A    +0.0000                                                                                                           A1C4     
+16      EZX errors X-axis        Trans    Z    +0.0000                                                                                                           A1C3     
+17      EYX errors X-axis        Trans    Y    +0.0000                                                                                                           A1C2     
+18      EXX errors X-axis        Trans    X    +0.0000                                                                                                           A1C1     
+19      Axis X                   MachAxis X                                                                                                                               
+20      ECY errors Y-axis        Trans    C    +0.0000                                                                                                           A2C6     
+21      EBY errors Y-axis        Trans    B    +0.0000                                                                                                           A2C5     
+22      EAY errors Y-axis        Trans    A    +0.0000                                                                                                           A2C4     
+23      EZY errors Y-axis        Trans    Z    +0.0000                                                                                                           A2C3     
+24      EYY errors Y-axis        Trans    Y    +0.0000                                                                                                           A2C2     
+25      EXY errors Y-axis        Trans    X    +0.0000                                                                                                           A2C1     
+26      Axis Y                   MachAxis Y                                                                                                                               
+27      Transformation Z         Trans    Z    -500.0000                                                                                                                  
+28      Base                     MachBase                                                                                                                                 
+29      Table                    CMO                      CMO\CMO_Table1.tab                                                                                              
+30      Fixture elements         Clamp                    Fixture.tab                                                                                                     
+31      BasicRot C               Trans    C    +0.0000                                                                                                                    
+32      BasicRot B               Trans    B    +0.0000                                                                                                                    
+33      BasicRot A               Trans    A    +0.0000                                                                                                                    
+[END]

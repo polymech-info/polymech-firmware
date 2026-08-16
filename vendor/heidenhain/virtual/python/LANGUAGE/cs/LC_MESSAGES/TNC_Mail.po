@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "nastavení"
+
+msgid "MAIL"
+msgstr "e-Mail"
+
+msgid "EVENTS"
+msgstr "události"
+
+msgid "FROM"
+msgstr "Od:"
+
+msgid "TO"
+msgstr "Komu:"
+
+msgid "CC"
+msgstr "Kopie:"
+
+msgid "BCC"
+msgstr "Skrytá:"
+
+msgid "SUBJECT"
+msgstr "Věc:"
+
+msgid "PLC_EVENTS"
+msgstr "PLC událost"
+
+msgid "NAME"
+msgstr "Název"
+
+msgid "PLC_ADDRESS"
+msgstr "PLC adresa"
+
+msgid "TRIGGER"
+msgstr "Trigger"
+
+msgid "SERVER"
+msgstr "Server"
+
+msgid "USER"
+msgstr "Uživatel"
+
+msgid "PASSWORD"
+msgstr "Heslo"
+
+msgid "MAIL_TEXT"
+msgstr "e-Mail text"
+
+msgid "HEADLINE"
+msgstr "Záhlaví"
+
+msgid "FOOTER"
+msgstr "Zápatí"
+

@@ -1,0 +1,35 @@
+*-----------------------------------------------------------------------------
+*  PLC Nullpunktverschiebung (Preset)
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+GLOBAL PLC_Preset
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL PLC_Preset
+;----------------------------
+
+  L      MG_M70_PLC_Preset_aus
+  IFT
+    S      PN_M4092_Quit_M_Funktion
+
+    L      K+0
+    =      BG_PLC_Preset_Nr
+  ENDI
+
+  L      MG_M79_PLC_Preset_ein
+  IFT
+    L      BG_FN19_PLC_Preset_Nr
+    >      K+0
+    S      PN_M4092_Quit_M_Funktion
+    SN     PN_Fehler_Wert_unzulaessig
+
+    L      BG_FN19_PLC_Preset_Nr
+    =      BG_PLC_Preset_Nr
+  ENDI
+
+EM

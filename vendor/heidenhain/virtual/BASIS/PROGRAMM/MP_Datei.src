@@ -1,0 +1,113 @@
+*-----------------------------------------------------------------------------
+*  Maschinen-Parameter Teildatei aktivieren
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Mit dem Setzen des MP4310.5 <NP_W986_Farb_Einstellung> im Wertevorrat
+*    [0..3] werden die Maschinen-Parameter der entsprechenden MP-Teildatei
+*    aktiviert.
+*
+*     <NP_W986_Farb_Einstellung>  MP's aus Teildatei
+*              0                  PLC:\MP\TeilDat0.A
+*              1                  PLC:\MP\TeilDat1.A
+*              2                  PLC:\MP\TeilDat2.A
+*              3                  PLC:\MP\TeilDat3.A
+*
+*-----------------------------------------------------------------------------
+
+#define /s    BL_MP_Teildatei_Identifier               B
+
+#define /s    WL_Nr_MP_Teildatei                       W
+#define /s    WL_Stack_synchronisieren                 W
+
+#include Mac_Lib.inc
+
+GLOBAL MP_Teil_Datei
+
+;----------------------------
+LBL MP_Teil_Datei
+;----------------------------
+
+  L      WL_Nr_MP_Teildatei
+  ==     NP_W986_Farb_Einstellung
+  EMT
+
+  SUBM   MP_Teildatei_Submit
+  =      BL_MP_Teildatei_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+  L      PN_Fehler_Submit_Spawn_Queue_voll
+  EMT
+
+  L      NP_W986_Farb_Einstellung
+  =      WL_Nr_MP_Teildatei
+
+EM
+
+;----------------------------
+LBL MP_Teildatei_Submit
+
+  L      NP_W986_Farb_Einstellung
+  >      K+3
+  EMT
+
+  L      NP_W986_Farb_Einstellung
+  <      K+0
+  EMT
+
+  CASE   NP_W986_Farb_Einstellung
+    CM     Teil_Datei_0
+    CM     Teil_Datei_1
+    CM     Teil_Datei_2
+    CM     Teil_Datei_3
+  ENDC
+
+  PS     K &SG_MP_Teildatei
+  CM     9034                          ;Laden einer Maschinen-Parameter-Teildatei
+  PL     WL_Stack_synchronisieren
+  M_Modul_Fehler_anzeigen
+
+  LN     MG_Inbetriebnahme
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM
+
+;----------------------------
+LBL Teil_Datei_0
+
+  L      S"PLC:\MP\TEILDAT0.A"
+  =      SG_MP_Teildatei
+
+EM
+
+;----------------------------
+LBL Teil_Datei_1
+
+  L      S"PLC:\MP\TEILDAT1.A"
+  =      SG_MP_Teildatei
+
+EM
+
+;----------------------------
+LBL Teil_Datei_2
+
+  L      S"PLC:\MP\TEILDAT2.A"
+  =      SG_MP_Teildatei
+
+EM
+
+;----------------------------
+LBL Teil_Datei_3
+
+  L      S"PLC:\MP\TEILDAT3.A"
+  =      SG_MP_Teildatei
+
+EM

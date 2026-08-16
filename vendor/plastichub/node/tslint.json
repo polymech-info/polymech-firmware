@@ -1,0 +1,101 @@
+{
+  "extends": [
+    "tslint:latest",
+    "tslint-react"
+  ],
+  "rules": {
+    "triple-equals": false,
+    "no-bitwise": false,
+    "jsx-self-close": false,
+    "comment-format": false,
+    "jsx-alignment": false,
+    "no-debugger": false,
+    "no-empty": false,
+    "arrow-parens": false,
+    "eofline": false,
+    "only-arrow-functions": false,
+    "no-unused-expression": false,
+    "no-unused-variable": true,
+    "prefer-for-of": false,
+    "prefer-const": false,
+    "no-this-assignment": false,
+    "member-access": false,
+    "member-ordering": false,
+    "no-empty-interface": false,
+    "no-string-literal": false,
+    "no-trailing-whitespace": false,
+    "no-shadowed-variable": false,
+    "object-literal-shorthand": false,
+    "no-var-requires": true,
+    "interface-name": false,
+    "interface-over-type-literal": false,
+    "no-duplicate-imports": false,
+    "array-type": false,
+    "jsx-no-lambda": false,
+    "jsdoc-format": false,
+    "typedef-whitespace": false,
+    "ban": [
+      true,
+      [
+        "Object",
+        "assign",
+        "use TS2.1 object spread { ...a, ...b }"
+      ],
+      [
+        "describe",
+        "only"
+      ],
+      [
+        "it",
+        "only"
+      ]
+    ],
+    "no-console": false,
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    "no-invalid-this": [
+      true,
+      "check-function-in-method"
+    ],
+    "jsx-wrap-multiline": false,
+    "space-before-function-paren": false,
+    "variable-name": [
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ],
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "trailing-comma": [
+      false
+    ],
+    "max-line-length": [
+      180
+    ],
+    "max-classes-per-file": [
+      false,
+      5
+    ],
+    "object-literal-sort-keys": false,
+    "jsx-no-multiline-js": false,
+    "ordered-imports": [
+      false
+    ],
+    "semicolon": [
+      false
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ]
+  },
+  "jsRules": {
+    "object-literal-shorthand": true,
+    "trailing-comma": [
+      false
+    ]
+  }
+}

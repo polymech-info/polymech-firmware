@@ -1,0 +1,1 @@
+pm-config patch-config --patch ./config/cassandra-config-fibereusetech.json --dst ./src/config-user.h

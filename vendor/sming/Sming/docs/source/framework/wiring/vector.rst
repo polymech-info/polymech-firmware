@@ -1,0 +1,5 @@
+Vector
+======
+
+.. doxygenclass:: Vector
+   :members:

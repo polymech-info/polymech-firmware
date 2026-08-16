@@ -1,0 +1,33 @@
+/* PALETTEN VERWALTUNG
+   -------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"PALETTEN VERWALTUNG";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"                                      \n";
+CURSOR=OFF;
+
+"MG_P_SLOC_REQ       : %d\n",M3653/c;
+"MG_P_SLOC_END       : %d\n",M3651/c;
+"MG_P_SPAL_REQ       : %d\n",M3653/c;
+"MG_P_SPAL_END       : %d\n",M3650/c;
+"MG_P_NOSUCHERG      : %d\n\n",M3649/c;
+
+"BG_P_SLOC_MOD       : %4D\n",B3835/e;
+"BG_P_PALNR          : %4D\n",B3834/e;
+"BG_P_RELATIVPOSITION: %4D\n",B3833/e;
+"BG_P_SPAL_MOD       : %4D\n",B3832/e;
+"WG_Palette_Rüstplatz: %4D\n\n",W3820/e;
+
+"BG_P_PRIO_ERGEBNIS  : %4D\n",B3831/c;
+"BG_P_STAT_ERGEBNIS  : %4D\n",B3830/c;
+"BG_P_PNR_ERGEBNIS   : %4D\n",B3828/c;
+"BG_P_LOC_ERGEBNIS   : %4D\n",B3827/c;
+"BG_P_AUX_ERGEBNIS   : %4D\n",B3829/c;
+"WG_Pal_Tabelle_Zeile: %4D\n",W3822/c;
+

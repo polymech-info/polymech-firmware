@@ -1,0 +1,495 @@
+*-----------------------------------------------------------------------------
+*  Library of Standard Functions
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*    To expand the NC/PLC interface further functions will be offered.
+*
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_2_seconds                             K+2
+#define /s    KL_60_seconds                            K+60
+#define /s    KL_3600_seconds                          K+3600
+#define /s    KL_displayed_screen_window               K+4
+#define /s    KL_overlaid_machine_mode                 K+3
+#define /s    KL_editor_overlaid_machine_mode          K+28
+#define /s    KL_tool_table                            K+3
+#define /s    KL_pocket_table                          K+4
+#define /s    KL_reference_value                       K+7
+#define /s    KL_ACTL_value                            K+0            *;EUMACH
+#define /s    KL_DCM_status                            K+0            *;EUMACH BASIC 54
+#define /s    KL_active                                K+1            *;EUMACH BASIC 54
+#define /s    KL_runtime_from_MP                       K-1            *;EUMACH HSCI
+#define /s    KL_axis_group_8                          K +7           *;EUMACH HSCI
+
+#define /s    ML_second_odd                            M
+#define /s    ML_second_even                           M
+#define /s    ML_second_0                              M
+#define /s    ML_END_PGM_M02_M30                       M
+#define /s    ML_control_operates_flashes              M
+#define /s    ML_mode_restore_position                 M
+#define /s    ML_reset_init_macro_executed             M
+#define /s    ML_tool_table_has_been_selected          M
+#define /s    ML_soft_key_edit_on_off                  M
+#define /s    ML_key_pressed                           M
+#define /s    ML_clock_500_ms                          M
+#define /s    ML_control_operational_last_PLC_scan     M              *;EUMACH
+
+#define /s    BL_clock_250_ms                          B
+#define /s    BL_reset_init_macro                      B
+#define /s    BL_axes_group_index                      B              *;EUMACH HSCI
+
+#include Mac_Lib.inc
+
+GLOBAL Library
+GLOBAL Absolute
+GLOBAL End_PLC_Cycle
+
+;----------------------------
+LBL Library
+;----------------------------
+
+;Seconds clock (0.5S, 1S)
+
+  LN     TR_pulse_250_ms
+  =      TS_pulse_250_ms
+  =      MG_pulse_250_ms
+
+  L      MG_clock_500_ms
+  XO     MG_pulse_250_ms
+  =      MG_clock_500_ms
+
+  L      MG_clock_500_ms
+  AN     ML_clock_500_ms
+  =      MG_pulse_500_ms
+
+  L      MG_clock_500_ms
+  =      ML_clock_500_ms
+
+  L      MG_clock_500_ms
+  A      MG_pulse_250_ms
+  XO     MG_clock_1_s
+  =      MG_clock_1_s
+
+  CM     9195
+  PL     DG_real_time
+  M_display_module_error(KG_error_module_9195)
+
+  L      DG_real_time
+  MOD    KL_2_seconds
+  PSW
+  ==     K+1
+  =      ML_second_odd
+  =      MG_clock_2_s                                                 *;EUMACH Dual TC
+
+  LN     ML_second_odd
+  XO     ML_second_even
+  =      MG_pulse_1_s
+
+  PLW
+  ==     K+0
+  =      ML_second_even
+
+  L      DG_real_time
+  MOD    KL_3600_seconds
+  ==     K+1
+  A      ML_second_0
+  =      MG_pulse_1_h
+
+  L      DG_real_time
+  MOD    KL_60_seconds
+  PSW
+  ==     K+1
+  A      ML_second_0
+  =      MG_pulse_1_min
+
+  PLW
+  ==     K+0
+  =      ML_second_0
+
+;External DC voltage off/on -t->
+
+  L      I_control_operational
+  AN     NP_M4178_external_emergency_stop_active
+  =      MG_control_operational
+
+  LN     MG_control_operational
+  =      TS_extern_DC_voltage_off_on
+
+  L      MG_control_operational
+  AN     TR_extern_DC_voltage_off_on
+  A      MG_machine_parameter_are_read
+  =      MG_power_delayed_on
+
+  L      MG_control_operational
+  =      TS_extern_DC_voltage_on_off
+
+*;EUMACH MG_p_pulse_control_operational
+  L      MG_control_operational
+  AN     ML_control_operational_last_PLC_scan
+  =      MG_p_pulse_control_operational
+
+  L      MG_control_operational
+  =      ML_control_operational_last_PLC_scan
+
+*;EUMACH Original PLC (due to BASIC 53 AXES.SRC)
+;Servo drive release axes group X150/X151
+
+*;EUMACH Delay of MG_power_delayed_on
+  LN     MG_power_delayed_on
+  =      TS_MG_power_delayed_on
+
+  L      MG_power_delayed_on
+  AN     TR_MG_power_delayed_on
+  =      MG_delay_of_MG_power_delayed_on
+*;EUMACH Delay of MG_power_delayed_on
+
+;  LN     MG_servo_drive_release_axis_groups_X150_active
+;  S      MG_servo_drive_release_1st_axes_group
+;  S      MG_servo_drive_release_2nd_axes_group
+;  S      MG_servo_drive_release_3rd_axes_group
+;  S      MG_servo_drive_release_spindle
+;  IFF
+;    PS     K+2
+;    CM     9157
+;    PL     WG_release_axes_X150_X151
+;    M_display_module_error(KG_error_module_9157)
+
+;    L      WG_release_axes_X150_X151
+;    A      WG_MP2040_0_axis_group_1
+;    ==     WG_MP2040_0_axis_group_1
+;    =      MG_servo_drive_release_1st_axes_group
+
+;    L      WG_release_axes_X150_X151
+;    A      WG_MP2040_1_axis_group_2
+;    ==     WG_MP2040_1_axis_group_2
+;    =      MG_servo_drive_release_2nd_axes_group
+
+;    L      WG_release_axes_X150_X151
+;    A      WG_MP2040_2_axis_group_3
+;    ==     WG_MP2040_2_axis_group_3
+;    =      MG_servo_drive_release_3rd_axes_group
+
+;    L      WG_release_axes_X150_X151
+;    BT     KG_spindle
+;    =      MG_servo_drive_release_spindle
+;  ENDI
+
+;Operational mode and change
+
+  L      NP_M4150_mode_manual
+  O      NP_M4151_mode_electronic_handwheel
+  O      NP_M4155_mode_pass_over_reference
+  O      NP_M4156_mode_soft_key_manual_operation
+  =      MG_manual_mode
+
+  LN     MG_manual_mode
+  AN     MG_automatic_mode
+  =      MG_manu_auto_mode_change
+
+  L      MG_manual_mode
+  A      MG_automatic_mode
+  AN     NP_M4156_mode_soft_key_manual_operation
+  =      MG_auto_manu_mode_change
+
+  L      NP_M4152_mode_posit_with_manual_input
+  O      NP_M4153_mode_program_run_single_block
+  O      NP_M4154_mode_program_run_full_sequence
+  AN     NP_M4156_mode_soft_key_manual_operation
+  =      MG_automatic_mode
+
+  PS     KL_displayed_screen_window
+  CM     9035
+  PLW
+  BT     K+0
+  =      MG_edit_mode
+  M_display_module_error(KG_error_module_9035)
+
+  PS     KL_overlaid_machine_mode
+  CM     9035
+  PLW
+  PSW
+  ==     KL_pocket_table
+  =      MG_pocket_table_selected
+
+  PLW
+  ==     KL_tool_table
+  =      MG_tool_table_selected
+  M_display_module_error(KG_error_module_9035)
+
+  PS     KL_editor_overlaid_machine_mode
+  CM     9035
+  PLW
+  ==     KL_pocket_table
+  =      MG_edit_pocket_table
+  M_display_module_error(KG_error_module_9035)
+
+  LN     MG_tool_table_selected
+  A      ML_tool_table_has_been_selected
+  S      MG_tool_status_reading
+
+  L      MG_tool_table_selected
+  =      ML_tool_table_has_been_selected
+
+  LN     NP_M4157_mode_restore_position
+  AN     NP_M4158_mode_block_scan
+  R      MG_mode_block_scan_has_been_active
+
+  L      NP_M4158_mode_block_scan
+  S      MG_mode_block_scan_has_been_active
+
+*;EUMACH BASIC 54
+  PS     KL_DCM_status
+  CM     9064
+  PLW
+  ==     KL_active
+  =      MG_DCM_active
+  M_display_module_error(KG_error_module_9064)
+*;EUMACH BASIC 54
+
+;M2, M30, END PGM
+
+  L      NP_M4170_END_PGM_M02_M30_executed
+  AN     ML_END_PGM_M02_M30
+  =      MG_pulse_END_PGM_M02_M30
+
+  L      NP_M4170_END_PGM_M02_M30_executed
+  =      ML_END_PGM_M02_M30
+
+;External/Internal STOP
+
+  LN     NP_M4176_control_in_operation_on_or_flashes
+  A      ML_control_operates_flashes
+  =      MG_pulse_internal_stop
+
+  L      NP_M4175_control_in_operation_flashes
+  AN     ML_control_operates_flashes
+  AN     NP_M4158_mode_block_scan
+  =      MG_pulse_external_stop
+
+  L      NP_M4176_control_in_operation_on_or_flashes
+  AN     NP_M4175_control_in_operation_flashes
+  =      MG_control_in_operation_on
+
+  L      MG_control_in_operation_on
+  A      ML_control_operates_flashes
+  AN     NP_M4157_mode_restore_position
+  =      MG_NC_start_pulse
+
+  L      NP_M4175_control_in_operation_flashes
+  =      ML_control_operates_flashes
+
+  LN     NP_M4157_mode_restore_position
+  A      ML_mode_restore_position
+  R      MG_pulse_external_stop
+
+  L      NP_M4157_mode_restore_position
+  =      ML_mode_restore_position
+
+  L      NP_M4153_mode_program_run_single_block                       *;EUMACH
+  O      NP_M4154_mode_program_run_full_sequence                      *;EUMACH
+  AN     NP_M4156_mode_soft_key_manual_operation                      *;EUMACH
+  A      MG_control_in_operation_on                                   *;EUMACH
+  AN     MG_PGM_running_control_in_operation_on                       *;EUMACH
+  =      MG_p_pulse_PGM_running_control_in_operation_on               *;EUMACH
+
+  L      NP_M4153_mode_program_run_single_block                       *;EUMACH
+  O      NP_M4154_mode_program_run_full_sequence                      *;EUMACH
+  AN     NP_M4156_mode_soft_key_manual_operation                      *;EUMACH
+  A      MG_control_in_operation_on                                   *;EUMACH
+  =      MG_PGM_running_control_in_operation_on                       *;EUMACH
+
+;NC STOP / NC START
+
+  LN     PN_M4560_NC_stop_0_active
+  O      MG_pulse_external_stop
+  S      MG_NC_stop_active
+
+  L      PN_M4564_NC_start
+  O      MG_manual_mode
+  O      MG_pulse_internal_stop
+  O      MG_key_spindle_M3
+  O      MG_key_spindle_M4                                            *;EUMACH
+  R      MG_NC_stop_active
+
+  L      MG_key_NC_start
+  O      MG_key_spindle_M3
+  O      MG_key_spindle_M4                                            *;EUMACH
+  O      MG_automatic_mode
+  O      MG_key_spindle_start                                         *;EUMACH
+#if HSS ! &inactive                                                   *;EUMACH
+  O      MG_soft_key_S_warming_up                                     *;EUMACH
+#endif                                                                *;EUMACH
+  R      MG_NC_stop_in_manual_mode
+
+  L      MG_key_NC_stop
+  A      MG_manual_mode
+  S      MG_NC_stop_in_manual_mode
+
+;CE-key operated
+
+  L      NP_W274_code_pushed_key
+  ==     KG_key_CE
+  AN     MG_CE_key
+  =      MG_pulse_CE_key
+  S      MG_submit_CE_key
+
+  L      NP_W274_code_pushed_key
+  ==     KG_key_CE
+  =      MG_CE_key
+
+;Key pulse identification  (e.g. operation > 0.5s)                    *;EUMACH S% knob -> FMAX% knob
+
+  L      MG_marker_one                                                *;EUMACH S% knob -> FMAX% knob
+  S      TS_keys_pulse_identifier                                     *;EUMACH S% knob -> FMAX% knob
+
+;Axes in position
+
+  L      NP_W1026_axes_in_position
+  ==     K-1
+  =      MG_axes_in_position
+
+;Axes in motion
+
+  L      NP_W1028_axes_in_motion
+  >      K+0
+  =      MG_axes_in_motion
+
+;Reference traversed
+
+  L      NP_W1032_reference_nesessary
+  O      WG_PLC_reference_necessary
+  AN     WG_MP12_simulated_axes                                       *;EUMACH MP12
+  ==     K+0
+  =      MG_reference_axes_traversed
+
+
+;Quit FN19
+
+  LN     NP_M4075_strobe_transfer_FN19
+  R      PN_M4095_quit_transfer_FN19
+
+  L      NP_M4075_strobe_transfer_FN19
+  S      MG_FN19_date_new
+
+;Spindle position reading
+
+  PS     K&DG_position_axis_S_actual
+  CM     9044
+  M_display_module_error(KG_error_module_9044)
+
+;Axes position reading
+
+  PS     K&DG_position_axis_X_ref
+  PS     KL_reference_value
+  CM     9041
+  M_display_module_error(KG_error_module_9041)
+
+*;EUMACH
+;Axes ACTL. position reading
+
+  PS     K&DG_position_axis_X_ACTL
+  PS     KL_ACTL_value
+  CM     9041
+  M_display_module_error(KG_error_module_9041)
+*;EUMACH
+
+;Axes release via MP4132.x with HSCI (max. 8 axes groups)
+
+  L      K +0
+  =      BL_axes_group_index
+  REPEAT
+    L      WG_MP2040_0_axis_group_1[BL_axes_group_index]
+    A      K$7FFF
+    A      NP_W1028_axes_in_motion
+    <>     K +0
+    IFT
+      L      BL_axes_group_index
+      +      K &TR_axes_group_01_in_motion
+      PSW
+      PS     KL_runtime_from_MP
+      CM     9006
+      M_display_module_error(KG_error_module_9006)
+    ENDI
+
+    L      TR_axes_group_01_in_motion[BL_axes_group_index]
+    AN     MG_TNC_programming_station_with_PLC
+    IFT
+      L      PN_W524_servo_drive_release_axes_groups
+      BS     BL_axes_group_index
+      =      PN_W524_servo_drive_release_axes_groups
+    ELSE
+      L      PN_W524_servo_drive_release_axes_groups
+      BC     BL_axes_group_index
+      =      PN_W524_servo_drive_release_axes_groups
+    ENDI
+
+    INC    BL_axes_group_index
+
+    L      BL_axes_group_index
+    >      KL_axis_group_8
+  UNTILT
+
+EM
+
+;----------------------------
+LBL Absolute
+;----------------------------
+
+  PLW
+  PSW
+  >=     K+0
+  EMT
+  PLW
+  XON    K+0
+  +      K+1
+  PSW
+
+EM
+
+;----------------------------
+LBL End_PLC_Cycle
+;----------------------------
+
+  L      NP_M4173_1st_PLC_run_after_compile
+  S      ML_reset_init_macro_executed
+
+  LN     ML_reset_init_macro_executed
+  IFT
+*$WS 14 axes
+    LW     PN_M4120_strobe_PLC_posit_axis_X
+    ==     K+0
+    A      MG_reference_axes_traversed
+    IFT
+      SUBM   Reset_init_macro
+      =      BL_reset_init_macro
+      ==     K+0
+      S      PN_error_submit_spawn_queue_full
+
+      LN     PN_error_submit_spawn_queue_full
+      S      ML_reset_init_macro_executed
+    ENDI
+  ENDI
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------
+LBL Reset_init_macro
+
+  PS     S"STARTUPCANCEL"
+  CM     9291
+  M_display_module_error(KG_error_module_9291)
+
+EM

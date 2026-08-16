@@ -1,0 +1,508 @@
+*-----------------------------------------------------------------------------
+* PLC CLIENT: Daten Austausch über TCP/IP (jh.TCPcomm)
+*-----------------------------------------------------------------------------
+*  Modul Beschreibung
+*
+*  Startet einen PLC Client der über TCP-IP mit einem PLC Server kommunizieren kann.
+*  Über die Funktion Client_Senden werden Daten mit dem Modul 9374 an das Python Skript PLC_Client.py gesendet.
+*  Dieses sendet die Daten an den parametrierten PLC Server.
+*  Der Server muss auf jedes Datenpacket innerhalb der Timeoutzeit antworten.
+*  Die Antwort wird vom Python Skript empfangen. und in die PLC-Empfangsstruktur geschrieben.
+*  Die PLC liest die Struktur mit dem Modul 9373 aus und ruft die angegebene Return Funktion.
+*
+*  - Anmelden der Sende- und Empfangsstrukturen zur PLC<->Python Kommunikation.
+*
+*  - Starten des Python Skript PLC_server.py.
+*    Parameter (KS_Prozess_Parameter):
+*      -s:<Namen der Sendestruktur>
+*      -r:<Namen der Empfangsstruktur>
+*      -h:<IP-Adresse oder DHCP-Name des Server>
+*      -p:<Nummer des TCP-IP Port des Server>
+*    Beispiel: #define /s KS_Prozess_Parameter S"-s:STG_PLC_Client_Senden -r:STG_PLC_Client_Empfang -h:de01tnc08 -p:8076"
+*
+*  - Senden der Daten an den verbundenden Server.
+*
+*  - Auswertung der einkommenden Datenpacket (Antwort) und Aufruf des hinterlegten Labels
+*-----------------------------------------------------------------------------
+
+#define       KL_Funktion_Ping                         K +0
+#define       KL_Funktion_Achs_Positionen              K +1
+#define       KL_Funktion_Maschinenstatus              K +2
+#define       KL_Funktion_03                           K +3
+#define       KL_Funktion_04                           K +4
+
+
+#define /s    KS_Prozess_Path                          S"PLC:\\PYTHON\\plcClient.py"
+#define /s    KS_Prozess_Parameter                     S"-s:STG_PLC_Client_Senden -r:STG_PLC_Client_Empfang -h:160.1.180.14 -p:8076"
+#define /s    KS_Prozess_Name                          S"PLC_CLIENT"
+
+#define /s    ML_TCP_IP_Client_gestartet               M
+#define /s    ML_Spawn_Empfangen_gestartet             M
+#define /s    ML_Senden_gestartet                      M     ;wird für die Zeit eines kompletten Datenaustausch gesetzt
+#define /s    ML_Sende_Freigabe                        M
+#define /s    ML_Repeat_Exit                           M
+
+
+#define /s    ML_Ping_Server                           M
+#define /s    ML_Ping_Server_Ok                        M
+#define /s    ML_Achs_Position                         M
+#define /s    ML_Maschinenstatus                       M
+#define /s    ML_Funktion_03                           M
+#define /s    ML_Funktion_04                           M
+
+#define /s    BL_Submit_Ident_Start                    B
+#define /s    BL_Submit_Ident_Stop                     B
+#define /s    BL_Submit_Ident_Monitor                  B
+#define /s    BL_Return_Wert                           B
+#define /s    BL_Sende_Funktion                        B
+
+#define /s    DL_Fehler_9295                           D
+#define /s    DL_Exit_9295                             D
+#define /s    DL_Spawn_Empfangen_Ident                 D
+#define /s    DL_Funktion_temp                         D
+
+
+#include Mac_Lib.inc
+
+GLOBAL TCP_IP_Client
+
+;----------------------------
+LBL TCP_IP_Client
+;----------------------------
+
+; Verbindungsaufbau zum Server
+
+  LN     ML_TCP_IP_Client_gestartet
+  AN     PN_Fehler_TCP_Client_Verbindungsfehler
+  AN     PN_Fehler_Submit_Spawn_Queue_voll
+  A      MG_Impuls_500_ms
+  IFT
+    RPLY   BL_Submit_Ident_Start
+    ==     K+0
+    IFT
+      SUBM   Client_Start
+      =      BL_Submit_Ident_Start
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+  L      ML_TCP_IP_Client_gestartet
+  A      MG_Impuls_1_min
+  IFT
+    RPLY   BL_Submit_Ident_Monitor
+    ==     K+0
+    IFT
+      SUBM   Prozess_Monitor
+      =      BL_Submit_Ident_Monitor
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+; Bei Fehler Python Skript stoppen
+
+  L      PN_Fehler_TCP_Client_Verbindungsfehler
+  A      ML_TCP_IP_Client_gestartet
+  IFT
+    SUBM   Client_Stop
+    =      BL_Submit_Ident_Stop
+    ==     K+0
+    S      PN_Fehler_Submit_Spawn_Queue_voll
+  ENDI
+
+  L      PN_Fehler_TCP_Client_Verbindungsfehler
+  ON     ML_TCP_IP_Client_gestartet
+  EMT
+
+; Timeout überprüfung
+
+  L      DL_Funktion_temp
+  >=     K+0
+  =      ML_Senden_gestartet
+
+  LN     ML_Senden_gestartet
+  O      PN_Fehler_TCP_Client_Verbindungsfehler
+  =      TS_TCP_IP_Client_Timeout
+
+  L      ML_Senden_gestartet
+  AN     TR_TCP_IP_Client_Timeout
+  S      PN_Fehler_TCP_Client_Verbindungsfehler
+
+; Client Funktionsaufruf
+
+  REPEAT
+    PS     STG_PLC_Client_Status_Senden.Handle
+    PS     KG_Py_Lese_Schreibstatus
+    CM     9372                        ;Statusabfrage einer Daten-Struktur
+    PLW
+    ==     K+4                         ;Daten wurden bereits abgeholt bzw. noch nie über Modul 9374 bereitgestellt
+    =      ML_Sende_Freigabe
+
+    L      ML_Sende_Freigabe
+    IFT
+      CASE   BL_Sende_Funktion
+        CM     Ping                    ;00
+        CM     Achs_Positionen         ;01
+        CM     Maschinenstatus         ;02
+        CM     Funktion_03             ;03
+        CM     Funktion_04             ;04
+      ENDC
+
+      L      BL_Sende_Funktion
+      <      K+4
+      IFT
+        INC    BL_Sende_Funktion
+      ELSE
+        L      K+0
+        =      BL_Sende_Funktion
+
+        LN     ML_Repeat_Exit
+        S      ML_Repeat_Exit
+      ENDI
+
+    ELSE
+      LN     ML_Repeat_Exit
+      S      ML_Repeat_Exit
+
+    ENDI
+
+    L      ML_Repeat_Exit
+  UNTILT
+
+  L      ML_Repeat_Exit
+  R      ML_Repeat_Exit
+
+EM
+
+;----------------------------
+LBL Client_Start
+
+  ; Anmelden der PLC Strukturen
+  PS     STG_PLC_Client_Status_Senden.Handle
+  PS     KG_Py_Lese_Schreibstatus
+  CM     9372                          ;Statusabfrage einer Daten-Struktur
+  PLW
+  <      K+0                           ;ungueltiges Handle (nicht eingerichtet)
+  IFT
+    PS     S"STG_PLC_Client_Senden"
+    PS     KG_Py_SchreibenDurchPLC
+    PS     STG_PLC_Client_Status_Senden.Event
+    CM     9370                        ;Daten-Struktur für Client-Behandlung anmelden
+    PL     STG_PLC_Client_Status_Senden.Handle
+    PL     STG_PLC_Client_Status_Senden.LogOnReturn
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  PS     STG_PLC_Client_Status_Empfangen.Handle
+  PS     KG_Py_Lese_Schreibstatus
+  CM     9372                          ;Statusabfrage einer Daten-Struktur
+  PLW
+  <      K+0                           ;ungueltiges Handle (nicht eingerichtet)
+  IFT
+    PS     S"STG_PLC_Client_Empfang"
+    PS     KG_Py_LesenDurchPlc
+    PS     STG_PLC_Client_Status_Empfangen.Event
+    CM     9370                        ;Daten-Struktur für Client-Behandlung anmelden
+    PL     STG_PLC_Client_Status_Empfangen.Handle
+    PL     STG_PLC_Client_Status_Empfangen.LogOnReturn
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  ; Python Skript starten
+  PS     KS_Prozess_Name
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_aktiv
+  IFF
+    PS     KG_Py_Mode_asynchron
+    PS     KG_Py_Speicher_8_MB
+    PS     KS_Prozess_Path
+    PS     KS_Prozess_Name
+    PS     KS_Prozess_Parameter
+    CM     9295                        ;Starten eines Python-Prozesses
+    PL     DL_Fehler_9295
+    PL     DL_Exit_9295
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  ; Spawn Empfangen starten
+  L      DL_Spawn_Empfangen_Ident
+  ==     K+0
+  IFT
+    SPAWN  Spawn_Client_Empfangen
+    =      DL_Spawn_Empfangen_Ident
+    ==     K-1
+    S      PN_Fehler_Submit_Spawn_Queue_voll
+    SN     ML_Spawn_Empfangen_gestartet
+  ENDI
+
+  ; Verbindungsaufbau abwarten
+  PS     STG_PLC_Client_Status_Senden.Handle
+  PS     KG_Py_Anzahl_angemeldete_Clients
+  CM     9372                          ;Statusabfrage einer Daten-Struktur
+  PLW
+  >      K+0
+  IFT
+    LN     ML_TCP_IP_Client_gestartet
+    S      ML_TCP_IP_Client_gestartet
+    S      TS_TCP_IP_Client_Timeout
+  ENDI
+
+  L      K-1
+  =      DL_Funktion_temp
+
+EM
+
+;----------------------------
+LBL Client_Stop
+
+  L      k-1
+  =      DL_Funktion_temp
+
+  PS     KS_Prozess_Name
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_aktiv
+  IFT
+    PS     KG_Py_Terminate_Python_Prozess
+    PS     KS_Prozess_Name
+    CM     9296                        ;Abbrechen eines Python-Prozesses
+    PL     BL_Return_Wert
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      ML_TCP_IP_Client_gestartet
+  R      ML_TCP_IP_Client_gestartet
+
+EM
+
+;--------------------------------------------------------
+; Client Funktionen
+;--------------------------------------------------------
+LBL Ping
+
+  L      ML_Ping_Server
+  EMF
+
+  L      ML_Ping_Server_Ok
+  R      ML_Ping_Server_Ok
+
+  L      KL_Funktion_Ping
+  =      STG_PLC_Client_Senden.Funktion
+  CM     Client_Senden
+
+  L      ML_Ping_Server
+  R      ML_Ping_Server
+
+EM
+
+;----------------------------
+LBL Achs_Positionen
+
+  L      ML_Achs_Position
+  EMF
+
+  L      KL_Funktion_Achs_Positionen
+  =      STG_PLC_Client_Senden.Funktion
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  =      STG_PLC_Client_Senden.D_1
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Y]
+  =      STG_PLC_Client_Senden.D_2
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  =      STG_PLC_Client_Senden.D_3
+
+  CM     Client_Senden
+
+  L      ML_Achs_Position
+  R      ML_Achs_Position
+
+EM
+
+;----------------------------
+LBL Maschinenstatus
+
+  L      ML_Maschinenstatus
+  EMF
+
+  L      KL_Funktion_Maschinenstatus
+  =      STG_PLC_Client_Senden.Funktion
+
+  CM     Client_Senden
+
+  L      ML_Maschinenstatus
+  R      ML_Maschinenstatus
+
+EM
+
+;----------------------------
+LBL Funktion_03
+
+  L      ML_Funktion_03
+  EMF
+
+  L      KL_Funktion_03
+  =      STG_PLC_Client_Senden.Funktion
+
+  CM     Client_Senden
+
+EM
+
+;----------------------------
+LBL Funktion_04
+
+  L      ML_Funktion_04
+  EMF
+
+  L      KL_Funktion_04
+  =      STG_PLC_Client_Senden.Funktion
+
+  CM     Client_Senden
+
+EM
+
+;----------------------------
+LBL Client_Senden
+
+  PS     STG_PLC_Client_Status_Senden.Handle
+  PS     KG_Py_ohne_Warten_Daten_nicht_ueberschreiben
+  CM     9374                          ;Daten-Struktur von der PLC an Client übertragen
+  PL     STG_PLC_Client_Status_Senden.AccessReturn
+
+  L      STG_PLC_Client_Status_Senden.AccessReturn
+  >      k+0
+  S      PN_Fehler_TCP_Client_Verbindungsfehler
+  RN     PN_Fehler_TCP_Client_Verbindungsfehler
+
+  L      STG_PLC_Client_Senden.Funktion
+  =      DL_Funktion_temp
+
+  ;mce! Workaround da der Client.close nicht funktioniert. Call 62984 !
+  L      PN_Fehler_TCP_Client_Verbindungsfehler
+  IFT
+    RPLY   BL_Submit_Ident_Stop
+    ==     K+0
+    IFT
+      SUBM   Client_Stop
+      =      BL_Submit_Ident_Stop
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+EM
+
+;--------------------------------------------------------
+; Return Funktionen
+;--------------------------------------------------------
+
+; Endlos Schleife für Spawn (warten auf Event)
+
+LBL Spawn_Client_Empfangen
+
+  REPEAT
+    PS     STG_PLC_Client_Status_Empfangen.Handle
+    PS     KG_Py_mit_Warten
+    CM     9373                        ;Daten-Struktur von Clients in die PLC übertragen
+    PL     STG_PLC_Client_Status_Empfangen.AccessReturn
+
+    CASE   STG_PLC_Client_Empfang.Funktion
+      CM     Ret_Ping                  ;00
+      CM     Ret_Achs_Positionen       ;01
+      CM     Ret_Maschinenstatus       ;02
+      CM     Ret_Funktion_03           ;03
+      CM     Ret_Funktion_04           ;04
+    ENDC
+
+    L      STG_PLC_Client_Empfang.Funktion
+    ==     DL_Funktion_temp
+    IFT
+      L      K-1
+      =      DL_Funktion_temp
+    ENDI
+
+    L      STG_PLC_Client_Status_Empfangen.AccessReturn
+    >      K+0
+    O      PN_Fehler_Submit_Spawn_Queue_voll
+    R      ML_Spawn_Empfangen_gestartet
+
+  UNTILT
+
+  L      K+0
+  =      DL_Spawn_Empfangen_Ident
+EM
+
+;----------------------------
+LBL Ret_Ping
+
+  LN     ML_Ping_Server_Ok
+  S      ML_Ping_Server_Ok
+
+EM
+
+;----------------------------
+LBL Ret_Achs_Positionen
+
+  L      STG_PLC_Client_Empfang.D_1
+  =      STG_PLC_Client_Empfang.D_1
+
+;  L      STG_PLC_Client_Empfang.D_2
+;  =
+;
+;  L      STG_PLC_Client_Empfang.D_3
+;  =
+
+  ; bei Rückmeldung Positionen wieder anfordern
+  LN     ML_Achs_Position
+  S      ML_Achs_Position
+
+EM
+
+;----------------------------
+LBL Ret_Maschinenstatus
+
+  L      STG_PLC_Client_Empfang.M_1
+  =      STG_PLC_Client_Empfang.M_1
+
+  L      STG_PLC_Client_Empfang.D_1
+  =      STG_PLC_Client_Empfang.D_1
+
+EM
+
+;----------------------------
+LBL Ret_Funktion_03
+
+  L      KL_Funktion_03
+  =      STG_PLC_Client_Senden.Funktion
+
+EM
+
+;----------------------------
+LBL Ret_Funktion_04
+
+  L      KL_Funktion_04
+  =      STG_PLC_Client_Senden.Funktion
+
+EM
+
+;----------------------------
+LBL Prozess_Monitor
+
+  PS     KS_Prozess_Name
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_nicht_aktiv
+  IFT
+    L      MG_Eins_Merker
+    R      ML_TCP_IP_Client_gestartet
+    S      PN_Fehler_TCP_Client_Verbindungsfehler
+  ENDI
+
+EM

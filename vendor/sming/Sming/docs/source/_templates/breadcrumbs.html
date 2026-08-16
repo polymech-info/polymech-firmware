@@ -1,0 +1,25 @@
+{%- extends "sphinx_rtd_theme/breadcrumbs.html" %}
+
+{% block breadcrumbs_aside %}
+
+{% if page_source_suffix %}
+{%   set suffix = page_source_suffix %}
+{% elif source_suffix %}
+{%   set suffix = source_suffix %}
+{% else %}
+{%   set suffix = '' %}
+{% endif %}
+
+{% if pagename.startswith('_inc/') %}
+{%   set github_url = page_urls.get(pagename + suffix) %}
+{% else %}
+{%   set github_url = 'https://' + github_host|default('github.com') + '/' + github_user + '/' + github_repo + '/blob/' + github_version + '/' + conf_py_path + pagename + suffix %}
+{% endif %}
+
+<li class="wy-breadcrumbs-aside">
+  {% if github_url is not none %}
+  <a href="{{ github_url }}" class="fa fa-github"> {{ _('View on GitHub') }}</a>
+  {% endif %}
+</li>
+
+{% endblock %}

@@ -1,0 +1,6 @@
+/* Display Machine Graphic
+   -----------------------
+*/
+POS=-50,270;
+GRAPHICS=PLC:\LANGUAGE\ENGLISH\MASCHINE.HE;
+

@@ -1,0 +1,1767 @@
+diff --git a/crypto/bigint.c b/crypto/bigint.c
+index d90b093..9ddad77 100644
+--- a/crypto/bigint.c
++++ b/crypto/bigint.c
+@@ -180,7 +180,7 @@ void bi_permanent(bigint *bi)
+     if (bi->refs != 1)
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("bi_permanent: refs was not 1\n");
++        puts("bi_permanent: refs was not 1\n");
+ #endif
+         abort();
+     }
+@@ -198,7 +198,7 @@ void bi_depermanent(bigint *bi)
+     if (bi->refs != PERMANENT)
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("bi_depermanent: bigint was not permanent\n");
++        puts("bi_depermanent: bigint was not permanent\n");
+ #endif
+         abort();
+     }
+@@ -233,7 +233,7 @@ void bi_free(BI_CTX *ctx, bigint *bi)
+     if (--ctx->active_count < 0)
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("bi_free: active_count went negative "
++        puts("bi_free: active_count went negative "
+                 "- double-freed bigint?\n");
+ #endif
+         abort();
+@@ -508,6 +508,7 @@ bigint *bi_divide(BI_CTX *ctx, bigint *u, bigint *v, int is_mod)
+  */
+ static bigint *bi_int_divide(BI_CTX *ctx, bigint *biR, comp denom)
+ {
++    (void)ctx;
+     int i = biR->size - 1;
+     long_comp r = 0;
+ 
+@@ -688,11 +689,11 @@ void bi_print(const char *label, bigint *x)
+         {
+             comp mask = 0x0f << (j*4);
+             comp num = (x->comps[i] & mask) >> (j*4);
+-            putc((num <= 9) ? (num + '0') : (num + 'A' - 10), stdout);
++            putc((num <= 9) ? (num + '0') : (num + 'A' - 10));
+         }
+     }  
+ 
+-    printf("\n");
++    puts("\n");
+ }
+ #endif
+ 
+@@ -1098,7 +1099,7 @@ static bigint *alloc(BI_CTX *ctx, int size)
+         if (biR->refs != 0)
+         {
+ #ifdef CONFIG_SSL_FULL_MODE
+-            printf("alloc: refs was not 0\n");
++            puts("alloc: refs was not 0\n");
+ #endif
+             abort();    /* create a stack trace from a core dump */
+         }
+@@ -1174,13 +1175,13 @@ static void check(const bigint *bi)
+ {
+     if (bi->refs <= 0)
+     {
+-        printf("check: zero or negative refs in bigint\n");
++        puts("check: zero or negative refs in bigint\n");
+         abort();
+     }
+ 
+     if (bi->next != NULL)
+     {
+-        printf("check: attempt to use a bigint from "
++        puts("check: attempt to use a bigint from "
+                 "the free list\n");
+         abort();
+     }
+diff --git a/crypto/crypto.h b/crypto/crypto.h
+index da24d31..4de139b 100644
+--- a/crypto/crypto.h
++++ b/crypto/crypto.h
+@@ -196,6 +196,10 @@ EXP_FUNC void STDCALL MD5_Final(uint8_t *digest, MD5_CTX *);
+ /**************************************************************************
+  * HMAC declarations 
+  **************************************************************************/
++#define hmac_md5 ax_hmac_md5
++#define hmac_sha1 ax_hmac_sha1
++#define hmac_sha256 ax_hmac_sha256
++
+ void hmac_md5(const uint8_t *msg, int length, const uint8_t *key, 
+         int key_len, uint8_t *digest);
+ void hmac_sha1(const uint8_t *msg, int length, const uint8_t *key, 
+@@ -206,6 +210,10 @@ void hmac_sha256(const uint8_t *msg, int length, const uint8_t *key,
+ /**************************************************************************
+  * HMAC functions operating on vectors 
+  **************************************************************************/
++#define hmac_md5_v ax_hmac_md5_v
++#define hmac_sha1_v ax_hmac_sha1_v
++#define hmac_sha256_v ax_hmac_sha256_v
++
+ void hmac_md5_v(const uint8_t **msg, int* length, int count, const uint8_t *key, 
+         int key_len, uint8_t *digest);
+ void hmac_sha1_v(const uint8_t **msg, int* length, int count, const uint8_t *key, 
+diff --git a/crypto/crypto_misc.c b/crypto/crypto_misc.c
+index dca7e5f..6198b9f 100644
+--- a/crypto/crypto_misc.c
++++ b/crypto/crypto_misc.c
+@@ -44,7 +44,6 @@
+ 
+ #ifdef ESP8266
+ #define CONFIG_SSL_SKELETON_MODE 1
+-uint32_t phy_get_rand();
+ #endif
+ 
+ #if defined(CONFIG_USE_DEV_URANDOM)
+@@ -142,6 +141,9 @@ EXP_FUNC void STDCALL RNG_custom_init(const uint8_t *seed_buf, int size)
+ 
+     for (i = 0; i < ENTROPY_POOL_SIZE && i < size; i++)
+         entropy_pool[i] ^= seed_buf[i];
++#else
++    (void)seed_buf;
++    (void)size;
+ #endif
+ }
+ 
+@@ -157,62 +159,6 @@ EXP_FUNC void STDCALL RNG_terminate(void)
+ #endif
+ }
+ 
+-/**
+- * Set a series of bytes with a random number. Individual bytes can be 0
+- */
+-EXP_FUNC int STDCALL get_random(int num_rand_bytes, uint8_t *rand_data)
+-{   
+-#if !defined(WIN32) && defined(CONFIG_USE_DEV_URANDOM)
+-    /* use the Linux default - read from /dev/urandom */
+-    if (read(rng_fd, rand_data, num_rand_bytes) < 0) 
+-        return -1;
+-#elif defined(WIN32) && defined(CONFIG_WIN32_USE_CRYPTO_LIB)
+-    /* use Microsoft Crypto Libraries */
+-    CryptGenRandom(gCryptProv, num_rand_bytes, rand_data);
+-#elif defined(ESP8266)
+-    for (size_t cb = 0; cb < num_rand_bytes; cb += 4) {
+-        uint32_t r = phy_get_rand();
+-        size_t left = num_rand_bytes - cb;
+-        left = (left < 4) ? left : 4;
+-        memcpy(rand_data + cb, &r, left);
+-    }
+-#else   /* nothing else to use, so use a custom RNG */
+-    /* The method we use when we've got nothing better. Use RC4, time
+-       and a couple of random seeds to generate a random sequence */
+-    AES_CTX rng_ctx;
+-    struct timeval tv;
+-    MD5_CTX rng_digest_ctx;
+-    uint8_t digest[MD5_SIZE];
+-    uint64_t *ep;
+-    int i;
+-
+-    /* A proper implementation would use counters etc for entropy */
+-    gettimeofday(&tv, NULL);
+-    ep = (uint64_t *)entropy_pool;
+-    ep[0] ^= ENTROPY_COUNTER1;
+-    ep[1] ^= ENTROPY_COUNTER2;
+-
+-    /* use a digested version of the entropy pool as a key */
+-    MD5_Init(&rng_digest_ctx);
+-    MD5_Update(&rng_digest_ctx, entropy_pool, ENTROPY_POOL_SIZE);
+-    MD5_Final(digest, &rng_digest_ctx);
+-
+-    /* come up with the random sequence */
+-    AES_set_key(&rng_ctx, digest, (const uint8_t *)ep, AES_MODE_128); /* use as a key */
+-    memcpy(rand_data, entropy_pool, num_rand_bytes < ENTROPY_POOL_SIZE ?
+-				num_rand_bytes : ENTROPY_POOL_SIZE);
+-    AES_cbc_encrypt(&rng_ctx, rand_data, rand_data, num_rand_bytes);
+-
+-    /* move things along */
+-    for (i = ENTROPY_POOL_SIZE-1; i >= MD5_SIZE ; i--)
+-        entropy_pool[i] = entropy_pool[i-MD5_SIZE];
+-
+-    /* insert the digest at the start of the entropy pool */
+-    memcpy(entropy_pool, digest, MD5_SIZE);
+-#endif
+-    return 0;
+-}
+-
+ /**
+  * Set a series of bytes with a random number. Individual bytes are not zero.
+  */
+@@ -257,17 +203,17 @@ static void print_hex(uint8_t hex)
+     printf("%02x ", hex);
+     if (++column == 8)
+     {
+-        printf(": ");
++        puts(": ");
+     }
+     else if (column >= 16)
+     {
+-        printf("\n");
++        puts("\n");
+         column = 0;
+     }
+ 
+     if (++hex_index >= hex_finish && column > 0)
+     {
+-        printf("\n");
++        puts("\n");
+     }
+ }
+ 
+@@ -374,7 +320,7 @@ EXP_FUNC int STDCALL base64_decode(const char *in, int len,
+ error:
+ #ifdef CONFIG_SSL_FULL_MODE
+     if (ret < 0)
+-        printf("Error: Invalid base64\n"); TTY_FLUSH();
++        puts("Error: Invalid base64\n"); TTY_FLUSH();
+ #endif
+     TTY_FLUSH();
+     return ret;
+diff --git a/crypto/rsa.c b/crypto/rsa.c
+index 53509d0..25c568d 100644
+--- a/crypto/rsa.c
++++ b/crypto/rsa.c
+@@ -236,11 +236,11 @@ void RSA_print(const RSA_CTX *rsa_ctx)
+     if (rsa_ctx == NULL)
+         return;
+ 
+-    printf("-----------------   RSA DEBUG   ----------------\n");
++    puts("-----------------   RSA DEBUG   ----------------\n");
+     printf("Size:\t%d\n", rsa_ctx->num_octets);
+-    printf("Modulus"); bi_print("", rsa_ctx->m);
+-    printf("Public Key"); bi_print("", rsa_ctx->e);
+-    printf("Private Key"); bi_print("", rsa_ctx->d);
++    puts("Modulus"); bi_print("", rsa_ctx->m);
++    puts("Public Key"); bi_print("", rsa_ctx->e);
++    puts("Private Key"); bi_print("", rsa_ctx->d);
+ }
+ #endif
+ 
+diff --git a/crypto/sha1.c b/crypto/sha1.c
+index 1082733..097302a 100644
+--- a/crypto/sha1.c
++++ b/crypto/sha1.c
+@@ -121,7 +121,7 @@ static void SHA1ProcessMessageBlock(SHA1_CTX *ctx)
+      */
+     for  (t = 0; t < 16; t++)
+     {
+-        W[t] = ctx->Message_Block[t * 4] << 24;
++        W[t] = (uint32_t)ctx->Message_Block[t * 4] << 24;
+         W[t] |= ctx->Message_Block[t * 4 + 1] << 16;
+         W[t] |= ctx->Message_Block[t * 4 + 2] << 8;
+         W[t] |= ctx->Message_Block[t * 4 + 3];
+diff --git a/crypto/sha256.c b/crypto/sha256.c
+index ba1ac95..abfde8f 100644
+--- a/crypto/sha256.c
++++ b/crypto/sha256.c
+@@ -216,10 +216,10 @@ void SHA256_Update(SHA256_CTX *ctx, const uint8_t * msg, int len)
+     ctx->total[0] += len;
+     ctx->total[0] &= 0xFFFFFFFF;
+ 
+-    if (ctx->total[0] < len)
++    if ((int)ctx->total[0] < len)
+         ctx->total[1]++;
+ 
+-    if (left && len >= fill)
++    if (left && len >= (int)fill)
+     {
+         memcpy((void *) (ctx->buffer + left), (void *)msg, fill);
+         SHA256_Process(ctx->buffer, ctx);
+diff --git a/crypto/sha512.c b/crypto/sha512.c
+index f92b80a..4d37cec 100644
+--- a/crypto/sha512.c
++++ b/crypto/sha512.c
+@@ -160,7 +160,7 @@ void SHA512_Update(SHA512_CTX *ctx, const uint8_t * msg, int len)
+     while (len > 0)
+     {
+         // The buffer can hold at most 128 bytes
+-        size_t n = MIN(len, 128 - ctx->size);
++        size_t n = MIN((size_t)len, 128 - ctx->size);
+  
+         // Copy the data to the buffer
+         memcpy(ctx->w_buf.buffer + ctx->size, msg, n);
+diff --git a/replacements/time.c b/replacements/time.c
+index 4972119..1447711 100644
+--- a/replacements/time.c
++++ b/replacements/time.c
+@@ -16,6 +16,8 @@
+  *
+  */
+ 
++#if 0
++
+ #include <time.h>
+ #include <sntp.h>
+ 
+@@ -145,3 +147,5 @@ int gettimeofday(struct timeval *tp, void *tzp)
+     }
+     return 0;
+ }
++
++#endif
+diff --git a/ssl/asn1.c b/ssl/asn1.c
+index a08a618..9487bb3 100644
+--- a/ssl/asn1.c
++++ b/ssl/asn1.c
+@@ -183,7 +183,7 @@ int asn1_get_int(const uint8_t *buf, int *offset, int32_t *val)
+     int i;
+ 
+     if ((len = asn1_next_obj(buf, offset, ASN1_INTEGER)) < 0 || 
+-                len > sizeof(int32_t))
++                (size_t)len > sizeof(int32_t))
+     {
+         res = X509_NOT_OK;
+         goto end_int;
+@@ -271,7 +271,7 @@ int asn1_get_private_key(const uint8_t *buf, int len, RSA_CTX **rsa_ctx)
+     if (buf[0] != ASN1_SEQUENCE) /* basic sanity check */
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("Error: This is not a valid ASN.1 file\n");
++        puts("Error: This is not a valid ASN.1 file\n");
+ #endif
+         return X509_INVALID_PRIV_KEY;
+     }
+@@ -405,7 +405,7 @@ static int asn1_get_utc_time(const uint8_t *buf, int *offset, time_t *t)
+ int asn1_version(const uint8_t *cert, int *offset, int *val)
+ {
+     (*offset) += 2;        /* get past explicit tag */
+-    return asn1_get_int(cert, offset, val);
++    return asn1_get_int(cert, offset, (int32_t*)val);
+ }
+ 
+ /**
+@@ -766,12 +766,12 @@ int asn1_signature_type(const uint8_t *cert,
+         {
+ #ifdef CONFIG_SSL_FULL_MODE
+             int i;
+-            printf("invalid digest: ");
++            puts("invalid digest: ");
+ 
+             for (i = 0; i < len; i++)
+                 printf("%02x ", cert[*offset + i]);
+ 
+-            printf("\n");
++            puts("\n");
+ #endif
+             goto end_check_sig;     /* unrecognised cert type */
+         }
+diff --git a/ssl/crypto_misc.h b/ssl/crypto_misc.h
+index 02d9306..63423c2 100644
+--- a/ssl/crypto_misc.h
++++ b/ssl/crypto_misc.h
+@@ -39,8 +39,11 @@
+ extern "C" {
+ #endif
+ 
+-#include "crypto.h"
+-#include "bigint.h"
++#include "../crypto/crypto.h"
++#include "../crypto/bigint.h"
++#include <Crypto/HashApi/md5.h>
++#include <Crypto/HashApi/sha1.h>
++#include <Crypto/HashApi/sha2.h>
+ 
+ /**************************************************************************
+  * X509 declarations 
+diff --git a/ssl/gen_cert.c b/ssl/gen_cert.c
+index 093ae9c..d611ab0 100644
+--- a/ssl/gen_cert.c
++++ b/ssl/gen_cert.c
+@@ -314,7 +314,7 @@ static int gen_tbs_cert(const char * dn[],
+                     uint8_t *sha_dgst)
+ {
+     int ret = X509_OK;
+-    SHA1_CTX sha_ctx;
++    crypto_sha1_context_t sha_ctx;
+     int seq_offset;
+     int begin_tbs = *offset;
+     int seq_size = pre_adjust_with_size(
+@@ -336,9 +336,9 @@ static int gen_tbs_cert(const char * dn[],
+     gen_pub_key(rsa_ctx, buf, offset);
+     adjust_with_size(seq_size, seq_offset, buf, offset);
+ 
+-    SHA1_Init(&sha_ctx);
+-    SHA1_Update(&sha_ctx, &buf[begin_tbs], *offset-begin_tbs);
+-    SHA1_Final(sha_dgst, &sha_ctx);
++    crypto_sha1_init(&sha_ctx);
++    crypto_sha1_update(&sha_ctx, &buf[begin_tbs], *offset-begin_tbs);
++    crypto_sha1_final(sha_dgst, &sha_ctx);
+ 
+ error:
+     return ret;
+diff --git a/ssl/loader.c b/ssl/loader.c
+index 6e41f40..5544434 100644
+--- a/ssl/loader.c
++++ b/ssl/loader.c
+@@ -126,6 +126,7 @@ EXP_FUNC int STDCALL ssl_obj_memory_load(SSL_CTX *ssl_ctx, int mem_type,
+ static int do_obj(SSL_CTX *ssl_ctx, int obj_type, 
+                     SSLObjLoader *ssl_obj, const char *password)
+ {
++    (void)password;
+     int ret = SSL_OK;
+ 
+     switch (obj_type)
+@@ -155,7 +156,7 @@ static int do_obj(SSL_CTX *ssl_ctx, int obj_type,
+ #endif
+         default:
+ #ifdef CONFIG_SSL_FULL_MODE
+-            printf(unsupported_str);
++            printf("%s", unsupported_str);
+ #endif
+             ret = SSL_ERROR_NOT_SUPPORTED;
+             break;
+@@ -222,14 +223,14 @@ static int pem_decrypt(const char *where, const char *end,
+     char *start = NULL;
+     uint8_t iv[IV_SIZE];
+     int i, pem_size;
+-    MD5_CTX md5_ctx;
++    crypto_md5_context_t md5_ctx;
+     AES_CTX aes_ctx;
+     uint8_t key[32];        /* AES256 size */
+ 
+     if (password == NULL || strlen(password) == 0)
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("Error: Need a password for this PEM file\n");
++        puts("Error: Need a password for this PEM file\n");
+ #endif
+         goto error;
+     }
+@@ -246,7 +247,7 @@ static int pem_decrypt(const char *where, const char *end,
+     else 
+     {
+ #ifdef CONFIG_SSL_FULL_MODE
+-        printf("Error: Unsupported password cipher\n");
++        puts("Error: Unsupported password cipher\n");
+ #endif
+         goto error;
+     }
+@@ -269,18 +270,18 @@ static int pem_decrypt(const char *where, const char *end,
+         goto error;
+ 
+     /* work out the key */
+-    MD5_Init(&md5_ctx);
+-    MD5_Update(&md5_ctx, (const uint8_t *)password, strlen(password));
+-    MD5_Update(&md5_ctx, iv, SALT_SIZE);
+-    MD5_Final(key, &md5_ctx);
++    crypto_md5_init(&md5_ctx);
++    crypto_md5_update(&md5_ctx, (const uint8_t*)password, strlen(password));
++    crypto_md5_update(&md5_ctx, iv, SALT_SIZE);
++    crypto_md5_final(key, &md5_ctx);
+ 
+     if (is_aes_256)
+     {
+-        MD5_Init(&md5_ctx);
+-        MD5_Update(&md5_ctx, key, MD5_SIZE);
+-        MD5_Update(&md5_ctx, (const uint8_t *)password, strlen(password));
+-        MD5_Update(&md5_ctx, iv, SALT_SIZE);
+-        MD5_Final(&key[MD5_SIZE], &md5_ctx);
++        crypto_md5_init(&md5_ctx);
++        crypto_md5_update(&md5_ctx, key, MD5_SIZE);
++        crypto_md5_update(&md5_ctx, (const uint8_t*)password, strlen(password));
++        crypto_md5_update(&md5_ctx, iv, SALT_SIZE);
++        crypto_md5_final(&key[MD5_SIZE], &md5_ctx);
+     }
+ 
+     /* decrypt using the key/iv */
+@@ -481,7 +482,7 @@ error:
+ #ifdef CONFIG_SSL_FULL_MODE
+     if (ret)
+     {
+-        printf("Error: Certificate or key not loaded\n");
++        puts("Error: Certificate or key not loaded\n");
+     }
+ #endif
+ 
+diff --git a/ssl/os_port.h b/ssl/os_port.h
+index e0b9e46..743f0d1 100644
+--- a/ssl/os_port.h
++++ b/ssl/os_port.h
+@@ -43,31 +43,20 @@ extern "C" {
+ 
+ #include "os_int.h"
+ #include "config.h"
+-#include <stdio.h>
++#include <FakePgmSpace.h>
+ 
+-#ifdef WIN32
+-#define STDCALL                 __stdcall
+-#define EXP_FUNC                __declspec(dllexport)
+-#else
+-#define STDCALL
+-#define EXP_FUNC
+-#endif
+-
+-#if defined(_WIN32_WCE)
+ #undef WIN32
+-#define WIN32
++#ifndef ESP8266
++#define ESP8266
+ #endif
+ 
+-#if defined(ESP8266)
++#define STDCALL
++#define EXP_FUNC
+ 
+-#include "util/time.h"
++#include "../util/time.h"
+ #include <errno.h>
+-#define alloca(size) __builtin_alloca(size)
+ #define TTY_FLUSH()
+-#ifdef putc
+ #undef putc
+-#endif
+-#define putc(x, f)   ets_putc(x)
+ 
+ #define SOCKET_READ(A,B,C)      ax_port_read(A,B,C)
+ #define SOCKET_WRITE(A,B,C)     ax_port_write(A,B,C)
+@@ -75,10 +64,6 @@ extern "C" {
+ #define get_file                ax_get_file
+ #define EWOULDBLOCK EAGAIN
+ 
+-#define hmac_sha1 ax_hmac_sha1
+-#define hmac_sha256 ax_hmac_sha256
+-#define hmac_md5 ax_hmac_md5
+-
+ #ifndef be64toh
+ # define __bswap_constant_64(x) \
+      ((((x) & 0xff00000000000000ull) >> 56)                                   \
+@@ -92,175 +77,35 @@ extern "C" {
+ #define be64toh(x) __bswap_constant_64(x)
+ #endif
+ 
+-void ax_wdt_feed();
+-
+-#ifndef PROGMEM
+-#define PROGMEM __attribute__((aligned(4))) __attribute__((section(".irom.text")))
+-#endif
+-
+-#ifndef WITH_PGM_READ_HELPER
+-#define ax_array_read_u8(x, y) x[y]
+-#else
+-
+-static inline uint8_t pgm_read_byte(const void* addr) {
+-  register uint32_t res;
+-  __asm__("extui    %0, %1, 0, 2\n"     /* Extract offset within word (in bytes) */
+-      "sub      %1, %1, %0\n"       /* Subtract offset from addr, yielding an aligned address */
+-      "l32i.n   %1, %1, 0x0\n"      /* Load word from aligned address */
+-      "slli     %0, %0, 3\n"        /* Multiply offset by 8, yielding an offset in bits */
+-      "ssr      %0\n"               /* Prepare to shift by offset (in bits) */
+-      "srl      %0, %1\n"           /* Shift right; now the requested byte is the first one */
+-      :"=r"(res), "=r"(addr)
+-      :"1"(addr)
+-      :);
+-  return (uint8_t) res;     /* This masks the lower byte from the returned word */
+-}
++extern void system_soft_wdt_feed(void);
++#define ax_wdt_feed system_soft_wdt_feed
+ 
+ #define ax_array_read_u8(x, y) pgm_read_byte((x)+(y))
+-#endif //WITH_PGM_READ_HELPER
+ 
+-#ifdef printf
+-#undef printf
+-#endif
+-//#define printf(...)  ets_printf(__VA_ARGS__)
+-#define PSTR(s) (__extension__({static const char __c[] PROGMEM = (s); &__c[0];}))
+-#define PGM_VOID_P const void *
+-static inline void* memcpy_P(void* dest, PGM_VOID_P src, size_t count) {
+-    const uint8_t* read = (const uint8_t*)(src);
+-    uint8_t* write = (uint8_t*)(dest);
++#ifdef AXTLS_BUILD
+ 
+-    while (count)
+-    {
+-        *write++ = pgm_read_byte(read++);
+-        count--;
+-    }
++#define get_random(num_rand_bytes, rand_data) os_get_random(rand_data, num_rand_bytes)
+ 
+-    return dest;
+-}
+-static inline int strlen_P(const char *str) {
+-    int cnt = 0;
+-    while (pgm_read_byte(str++)) cnt++;
+-    return cnt;
+-}
+-static inline int memcmp_P(const void *a1, const void *b1, size_t len) {
+-    const uint8_t* a = (const uint8_t*)(a1);
+-    uint8_t* b = (uint8_t*)(b1);
+-    for (size_t i=0; i<len; i++) {
+-        uint8_t d = pgm_read_byte(a) - pgm_read_byte(b);
+-        if (d) return d;
+-        a++;
+-        b++;
+-    }
+-    return 0;
+-}
++#define printf(fmt, ...)  m_printf(_F(fmt), ##__VA_ARGS__)
++#define puts(str)         m_puts(_F(str))
++#define putc(c)           m_putc(c)
++#define vprintf(fmt, ...) m_vprintf(fmt, ##__VA_ARGS__)
+ 
+-#define printf(fmt, ...) do { static const char fstr[] PROGMEM = fmt; char rstr[sizeof(fmt)]; memcpy_P(rstr, fstr, sizeof(rstr)); ets_printf(rstr, ##__VA_ARGS__); } while (0)
+-#define strcpy_P(dst, src) do { static const char fstr[] PROGMEM = src; memcpy_P(dst, fstr, sizeof(src)); } while (0)
++#undef strcpy_P
++#define strcpy_P(a, str) strcpy(a, _F(str))
+ 
+-// Copied from ets_sys.h to avoid compile warnings
+-extern int ets_printf(const char *format, ...)  __attribute__ ((format (printf, 1, 2)));
+-extern int ets_putc(int);
++#endif /* AXTLS_BUILD */
+ 
+-// The network interface in WiFiClientSecure
+-extern int ax_port_read(int fd, uint8_t* buffer, size_t count);
+-extern int ax_port_write(int fd, uint8_t* buffer, size_t count);
++// Implemented outside this library
++extern int ax_port_read(int fd, uint8_t* buffer, int count);
++extern int ax_port_write(int fd, uint8_t* buffer, uint16_t count);
+ 
+-// TODO: Why is this not being imported from <string.h>?
++// Not ANSI C so prototype required
+ extern char *strdup(const char *orig);
+ 
+-#elif defined(WIN32)
+-
+-/* Windows CE stuff */
+-#if defined(_WIN32_WCE)
+-#include <basetsd.h>
+-#define abort()                 exit(1)
+-#else
+-#include <io.h>
+-#include <process.h>
+-#include <sys/timeb.h>
+-#include <fcntl.h>
+-#endif      /* _WIN32_WCE */
+-
+-#include <winsock.h>
+-#include <direct.h>
+-#undef getpid
+-#undef open
+-#undef close
+-#undef sleep
+-#undef gettimeofday
+-#undef dup2
+-#undef unlink
+-
+-#define SOCKET_READ(A,B,C)      recv(A,B,C,0)
+-#define SOCKET_WRITE(A,B,C)     send(A,B,C,0)
+-#define SOCKET_CLOSE(A)         closesocket(A)
+-#define srandom(A)              srand(A)
+-#define random()                rand()
+-#define getpid()                _getpid()
+-#define snprintf                _snprintf
+-#define open(A,B)               _open(A,B)
+-#define dup2(A,B)               _dup2(A,B)
+-#define unlink(A)               _unlink(A)
+-#define close(A)                _close(A)
+-#define read(A,B,C)             _read(A,B,C)
+-#define write(A,B,C)            _write(A,B,C)
+-#define sleep(A)                Sleep(A*1000)
+-#define usleep(A)               Sleep(A/1000)
+-#define strdup(A)               _strdup(A)
+-#define chroot(A)               _chdir(A)
+-#define chdir(A)                _chdir(A)
+-#define alloca(A)               _alloca(A)
+-#ifndef lseek
+-#define lseek(A,B,C)            _lseek(A,B,C)
+-#endif
+-
+-/* This fix gets around a problem where a win32 application on a cygwin xterm
+-   doesn't display regular output (until a certain buffer limit) - but it works
+-   fine under a normal DOS window. This is a hack to get around the issue -
+-   see http://www.khngai.com/emacs/tty.php  */
+-#define TTY_FLUSH()             if (!_isatty(_fileno(stdout))) fflush(stdout);
+-
+-/*
+- * automatically build some library dependencies.
+- */
+-#pragma comment(lib, "WS2_32.lib")
+-#pragma comment(lib, "AdvAPI32.lib")
+-
+-typedef int socklen_t;
+-
+-EXP_FUNC void STDCALL gettimeofday(struct timeval* t,void* timezone);
+-EXP_FUNC int STDCALL strcasecmp(const char *s1, const char *s2);
+-EXP_FUNC int STDCALL getdomainname(char *buf, int buf_size);
+-
+-#else   /* Not Win32 */
+-
+-#include <unistd.h>
+-#include <pwd.h>
+-#include <netdb.h>
+-#include <dirent.h>
+-#include <fcntl.h>
+-#include <errno.h>
+-#include <sys/stat.h>
+-#include <sys/time.h>
+-#include <sys/socket.h>
+-#include <sys/wait.h>
+-#include <netinet/in.h>
+-#include <arpa/inet.h>
+-#include <asm/byteorder.h>
+-
+-#define SOCKET_READ(A,B,C)      read(A,B,C)
+-#define SOCKET_WRITE(A,B,C)     write(A,B,C)
+-#define SOCKET_CLOSE(A)         if (A >= 0) close(A)
+-#define TTY_FLUSH()
+-
+-#ifndef be64toh
+-#define be64toh(x) __be64_to_cpu(x)
+-#endif
+-
+-#endif  /* Not Win32 */
+-
+ /* some functions to mutate the way these work */
+-inline uint32_t htonl(uint32_t n){
++#ifndef ntohl
++static inline uint32_t htonl(uint32_t n){
+   return ((n & 0xff) << 24) |
+     ((n & 0xff00) << 8) |
+     ((n & 0xff0000UL) >> 8) |
+@@ -268,41 +113,14 @@ inline uint32_t htonl(uint32_t n){
+ }
+ 
+ #define ntohl htonl
+-
+-EXP_FUNC int STDCALL ax_open(const char *pathname, int flags); 
+-
+-#ifdef CONFIG_PLATFORM_LINUX
+-void exit_now(const char *format, ...) __attribute((noreturn));
+-#else
+-void exit_now(const char *format, ...);
++#define LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS
+ #endif
+ 
+ /* Mutexing definitions */
+-#if defined(CONFIG_SSL_CTX_MUTEXING)
+-#if defined(WIN32)
+-#define SSL_CTX_MUTEX_TYPE          HANDLE
+-#define SSL_CTX_MUTEX_INIT(A)       A=CreateMutex(0, FALSE, 0)
+-#define SSL_CTX_MUTEX_DESTROY(A)    CloseHandle(A)
+-#define SSL_CTX_LOCK(A)             WaitForSingleObject(A, INFINITE)
+-#define SSL_CTX_UNLOCK(A)           ReleaseMutex(A)
+-#else
+-#include <pthread.h>
+-#define SSL_CTX_MUTEX_TYPE          pthread_mutex_t
+-#define SSL_CTX_MUTEX_INIT(A)       pthread_mutex_init(&A, NULL)
+-#define SSL_CTX_MUTEX_DESTROY(A)    pthread_mutex_destroy(&A)
+-#define SSL_CTX_LOCK(A)             pthread_mutex_lock(&A)
+-#define SSL_CTX_UNLOCK(A)           pthread_mutex_unlock(&A)
+-#endif
+-#else   /* no mutexing */
+ #define SSL_CTX_MUTEX_INIT(A)
+ #define SSL_CTX_MUTEX_DESTROY(A)
+ #define SSL_CTX_LOCK(A)
+ #define SSL_CTX_UNLOCK(A)
+-#endif
+-
+-#ifndef PROGMEM
+-#define PROGMEM
+-#endif
+ 
+ #ifdef __cplusplus
+ }
+diff --git a/ssl/p12.c b/ssl/p12.c
+index 5bd2394..5363d22 100644
+--- a/ssl/p12.c
++++ b/ssl/p12.c
+@@ -190,7 +190,7 @@ static int p8_decrypt(const char *uni_pass, int uni_pass_len,
+     uint8_t p[BLOCK_SIZE*2];
+     uint8_t d[BLOCK_SIZE];
+     uint8_t Ai[SHA1_SIZE];
+-    SHA1_CTX sha_ctx;
++    crypto_sha1_context_t sha_ctx;
+     RC4_CTX rc4_ctx;
+     int i;
+ 
+@@ -202,16 +202,16 @@ static int p8_decrypt(const char *uni_pass, int uni_pass_len,
+     }
+ 
+     /* get the key - no IV since we are using RC4 */
+-    SHA1_Init(&sha_ctx);
+-    SHA1_Update(&sha_ctx, d, sizeof(d));
+-    SHA1_Update(&sha_ctx, p, sizeof(p));
+-    SHA1_Final(Ai, &sha_ctx);
++    crypto_sha1_init(&sha_ctx);
++    crypto_sha1_update(&sha_ctx, d, sizeof(d));
++    crypto_sha1_update(&sha_ctx, p, sizeof(p));
++    crypto_sha1_final(Ai, &sha_ctx);
+ 
+     for (i = 1; i < iter; i++)
+     {
+-        SHA1_Init(&sha_ctx);
+-        SHA1_Update(&sha_ctx, Ai, SHA1_SIZE);
+-        SHA1_Final(Ai, &sha_ctx);
++    	crypto_sha1_init(&sha_ctx);
++    	crypto_sha1_update(&sha_ctx, Ai, SHA1_SIZE);
++    	crypto_sha1_final(Ai, &sha_ctx);
+     }
+ 
+     /* do the decryption */
+@@ -409,7 +409,7 @@ int pkcs12_decode(SSL_CTX *ssl_ctx, SSLObjLoader *ssl_obj, const char *password)
+                             key, SHA1_SIZE, PKCS12_MAC_ID)) < 0)
+         goto error;
+ 
+-    hmac_sha1(auth_safes, auth_safes_len, key, SHA1_SIZE, mac);
++    crypto_sha1_hmac(auth_safes, auth_safes_len, key, SHA1_SIZE, mac);
+ 
+     if (memcmp(mac, orig_mac, SHA1_SIZE))
+     {
+diff --git a/ssl/tls1.c b/ssl/tls1.c
+index 8f0fbfb..330f459 100644
+--- a/ssl/tls1.c
++++ b/ssl/tls1.c
+@@ -85,7 +85,7 @@ static const cipher_info_t cipher_info[NUM_PROTOCOLS] =
+         16,                             /* block padding size */
+         SHA1_SIZE,                      /* digest size */
+         2*(SHA1_SIZE+16+16),            /* key block size */
+-        hmac_sha1_v,                    /* hmac algorithm */
++        crypto_sha1_hmac_v,             /* hmac algorithm */
+         (crypt_func)AES_cbc_encrypt,    /* encrypt */
+         (crypt_func)AES_cbc_decrypt     /* decrypt */
+     },
+@@ -96,7 +96,7 @@ static const cipher_info_t cipher_info[NUM_PROTOCOLS] =
+         16,                             /* block padding size */
+         SHA1_SIZE,                      /* digest size */
+         2*(SHA1_SIZE+32+16),            /* key block size */
+-        hmac_sha1_v,                    /* hmac algorithm */
++        crypto_sha1_hmac_v,             /* hmac algorithm */
+         (crypt_func)AES_cbc_encrypt,    /* encrypt */
+         (crypt_func)AES_cbc_decrypt     /* decrypt */
+     },       
+@@ -107,7 +107,7 @@ static const cipher_info_t cipher_info[NUM_PROTOCOLS] =
+         16,                             /* block padding size */
+         SHA256_SIZE,                    /* digest size */
+         2*(SHA256_SIZE+32+16),          /* key block size */
+-        hmac_sha256_v,                  /* hmac algorithm */
++        crypto_sha256_hmac_v,           /* hmac algorithm */
+         (crypt_func)AES_cbc_encrypt,    /* encrypt */
+         (crypt_func)AES_cbc_decrypt     /* decrypt */
+     },       
+@@ -118,7 +118,7 @@ static const cipher_info_t cipher_info[NUM_PROTOCOLS] =
+         16,                             /* block padding size */
+         SHA256_SIZE,                    /* digest size */
+         2*(SHA256_SIZE+32+16),          /* key block size */
+-        hmac_sha256_v,                  /* hmac algorithm */
++        crypto_sha256_hmac_v,           /* hmac algorithm */
+         (crypt_func)AES_cbc_encrypt,    /* encrypt */
+         (crypt_func)AES_cbc_decrypt     /* decrypt */
+     }
+@@ -334,7 +334,8 @@ EXP_FUNC int STDCALL ssl_read(SSL *ssl, uint8_t **in_data)
+  */
+ EXP_FUNC int STDCALL ssl_write(SSL *ssl, const uint8_t *out_data, int out_len)
+ {
+-    int n = out_len, nw, i, tot = 0;
++    int n = out_len, i, tot = 0;
++    size_t nw;
+     /* maximum size of a TLS packet is around 16kB, so fragment */
+ 
+     do 
+@@ -843,15 +844,15 @@ void add_packet(SSL *ssl, const uint8_t *pkt, int len)
+     // TLS1.2+
+     if (ssl->version >= SSL_PROTOCOL_VERSION_TLS1_2 || ssl->version == 0) 
+     {
+-        SHA256_Update(&ssl->dc->sha256_ctx, pkt, len);
++        crypto_sha256_update(&ssl->dc->sha256_ctx, pkt, len);
+     }
+ 
+     if (ssl->version < SSL_PROTOCOL_VERSION_TLS1_2 || 
+                 ssl->next_state == HS_SERVER_HELLO ||
+                 ssl->next_state == 0) 
+     {
+-        MD5_Update(&ssl->dc->md5_ctx, pkt, len);
+-        SHA1_Update(&ssl->dc->sha1_ctx, pkt, len);
++        crypto_md5_update(&ssl->dc->md5_ctx, pkt, len);
++        crypto_sha1_update(&ssl->dc->sha1_ctx, pkt, len);
+     }
+ }
+ 
+@@ -864,9 +865,9 @@ static void p_hash_md5(const uint8_t *sec, int sec_len,
+     uint8_t a1[MD5_SIZE+77];
+ 
+     /* A(1) */
+-    hmac_md5(seed, seed_len, sec, sec_len, a1);
++    crypto_md5_hmac(seed, seed_len, sec, sec_len, a1);
+     memcpy(&a1[MD5_SIZE], seed, seed_len);
+-    hmac_md5(a1, MD5_SIZE+seed_len, sec, sec_len, out);
++    crypto_md5_hmac(a1, MD5_SIZE+seed_len, sec, sec_len, out);
+ 
+     while (olen > MD5_SIZE)
+     {
+@@ -875,11 +876,11 @@ static void p_hash_md5(const uint8_t *sec, int sec_len,
+         olen -= MD5_SIZE;
+ 
+         /* A(N) */
+-        hmac_md5(a1, MD5_SIZE, sec, sec_len, a2);
++        crypto_md5_hmac(a1, MD5_SIZE, sec, sec_len, a2);
+         memcpy(a1, a2, MD5_SIZE);
+ 
+         /* work out the actual hash */
+-        hmac_md5(a1, MD5_SIZE+seed_len, sec, sec_len, out);
++        crypto_md5_hmac(a1, MD5_SIZE+seed_len, sec, sec_len, out);
+     }
+ }
+ 
+@@ -892,9 +893,9 @@ static void p_hash_sha1(const uint8_t *sec, int sec_len,
+     uint8_t a1[SHA1_SIZE+77];
+ 
+     /* A(1) */
+-    hmac_sha1(seed, seed_len, sec, sec_len, a1);
++    crypto_sha1_hmac(seed, seed_len, sec, sec_len, a1);
+     memcpy(&a1[SHA1_SIZE], seed, seed_len);
+-    hmac_sha1(a1, SHA1_SIZE+seed_len, sec, sec_len, out);
++    crypto_sha1_hmac(a1, SHA1_SIZE+seed_len, sec, sec_len, out);
+ 
+     while (olen > SHA1_SIZE)
+     {
+@@ -903,11 +904,11 @@ static void p_hash_sha1(const uint8_t *sec, int sec_len,
+         olen -= SHA1_SIZE;
+ 
+         /* A(N) */
+-        hmac_sha1(a1, SHA1_SIZE, sec, sec_len, a2);
++        crypto_sha1_hmac(a1, SHA1_SIZE, sec, sec_len, a2);
+         memcpy(a1, a2, SHA1_SIZE);
+ 
+         /* work out the actual hash */
+-        hmac_sha1(a1, SHA1_SIZE+seed_len, sec, sec_len, out);
++        crypto_sha1_hmac(a1, SHA1_SIZE+seed_len, sec, sec_len, out);
+     }
+ }
+ 
+@@ -920,9 +921,9 @@ static void p_hash_sha256(const uint8_t *sec, int sec_len,
+     uint8_t a1[SHA256_SIZE+77];
+ 
+     /* A(1) */
+-    hmac_sha256(seed, seed_len, sec, sec_len, a1);
++    crypto_sha256_hmac(seed, seed_len, sec, sec_len, a1);
+     memcpy(&a1[SHA256_SIZE], seed, seed_len);
+-    hmac_sha256(a1, SHA256_SIZE+seed_len, sec, sec_len, out);
++    crypto_sha256_hmac(a1, SHA256_SIZE+seed_len, sec, sec_len, out);
+ 
+     while (olen > SHA256_SIZE)
+     {
+@@ -931,11 +932,11 @@ static void p_hash_sha256(const uint8_t *sec, int sec_len,
+         olen -= SHA256_SIZE;
+ 
+         // A(N)
+-        hmac_sha256(a1, SHA256_SIZE, sec, sec_len, a2);
++        crypto_sha256_hmac(a1, SHA256_SIZE, sec, sec_len, a2);
+         memcpy(a1, a2, SHA256_SIZE);
+ 
+         // work out the actual hash 
+-        hmac_sha256(a1, SHA256_SIZE+seed_len, sec, sec_len, out);
++        crypto_sha256_hmac(a1, SHA256_SIZE+seed_len, sec, sec_len, out);
+     }
+ }
+ 
+@@ -1023,20 +1024,20 @@ int finished_digest(SSL *ssl, const char *label, uint8_t *digest)
+ 
+     if (ssl->version >= SSL_PROTOCOL_VERSION_TLS1_2) // TLS1.2+
+     {
+-        SHA256_CTX sha256_ctx = ssl->dc->sha256_ctx; // interim copy
+-        SHA256_Final(q, &sha256_ctx);
++        crypto_sha256_context_t sha256_ctx = ssl->dc->sha256_ctx; // interim copy
++        crypto_sha256_final(q, &sha256_ctx);
+         q += SHA256_SIZE;
+         dgst_len = (int)(q-mac_buf);
+     }
+     else // TLS1.0/1.1
+     {
+-        MD5_CTX md5_ctx = ssl->dc->md5_ctx; // interim copy
+-        SHA1_CTX sha1_ctx = ssl->dc->sha1_ctx;
++        crypto_md5_context_t md5_ctx = ssl->dc->md5_ctx; // interim copy
++        crypto_sha1_context_t sha1_ctx = ssl->dc->sha1_ctx;
+ 
+-        MD5_Final(q, &md5_ctx);
++        crypto_md5_final(q, &md5_ctx);
+         q += MD5_SIZE;
+         
+-        SHA1_Final(q, &sha1_ctx);
++        crypto_sha1_final(q, &sha1_ctx);
+         q += SHA1_SIZE;
+         dgst_len = (int)(q-mac_buf);
+     }
+@@ -1368,6 +1369,10 @@ int basic_read(SSL *ssl, uint8_t **in_data)
+     int read_len, is_client = IS_SET_SSL_FLAG(SSL_IS_CLIENT);
+     uint8_t *buf = ssl->bm_data;
+ 
++    if (ssl->can_free_certificates) {
++    	certificate_free(ssl);
++    }
++
+     if (IS_SET_SSL_FLAG(SSL_SENT_CLOSE_NOTIFY))
+         return SSL_CLOSE_NOTIFY;
+ 
+@@ -1411,7 +1416,7 @@ int basic_read(SSL *ssl, uint8_t **in_data)
+         if ((buf[0] & 0x80) && buf[2] == 1)
+         {
+ #ifdef CONFIG_SSL_FULL_MODE
+-            printf("Error: no SSLv23 handshaking allowed\n");
++            puts("Error: no SSLv23 handshaking allowed\n");
+ #endif
+             ret = SSL_ERROR_NOT_SUPPORTED;
+             goto error; /* not an error - just get out of here */
+@@ -1432,7 +1437,7 @@ int basic_read(SSL *ssl, uint8_t **in_data)
+         /* is the allocated buffer large enough to handle all the data? if not, increase its size*/
+         if (ssl->need_bytes > ssl->max_plain_length+RT_EXTRA-BM_RECORD_OFFSET)
+         {
+-            printf("ssl->need_bytes=%d > %d\r\n", ssl->need_bytes, ssl->max_plain_length+RT_EXTRA-BM_RECORD_OFFSET);
++            printf("ssl->need_bytes=%u > %u\r\n", ssl->need_bytes, (unsigned)ssl->max_plain_length+RT_EXTRA-BM_RECORD_OFFSET);
+             ret = increase_bm_data_size(ssl, ssl->need_bytes + BM_RECORD_OFFSET - RT_EXTRA);
+             if (ret != SSL_OK)
+             {
+@@ -1562,7 +1567,7 @@ int increase_bm_data_size(SSL *ssl, size_t size)
+     required = (required < RT_MAX_PLAIN_LENGTH) ? required : RT_MAX_PLAIN_LENGTH;
+     uint8_t* new_bm_all_data = (uint8_t*) realloc(ssl->bm_all_data, required + RT_EXTRA);
+     if (!new_bm_all_data) {
+-        printf("failed to grow plain buffer\r\n");
++        puts("failed to grow plain buffer\r\n");
+         ssl->hs_status = SSL_ERROR_DEAD;
+         return SSL_ERROR_CONN_LOST;
+     }
+@@ -1765,6 +1770,7 @@ int send_alert(SSL *ssl, int error_code)
+  */
+ int process_finished(SSL *ssl, uint8_t *buf, int hs_len)
+ {
++    (void)hs_len;
+     int ret = SSL_OK;
+     int is_client = IS_SET_SSL_FLAG(SSL_IS_CLIENT);
+     int resume = IS_SET_SSL_FLAG(SSL_SESSION_RESUME);
+@@ -1845,9 +1851,9 @@ void disposable_new(SSL *ssl)
+     if (ssl->dc == NULL)
+     {
+         ssl->dc = (DISPOSABLE_CTX *)calloc(1, sizeof(DISPOSABLE_CTX));
+-        SHA256_Init(&ssl->dc->sha256_ctx);
+-        MD5_Init(&ssl->dc->md5_ctx);
+-        SHA1_Init(&ssl->dc->sha1_ctx);
++        crypto_sha256_init(&ssl->dc->sha256_ctx);
++        crypto_md5_init(&ssl->dc->md5_ctx);
++        crypto_sha1_init(&ssl->dc->sha1_ctx);
+     }
+ }
+ 
+@@ -2248,15 +2254,15 @@ EXP_FUNC int STDCALL ssl_match_fingerprint(const SSL *ssl, const uint8_t* fp)
+         return 1;
+     int res = memcmp(ssl->x509_ctx->fingerprint, fp, SHA1_SIZE);
+     if (res != 0) {
+-        printf("cert FP: ");
++        puts("cert FP: ");
+         for (int i = 0; i < SHA1_SIZE; ++i) {
+             printf("%02X ", ssl->x509_ctx->fingerprint[i]);
+         }
+-        printf("\r\ntest FP: ");
++        puts("\r\ntest FP: ");
+         for (int i = 0; i < SHA1_SIZE; ++i) {
+             printf("%02X ", fp[i]);
+         }
+-        printf("\r\n");
++        puts("\r\n");
+     }
+     return res;
+ }
+@@ -2267,15 +2273,15 @@ EXP_FUNC int STDCALL ssl_match_spki_sha256(const SSL *ssl, const uint8_t* hash)
+         return 1;
+     int res = memcmp(ssl->x509_ctx->spki_sha256, hash, SHA256_SIZE);
+     if (res != 0) {
+-        printf("cert SPKI SHA-256 hash: ");
++        puts("cert SPKI SHA-256 hash: ");
+         for (int i = 0; i < SHA256_SIZE; ++i) {
+             printf("%02X ", ssl->x509_ctx->spki_sha256[i]);
+         }
+-        printf("\r\ntest hash: ");
++        puts("\r\ntest hash: ");
+         for (int i = 0; i < SHA256_SIZE; ++i) {
+             printf("%02X ", hash[i]);
+         }
+-        printf("\r\n");
++        puts("\r\n");
+     }
+     return res;
+ }
+@@ -2294,55 +2300,55 @@ void DISPLAY_STATE(SSL *ssl, int is_send, uint8_t state, int not_ok)
+     if (!IS_SET_SSL_FLAG(SSL_DISPLAY_STATES))
+         return;
+ 
+-    if (not_ok) printf("Error - invalid State:\t");
+-    else printf("State:\t");
+-    if (is_send) printf("sending ");
+-    else printf("receiving ");
++    if (not_ok) puts("Error - invalid State:\t");
++    else puts("State:\t");
++    if (is_send) puts("sending ");
++    else puts("receiving ");
+ 
+     switch (state)
+     {
+         case HS_HELLO_REQUEST:
+-            printf("Hello Request (0)\n");
++            puts("Hello Request (0)\n");
+             break;
+ 
+         case HS_CLIENT_HELLO:
+-            printf("Client Hello (1)\n");
++            puts("Client Hello (1)\n");
+             break;
+ 
+         case HS_SERVER_HELLO:
+-            printf("Server Hello (2)\n");
++            puts("Server Hello (2)\n");
+             break;
+ 
+         case HS_CERTIFICATE:
+-            printf("Certificate (11)\n");
++            puts("Certificate (11)\n");
+             break;
+ 
+         case HS_SERVER_KEY_XCHG:
+-            printf("Certificate Request (12)\n");
++            puts("Certificate Request (12)\n");
+             break;
+ 
+         case HS_CERT_REQ:
+-            printf("Certificate Request (13)\n");
++            puts("Certificate Request (13)\n");
+             break;
+ 
+         case HS_SERVER_HELLO_DONE:
+-            printf("Server Hello Done (14)\n");
++            puts("Server Hello Done (14)\n");
+             break;
+ 
+         case HS_CERT_VERIFY:
+-            printf("Certificate Verify (15)\n");
++            puts("Certificate Verify (15)\n");
+             break;
+ 
+         case HS_CLIENT_KEY_XCHG:
+-            printf("Client Key Exchange (16)\n");
++            puts("Client Key Exchange (16)\n");
+             break;
+ 
+         case HS_FINISHED:
+-            printf("Finished (16)\n");
++            puts("Finished (16)\n");
+             break;
+ 
+         default:
+-            printf("Error (Unknown)\n");
++            puts("Error (Unknown)\n");
+             break;
+     }
+ }
+@@ -2372,7 +2378,7 @@ void DISPLAY_BYTES(SSL *ssl, const char *format,
+ 
+     va_start(ap, size);
+     char fmt_ram[64];
+-    int len = strlen_P(format) + 1;
++    size_t len = strlen_P(format) + 1;
+     if (len > sizeof(fmt_ram)) len = sizeof(fmt_ram);
+     memcpy_P(fmt_ram, format, len);
+     fmt_ram[sizeof(fmt_ram)-1] = 0;
+@@ -2389,7 +2395,7 @@ EXP_FUNC void STDCALL ssl_display_error(int error_code)
+     if (error_code == SSL_OK)
+         return;
+ 
+-    printf("Error: ");
++    puts("Error: ");
+ 
+     /* X509 error? */
+     if (error_code < SSL_X509_OFFSET)
+@@ -2409,67 +2415,67 @@ EXP_FUNC void STDCALL ssl_display_error(int error_code)
+     switch (error_code)
+     {
+         case SSL_ERROR_DEAD:
+-            printf("connection dead");
++        	puts("connection dead");
+             break;
+ 
+         case SSL_ERROR_RECORD_OVERFLOW:
+-            printf("record overflow");
++        	puts("record overflow");
+             break;
+ 
+         case SSL_ERROR_INVALID_HANDSHAKE:
+-            printf("invalid handshake");
++        	puts("invalid handshake");
+             break;
+ 
+         case SSL_ERROR_INVALID_PROT_MSG:
+-            printf("invalid protocol message");
++        	puts("invalid protocol message");
+             break;
+ 
+         case SSL_ERROR_INVALID_HMAC:
+-            printf("invalid mac");
++        	puts("invalid mac");
+             break;
+ 
+         case SSL_ERROR_INVALID_VERSION:
+-            printf("invalid version");
++        	puts("invalid version");
+             break;
+ 
+         case SSL_ERROR_INVALID_SESSION:
+-            printf("invalid session");
++        	puts("invalid session");
+             break;
+ 
+         case SSL_ERROR_NO_CIPHER:
+-            printf("no cipher");
++        	puts("no cipher");
+             break;
+ 
+         case SSL_ERROR_INVALID_CERT_HASH_ALG:
+-            printf("invalid cert hash algorithm");
++        	puts("invalid cert hash algorithm");
+             break;
+ 
+         case SSL_ERROR_CONN_LOST:
+-            printf("connection lost");
++        	puts("connection lost");
+             break;
+ 
+         case SSL_ERROR_BAD_CERTIFICATE:
+-            printf("bad certificate");
++        	puts("bad certificate");
+             break;
+ 
+         case SSL_ERROR_INVALID_KEY:
+-            printf("invalid key");
++        	puts("invalid key");
+             break;
+ 
+         case SSL_ERROR_FINISHED_INVALID:
+-            printf("finished invalid");
++        	puts("finished invalid");
+             break;
+ 
+         case SSL_ERROR_NO_CERT_DEFINED:
+-            printf("no certificate defined");
++        	puts("no certificate defined");
+             break;
+ 
+         case SSL_ERROR_NO_CLIENT_RENOG:
+-            printf("client renegotiation not supported");
++        	puts("client renegotiation not supported");
+             break;
+             
+         case SSL_ERROR_NOT_SUPPORTED:
+-            printf("Option not supported");
++        	puts("Option not supported");
+             break;
+ 
+         default:
+@@ -2477,7 +2483,7 @@ EXP_FUNC void STDCALL ssl_display_error(int error_code)
+             break;
+     }
+ 
+-    printf("\n");
++    puts("\n");
+ }
+ 
+ /**
+@@ -2488,68 +2494,68 @@ void DISPLAY_ALERT(SSL *ssl, int alert)
+     if (!IS_SET_SSL_FLAG(SSL_DISPLAY_STATES))
+         return;
+ 
+-    printf("Alert: ");
++    puts("Alert: ");
+ 
+     switch (alert)
+     {
+         case SSL_ALERT_CLOSE_NOTIFY:
+-            printf("close notify");
++        	puts("close notify");
+             break;
+ 
+         case SSL_ALERT_UNEXPECTED_MESSAGE:
+-            printf("unexpected message");
++        	puts("unexpected message");
+             break;
+ 
+         case SSL_ALERT_BAD_RECORD_MAC:
+-            printf("bad record mac");
++        	puts("bad record mac");
+             break;
+ 
+         case SSL_ALERT_RECORD_OVERFLOW:
+-            printf("record overlow");
++        	puts("record overflow");
+             break;
+ 
+         case SSL_ALERT_HANDSHAKE_FAILURE:
+-            printf("handshake failure");
++        	puts("handshake failure");
+             break;
+ 
+         case SSL_ALERT_BAD_CERTIFICATE:
+-            printf("bad certificate");
++        	puts("bad certificate");
+             break;
+ 
+         case SSL_ALERT_UNSUPPORTED_CERTIFICATE:
+-            printf("unsupported certificate");
++        	puts("unsupported certificate");
+             break;
+ 
+         case SSL_ALERT_CERTIFICATE_EXPIRED:
+-            printf("certificate expired");
++        	puts("certificate expired");
+             break;
+ 
+         case SSL_ALERT_CERTIFICATE_UNKNOWN:
+-            printf("certificate unknown");
++        	puts("certificate unknown");
+             break;
+ 
+         case SSL_ALERT_ILLEGAL_PARAMETER:
+-            printf("illegal parameter");
++        	puts("illegal parameter");
+             break;
+ 
+         case SSL_ALERT_UNKNOWN_CA:
+-            printf("unknown ca");
++        	puts("unknown ca");
+             break;
+ 
+         case SSL_ALERT_DECODE_ERROR:
+-            printf("decode error");
++        	puts("decode error");
+             break;
+ 
+         case SSL_ALERT_DECRYPT_ERROR:
+-            printf("decrypt error");
++        	puts("decrypt error");
+             break;
+ 
+         case SSL_ALERT_INVALID_VERSION:
+-            printf("invalid version");
++        	puts("invalid version");
+             break;
+ 
+         case SSL_ALERT_NO_RENEGOTIATION:
+-            printf("no renegotiation");
++            puts("no renegotiation");
+             break;
+ 
+         default:
+@@ -2557,7 +2563,7 @@ void DISPLAY_ALERT(SSL *ssl, int alert)
+             break;
+     }
+ 
+-    printf("\n");
++    puts("\n");
+ }
+ 
+ #endif /* CONFIG_SSL_FULL_MODE */
+@@ -2584,7 +2590,7 @@ EXP_FUNC void STDCALL ssl_display_error(int error_code) {}
+ EXP_FUNC SSL * STDCALL ssl_client_new(SSL_CTX *ssl_ctx, int client_fd, const
+         uint8_t *session_id, uint8_t sess_id_size)
+ {
+-    printf(unsupported_str);
++    printf("%s", unsupported_str);
+     return NULL;
+ }
+ #endif
+@@ -2592,20 +2598,20 @@ EXP_FUNC SSL * STDCALL ssl_client_new(SSL_CTX *ssl_ctx, int client_fd, const
+ #if !defined(CONFIG_SSL_CERT_VERIFICATION)
+ EXP_FUNC int STDCALL ssl_verify_cert(const SSL *ssl)
+ {
+-    printf(unsupported_str);
++    printf("%s", unsupported_str);
+     return -1;
+ }
+ 
+ 
+ EXP_FUNC const char * STDCALL ssl_get_cert_dn(const SSL *ssl, int component)
+ {
+-    printf(unsupported_str);
++    printf("%s", unsupported_str);
+     return NULL;
+ }
+ 
+ EXP_FUNC const char * STDCALL ssl_get_cert_subject_alt_dnsname(const SSL *ssl, int index)
+ {
+-    printf(unsupported_str);
++    printf("%s", unsupported_str);
+     return NULL;
+ }
+ 
+diff --git a/ssl/tls1.h b/ssl/tls1.h
+index dac63b9..bf79c9e 100644
+--- a/ssl/tls1.h
++++ b/ssl/tls1.h
+@@ -44,7 +44,6 @@ extern "C" {
+ #include "config.h"
+ #include "os_int.h"
+ #include "os_port.h"
+-#include "crypto.h"
+ #include "crypto_misc.h"
+ 
+ #define SSL_PROTOCOL_MIN_VERSION    0x31   /* TLS v1.0 */
+@@ -161,9 +160,9 @@ typedef struct
+ 
+ typedef struct
+ {
+-    MD5_CTX md5_ctx;
+-    SHA1_CTX sha1_ctx;
+-    SHA256_CTX sha256_ctx;
++    crypto_md5_context_t md5_ctx;
++    crypto_sha1_context_t sha1_ctx;
++    crypto_sha256_context_t sha256_ctx;
+     uint8_t client_random[SSL_RANDOM_SIZE]; /* client's random sequence */
+     uint8_t server_random[SSL_RANDOM_SIZE]; /* server's random sequence */
+     uint8_t final_finish_mac[128];
+diff --git a/ssl/tls1_svr.c b/ssl/tls1_svr.c
+index 6df91b5..dab6def 100644
+--- a/ssl/tls1_svr.c
++++ b/ssl/tls1_svr.c
+@@ -63,7 +63,7 @@ EXP_FUNC SSL * STDCALL ssl_server_new(SSL_CTX *ssl_ctx, int client_fd)
+ 
+ #ifdef CONFIG_SSL_FULL_MODE
+     if (ssl_ctx->chain_length == 0)
+-        printf("Warning - no server certificate defined\n"); TTY_FLUSH();
++        puts("Warning - no server certificate defined\n"); TTY_FLUSH();
+ #endif
+ 
+     return ssl;
+diff --git a/ssl/x509.c b/ssl/x509.c
+index a51b948..ae626b4 100644
+--- a/ssl/x509.c
++++ b/ssl/x509.c
+@@ -109,76 +109,52 @@ int x509_new(const uint8_t *cert, int *len, X509_CTX **ctx)
+     end_spki = offset;
+ 
+     x509_ctx->fingerprint = malloc(SHA1_SIZE);
+-    SHA1_CTX sha_fp_ctx;
+-    SHA1_Init(&sha_fp_ctx);
+-    SHA1_Update(&sha_fp_ctx, &cert[0], cert_size);
+-    SHA1_Final(x509_ctx->fingerprint, &sha_fp_ctx);
++    crypto_sha1_context_t sha_fp_ctx;
++    crypto_sha1_init(&sha_fp_ctx);
++    crypto_sha1_update(&sha_fp_ctx, &cert[0], cert_size);
++    crypto_sha1_final(x509_ctx->fingerprint, &sha_fp_ctx);
+ 
+     x509_ctx->spki_sha256 = malloc(SHA256_SIZE);
+-    SHA256_CTX spki_hash_ctx;
+-    SHA256_Init(&spki_hash_ctx);
+-    SHA256_Update(&spki_hash_ctx, &cert[begin_spki], end_spki-begin_spki);
+-    SHA256_Final(x509_ctx->spki_sha256, &spki_hash_ctx);
++    crypto_sha256_context_t spki_hash_ctx;
++    crypto_sha256_init(&spki_hash_ctx);
++    crypto_sha256_update(&spki_hash_ctx, &cert[begin_spki], end_spki-begin_spki);
++    crypto_sha256_final(x509_ctx->spki_sha256, &spki_hash_ctx);
+ 
+ #ifdef CONFIG_SSL_CERT_VERIFICATION /* only care if doing verification */
+     bi_ctx = x509_ctx->rsa_ctx->bi_ctx;
+ 
+     /* use the appropriate signature algorithm */
+-    switch (x509_ctx->sig_type)
++
++#define CALC_DIGEST(hash, size)                                                                                        \
++	{                                                                                                                  \
++		crypto_##hash##_context_t ctx;                                                                                 \
++		uint8_t dgst[size];                                                                                            \
++		crypto_##hash##_init(&ctx);                                                                                    \
++		crypto_##hash##_update(&ctx, &cert[begin_tbs], end_tbs - begin_tbs);                                           \
++		crypto_##hash##_final(dgst, &ctx);                                                                             \
++		x509_ctx->digest = bi_import(bi_ctx, dgst, size);                                                              \
++	}
++
++	switch (x509_ctx->sig_type)
+     {
+         case SIG_TYPE_MD5:
+-        {
+-            MD5_CTX md5_ctx;
+-            uint8_t md5_dgst[MD5_SIZE];
+-            MD5_Init(&md5_ctx);
+-            MD5_Update(&md5_ctx, &cert[begin_tbs], end_tbs-begin_tbs);
+-            MD5_Final(md5_dgst, &md5_ctx);
+-            x509_ctx->digest = bi_import(bi_ctx, md5_dgst, MD5_SIZE);
+-        }
++        	CALC_DIGEST(md5, MD5_SIZE);
+             break;
+ 
+         case SIG_TYPE_SHA1:
+-        {
+-            SHA1_CTX sha_ctx;
+-            uint8_t sha_dgst[SHA1_SIZE];
+-            SHA1_Init(&sha_ctx);
+-            SHA1_Update(&sha_ctx, &cert[begin_tbs], end_tbs-begin_tbs);
+-            SHA1_Final(sha_dgst, &sha_ctx);
+-            x509_ctx->digest = bi_import(bi_ctx, sha_dgst, SHA1_SIZE);
+-        }
++        	CALC_DIGEST(sha1, SHA1_SIZE);
+             break;
+ 
+         case SIG_TYPE_SHA256:
+-        {
+-            SHA256_CTX sha256_ctx;
+-            uint8_t sha256_dgst[SHA256_SIZE];
+-            SHA256_Init(&sha256_ctx);
+-            SHA256_Update(&sha256_ctx, &cert[begin_tbs], end_tbs-begin_tbs);
+-            SHA256_Final(sha256_dgst, &sha256_ctx);
+-            x509_ctx->digest = bi_import(bi_ctx, sha256_dgst, SHA256_SIZE);
+-        }
++        	CALC_DIGEST(sha256, SHA256_SIZE);
+             break;
+ 
+         case SIG_TYPE_SHA384:
+-        {
+-            SHA384_CTX sha384_ctx;
+-            uint8_t sha384_dgst[SHA384_SIZE];
+-            SHA384_Init(&sha384_ctx);
+-            SHA384_Update(&sha384_ctx, &cert[begin_tbs], end_tbs-begin_tbs);
+-            SHA384_Final(sha384_dgst, &sha384_ctx);
+-            x509_ctx->digest = bi_import(bi_ctx, sha384_dgst, SHA384_SIZE);
+-        }
++        	CALC_DIGEST(sha384, SHA384_SIZE);
+             break;
+ 
+         case SIG_TYPE_SHA512:
+-        {
+-            SHA512_CTX sha512_ctx;
+-            uint8_t sha512_dgst[SHA512_SIZE];
+-            SHA512_Init(&sha512_ctx);
+-            SHA512_Update(&sha512_ctx, &cert[begin_tbs], end_tbs-begin_tbs);
+-            SHA512_Final(sha512_dgst, &sha512_ctx);
+-            x509_ctx->digest = bi_import(bi_ctx, sha512_dgst, SHA512_SIZE);
+-        }
++        	CALC_DIGEST(sha512, SHA512_SIZE);
+             break;
+     }
+ 
+@@ -305,7 +281,7 @@ static int x509_v3_basic_constraints(const uint8_t *cert, int offset,
+     /* If the Sequence Length is greater than 3, it has more content than 
+     the basic_constraint_cA bool, so grab the pathLenConstraint */
+     if ((lenSeq>3) && (asn1_get_int(cert, &offset, 
+-            &x509_ctx->basic_constraint_pathLenConstraint) < 0))
++            (int32_t*)&x509_ctx->basic_constraint_pathLenConstraint) < 0))
+     {
+         ret = X509_NOT_OK;
+     }
+@@ -673,36 +649,36 @@ void x509_print(const X509_CTX *cert, CA_CERT_CTX *ca_cert_ctx)
+     char critical[16];
+     strcpy_P(critical, "critical, ");
+ 
+-    printf("=== CERTIFICATE ISSUED TO ===\n");
+-    printf("Common Name (CN):\t\t");
++    puts("=== CERTIFICATE ISSUED TO ===\n");
++    puts("Common Name (CN):\t\t");
+     printf("%s\n", cert->cert_dn[X509_COMMON_NAME] ?
+                     cert->cert_dn[X509_COMMON_NAME] : not_part_of_cert);
+ 
+-    printf("Organization (O):\t\t");
++    puts("Organization (O):\t\t");
+     printf("%s\n", cert->cert_dn[X509_ORGANIZATION] ?
+         cert->cert_dn[X509_ORGANIZATION] : not_part_of_cert);
+ 
+     if (cert->cert_dn[X509_ORGANIZATIONAL_UNIT]) 
+     {
+-        printf("Organizational Unit (OU):\t");
++        puts("Organizational Unit (OU):\t");
+         printf("%s\n", cert->cert_dn[X509_ORGANIZATIONAL_UNIT]);
+     }
+ 
+     if (cert->cert_dn[X509_LOCATION]) 
+     {
+-        printf("Location (L):\t\t\t");
++        puts("Location (L):\t\t\t");
+         printf("%s\n", cert->cert_dn[X509_LOCATION]);
+     }
+ 
+     if (cert->cert_dn[X509_COUNTRY]) 
+     {
+-        printf("Country (C):\t\t\t");
++        puts("Country (C):\t\t\t");
+         printf("%s\n", cert->cert_dn[X509_COUNTRY]);
+     }
+ 
+     if (cert->cert_dn[X509_STATE]) 
+     {
+-        printf("State (ST):\t\t\t");
++        puts("State (ST):\t\t\t");
+         printf("%s\n", cert->cert_dn[X509_STATE]);
+     }
+ 
+@@ -723,83 +699,83 @@ void x509_print(const X509_CTX *cert, CA_CERT_CTX *ca_cert_ctx)
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_DIGITAL_SIGNATURE))
+         {
+-            printf("Digital Signature");
++            puts("Digital Signature");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_NON_REPUDIATION))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Non Repudiation");
++            puts("Non Repudiation");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_KEY_ENCIPHERMENT))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Key Encipherment");
++            puts("Key Encipherment");
+             has_started = true;
+         }
+         
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_DATA_ENCIPHERMENT))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Data Encipherment");
++            puts("Data Encipherment");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_KEY_AGREEMENT))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Key Agreement");
++            puts("Key Agreement");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_KEY_CERT_SIGN))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Key Cert Sign");
++            puts("Key Cert Sign");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_CRL_SIGN))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("CRL Sign");
++            puts("CRL Sign");
+             has_started = true;
+         }
+        
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_ENCIPHER_ONLY))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Encipher Only");
++            puts("Encipher Only");
+             has_started = true;
+         }
+ 
+         if (IS_SET_KEY_USAGE_FLAG(cert, KEY_USAGE_DECIPHER_ONLY))
+         {
+             if (has_started)
+-                printf(", ");
++                puts(", ");
+ 
+-            printf("Decipher Only");
++            puts("Decipher Only");
+             has_started = true;
+         }
+ 
+-        printf("\n");
++        puts("\n");
+     }
+ 
+     if (cert->subject_alt_name_present)
+@@ -813,63 +789,63 @@ void x509_print(const X509_CTX *cert, CA_CERT_CTX *ca_cert_ctx)
+             while (cert->subject_alt_dnsnames[i])
+                 printf("%s ", cert->subject_alt_dnsnames[i++]);
+         }
+-        printf("\n");
++        puts("\n");
+ 
+     }
+ 
+-    printf("=== CERTIFICATE ISSUED BY ===\n");
+-    printf("Common Name (CN):\t\t");
++    puts("=== CERTIFICATE ISSUED BY ===\n");
++    puts("Common Name (CN):\t\t");
+     printf("%s\n", cert->ca_cert_dn[X509_COMMON_NAME] ?
+                     cert->ca_cert_dn[X509_COMMON_NAME] : not_part_of_cert);
+ 
+-    printf("Organization (O):\t\t");
++    puts("Organization (O):\t\t");
+     printf("%s\n", cert->ca_cert_dn[X509_ORGANIZATION] ?
+         cert->ca_cert_dn[X509_ORGANIZATION] : not_part_of_cert);
+ 
+     if (cert->ca_cert_dn[X509_ORGANIZATIONAL_UNIT]) 
+     {
+-        printf("Organizational Unit (OU):\t");
++        puts("Organizational Unit (OU):\t");
+         printf("%s\n", cert->ca_cert_dn[X509_ORGANIZATIONAL_UNIT]);
+     }
+ 
+     if (cert->ca_cert_dn[X509_LOCATION]) 
+     {
+-        printf("Location (L):\t\t\t");
++        puts("Location (L):\t\t\t");
+         printf("%s\n", cert->ca_cert_dn[X509_LOCATION]);
+     }
+ 
+     if (cert->ca_cert_dn[X509_COUNTRY]) 
+     {
+-        printf("Country (C):\t\t\t");
++        puts("Country (C):\t\t\t");
+         printf("%s\n", cert->ca_cert_dn[X509_COUNTRY]);
+     }
+ 
+     if (cert->ca_cert_dn[X509_STATE]) 
+     {
+-        printf("State (ST):\t\t\t");
++        puts("State (ST):\t\t\t");
+         printf("%s\n", cert->ca_cert_dn[X509_STATE]);
+     }
+ 
+     printf("Not Before:\t\t\t%s", ctime(&cert->not_before));
+     printf("Not After:\t\t\t%s", ctime(&cert->not_after));
+     printf("RSA bitsize:\t\t\t%d\n", cert->rsa_ctx->num_octets*8);
+-    printf("Sig Type:\t\t\t");
++    puts("Sig Type:\t\t\t");
+     switch (cert->sig_type)
+     {
+         case SIG_TYPE_MD5:
+-            printf("MD5\n");
++            puts("MD5\n");
+             break;
+         case SIG_TYPE_SHA1:
+-            printf("SHA1\n");
++            puts("SHA1\n");
+             break;
+         case SIG_TYPE_SHA256:
+-            printf("SHA256\n");
++            puts("SHA256\n");
+             break;
+         case SIG_TYPE_SHA384:
+-            printf("SHA384\n");
++            puts("SHA384\n");
+             break;
+         case SIG_TYPE_SHA512:
+-            printf("SHA512\n");
++            puts("SHA512\n");
+             break;
+         default:
+             printf("Unrecognized: %d\n", cert->sig_type);

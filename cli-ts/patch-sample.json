@@ -1,0 +1,10 @@
+{
+  "features": {
+    "ENABLE_WIFI": false,
+    "ENABLE_PLUNGER": true
+  },
+  "settings": {
+    "WIFI_SSID": "MyNewNetwork",
+    "SAKO_VFD_SLAVE_ID": 15
+  }
+} 

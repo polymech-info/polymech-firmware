@@ -1,0 +1,137 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Cabezal"
+
+msgid "AXIS"
+msgstr "Eje"
+
+msgid "SCREEN"
+msgstr "Pantalla"
+
+msgid "MACHINE"
+msgstr "Maquina"
+
+msgid "CONTROL"
+msgstr "Control"
+
+msgid "LIGHT"
+msgstr "Luz"
+
+msgid "LIGHT_1"
+msgstr "Luz 1"
+
+msgid "LIGHT_2"
+msgstr "Luz 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Agregar aire"
+
+msgid "OEL_AGGREGATE"
+msgstr "Agregar aceite"
+
+msgid "DRIVES"
+msgstr "Reguladores"
+
+msgid "MONDAY_SHORT"
+msgstr "Lu"
+
+msgid "TUESDAY_SHORT"
+msgstr "Ma"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Mi"
+
+msgid "THURSDAY_SHORT"
+msgstr "Ju"
+
+msgid "FRIDAY_SHORT"
+msgstr "Vi"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Sa"
+
+msgid "SUNDAY_SHORT"
+msgstr "Do"
+
+msgid "SETUP"
+msgstr "Ajuste"
+
+msgid "ADVANCED"
+msgstr "Avanzado"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Prog. calentamiento"
+
+msgid "STANDBY"
+msgstr "Espera"
+
+msgid "SWITCH_OFF"
+msgstr "Apagar"
+
+msgid "TIME"
+msgstr "Tiempo"
+
+msgid "AXIS_FILTER"
+msgstr "Filtro ejes"
+
+msgid "SPINDLE_FILTER"
+msgstr "Filtro cabezal"
+
+msgid "SWITCH_ON"
+msgstr "Encender"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Con EnergyOpt puedes optimizar la\n"
+"energia de tu\n"
+"maquina. Los dispositivos sin\n"
+"uso pueden pasar a modo standby\n"
+"o apagarse completamente .\n"
+"- Pulsar Softkey EDIT\n"
+"- Activar dispositivos relevantes\n"
+"y eleguir tiempo.\n"
+"- Salir modo edicion con\n"
+"Softkey EDIT.\n"
+"- Habilitar o deshabilitar opciones\n"
+"con Softkey ON/OFF"
+
+msgid "MILLISECOND"
+msgstr "Milisegundo"
+
+msgid "MILLISECONDS"
+msgstr "Milisegundos"
+
+msgid "SECOND"
+msgstr "Segundo"
+
+msgid "SECONDS"
+msgstr "Segundos"
+
+msgid "MINUTE"
+msgstr "Minuto"
+
+msgid "MINUTES"
+msgstr "Minutos"
+
+msgid "HOUR"
+msgstr "Hora"
+
+msgid "HOURS"
+msgstr "Horas"
+
+msgid "DAY"
+msgstr "Dia"
+
+msgid "DAYS"
+msgstr "Dias"
+
+msgid "WEEK"
+msgstr "Semana"
+
+msgid "WEEKS"
+msgstr "Semanas"
+

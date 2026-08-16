@@ -1,0 +1,653 @@
+*-----------------------------------------------------------------------------
+*  Werkzeug-Magazin beladen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*   Suchen von Werkzeugen (Softkeys Beladen/Entladen)
+*    - WZ-Tabelle aktiv
+*       - leeren Platz für WZ suchen (Beladen)
+*       - WZ in Platz Tabelle suchen (Entladen)
+*    - Platz-Tabelle aktiv
+*       - leere Plätze suchen (Beladen]
+*       - auf Platz angewählte Zeile positionieren (Entladen)
+*    - T/P-Tabellen sperren wenn WZW auto aktiv
+*    - Automatisches Aus und Eintragen (in Vorbereitung)
+*    - Suchen nach WZ-Name Teilstring (in Vorbereitung)
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_auf_Event_warten                      K -1
+#define /s    KL_Event_oder_verknuepft                 K +0
+#define /s    KL_Event_Maske                           K %1111111
+#define /s    KL_Event_P_Tab_sperren                   K +0
+#define /s    KL_Event_P_Tab_freigeben                 K +1
+#define /s    KL_Event_Tab_aktive_Zeile                K +2
+#define /s    KL_Event_WZ_Nr_in_P_Tab_lesen            K +3
+#define /s    KL_Event_WZ_Nr_in_T_Tab_lesen            K +4
+#define /s    KL_Event_leer_in_P_Tab_suchen            K +5
+#define /s    KL_Event_WZ_in_P_Tab_suchen              K +6
+#define /s    KL_Event_WZ_Name_in_P_Tab_suchen         K +7
+
+#define /s    KL_Zeile_0                               K +0
+#define /s    KL_Zeile_1                               K +1
+#define /s    KL_Tab_Editor_aktive_Zeile               K +1000
+#define /s    KL_Element_Typ_WZ_Nummer                 K +0
+#define /s    KL_leerer_Platz_T0                       K +0
+#define /s    KL_leerer_Platz                          K -1
+#define /s    KL_Platz_Tabelle                         K +2
+#define /s    KL_P_Tabelle_sperren                     K +1  ;;Platztabelle sperren
+#define /s    KL_P_Tabelle_freigeben                   K +0  ;;Platztabelle freigeben
+#define /s    KL_WZ_Tabelle                            K +0
+#define /s    KL_Element_P_Tab_WZ_Nummer               K +0
+#define /s    KL_Element_T_Tab_WZ_Nummer               K +24
+#define /s    KL_WZ_nicht_in_P_Tab                     K +6
+#define /s    KL_0_Tabelle_ok                          K +0
+#define /s    KL_6_Tabelle_bereits_ok                  K +6
+#define /s    KL_Tasten_inaktiv                        K -1
+
+#define /s    KL_Tab_Spindel_Platz                     K +0
+
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Taste_WZM_Beladen_betaetigt           M
+#define /s    ML_WZM_Tuer_zu                    M
+#define /s    ML_Spawn_gestartet                       M
+#define /s    ML_debug_Spawn                           M
+#define /s    ML_Tab_aktive_Zeile_geaendert            M
+#define /s    ML_SK_WZ_Beladen                         M
+#define /s    ML_SK_WZ_Entladen                        M
+#define /s    ML_Event_Tab_aktive_Zeile                M
+#define /s    ML_WZM_Beladen_aktiv                     M
+#define /s    ML_WZM_Pos_Beladen_Start          M
+
+#define /s    BL_Status_SUBM                           B
+
+#define /s    WL_Tab_Editor_aktive_Zeile               W
+#define /s    WL_Softkey_WZM_n_Anwahl                  W
+#define /s    WL_WZ_Nummer                             W
+#define /s    WL_Fehler_Code                           W
+#define /s    WL_Zeile_Leerplatz_P_Tab                 W
+#define /s    WL_Zeile_Suchbegin                       W
+#define /s    WL_Zeilen_Nummer_P_Tab                   W
+#define /s    WL_WZM_Beladen_Soll_Platz                W
+
+#define /s    DL_WZM_Beladen_Ident                     D
+
+EXTERN WZM_rechts_drehen
+EXTERN WZM_links_drehen
+GLOBAL WZM_Beladen
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL WZM_Beladen
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  R      MG_SK_FG_WZM_Beladen_aktiv
+  EMT
+
+  LN     ML_Spawn_gestartet
+  A      MG_Steuer_Spannung_verzoegert_ein
+  CMT    Submit_Start
+
+  LN     NP_M4073_Strobe_TOOL_CALL
+  AN     NP_M4520_TOOL_CALL_2_Strobe
+  AN     NP_M4074_Strobe_TOOL_DEF
+  AN     MG_WZM_Tool_Def_aktiv
+;  O      MG_Edit_Platz_Tabelle
+  =      MG_SK_FG_WZM_Beladen_aktiv
+
+  L      MG_SK_WZM_Beladen_aktiv
+  O      MG_Taste_WZM_Beladen_aktiv
+  AN     ML_Taste_WZM_Beladen_betaetigt
+  XO     MG_WZM_Beladen_aktiv
+  =      MG_WZM_Beladen_aktiv
+
+  L      MG_SK_WZM_Beladen_aktiv
+  O      MG_Taste_WZM_Beladen_aktiv
+  =      ML_Taste_WZM_Beladen_betaetigt
+
+  L      MG_WZM_Beladen_aktiv
+  A      MG_Stern_ein
+  AN     MG_Edit_Platz_Tabelle
+  AN     MG_P_Tab_gesperrt
+  S      MG_Event_P_Tab_sperren
+
+  LN     MG_WZM_Beladen_aktiv
+  A      MG_P_Tab_gesperrt
+  S      MG_Event_P_Tab_freigeben
+
+  LN     MG_Edit_Platz_Tabelle
+  AN     MG_P_Tab_gesperrt
+  AN     MG_Event_P_Tab_sperren
+  A      MG_Stern_ein
+;  A      MG_BA_Automatik
+;  AN     MG_WZM_n_Start_aktiv
+  O      MG_SK_WZM_Beladen_zurueck
+  R      MG_WZM_Beladen_aktiv
+
+  L      MG_WZM_Beladen_aktiv
+  IFT
+    L      WG_WZW_Platz_Nummer
+    <>     K-1
+    A[
+      L      WG_Werkzeug_in_Spindel
+      <>     K+0
+    ]
+    A      MG_WZ_Mag_vor_beladen_T0_notwendig
+;    A      MG_BA_Manuell
+    S      PN_Fehler_Spindel_nicht_leer
+    R      MG_WZM_Beladen_aktiv
+  ENDI
+
+  L      MG_Taste_NC_Start
+  O      MG_SK_WZM_Beladen_aktiv
+  O      MG_Taste_WZM_Beladen_aktiv
+  A      MG_WZM_Beladen_aktiv
+  S      PN_Fehler_WZM_Beladen_aktiv
+
+  LN     I_WZM_Tuer_zu_verriegelt
+  AN     MG_WZM_Beladen_aktiv
+  A      MG_Steuer_Spannung_verzoegert_ein
+  =      PN_Fehler_WZM_Tuer_offen
+
+  L      I_WZM_Tuer_zu
+  AN     ML_WZM_Tuer_zu
+  R      O_WZM_Tuer_entriegeln
+
+  L      I_WZM_Tuer_zu
+  =      ML_WZM_Tuer_zu
+
+  L      MG_WZM_Beladen_aktiv
+  XO     ML_WZM_Beladen_aktiv
+  S      MG_WZ_Vorwahl_Status_lesen
+
+  L      MG_WZM_Beladen_aktiv
+  =      ML_WZM_Beladen_aktiv
+
+  L      MG_WZM_Beladen_aktiv
+  =      MG_SK_FG_WZM_plus
+  =      MG_SK_FG_WZM_minus
+  =      O_LED_WZ_Beladen
+  =      MG_SK_FG_WZ_Beladen
+  RN     PN_Fehler_WZM_Beladen_aktiv
+  RN     O_WZ_Beladeplatz_entriegeln
+  EMF
+
+  L      NP_M4074_Strobe_TOOL_DEF
+  S      PN_M4094_Quit_TOOL_DEF
+
+  L      NP_W274_Tasten_Code_betaetigte_Taste
+  <>     KL_Tasten_inaktiv
+  A      MG_Tabellen_Editor_aktiv
+  S      ML_Tab_aktive_Zeile_geaendert
+
+  L      NP_W274_Tasten_Code_betaetigte_Taste
+  ==     KL_Tasten_inaktiv
+  A      ML_Tab_aktive_Zeile_geaendert
+  AN     MG_Event_Tab_aktive_Zeile
+  AN     ML_Event_Tab_aktive_Zeile
+  S      MG_Event_Tab_aktive_Zeile
+  R      ML_Tab_aktive_Zeile_geaendert
+
+  L      MG_Event_Tab_aktive_Zeile
+  =      ML_Event_Tab_aktive_Zeile
+
+  L      MG_Platz_Tabelle_angewaehlt
+  O      MG_WZ_Tabelle_angewaehlt
+  A[
+    L      WG_Tab_Editor_aktive_Zeile
+    >      KL_Tab_Spindel_Platz
+  ]
+  RN     MG_SK_FG_WZ_Entladen
+  IFT
+    L      WG_Tab_Editor_aktive_Zeile
+    <>     WL_Tab_Editor_aktive_Zeile
+    IFT
+      L      MG_Platz_Tabelle_angewaehlt
+      AN     MG_Event_WZ_Nr_in_P_Tab_lesen
+      S      MG_Event_WZ_Nr_in_P_Tab_lesen
+
+      L      MG_WZ_Tabelle_angewaehlt
+      AN     MG_Event_WZ_Nr_in_T_Tab_lesen
+      S      MG_Event_WZ_Nr_in_T_Tab_lesen
+    ENDI
+
+; Platz WZ auswechseln (Softkey T_OUT)
+
+    L      WL_WZ_Nummer
+    >      KL_leerer_Platz_T0
+    A      MG_Platz_Tabelle_angewaehlt
+    O[
+      L      WL_Zeilen_Nummer_P_Tab
+      >      KL_leerer_Platz_T0
+      A      MG_WZ_Tabelle_aktiv
+    ]
+    AN     MG_Event_WZ_Nr_in_P_Tab_lesen
+    AN     MG_Event_WZ_Nr_in_T_Tab_lesen
+    AN     MG_Event_WZ_in_P_Tab_suchen
+    AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Beladen_Entladen_Start
+    =      MG_SK_FG_WZ_Entladen
+
+    L      MG_SK_WZ_Entladen
+    AN     ML_SK_WZ_Entladen
+    IFT
+      S      ML_WZM_Pos_Beladen_Start
+
+      L      MG_Platz_Tabelle_angewaehlt
+      IFT
+        L      WG_Tab_Editor_aktive_Zeile
+        =      WL_WZM_Beladen_Soll_Platz
+      ENDI
+
+      L      MG_WZ_Tabelle_angewaehlt
+      IFT
+        L      WL_Zeilen_Nummer_P_Tab
+        =      WL_WZM_Beladen_Soll_Platz
+      ENDI
+    ENDI
+
+    L      MG_SK_WZ_Entladen
+    =      ML_SK_WZ_Entladen
+  ENDI
+
+; Platz leer suchen (Softkey T_IN)
+
+  L      MG_SK_WZ_Beladen
+  AN     ML_SK_WZ_Beladen
+  AN     MG_Event_leer_in_P_Tab_suchen
+  S      MG_Event_leer_in_P_Tab_suchen
+
+  L      MG_SK_WZ_Beladen
+  =      ML_SK_WZ_Beladen
+
+  L      MG_Event_leer_in_P_Tab_suchen
+  O      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Beladen_Entladen_Start
+  R      MG_SK_FG_WZ_Beladen
+
+  L      WG_Tab_Editor_aktive_Zeile
+  =      WL_Tab_Editor_aktive_Zeile
+
+;WZ-Magazin Beladetür
+
+  L      MG_Taste_WZM_Tuer_entriegeln
+  AN     MG_WZM_n_Start_aktiv
+  S      O_WZM_Tuer_entriegeln
+
+  LN     I_WZM_Tuer_zu_verriegelt
+  O      MG_WZM_n_Start_aktiv
+  IFT
+    L      MG_Takt_1_s
+    =      O_LED_WZ_Beladen
+  ENDI
+
+  L      I_Fussschalter_WZ_Beladeplatz_entriegeln
+  =      O_WZ_Beladeplatz_entriegeln
+  EMT
+
+  LN     I_WZM_Tuer_zu_verriegelt
+  ON     MG_Antriebs_Freigabe_2_Achsgruppe_MC
+  EMT
+
+;WZ-Magazin Positionieren
+
+  L      MG_Taste_WZM_n_Anwahl
+  AN     ML_Taste_betaetigt
+  IFT
+    INC    WG_Softkey_WZM_n_Anwahl
+
+    L      WG_Softkey_WZM_n_Anwahl
+    >=     KG_WZM_max_Anzahl
+    IFT
+      L      KG_WZM_1_Index
+      =      WG_Softkey_WZM_n_Anwahl
+    ENDI
+  ENDI
+
+  L      WG_Softkey_WZM_n_Anwahl
+  <>     WL_Softkey_WZM_n_Anwahl
+  IFT
+    S      MG_WZ_Vorwahl_Status_lesen
+
+    L      WG_Softkey_WZM_n_Anwahl
+    =      WL_Softkey_WZM_n_Anwahl
+    =      BG_WZM_Index_Tool_Call
+    INCW
+    =      NP_W268_Werkzeug_Magazin_Nummer
+  ENDI
+
+  L      MG_Taste_WZM_n_Anwahl
+  =      ML_Taste_betaetigt
+
+  L      MG_Taste_WZM_plus
+  O      MG_SK_WZM_plus
+  A      MG_WZW_Grund_Stellung
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Linkslauf
+  S      PN_Fehler_WZM_Beladen_aktiv
+  CMT    WZM_rechts_drehen
+
+  L      MG_Taste_WZM_minus
+  O      MG_SK_WZM_minus
+  A      MG_WZW_Grund_Stellung
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Rechtslauf
+  S      PN_Fehler_WZM_Beladen_aktiv
+  CMT    WZM_links_drehen
+
+;WZM auf Platz P positionieren
+
+  L      ML_WZM_Pos_Beladen_Start
+  IFT
+    R      ML_WZM_Pos_Beladen_Start
+
+    L      WL_WZM_Beladen_Soll_Platz
+    <=     STG_WZM[KG_WZM_1_Index].WG_MP7261_WZM_max_Platz
+    A[
+      L      WL_WZM_Beladen_Soll_Platz
+      >      K+0
+    ]
+    IFT
+      L      WL_WZM_Beladen_Soll_Platz
+      +      STG_WZM[KG_WZM_1_Index].WG_MP7261_WZM_max_Platz
+      -      STG_WZM[KG_WZM_1_Index].DG_WZM_Offset_Beladeplatz
+      -      K+1
+      MOD    STG_WZM[KG_WZM_1_Index].WG_MP7261_WZM_max_Platz
+      +      K+1
+      =      STG_WZM[KG_WZM_1_Index].WG_WZM_Beladen_Soll_Platz
+
+      LN     NP_M4203_Fehler_Modul_9xxx
+      S      STG_WZM[KG_WZM_1_Index].MG_WZM_Beladen_Entladen_Start
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Tab_aktive_Zeile
+
+  PS     KL_Tab_Editor_aktive_Zeile
+  CM     9035                          ;NC-Statusinformationen lesen
+  PL     WG_Tab_Editor_aktive_Zeile
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Event_Tab_aktive_Zeile
+  R      MG_Event_Tab_aktive_Zeile
+
+  L      WG_Tab_Editor_aktive_Zeile
+  >      WG_MP7260_WZ_Anzahl_in_Tabelle
+  A      MG_WZ_Tabelle_angewaehlt
+  IFT
+    L      WG_MP7260_WZ_Anzahl_in_Tabelle
+    =      WG_Tab_Editor_aktive_Zeile
+  ENDI
+
+  L      WG_Tab_Editor_aktive_Zeile
+  >      STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+  A      MG_Platz_Tabelle_angewaehlt
+  IFT
+    L      STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+    =      WG_Tab_Editor_aktive_Zeile
+  ENDI
+
+  L      MG_Platz_Tabelle_angewaehlt
+  IFT
+    L      WG_Tab_Editor_aktive_Zeile
+    =      WL_Zeile_Suchbegin
+  ENDI
+
+EM
+
+;----------------------------
+LBL WZ_Nr_in_P_Tab_lesen
+
+  PS     KL_Platz_Tabelle
+  PS     WG_Tab_Editor_aktive_Zeile
+  PS     KL_Element_P_Tab_WZ_Nummer
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PL     WL_WZ_Nummer
+  PL     WL_Fehler_Code
+
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Event_WZ_Nr_in_P_Tab_lesen
+  R      MG_Event_WZ_Nr_in_P_Tab_lesen
+
+EM
+
+;----------------------------
+LBL WZ_Nr_in_T_Tab_lesen
+
+  PS     KL_WZ_Tabelle
+  PS     WG_Tab_Editor_aktive_Zeile
+  PS     KL_Element_T_Tab_WZ_Nummer
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PL     WL_WZ_Nummer
+  PL     WL_Fehler_Code
+
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Event_WZ_Nr_in_T_Tab_lesen
+  S      MG_Event_WZ_in_P_Tab_suchen
+  R      MG_Event_WZ_Nr_in_T_Tab_lesen
+
+EM
+
+;----------------------------
+LBL Leerplatz_in_P_Tab_suchen
+
+  INC    WL_Zeile_Suchbegin
+
+  L      WL_Zeile_Suchbegin
+  >      STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+  IFT
+    L      KL_Zeile_1
+    =      WL_Zeile_Suchbegin
+  ENDI
+
+  PS     KL_Platz_Tabelle
+  PS     KL_leerer_Platz
+  PS     KL_Element_P_Tab_WZ_Nummer
+  PS     WL_Zeile_Suchbegin
+  CM     9092                          ;Eintrag in aktiven Tabellen (.T/.D/.TCH) suchen
+  PL     WL_Zeile_Leerplatz_P_Tab      ;STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+  PL     WL_Fehler_Code
+
+*$WS falls Leerplatz vom Typ locked, weitersuchen
+
+; kein Leerplatz in P-Tabelle
+
+  L      WL_Zeile_Suchbegin
+  ==     KL_Zeile_1
+  A[
+    L      WL_Fehler_Code
+    ==     KL_WZ_nicht_in_P_Tab
+  ]
+  R      NP_M4203_Fehler_Modul_9xxx
+  S      PN_Fehler_kein_freier_Platz_in_P_Tab
+  R      MG_SK_WZ_Beladen
+  R      MG_Event_leer_in_P_Tab_suchen
+  EMT
+
+  L      WL_Fehler_Code
+  ==     KL_WZ_nicht_in_P_Tab
+  IFT
+    L      KL_Zeile_0
+    =      WL_Zeile_Suchbegin
+
+    JP     Leerplatz_in_P_Tab_suchen
+  ENDI
+
+  M_Modul_Fehler_anzeigen
+
+  LN     ML_WZM_Pos_Beladen_Start
+  S      ML_WZM_Pos_Beladen_Start
+
+  L      WL_Zeile_Leerplatz_P_Tab
+  =      WL_WZM_Beladen_Soll_Platz
+;  =      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+
+  LN     MG_Platz_Tabelle_angewaehlt
+  IFT
+    L      WL_Zeile_Leerplatz_P_Tab
+    =      WL_Zeile_Suchbegin
+  ENDI
+
+  L      MG_Event_leer_in_P_Tab_suchen
+  R      MG_Event_leer_in_P_Tab_suchen
+
+EM
+
+;----------------------------
+LBL WZ_in_P_Tab_suchen
+
+  PS     KL_Platz_Tabelle
+  PS     WL_WZ_Nummer
+  PS     KL_Element_Typ_WZ_Nummer
+  PS     KL_Zeile_0
+  CM     9092                          ;Eintrag in aktiven Tabellen (.T/.D/.TCH) suchen
+  PL     WL_Zeilen_Nummer_P_Tab        ;STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Soll_Platz
+  PL     WL_Fehler_Code
+
+  L      WL_Fehler_Code
+  ==     KL_WZ_nicht_in_P_Tab
+  R      NP_M4203_Fehler_Modul_9xxx
+
+  L      MG_Event_WZ_in_P_Tab_suchen
+  R      MG_Event_WZ_in_P_Tab_suchen
+
+EM
+
+;----------------------------
+LBL WZ_Name_P_Tab_suchen
+
+*$WS in Vorbereitung, evtl über Dummy-Magazinregeln
+
+EM
+
+;----------------------------
+LBL P_Tab_sperren
+
+  PS     KL_P_Tabelle_sperren
+  CM     9300                          ;Verriegeln und Freigeben der Platztabelle
+  PLW
+  PSW
+  ==     KL_0_Tabelle_ok
+  S      MG_P_Tab_gesperrt
+
+  PLW
+  ==     KL_6_Tabelle_bereits_ok
+  S      MG_P_Tab_gesperrt
+
+  L      MG_Event_P_Tab_sperren
+  R      MG_Event_P_Tab_sperren
+
+  L      MG_P_Tab_gesperrt
+  EMT
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL P_Tab_freigeben
+
+  PS     KL_P_Tabelle_freigeben
+  CM     9300                          ;Verriegeln und Freigeben der Platztabelle
+  PLW
+  PSW
+  ==     KL_0_Tabelle_ok
+  R      MG_P_Tab_gesperrt
+
+  PLW
+  ==     KL_6_Tabelle_bereits_ok
+  R      MG_P_Tab_gesperrt
+
+  L      MG_Event_P_Tab_freigeben
+  R      MG_Event_P_Tab_freigeben
+
+  LN     MG_P_Tab_gesperrt
+  EMT
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Submit_Start
+
+  RPLY   BL_Status_SUBM
+  ==     K+0
+  IFT
+    SUBM   Spawn_Start
+    =      BL_Status_SUBM
+    ==     K+0
+    S      PN_Fehler_Submit_Spawn_Queue_voll
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spawn_Start
+
+  SPAWN  Spawn_WZM_Beladen
+  =      DL_WZM_Beladen_Ident
+  ==     K-1
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+  SN     ML_Spawn_gestartet
+
+EM
+
+; Endlos Schleife für Spawn (warten auf Event)
+;----------------------------
+LBL Spawn_WZM_Beladen
+
+  REPEAT
+    PS     KL_auf_Event_warten
+    PS     KL_Event_oder_verknuepft
+    PS     KL_Event_Maske
+    CM     9260                        ;Empfangen von und Warten auf Events
+    PLW
+    PSW
+    BT     KL_Event_P_Tab_sperren
+    CMT    P_Tab_sperren
+
+    PLW
+    PSW
+    BT     KL_Event_P_Tab_freigeben
+    CMT    P_Tab_freigeben
+
+    PLW
+    PSW
+    BT     KL_Event_Tab_aktive_Zeile
+    CMT    Tab_aktive_Zeile
+
+    PLW
+    PSW
+    BT     KL_Event_WZ_Nr_in_P_Tab_lesen
+    CMT    WZ_Nr_in_P_Tab_lesen
+
+    PLW
+    PSW
+    BT     KL_Event_WZ_Nr_in_T_Tab_lesen
+    CMT    WZ_Nr_in_T_Tab_lesen
+
+    PLW
+    PSW
+    BT     KL_Event_leer_in_P_Tab_suchen
+    CMT    Leerplatz_in_P_Tab_suchen
+
+    PLW
+    PSW
+    BT     KL_Event_WZ_in_P_Tab_suchen
+    CMT    WZ_in_P_Tab_suchen
+
+    PLW
+    BT     KL_Event_WZ_Name_in_P_Tab_suchen
+    CMT    WZ_Name_P_Tab_suchen
+
+    M_Modul_Fehler_anzeigen
+
+    L      ML_debug_Spawn
+  UNTILT
+
+EM
+

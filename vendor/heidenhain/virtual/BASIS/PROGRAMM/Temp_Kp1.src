@@ -1,0 +1,186 @@
+*-----------------------------------------------------------------------------
+*  Temperatur-Kompensation
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    - Achse Z
+*    - Temperaturen in 1/10 Grad
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Temperatur_diff_max                   K +500
+#define /s    KL_Temperatur_Bereiche                   K +100
+#define /s    KL_Anzahl_Messungen                      K +10
+#define /s    KL_MP_Format                             K +10000
+#define /s    KL_Pt100_Eingang_1                       K +67
+#define /s    KL_Pt100_Eingang_2                       K +68
+#define /s    KL_max_T_Komp_Bereich                    K +30000
+#define /s    KL_Rundung_HSCI_Aufloesung               K +5
+#define /s    KL_Anpassung_HSCI_Aufloesung             K +10
+
+#define /s    ML_Konstanten_berechnen                  M
+#define /s    ML_Test_war_aktiv                        M
+
+#define /s    BL_Mittelwert                            B
+
+#define /s    WL_Summe_Temperatur_Differenz            W
+#define /s    WL_Konstante_vorheriger_Bereich          W
+
+#define /s /c Konstanten                               W[5]
+#define /s /c WL_Konstante_10_Grad_Breich              W &Konstanten + 0
+#define /s /c WL_Konstante_20_Grad_Breich              W &Konstanten + 2
+#define /s /c WL_Konstante_30_Grad_Breich              W &Konstanten + 4
+#define /s /c WL_Konstante_40_Grad_Breich              W &Konstanten + 6
+#define /s /c WL_Konstante_50_Grad_Breich              W &Konstanten + 8
+
+#include Mac_Lib.inc
+
+GLOBAL Temperatur_Komp
+
+;----------------------------
+LBL Temperatur_Komp
+;----------------------------
+
+  LN     MG_Maschinenparameter_gelesen
+  S      ML_Konstanten_berechnen
+
+  LN     MG_Impuls_1_s
+  ON     MG_Maschinenparameter_gelesen
+  O      PN_Fehler_Temperatur_Kompensation
+  EMT
+
+  L      ML_Konstanten_berechnen
+  JPT    Konstanten_berechnen
+
+  L      MG_T_Kompensation_Test
+  IFT
+    L      MG_T_Kompensation_Test
+    AN     ML_Test_war_aktiv
+    IFT
+      L      K+200
+      =      WG_Temperatur_Spindel_Pt100
+      =      WG_Temperatur_Maschine_Pt100
+    ENDI
+
+  ELSE
+#if CFG_HSCI = "aktiv"
+    L      IW_Temperatur_Maschine_Pt100
+    +      KL_Rundung_HSCI_Aufloesung
+    /      KL_Anpassung_HSCI_Aufloesung
+    =      WG_Temperatur_Maschine_Pt100
+
+    L      IW_Temperatur_Spindel_Pt100
+    +      KL_Rundung_HSCI_Aufloesung
+    /      KL_Anpassung_HSCI_Aufloesung
+    =      WG_Temperatur_Spindel_Pt100
+#else
+    PS     KL_Pt100_Eingang_1
+    CM     9003                        ;Analog-Eingänge lesen
+    PL     WG_Temperatur_Maschine_Pt100
+    M_Modul_Fehler_anzeigen
+
+    PS     KL_Pt100_Eingang_2
+    CM     9003                        ;Analog-Eingänge lesen
+    PL     WG_Temperatur_Spindel_Pt100
+    M_Modul_Fehler_anzeigen
+#endif
+  ENDI
+
+  L      MG_T_Kompensation_Test
+  =      ML_Test_war_aktiv
+
+  L      STG_Spindel[BG_Index_Sn].DG_max_Temperatur
+  <=     WG_Temperatur_Spindel_Pt100
+  S      PN_Fehler_Spindel_T_max
+
+  L      WG_Temperatur_Spindel_Pt100
+  -      WG_Temperatur_Maschine_Pt100
+  =      WG_Temperatur_Differenz
+
+  L      WG_Temperatur_Differenz
+  +      WL_Summe_Temperatur_Differenz
+  =      WL_Summe_Temperatur_Differenz
+
+  INC    BL_Mittelwert
+
+  L      BL_Mittelwert
+  <      KL_Anzahl_Messungen
+  EMT
+
+  L      K+0
+  =      BL_Mittelwert
+
+  L      WL_Summe_Temperatur_Differenz
+  /      KL_Anzahl_Messungen
+  >      KL_Temperatur_diff_max
+  S      PN_Fehler_Temperatur_Kompensation
+  S      MG_Win_Temperatur_Sensoren
+  JPT    Temp_Komp_Reset
+
+  L      WL_Summe_Temperatur_Differenz
+  <      K+0
+  JPT    Temp_Komp_Reset
+
+  L      WL_Summe_Temperatur_Differenz
+  /      KL_Anzahl_Messungen
+  /      KL_Temperatur_Bereiche
+  =X
+
+  LX
+  >      K+4
+  S      PN_Fehler_Temperatur_Kompensation
+  S      MG_Win_Temperatur_Sensoren
+  JPT    Temp_Komp_Reset
+
+  L      WL_Summe_Temperatur_Differenz
+  MOD[
+    L      KL_Temperatur_Bereiche
+    X      KL_Anzahl_Messungen
+  ]
+  X      DG_Faktor_10_Grad_Bereich[X]
+  /      KL_Anzahl_Messungen
+  /      KL_MP_Format
+  +      WL_Konstante_10_Grad_Breich[X]
+  X      K-1
+  =      WG_Temp_Kompensation_Z
+
+  L      K+0
+  =      WL_Summe_Temperatur_Differenz
+
+EM
+
+LBL Temp_Komp_Reset
+
+  L      K+0
+  =      WL_Summe_Temperatur_Differenz
+  =      WG_Temp_Kompensation_Z
+
+EM
+
+;----------------------------
+LBL Konstanten_berechnen
+
+  L      K+0
+  =X
+  =      WL_Konstante_10_Grad_Breich
+
+  REPEAT
+    L      WL_Konstante_10_Grad_Breich[X]
+    =      WL_Konstante_vorheriger_Bereich
+
+    PS     DG_Faktor_10_Grad_Bereich[X]
+    INCX
+    PLW
+    X      KL_Temperatur_Bereiche
+    /      KL_MP_Format
+    +      WL_Konstante_vorheriger_Bereich
+    =      WL_Konstante_10_Grad_Breich[X]
+    >      KL_max_T_Komp_Bereich
+    S      PN_Fehler_Temperatur_Kompensation
+
+    LX
+    >=     K+4
+  UNTILT
+
+  LN     PN_Fehler_Temperatur_Kompensation
+  R      ML_Konstanten_berechnen
+
+EM

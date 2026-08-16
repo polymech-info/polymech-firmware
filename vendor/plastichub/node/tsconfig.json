@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es6",
+		"allowJs": false,
+		"noImplicitAny": false,
+		"noImplicitThis": false,
+		"alwaysStrict": true,
+		"sourceMap": true,
+		"outDir": "./build",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"pretty": true,
+		"baseUrl": "./src",
+		"rootDir": "./src",
+		"watch": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"compileOnSave": false,
+	"filesGlob": [
+		"./src/**/*.ts"
+	],
+	"atom": {
+		"rewriteTsconfig": true
+	},
+	"files": [
+		"./src/index.ts"
+	]
+}

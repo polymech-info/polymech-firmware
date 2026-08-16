@@ -1,0 +1,26 @@
+﻿************************************
+!!! ATENCION !!!
+solo para personal cualificado
+X, Y, Z  pueden ser movidos por
+teclas   X+, X-, Y+, Y-, Z+, Z-
+o volante electronico
+Servicio para el cambiador htas
+(sistema pickup)
+! Solo en modo MANUAL !
+Confirmar con tecla "NC start" de maquina
+************************************
+#401  Orienta cabezal para cambio hta.
+#402  Z a pos. seguridad cambio hta.
+#403  Z a posicion cambio coger hta.
+#404  Desbloquear herramienta
+#405  Bloquear herramienta
+#406  Entrar en el pickup
+#407  Salir del pickup
+#408  Soltar herramiena
+#409  Atar herramienta
+#410  X a preposicion cambio de hta.
+#411  X a posicion de cambio de hta.
+#412  Y a posicion Pn hta. cabezal
+#413  Y a posicion Pn+1
+#414  Y a posicion Pn-1
+#415  Borrar datos de Hta. (T0)

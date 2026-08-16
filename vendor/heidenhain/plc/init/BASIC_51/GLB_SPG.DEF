@@ -1,0 +1,544 @@
+*-----------------------------------------------------------------------------
+*  PLC outputs / PLC inputs for SPG
+*    symbolic operands allways describing logic status one (=1)
+*-----------------------------------------------------------------------------
+
+#type
+
+*-----------------------------------------------------------------------------
+*  Outputs X41/X46 (O0 - O7)
+*-----------------------------------------------------------------------------
+
+   O_servo_drive_release_X                  O0
+   O_servo_drive_release_Y                  O1
+   O_servo_drive_release_Z                  O2
+   O_servo_drive_release_4                  O3
+   O_servo_drive_release_5                  O4
+   O_servo_drive_release_6                  M
+   O_servo_drive_release_7                  M
+   O_servo_drive_release_8                  M
+   O_servo_drive_release_9                  M
+   O_lamp_spindle_M5                        O5
+   O_lamp_spindle_M3                        O6
+   O_lamp_spindle_M4                        M
+   O_lamp_special_mode                      M
+   O_lamp_PC_release                        M
+   O_program_run                            M
+   O_power_relais_voltage                   M
+
+*-----------------------------------------------------------------------------
+*  Outputs X41 (O08 - O30)
+*          X41 (O24 - O30 not switched off by emergency stop)
+*-----------------------------------------------------------------------------
+
+   O_unclamping_X                           M
+   O_unclamping_Y                           M
+   O_unclamping_Z                           M
+   O_unclamping_4                           M
+   O_unclamping_5                           M
+   O_unclamping_6                           M
+   O_unclamping_7                           M
+   O_unclamping_8                           M
+   O_unclamping_9                           M
+
+   O_servo_drive_release_S                  O15
+   O_lamp_NC_start                          O16
+   O_lamp_NC_stop                           O17
+   O_lamp_coolant_M08                       O18
+   O_lamp_coolant_M07                       M
+   O_lamp_chip_conveyor                     M
+   O_lamp_lubrication_on                    M
+   O_lamp_tool_unclamped                    O24
+   O_lamp_TC_enable                         O25
+   O_lamp_table_1                           M
+   O_lamp_table_2                           M
+   O_lamp_TC_pocket_loading                 M
+   O_lamp_axes_motion_from_end_position     M
+   O_lamp_power_on                          M
+   O_lamp_TNC_alarm                         M
+   O_lamp_program_end                       M
+
+   O_axes_motion_from_end_position          M
+   O_wye_delta_connection                   M
+   O_gear_range_1                           M
+   O_gear_range_2                           M
+   O_spindle_blow_clean                     M
+   O_tool_unclamping                        M
+   O_tool_clamping                          M
+   O_TC_magazine_cw                         M
+   O_TC_magazine_ccw                        M
+   O_TC_magazine_rapid_traverse             M
+   O_TC_magazine_slow_motion                M
+   O_TC_magazine_lock_pin_out               M
+   O_TC_magazine_lock_pin_in                M
+   O_TC_magazine_to_spindle_position        M
+   O_TC_magazine_to_basic_position          M
+   O_TC_arm_put_out                         M
+   O_TC_arm_put_in                          M
+   O_TC_arm_turn_cw                         M
+   O_TC_arm_turn_ccw                        M
+   O_TC_arm_to_middle_position              M
+   O_TC_arm_to_spindle_position             M
+   O_TC_arm_to_basic_position               M
+   O_TC_arm_gripper_close                   M
+   O_TC_pocket_put_out                      M
+   O_TC_pocket_put_in                       M
+   O_TC_magazine_guard_unlock               M
+   O_TC_magazine_load_position_unlock       M
+
+   O_pallet_in_machine_unclamping           M
+   O_pallet_in_machine_clamping             M
+
+* Definition from Profibus IOconfig
+*   O_PC_door_open                           M
+*   O_PC_door_close                          M
+*   O_PW_Schleuse_auf                        M
+*   O_PW_Schleuse_zu                         M
+*   O_PC_1_to_load_position                  M
+*   O_PC_1_to_machine_position               M
+*   O_PC_2_to_load_position                  M
+*   O_PC_2_to_machine_position               M
+*   O_PC_1_rapid_traverse                    M
+*   O_PC_2_rapid_traverse                    M
+
+   O_PC_release_stop_position               M
+   O_PC_release_machine_position            M
+   O_workpiece_unclamping                   M
+   O_PC_load_door_open                      M
+   O_PC_bit_0                               M
+   O_PC_bit_1                               M
+   O_PC_bit_2                               M
+   O_PC_bit_3                               M
+   O_PC_bit_4                               M
+   O_PC_bit_5                               M
+   O_PC_bit_6                               M
+   O_PC_bit_7                               M
+   O_PC_table_empty                         M
+   O_PC_start                               M
+
+   O_coolant_M07_on                         M
+   O_coolant_M08_on                         M
+   O_lubrication_on                         M
+   O_chip_conveyor                          M
+   O_chip_conveyor_back                     M
+   O_hydraulic_on                           M
+   O_start_index_table                      M
+   O_working_light                          M
+   O_guard_1_unlock                         M
+   O_guard_2_unlock                         M
+   O_auto_power_off_after_END_PGM           M
+   O_release_special_mode                   M
+
+*-----------------------------------------------------------------------------
+*  Outputs Handwheel HR 410 X23 (O109 - O111)
+*-----------------------------------------------------------------------------
+
+* Variant 45
+
+   O_HR410_lamp_spindle_M3                  O109
+   O_HR410_lamp_NC_start                    O110
+   O_HR410_lamp_NC_stop                     O111
+
+* Variant 44
+
+*  O_HR410_lamp_spindle_M3                  M
+   O_HR410_lamp_spindle_M5                  M
+   O_HR410_lamp_spindle_M4                  M
+
+*-----------------------------------------------------------------------------
+*  Output X7 PL410/1 (O32 - O47)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output X8 PL410/1 (O48 - O62)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output X7 PL410/2 (O64 - O79)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output X8 PL410/2 (O80 - O94)
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Output 1. PL510 / X6-Slot1 (O32 - O39)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 1. PL510 / X6-Slot2 (O40 - O47)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 1. PL510 / X6-Slot3 (O48 - O55)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 1. PL510 / X6-Slot4 (O56 - O62)
+*----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 2. PL510 / X6-Slot1 (O64 - O71)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 2. PL510 / X6-Slot2 (O72 - O79)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 2. PL510 / X6-Slot3 (O80 - O87)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Output 2. PL510 / X6-Slot4 (O88 - O94)
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Inputs X42 (I0 - I31)
+*-----------------------------------------------------------------------------
+
+   I_end_posit_axis_X                       M
+   I_end_posit_axis_Y                       M
+   I_end_posit_axis_Z                       M
+   I_end_posit_axis_4                       M
+   I_end_posit_axis_5                       M
+   I_not_ref_end_posit_X                    I0
+   I_not_ref_end_posit_Y                    I1
+   I_not_ref_end_posit_Z                    I2
+   I_control_operational                    I3
+   I_not_ref_end_posit_4                    I4
+/c I_guard_1_closed                         I5
+/c I_guard_1_closed_locked                  I5
+/c I_guard_2_closed                         M &MG_marker_one
+/c I_guard_2_closed_locked                  M &MG_marker_one
+   I_not_ref_end_posit_5                    M
+   I_not_ref_end_posit_6                    M
+   I_not_ref_end_posit_7                    M
+   I_not_ref_end_posit_8                    M
+   I_not_ref_end_posit_9                    M
+   I_not_ref_end_posit_10                   M
+   I_not_ref_end_posit_11                   M
+   I_not_ref_end_posit_12                   M
+   I_not_ref_end_posit_13                   M
+   I_not_ref_end_posit_14                   M
+   I_not_ref_end_posit_15                   M
+   I_not_ref_end_posit_16                   M
+   I_X_not_overtravelled                    M
+   I_X_Y_not_overtravelled                  M
+   I_X_Y_Z_not_overtravelled                M
+/c I_X_Y_Z_4_not_overtravelled              M &MG_marker_one
+/c I_X_Y_Z_4_5_not_overtravelled            M &MG_marker_one
+   I_emergency_button_unlocked              M
+
+   I_clamped_axis_X                         M
+   I_clamped_axis_Y                         M
+   I_clamped_axis_Z                         M
+   I_clamped_axis_4                         M
+   I_clamped_axis_5                         M
+   I_clamped_axis_6                         M
+   I_clamped_axis_7                         M
+   I_clamped_axis_8                         M
+   I_clamped_axis_9                         M
+
+   I_unclamped_axis_X                       M
+   I_unclamped_axis_Y                       M
+   I_unclamped_axis_Z                       M
+   I_unclamped_axis_4                       M
+   I_unclamped_axis_5                       M
+   I_unclamped_axis_6                       M
+   I_unclamped_axis_7                       M
+   I_unclamped_axis_8                       M
+   I_unclamped_axis_9                       M
+
+/c I_circuit_breaker_ok                     M &MG_marker_one
+/c I_pneumatic_pressure_ok                  M &MG_marker_one
+/c I_hydraulic_pressure_ok                  M &MG_marker_one
+
+   I_gear_range_1                           M
+   I_gear_range_2                           M
+   I_index_table_in_position                M
+
+   I_tool_unclamped                         M
+   I_tool_clamped                           M
+   I_TC_arm_put_out                         M
+   I_TC_arm_put_in                          M
+   I_TC_arm_cw                              M
+   I_TC_arm_ccw                             M
+   I_TC_arm_middle_pos                      M
+   I_TC_arm_basic_pos                       M
+   I_TC_arm_spindle_pos                     M
+   I_TC_arm_brake_pos                       M
+   I_TC_pocket_out                          M
+   I_TC_pocket_in                           M
+   I_TC_arm_gripper_opened                  M
+   I_TC_magazine_reference                  M
+   I_TC_magazine_exact_position             M
+   I_TC_magazine_counter                    M
+/c I_TC_magazine_guard_closed               M &MG_marker_one
+/c I_TC_magazine_guard_locked_closed        M &MG_marker_one
+   I_TC_magazine_in_spindle_position        M
+   I_TC_magazine_in_basic_position          M
+   I_TC_magazine_lock_pin_in                M
+   I_TC_magazine_lock_pin_out               M
+   I_tool_located_in_spindle                M
+   I_tool_pocket_not_empty                  M
+
+* Definition from Profibus IOconfig
+*   I_PC_door_opened                         M
+*   I_PC_door_closed                         M
+*   I_PC_position_1_occupy                   M
+*   I_PC_position_2_occupy                   M
+*   I_PC_1_in_stop_position                  M
+*   I_PC_2_in_stop_position                  M
+*   I_PC_1_in_load_position                  M
+*   I_PC_2_in_load_position                  M
+*   I_PC_1_in_machine_position               M
+*   I_PC_2_in_machine_position               M
+*   I_PC_load_door_closed                    M
+*   I_pallet_in_machine_unclamped            M
+*   I_pallet_in_machine_clamped              M
+*   I_key_workpiece_clamping_on_off          M
+*   I_key_PC_cabin_open                      M
+*   I_workpiece_unclamped                    M
+
+   I_PC_cabin_opened                        M
+   I_PC_cabin_closed                        M
+   I_PC_cabin_closed_locked                 M
+   I_PC_ready                               M
+   I_PC_alarm                               M
+   I_PC_3R_selected_in_auto_mode            M
+
+/c I_lubricant_level_ok                     M &MG_marker_one
+   I_lubricant_pressure_ok                  M
+
+/c I_coolant_level_ok                       M &MG_marker_one
+/c I_PW_210_temperature_ok                  M &MG_marker_one
+/c I_DA300_pressure_ok                      M &MG_marker_one
+
+*-----------------------------------------------------------------------------
+*  Input servo drive release (pulse enable SIMODRIVE)
+*-----------------------------------------------------------------------------
+
+* Machines with digital interface to inverter
+*-------------------------------------------
+* Servo drive release by X42/33 - I32 or X150
+* enter address 32 in MP4310.0
+* MP 4130.0  : 32         ;Suppress the monitoring functions
+
+   I_servo_drive_release                    I32
+
+* Machines with analog interface to inverter
+*-------------------------------------------
+* (e.g. SIMODRIVE 611) servo drive release 9/64 (max. braking
+* performance for deceleration)
+* switch off pulse enable 9/63 delayed by hardware (K6/K7)
+* input for servo drive release TNC must be entered in MP4130.0
+* input I0 not supported by PLC Basic Program for this function
+* MP4130.0: <address>         ;Suppress the monitoring functions
+*
+*  I_servo_drive_release                    M
+
+* only for Siemens SIMODRIVE 611 (X111 72-73.1)
+
+/c I_Siemens_supply_recover_unit_operational M &MG_marker_one
+
+* only for Indramat Power Drive supply unit HVE (X7 3-4)
+
+/c I_Indramat_power_supply_ok               M &MG_marker_one
+
+*-----------------------------------------------------------------------------
+*  Inputs only for analog drives
+*-----------------------------------------------------------------------------
+
+/c I_temp_drives_power_stage_ok             M &MG_marker_one
+/c I_drives_operational                     M &MG_marker_one
+/c I_spindle_operational                    M &MG_marker_one
+/c I_spindle_temperature_ok                 M &MG_marker_one
+   I_spindle_I_max                          M
+   I_S_actual_equal_nominal_rpm             M
+   I_S_actual_lower_nominal_rpm             M
+
+*-----------------------------------------------------------------------------
+*  Inputs X46 (I128 - I152) only if SPG connected
+*-----------------------------------------------------------------------------
+
+   I_test_switch_1                          I6
+   I_test_switch_2                          I7
+
+   I_key_tool_unclamping                    I128
+   I_key_tool_unclamping_foot_switch        M
+   I_key_coolant_M08                        I129
+   I_key_coolant_M07                        M
+   I_key_NC_stop                            I131
+   I_key_NC_stop_2_axes_spindle             M
+   I_key_NC_start                           I132
+   I_key_axis_X_minus                       I133
+   I_key_axis_Y_minus                       I134
+   I_key_axis_Z_minus                       I135
+   I_key_axis_Z_plus                        I136
+   I_key_axis_Y_plus                        I137
+   I_key_axis_X_plus                        I138
+   I_key_axis_4_plus                        I139
+   I_key_axis_4_minus                       I140
+   I_key_rapid_traverse                     I141
+   I_key_spindle_M3                         I142
+   I_key_spindle_M4                         M
+   I_key_spindle_M5                         I143
+   I_key_enabling_mode_SPG                  I144
+
+   I_key_axis_5_plus                        I146
+   I_key_axis_5_minus                       I147
+   I_key_axis_6_plus                        M
+   I_key_axis_6_minus                       M
+   I_key_axis_7_plus                        M
+   I_key_axis_7_minus                       M
+   I_key_axis_8_plus                        M
+   I_key_axis_8_minus                       M
+   I_key_axis_9_plus                        M
+   I_key_axis_9_minus                       M
+   I_key_axis_10_plus                       M
+   I_key_axis_10_minus                      M
+   I_key_axis_11_plus                       M
+   I_key_axis_11_minus                      M
+   I_key_axis_12_plus                       M
+   I_key_axis_12_minus                      M
+   I_key_axis_13_plus                       M
+   I_key_axis_13_minus                      M
+   I_key_axis_14_plus                       M
+   I_key_axis_14_minus                      M
+   I_key_axis_15_plus                       M
+   I_key_axis_15_minus                      M
+   I_key_axis_16_plus                       M
+   I_key_axis_16_minus                      M
+   I_key_axes_motion_from_end_position      M
+
+   I_key_enable_toolchange                  I151
+
+   I_key_axes_plus                          M
+   I_key_axes_minus                         M
+   I_key_lubrication_axes                   M
+   I_key_TC_magazine_cw                     M
+   I_key_TC_magazine_ccw                    M
+   I_key_enable_table_1                     M
+   I_key_enable_table_2                     M
+   I_key_enable_new_workpiece_on_pallet     M
+   I_key_chip_conveyor                      M
+   I_key_chip_conveyor_back                 M
+   I_soft_key_enable_by_hard_key            M
+   I_key_guard_unlock                       M
+   I_key_working_light                      M
+   I_key_power_on                           M
+   I_key_TC_magazine_guard_unlock           M
+   I_key_TC_mag_load_unclamp_foot_switch    M
+   I_keylock_switch_special_mode            M
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel HR 330 X23 (I160 - I162)
+*-----------------------------------------------------------------------------
+
+   I_HR330_key_plus                         I160
+   I_HR330_key_minus                        I161
+   I_HR330_key_rapid_traverse               I162
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel HR 410 X23 (I173 - I175)
+*-----------------------------------------------------------------------------
+
+/c I_HR410_key_permissive_mode              M &MG_marker_one
+
+* Variant 45
+   I_HR410_key_spindle_M3                   I173
+   I_HR410_key_NC_start                     I174
+   I_HR410_key_NC_stop                      I175
+
+* Variant 44
+
+*  I_HR410_key_spindle_M3                   M
+   I_HR410_key_spindle_M5                   M
+   I_HR410_key_spindle_M4                   M
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel Adapter HRA 110 X23 (I160 - I170)
+*-----------------------------------------------------------------------------
+
+/c I_HRA110_S1_Bit0                         I160
+/c I_HRA110_S1_Bit1                         I161
+/c I_HRA110_S1_Bit2                         I162
+/c I_HRA110_S1_Bit3                         I163
+/c I_HRA110_S1_Bit4                         I164
+/c I_HRA110_S1_Bit5                         I165
+/c I_HRA110_S1_Bit6                         I166
+/c I_HRA110_S1_Bit7                         I167
+
+/c I_HRA110_S2_Bit0                         I168
+/c I_HRA110_S2_Bit1                         I169
+/c I_HRA110_S2_Bit2                         I170
+/c I_HRA110_S2_Bit3                         I171
+/c I_HRA110_S2_Bit4                         I172
+/c I_HRA110_S2_Bit5                         I173
+/c I_HRA110_S2_Bit6                         I174
+/c I_HRA110_S2_Bit7                         I175
+
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X3 PL410/1 (I64 - I79)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X4 PL410/1 (I80 - I95)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X5 PL410/1 (I96 - I111)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X6 PL410/1 (I112 - I127)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X3 PL410/2 (I192 - I207)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X4 PL410/2 (I208 - I223)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X5 PL410/2 (I224 - I239)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) X6 PL410/2 (I240 - I255)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X4-Slot1 (I64 - I71)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X5-Slot1 (I72 - I79)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X4-Slot2 (I80 - I87)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X5-Slot2 (I88 - I95)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X4-Slot3 (I96 - I103)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X5-Slot3 (I104 - I111)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X4-Slot4 (I112 - I119)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 1. PL510 / X5-Slot4 (I120 - I127)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X4-Slot1 (I192 - I199)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X5-Slot1 (I200 - I207)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X4-Slot2 (I208 - I215)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X5-Slot2 (I216 - I223)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X4-Slot3 (I224 - I231)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X5-Slot3 (I232 - I239)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X4-Slot4 (I240 - I247)
+*-----------------------------------------------------------------------------
+*-----------------------------------------------------------------------------
+*  Eingänge (Input) 2. PL510 / X5-Slot4 (I248 - I255)
+*-----------------------------------------------------------------------------
+

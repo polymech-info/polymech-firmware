@@ -1,0 +1,181 @@
+*-----------------------------------------------------------------------------
+*  Position monitoring module for double changing arm driven by cam
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*  Definitions in glb_tcmb.def
+*
+*     Pos_TC_arm                               [8]
+*  /c MG_TC_arm_on_basic                       &Pos_TC_arm + 0
+*  /c MG_TC_arm_to_unclamping                  &Pos_TC_arm + 1
+*  /c MG_TC_arm_on_unclamping                  &Pos_TC_arm + 2
+*  /c MG_TC_arm_exchanging                     &Pos_TC_arm + 3
+*  /c MG_TC_arm_on_clamping                    &Pos_TC_arm + 4
+*  /c MG_TC_arm_to_basic                       &Pos_TC_arm + 5
+*
+*
+*  Definitions in glb_io.def
+*
+*     I_TC_arm_basic_pos
+*     I_TC_arm_spindle_pos
+*     I_TC_arm_brake_pos
+*
+*     O_TC_arm_turn_cw
+*     O_TC_arm_turn_ccw
+*
+*  Logic diagram of arm position
+*
+*             Pos.   basic       spindle     middle      spindle     basic
+*    Sensors
+*                    -----                                           -----
+*    basic     -------   ---------------------------------------------   ---
+*                                -----                   -----
+*    spindle   -------------------   ---------------------   ---------------
+*                                            -----
+*    middle    -------------------------------   ---------------------------
+*                   -------     -------                 -------     -------
+*    brake     ------     -------     -------------------     -------     --
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_maximum_arm_positions                 K+5
+
+#define /s /r BL_TC_arm_position                       B
+
+GLOBAL TC_arm_position
+GLOBAL TC_arm_direction
+
+;----------------------------
+LBL TC_arm_position
+;----------------------------
+
+  L      I_TC_arm_basic_pos
+  AN     I_TC_arm_spindle_pos
+  A      I_TC_arm_brake_pos
+  IFT
+    L      K+0
+    =      BL_TC_arm_position
+  ENDI
+
+  CASE   BL_TC_arm_position
+    CM     Arm_basic                   ;00
+    CM     Arm_to_unclamp              ;01
+    CM     Arm_on_unclamp              ;02
+    CM     Arm_exchanging              ;03
+    CM     Arm_on_clamp                ;04
+    CM     Arm_to_basic                ;05
+  ENDC
+
+  PLL
+  IFT
+    L      MG_TC_arm_turn_cw
+    IFT
+      INC    BL_TC_arm_position
+    ELSE
+      DEC    BL_TC_arm_position
+    ENDI
+  ENDI
+
+  L      BL_TC_arm_position
+  >      KL_maximum_arm_positions
+  IFT
+    L      K+0
+    =      BL_TC_arm_position
+  ENDI
+
+  L      BL_TC_arm_position
+  <      K+0
+  IFT
+    L      KL_maximum_arm_positions
+    =      BL_TC_arm_position
+  ENDI
+
+  CM     Decoding
+
+EM
+
+;----------------------------
+LBL Arm_basic                          ;00
+
+  L      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  PSL
+
+EM
+
+;----------------------------
+LBL Arm_to_unclamp                     ;01
+
+  LN     I_TC_arm_basic_pos
+  A      I_TC_arm_spindle_pos
+  A      I_TC_arm_brake_pos
+  PSL
+
+EM
+
+;----------------------------
+LBL Arm_on_unclamp                     ;02
+
+  LN     I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  PSL
+
+EM
+
+;----------------------------
+LBL Arm_exchanging                     ;03
+
+  LN     I_TC_arm_basic_pos
+  A      I_TC_arm_spindle_pos
+  A      I_TC_arm_brake_pos
+  PSL
+
+EM
+
+;----------------------------
+LBL Arm_on_clamp                       ;04
+
+  LN     I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  PSL
+
+EM
+
+;----------------------------
+LBL Arm_to_basic                       ;05
+
+  L      MG_TC_arm_turn_cw
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    LN     I_TC_arm_basic_pos
+    A      I_TC_arm_spindle_pos
+    A      I_TC_arm_brake_pos
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL TC_arm_direction
+;----------------------------
+
+  L      O_TC_arm_turn_cw
+  S      MG_TC_arm_turn_cw
+
+  L      O_TC_arm_turn_ccw
+  R      MG_TC_arm_turn_cw
+
+EM
+
+;----------------------------
+LBL Decoding
+
+  L      BL_TC_arm_position
+  =X
+
+  L      K+0
+  BSX
+  B=     MG_TC_arm_on_basic
+
+EM

@@ -1,0 +1,234 @@
+*-----------------------------------------------------------------------------
+*  Shifting pocket to TC
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*  Subroutine of TC_MAG1.SRC/TC_HELPxx.SRC
+*  Shifting pocket (random pocket storage) to TC position
+*-----------------------------------------------------------------------------
+
+#define /s    BL_step_SFT_P_to_TC_pos                  B
+
+#define /s    ML_SFT_P_to_TC_interruption              M
+
+#include Mac_Lib.inc
+
+EXTERN Mag_axis_in_pos
+
+GLOBAL Shift_P_to_TC_pos
+
+;----------------------------
+LBL Shift_P_to_TC_pos
+;----------------------------
+
+  LN     MG_TC_auto_active
+  ON     MG_TC_magazine_1_active
+  EMT
+
+  L      MG_marker_one
+  R      TS_SFT_P_to_TC_timeout
+  S      TS_SFT_P_to_TC_timer_universal
+
+  CASE   BL_step_SFT_P_to_TC_pos
+    CM     SFT_P_to_TC_start           ;00
+    CM     SFT_P_to_TC_check           ;01
+    CM     SFT_P_clamp                 ;02 -> also shifting pocket brace off
+    CM     SFT_P_clamped               ;03 -> also shifting pocket brace position off
+    CM     SFT_P_to_TC_auto_time       ;04
+    CM     SFT_P_to_TC                 ;05
+    CM     SFT_P_pos_TC                ;06
+    CM     SFT_P_to_TC_auto_time       ;07
+    CM     SFT_P_brace_on              ;08
+    CM     SFT_P_brace_pos_on          ;09
+    CM     SFT_P_to_TC_auto_time       ;10
+    CM     SFT_P_to_TC_end             ;11
+  ENDC
+
+  PLL
+  S      TS_SFT_P_to_TC_timeout
+  IFT
+    INC    BL_step_SFT_P_to_TC_pos
+  ENDI
+
+  LN     MG_SFT_P_to_TC_start
+  EMT
+
+  L      MG_NC_start_pulse
+  R      ML_SFT_P_to_TC_interruption
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_SFT_P_to_TC_timeout
+
+  LN     TR_SFT_P_to_TC_timeout
+  AN     TS_SFT_P_to_TC_timeout
+  =      MG_error_SFT_P_to_TC_timeout
+  S      ML_SFT_P_to_TC_interruption
+
+  LN     I_TC_magazine_guard_locked_closed
+  S      ML_SFT_P_to_TC_interruption
+
+  LN     MG_control_operational
+  CMT    SFT_P_to_TC_reset
+
+EM
+
+;----------------------------
+LBL SFT_P_to_TC_start                  ;00
+
+  L      MG_SFT_P_to_TC_by_TC_MAG1
+  O      MG_SFT_P_to_TC_by_TC_AUTO
+  O      MG_SFT_P_to_TC_by_TC_HELP
+  S      MG_SFT_P_to_TC_start
+  PSL
+
+EM
+
+;----------------------------
+LBL SFT_P_to_TC_check                  ;01
+
+#if Tool_magazine = &PLC_axis
+  CM     Mag_axis_in_pos
+
+  L      MG_magazine_axis_in_position
+#else
+  L      I_TC_magazine_counter
+  A      I_TC_magazine_exact_position
+#endif
+  SN     MG_error_magazine_pocket_pos                                 ; -> Condition to call up LBL TC_magazine_reset in TC_MAG1.SRC and LBL T_select_reset in T_SELECT.SRC
+
+; If any error occurs, this error should also call up LBL TC_magazine_reset in TC_MAG1.SRC and LBL T_select_reset in T_SELECT.SRC.
+
+  LN     MG_error_magazine_pocket_pos
+  PSL
+
+  L      NP_M4175_control_in_operation_flashes
+  ON     NP_M4176_control_in_operation_on_or_flashes
+  A      MG_error_magazine_pocket_pos
+  JPT    SFT_P_to_TC_reset
+
+EM
+
+;----------------------------
+LBL SFT_P_clamp                        ;02
+
+  L      I_TC_pocket_in_magazine_position
+  ON     I_TC_pocket_in_TC_position
+  R      O_TC_pocket_brace_on_at_TC_position
+  S      O_TC_pocket_brace_off_at_TC_position
+
+  L      MG_marker_one
+  S      O_TC_pocket_clamp
+  R      O_TC_pocket_unclamp
+  PSL
+
+EM
+
+;----------------------------
+LBL SFT_P_clamped                      ;03
+
+  L      I_TC_pocket_clamped
+  AN     I_TC_pocket_unclamped
+  A[
+    LN     I_TC_pocket_in_magazine_position
+    A      I_TC_pocket_in_TC_position
+    O[
+      LN     I_TC_pocket_brace_on_at_TC_position
+      A      I_TC_pocket_brace_off_at_TC_position
+    ]
+  ]
+  AN     ML_SFT_P_to_TC_interruption
+  PSL
+
+  LN     I_TC_pocket_clamped
+  O      I_TC_pocket_unclamped
+  A      ML_SFT_P_to_TC_interruption
+  =      MG_win_pocket_clamp
+
+  L      I_TC_pocket_brace_on_at_TC_position
+  ON     I_TC_pocket_brace_off_at_TC_position
+  A[
+    L      I_TC_pocket_in_magazine_position
+    ON     I_TC_pocket_in_TC_position
+  ]
+  A      ML_SFT_P_to_TC_interruption
+  AN     MG_win_pocket_clamp
+  =      MG_win_pocket_brace_off
+
+EM
+
+;----------------------------
+LBL SFT_P_to_TC                        ;05
+
+  L      MG_marker_one
+  R      O_TC_pocket_to_magazine_position
+  S      O_TC_pocket_to_TC_position
+  PSL
+
+EM
+
+;----------------------------
+LBL SFT_P_pos_TC                       ;06
+
+  LN     I_TC_pocket_in_magazine_position
+  A      I_TC_pocket_in_TC_position
+  AN     ML_SFT_P_to_TC_interruption
+  PSL
+
+  L      ML_SFT_P_to_TC_interruption
+  =      MG_win_TC_pocket_to_TC_pos
+
+EM
+
+;----------------------------
+LBL SFT_P_brace_on                     ;08
+
+  L      MG_marker_one
+  S      O_TC_pocket_brace_on_at_TC_position
+  R      O_TC_pocket_brace_off_at_TC_position
+  PSL
+
+EM
+
+;----------------------------
+LBL SFT_P_brace_pos_on                 ;09
+
+  L      I_TC_pocket_brace_on_at_TC_position
+  AN     I_TC_pocket_brace_off_at_TC_position
+  AN     ML_SFT_P_to_TC_interruption
+  PSL
+
+  L      ML_SFT_P_to_TC_interruption
+  =      MG_win_pocket_brace_on
+
+EM
+
+;----------------------------
+LBL SFT_P_to_TC_end                    ;11
+
+  PS     MG_marker_zero
+
+;----------------------------
+LBL SFT_P_to_TC_reset
+
+  L      MG_marker_one
+  R      ML_SFT_P_to_TC_interruption
+  R      MG_SFT_P_to_TC_start
+  R      MG_SFT_P_to_TC_by_TC_MAG1
+  R      MG_SFT_P_to_TC_by_TC_AUTO
+  R      MG_SFT_P_to_TC_by_TC_HELP
+
+  L      K+0
+  =      BL_step_SFT_P_to_TC_pos
+
+EM
+
+;----------------------------
+LBL SFT_P_to_TC_auto_time              ;04 ;07 ;10
+
+  LN     TR_SFT_P_to_TC_timer_universal
+  =      TS_SFT_P_to_TC_timer_universal
+  PSL
+
+EM
+

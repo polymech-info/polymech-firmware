@@ -1,0 +1,690 @@
+*-----------------------------------------------------------------------------
+*  MP Daten aus Tabelle MP_Data.tab lesen
+*  Maschinen Konfiguration aus Tabellen MP_Config.tab lesen
+*-----------------------------------------------------------------------------
+*  Maschinenparameter Werte (früher MP4210.x ..) für die PLC werden in der
+*  Datei PLC:\MP\MP_Data.tab abgelegt.
+*  Neben dem eigentlichen Wert (Spalte: Value) wird die Einheit
+*  (Spalte: Unit) ausgewertet.
+*
+*  Maschinen Konfigurationen (früher MP4310.x) für die PLC werden in der Datei
+*  PLC:\MP\MP_Config.tab abgelegt.
+*
+*  Die Anzahl der zu lesenden Werte werden über die Arrays DG_MP_Daten
+*  und MG_MP_Config (GLB_TCMB.def) festgelegt.
+*
+*  Zur Prüfung der Tabellen dient jeweils eine Kennung in der letzten Zeile.
+*
+*  Tabellen-Editor kann nur in Maschinen-Betriebsarten angezeigt werden.
+*  Aus diesem Grund wird eine Tastensimulation (Taste Bildschirm umschalten)
+*  durchgeführt.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Offset_Titel_Meldungs_Fenster         K +30
+#define /s    KL_File_Zugriff_lesen_locked             K %010
+#define /s    KL_MP_Data_Tab_Ende                      K +807667123
+#define /s    KL_MP_Config_Tab_Ende                    K +80766
+#define /s    KL_ueberlagerte_BA_Editor                K +2
+#define /s    KL_ueberlagerte_BA_Maschine              K +3
+#define /s    KL_MP_Editor_aktiv                       K +3
+#define /s    KL_Status_aktuelles_SK_Menue             K -1
+#define /s    KL_SK_vertikal                           K +1
+#define /s    KL_BA_Maschine_Edit                      K +2
+#define /s    KL_Nummer_aktuelles_SK_Menue             K +0
+#define /s    KL_reserviert                            K +0
+#define /s    KL_aktiv                                 K +1
+#define /s    KL_inaktiv                               K -1
+#define /s    KL_Zeile_1                               K +1
+#define /s    KL_1_Zeile                               K +1
+#define /s    KL_2_Zeilen                              K +2
+#define /s    KL_D_Adresse_mit_4_teilbar               K +4
+#define /s    KL_Datei_gesamt                          K -1
+#define /s    KL_Format_Tabelle                        K %0000
+#define /s    KL_Aenderungen_verwerfen                 K +0
+#define /s    KL_Aenderungen_speichern                 K +1
+#define /s    KL_Softkey_MP_Daten_nicht_betaetigt      K +0
+#define /s    KL_falsche_Betriebsart                   K +8
+#define /s    KL_Kennung_Softkey_Bereich               K -10000
+#define /s    KL_Anzahl_Softkey_Untermenue             K +2
+#define /s    KL_max_Anzahl_Softkeys                   K +18
+#define /s    KL_Modus_Softkey_JA_NEIN                 K +2
+#define /s    KL_Softkey_JA                            K +2
+#define /s    KL_Softkey_NEIN                          K +3
+
+#define /s    ML_MP_Editor_aktiv                       M
+#define /s    ML_MP_Editor_war_aktiv                   M
+#define /s    ML_Softkeys_MP_Editor_ein                M
+#define /s    ML_Softkeys_MP_Editor_aus                M
+#define /s    ML_Softkey_MP_Daten_speichern            M
+#define /s    ML_Softkey_MP_Daten_verwerfen            M
+#define /s    ML_MP_Daten_speichern_aktiv              M
+#define /s    ML_MP_Daten_verwerfen_aktiv              M
+#define /s    ML_Submit_gestartet                      M
+
+#define /s    BL_Identifier                            B
+#define /s    BL_Softkey_Index                         B
+#define /s    BL_Stack_synchronisieren                 B
+#define /s    BL_Status_SUBM                           B
+#define /s    BL_Softkey_Code                          B
+#define /s    BL_Fehlercode                            B
+#define /s    BL_Operanden_Typ                         B
+
+#define /s    WL_Softkey_Bereich                       W[18]
+
+#define /s    WL_Tabellen_Ende                         W
+#define /s    WL_Zeile_MP_Data_Tab                     W
+#define /s    WL_Index_Achs_Daten                      W
+#define /s    WL_Zeile_MP_Config_Tab                   W
+#define /s    WL_Softkey_MP_Daten                      W
+#define /s    WL_Softkey_MP_Daten_alt                  W
+#define /s    WL_debug_Zeilennummer                    W
+
+#define /s    DL_File_Handle                           D
+#define /s    DL_MP_Einheit                            D
+#define /s    DL_MP_Daten                              D
+#define /s    DL_Resourcen_Handle                      D
+#define /s    DL_Status_Information                    D
+#define /s    DL_Spawn_Ueberblendfenster               D
+
+#include Mac_Lib.inc
+
+GLOBAL MP_Data_Tab_lesen
+GLOBAL MP_Config_Tab_lesen
+GLOBAL MP_Tab_editieren
+
+;----------------------------
+LBL MP_Tab_editieren
+;----------------------------
+
+  L      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  CMT    Tasten_freigeben
+
+  PS     KL_ueberlagerte_BA_Editor
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  ==     KL_MP_Editor_aktiv
+  =      ML_MP_Editor_aktiv
+
+  L      NP_D276_Schluesselzahl
+  ==     K+123
+  R      ML_MP_Editor_aktiv
+
+  L      ML_MP_Editor_aktiv
+  AN     ML_MP_Editor_war_aktiv
+  S      ML_Softkeys_MP_Editor_ein
+
+  LN     ML_MP_Editor_aktiv
+  A      ML_MP_Editor_war_aktiv
+  S      ML_Softkeys_MP_Editor_aus
+
+  L      ML_MP_Editor_aktiv
+  =      ML_MP_Editor_war_aktiv
+
+  L      MG_SK_MP_Daten_speichern
+  AN     ML_MP_Daten_speichern_aktiv
+  S      ML_Softkey_MP_Daten_speichern
+
+  L      MG_SK_MP_Daten_speichern
+  =      ML_MP_Daten_speichern_aktiv
+
+  L      MG_SK_MP_Daten_verwerfen
+  AN     ML_MP_Daten_verwerfen_aktiv
+  S      ML_Softkey_MP_Daten_verwerfen
+
+  L      MG_SK_MP_Daten_verwerfen
+  =      ML_MP_Daten_verwerfen_aktiv
+
+  L      WG_Softkey_MP_Daten
+  <>     WL_Softkey_MP_Daten_alt
+  IFT
+    L      WG_Softkey_MP_Daten
+    <      KL_Softkey_MP_Daten_nicht_betaetigt
+    IFT
+      L      WL_Softkey_MP_Daten_alt
+      =      WL_Softkey_MP_Daten
+    ENDI
+  ENDI
+
+  L      WG_Softkey_MP_Daten
+  =      WL_Softkey_MP_Daten_alt
+
+  L      WL_Softkey_MP_Daten
+  <=     KL_Softkey_MP_Daten_nicht_betaetigt
+  AN     ML_Softkey_MP_Daten_speichern
+  AN     ML_Softkey_MP_Daten_verwerfen
+  AN     ML_Softkeys_MP_Editor_ein
+  AN     ML_Softkeys_MP_Editor_aus
+  A[
+    LN     NP_M4159_Taste_END_Tab_Editor_betaetigt
+    ON     ML_MP_Editor_aktiv
+  ]
+  EMT
+
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   Softkey_MP_ein_aus
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL Softkey_MP_ein_aus
+
+  L      ML_Softkeys_MP_Editor_ein
+  R      ML_Softkeys_MP_Editor_ein
+  CMT    Softkey_MP_ein
+
+  L      ML_Softkeys_MP_Editor_aus
+  R      ML_Softkeys_MP_Editor_aus
+  CMT    Softkey_MP_aus
+
+*$WS vor speichern testen ob Daten zulässig sind
+  L      ML_Softkey_MP_Daten_speichern
+  R      ML_Softkey_MP_Daten_speichern
+  IFT
+    CM     Tabelle_speichern
+
+    L      KL_Softkey_MP_Daten_nicht_betaetigt
+    =      WL_Softkey_MP_Daten
+  ENDI
+
+  L      ML_Softkey_MP_Daten_verwerfen
+  R      ML_Softkey_MP_Daten_verwerfen
+  IFT
+    CM     Tabelle_verwerfen
+
+    L      KL_Softkey_MP_Daten_nicht_betaetigt
+    =      WL_Softkey_MP_Daten
+  ENDI
+
+  L      NP_M4159_Taste_END_Tab_Editor_betaetigt
+  R      NP_M4159_Taste_END_Tab_Editor_betaetigt
+  IFT
+    CM     Speichern_j_n
+  ENDI
+
+  L      WL_Softkey_MP_Daten
+  >=     SK_MP_config_total
+  A[
+    L      WL_Softkey_MP_Daten
+    <=     SK_MP_data_other
+  ]
+  CMT    Tabelle_editieren
+
+  LN     MG_Inbetriebnahme
+  EMT
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM
+
+;----------------------------
+LBL Taste_BS_Umschaltung
+
+  PS     KG_Taste_Bildschirm_umschalten
+  CM     9180                          ;Tastensimulation
+  PL     BL_Stack_synchronisieren
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Tasten_freigeben
+
+  PS     KG_Taste_Edit_Betriebsart
+  CM     9182                          ;NC-Taste durch die PLC wieder freigeben
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+  PS     KG_Taste_Test_Betriebsart
+  CM     9182                          ;NC-Taste durch die PLC wieder freigeben
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+  PS     KG_Taste_Bildschirm_umschalten
+  CM     9182                          ;NC-Taste durch die PLC wieder freigeben
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Tasten_sperren
+
+  PS     KG_Taste_Edit_Betriebsart
+  CM     9181                          ;NC-Taste durch die PLC sperren
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+  PS     KG_Taste_Test_Betriebsart
+  CM     9181                          ;NC-Taste durch die PLC sperren
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+  PS     KG_Taste_Bildschirm_umschalten
+  CM     9181                          ;NC-Taste durch die PLC sperren
+  PL     BL_Fehlercode
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Tabelle_editieren
+
+  L      WL_Softkey_MP_Daten
+  ==     SK_MP_config_total
+  IFT
+    PS     S">OEM.MP_CONFIG_TAB"
+*   PS     S"PLC:\MP\MP_Config.TAB"
+    PS     S"Comment on/off Default"
+    PS     KL_Zeile_1
+    L      WL_Zeile_MP_Config_Tab
+    -      KL_1_Zeile
+    PSW
+*    PS     KL_Datei_gesamt
+  ELSE
+    PS     S">OEM.MP_DATA_TAB"
+*   PS     S"PLC:\MP\MP_Data.TAB"
+    PS     S"Comment Value Default"
+
+    L      WL_Softkey_MP_Daten
+    <=     SK_MP_data_total
+    IFT
+      PS     KL_Zeile_1
+      L      WL_Zeile_MP_Data_Tab
+      -      KL_1_Zeile
+      PSW
+*      PS     KL_Datei_gesamt
+    ELSE
+      L      WL_Softkey_MP_Daten
+      -      SK_MP_data_total
+      /[
+        L      KL_Anzahl_Softkey_Untermenue
+        +      K+1
+      ]
+      =X
+      DECX
+      PS     WL_Softkey_Bereich[X]
+      INCX
+      L      WL_Softkey_Bereich[X]
+      -      KL_2_Zeilen
+      PSW
+    ENDI
+  ENDI
+
+  PS     KL_Format_Tabelle
+  CM     9250                          ;Tabellen-Editor  starten
+
+  L      NP_W1022_Modul_Fehlerstatus
+  ==     KL_falsche_Betriebsart
+  A      NP_M4203_Fehler_Modul_9xxx
+  =      PN_Fehler_Tabellen_Editor_aktiv
+  IFT
+    CM     Softkey_MP_anzeigen
+
+    L      KL_Softkey_MP_Daten_nicht_betaetigt
+    =      WL_Softkey_MP_Daten
+    EM
+  ELSE
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      KL_Softkey_MP_Daten_nicht_betaetigt
+  =      WL_Softkey_MP_Daten
+
+  L      MG_BA_Editieren
+  CMT    Taste_BS_Umschaltung
+
+  CM     Tasten_sperren
+
+EM
+
+;----------------------------
+LBL Speichern_j_n
+
+  SPAWN  Meldungs_Fenster
+  =      DL_Spawn_Ueberblendfenster
+  ==     K-1
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL Meldungs_Fenster
+
+  L      KL_Offset_Titel_Meldungs_Fenster
+  =X
+
+  L      S#D0[X]
+  =      SG_Titel_Ueberblendfenster
+
+  PS     K +&SG_Titel_Ueberblendfenster
+
+  PS     S"MP_Edit.a"
+
+  PS     KL_Modus_Softkey_JA_NEIN
+  CM     9217                          ;Überblendfenster für Meldungen
+  PL     BL_Softkey_Code
+  M_Modul_Fehler_anzeigen
+
+  L      BL_Softkey_Code
+  ==     KL_Softkey_JA
+  CMT    Tabelle_speichern
+
+  L      BL_Softkey_Code
+  ==     KL_Softkey_NEIN
+  CMT    Tabelle_verwerfen
+
+  CM     Softkey_MP_anzeigen
+
+EM
+
+;----------------------------
+LBL Tabelle_verwerfen
+
+  PS     KL_Aenderungen_verwerfen
+  CM     9251                          ;Tabelleneditor der PLC beenden
+  M_Modul_Fehler_anzeigen
+
+  CM     Tasten_freigeben
+
+  LN     MG_BA_Editieren
+  CMT    Taste_BS_Umschaltung
+
+EM
+
+;----------------------------
+LBL Tabelle_speichern
+
+  PS     KL_Aenderungen_speichern
+  CM     9251                          ;Tabelleneditor der PLC beenden
+  M_Modul_Fehler_anzeigen
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  R      MG_Maschinenparameter_gelesen
+
+  CM     Tasten_freigeben
+
+  LN     MG_BA_Editieren
+  CMT    Taste_BS_Umschaltung
+
+EM
+
+;----------------------------
+LBL Softkey_MP_ein
+
+;aktuelles SK Menü ermitteln
+
+  PS     DL_Resourcen_Handle
+  PS     S""
+  PS     KL_Status_aktuelles_SK_Menue
+  PS     KL_SK_vertikal
+  PS     KL_BA_Maschine_Edit
+  CM     9203                          ;PLC-Softkey-Menü aktivieren
+  PL     DL_Resourcen_Handle
+  M_Modul_Fehler_anzeigen
+
+  PS     DL_Resourcen_Handle
+  PS     KL_Nummer_aktuelles_SK_Menue
+  PS     KL_reserviert
+  CM     9208                          ;Statusinformation PLC Softkeys
+  PL     DL_Status_Information
+  M_Modul_Fehler_anzeigen
+
+LBL Softkey_MP_anzeigen
+
+;SK Menü MP Edit anzeigen
+
+  PS     DL_Resourcen_Handle
+  PS     S""
+  PS     MP_Edit
+  PS     KL_SK_vertikal
+  PS     KL_BA_Maschine_Edit
+  CM     9203                          ;PLC-Softkey-Menü aktivieren
+  PL     DL_Resourcen_Handle
+  M_Modul_Fehler_anzeigen
+
+  PS     DL_Resourcen_Handle
+  CM     9204                          ;Softkeyleiste neu anzeigen (iTNC 530)
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Softkey_MP_aus
+
+;vorher aktuelles SK Menü anzeigen
+
+  PS     DL_Resourcen_Handle
+  PS     S""
+  PS     DL_Status_Information
+  PS     KL_SK_vertikal
+  PS     KL_BA_Maschine_Edit
+  CM     9203                          ;PLC-Softkey-Menü aktivieren
+  PL     DL_Resourcen_Handle
+  M_Modul_Fehler_anzeigen
+
+  PS     DL_Resourcen_Handle
+  CM     9204                          ;Softkeyleiste neu anzeigen (iTNC 530)
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL MP_Data_Tab_lesen
+;----------------------------
+
+  PS     KL_File_Zugriff_lesen_locked
+* PS     S"PLC:\MP\MP_Data.TAB"
+  PS     S">OEM.MP_DATA_TAB"
+  CM     9240                          ;Öffnen einer Datei durch die PLC
+  PL     DL_File_Handle
+  M_Modul_Fehler_Win_anzeigen(MG_Win_Datei_oeffnen)
+
+  L      K-1
+  =      WL_Zeile_MP_Data_Tab
+
+  L      K+0
+  =      BL_Softkey_Index
+  =      DG_MP_Data_Tab_Ende
+
+  REPEAT
+    INC    WL_Zeile_MP_Data_Tab
+
+    PS     DL_File_Handle
+    PS     WL_Zeile_MP_Data_Tab
+    PS     S"Symbol"
+    PS     K &SG_Symbol_Name_Tab_Operand
+    CM     9245                        ;Lesen eines Feldes aus einer Tabelle
+    M_Modul_Fehler_Tabelle(WL_Zeile_MP_Data_Tab,PLC:\MP\MP_Data_xxx.TAB)
+
+    L      NP_M4203_Fehler_Modul_9xxx
+    S      PN_Fehler_MP_Daten_Tabelle_pruefen
+
+      PS     DL_File_Handle
+      PS     WL_Zeile_MP_Data_Tab
+      PS     S"Unit"
+      CM     9255                      ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+      PL     DL_MP_Einheit
+      M_Modul_Fehler_Tabelle(WL_Zeile_MP_Data_Tab,PLC:\MP\MP_Data_xxx.TAB)
+
+      L      NP_M4203_Fehler_Modul_9xxx
+      S      PN_Fehler_MP_Daten_Tabelle_pruefen
+
+    L      SG_Symbol_Name_Tab_Operand
+    <>     S""
+    AN     PN_Fehler_MP_Daten_Tabelle_pruefen
+      IFT
+        PS     DL_File_Handle
+        PS     WL_Zeile_MP_Data_Tab
+        PS     S"Value"
+        CM     9255                    ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+        PLW
+        /      DL_MP_Einheit
+        =      DL_MP_Daten
+
+*$WS  S">OEM.name" wird von Modul 9084 nicht aufgelöst
+*     M_Modul_Fehler_Tabelle(WL_Zeile_MP_Data_Tab,>OEM.MP_DATA_TAB)
+        M_Modul_Fehler_Tabelle(WL_Zeile_MP_Data_Tab,PLC:\MP\MP_Data_xxx.TAB)
+
+        L      NP_M4203_Fehler_Modul_9xxx
+        S      PN_Fehler_MP_Daten_Tabelle_pruefen
+
+      LN     PN_Fehler_MP_Daten_Tabelle_pruefen
+      IFT
+        PS     K &SG_Symbol_Name_Tab_Operand
+        PS     DL_MP_Daten
+        CM     9075                    ;Symbolischen PLC-Operanden beschreiben
+        PL     BL_Operanden_Typ
+        M_Modul_Fehler_Tabelle(WL_Zeile_MP_Data_Tab,PLC:\MP\MP_Data_xxx.TAB)
+
+        L      NP_M4203_Fehler_Modul_9xxx
+        S      PN_Fehler_MP_Daten_Tabelle_pruefen
+      ENDI
+    ENDI
+
+    L      DL_MP_Einheit
+    ==     KL_Kennung_Softkey_Bereich
+    AN     PN_Fehler_MP_Daten_Tabelle_pruefen
+    IFT
+      L      WL_Zeile_MP_Data_Tab
+      =      WL_Softkey_Bereich[BL_Softkey_Index]
+      =      WL_Tabellen_Ende
+
+      INC    BL_Softkey_Index
+
+      L      BL_Softkey_Index
+      >      KL_max_Anzahl_Softkeys
+      S      PN_Fehler_MP_Daten_Tabelle_pruefen
+    ENDI
+
+    L      DG_MP_Data_Tab_Ende
+    ==     KL_MP_Data_Tab_Ende
+    O      PN_Fehler_MP_Daten_Tabelle_pruefen
+  UNTILT
+
+  L      DG_MP_Data_Tab_Ende
+  <>     KL_MP_Data_Tab_Ende
+  =      MG_MP_Daten_Tabelle_pruefen
+  S      PN_Fehler_MP_Daten_Tabelle_pruefen
+
+EM
+
+;----------------------------
+LBL MP_Config_Tab_lesen
+;----------------------------
+
+  PS     KL_File_Zugriff_lesen_locked
+  PS     S">OEM.MP_CONFIG_TAB"
+*  PS     S"PLC:\MP\MP_CONFIG.TAB"
+  CM     9240                          ;Öffnen einer Datei durch die PLC
+  PL     DL_File_Handle
+  M_Modul_Fehler_Win_anzeigen(MG_Win_Datei_oeffnen)
+
+  L      K -1
+  =      WL_Zeile_MP_Config_Tab
+
+  L      K +0
+  =      BL_Softkey_Index
+  =      DG_MP_Config_Tab_Ende
+
+  REPEAT
+    INC    WL_Zeile_MP_Config_Tab
+
+    PS     DL_File_Handle
+    PS     WL_Zeile_MP_Config_Tab
+    PS     S"Symbol"
+    PS     K &SG_Symbol_Name_Tab_Operand
+    CM     9245                        ;Lesen eines Feldes aus einer Tabelle
+    M_Modul_Fehler_Tabelle(WL_Zeile_MP_Config_Tab,PLC:\MP\MP_Config_xxx.TAB)
+
+    L      NP_M4203_Fehler_Modul_9xxx
+    S      PN_Fehler_MP_Config_Tabelle_pruefen
+
+    L      SG_Symbol_Name_Tab_Operand
+    <>     S""
+    IFT
+      PS     DL_File_Handle
+      PS     WL_Zeile_MP_Config_Tab
+      PS     S"on/off"
+      CM     9255                      ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+      PLW
+      /      K+10000
+      =      DL_MP_Daten
+*$WS S">OEM.name" wird von Modul 9084 nicht aufgelöst
+*   M_Modul_Fehler_Tabelle(WL_Zeile_MP_Config_Tab,>OEM.MP_CONFIG_TAB)
+      M_Modul_Fehler_Tabelle(WL_Zeile_MP_Config_Tab,PLC:\MP\MP_CONFIG.TAB)
+
+      L      NP_M4203_Fehler_Modul_9xxx
+      S      PN_Fehler_MP_Config_Tabelle_pruefen
+
+      LN     PN_Fehler_MP_Config_Tabelle_pruefen
+      IFT
+        PS     K &SG_Symbol_Name_Tab_Operand
+        PS     DL_MP_Daten
+        CM     9075                    ;Symbolischen PLC-Operanden beschreiben
+        PL     BL_Operanden_Typ
+        M_Modul_Fehler_Tabelle(WL_Zeile_MP_Config_Tab,PLC:\MP\MP_CONFIG.TAB)
+
+        L      NP_M4203_Fehler_Modul_9xxx
+        S      PN_Fehler_MP_Config_Tabelle_pruefen
+      ENDI
+    ENDI
+
+    L      DG_MP_Config_Tab_Ende
+    ==     KL_MP_Config_Tab_Ende
+    O      PN_Fehler_MP_Config_Tabelle_pruefen
+*$WS Call 91629 PLC-Modul 9075 STG[0].Merker   Wert 255 zuordnen
+;    O[
+;      L    WL_debug_Zeilennummer
+;      ==   WL_Zeile_MP_Config_Tab
+;    ]
+  UNTILT
+
+*$WS Bugfix Call 91629
+  CM     Call_Modul_9075
+
+  L      DG_MP_Config_Tab_Ende
+  <>     KL_MP_Config_Tab_Ende
+  =      MG_MP_Config_Tabelle_pruefen
+  S      PN_Fehler_MP_Config_Tabelle_pruefen
+
+  L      MG_Power_Fail_inaktiv
+  =      MG_Power_Fail_inaktiv_remanent
+
+EM
+
+*$WS Bugfix Call 91629
+;----------------------------
+LBL Call_Modul_9075
+
+  L      MG_S1_Freigabe_M07_mit_WZ_Status_Bit2
+  =      STG_Spindel[KG_S1].MG_Freigabe_M07_mit_WZ_Status_Bit2
+
+  L      MG_S2_Freigabe_M07_mit_WZ_Status_Bit2
+  =      STG_Spindel[KG_S2].MG_Freigabe_M07_mit_WZ_Status_Bit2
+
+  L      MG_S1_WZ_Ueberwachung_inaktiv
+  =      STG_Spindel[KG_S1].MG_WZ_Ueberwachung_inaktiv
+
+  L      MG_S2_WZ_Ueberwachung_inaktiv
+  =      STG_Spindel[KG_S2].MG_WZ_Ueberwachung_inaktiv
+
+  L      MG_S1_WZM_Ueberwachung_inaktiv
+  =      STG_WZM[KG_S1].MG_WZM_Ueberwachung_inaktiv
+
+  L      MG_S2_WZM_Ueberwachung_inaktiv
+  =      STG_WZM[KG_S2].MG_WZM_Ueberwachung_inaktiv
+
+EM

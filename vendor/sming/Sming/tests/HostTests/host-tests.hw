@@ -1,0 +1,21 @@
+{
+	"name": "Host Tests profile",
+	"base_config": "spiffs",
+	"partitions": {
+		"spiffs0": {
+			"size": "0x10000",
+			"filename": ""
+		},
+		"fwfs_httprequest": {
+			"address": "0x220000",
+			"size": "0x20000",
+			"type": "data",
+			"subtype": "fwfs",
+			"filename": "$(FW_BASE)/fwfs0.bin",
+			"build": {
+				"target": "fwfs-build",
+				"config": "fwfs0.json"
+			}
+		}
+	}
+}

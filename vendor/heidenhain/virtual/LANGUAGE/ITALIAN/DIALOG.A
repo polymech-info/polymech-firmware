@@ -1,0 +1,2048 @@
+﻿Macchina/Posto di programmazione - 0/2
+Fattore di scala XYZ/Z           - 0/1
+Comportamento con cicli
+Sovrapposizione tasche   0.1-1.414
+Tolleranza traiettoria circolare    max 0.016
+Rotazione 3D  ON/OFF  -  ..0/ ..1
+Lubrificazione assi         [min]
+Volantino OFF/HR410            0/6
+Spegnimento automatico         0/1
+TT1x0 Posizione X           [REF]
+TT1x0 Posizione Y           [REF]
+TT1x0 Posizione Z           [REF]
+Parametro utente 13
+Parametro utente 14
+Parametro utente 15
+Parametro utente 16
+Tempo Mandrino S1 =
+Tempo Mandrino S2 =
+Tempo assi        =
+Tempo idraulica   =
+Tempo operativo 5 =
+Tempo operativo 6 =
+Tempo operativo 7 =
+Tempo operativo 8 =
+Tempo operativo 9 =
+Tempo operativo 10=
+Tempo operativo 11=
+Tempo operativo 12=
+Tempo operativo 13=
+* Title message box MP table editor <- line 30
+MP Editor Tabella
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Pulsante di Emergenza premuto
+-> sbloccare
+H001 Asse in extracorsa X+
+-> tasto End -> muovi da extracorsa
+H002 Asse in extracorsa Y+
+-> tasto End -> muovi da extracorsa
+H003 Asse in extracorsa Z+
+-> tasto End -> muovi da extracorsa
+H004 Asse in extracorsa 4+
+-> tasto End -> muovi da extracorsa
+H005 Asse in extracorsa 5+
+-> tasto End -> muovi da extracorsa
+H006 Asse in extracorsa X-
+-> tasto End -> muovi da extracorsa
+H007 Asse in extracorsa Y-
+-> tasto End -> muovi da extracorsa
+H008 Asse in extracorsa Z-
+-> tasto End -> muovi da extracorsa
+H009 Asse in extracorsa 4-
+-> tasto End -> muovi da extracorsa
+H010 Asse in extracorsa 5-
+-> tasto End -> muovi da extracorsa
+H011 Asse X - posizione di CU
+->Modo Manuale/Volantino ->MOD ->Help
+H012 Asse Y - posizione di CU
+->Modo Manuale/Volantino ->MOD ->Help
+H013 Asse Y - posizione di CU fuori
+->Modo Manuale/Volantino ->MOD ->Help
+H014 Asse Y - posizione di CU dentro
+->Modo Manuale/Volantino ->MOD ->Help
+H015 Asse Z - posizione di CU fuori
+->Modo Manuale/Volantino ->MOD ->Help
+H016 Asse Z - posizione di CU dentro
+->Modo Manuale/Volantino ->MOD ->Help
+H017 Asse Z - posizione di CU manuale
+->Modo Manuale/Volantino ->MOD ->Help
+H018 Asse Z - posizione di sicurezza
+->Modo Manuale/Volantino ->MOD ->Help
+H019 Orientamento mandrino per CU
+->Modo Manuale/Volantino ->MOD ->Help
+H020 Sbloccaggio Utensile
+->Modo Manuale/Volantino ->MOD ->Help
+H021 Bloccaggio Utensile
+->Modo Manuale/Volantino ->MOD ->Help
+H022 Braccio CU in posizione fuori
+->Modo Manuale/Volantino ->MOD ->Help
+H023 Braccio CU in posizione dentro
+->Modo Manuale/Volantino ->MOD ->Help
+H024 Braccio CU fino ad end posit
+->Modo Manuale/Volantino ->MOD ->Help
+H025 pinza chiusa (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H026 Pinza aperta (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H027 Pinza verso mandrino chiusa (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H028 Pinza verso mandrino aperta (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H029 Pinza magazzino chiusa (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H030 Pinza magazzino aperta (CU)
+->Modo Manuale/Volantino ->MOD ->Help
+H031 CU posizione magazzino
+->Modo Manuale/Volantino ->MOD ->Help
+H032 CU porta magazzino chiusa
+->Modo Manuale/Volantino ->MOD ->Help
+H033 CU in accordo allo stato
+-> Internal stop -> MDI -> TOOL CALL
+H034 CU Magazzino verso mandrino
+->Modo Manuale/Volantino ->MOD ->Help
+H035 CU magazzino in posizione base
+->Modo Manuale/Volantino ->MOD ->Help
+H036 CU Posto utensile fuori
+->Modo Manuale/Volantino ->MOD ->Help
+H037 CU Posto utensile dentro
+->Modo Manuale/Volantino ->MOD ->Help
+H038 magazzino utensili - pin fuori
+->Modo Manuale/Volantino ->MOD ->Help
+H039 magazzino utensili - pin dentro
+->Modo Manuale/Volantino ->MOD ->Help
+H040 Braccio CU in pos. intermedia
+->Modo Manuale/Volantino ->MOD ->Help
+H041 CU - funzione inibita
+->Manual/Handwheel mode ->MOD ->Help
+H042 Braccio CU alla posizione Mandrino
+->Manual/Handwheel mode ->MOD ->Help
+H043 Braccio CU alla posizione magazzino
+->Manual/Handwheel mode ->MOD ->Help
+H044 Braccio CU alla posizione Base
+->Manual/Handwheel mode ->MOD ->Help
+H045 Braccio CU alla pos. intermedia
+->Manual/Handwheel mode ->MOD ->Help
+H046 Volantino HR410 elaborato da NC
+FCT A-C dal  PLC      -> MP7645: 0
+H047 M/S/T/Q strobe al PLC durante
+block scan          -> MP7681: %110111
+H048 Magazzino UT. è un asse PLC !
+lettera minuscola         -> MP100
+H049 Volantino non supportato
+                -> MP7640: 0..6/11..13
+H050 Block scan PLC attivo !
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 PGM stop con funzione M necess.
+Bit 02  MP 7440: %xxxxx0xx
+H052 Errore in apertura file
+-> module 9240
+H053 Errore lettura tabella
+-> module 9255
+H054 Errore scrittura tabella
+-> module 9256
+H055 Errore valore non in tabella
+-> module 9255
+H056 Sensore Temperatura Pt100
+-> verificare conn. X48
+H057 Pt100 non definita
+-> Tabella compensazione termica
+H058 Asse X in Pos. Cambio Pallet
+->Modo Manuale/Volantino ->MOD ->Help
+H059 Asse Y in Pos. Cambio Pallet
+->Modo Manuale/Volantino ->MOD ->Help
+H060 Asse Z in Pos. Cambio Pallet
+->Modo Manuale/Volantino ->MOD ->Help
+H061 Attivazione auto. Cambio Pallet
+
+H062 Start Cambio Pallet
+-> Tasto NC-Start
+H063 Cambio Pallet terminato
+-> Tasto NC-Start
+H064 Cambio Pallet - Porta aperta
+->Modo Manuale/Volantino ->MOD ->Help
+H065 Cambio Pallet - Porta chiusa
+->Modo Manuale/Volantino ->MOD ->Help
+H066 Numero Pallet non possibile
+
+H067 Pallet in Macchina sbloccato
+->Modo Manuale/Volantino ->MOD ->Help
+H068 Pallet in Macchina bloccato
+->Modo Manuale/Volantino ->MOD ->Help
+H069 Assi controllati non assegnati
+-> MP2040.x
+H070 Cambio Pallet in pos. di Stop
+->Modo Manuale/Volantino ->MOD ->Help
+H071 Asse X in Pos. Cambio Pallet 1
+->Modo Manuale/Volantino ->MOD ->Help
+H072 Asse X in Pos. Cambio Pallet 2
+->Modo Manuale/Volantino ->MOD ->Help
+H073 Cambio Pallet non in pos. Start
+->Modo Manuale/Volantino ->MOD ->Help
+H074 Cambio Pallet 1 - Pos. iniziale
+->Modo Manuale/Volantino ->MOD ->Help
+H075 Cambio Pallet 2 - Pos. iniziale
+->Modo Manuale/Volantino ->MOD ->Help
+H076 Cambio Pallet al Carico
+->Modo Manuale/Volantino ->MOD ->Help
+H077 Cambio Pallet alla macchina
+->Modo Manuale/Volantino ->MOD ->Help
+H078 Cambio Pallet - Allarme sensori
+->Modo Manuale/Volantino ->MOD ->Help
+H079 Asse 4 - Cambio pallet pos.
+->Modo Manuale/Volantino ->MOD ->Help
+H080 3D-Head - Commutazione
+
+H081 3D-Head - Orientamento Mandrino
+
+H082 3D-Head - Limitazione Coppia
+->Modo Manuale ->soft key 3D head
+H083 Blocco utensile aperto
+->Modo Manuale/Volantino ->MOD ->Help
+H084 Blocco utensile chiuso
+->Modo Manuale/Volantino ->MOD ->Help
+H085 pickup alla pos. di cambio
+->Modo Manuale/Volantino ->MOD ->Help
+H086 pickup alla pos. Base
+->Modo Manuale/Volantino ->MOD ->Help
+H087 Asse X TC preposition
+->Modo Manuale/Volantino ->MOD ->Help
+H088 Cambio Pallet in allarme
+
+H089 Verificare Cambio Pallet
+
+H090 Mandrino in modo Asse C
+-> positione Mandrino (sincronizza)
+H091 Extented interface - 20 loops
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard interface - 16 loops
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> AUTOSTART / progr. warmup attivo
+H094 Fmax Override attivo
+       MP7620: impostare Bit05 o Bit09
+H095 Magazzino UT  hirth-/axis-modulo
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 PLC message
+
+H097 PLC message
+
+H098      si   -> NC start
+          no   -> NC stop
+H099
+-> NC start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC magazine - PLC axis *
+* TC magazine - Pulse counter *
+* TC auto - Single arm *
+* TC auto - Double arm *
+* TC auto - Cam driven arm *
+* TC auto - Pickup *
+
+
+
+Magazine_start
+Magazine_end
+Tool_def_quit
+Pocket_put_in
+Pocket_pos_in
+Pocket_in_out
+Pocket_posit
+T_magazine_start
+T_mag_in_position
+Decode_P_no
+Standby_T_read
+Magazine_direct
+Lock_pin_out
+Lock_pin_pos_out
+Magazine_nom_pos
+Time_exact_stop
+Lock_pin_pos_in
+Mag_exact_stop
+WZ-Magazin cw (rechts)
+WZ-Magazin ccw (links)
+
+TC_auto_start
+TC_auto_end
+Tool_spindle_ok
+T_mag_start
+Magazine_in_pos
+Mag_full_empty
+Spi_full_empty
+Mag_full
+Mag_empty
+Spi_empty_full
+Tool_lock_open
+Tool_lock_opened
+Tool_lock_close
+Tool_lock_closed
+S_start
+S_in_TC_pos
+XY_start
+X_start
+X_in_pos
+X_TC_pre_pos
+X_in_pre_pos
+Y_start
+Y_in_TC_pos
+Y_TC_pre_pos
+Y_in_pre_pos
+Z_start
+Z_in_TC_pos
+Z_start_safety
+Z_in_pos_safety
+Z1_in_out_start
+Z1_posit_in_out
+Z2_in_out_start
+Z2_posit_in_out
+Z3_in_start
+Z3_posit_in
+T_pocket_put_out
+T_pocket_pos_out
+T_pocket_time
+Pickup_values_read
+Pickup_put_out
+Pickup_put_out_ok
+Pickup_put_in
+Pickup_put_in_ok
+T_arm_put_out
+T_arm_pos_out
+T_arm_put_in
+T_arm_pos_in
+T_arm_to_spindle
+T_arm_on_spindle
+T_arm_to_magazine
+T_arm_on_magazine
+T_arm_to_middle
+T_arm_in_middle
+T_arm_to_basic
+T_arm_on_basic
+T_arm_to_cw_ccw
+T_arm_in_cw_ccw
+T_arm_middle_stop
+TC_arm_delay
+Jump_TC_arm
+T_pocket_in_out
+T_pocket_pos_ok
+T_gripper_close
+T_gripper_closed
+T_gripper_open
+T_gripper_opened
+T_gri_mag_open
+T_gri_mag_opened
+T_gri_mag_close
+T_gri_mag_closed
+T_gri_spi_open
+T_gri_spi_opened
+T_gri_spi_close
+T_gri_spi_closed
+T_standby_read
+TC_auto_time
+Mag_to_spindle
+Mag_in_spindle
+Tool_unclamping
+Tool_unclamped
+Tool_clamping
+Tool_clamped
+Time_put_out
+Tnew_store
+T0_in_status
+T0_Tnew_status
+Tnew_in_status
+T_status_ok
+Tool_Call_2nd
+Tool_Call_wait
+T_status_read
+Jump_clamping
+Mag_to_basic
+Mag_on_basic
+TOOL_CALL_quit
+Jump_T0_programed
+Jump_spindle_was_empty
+AC_in_TC_position
+T_gripper_to_cw_right
+T_gripper_to_ccw_left
+Tool_in magazine unlock
+Tool_in_magazine_unlocked
+Tool_in_magazine_lock
+Tool_in_magazine_locked
+TC_manual
+TC_manual_start
+Jump_BA_manual
+X_start_manual
+X_in_pos_manual
+Y_start_manual
+Y_in_pos_manual
+Z_start_manual
+Z_in_pos_manual
+Tool_manu_unclamping
+Tool_manu_clamping
+TC_disable
+TC_quit
+Restore_necessary
+Restore_pos_ok
+Tool_Call_quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+non definito
+DC-link tensione troppo alta
+Temperatura dissipatore alta
+Corto circuito fase motore-Uz
+DC-link corrente troppo alta
+Alimentatore non pronto
+Corrente di fuga troppo alta
+
+
+
+0 No further error code
+1 Parameter outside value range
+2 Parameter invalid/does not exist
+3 Address outside value range
+4 block length outside value range
+5 No word or double-word address
+6 Value can/must not be changed
+7 File faulty / could not be read.
+8 Incorrect operating mode
+9 - Posit command already executed
+10 - No tool change defined
+11 impermissible characters
+12 No string end, or string incomplete
+13 No connection
+14 RS-232 busy or not assigned
+15 RS-232 send buffer not empty
+16 RS-232 receive buffer empty
+17 RS-232 baud rate not possible
+18 RS-232 transmit error
+19 No current controller found
+20 Module not called from submit job
+21 Module called without strobe
+22 Overflow of key queue
+23 Overflow of PLC error message queue
+24 Module was called in a submit job
+25 Too many elements constants field
+26 Impermissible elements Const-field
+27 Oriented S stop already active
+28 Module function is already active
+29 The opened file unexpected type
+30 Field name is not contained
+31 Query condition is incorrect
+32 No data record fits query condition
+33 Axis not jet traversed reference
+34 Reset; external device defect
+35 Editor is not active
+36 Miscellaneous error file access
+37 Not enough system memory
+38 Error during compilation
+39 Fast PLC input drive on
+40 Drive power on not possible
+41 Type check numbers tool table
+42 Powerfail can not switched off
+43 Module called, no safety package
+44 Error soft-key resources
+45 Module canceled
+46 Profibus or ASI error
+47 -
+48 -
+49 -
+50 -
+51 Function not possible, only PLC510
+52 Function not for single processor
+53 no serial interface available
+54 Function not for dual processor
+55 File could not be locked
+56 File not found
+57 Option FCL not available
+58 Function NC channel not available
+59 Process (Phyton) not permissible
+60 Analog output X8/9 blocked (HW)
+61 Module function not suported
+62 Symbole/identifier does not exist
+63 Error create structure
+64 Handle unknown/incorrect
+65 Wrong data direction
+66 Funzione non supportata da FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

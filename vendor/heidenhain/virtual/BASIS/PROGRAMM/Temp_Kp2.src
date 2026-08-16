@@ -1,0 +1,1174 @@
+*-----------------------------------------------------------------------------
+*  Temperatur-Kompensation mit Tabelle (Spawn)
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Das Label TempCompensation wird von dem Zyklischen PLC Programm
+*    aufgerufen.
+*    In dem Modul finden folgende Funktionen statt:
+*    1.    Grund-Initialisierung von dem Modul
+*    1.1   Submit Starten um den Spawn zu starten
+*    2.    Einlesen der Pt100 Werte
+*    3.    Mittelwert-Bildung der Temperatur Eing‰nge
+*    4.    Erkennung ob eine Erw‰rmung oder Abk¸hlung statt findet
+*    5.    Spawn Starten um die Daten aus der Tabelle zulesen
+*    5.1   Endlos Schleife f¸r den Spawn
+*    6.    Submit Job
+*    6.1   Tabellen Datei ˆffnen
+*    6.2   Tabellen Datei offen Daten bearbeiten
+*    6.3   Initialisierungs-Werte aus der Tabelle lesen nach PGM Start
+*    6.3.1 Temp Kompensation Aktive ? (lesen)
+*    6.4   Aktuelle Temperatur in die Tabelle schreiben
+*    6.5   Aktuelle Temperatur in der Tabelle suchen
+*          und der CNC ¸bergeben f¸r die Gleitende Nachf¸hrung
+*    6.6   PLC Tabelle f¸r die Bearbeitung schliessen
+*    7.    Kompensations-Wert lesen
+*    7.1   Kompensations-Wert f¸r die entsprechende Achse aus der Tabelle
+*          lesen
+*    7.2   Linear Interpolation zwischen den St¸tzpunkten
+*    8.    Init.Werte aus der Tabelle lesen
+*    8.1   Initialisierungs-Werte lesen Nr. der Pt100 Anschl¸sse
+*    8.2   Suchen der Pt100 Anschl¸sse in KField
+*    8.3   Multiplikations Faktoren f¸r die Pt100 lesen
+*    8.4   Lesen der Anzahl der PLC Zyklen f¸r die Mittelwert-Bildung
+*    8.5   Erkennung Hysterese f¸r Erw‰rmung und Abk¸hlung
+*-----------------------------------------------------------------------------
+
+#define /s    KL_auf_Event_warten                      K -1
+#define /s    KL_Event_oder_verknuepft                 K +0
+#define /s    KL_Event_Maske                           K %001
+#define /s    KL_File_Zugriff_lesen_schreiben          K %001
+#define /s    KL_min_notwendige_Messungen              K +50
+#define /s    KL_T_Differenz_min                       K -100
+#define /s    KL_inaktiv                               K -1
+#define /s    KL_Zeile_0                               K +0
+#define /s    KL_Zeile_1                               K +1
+#define /s    KL_Zeile_2                               K +2
+#define /s    KL_Zeile_3                               K +3
+#define /s    KL_Zeile_4                               K +4
+#define /s    KL_Zeile_5                               K +5
+#define /s    KL_Zeile_6                               K +6
+#define /s    KL_Zeile_7                               K +7
+#define /s    KL_Zeile_8                               K +8
+#define /s    KL_Zeile_9                               K +9
+#define /s    KL_Zeile_10                              K +10
+#define /s    KL_Rundung_HSCI_Aufloesung               K +5
+#define /s    KL_Anpassung_HSCI_Aufloesung             K +10
+
+#define /s    ML_Spawn_gestartet                       M
+#define /s    ML_Daten_von_Spawn_in_Bearbeitung        M
+#define /s    ML_Init_Temp_Kompensation                M
+#define /s    ML_Maschine_Pt100_gefunden               M
+#define /s    ML_Spindel_Pt100_gefunden                M
+#define /s    ML_Temperatur_Mittelwert_Sensoren        M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Test_war_aktiv                        M
+#define /s    ML_Temperatur_decrementieren             M
+#define /s    ML_Maschine_Pt100_an_PL510               M
+#define /s    ML_Spindel_Pt100_an_PL510                M
+#define /s    ML_T_Kompensation_Grundzustand           M
+
+#define /s    BL_Maschine_Nr_Pt100_Eingang             B
+#define /s    BL_Maschine_Nr_Steckplatz_PL510          B
+#define /s    BL_Maschine_Nr_Basismodul_PL510          B
+#define /s    BL_Spindel_Nr_Pt100_Eingang              B
+#define /s    BL_Spindel_Nr_Steckplatz_PL510           B
+#define /s    BL_Spindel_Nr_Basismodul_PL510           B
+#define /s    BL_Faktor_Spindel_Pt100                  B
+#define /s    BL_Faktor_Maschine_Pt100                 B
+#define /s    BL_Status_SUBM                           B
+#define /s    BL_Zaehler_PLC_Zyklen                    B
+
+#define /s    WL_Temperatur_Diff_0                     W
+#define /s    WL_Temperatur_Diff_1                     W
+#define /s    WL_Kompensations_Wert_0                  W
+#define /s    WL_Kompensations_Wert_1                  W
+#define /s    WL_Tabelle_Zeilennummer                  W
+#define /s    WL_Mittelwert_Zaehler                    W
+#define /s    WL_n_Messungen                           W
+#define /s    WL_Temperatur_Differenz_alt              W
+#define /s    WL_Tasten_Code_alt                       W
+
+#define /s    Kompensation                             W[15]
+#define /c    WL_Kompensation_Wert_Xp                  W &Kompensation + 0
+#define /c    WL_Kompensation_Wert_Yp                  W &Kompensation + 2
+#define /c    WL_Kompensation_Wert_Zp                  W &Kompensation + 4
+#define /c    WL_Kompensation_Wert_Xn                  W &Kompensation + 6
+#define /c    WL_Kompensation_Wert_Yn                  W &Kompensation + 8
+#define /c    WL_Kompensation_Wert_Zn                  W &Kompensation + 10
+#define /c    WL_Kompensation_Wert_X                   W &Kompensation + 12
+#define /c    WL_Kompensation_Wert_Y                   W &Kompensation + 14
+#define /c    WL_Kompensation_Wert_Z                   W &Kompensation + 16
+#define /c    WL_Erwaermung_Wert_X                     W &Kompensation + 18
+#define /c    WL_Erwaermung_Wert_Y                     W &Kompensation + 20
+#define /c    WL_Erwaermung_Wert_Z                     W &Kompensation + 22
+#define /c    WL_Abkuehlung_Wert_X                     W &Kompensation + 24
+#define /c    WL_Abkuehlung_Wert_Y                     W &Kompensation + 26
+#define /c    WL_Abkuehlung_Wert_Z                     W &Kompensation + 28
+
+#define /s    DL_File_Handle                           D
+#define /s    DL_Temp_Komp_Ident                       D
+#define /s    DL_Temperatur_Spindel_Summe              D
+#define /s    DL_Temperatur_Maschine_Summe             D
+
+#include Mac_Lib.inc
+
+EXTERN Absolut
+GLOBAL Temperatur_Komp
+
+;----------------------------
+LBL Temperatur_Komp
+;----------------------------
+
+  LN     ML_Init_Temp_Kompensation
+  AN     ML_Spawn_gestartet
+  A      MG_T_Kompensation_aktiv
+  IFT
+    S      ML_Init_Temp_Kompensation
+    R      ML_Spawn_gestartet
+    R      MG_Erwaermung
+    R      MG_Abkuehlung
+    R      MG_Hyst_Erwaermung_X
+    R      MG_Hyst_Erwaermung_Y
+    R      MG_Hyst_Erwaermung_Z
+    R      MG_Hyst_Abkuehlung_X
+    R      MG_Hyst_Abkuehlung_Y
+    R      MG_Hyst_Abkuehlung_Z
+
+    L      K+0
+    =      WL_Mittelwert_Zaehler
+
+    L      KL_min_notwendige_Messungen
+    =      WL_n_Messungen
+
+    LN     ML_T_Kompensation_Grundzustand
+    S      ML_T_Kompensation_Grundzustand
+    S      MG_T_Kompensation_X_aktiv
+    S      MG_T_Kompensation_Y_aktiv
+    S      MG_T_Kompensation_Z_aktiv
+* Spawn Prozeﬂ mittels Submit starten
+    RPLY   BL_Status_SUBM
+    ==     K+0
+    IFT
+      SUBM   Spawn_Start
+      =      BL_Status_SUBM
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+    ENDI
+  ENDI
+
+  L      PN_Fehler_Temperatur_Kompensation
+  ON     MG_Steuerung_betriebsbereit
+  ON     MG_T_Kompensation_aktiv
+  IFT
+    L      K+0
+    =      WG_Temp_Kompensation_X
+    =      WG_Temp_Kompensation_Y
+    =      WG_Temp_Kompensation_Z
+
+    LN     ML_Spawn_gestartet
+    EMT
+  ENDI
+
+* Einlesen der Pt100 Werte (Temperatur in 1/10 Grad bzw. 1/100 Grad)
+
+#if CFG_HSCI = "aktiv"
+  LN     ML_Init_Temp_Kompensation
+  AN     MG_T_Kompensation_Test
+  IFT
+    L      IW_Temperatur_Maschine_Pt100
+    +      KL_Rundung_HSCI_Aufloesung
+    /      KL_Anpassung_HSCI_Aufloesung
+    +      WG_Temperatur_Maschine_Offset
+    =      WG_Temperatur_Maschine_Pt100
+
+    L      IW_Temperatur_Spindel_Pt100
+    +      KL_Rundung_HSCI_Aufloesung
+    /      KL_Anpassung_HSCI_Aufloesung
+    =      WG_Temperatur_Spindel_Pt100
+  ENDI
+#else
+  LN     ML_Init_Temp_Kompensation
+  AN     MG_T_Kompensation_Test
+  A      ML_Maschine_Pt100_gefunden
+  A      ML_Spindel_Pt100_gefunden
+  IFT
+    L      BL_Maschine_Nr_Pt100_Eingang
+    >      K+0
+    IFT
+      L      ML_Maschine_Pt100_an_PL510
+      IFT
+        PS     BL_Maschine_Nr_Basismodul_PL510
+        PS     BL_Maschine_Nr_Steckplatz_PL510
+        PS     BL_Maschine_Nr_Pt100_Eingang
+        CM     9138                    ;Analog-Eing‰nge einer PLC-Leistungsplatine PLB 51x lesen
+        PLW
+        +      K+5
+        /      K+10
+        +      WG_Temperatur_Maschine_Offset
+        =      WG_Temperatur_Maschine_Pt100
+        M_Modul_Fehler_anzeigen
+      ELSE
+        PS     BL_Maschine_Nr_Pt100_Eingang
+        CM     9003                    ;Analog-Eing‰nge lesen
+        PLW
+        X      BL_Faktor_Maschine_Pt100
+        +      WG_Temperatur_Maschine_Offset
+        =      WG_Temperatur_Maschine_Pt100
+        M_Modul_Fehler_anzeigen
+      ENDI
+    ENDI
+
+    L      ML_Spindel_Pt100_an_PL510
+    IFT
+      PS     BL_Spindel_Nr_Basismodul_PL510
+      PS     BL_Spindel_Nr_Steckplatz_PL510
+      PS     BL_Spindel_Nr_Pt100_Eingang
+      CM     9138                      ;Analog-Eing‰nge einer PLC-Leistungsplatine PLB 51x lesen
+      PLW
+      +      K+5
+      /      K+10
+      =      WG_Temperatur_Spindel_Pt100
+      M_Modul_Fehler_anzeigen
+    ELSE
+      PS     BL_Spindel_Nr_Pt100_Eingang
+      CM     9003                      ;Analog-Eing‰nge lesen
+      PLW
+      X      BL_Faktor_Spindel_Pt100
+      =      WG_Temperatur_Spindel_Pt100
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+#endif
+
+  CM     T_Simulation
+
+  L      WG_Temperatur_Spindel
+  >      STG_Spindel[KG_S1].DG_max_Temperatur
+  S      PN_Fehler_Spindel_T_max
+
+  L      WG_Temperatur_Spindel_Pt100
+  +      DL_Temperatur_Spindel_Summe
+  =      DL_Temperatur_Spindel_Summe
+
+  L      WG_Temperatur_Maschine_Pt100
+  +      DL_Temperatur_Maschine_Summe
+  =      DL_Temperatur_Maschine_Summe
+
+  INC    WL_Mittelwert_Zaehler
+
+  L      WL_Mittelwert_Zaehler
+  >=     WL_n_Messungen
+  IFT
+    LN     ML_Daten_von_Spawn_in_Bearbeitung
+    AN     ML_Init_Temp_Kompensation
+    IFT
+      L      DL_Temperatur_Spindel_Summe
+      /      WL_n_Messungen
+      =      WG_Temperatur_Spindel
+
+      L      DL_Temperatur_Maschine_Summe
+      /      WL_n_Messungen
+      =      WG_Temperatur_Maschine
+
+* Mittelwert-Bildung oder Temperatur-Differenz
+
+      L      ML_Temperatur_Mittelwert_Sensoren
+      IFT
+        L      WG_Temperatur_Spindel
+        +      WG_Temperatur_Maschine
+        /      K+2
+        =      WG_Temperatur_Tabelle
+      ELSE
+        L      WG_Temperatur_Spindel
+        -      WG_Temperatur_Maschine
+        =      WG_Temperatur_Tabelle
+      ENDI
+
+      L      WG_Temperatur_Tabelle
+      <      K+0
+      IFT
+        L      WG_Temperatur_Tabelle
+        <      KL_T_Differenz_min
+        S      PN_Fehler_Temperatur_Kompensation
+        S      MG_Win_Temperatur_Sensoren
+
+        L      K+0
+        =      WG_Temperatur_Tabelle
+      ENDI
+    ENDI
+
+    L      ML_Spawn_gestartet
+    IFT
+      PS     DL_Temp_Komp_Ident
+      PS     KL_Event_Maske
+      CM     9261                      ;Senden von Events
+
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      K+0
+    =      WL_Mittelwert_Zaehler
+    =      DL_Temperatur_Spindel_Summe
+    =      DL_Temperatur_Maschine_Summe
+
+    L      MG_Eins_Merker
+    S      ML_Daten_von_Spawn_in_Bearbeitung
+
+  ENDI
+
+EM
+
+* Spawn Starten (Temp-Kompensations Tabelle lesen/schreiben)
+;----------------------------
+LBL Spawn_Start
+
+  SPAWN  Spawn_Kompensation
+  =      DL_Temp_Komp_Ident
+  ==     K -1
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+  SN     ML_Spawn_gestartet
+
+EM
+
+* Endlos Schleife f¸r Spawn (warten auf Event)
+;----------------------------
+LBL Spawn_Kompensation
+
+  REPEAT
+    PS     KL_auf_Event_warten
+    PS     KL_Event_oder_verknuepft
+    PS     KL_Event_Maske
+    CM     9260                        ;Empfangen von und Warten auf Events
+    PLW
+    BT     K+0
+    CMT    Kompensation
+
+    M_Modul_Fehler_anzeigen
+
+    LN     MG_T_Kompensation_aktiv
+    O      PN_Fehler_Submit_Spawn_Queue_voll
+  UNTILT
+
+  L      MG_Eins_Merker
+  R      ML_Spawn_gestartet
+
+EM
+
+* Tabellen Datei ˆffnen
+;----------------------------
+LBL Kompensation
+
+  PS     KL_File_Zugriff_lesen_schreiben
+  PS     S">OEM.TEMP_COMPENSATION"
+  CM     9240                          ;÷ffnen einer Datei durch die PLC
+  PL     DL_File_Handle
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_Datei_oeffnen)
+
+  CM     9262                          ;Kontextwechsel zwischen PLC-Prozessen
+  M_Modul_Fehler_anzeigen
+
+* Daten Temperatur_Tabelle lesen/schreiben
+  L      DL_File_Handle
+  <>     K -1
+  IFT
+    L      ML_Init_Temp_Kompensation
+    CMT    Init_Temp_Komp
+
+    CM     9262                        ;Kontextwechsel zwischen PLC-Prozessen
+    M_Modul_Fehler_anzeigen
+
+* aktuelle Temperatur Differenz schreiben
+    PS     DL_File_Handle
+    PS     KL_Zeile_1
+    PS     S"Data"
+    PS     WG_Temperatur_Maschine
+    CM     9256                        ;Schreiben eines Integerwertes in ein Feld einer Tabelle
+    M_Modul_Fehler_Win_anzeigen(MG_Win_schreiben_Tabelle)
+
+    PS     DL_File_Handle
+    PS     KL_Zeile_2
+    PS     S"Data"
+    PS     WG_Temperatur_Spindel
+    CM     9256                        ;Schreiben eines Integerwertes in ein Feld einer Tabelle
+    M_Modul_Fehler_Win_anzeigen(MG_Win_schreiben_Tabelle)
+
+    PS     DL_File_Handle
+    PS     KL_Zeile_3
+    PS     S"Data"
+    PS     WG_Temperatur_Tabelle
+    CM     9256                        ;Schreiben eines Integerwertes in ein Feld einer Tabelle
+    M_Modul_Fehler_Win_anzeigen(MG_Win_schreiben_Tabelle)
+
+    PS     DL_File_Handle
+    PS     KL_Zeile_0
+    PS     S"Setup"
+    CM     9255                        ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+
+    M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+* Aktuelle Temperatur Differenz in der Tabelle suchen.
+
+    PLW
+    ==     K+1
+    =      MG_T_Kompensation_ein
+    IFT
+      L      MG_Win_Wert_nicht_gefunden
+      R      MG_Win_Wert_nicht_gefunden
+
+      L      K+0
+      =X
+      REPEAT
+        LX
+        =      WL_Tabelle_Zeilennummer
+
+        PS     DL_File_Handle
+        PSX
+        PS     S"Temp"
+        CM     9255                    ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+        PL     WL_Temperatur_Diff_0
+        M_Modul_Fehler_Win_anzeigen(MG_Win_Wert_nicht_gefunden)
+
+        CM     9262                    ;Kontextwechsel zwischen PLC-Prozessen
+        M_Modul_Fehler_anzeigen
+
+        INCX
+
+        PS     DL_File_Handle
+        PSX
+        PS     S"Temp"
+        CM     9255                    ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+        PL     WL_Temperatur_Diff_1
+
+        M_Modul_Fehler_Win_anzeigen(MG_Win_Wert_nicht_gefunden)
+
+        L      MG_Win_Wert_nicht_gefunden
+        IFT
+          DEC    WL_Tabelle_Zeilennummer
+        ENDI
+
+        CM     9262                    ;Kontextwechsel zwischen PLC-Prozessen
+        M_Modul_Fehler_anzeigen
+
+        L      WG_Temperatur_Tabelle
+        >=     WL_Temperatur_Diff_0
+        A[
+          L      WG_Temperatur_Tabelle
+          <=     WL_Temperatur_Diff_1
+        ]
+        O      MG_Win_Wert_nicht_gefunden
+      UNTILT
+
+* Komp-Werte der Achsen aus Tabelle lesen und an NC ¸bergeben
+* Erkennung ob Erw‰rmung bzw. Abk¸hlung stattfindet oder System
+* sich in Hysterese befindet
+
+      L      WG_Temperatur_Tabelle
+      -      WL_Temperatur_Differenz_alt
+      >      K+0
+      S      MG_Erwaermung
+      IFT
+        L      MG_Abkuehlung
+        R      MG_Abkuehlung
+        S      MG_Hyst_Abkuehlung_X
+        S      MG_Hyst_Abkuehlung_Y
+        S      MG_Hyst_Abkuehlung_Z
+      ENDI
+
+      L      WG_Temperatur_Tabelle
+      -      WL_Temperatur_Differenz_alt
+      <      K+0
+      S      MG_Abkuehlung
+      IFT
+        L      MG_Erwaermung
+        R      MG_Erwaermung
+        S      MG_Hyst_Erwaermung_X
+        S      MG_Hyst_Erwaermung_Y
+        S      MG_Hyst_Erwaermung_Z
+      ENDI
+
+      L      WG_Temperatur_Tabelle
+      =      WL_Temperatur_Differenz_alt
+
+      L      S"Xp"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Xp
+
+      L      S"Yp"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Yp
+
+      L      S"Zp"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Zp
+
+*    CM     9262                        ;Taskwechsel erlauben
+*    M_Modul_Fehler_anzeigen
+
+      L      S"Xn"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Xn
+
+      L      S"Yn"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Yn
+
+      L      S"Zn"
+      =      SG_Feld_Name
+      CM     Temp_Komp_Wert
+      PL     WL_Kompensation_Wert_Zn
+
+*    CM     9262                        ;Taskwechsel erlauben
+*    M_Modul_Fehler_anzeigen
+
+* falls Kennlinie keine Hysterese aufweist oder Mittelwert in Tabelle
+* angew‰hlt wurde, wird der Mittelwert zwischen den 2 Kurven verwandt
+
+      L      K+0
+      =X
+
+      REPEAT
+        L      MG_Kennlinie_ohne_Hyst_X[X]
+        IFT
+          R      MG_Hyst_Abkuehlung_X[X]
+          R      MG_Hyst_Erwaermung_X[X]
+
+          L      MG_T_Kompensation_X_aktiv[X]
+          IFT
+            L      WL_Kompensation_Wert_Xp[X]
+            +      WL_Kompensation_Wert_Xn[X]
+            /      K+2
+            =      WL_Kompensation_Wert_X[X]
+            =      WG_Temp_Kompensation_X[X]
+          ELSE
+            L      K+0
+            =      WG_Temp_Kompensation_X[X]
+          ENDI
+        ELSE
+          L      MG_Erwaermung
+          IFT
+            L      WL_Kompensation_Wert_Xp[X]
+            =      WL_Kompensation_Wert_X[X]
+          ENDI
+
+          L      MG_Abkuehlung
+          IFT
+            L      WL_Kompensation_Wert_Xn[X]
+            =      WL_Kompensation_Wert_X[X]
+          ENDI
+
+          LN     MG_Hyst_Erwaermung_X[X]
+          AN     MG_Hyst_Abkuehlung_X[X]
+          IFT
+            L      MG_T_Kompensation_X_aktiv[X]
+            IFT
+              L      WL_Kompensation_Wert_X[X]
+              =      WG_Temp_Kompensation_X[X]
+            ELSE
+              L      K+0
+              =      WG_Temp_Kompensation_X[X]
+            ENDI
+
+            PS     WL_Kompensation_Wert_X[X]
+            CM     Absolut
+            PL     WL_Kompensation_Wert_X[X]
+
+            L      MG_Abkuehlung
+            IFT
+              L      WL_Kompensation_Wert_X[X]
+              =      WL_Abkuehlung_Wert_X[X]
+            ENDI
+
+            L      MG_Erwaermung
+            IFT
+              L      WL_Kompensation_Wert_X[X]
+              =      WL_Erwaermung_Wert_X[X]
+            ENDI
+          ENDI
+
+          PS     WL_Kompensation_Wert_X[X]
+          CM     Absolut
+          PL     WL_Kompensation_Wert_X[X]
+
+          PS     WL_Kompensation_Wert_Xp[X]
+          CM     Absolut
+          PL     WL_Kompensation_Wert_Xp[X]
+
+          PS     WL_Kompensation_Wert_Xn[X]
+          CM     Absolut
+          PL     WL_Kompensation_Wert_Xn[X]
+
+          L      WL_Kompensation_Wert_Xn[X]
+          <      WL_Kompensation_Wert_Xp[X]
+          S      MG_Kennlinie_ohne_Hyst_X[X]
+          IFT
+            PS     DL_File_Handle
+            LX
+            +      KL_Zeile_8
+            PSW
+            PS     S"Setup"
+            PS     K+1
+            CM     9256                ;Schreiben eines Integerwertes in ein Feld einer Tabelle
+            M_Modul_Fehler_Win_anzeigen(MG_Win_schreiben_Tabelle)
+          ENDI
+
+          L      MG_Abkuehlung
+          IFT
+            L      WL_Kompensation_Wert_X[X]
+            <=     WL_Erwaermung_Wert_X[X]
+            R      MG_Hyst_Erwaermung_X[X]
+
+            L      WL_Kompensation_Wert_X[X]
+            <=     WL_Abkuehlung_Wert_X[X]
+            R      MG_Hyst_Abkuehlung_X[X]
+          ENDI
+
+          L      MG_Erwaermung
+          IFT
+            L      WL_Kompensation_Wert_X[X]
+            >=     WL_Abkuehlung_Wert_X[X]
+            R      MG_Hyst_Abkuehlung_X[X]
+
+            L      WL_Kompensation_Wert_X[X]
+            >=     WL_Erwaermung_Wert_X[X]
+            R      MG_Hyst_Erwaermung_X[X]
+          ENDI
+        ENDI
+
+        INCX
+        LX
+        >      KG_Achse_Z
+      UNTILT
+
+    ELSE
+      L      K+0
+      =      WG_Temp_Kompensation_X
+      =      WG_Temp_Kompensation_Y
+      =      WG_Temp_Kompensation_Z
+    ENDI
+
+    L      ML_Daten_von_Spawn_in_Bearbeitung
+    R      ML_Daten_von_Spawn_in_Bearbeitung
+
+  ENDI
+
+  L      MG_Win_Datei_oeffnen
+  O      MG_Win_lesen_Tabelle
+  O      MG_Win_schreiben_Tabelle
+  O      MG_Win_Wert_nicht_gefunden
+  S      PN_Fehler_Temperatur_Kompensation
+
+  PS     DL_File_Handle
+  CM     9241                          ;Schlieﬂen einer Datei durch die PLC
+  M_Modul_Fehler_anzeigen
+
+EM
+
+* Werte aus Tabelle lesen und interpolieren
+;----------------------------
+LBL Temp_Komp_Wert
+
+  PS     DL_File_Handle
+  PS     WL_Tabelle_Zeilennummer
+  PS     K &SG_Feld_Name
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PL     WL_Kompensations_Wert_0
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  PS     DL_File_Handle
+  L      WL_Tabelle_Zeilennummer
+  +      K+1
+  PSW
+  PS     K &SG_Feld_Name
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PL     WL_Kompensations_Wert_1
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  CM     9262                          ;Kontextwechsel zwischen PLC-Prozessen
+  M_Modul_Fehler_anzeigen
+
+* Linear Interpolation zwischen den St¸tzpunkten.
+
+  L      WL_Kompensations_Wert_1
+  -      WL_Kompensations_Wert_0
+  X[
+    L      WG_Temperatur_Tabelle
+    -      WL_Temperatur_Diff_0
+  ]
+  /[
+    L      WL_Temperatur_Diff_1
+    -      WL_Temperatur_Diff_0
+  ]
+  +      WL_Kompensations_Wert_0
+  PSW
+
+EM
+
+
+* Lesen der Initialisierungs-Werte aus Temperatur Tabelle.
+;----------------------------
+LBL Init_Temp_Komp
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_4
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  ==     K+1
+  =      ML_Temperatur_Mittelwert_Sensoren
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+#if CFG_HSCI = "inaktiv"
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_5
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  PSW
+  >      K+69
+  =      ML_Maschine_Pt100_an_PL510
+  IFT
+    PLW
+    PSW
+    /      K+100
+    =      BL_Maschine_Nr_Pt100_Eingang
+
+    PLW
+    MOD    K+100
+    PSW
+    /      K+10
+    =      BL_Maschine_Nr_Steckplatz_PL510
+
+    PLW
+    MOD    K+10
+    =      BL_Maschine_Nr_Basismodul_PL510
+  ELSE
+    PL     BL_Maschine_Nr_Pt100_Eingang
+  ENDI
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_6
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  PSW
+  >      K+69
+  =      ML_Spindel_Pt100_an_PL510
+  IFT
+    PLW
+    PSW
+    /      K+100
+    =      BL_Spindel_Nr_Pt100_Eingang
+
+    PLW
+    MOD    K+100
+    PSW
+    /      K+10
+    =      BL_Spindel_Nr_Steckplatz_PL510
+
+    PLW
+    MOD    K+10
+    =      BL_Spindel_Nr_Basismodul_PL510
+  ELSE
+    PL     BL_Spindel_Nr_Pt100_Eingang
+  ENDI
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  CM     9262                          ;Kontextwechsel zwischen PLC-Prozessen
+  M_Modul_Fehler_anzeigen
+
+* Nr Pt100 Anschluﬂ und Multiplikationsfaktor aus KField lesen
+
+  L      MG_Eins_Merker
+  R      ML_Spindel_Pt100_gefunden
+  R      ML_Maschine_Pt100_gefunden
+
+  L      BL_Maschine_Nr_Pt100_Eingang
+  ==     K+0
+  S      ML_Maschine_Pt100_gefunden
+
+  L      K+0
+  =X
+  REPEAT
+    L      KF Pt100_Eingang[X]
+    PSW
+    PSW
+
+    INCX
+
+    PLW
+    ==     BL_Maschine_Nr_Pt100_Eingang
+    AN     ML_Maschine_Pt100_gefunden
+    S      ML_Maschine_Pt100_gefunden
+    IFT
+      L      KF Pt100_Eingang[X]
+      =      BL_Faktor_Maschine_Pt100
+    ENDI
+
+    PLW
+    ==     BL_Spindel_Nr_Pt100_Eingang
+    AN     ML_Spindel_Pt100_gefunden
+    S      ML_Spindel_Pt100_gefunden
+    IFT
+      L      KF Pt100_Eingang[X]
+      =      BL_Faktor_Spindel_Pt100
+    ENDI
+
+    INCX
+
+    LN     ML_Spindel_Pt100_gefunden
+    ON     ML_Maschine_Pt100_gefunden
+    A[
+      L      KF Pt100_Eingang[X]
+      <=     K-1
+    ]
+    S      MG_Win_Pt100_nicht_gefunden
+
+    L      ML_Spindel_Pt100_gefunden
+    A      ML_Maschine_Pt100_gefunden
+    O      MG_Win_Pt100_nicht_gefunden
+  UNTILT
+
+#endif
+
+  CM     9262                          ;Kontextwechsel zwischen PLC-Prozessen
+  M_Modul_Fehler_anzeigen
+
+* Lesen der Anzahl der PLC Zyklen f¸r die Mittelwert-Bildung
+  PS     DL_File_Handle
+  PS     KL_Zeile_7
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PL     WL_n_Messungen
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  L      WL_n_Messungen
+  <      KL_min_notwendige_Messungen
+  IFT
+    L      KL_min_notwendige_Messungen
+    =      WL_n_Messungen
+  ENDI
+
+  CM     9262                          ;Kontextwechsel zwischen PLC-Prozessen
+
+  M_Modul_Fehler_anzeigen
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_8
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  >      K+0
+  =      MG_Kennlinie_ohne_Hyst_X
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_9
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  >      K+0
+  =      MG_Kennlinie_ohne_Hyst_Y
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  PS     DL_File_Handle
+  PS     KL_Zeile_10
+  PS     S"Setup"
+  CM     9255                          ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+  PLW
+  >      K+0
+  =      MG_Kennlinie_ohne_Hyst_Z
+
+  M_Modul_Fehler_Win_anzeigen(MG_Win_lesen_Tabelle)
+
+  L      ML_Init_Temp_Kompensation
+  R      ML_Init_Temp_Kompensation
+
+EM
+
+;----------------------------
+LBL T_Simulation
+
+  L      MG_T_Kompensation_Test
+  IFT
+    L      MG_T_Kompensation_Test
+    AN     ML_Test_war_aktiv
+    IFT
+      L      K+50
+      =      BG_PLC_Zyklen_T_Simulation
+
+      L      K+200
+      =      WG_Temperatur_Spindel_Pt100
+      =      WG_Temperatur_Maschine_Pt100
+      =      WG_Temperatur_Spindel_min
+
+      L      K+300
+      =      WG_Temperatur_Spindel_max
+    ENDI
+
+    L      MG_T_Kompensation_Test_auto
+    IFT
+
+      DEC    BL_Zaehler_PLC_Zyklen
+
+      L      BL_Zaehler_PLC_Zyklen
+      <=     K+0
+      AN     ML_Temperatur_decrementieren
+      IFT
+        L      BG_PLC_Zyklen_T_Simulation
+        =      BL_Zaehler_PLC_Zyklen
+
+        L      WG_Temperatur_Spindel_Pt100
+        +      K+1
+        =      WG_Temperatur_Spindel_Pt100
+
+        L      WG_Temperatur_Spindel_Pt100
+        >=     WG_Temperatur_Spindel_max
+        S      ML_Temperatur_decrementieren
+      ENDI
+
+      L      BL_Zaehler_PLC_Zyklen
+      <=     K+0
+      A      ML_Temperatur_decrementieren
+      IFT
+        L      BG_PLC_Zyklen_T_Simulation
+        =      BL_Zaehler_PLC_Zyklen
+
+        L      WG_Temperatur_Spindel_Pt100
+        -      K+1
+        =      WG_Temperatur_Spindel_Pt100
+
+        L      WG_Temperatur_Spindel_Pt100
+        <=     WG_Temperatur_Spindel_min
+        R      ML_Temperatur_decrementieren
+*       R      MG_T_Kompensation_Test_auto
+      ENDI
+    ENDI
+  ENDI
+
+  L      MG_T_Kompensation_Test
+  =      ML_Test_war_aktiv
+
+EM
+
+#if CFG_HSCI = "inaktiv"
+
+* Stecker Belegung und Multiplikations Faktor f¸r die
+* PT 100 Eing‰nge.
+
+* Stecker-Belegung an der ersten PL410
+* Stecker (PA)     Modul-Wert
+* X15     (X2)  == 0    Analog-Eingang
+* X16     (X3)  == 1    Analog-Eingang
+* X17     (X4)  == 2    Analog-Eingang
+* X18     (X5)  == 3    Analog-Eingang
+* X19     (X7)  == 4    PT 100 Eingang
+* X20     (X8)  == 5    PT 100 Eingang
+* X21     (X9)  == 6    PT 100 Eingang
+* X22     (X10) == 7    PT 100 Eingang
+
+* Stecker-Belegung an der zweiten PL410
+* Stecker (PA)     Modul-Wert
+* X15     (X2)  == 8    Analog-Eingang
+* X16     (X3)  == 9    Analog-Eingang
+* X17     (X4)  == 10   Analog-Eingang
+* X18     (X5)  == 11   Analog-Eingang
+* X19     (X7)  == 12   PT 100 Eingang
+* X20     (X8)  == 13   PT 100 Eingang
+* X21     (X9)  == 14   PT 100 Eingang
+* X22     (X10) == 15   PT 100 Eingang
+
+* Pt100 Belegung an der ersten PL510
+* Stecker Steckplatz Basismodul  Modul-Wert
+* X19     0          0        == 400
+* X20     0          0        == 500
+* X21     0          0        == 600
+* X22     0          0        == 700
+* X19     1          0        == 410
+* X20     1          0        == 510
+* X21     1          0        == 610
+* X22     1          0        == 710
+* X19     2          0        == 420
+* X20     2          0        == 520
+* X21     2          0        == 620
+* X22     2          0        == 720
+* X19     3          0        == 430
+* X20     3          0        == 530
+* X21     3          0        == 630
+* X22     3          0        == 730
+
+* Pt100 Belegung an der zweiter PL510
+* Stecker Steckplatz Basismodul  Modul-Wert
+* X19     0          1        == 401
+* X20     0          1        == 501
+* X21     0          1        == 601
+* X22     0          1        == 701
+* X19     1          1        == 411
+* X20     1          1        == 511
+* X21     1          1        == 611
+* X22     1          1        == 711
+* X19     2          1        == 421
+* X20     2          1        == 521
+* X21     2          1        == 621
+* X22     2          1        == 721
+* X19     3          1        == 431
+* X20     3          1        == 531
+* X21     3          1        == 631
+* X22     3          1        == 731
+
+* Stecker-Belegung an der LE
+* Stecker PIN        Modul-Wert
+* X48     1,2,3,4      == 67   PT 100-Eingang
+* X48     5,6,7,8      == 68   PT 100-Eingang
+* X48     9,10,11,12   == 69   PT 100-Eingang
+* X48     14,15        == 64   Analog-Eingang
+* X48     16,17        == 65   Analog-Eingang
+* X48     18,19        == 66   Analog-Eingang
+
+KFIELD Pt100_Eingang
+  K+4                                  ;Pt100 Eingang 0.5 Grad Auflˆsung
+  K+5                                  ;Faktor f¸r die Anpassung 0.1 Grad Auflˆsung
+
+  K+5
+  K+5
+
+  K+6
+  K+5
+
+  K+7
+  K+5
+
+  K+12
+  K+5
+
+  K+13
+  K+5
+
+  K+14
+  K+5
+
+  K+15
+  K+5
+
+  K+67                                 ;Pt100 Eingang 0.1 Grad Auflˆsung
+  K+1                                  ;Faktor f¸r die Anpassung 0.1 Grad Auflˆsung
+
+  K+68
+  K+1
+
+  K+69
+  K+1
+
+  K+400
+  K+1
+
+  K+500
+  K+1
+
+  K+600
+  K+1
+
+  K+700
+  K+1
+
+  K+410
+  K+1
+
+  K+510
+  K+1
+
+  K+610
+  K+1
+
+  K+710
+  K+1
+
+  K+420
+  K+1
+
+  K+520
+  K+1
+
+  K+620
+  K+1
+
+  K+720
+  K+1
+
+  K+430
+  K+1
+
+  K+530
+  K+1
+
+  K+630
+  K+1
+
+  K+730
+  K+1
+
+  K+401
+  K+1
+
+  K+501
+  K+1
+
+  K+601
+  K+1
+
+  K+701
+  K+1
+
+  K+411
+  K+1
+
+  K+511
+  K+1
+
+  K+611
+  K+1
+
+  K+711
+  K+1
+
+  K+421
+  K+1
+
+  K+521
+  K+1
+
+  K+621
+  K+1
+
+  K+721
+  K+1
+
+  K+431
+  K+1
+
+  K+531
+  K+1
+
+  K+631
+  K+1
+
+  K+731
+  K+1
+
+  K-1                                  ; Ende der Tabelle
+ENDK
+
+#endif

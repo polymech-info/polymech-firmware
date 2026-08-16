@@ -1,0 +1,203 @@
+VERSION 3
+PLCSOFTVERS {
+    OrgValue(PLC Version)
+    SetConfigValue(CFG_PLC_Version)
+}
+MPFILE {
+    OrgValue(PLC:\MP\60642x04.MP)
+    InsertConfigValue("$VARIANTBASE$,  $VARIANTINDEX$,  CFG_Maschinen_Typ", "PLC:\\MP\\%s_%s_%s.MP")
+}
+SPLCSOFTVERS {
+    OrgValue(SPLC Version)
+  #if CFG_FS = "inaktiv"
+    Comment
+}
+PLCSAFETY {
+    OrgValue(PLC:\SPLC\sMainPgm.src)
+  #if CFG_FS = "inaktiv"
+    Comment
+}
+PLCSAFETYCFG {
+    OrgValue(PLC:\SPLC\sOemFs.cfg)
+  #if CFG_FS = "inaktiv"
+    Comment
+}
+SGMPCHANGE {
+    OrgValue(SMP)
+    Comment
+}
+KINEMATIC {
+    OrgValue(PLC:\KINEMAT\KINELIST.TAB)
+  #if CFG_Maschinen_Typ = "PS"
+    Set("PLC:\\KINEMAT_PS\\KINELIST.TAB")
+}
+FORCELISTPATH {
+    OrgValue(PLC:\BASIS\PROGRAMM\MAIN_PGM_01.FLT)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+OEMERRORCHM.FILE {
+    OrgValue(oem1.chm)
+  #if CFG_Maschinen_Typ = "PS"
+    Comment
+}
+OEMERRORCHM.OFFSET {
+    OrgValue(10000000)
+  #if CFG_Maschinen_Typ = "PS"
+    Comment
+}
+LOGOSP {
+    OrgValue(PLC:\LOGO\%GraphicsResolution%\Logo_iTNC530.bmp)
+  #if (CFG_Maschinen_Typ ! "MSU_530") and ( $VARIANTBASE$ ! 340494)
+    Comment
+}
+NUMBERMP4111 {
+    OrgValue(999)
+  #ifdef $iTNC530PROG$
+    Set(114)
+}
+NUMBERMP4230 {
+    OrgValue(99)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+WLB.ORDER {
+    OrgValue(4,2,1,3,5)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPFRAGMENT0 {
+    OrgValue(PLC:\MP\Teildat0.MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPFRAGMENT1 {
+    OrgValue(PLC:\MP\Teildat1.MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPFRAGMENT2 {
+    OrgValue(PLC:\MP\Teildat2.MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPFRAGMENT3 {
+    OrgValue(PLC:\MP\Teildat3.MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+TCHRULES {
+    OrgValue(PLC:\WZM_20_40_1_1.TCR)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+IOCCFG {
+    OrgValue(PLC:\IOC\hsci_pl62xx_mb_te.iocp)
+  #if (CFG_FS = "inaktiv") and (CFG_HSCI = "inaktiv")
+    Comment
+}
+BISPATH {
+    OrgValue(PLC:\IOC\BIS)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+PRESETTABLE {
+    OrgValue(OFF)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+PR.LINESLOCKED {
+    OrgValue(0,1,2,10-12)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+TTYP {
+    OrgValue(PLC:\TTYP_01.TAB)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+TABCMA {
+    OrgValue(PLC:\CORRECT\CONFIG.CMA)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPPASSWORD {
+    OrgValue(MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+MPLOCKFILE {
+    OrgValue(PLC:\MP\MP_LOCK.MP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+PLCPASSWORD {
+    OrgValue(PLC)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+REMOTE.LOCKSOFTKEYVISIBLE {
+    OrgValue(YES)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+USR_PAL_POCKET {
+    OrgValue(PLC:\PROTO\PAL_POCK.P)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SERVICE.REQUEST.HOST {
+    OrgValue(160.1.246.119)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SERVICE.REQUEST.CONTENT {
+    OrgValue(PLC:\SERVICE.SYS)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SERVICE.REQUEST.PORT {
+    OrgValue(19001)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SERVICE.REQUEST.PERIOD {
+    OrgValue(10)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SERVICE.REQUEST.TIMEOUT {
+    OrgValue(15)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SUPPORT.REQUEST.HOST {
+    OrgValue(160.1.246.119)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+SUPPORT.REQUEST.CONTENT {
+    OrgValue(PLC:\SUPPORT.SYS)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+OEMCYC.ZIPNAME {
+    OrgValue(OEMCY1.ZIP)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+LOCKEOPTIONS {
+    OrgValue(44,45)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+STRICTREPOS {
+    OrgValue(YES)
+  #ifdef $iTNC530PROG$
+    Comment
+}
+REMOTE.RFBSERVER {
+    OrgValue(ON)
+  #ifdef $iTNC530PROG$
+    Comment
+}

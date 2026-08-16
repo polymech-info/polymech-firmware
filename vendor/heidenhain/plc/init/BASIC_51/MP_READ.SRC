@@ -1,0 +1,1348 @@
+*-----------------------------------------------------------------------------
+*  Machine Parameter reading
+*-----------------------------------------------------------------------------
+*    To read one machine parameter (MP) it is necessary to put in 4 lines
+*    in the constant field "KFIELD MP_definition":
+*
+*    KFIELD MP_definition
+*      K+10                    --> number MP
+*      KL_index_0              --> index MP
+*      KL_type_word            --> typ destination operand (B,W,D)
+*      K&WG_MP10_active_axis   --> destination address MP value
+*      ...
+*      K-1                     --> end constant field
+*    ENDK
+*-----------------------------------------------------------------------------
+
+#define /s    KL_index_0                               K+0
+#define /s    KL_index_1                               K+1
+#define /s    KL_index_2                               K+2
+#define /s    KL_index_3                               K+3
+#define /s    KL_index_4                               K+4
+#define /s    KL_index_5                               K+5
+#define /s    KL_index_6                               K+6
+#define /s    KL_index_7                               K+7
+#define /s    KL_index_8                               K+8
+#define /s    KL_index_9                               K+9
+#define /s    KL_index_10                              K+10
+#define /s    KL_index_11                              K+11
+#define /s    KL_index_12                              K+12
+#define /s    KL_index_13                              K+13
+#define /s    KL_index_14                              K+14
+#define /s    KL_index_15                              K+15
+#define /s    KL_index_16                              K+16
+#define /s    KL_index_17                              K+17
+#define /s    KL_index_18                              K+18
+#define /s    KL_index_19                              K+19
+#define /s    KL_index_20                              K+20
+#define /s    KL_index_21                              K+21
+#define /s    KL_index_22                              K+22
+#define /s    KL_index_23                              K+23
+#define /s    KL_index_24                              K+24
+#define /s    KL_index_25                              K+25
+#define /s    KL_index_26                              K+26
+#define /s    KL_index_27                              K+27
+#define /s    KL_index_28                              K+28
+#define /s    KL_index_29                              K+29
+#define /s    KL_index_30                              K+30
+#define /s    KL_index_31                              K+31
+#define /s    KL_index_34                              K+34           *;EUMACH Table clamped -> Z comp
+#define /s    KL_index_36                              K+36           *;EUMACH
+#define /s    KL_index_40                              K+40           *;EUMACH
+#define /s    KL_index_41                              K+41           *;EUMACH
+#define /s    KL_index_42                              K+42           *;EUMACH
+#define /s    KL_index_43                              K+43           *;EUMACH
+#define /s    KL_index_47                              K+47           *;EUMACH
+#define /s    KL_index_48                              K+48           *;EUMACH
+#define /s    KL_index_49                              K+49           *;EUMACH
+#define /s    KL_index_60                              K+60           *;EUMACH
+#define /s    KL_index_61                              K+61           *;EUMACH
+#define /s    KL_index_62                              K+62           *;EUMACH
+#define /s    KL_index_66                              K+66           *;EUMACH
+#define /s    KL_type_Byte                             K+0
+#define /s    KL_type_Word                             K+1
+#define /s    KL_type_DWord                            K+2
+#define /s    KL_spindle_inactive                      K+0
+#define /s    KL_spindle_with_ROD                      K+6
+#define /s    KL_spindle_without_rpm_ROD               K+0
+#define /s    KL_without_gear                          K+5
+#define /s    KL_without_gear_and_ROD                  K+8
+#define /s    KL_spindle_ref_without_ext_sensor        K+0
+#define /s    KL_TC_without_P_code                     K+2
+#define /s    KL_TC_table_inactive                     K+0
+#define /s    KL_TC_without_pockets                    K+0            *;EUMACH Dual TC
+#define /s    KL_PLC_axis                              K+1
+#define /s    KL_axis_with_ROD                         K+0
+#define /s    KL_controlled_axis                       K+2
+#define /s    KL_drive_temperature_max                 K+3
+#define /s    KL_hirth_axis                            K+4
+#define /s    KL_hirth_increment                       K+5
+#define /s    KL_modulo_value_axis                     K+6
+#define /s    KL_digital_axis                          K+8
+#define /s    KL_function_keys_to_PLC                  K+0
+#define /s    KL_bit_2_PGM_stop_M_strobe               K+2
+#define /s    KL_evaluation_by_NC                      K%10111
+#define /s    KL_encoder_distance_coded                K+0
+#define /s    KL_encoder_one_reference_mark            K+1
+#define /s    KL_encoder_incremental                   K+2            *;EUMACH
+#define /s    KL_reference_dog_short_distance_coded    K+3
+#define /s    KL_2_reference_mark_distance_coded       K+4
+#define /s    KL_encoder_EnDat                         K+5            *;EUMACH
+#define /s    KL_monitoring_drives_off_PLC_input       K+0
+#define /s    KL_monitoring_drives_on_PLC_input        K+1
+#define /s    KL_input_I0                              K+0
+#define /s    KL_programming_station_with_PLC          K+1
+#define /s    KL_programming_station                   K+2
+#define /s    KL_control_type                          K+21
+#define /s    KL_iTNC530_PC_programming_station        K+7
+#define /s    KL_supported_hand_wheel_types            K+13           *;EUMACH
+#define /s    KL_auto_start_active                     K+5            *;EUMACH
+
+#define /s    BL_MP_read_identfier                     B
+#define /s    BL_type_operand                          B
+#define /s    BL_case                                  B
+#define /s    BL_MP113_spindle_rpm_ROD                 B
+#define /s    BL_MP1340_reference_axis_identifier      B
+#define /s    BL_MP3010_spindle_mode                   B
+#define /s    BL_MP3143_reference_spindle              B
+#define /s    BL_MP7210_programming_station            B
+#define /s    BL_MP7440_output_of_M_functions          B
+#define /s    BL_MP7480_Tool_change_type               B
+#define /s    BL_MP7645_handwheel_keyboard             B
+#define /s    BL_MP7681_MSTQ_strobe_block_scan         B
+#define /s    BL_MP7683_NC_PGM_and_pallet_execute      B              *;EUMACH
+
+#define /s    WL_index                                 W
+#define /s    WL_MP4130_Ixx_suppress_monitoring_function W
+#define /s    WL_MP7260_tool_number_in_table           W
+
+#define /s /c BL_address_0                             B0             *;EUMACH BASIC 56
+#define /s /c WL_address_0                             W0             *;EUMACH BASIC 56
+#define /s /c DL_address_0                             D0             *;EUMACH BASIC 56
+
+#include Mac_Lib.inc
+
+GLOBAL MP_read
+
+;----------------------------
+LBL MP_read
+;----------------------------
+
+  L      PN_error_check_machine_parameter                             *;EUMACH BASIC54
+  EMT                                                                 *;EUMACH BASIC54
+
+  RPLY   BL_MP_read_identfier
+  <>     K+0
+  EMT
+  SUBM   MP_read_submit
+  =      BL_MP_read_identfier
+  ==     K+0
+  S      PN_error_submit_spawn_queue_full
+
+EM
+
+;----------------------------
+LBL MP_read_submit
+
+  L      MG_marker_one
+  R      MG_TNC_digital
+  R      PN_error_check_machine_parameter
+
+  L      K+0
+  =X
+
+  REPEAT
+
+    PS     KF MP_definition[X]
+    INCX
+    PS     KF MP_definition[X]
+;    CM     9032                                                      *;EUMACH Original PLC
+    CM     9310                                                       *;EUMACH BASIC54
+
+    INCX
+
+    L      KF MP_definition[X]
+    =      BL_type_operand
+
+    INCX
+
+    LX
+    =      WL_index
+
+    CASE   BL_type_operand
+      CM     PL_Byte_index
+      CM     PL_Word_index
+      CM     PL_DWord_index
+    ENDC
+
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+    L      WL_index
+    =X
+    INCX
+
+    L      KF MP_definition[X]
+    <      K+0
+  UNTILT
+
+  L      K+0
+  =      WG_controlled_axes
+  =      WG_PLC_axes
+  =      WG_hirth_axes
+  =      WG_drives_digital
+  =X
+
+  REPEAT
+
+    PSX
+    PS     KL_controlled_axis
+    CM     9038
+    PLW
+    >      K+0
+    IFT
+      L      WG_controlled_axes
+      BSX
+      =      WG_controlled_axes
+    ENDI
+    M_display_module_error(KG_error_module_9038)
+
+    L      WG_controlled_axes
+    BTX
+    IFT
+
+      PSX
+      PS     KL_digital_axis
+      CM     9038
+      PLW
+      >      K+0
+      IFT
+        L      WG_drives_digital
+        BSX
+        =      WG_drives_digital
+      ENDI
+
+     M_display_module_error(KG_error_module_9038)
+
+      PSX
+      PS     KL_hirth_axis
+      CM     9038
+      PLW
+      >      K+0
+      IFT
+        L      WG_hirth_axes
+        BSX
+        A      WG_controlled_axes
+        =      WG_hirth_axes
+      ENDI
+    M_display_module_error(KG_error_module_9038)
+
+      PSX
+      PS     KL_PLC_axis
+      CM     9038
+      PLW
+      >      K+0
+      IFT
+        L      WG_PLC_axes
+        BSX
+        =      WG_PLC_axes
+      ENDI
+    M_display_module_error(KG_error_module_9038)
+
+      PSX
+      PS     KL_hirth_increment
+      CM     9038
+      PL     DG_MP430_hirth_increm_X[X]
+    M_display_module_error(KG_error_module_9038)
+
+      PSX
+      PS     KL_modulo_value_axis
+      CM     9038
+      PL     DG_MP810_modulo_value_X[X]
+    M_display_module_error(KG_error_module_9038)
+
+      PSX
+      PS     KL_drive_temperature_max
+      CM     9038
+      PL     WG_drive_temp_max_X[X]
+    M_display_module_error(KG_error_module_9038)
+
+      PS     K+960
+      PSX
+;      CM     9032                                                    *;EUMACH Original PLC
+      CM     9310                                                     *;EUMACH BASIC54
+      PL     DG_MP960_ref_preset_X[X]
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+      PS     K+1030
+      PSX
+;      CM     9032                                                    *;EUMACH Original PLC
+      CM     9310                                                     *;EUMACH BASIC54
+      PL     DG_MP1030_pos_window_X[X]
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+      PS     K+1330
+      PSX
+;      CM     9032                                                    *;EUMACH Original PLC
+      CM     9310                                                     *;EUMACH BASIC54
+      PL     WG_MP1330_feed_X_ref[X]
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+      PS     K+1340
+      PSX
+;      CM     9032                                                    *;EUMACH Original PLC
+      CM     9310                                                     *;EUMACH BASIC54
+      PLW
+      =      BL_MP1340_reference_axis_identifier
+      >=     K+1
+      IFT
+        L      BL_MP1340_reference_axis_identifier
+        DECW
+        =      BL_MP1340_reference_axis_identifier
+
+        L      WG_traverse_reverence_active
+        BS     BL_MP1340_reference_axis_identifier
+        =      WG_traverse_reverence_active
+      ENDI
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+      PS     K+1350
+      PSX
+;      CM     9032                                                    *;EUMACH Original PLC
+      CM     9310                                                     *;EUMACH BASIC54
+      PLW
+      PSW
+      ==     KL_encoder_distance_coded
+      IFT
+        L      WG_axis_encoder_distance_coded
+        BSX
+        =      WG_axis_encoder_distance_coded
+      ENDI
+;    M_display_module_error(KG_error_module_9032)                     *;EUMACH Original PLC
+    M_display_module_error(KG_error_module_9310)                      *;EUMACH BASIC54
+
+      PLW
+      PSW
+      ==     KL_encoder_one_reference_mark
+      IFT
+        L      WG_axis_encoder_one_reference_mark
+        BSX
+        =      WG_axis_encoder_one_reference_mark
+      ENDI
+
+*;EUMACH
+      PLW
+      PSW
+      ==     KL_encoder_incremental
+      IFT
+        L      WG_axis_encoder_incremental
+        BSX
+        =      WG_axis_encoder_incremental
+      ENDI
+
+#if Tool_magazine = &PLC_axis
+      LX
+      ==     KG_Tool_magazine_axis
+      IFT
+        L      WG_axis_encoder_incremental
+        BT     KG_Tool_magazine_axis
+        =      MG_mag_axis_encoder_incremental
+      ENDI
+#endif
+*;EUMACH
+
+      PLW
+      PSW
+      ==     KL_reference_dog_short_distance_coded
+      IFT
+        L      WG_axis_encoder_distance_coded
+        BSX
+        =      WG_axis_encoder_distance_coded
+      ENDI
+
+      PLW
+      PSW                                                             *;EUMACH
+      ==     KL_2_reference_mark_distance_coded
+      IFT
+        L      WG_axis_encoder_distance_coded
+        BSX
+        =      WG_axis_encoder_distance_coded
+      ENDI
+
+*;EUMACH
+      PLW
+      ==     KL_encoder_EnDat
+      IFT
+        L      WG_axis_encoder_EnDat
+        BSX
+        =      WG_axis_encoder_EnDat
+      ENDI
+
+#if Tool_magazine = &PLC_axis
+      LX
+      ==     KG_Tool_magazine_axis
+      IFT
+        L      WG_axis_encoder_EnDat
+        BT     KG_Tool_magazine_axis
+        =      MG_mag_axis_encoder_EnDat
+      ENDI
+#endif
+*;EUMACH
+
+      LX                                                              *;EUMACH
+      <=     K+11                                                     *;EUMACH
+      IFT                                                             *;EUMACH
+        PS     K+4230
+        LX
+        +      K+12
+        PSW
+;        CM     9032                                                  *;EUMACH Original PLC
+        CM     9310                                                   *;EUMACH BASIC54
+        PL     NP_MP4230_12_posit_after_reference_X[X]
+;       M_display_module_error(KG_error_module_9032)                  *;EUMACH Original PLC
+        M_display_module_error(KG_error_module_9310)                  *;EUMACH BASIC54
+      ENDI                                                            *;EUMACH
+
+*      PS     K+4231
+*      LX
+*      +      K+10
+*      PSW
+*      CM     9032
+*      PL     NP_MP4230_10_torque_limited_X[X]
+*      M_display_module_error(KG_error_module_9032)
+
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_number_axes
+  UNTILT
+
+  PS     KG_spindle
+  PS     KL_drive_temperature_max
+  CM     9038
+  PL     WG_drive_temp_max_S
+  M_display_module_error(KG_error_module_9038)
+
+  PS     KG_spindle
+  PS     KL_digital_axis
+  CM     9038
+  PLW
+  >      K+0
+  =      MG_spindle_digital
+  IFT
+    L      WG_drives_digital
+    BS     KG_spindle
+    =      WG_drives_digital
+  ENDI
+    M_display_module_error(KG_error_module_9038)
+
+  L      WG_drives_digital
+  <>     K+0
+  S      MG_TNC_digital
+
+  L      DG_MP3420_pos_window_S
+  +      K+100                         ;S offset controlled to posit window
+  =      DG_MP3420_pos_window_S
+
+  L      BL_MP113_spindle_rpm_ROD
+  ==     KL_spindle_without_rpm_ROD
+  AN     MG_spindle_digital                                           *;EUMACH
+  =      MG_spindle_in_Uf_control_mode
+
+  L      BL_MP3010_spindle_mode
+  <>     KL_spindle_inactive
+  =      MG_spindle_active
+
+  L      BL_MP3010_spindle_mode
+  <>     KL_without_gear
+  A[
+    L      BL_MP3010_spindle_mode
+    <>     KL_without_gear_and_ROD
+  ]
+  =      MG_spindle_with_gear
+
+  L      BL_MP3010_spindle_mode
+  >=     KL_spindle_with_ROD
+  =      MG_spindle_with_ROD
+
+  L      BL_MP3143_reference_spindle
+  <>     KL_spindle_ref_without_ext_sensor
+  =      MG_spindle_reference_using_sensor
+
+  L      WG_MP2040_0_axis_group_1
+  O      WG_MP2040_1_axis_group_2
+  O      WG_MP2040_2_axis_group_3
+  O      WG_MP2040_3_axis_group_4                                     *;EUMACH 5XT
+  <>     K+0
+  =      MG_servo_drive_release_axis_groups_X150_active
+  IFT
+    L      MG_spindle_active
+    IFT
+      L      WG_controlled_axes
+      BS     KG_spindle
+      AN     WG_MP2040_0_axis_group_1
+      AN     WG_MP2040_1_axis_group_2
+      AN     WG_MP2040_2_axis_group_3
+      AN     WG_MP2040_3_axis_group_4                                 *;EUMACH 5XT
+      <>     K+0
+      S      PN_error_check_machine_parameter
+      =      MG_win_axes_MP10_not_assigned
+    ELSE
+      L      WG_controlled_axes
+      AN     WG_MP2040_0_axis_group_1
+      AN     WG_MP2040_1_axis_group_2
+      AN     WG_MP2040_2_axis_group_3
+      AN     WG_MP2040_3_axis_group_4                                 *;EUMACH 5XT
+      <>     K+0
+      S      PN_error_check_machine_parameter
+      =      MG_win_axes_MP10_not_assigned
+    ENDI
+  ENDI
+
+*;EUMACH BASIC51
+;  L      WL_MP4130_Ixx_suppress_monitoring_function
+;  <>     KL_input_I0
+;  IFT
+;    L      KL_monitoring_drives_on_PLC_input
+;    =      PN_W522_fast_PLC_input
+;  ELSE
+;    L      KL_monitoring_drives_off_PLC_input
+;    =      PN_W522_fast_PLC_input
+;  ENDI
+*;EUMACH BASIC51
+
+*;EUMACH
+#if 3D_head = &active
+#if (MT = &MT_25A) or (MT = &MT_35A)
+  L      NP_MP4230_10_3D_head_offset_axis_1_S_position
+  MOD    K+3600000
+  =      DG_3D_head_axis_1_S_position
+
+  L      NP_MP4230_11_3D_head_offset_axis_2_S_position
+  MOD    K+3600000
+  =      DG_3D_head_axis_2_S_position
+#endif
+#endif
+*;EUMACH
+
+  L      BL_MP7210_programming_station
+  ==     KL_programming_station_with_PLC
+  =      MG_TNC_programming_station_with_PLC
+
+  L      BL_MP7210_programming_station
+  ==     KL_programming_station
+  O      MG_TNC_programming_station_with_PLC
+  S      PN_error_TNC_programming_station_active
+
+  PS     KL_control_type
+  CM     9035
+  PLW
+  ==     KL_iTNC530_PC_programming_station
+  =      MG_iTNC530_PC_programming_station
+  M_display_module_error(KG_error_module_9035)
+
+  L      WL_MP7260_tool_number_in_table
+  >      KL_TC_table_inactive
+  =      MG_tool_table_active
+
+*;EUMACH Dual TC
+  L      WG_MP7261_TC_magazine_max_pocket
+  >      KL_TC_without_pockets
+  =      MG_TC_magazine_1_active
+
+  L      WG_MP7261_TC_magazine_2_max_pocket
+  >      KL_TC_without_pockets
+  =      MG_TC_magazine_2_active
+*;EUMACH Dual TC
+
+  L      BL_MP7480_Tool_change_type
+  >      KL_TC_without_P_code
+  =      MG_TC_auto_active
+
+#ifdef KG_Tool_magazine_axis
+
+  L      WG_controlled_axes
+  BT     KG_Tool_magazine_axis
+  IFT
+    LN     WG_PLC_axes
+    BT     KG_Tool_magazine_axis
+    A      MG_TC_auto_active
+    S      PN_error_check_machine_parameter
+    =      MG_win_TC_magazine_PLC_axis
+
+    L      WG_PLC_axes
+    BT     KG_Tool_magazine_axis
+    A      MG_TC_auto_active
+    =      MG_TC_auto_active
+  ENDI
+
+  L      KG_Tool_magazine_axis
+  =X
+
+  L      DG_MP810_modulo_value_X[X]
+  /      WG_MP7261_TC_magazine_max_pocket
+  =      DG_TC_magazine_pocket_distance
+
+  L      NP_commissioning
+  IFT
+    L      K+0
+    =      WG_TC_magazine_axis
+  ELSE
+    L      K+0
+    BS     KG_Tool_magazine_axis
+    =      WG_TC_magazine_axis
+  ENDI
+#endif
+
+  L      BL_MP7440_output_of_M_functions
+  BT     KL_bit_2_PGM_stop_M_strobe
+  S      PN_error_check_machine_parameter
+  =      MG_win_PGM_stop_M_strobe_MP7440
+
+  L      BG_MP7640_handwheel_type
+  >      KL_supported_hand_wheel_types
+  S      PN_error_check_machine_parameter
+  =      MG_win_MP7640_HR_type_not_supported
+  IFT
+    L      K+0
+    =      BG_MP7640_handwheel_type
+  ENDI
+
+  L      BL_MP7645_handwheel_keyboard
+  <>     KL_function_keys_to_PLC
+  S      PN_error_check_machine_parameter
+  =      MG_win_HR410_MP7645
+
+  L      BL_MP7681_MSTQ_strobe_block_scan
+  <>     KL_evaluation_by_NC
+  S      PN_error_check_machine_parameter
+  =      MG_win_MSTG_strobe_block_scan
+
+  L      BL_MP7683_NC_PGM_and_pallet_execute                          *;EUMACH
+  BT     KL_auto_start_active                                         *;EUMACH
+  =      PN_M4586_auto_start_release                                  *;EUMACH
+
+  L      WG_S_max_torque
+  ==     K+0
+  IFT
+    L      NP_D868_S_max_torque
+    /      K+10000
+    =      WG_S_max_torque
+  ENDI
+
+  LN     PN_error_check_machine_parameter
+  S      MG_machine_parameter_are_read
+
+  L      MG_TC_auto_active
+  S      MG_tool_status_reading
+
+  LN     NP_commissioning
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+EM
+
+;----------------------------
+LBL PL_Byte_index
+
+  L      KF MP_definition[X]
+  =X
+  PL     BL_address_0[X]
+
+EM
+
+;----------------------------
+LBL PL_Word_index
+
+  L      KF MP_definition[X]
+  /      K+2
+  =X
+  PL     WL_address_0[X]
+
+EM
+
+;----------------------------
+LBL PL_DWord_index
+
+  L      KF MP_definition[X]
+  /      K+4
+  =X
+  PL     DL_address_0[X]
+
+EM
+
+;----------------------------
+KFIELD MP_definition
+
+*;EUMACH MP12
+  K+12
+  KL_index_0
+  KL_type_Word
+  K&WG_MP12_simulated_axes
+*;EUMACH MP12
+
+  K+113
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP113_spindle_rpm_ROD
+
+#if Tool_magazine = &PLC_axis
+  K+710
+  KG_Tool_magazine_axis
+  KL_type_DWord
+  K&DG_MP710_magazine_axis_backlash
+#endif
+
+*;EUMACH Software Limit Position for Traverse Range I/II/III
+#if Pallet_changer = &Alternat_table
+  K+911
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP911_X_plus_limit_switch
+
+  K+920
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP920_X_minus_limit_switch
+#endif
+
+#if (MT = &MT_12) or (MT = &MT_13) or (MT = &MT_15) or (MT = &MT_15A) or (MT = &MT_16) or (MT = &MT_21) or (MT = &MT_2D)
+  K+910
+  KL_index_1
+  KL_type_DWord
+  K&DG_MP910_Y_limit_switch
+#endif
+
+#if (MT = &MT_32) or (MT = &MT_32A)
+  K+910
+  KL_index_1
+  KL_type_DWord
+  K&DG_MP910_Y_limit_switch
+#endif
+
+#if MT = &MT_39
+  K+910
+  KL_index_4
+  KL_type_DWord
+  K&DG_MP910_5_limit_switch
+#endif
+
+#if MT = &MT_17
+  K+920
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP920_X_limit_switch
+#endif
+
+#if ((MT = &MT_25) or (MT = &MT_35)) and ((Head = &S_head_type_01) or (Head = &S_head_type_02) or (Head = &S_head_type_10))
+  K+920
+  KL_index_2
+  KL_type_DWord
+  K&DG_MP920_Z_limit_switch
+
+  K+921
+  KL_index_2
+  KL_type_DWord
+  K&DG_MP921_Z_limit_switch
+#endif
+
+#if MT = &MT_39
+  K+920
+  KL_index_4
+  KL_type_DWord
+  K&DG_MP920_5_limit_switch
+#endif
+
+#if (MT = &MT_22) or (MT = &MT_32B)
+  K+922
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP922_X_limit_switch
+#endif
+*;EUMACH Software Limit Position for Traverse Range I/II/III
+
+  K+1320
+  KL_index_0
+  KL_type_Word
+  K&WG_MP1320_direction_traverse_ref_negative
+
+  K+1350
+  KL_index_0
+  KL_type_Byte
+  K&BG_MP1350_reference_mode_X
+
+*;EUMACH
+  K+1355
+  KL_index_0
+  KL_type_Byte
+  K&WG_MP1355_double_reference_run
+
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)
+  K+1350
+  KL_index_4
+  KL_type_Byte
+  K&BG_MP1350_ref_mode_5
+#endif
+
+  K+1352
+  KL_index_0
+  KL_type_Word
+  K&WG_MP1352_power_off_pos_saved
+*;EUMACH
+
+  K+2040
+  KL_index_0
+  KL_type_Word
+  K&WG_MP2040_0_axis_group_1
+
+  K+2040
+  KL_index_1
+  KL_type_Word
+  K&WG_MP2040_1_axis_group_2
+
+  K+2040
+  KL_index_2
+  KL_type_Word
+  K&WG_MP2040_2_axis_group_3
+
+  K+2040                                                              *;EUMACH 5XT
+  KL_index_3                                                          *;EUMACH 5XT
+  KL_type_Word                                                        *;EUMACH 5XT
+  K&WG_MP2040_3_axis_group_4                                          *;EUMACH 5XT
+
+  K+2160                                                              *;EUMACH
+  KL_index_12                                                         *;EUMACH
+  KL_type_Byte                                                        *;EUMACH
+  K&BG_MP2160_S_SM1xx_voltage_protection                              *;EUMACH
+
+  K+2220                                                              *;EUMACH 5XT
+  KL_index_3                                                          *;EUMACH 5XT
+  KL_type_Word                                                        *;EUMACH 5XT
+  K&WG_MP2220_3_monitoring_functions_axis_4                           *;EUMACH 5XT
+
+  K+2220                                                              *;EUMACH 5XT
+  KL_index_4                                                          *;EUMACH 5XT
+  KL_type_Word                                                        *;EUMACH 5XT
+  K&WG_MP2220_4_monitoring_functions_axis_5                           *;EUMACH 5XT
+
+  K+2220                                                              *;EUMACH 5XT
+  KL_index_5                                                          *;EUMACH 5XT
+  KL_type_Word                                                        *;EUMACH 5XT
+  K&WG_MP2220_5_monitoring_functions_axis_6                           *;EUMACH 5XT
+
+  K+2256
+  KL_index_3
+  KL_type_DWord
+  K&DG_MP2256_3_field_angle_4
+
+  K+2256
+  KL_index_4
+  KL_type_DWord
+  K&DG_MP2256_4_field_angle_5
+
+  K+2256
+  KL_index_5
+  KL_type_DWord
+  K&DG_MP2256_5_field_angle_6
+
+  K+2256
+  KL_index_12
+  KL_type_DWord
+  K&DG_MP2256_12_field_angle_S
+
+  K+3010
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP3010_spindle_mode
+
+  K+3143
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP3143_reference_spindle
+
+*;EUMACH MP3240.1
+#if S_warming_up_type = &Stepless_rpm
+  K+3240
+  KL_index_1
+  KL_type_DWord
+  K&DG_MP3240_1_S_min_rpm
+#endif
+*;EUMACH MP3240.1
+
+*;EUMACH S% knob -> FMAX% knob
+  K+3310
+  KL_index_0
+  KL_type_Word
+  K&WG_MP3310_0_S_override_max
+
+  K+3310
+  KL_index_1
+  KL_type_Word
+  K&WG_MP3310_1_S_override_min
+*;EUMACH S% knob -> FMAX% knob
+
+  K+3420
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP3420_pos_window_S
+
+*;EUMACH MP3510.0
+#if S_warming_up_type = &Stepless_rpm
+  K+3510
+  KL_index_0
+  KL_type_DWord
+  K&DG_MP3510_0_S_1st_gear_rpm
+#endif
+*;EUMACH MP3510.0
+
+  K+4030
+  KL_index_0
+  KL_type_Byte
+  K&BG_MP4030_0_assignment_logical_PL_1
+
+  K+4030
+  KL_index_1
+  KL_type_Byte
+  K&BG_MP4030_1_assignment_logical_PL_2
+
+  K+4030
+  KL_index_2
+  KL_type_Byte
+  K&BG_MP4030_2_assignment_logical_PL_3
+
+  K+4030
+  KL_index_3
+  KL_type_Byte
+  K&BG_MP4030_3_assignment_logical_PL_4
+
+  K+4110
+  KL_index_30
+  KL_type_DWord
+  K&DG_MP4110_30_TS_probe_air_blow                                    *;EUMACH
+
+  K+4130
+  KL_index_0
+  KL_type_Word
+  K&WL_MP4130_Ixx_suppress_monitoring_function
+
+  K+4230
+  KL_index_0
+  KL_type_DWord
+  K&NP_MP4230_0_working_area_manu_Y
+
+  K+4230
+  KL_index_1
+  KL_type_DWord
+  K&NP_MP4230_1_working_area_manu_Z
+
+  K+4230
+  KL_index_2
+  KL_type_DWord
+  K&NP_MP4230_2_working_area_auto_Y
+
+  K+4230
+  KL_index_3
+  KL_type_DWord
+  K&NP_MP4230_3_working_area_auto_Z
+
+  K+4230
+  KL_index_4
+  KL_type_DWord
+  K&NP_MP4230_4_working_area_auto_B
+
+  K+4230
+  KL_index_5
+  KL_type_DWord
+  K&NP_MP4230_5_working_area_auto_C
+
+  K+4230
+  KL_index_6
+  KL_type_DWord
+  K&NP_MP4230_6_working_area_auto_B
+
+  K+4230
+  KL_index_7
+  KL_type_DWord
+  K&NP_MP4230_7_S_head_bearing_lube_interval                          *;EUMACH
+;  K&NP_MP4230_7_working_area_auto_C                                  *;EUMACH original PLC
+
+*$WS
+  K+4230
+  KL_index_8
+  KL_type_DWord
+  K&NP_MP4230_8_max_torque_axis_1
+
+  K+4230
+  KL_index_9
+  KL_type_DWord
+  K&NP_MP4230_9_max_torque_axis_2
+
+  K+4230
+  KL_index_10
+  KL_type_DWord
+  K&NP_MP4230_10_3D_head_offset_axis_1_S_position
+
+  K+4230
+  KL_index_11
+  KL_type_DWord
+  K&NP_MP4230_11_3D_head_offset_axis_2_S_position
+
+*;EUMACH MP4230
+  K+4230
+  KL_index_24
+  KL_type_DWord
+  K&NP_MP4230_24_tool_unclamped_V_upper_lim
+
+  K+4230
+  KL_index_25
+  KL_type_DWord
+  K&NP_MP4230_25_tool_unclamped_V_lower_lim
+
+  K+4230
+  KL_index_26
+  KL_type_DWord
+  K&NP_MP4230_26_tool_clamped_V_upper_lim
+
+  K+4230
+  KL_index_27
+  KL_type_DWord
+  K&NP_MP4230_27_tool_clamped_V_lower_lim
+
+  K+4230
+  KL_index_28
+  KL_type_DWord
+  K&NP_MP4230_28_no_tool_clamped_V_upper_lim
+
+  K+4230
+  KL_index_29
+  KL_type_DWord
+  K&NP_MP4230_29_no_tool_clamped_V_lower_lim
+
+  K+4230
+  KL_index_30
+  KL_type_DWord
+  K&NP_MP4230_30_min_torque_axis_1
+
+  K+4230
+  KL_index_31
+  KL_type_DWord
+  K&NP_MP4230_31_min_torque_axis_2
+
+  K+4230
+  KL_index_34
+  KL_type_DWord
+  K&NP_MP4230_34_4_clamped_Z_comp                                     *;EUMACH Table clamped -> Z comp
+
+  K+4230
+  KL_index_36
+  KL_type_DWord
+  K&NP_MP4230_36_TC_pos_7
+
+  K+4230
+  KL_index_40
+  KL_type_DWord
+  K&NP_MP4230_40_working_area_manu_Y2
+
+  K+4230
+  KL_index_41
+  KL_type_DWord
+  K&NP_MP4230_41_working_area_manu_Z2
+
+  K+4230
+  KL_index_42
+  KL_type_DWord
+  K&NP_MP4230_42_lubrication_2_time
+
+  K+4230
+  KL_index_43
+  KL_type_DWord
+  K&NP_MP4230_43_lubrication_3_time
+
+  K+4230
+  KL_index_47
+  KL_type_DWord
+  K&NP_MP4230_47_S_rear_bearing_T_limit
+
+  K+4230
+  KL_index_48
+  KL_type_DWord
+  K&NP_MP4230_48_ATS_S_rpm_limitation
+
+  K+4230
+  KL_index_49
+  KL_type_DWord
+  K&NP_MP4230_49_coolant_level_sensor
+
+  K+4230
+  KL_index_60
+  KL_type_DWord
+  K&NP_MP4230_60_X_manual_lubrication
+
+  K+4230
+  KL_index_61
+  KL_type_DWord
+  K&NP_MP4230_61_Y_manual_lubrication
+
+  K+4230
+  KL_index_62
+  KL_type_DWord
+  K&NP_MP4230_62_Z_manual_lubrication
+
+  K+4230
+  KL_index_66
+  KL_type_DWord
+  K&NP_MP4230_66_TM_loading_pocket_offset
+*;EUMACH MP4230
+
+*;EUMACH MP4231
+  K+4231
+  KL_index_0
+  KL_type_DWord
+  K&NP_MP4231_0_X_screw_nut_lubrication_travel
+
+  K+4231
+  KL_index_1
+  KL_type_DWord
+  K&NP_MP4231_1_TC_pos_4
+
+  K+4231
+  KL_index_2
+  KL_type_DWord
+  K&NP_MP4231_2_TC_pos_5
+
+  K+4231
+  KL_index_3
+  KL_type_DWord
+  K&NP_MP4231_3_TC_pos_4_manual
+
+  K+4231
+  KL_index_4
+  KL_type_DWord
+  K&NP_MP4231_4_TC_pos_5_manual
+
+#if 3D_head = &active
+  K+4231
+  KL_index_5
+  KL_type_DWord
+  K&NP_MP4231_5_3D_head_S_prepos_window
+
+  K+4231
+  KL_index_6
+  KL_type_DWord
+  K&NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+#endif
+
+  K+4231
+  KL_index_7
+  KL_type_DWord
+  K&NP_MP4231_7_V_H_head_geometric_X_offset
+
+  K+4231
+  KL_index_8
+  KL_type_DWord
+  K&NP_MP4231_8_V_H_head_geometric_Y_offset
+
+  K+4231
+  KL_index_9
+  KL_type_DWord
+  K&NP_MP4231_9_V_H_head_geometric_Z_offset
+
+#if 3D_head = &active
+  K+4231
+  KL_index_10
+  KL_type_DWord
+  K&NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+#endif
+
+  K+4231
+  KL_index_11
+  KL_type_DWord
+  K&NP_MP4231_11_TC_pos_Y_safety
+
+  K+4231
+  KL_index_12
+  KL_type_DWord
+  K&NP_MP4231_12_SHC_pos_XY
+
+  K+4231
+  KL_index_13
+  KL_type_DWord
+  K&NP_MP4231_13_SHC_pos_Z
+
+  K+4231
+  KL_index_14
+  KL_type_DWord
+  K&NP_MP4231_14_V_H_head_S_pos_window
+
+  K+4231
+  KL_index_15
+  KL_type_DWord
+  K&NP_MP4231_15_S_pos_before_V_head_unclamping
+
+  K+4231
+  KL_index_16
+  KL_type_DWord
+  K&NP_MP4231_16_S_pos_before_H_head_unclamping
+
+  K+4231
+  KL_index_17
+  KL_type_DWord
+  K&NP_MP4231_17_head_V_to_H_turning_angle
+
+  K+4231
+  KL_index_18
+  KL_type_DWord
+  K&NP_MP4231_18_head_H_to_V_turning_angle
+
+  K+4231
+  KL_index_19
+  KL_type_DWord
+  K&NP_MP4231_19_V_H_head_turning_rpm
+
+  K+4231
+  KL_index_20
+  KL_type_DWord
+  K&NP_MP4231_20_S_head_transmission_lube_interval
+
+#if HSS ! &inactive
+  K+4231
+  KL_index_21
+  KL_type_DWord
+  K&NP_MP4231_21_S_without_tool_max_rpm
+
+  K+4231
+  KL_index_22
+  KL_type_DWord
+  K&NP_MP4231_22_S_front_bearing_T_limit
+
+  K+4231
+  KL_index_23
+  KL_type_DWord
+  K&NP_MP4231_23_S_warming_up_3rd_duration_sec
+
+  K+4231
+  KL_index_24
+  KL_type_DWord
+  K&NP_MP4231_24_S_warming_up_1st_duration_sec
+
+  K+4231
+  KL_index_25
+  KL_type_DWord
+  K&NP_MP4231_25_S_warming_up_2nd_duration_sec
+
+  K+4231
+  KL_index_26
+  KL_type_DWord
+  K&NP_MP4231_26_S_warming_up_1st_stage_rpm
+
+  K+4231
+  KL_index_27
+  KL_type_DWord
+  K&NP_MP4231_27_S_warming_up_2nd_stage_rpm
+
+  K+4231
+  KL_index_28
+  KL_type_DWord
+  K&NP_MP4231_28_S_warming_up_max_pause_sec
+
+  K+4231
+  KL_index_29
+  KL_type_DWord
+  K&NP_MP4231_29_S_rewarming_up_standstill_min
+
+  K+4231
+  KL_index_30
+  KL_type_DWord
+  K&NP_MP4231_30_S_warming_up_3rd_stage_rpm
+#endif
+
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02) or (Head = &S_head_type_05) or (Head = &S_head_type_06) or (Head = &S_head_type_09)
+  K+4231
+  KL_index_31
+  KL_type_DWord
+  K&NP_MP4231_31_S_head_S_limit_rpm
+#endif
+*;EUMACH MP4231
+
+  K+6010
+  KL_index_0
+  KL_type_Byte
+  K&BG_MP6010_touch_probe_type
+
+  K+7210
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7210_programming_station
+
+  K+7260
+  KL_index_0
+  KL_type_Word
+  K&WL_MP7260_tool_number_in_table
+
+  K+7261
+  KL_index_0
+  KL_type_Word
+  K&WG_MP7261_TC_magazine_max_pocket
+
+*;EUMACH Dual TC
+  K+7261
+  KL_index_1
+  KL_type_Word
+  K&WG_MP7261_TC_magazine_2_max_pocket
+*;EUMACH Dual TC
+
+  K+7440
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7440_output_of_M_functions
+
+  K+7480
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7480_Tool_change_type
+
+*;EUMACH MP7620
+  K+7620
+  KL_index_0
+  KL_type_Word                                                        *;EUMACH G00% override
+  K&WG_MP7620_F_S_override                                            *;EUMACH G00% override
+*;EUMACH MP7620
+
+  K+7640
+  KL_index_0
+  KL_type_Byte
+  K&BG_MP7640_handwheel_type
+
+  K+7645
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7645_handwheel_keyboard
+
+  K+7681
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7681_MSTQ_strobe_block_scan
+
+*;EUMACH MP7683
+  K+7683
+  KL_index_0
+  KL_type_Byte
+  K&BL_MP7683_NC_PGM_and_pallet_execute
+*;EUMACH MP7683
+
+  K-1
+ENDK
+

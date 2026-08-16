@@ -1,0 +1,311 @@
+*-----------------------------------------------------------------------------
+*  Feed Release
+*-----------------------------------------------------------------------------
+*  Module Description
+*    Special function F99999:
+*    The PLC program interprets the programmed feed rate F99999 as
+*    modally effective rapid traverse (Fmax - non-modal, blockwise).
+*    Spindle speed and spindle ramp are not monitored.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_M31_processing_without_M3_M4          M
+#define /s    ML_guard_has_been_opened                 M
+
+#define /s    WL_S_max_torque                          W
+
+GLOBAL Feed_release
+
+;----------------------------
+LBL Feed_release
+;----------------------------
+
+  L      MG_M31_processing_without_M3_M4
+  S      PN_M4092_quit_M_function
+  S      ML_M31_processing_without_M3_M4
+
+  LN     MG_control_operational
+  O      MG_auto_manu_mode_change
+  O      MG_pulse_END_PGM_M02_M30
+  R      ML_M31_processing_without_M3_M4
+;#if Tool_specific_torque_monitoring =  &active                       *;EUMACH
+;  S      MG_tool_torque_monitoring_active                            *;EUMACH
+;#endif                                                               *;EUMACH
+
+  L      KG_axes_with_c_axis_mode
+  A      NP_W1024_axes_release
+  <>     K+0
+  O      ML_M31_processing_without_M3_M4
+  O      NP_feed_monitoring_M3_M4_inactive
+  A      PN_M4007_S_M05_nominal_0_and_status
+#if (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B) *;EUMACH
+  O[                                                                  *;EUMACH
+    L      NP_M4157_mode_restore_position                             *;EUMACH
+    A      MG_spindle_C_axis_mode_active                              *;EUMACH
+    A      PN_M4008_S_nominal_off_status_inverse                      *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  O      MG_spindle_nominal_rpm_reached
+  O      MG_touch_probe_active
+  ON     MG_spindle_active
+  ON     PN_M4012_S_open_control_loop
+  O      NP_M4030_tapping_cycle_active
+  O      NP_M4060_tool_measurement_active
+  O[
+    L      NP_D360_programmed_feed_rate_PLC
+    ==     K+99999
+  ]
+  O      NP_M4073_strobe_TOOL_CALL
+  O      NP_M4180_F_Max_programmed
+  O      MG_M55_B_C_head_exchange
+  O      MG_M56_B_head_exchange
+  O      MG_M57_3D_head_replace
+  O      MG_M60_pallet_change
+  O      MG_M61_alternating_table_1
+  O      MG_M62_alternating_table_2
+  O      MG_M61_pallet_1_to_machine
+  O      MG_M62_pallet_2_to_machine
+  O      MG_V_H_head_turning_proceeding                               *;EUMACH
+  O      MG_manual_mode
+  A      I_drives_operational
+  AN[                                                                 *;EUMACH
+    L      PN_error_guard_signal                                      *;EUMACH
+    A      MG_enable_alternating_table                                *;EUMACH
+  ]                                                                   *;EUMACH
+  AN     PN_error_tool_clamping_line_pressure                         *;EUMACH CYCON K11
+;  AN     MG_3D_head_axis_2_feed_not_release                           *;EUMACH open loop on
+  =      MG_feed_release
+  IFT
+    L      WG_controlled_axes
+    AN     WG_feed_stop_PLC_axes
+    =      PN_W1060_feed_release_axis_specific
+  ELSE
+    L      WG_PLC_axes
+    AN     WG_feed_stop_PLC_axes
+    =      PN_W1060_feed_release_axis_specific
+  ENDI
+
+#if Tool_specific_torque_monitoring  = &active
+  L      MG_M82_T_torque_off
+  O      MG_M83_T_torque_on
+  S      MG_clear_screen
+  S      PN_M4092_quit_M_function
+
+  L      MG_M83_T_torque_on
+  S      MG_tool_torque_monitoring_active
+
+  L      MG_M82_T_torque_off
+  O      NP_T_torque_monitoring_inactive
+  R      MG_tool_torque_monitoring_active
+
+  L      MG_soft_key_T_torque_monitoring
+  S      MG_clear_screen
+
+  L      MG_soft_key_T_torque_monitoring
+  XO     MG_tool_torque_monitoring_active
+  =      MG_tool_torque_monitoring_active
+  IFT
+    L      WG_S_max_torque
+    =      WL_S_max_torque
+  ELSE
+    L      NP_D868_S_max_torque
+    /      K+10000
+    =      WL_S_max_torque
+  ENDI
+
+  L      WG_drive_utilization_S
+  >      WL_S_max_torque
+  A      NP_M4001_S_nominal_not_in_ramp
+  A      MG_spindle_active                                            *;EUMACH
+  =      PN_error_S_torque_max
+  IFT
+    L      WL_S_max_torque
+    -      WG_drive_utilization_S
+    X      NP_D872_factor_torque_reduction
+    /      K+10000
+    +      K+100
+    X      NP_W494_factor_feed_override_NC
+    /      K+100
+    =      PN_W766_factor_feed_override_PLC
+
+    L      PN_W766_factor_feed_override_PLC
+    <      K+1000
+    A[
+      L      NP_W494_factor_feed_override_NC
+      >      K+1000
+    ]
+    IFT
+      L      K+1000
+      =      PN_W766_factor_feed_override_PLC
+    ENDI
+  ENDI
+#endif
+
+  LN     MG_axes_in_motion
+  O      MG_safety_mode_4                                             *;EUMACH
+  R      ML_guard_has_been_opened
+
+#if Pallet_changer = &Alternat_table                                  *;EUMACH
+  LN     MG_guard_1_closed_locked                                     *;EUMACH
+  ON     MG_guard_2_closed_locked                                     *;EUMACH
+#else                                                                 *;EUMACH
+  LN     I_guard_1_closed_locked
+  ON     I_guard_2_closed_locked
+#endif                                                                *;EUMACH
+  AN     NP_guard_inactive
+  S      ML_guard_has_been_opened
+
+  L      K+300000
+  =      NP_D596_max_feed_rate_PLC
+
+;  L      ML_guard_has_been_opened                                    *;EUMACH Original PLC
+;  IFT                                                                *;EUMACH Original PLC
+;  L      O_release_special_mode                                      *;EUMACH Original PLC safety mode 4
+  L      MG_safety_mode_4                                             *;EUMACH safety mode 4
+  IFT
+    L      NP_D848_feed_special_mode
+    /      K+10000
+    =      NP_D596_max_feed_rate_PLC
+  ENDI
+
+  L      MG_TC_help
+  O      MG_PC_help
+  AN     I_key_rapid_traverse
+  O      O_axes_motion_from_end_position
+;  O      MG_guard_open                                               *;EUMACH
+;  O      MG_manual_motion_in_reference_mode                          *;EUMACH Original PLC
+#if SFM = &inactive                                                   *;EUMACH CE 2008
+  O      ML_guard_has_been_opened                                     *;EUMACH
+#else                                                                 *;EUMACH CE 2008
+  O      PN_error_safety_mode_2                                       *;EUMACH CE 2008
+#endif                                                                *;EUMACH CE 2008
+  IFT
+    L      NP_D804_feed_service
+    /      K+10000
+    =      NP_D596_max_feed_rate_PLC
+  ENDI
+;  ENDI                                                               *;EUMACH Original PLC
+
+  LN     MG_feed_release
+  AN     MG_axes_in_position
+  =      PN_error_M3_M4_missing
+  IFT
+    L      PN_M4007_S_M05_nominal_0_and_status
+    A      NP_feed_monitoring_M3_M4_inactive
+    R      PN_error_M3_M4_missing
+
+    L      NP_D360_programmed_feed_rate_PLC
+    ==     K+99999
+    O      NP_M4180_F_Max_programmed
+    O      MG_manual_mode
+    O      MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    O      MG_TC_magazine_start
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+    O      MG_TC_magazine_2_start                                     *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+    O      NP_M4070_strobe_G_code
+    O      NP_M4072_strobe_M_function
+    O      NP_M4073_strobe_TOOL_CALL
+    O      NP_M4175_control_in_operation_flashes
+    ON     NP_M4176_control_in_operation_on_or_flashes
+    O      PN_M4005_S_M03_nominal_and_status
+    O      PN_M4006_S_M04_nominal_and_status
+    R      PN_error_M3_M4_missing
+
+*;EUMACH
+#if 3D_head = &active
+    LN     NP_W1026_axes_in_position
+    BT     KG_3D_head_axis_1
+#if KG_3D_head_axis_2 ! &inactive
+    O[
+      LN     NP_W1026_axes_in_position
+      BT     KG_3D_head_axis_2
+    ]
+#endif
+    R      PN_error_M3_M4_missing
+#endif
+*;EUMACH
+  ENDI
+
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH G00% override *;EUMACH S% knob -> FMAX% knob
+  L      NP_W494_factor_feed_override_NC
+  ==     K+0
+  RN     PN_error_override_0
+  IFT
+    L      NP_M4158_mode_block_scan
+    O      MG_TC_help
+    O      MG_PC_help
+    O      MG_soft_key_F100_percent                                   *;EUMACH
+    EMT
+
+    L      PN_W1046_manual_motion_plus
+    O      PN_W1048_manual_motion_minus
+    <>     K+0
+    S      PN_error_override_0
+
+    L      MG_automatic_mode
+    O      NP_M4155_mode_pass_over_reference
+;    A      MG_key_NC_start                                           *;EUMACH
+    A      PN_M4564_NC_start                                          *;EUMACH
+    S      PN_error_override_0
+  ENDI
+#else                                                                 *;EUMACH G00% override
+  L      NP_W494_factor_feed_override_NC
+  ==     K+0
+  AN     NP_M4180_F_max_programmed
+  AN     PN_M4561_rapid_traverse
+  AN     MG_soft_key_F100_percent
+  AN     MG_TC_automatic
+  AN     MG_TC_manual
+  AN     MG_TC_help
+  O[
+    L      NP_W496_rapid_traverse_override_NC
+    ==     K+0
+    A[
+      L      NP_M4180_F_max_programmed
+      O      PN_M4561_rapid_traverse
+      O      MG_TC_automatic
+      O      MG_TC_manual
+      O      MG_TC_help
+    ]
+  ]
+  RN     PN_error_override_0
+  IFT
+    L      NP_M4158_mode_block_scan
+    EMT
+
+    L      PN_W1046_manual_motion_plus
+    O      PN_W1048_manual_motion_minus
+    <>     K+0
+    O[
+      L      PN_M4120_strobe_PLC_posit_axis_X
+      O      PN_M4121_strobe_PLC_posit_axis_Y
+      O      PN_M4122_strobe_PLC_posit_axis_Z
+      O      PN_M4123_strobe_PLC_posit_axis_4
+      O      PN_M4124_strobe_PLC_posit_axis_5
+      O      PN_M4125_strobe_PLC_posit_axis_6
+      A[
+        L      MG_TC_help
+        O      MG_enable_alternating_table
+      ]
+    ]
+    O[
+      L      MG_automatic_mode
+      A      MG_control_in_operation_on
+    ]
+    O[
+      L      NP_M4155_mode_pass_over_reference
+      AN     MG_axes_in_position
+    ]
+    A[
+      LN     NP_M4180_F_max_programmed
+      AN     PN_M4561_rapid_traverse
+      AN     MG_soft_key_F100_percent
+      O      NP_M4180_F_max_programmed
+      O      PN_M4561_rapid_traverse
+    ]
+    S      PN_error_override_0
+  ENDI
+#endif                                                                *;EUMACH G00% override
+
+EM

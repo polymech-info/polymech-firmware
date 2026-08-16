@@ -1,0 +1,23 @@
+# Basic clangd configuration.
+# For more options, see: https://clangd.llvm.org/config
+
+If:
+  PathMatch: [.*\.cpp, .*\.h, .*\.ino]
+
+CompileFlags:
+  # These flags are added to all builds.
+  # For full project awareness, it's recommended to generate a compile_commands.json by running:
+  # platformio run -t compiledb
+  Add:
+    - -std=gnu++17
+    # From platformio.ini build_flags
+    - -Isrc
+    - -Ilib/polymech-base/src
+    # From platformio.ini board_build.extra_flags for env:waveshare_base
+    - -DBOARD_HAS_PSRAM
+    - -DARDUINO_ESP32S3_DEV
+    - -DARDUINO_USB_MODE=1
+  Remove:
+    - -mlongcalls
+    - -fstrict-volatile-bitfields
+    - -fno-tree-switch-conversion

@@ -1,0 +1,15 @@
+{
+  "sta_ssid": "Plastiq",
+  "sta_password": "4GFFvS5u29",
+  "sta_local_ip": "100.10.100.250",
+  "sta_gateway": "10.10.100.1",
+  "sta_subnet": "255.255.255.0",
+  "sta_primary_dns": "100.10.100.1",
+  "sta_secondary_dns": "100.10.100.1",
+  "ap_ssid": "PolyMechAP",
+  "ap_password": "poly1234",
+  "ap_config_ip": "192.168.4.1",
+  "ap_config_gateway": "192.168.4.1",
+  "ap_config_subnet": "255.255.255.240",
+  "hostname": "cassandra-master-cat"
+} 

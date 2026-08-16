@@ -1,0 +1,216 @@
+*-----------------------------------------------------------------------------
+*  Axis Limit - Umschaltung Verfahrbereiche M71 M72 M73
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Verfahrbereich | Symb. Operand   | M-Funktion
+*    1              | MG_Axis_Limit_1 | M71
+*    2              | MG_Axis_Limit_2 | M72
+*    3              | MG_Axis_Limit_3 | M73
+*
+*    Verfahrbereichs-Umschaltung erfolgt über M-Funktions-Makros:
+*      PLC:\MFUNCT\MFUNCT.TAB
+*      PLC:\MFUNCT\M71.H
+*      PLC:\MFUNCT\M72.H
+*      PLC:\MFUNCT\M73.H
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inaktiv                               K -1
+#define /s    KL_String_Laenge_1_Zeichen               K +1
+#define /s    KL_Rund_Achse_inaktiv                    K -1
+
+#define /s    ML_Axis_Limit_init                       M
+
+#define /s    BL_String_Position                       B
+#define /s    BL_Achs_Index                            B
+
+#define /s    WL_String_Laenge                         W
+#define /s    WL_Anzahl_String_Zeichen_hinzufuegen     W
+
+#include Mac_Lib.inc
+
+GLOBAL Kennung_Achse_x
+GLOBAL Axis_Limit
+
+;----------------------------
+LBL Axis_Limit
+
+  L      MG_Maschinenparameter_gelesen
+  AN     ML_Axis_Limit_Init
+  IFT
+    S      ML_Axis_Limit_Init
+    S      PN_M4135_Strobe_Verfahrbereich
+
+    L      BG_MP1350_Ref_Mode_X
+    ==     K+2
+    A      MG_Pendeln_ein
+    R      MG_Axis_Limit_1
+    S      MG_Axis_Limit_2
+    R      MG_Axis_Limit_3
+
+    L      MG_Axis_Limit_2
+    =      PN_M4574_Axis_Limit_Vorwahl_Bit_0
+
+    L      MG_Axis_Limit_3
+    =      PN_M4575_Axis_Limit_Vorwahl_Bit_1
+  ENDI
+
+  L      MG_M71_Axis_Limit_1
+  S      MG_Axis_Limit_1
+  R      MG_Axis_Limit_2
+  R      MG_Axis_Limit_3
+  S      PN_M4092_Quit_M_Funktion
+  CMT    Kennung_Achse_x
+
+  L      MG_M72_Axis_Limit_2
+  R      MG_Axis_Limit_1
+  S      MG_Axis_Limit_2
+  R      MG_Axis_Limit_3
+  S      PN_M4092_Quit_M_Funktion
+  CMT    Kennung_Achse_x
+
+  L      MG_M73_Axis_Limit_3
+  R      MG_Axis_Limit_1
+  R      MG_Axis_Limit_2
+  S      MG_Axis_Limit_3
+  S      PN_M4092_Quit_M_Funktion
+  CMT    Kennung_Achse_x
+
+EM
+
+;----------------------------
+LBL Kennung_Achse_x
+
+  LN     MG_Axis_Limit_1
+  AN     MG_Axis_Limit_2
+  AN     MG_Axis_Limit_3
+  S      MG_Axis_Limit_1
+
+  L      MG_Axis_Limit_1
+  IFT
+    L      SG_Kennung_Achsen_Limit1
+    =      SG_Kennung_Achsen_Limitx
+  ENDI
+
+  L      MG_Axis_Limit_2
+  IFT
+    L      SG_Kennung_Achsen_Limit2
+    =      SG_Kennung_Achsen_Limitx
+  ENDI
+
+  L      MG_Axis_Limit_3
+  IFT
+    L      SG_Kennung_Achsen_Limit3
+    =      SG_Kennung_Achsen_Limitx
+  ENDI
+
+; Test String Länge MP100.x
+
+  PS     K&SG_Kennung_Achsen_Limitx
+  CM     9071                          ;Stringlänge ermitteln
+  PL     WL_String_Laenge
+  M_Modul_Fehler_anzeigen
+
+  L      KG_max_Achs_Anzahl
+  -      WL_String_Laenge
+  =      WL_Anzahl_String_Zeichen_hinzufuegen
+
+  L      WL_Anzahl_String_Zeichen_hinzufuegen
+  >      K+0
+  WHILET
+    L      S"-"
+    +      SG_Kennung_Achsen_Limitx
+    =      SG_Kennung_Achsen_Limitx
+    DEC    WL_Anzahl_String_Zeichen_hinzufuegen
+
+    L      WL_Anzahl_String_Zeichen_hinzufuegen
+    >      K +0
+  ENDW
+
+  L      KG_max_Achs_Anzahl
+  =      BL_String_Position
+
+  L      KL_Rund_Achse_inaktiv
+  =      BG_Achse_Index_A
+  =      BG_Achse_Index_B
+  =      BG_Achse_Index_C
+
+  L      K +0
+  =      BL_Achs_Index
+  REPEAT
+
+    DEC    BL_String_Position
+
+    L      BL_String_Position
+    =X
+
+    L      SG_Kennung_Achsen_Limitx^X
+    =      SG_Kennung_Achse_n
+    =      SG_Kennung_Achse[BL_Achs_Index]
+
+    L      KL_String_Laenge_1_Zeichen
+    =X
+
+    L      S""
+    =      SG_Kennung_Achse_n^X
+
+    L      SG_Kennung_Achse_n
+    =      SG_Kennung_Achse[BL_Achs_Index]
+
+    L      BL_Achs_Index
+    <>     KG_S_Achs_Index
+    IFT
+      L      SG_Kennung_Achse[BL_Achs_Index]
+      ==     S"A"
+      IFT
+        L      BL_Achs_Index
+        =      BG_Achse_Index_A
+      ENDI
+
+      L      SG_Kennung_Achse[BL_Achs_Index]
+      ==     S"B"
+      IFT
+        L      BL_Achs_Index
+        =      BG_Achse_Index_B
+      ENDI
+
+      L      SG_Kennung_Achse[BL_Achs_Index]
+      ==     S"C"
+      IFT
+        L      BL_Achs_Index
+        =      BG_Achse_Index_C
+      ENDI
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+#if CFG_3D_Kopf = "aktiv"
+  L      KG_3D_Kopf_Achse_1
+  >      KL_inaktiv
+  IFT
+    L      SG_Kennung_Achse[KG_3D_Kopf_Achse_1]
+    =      SG_Kennung_3D_Achse_1
+  ELSE
+    L      S"-"
+    =      SG_Kennung_3D_Achse_1
+  ENDI
+
+  L      KG_3D_Kopf_Achse_2
+  >      KL_inaktiv
+  IFT
+    L      SG_Kennung_Achse[KG_3D_Kopf_Achse_2]
+    =      SG_Kennung_3D_Achse_2
+  ELSE
+    L      S"-"
+    =      SG_Kennung_3D_Achse_2
+  ENDI
+#endif
+
+  L      S"S"
+  =      SG_Kennung_Achse[KG_Spindel]
+
+EM

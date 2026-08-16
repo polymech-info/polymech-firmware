@@ -1,0 +1,1222 @@
+*-----------------------------------------------------------------------------
+*  Alternating Table Mode
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#if Override_knobs = &2_knobs                                         *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%010
+#define /s    KL_absolute_without_software_limit_switch K%000         *;EUMACH
+#else                                                                 *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%110          *;EUMACH G00% override
+#define /s    KL_absolute_without_software_limit_switch K%100         *;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+#define /s    KL_0_degree                              K+0            *;EUMACH
+#define /s    KL_plus_90_degree                        K+900000       *;EUMACH
+#define /s    KL_minus_90_degree                       K-900000       *;EUMACH
+
+#define /s    ML_altern_table_mode_was_off             M
+#define /s    ML_key_pressed                           M
+#define /s    ML_alternating_table_was_on              M              *;EUMACH
+#define /s    ML_enable_alternating_table              M              *;EUMACH
+#define /s    ML_stack_synchronize_alt_table           M              *;EUMACH
+#define /s    ML_axis_X_referenced_temp                M              *;EUMACH
+
+#define /s    BL_step_alternating_table                B
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL Alternat_table
+
+;----------------------------
+LBL Alternat_table
+;----------------------------
+
+  L      I_guard_1_closed_locked
+  O      NP_pallet_change_alternat_table_inactive
+  =      MG_guard_1_closed_locked
+
+  L      I_guard_2_closed_locked
+  O      NP_pallet_change_alternat_table_inactive
+  =      MG_guard_2_closed_locked
+
+  L      NP_pallet_change_alternat_table_inactive
+  R      MG_alternating_table_on
+
+  L      MG_alternating_table_on
+  A      ML_altern_table_mode_was_off
+  IFT
+*;EUMACH Original PLC
+;    L      DG_position_axis_X_ref
+;    >      NP_D944_posit_1_X_alternating_table
+;    A[
+;      L      DG_position_axis_X_ref
+;      <      NP_D948_posit_2_X_alternating_table
+;    ]
+;    R      MG_alternating_table_on
+;    =      PN_error_zone_alternating_table
+;    EMT
+
+;    LN     MG_manual_mode
+;    ON     MG_axes_in_position
+;    R      MG_alternating_table_on
+*;EUMACH Original PLC
+
+*;EUMACH
+    L      DG_position_axis_X_ref
+    <      DG_MP920_X_minus_limit_switch
+    A[
+      L      DG_position_axis_X_ref
+      >      DG_MP911_X_plus_limit_switch
+    ]
+    A      I_alternat_table_partition_removed
+    R      MG_alternating_table_on
+    =      PN_error_zone_alternating_table
+    EMT
+
+    L      NP_W1032_reference_nesessary
+    AN     WG_MP1355_double_reference_run
+    BT     KG_axis_X
+    ON     MG_manual_mode
+    O      MG_axes_in_motion
+    R      MG_alternating_table_on
+    =      PN_error_setting_alternating_table
+*;EUMACH
+  ENDI
+
+*;EUMACH 5XT
+;  L      DG_position_axis_X_ref
+;  <      DG_MP920_X_minus_limit_switch
+;  A[
+;    L      DG_position_axis_X_ref
+;    >      DG_MP911_X_plus_limit_switch
+;  ]
+;  AN     I_alternat_table_partition_removed
+;  AN     MG_enable_alternating_table
+;  =      PN_error_zone_alternating_table
+*;EUMACH 5XT
+
+*$WS
+*  L      MG_manual_mode
+*  A      MG_axes_in_position
+*  IFT
+*    LN    I_alternat_table_partition_removed
+*    AN    NP_pallet_change_alternat_table_inactive
+*    =     MG_alternating_table_on
+*  ELSE
+*    LN    I_alternat_table_partition_removed
+*    XO    MG_alternating_table_on
+*    S     PN_error_alternat_table_separation
+*  ENDI
+
+*;EUMACH
+  LN     I_alternat_table_partition_removed
+  XO     MG_alternating_table_on
+  S      PN_error_alternat_table_separation
+
+#if (MT = &MT_2D)
+  LN     I_alternat_table_partition_removed
+  AN     I_alternating_table_zone_overtravel
+  AN     I_not_ref_end_posit_Y
+  AN     MG_enable_alternating_table
+  =      PN_error_Y_to_traverse_range
+#endif
+
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+  L      DG_position_axis_X_ref
+  >      NP_D940_limit_X_alternating_table
+  AN     I_alternat_table_partition_removed
+  =      O_machine_in_table_1
+#endif
+
+#if MT = &MT_37A
+#if TC_guard_protection = &inactive
+  L      DG_position_axis_X_ref
+  >      NP_D940_limit_X_alternating_table
+  AN     I_alternat_table_partition_removed
+  AN     MG_TC_automatic
+  S      O_machine_in_table_1
+
+  L      DG_position_axis_X_ref
+  <=     NP_D940_limit_X_alternating_table
+  AN     MG_TC_automatic
+  O      I_alternat_table_partition_removed
+  R      O_machine_in_table_1
+#else
+  L      DG_position_axis_X_ref
+  >      NP_D940_limit_X_alternating_table
+  AN     I_alternat_table_partition_removed
+  =      O_machine_in_table_1
+#endif
+#endif
+
+  LN     MG_alternating_table_on
+  A      ML_alternating_table_was_on
+  O[
+    LN     MG_alternating_table_on
+    A      I_alternat_table_partition_removed
+    A      NP_M4173_1st_PLC_run_after_compile
+  ]
+  IFT
+    R      MG_axis_limit_1
+    R      MG_axis_limit_2
+    S      MG_axis_limit_3
+    S      PN_M4135_strobe_axes_limit
+    R      PN_M4574_axis_limit_Bit_0
+    S      PN_M4575_axis_limit_Bit_1
+    S      MG_power_on_axis_limit_selected                            *;EUMACH
+  ENDI
+
+  L      MG_alternating_table_on
+  =      ML_alternating_table_was_on
+
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+  L      MG_TC_automatic
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  O      MG_TC2_automatic                                             *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+;  O      MG_TC_help                                                   *;EUMACH 5XT
+  =      O_TC_X_OT_enable_alt_table
+#endif
+*;EUMACH
+
+  L      MG_M61_alternating_table_1
+  O      MG_M62_alternating_table_2
+  AN     MG_alternating_table_on
+  S      PN_error_inactive_alternating_table
+  EMT
+
+
+  L      MG_alternating_table_on
+  A      ML_altern_table_mode_was_off
+*;EUMACH
+  O[
+    LN     NP_W1032_reference_nesessary
+    BT     KG_axis_X
+    AN     ML_axis_X_referenced_temp
+    A      MG_alternating_table_on
+    AN     I_alternat_table_partition_removed
+  ]
+*;EUMACH
+  IFT
+    R      MG_axis_limit_3
+    S      PN_M4135_strobe_axes_limit
+    R      PN_M4575_axis_limit_Bit_1
+    S      MG_power_on_axis_limit_selected                            *;EUMACH
+
+    L      DG_position_axis_X_ref
+;    <      NP_D940_limit_X_alternating_table                         *;EUMACH Original PLC
+    >      NP_D940_limit_X_alternating_table                          *;EUMACH
+    =      MG_axis_limit_1
+    =N     MG_axis_limit_2
+    =N     PN_M4574_axis_limit_Bit_0
+  ENDI
+
+  LN     NP_W1032_reference_nesessary                                 *;EUMACH
+  BT     KG_axis_X                                                    *;EUMACH
+  =      ML_axis_X_referenced_temp                                    *;EUMACH
+
+  LN     MG_alternating_table_on
+  R      MG_new_workpiece_table_1
+  R      MG_new_workpiece_table_2
+  R      MG_interrupt_alternating_table
+;  R      O_lamp_table_1                                              *;EUMACH Original PLC
+;  R      O_lamp_table_2                                              *;EUMACH Original PLC
+  S      O_lamp_table_1                                               *;EUMACH
+  S      O_lamp_table_2                                               *;EUMACH
+  R      O_lamp_table_1_workpiece_loaded                              *;EUMACH
+  R      O_lamp_table_2_workpiece_loaded                              *;EUMACH
+  =      ML_altern_table_mode_was_off
+  EMT
+
+*;EUMACH Original PLC
+;  L      DG_position_axis_X_ref
+;  >=     NP_D940_limit_X_alternating_table
+;  SN     O_lamp_table_1
+;  IFT
+;    L      MG_new_workpiece_table_1
+;    A      MG_clock_1_s
+;    =      O_lamp_table_1
+
+;    L      MG_M61_alternating_table_1
+;    IFT
+;      L      MG_clock_500_ms
+;      =      O_lamp_table_1
+;    ENDI
+;    LN     I_guard_1_closed_locked
+;    R      O_lamp_table_1
+;  ENDI
+*;EUMACH Original PLC
+
+*;EUMACH
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+  L      MG_axis_limit_1                                              *;EUMACH 5XT
+  =      O_lamp_table_1                                               *;EUMACH 5XT
+
+  L      MG_axis_limit_2                                              *;EUMACH 5XT
+  =      O_lamp_table_2                                               *;EUMACH 5XT
+
+  L      DG_position_axis_X_ref
+  <=     NP_D940_limit_X_alternating_table
+;  SN     O_lamp_table_1                                               *;EUMACH 5XT
+  R      O_lamp_table_2_workpiece_loaded
+  IFT
+    L      MG_M61_alternating_table_1
+    IFT
+      L      MG_clock_1_s
+      =      O_lamp_table_1
+    ELSE
+      LN     MG_axis_limit_1
+      R      O_lamp_table_1
+    ENDI
+
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_1_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_1_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_1
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_1_workpiece_loaded
+
+    L      PN_error_enable_table_2                                    *;EUMACH
+    A      MG_clock_1_s                                               *;EUMACH
+    =      O_lamp_table_2_workpiece_loaded                            *;EUMACH
+  ENDI
+#endif
+#if MT = &MT_37A
+  L      MG_axis_limit_2
+#if TC_guard_protection = &active
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  AN     MG_TC2_automatic                                             *;EUMACH Dual TC
+#else
+  AN     MG_TC_automatic
+#endif                                                                *;EUMACH Dual TC
+#endif
+  AN     PN_error_enable_table_2                                      *;EUMACH
+  S      O_lamp_table_2
+  R      O_lamp_table_2_workpiece_loaded
+  IFT
+    L      MG_M61_alternating_table_1
+    IFT
+      L      MG_clock_1_s
+      =      O_lamp_table_1
+    ELSE
+      L      MG_marker_one
+      R      O_lamp_table_1
+    ENDI
+
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_1_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_1_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_1
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_1_workpiece_loaded
+  ENDI
+
+#if TC_guard_protection = &active
+  L      MG_axis_limit_2
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  A      MG_TC2_automatic                                             *;EUMACH Dual TC
+#else
+  A      MG_TC_automatic
+#endif                                                                *;EUMACH Dual TC
+  IFT
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_1_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_1_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_1
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_1_workpiece_loaded
+  ENDI
+#endif
+#endif
+*;EUMACH
+
+*;EUMACH Original PLC
+;  L      DG_position_axis_X_ref
+;  <      NP_D940_limit_X_alternating_table
+;  SN     O_lamp_table_2
+;  IFT
+;    L      MG_new_workpiece_table_2
+;    A      MG_clock_1_s
+;    =      O_lamp_table_2
+;
+;    L      MG_M62_alternating_table_2
+;    IFT
+;      L      MG_clock_500_ms
+;      =      O_lamp_table_2
+;    ENDI
+;    LN     I_guard_2_closed_locked
+;    R      O_lamp_table_2
+;  ENDI
+*;EUMACH Original PLC
+
+*;EUMACH
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+  L      DG_position_axis_X_ref
+  >      NP_D940_limit_X_alternating_table
+;  SN     O_lamp_table_2                                               *;EUMACH 5XT
+  R      O_lamp_table_1_workpiece_loaded
+  IFT
+    L      MG_M62_alternating_table_2
+    IFT
+      L      MG_clock_1_s
+      =      O_lamp_table_2
+    ELSE
+      LN     MG_axis_limit_2
+      R      O_lamp_table_2
+    ENDI
+
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_2_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_2_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_2
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_2_workpiece_loaded
+
+    L      PN_error_enable_table_1                                    *;EUMACH
+    A      MG_clock_1_s                                               *;EUMACH
+    =      O_lamp_table_1_workpiece_loaded                            *;EUMACH
+  ENDI
+#endif
+#if MT = &MT_37A
+  L      MG_axis_limit_1
+#if TC_guard_protection = &active
+  AN     MG_TC_automatic
+#endif
+  AN     PN_error_enable_table_1                                      *;EUMACH
+  S      O_lamp_table_1
+  R      O_lamp_table_1_workpiece_loaded
+  IFT
+    L      MG_M62_alternating_table_2
+    IFT
+      L      MG_clock_1_s
+      =      O_lamp_table_2
+    ELSE
+      L      MG_marker_one
+      R      O_lamp_table_2
+    ENDI
+
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_2_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_2_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_2
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_2_workpiece_loaded
+  ENDI
+
+#if TC_guard_protection = &active
+  L      MG_axis_limit_1
+  A      MG_TC_automatic
+  IFT
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    LN     I_guard_2_closed_locked
+#else                                                                 *;EUMACH Auto door
+    L      I_guard_2_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+    A      MG_clock_1_s
+    O      MG_new_workpiece_table_2
+    A[                                                                *;EUMACH Auto door
+      LN     NP_W1032_reference_nesessary                             *;EUMACH Auto door
+      BT     KG_axis_X                                                *;EUMACH Auto door
+    ]                                                                 *;EUMACH Auto door
+    =      O_lamp_table_2_workpiece_loaded
+  ENDI
+#endif
+#endif
+*;EUMACH
+
+*;EUMACH Original PLC
+;  L      MG_new_workpiece_table_1
+;  A      MG_axis_limit_2
+;  XO[
+;    L      I_key_enable_table_1
+;    AN     ML_key_pressed
+;  ]
+;  =      MG_new_workpiece_table_1
+
+;  L      MG_new_workpiece_table_2
+;  A      MG_axis_limit_1
+;  XO[
+;    L      I_key_enable_table_2
+;    AN     ML_key_pressed
+;  ]
+;  =      MG_new_workpiece_table_2
+*;EUMACH Original PLC
+
+*;EUMACH
+  L      MG_new_workpiece_table_1
+  XO[
+    L      I_key_enable_table_1
+    AN     ML_key_pressed
+  ]
+  O[
+    LN     MG_enable_alternating_table
+    A      ML_enable_alternating_table
+    XO     MG_new_workpiece_table_1
+    AN     I_key_enable_table_1
+    A      MG_alt_table_automatic_workpiece_loaded
+  ]
+  A[
+    LN     NP_M4176_control_in_operation_on_or_flashes
+    O      PN_error_enable_table_1
+    A      MG_axis_limit_1
+    O      MG_axis_limit_2
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    A      I_guard_1_closed
+#else                                                                 *;EUMACH Auto door
+    A      I_guard_1_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+  ]
+  =      MG_new_workpiece_table_1
+
+  L      MG_new_workpiece_table_2
+  XO[
+    L      I_key_enable_table_2
+    AN     ML_key_pressed
+  ]
+  O[
+    LN     MG_enable_alternating_table
+    A      ML_enable_alternating_table
+    XO     MG_new_workpiece_table_2
+    AN     I_key_enable_table_2
+    A      MG_alt_table_automatic_workpiece_loaded
+  ]
+  A[
+    LN     NP_M4176_control_in_operation_on_or_flashes
+    O      PN_error_enable_table_2
+    A      MG_axis_limit_2
+    O      MG_axis_limit_1
+#if ADS = &inactive                                                   *;EUMACH Auto door
+    A      I_guard_2_closed
+#else                                                                 *;EUMACH Auto door
+    A      I_guard_2_closed_locked                                    *;EUMACH Auto door
+#endif                                                                *;EUMACH Auto door
+  ]
+  =      MG_new_workpiece_table_2
+
+  L      MG_enable_alternating_table
+  =      ML_enable_alternating_table
+
+  L      I_key_enable_table_1
+  O      I_key_enable_table_2
+  =      ML_key_pressed
+*;EUMACH
+
+  CASE   BL_step_alternating_table
+    CM     Alternat_table_on           ;00
+    CM     Release                     ;01
+    CM     Z_start_alt_table           ;02
+    CM     Z_in_Pos                    ;03
+    CM     XY_prepos_start_alt_table   ;04                            *;EUMACH
+    CM     X_in_prepos                 ;05                            *;EUMACH
+    CM     Y_in_prepos                 ;06                            *;EUMACH
+    CM     B_start_alt_table           ;07                            *;EUMACH
+    CM     B_start_in_Pos              ;08                            *;EUMACH
+    CM     Y_start_alt_table           ;09
+    CM     Y_in_Pos                    ;10
+    CM     X_1_2_Start                 ;11
+    CM     X_1_2_in_Pos                ;12
+    CM     B_end_alt_table             ;13                            *;EUMACH
+    CM     B_end_in_Pos                ;14                            *;EUMACH
+    CM     Limit_1_2_Selection         ;15
+    CM     Y_end_start_alt_table       ;16                            *;EUMACH
+    CM     Y_end_in_Pos                ;17                            *;EUMACH
+    CM     Alt_table_quit              ;18
+    CM     Alt_table_end               ;19
+  ENDC
+
+  PLL
+  AN     MG_interrupt_alternating_table
+  =      TS_timeout_alternating_table
+  IFT
+    INC    BL_step_alternating_table
+  ENDI
+
+  LN     MG_enable_alternating_table
+  S      TS_timeout_alternating_table
+  EMT
+
+  L      MG_NC_start_pulse
+  R      MG_interrupt_alternating_table
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_timeout_alternating_table
+
+  LN     TR_timeout_alternating_table
+  AN     TS_timeout_alternating_table
+  =      PN_error_timeout_alternating_table
+  S      MG_interrupt_alternating_table
+
+  L      MG_key_NC_stop
+  O      MG_pulse_external_stop
+  S      MG_interrupt_alternating_table
+
+*;EUMACH Origianl PLC
+;  L      I_key_enable_table_1
+;  O      I_key_enable_table_2
+;  =      ML_key_pressed
+*;EUMACH Origianl PLC
+
+  L      MG_auto_manu_mode_change
+  O      MG_pulse_internal_stop
+  ON     MG_control_operational
+  CMT    Alt_table_reset
+
+EM
+
+;----------------------------
+LBL Alternat_table_on                  ;00
+
+  L      MG_axis_limit_1
+  AN     I_Y_in_table_alternating_area                                *;EUMACH
+  S      MG_guard_2_closed_locked
+
+  L      MG_axis_limit_2
+  AN     I_Y_in_table_alternating_area                                *;EUMACH
+  S      MG_guard_1_closed_locked
+
+  L      MG_M61_alternating_table_1
+  O      MG_M62_alternating_table_2
+  AN     PN_M4092_quit_M_function
+  PSL
+
+EM
+
+;----------------------------
+LBL Release                            ;01
+
+*;EUMACH Original PLC
+;  L      MG_axis_limit_1
+;  A      MG_M61_alternating_table_1
+;  O[
+;    L      MG_axis_limit_2
+;    A      MG_M62_alternating_table_2
+;  ]
+;  S      PN_M4092_quit_M_function
+;  JPT    Alt_table_end
+*;EUMACH Original PLC
+
+  L      MG_M61_alternating_table_1
+  AN     MG_new_workpiece_table_1
+  =      PN_error_enable_table_1
+
+  L      MG_M62_alternating_table_2
+  AN     MG_new_workpiece_table_2
+  =      PN_error_enable_table_2
+
+  L      I_guard_1_closed_locked
+  A      I_guard_2_closed_locked
+  O      NP_guard_inactive
+  AN     PN_error_enable_table_1
+  AN     PN_error_enable_table_2
+  A[                                                                  *;EUMACH
+    L      MG_axis_limit_1                                            *;EUMACH
+    A      MG_M62_alternating_table_2                                 *;EUMACH
+    O[                                                                *;EUMACH
+      L      MG_axis_limit_2                                          *;EUMACH
+      A      MG_M61_alternating_table_1                               *;EUMACH
+    ]                                                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    L      MG_axis_limit_1                                            *;EUMACH
+    A      MG_M61_alternating_table_1                                 *;EUMACH
+    A      I_guard_1_closed_locked                                    *;EUMACH
+    AN     PN_error_enable_table_1                                    *;EUMACH
+    O[                                                                *;EUMACH
+      L      MG_axis_limit_2                                          *;EUMACH
+      A      MG_M62_alternating_table_2                               *;EUMACH
+      A      I_guard_2_closed_locked                                  *;EUMACH
+      AN     PN_error_enable_table_2                                  *;EUMACH
+    ]                                                                 *;EUMACH
+    O      NP_guard_inactive                                          *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_control_in_operation_on
+  AN     NP_M4157_mode_restore_position
+  S      MG_enable_alternating_table
+;  PSL                                                                *;EUMACH Original PLC
+
+  L      MG_axis_limit_1
+  A      MG_M61_alternating_table_1
+  O[
+    L      MG_axis_limit_2
+    A      MG_M62_alternating_table_2
+  ]
+  A      MG_enable_alternating_table
+  S      PN_M4092_quit_M_function
+  JPT    Alt_table_end
+
+*;EUMACH
+ ;The following PLC must be added.  If not, when machine in area I and guard II is not locked -> M62 -> error 62 ->
+ ;BL_step_alternating_table = 1 -> EMG -> due to MG_enable_alternating_table = 0,CMT    Alt_table_reset won't be
+ ;executed. -> BL_step_alternating_table still = 1
+  L      MG_auto_manu_mode_change
+  O      MG_pulse_internal_stop
+  ON     MG_control_operational
+  JPT    Alt_table_end
+*;EUMACH
+
+  PS     MG_enable_alternating_table                                  *;EUMACH
+EM
+
+;----------------------------
+LBL Z_start_alt_table                  ;02
+
+  PS     KG_axis_Z
+  PS     NP_D956_posit_Z_alternating_table
+  L      NP_D776_feed_PLC_Z
+  /      K+10000
+  PSW
+; PS     KL_absolute_without_software_limit_switch                    *;EUMACH Original PLC
+  PS     KL_absolute_with_software_limit_switch                       *;EUMACH
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL Z_in_Pos                           ;03
+
+  L      DG_position_axis_Z_ref
+  -      NP_D956_posit_Z_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Z
+  AN     PN_M4122_strobe_PLC_posit_axis_Z
+  AN     MG_interrupt_alternating_table
+  PSL
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL XY_prepos_start_alt_table          ;04
+
+#if MT = &MT_2D
+  L      MG_M61_alternating_table_1
+  CMF    X_Limit_1_prepos_start
+  CMT    X_Limit_2_prepos_start
+  CM     Y_prepos_start
+  PL     ML_stack_synchronize_alt_table
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+#if MT = &MT_2D                                                       *;EUMACH
+;----------------------------                                         *;EUMACH
+LBL X_Limit_1_prepos_start
+
+  L      NP_ALT_PAL_change_X_preposition_active
+  IFT
+    PS     KG_axis_X
+    PS     NP_D808_TC_position_X
+    L      NP_D768_feed_PLC_X
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ELSE
+    PS     MG_marker_one
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL X_Limit_2_prepos_start
+
+  L      NP_ALT_PAL_change_X_preposition_active
+  IFT
+    PS     KG_axis_X
+    PS     NP_MP4231_12_SHC_pos_XY
+    L      NP_D768_feed_PLC_X
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ELSE
+    PS     MG_marker_one
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL Y_prepos_start
+
+  PS     KG_axis_Y
+  PS     NP_D952_posit_Y_alternating_table
+  L      NP_D772_feed_PLC_Y
+  /      K+10000
+  PSW
+  PS     KL_absolute_without_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+
+EM
+#endif                                                                *;EUMACH
+
+;----------------------------                                         *;EUMACH
+LBL X_in_prepos                        ;05
+
+#if MT = &MT_2D
+  L      MG_M61_alternating_table_1
+  CMF    X_in_Limit_1_prepos
+  CMT    X_in_Limit_2_prepos
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+#if MT = &MT_2D                                                       *;EUMACH
+;----------------------------                                         *;EUMACH
+LBL X_in_Limit_1_prepos
+
+  L      NP_ALT_PAL_change_X_preposition_active
+  IFT
+    L      DG_position_axis_X_ref
+    -      NP_D808_TC_position_X
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_X
+    AN     PN_M4120_strobe_PLC_posit_axis_X
+    AN     MG_interrupt_alternating_table
+    PSL
+  ELSE
+    PS     MG_marker_one
+  ENDI
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL X_in_Limit_2_prepos
+
+  L      NP_ALT_PAL_change_X_preposition_active
+  IFT
+    L      DG_position_axis_X_ref
+    -      NP_MP4231_12_SHC_pos_XY
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_X
+    AN     PN_M4120_strobe_PLC_posit_axis_X
+    AN     MG_interrupt_alternating_table
+    PSL
+  ELSE
+    PS     MG_marker_one
+  ENDI
+
+EM
+#endif                                                                *;EUMACH
+
+;----------------------------                                         *;EUMACH
+LBL Y_in_prepos                        ;06
+
+#if MT = &MT_2D
+  L      DG_position_axis_Y_ref
+  -      NP_D952_posit_Y_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  AN     MG_interrupt_alternating_table
+  PSL
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL B_start_alt_table                  ;07
+
+#if (MT = &MT_2D) or (MT = &MT_37B)
+  PS     KG_axis_6
+#if MT = &MT_2D
+  L      MG_axis_limit_1
+  IFT
+    PS     KL_plus_90_degree
+  ELSE
+    PS     KL_minus_90_degree
+  ENDI
+#else
+  PS     KL_0_degree
+#endif
+  L      NP_D788_feed_PLC_6
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL B_start_in_Pos                     ;08
+
+#if (MT = &MT_2D) or (MT = &MT_37B)
+#if MT = &MT_2D
+  L      MG_axis_limit_1
+  IFT
+    L      DG_position_axis_6_ref
+    -      KL_plus_90_degree
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_6
+    AN     PN_M4125_strobe_PLC_posit_axis_6
+    AN     MG_interrupt_alternating_table
+    PSL
+  ELSE
+    L      DG_position_axis_6_ref
+    -      KL_minus_90_degree
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_6
+    AN     PN_M4125_strobe_PLC_posit_axis_6
+    AN     MG_interrupt_alternating_table
+    PSL
+  ENDI
+#endif
+
+#if MT = &MT_37B
+  L      DG_position_axis_6_ref
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_6
+  AN     PN_M4125_strobe_PLC_posit_axis_6
+  AN     MG_interrupt_alternating_table
+  PSL
+#endif
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Y_start_alt_table                  ;09
+
+#if MT ! &MT_2D
+  PS     KG_axis_Y
+  PS     NP_D952_posit_Y_alternating_table
+  L      NP_D772_feed_PLC_Y
+  /      K+10000
+  PSW
+  PS     KL_absolute_without_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Y_in_Pos                           ;10
+
+#if MT ! &MT_2D
+  L      DG_position_axis_Y_ref
+  -      NP_D952_posit_Y_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  AN     MG_interrupt_alternating_table
+  PSL
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL X_1_2_Start                        ;11
+
+  L      MG_M61_alternating_table_1
+  CMT    X_Limit_1_Start
+  CMF    X_Limit_2_Start
+
+EM
+
+;----------------------------
+LBL X_1_2_in_Pos                       ;12
+
+  L      MG_M61_alternating_table_1
+  CMT    X_in_Limit_1_Pos
+  CMF    X_in_Limit_2_Pos
+
+EM
+
+;----------------------------
+LBL X_Limit_1_Start
+
+  PS     KG_axis_X
+  PS     NP_D944_posit_1_X_alternating_table
+  L      NP_D768_feed_PLC_X
+  /      K+10000
+  PSW
+  PS     KL_absolute_without_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL X_in_Limit_1_Pos
+
+  L      DG_position_axis_X_ref
+  -      NP_D944_posit_1_X_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  AN     MG_interrupt_alternating_table
+  PSL
+
+EM
+
+;----------------------------
+LBL X_Limit_2_Start
+
+  PS     KG_axis_X
+  PS     NP_D948_posit_2_X_alternating_table
+  L      NP_D768_feed_PLC_X
+  /      K+10000
+  PSW
+  PS     KL_absolute_without_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL X_in_Limit_2_Pos
+
+  L      DG_position_axis_X_ref
+  -      NP_D948_posit_2_X_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  AN     MG_interrupt_alternating_table
+  PSL
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL B_end_alt_table                    ;13
+
+#if MT = &MT_2D
+  PS     KG_axis_6
+  PS     KL_0_degree
+  L      NP_D788_feed_PLC_6
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL B_end_in_Pos                       ;14
+
+#if MT = &MT_2D
+  L      DG_position_axis_6_ref
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_6
+  AN     PN_M4125_strobe_PLC_posit_axis_6
+  AN     MG_interrupt_alternating_table
+  PSL
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Limit_1_2_Selection                ;15
+
+  L      MG_M61_alternating_table_1
+  =      MG_axis_limit_1
+  =N     MG_axis_limit_2
+  =N     PN_M4574_axis_limit_Bit_0
+
+*;EUMACH
+  L      MG_marker_one
+  S      PN_M4135_strobe_axes_limit
+  PSL
+*;EUMACH
+;  PS     MG_marker_one                                               *;EUMACH Original PLC
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL Y_end_start_alt_table              ;16
+
+  PS     KG_axis_Y
+  PS     NP_D920_posit_Y_end_alternating_table
+  L      NP_D772_feed_PLC_Y
+  /      K+10000
+  PSW
+  PS     KL_absolute_without_software_limit_switch
+  CM     9221
+  PLW
+  ==     K+0
+  PSL
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL Y_end_in_Pos                       ;17
+
+  L      DG_position_axis_Y_ref
+  -      NP_D920_posit_Y_end_alternating_table
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  AN     MG_interrupt_alternating_table
+  PSL
+
+EM
+
+;----------------------------
+LBL Alt_table_quit                     ;18
+
+  L      MG_M61_alternating_table_1
+  O      MG_M62_alternating_table_2
+  AN     PN_M4135_strobe_axes_limit
+  S      PN_M4092_quit_M_function
+
+  LN     NP_M4072_strobe_M_function
+  AN     PN_M4135_strobe_axes_limit
+  PSL
+*;EUMACH Auto door
+#if ADS ! &inactive
+  IFT
+    L      MG_axis_limit_2
+    R      O_auto_door_1_closing
+
+    L      NP_all_modes_auto_door_opening_M61_M62
+    O      NP_M4153_mode_program_run_single_block
+    O      NP_M4154_mode_program_run_full_sequence
+    A      NP_auto_door_opening_after_M61_M62
+    A      MG_axis_limit_2
+    S      O_auto_door_1_opening
+
+    L      MG_axis_limit_1
+    R      O_auto_door_2_closing
+
+    L      NP_all_modes_auto_door_opening_M61_M62
+    O      NP_M4153_mode_program_run_single_block
+    O      NP_M4154_mode_program_run_full_sequence
+    A      NP_auto_door_opening_after_M61_M62
+    A      MG_axis_limit_1
+    S      O_auto_door_2_opening
+  ENDI
+#endif
+*;EUMACH Auto door
+EM
+
+;----------------------------
+LBL Alt_table_end                      ;19
+
+  PS     MG_marker_zero
+
+LBL Alt_table_reset
+
+  L      MG_marker_one
+  R      MG_enable_alternating_table
+  R      MG_new_workpiece_table_1
+  R      MG_new_workpiece_table_2
+  R      MG_interrupt_alternating_table
+
+  L      K+0
+  =      BL_step_alternating_table
+
+EM

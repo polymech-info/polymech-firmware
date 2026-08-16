@@ -1,0 +1,274 @@
+*-----------------------------------------------------------------------------
+*  WZW Tool Table - PLC Status lesen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*  PLC Status (Tool Table):
+*    #Bit 0 (%00000xx1) - Tastsystem
+*    #Bit 1 (%00000x1x) - WZ mit Überlänge
+*                       - (WZ Platz nicht ausklappen nach TOOL DEF)
+*    #Bit 2 (%000001xx) - M07 Kühlmittel innen aktiv
+*-----------------------------------------------------------------------------
+
+#define /s    KL_WZ_Tabelle                            K +0
+#define /s    KL_Platz_Tabelle                         K +2
+#define /s    KL_PLC_Status                            K +17
+#define /s    KL_PLC_Wert                              K +26
+#define /s    KL_Element_Platz_gesperrt                K +3
+#define /s    KL_Platz_gesperrt                        K +1
+#define /s    KL_Spindel_Platz_P0                      K +0
+#define /s    KL_Werkzeug_Nummer                       K +0
+#define /s    KL_Index_0                               K +0
+#define /s    KL_WZ_Platz_leer                         K +0
+#define /s    KL_keine_Magazin_Nummer                  K +0
+#define /s    KL_Werkzeug_Magazin_1                    K +1
+#define /s    KL_PLC_Status_Bit0_Tastsystem            K +0
+#define /s    KL_PLC_Status_Bit1_WZ_Ueberlaenge        K +1
+#define /s    KL_PLC_Status_Bit2_WZ_Innenkuehlung      K +2
+
+#define /s    BL_Identifier                            B
+
+#define /s    WL_Zeilen_Nummer                         W
+#define /s    WL_Zeilen_Nummer_Werkzeug                W
+#define /s    WL_Werkzeug_in_Spindel_alt               W
+
+#include Mac_Lib.inc
+
+GLOBAL WZ_Status
+
+;----------------------------
+LBL WZ_Status
+;----------------------------
+
+*$WS
+*Rückmeldung MG_WZ_Status_gelesen einführen, wenn kein Modul-Fehler aufgetreten
+*MG_WZ_Status_gelesen am besten in den jeweiligen Modulen löschen
+
+  LN     MG_WZ_Status_lesen
+  AN     MG_WZ_Vorwahl_Status_lesen
+  EMT
+
+*$WS testen falls keine WZ-Tabelle vorhanden (TOOL DEF in NC-Programm)
+
+  LN     MG_WZ_Tabelle_aktiv
+  R      MG_WZ_Status_lesen
+  R      MG_WZ_Vorwahl_Status_lesen
+  EMT
+
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   WZ_Status_submit
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL WZ_Status_submit
+
+  L      MG_WZ_Status_lesen
+  CMT    WZW_Status_lesen
+
+  L      MG_WZ_Vorwahl_Status_lesen
+  CMT    WZ_Vorwahl_Status
+
+EM
+
+;----------------------------
+LBL WZW_Status_lesen
+
+  L      MG_WZW_Auto_aktiv
+  IFT
+    L      WG_Werkzeug_in_Spindel
+    =      WL_Werkzeug_in_Spindel_alt
+
+    PS     KL_Platz_Tabelle
+    PS     KL_Spindel_Platz_P0
+    PS     KL_Werkzeug_Nummer
+    CM     9093                        ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+    PL     WG_Werkzeug_in_Spindel
+    PLX
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_WZ_Spindel_Vorwahl
+  IFT
+    R      MG_WZ_Spindel_Vorwahl
+
+    L      WG_Werkzeug_in_Spindel
+    <>     WL_Werkzeug_in_Spindel_alt
+    IFT
+      S      PN_M4538_Vorwahl_Werkzeug
+
+      L      WG_Werkzeug_in_Spindel
+      =      NP_W264_Werkzeug_Nummer
+    ENDI
+  ENDI
+
+  PS     KL_WZ_Tabelle
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  IFT
+    PS     NP_W264_Werkzeug_Nummer
+  ELSE
+    PS     WG_Werkzeug_in_Spindel
+  ENDI
+
+  PS     KL_Index_0
+  CM     9091                          ;Ermittlung der Zeilennummer eines Werkzeugtabelleneintrages
+  PLW
+  =      WL_Zeilen_Nummer
+  PSW
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_PLC_Status
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PL     BG_WZ_neu_Status
+  PLX
+  M_Modul_Fehler_anzeigen
+
+  L      BG_WZ_neu_Status
+  BT     KL_PLC_Status_Bit0_Tastsystem
+  =      MG_3D_Tastsystem_aktiv
+
+  L      BG_WZ_neu_Status
+  BT     KL_PLC_Status_Bit2_WZ_Innenkuehlung
+  ON     STG_Spindel[BG_Index_Sn].MG_Freigabe_M07_mit_WZ_Status_Bit2
+  =      MG_Freigabe_M07_Kuehlmittel_innen
+
+#if CFG_WZ_spezifische_Momenten_Ueberwachung = "aktiv"
+  PS     KL_WZ_Tabelle
+  PS     WL_Zeilen_Nummer
+  PS     KL_PLC_Wert
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PLW
+  /      K+10000
+  =      WG_S_max_Moment_WZ_Tabelle
+  PLX
+  M_Modul_Fehler_anzeigen
+
+  L      WG_S_max_Moment_WZ_Tabelle
+  >      K+0
+  =      MG_SK_T_Moment_Ueberwachung
+  IFT
+    L      WG_S_max_Moment_WZ_Tabelle
+    <      STG_Spindel[BG_Index_Sn].DG_min_Moment
+    IFT
+      L      STG_Spindel[BG_Index_Sn].DG_min_Moment
+      =      WG_S_max_Moment_WZ_Tabelle
+    ENDI
+  ELSE
+    L      STG_Spindel[BG_Index_Sn].DG_max_Moment
+    =      WG_S_max_Moment_WZ_Tabelle
+  ENDI
+#else
+  L      STG_Spindel[BG_Index_Sn].DG_max_Moment
+  =      WG_S_max_Moment_WZ_Tabelle
+#endif
+
+  L      MG_Eins_Merker
+  S      MG_Bildschirm_loeschen
+  R      MG_WZ_Status_lesen
+
+  LN     MG_Inbetriebnahme
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM
+
+;----------------------------
+LBL WZ_Vorwahl_Status
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+  ==     K+0
+  R      MG_WZ_Vorwahl_Status_lesen
+  EMT
+
+  L      NP_W268_Werkzeug_Magazin_Nummer
+  <=     KL_keine_Magazin_Nummer
+  IFT
+    PS     KL_Werkzeug_Magazin_1
+  ELSE
+    PS     NP_W268_Werkzeug_Magazin_Nummer
+  ENDI
+
+  L      MG_WZM_Beladen_aktiv
+  IFT
+    L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+    +      STG_WZM[BG_WZM_Index_Tool_Call].DG_WZM_Offset_Beladeplatz
+    -      K+1
+    MOD    STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+    +      K+1
+    PSW
+  ELSE
+    PS     STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+  ENDI
+
+  CM     9301                          ;Ermittlung der Nummer eines Eintrags in der Platztabelle
+  PL     WL_Zeilen_Nummer_Werkzeug
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_Platz_Tabelle
+  PS     WL_Zeilen_Nummer_Werkzeug
+  PS     KL_Werkzeug_Nummer
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PL     WG_T_Nummer_Standby_Werkzeug
+  PLX
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_Platz_Tabelle
+  PS     WL_Zeilen_Nummer_Werkzeug
+  PS     KL_Element_Platz_gesperrt
+  CM     9093                          ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+  PLW
+  ==     KL_Platz_gesperrt
+  =      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Platz_gesperrt
+
+  PLX
+  M_Modul_Fehler_anzeigen
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  L      WG_T_Nummer_Standby_Werkzeug
+  >      KL_WZ_Platz_leer
+  IFT
+    PS     KL_WZ_Tabelle
+    PS     WG_T_Nummer_Standby_Werkzeug
+    PS     KL_Index_0
+    CM     9091                        ;Ermittlung der Zeilennummer eines Werkzeugtabelleneintrages
+    PLW
+    =      WL_Zeilen_Nummer
+    PSW
+    M_Modul_Fehler_anzeigen
+
+    PS     KL_PLC_Status
+    CM     9093                        ;Lesen von Daten aus aktiver Tabelle (.T/.D/.TCH  )
+    PL     BG_WZ_Vorwahl_Status
+    PLX
+    M_Modul_Fehler_anzeigen
+  ENDI
+#endif
+
+  L      MG_WZ_Vorwahl_Status_lesen
+  R      MG_WZ_Vorwahl_Status_lesen
+
+  LN     MG_Inbetriebnahme
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM

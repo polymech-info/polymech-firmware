@@ -1,0 +1,895 @@
+*-----------------------------------------------------------------------------
+*  TC Magazine 2 controlled by Pulse Counter
+*-----------------------------------------------------------------------------
+*  Module Description
+*    PLC status (tool table):
+*    #Bit 1 (%00000010) - pocket in/out control after TOOL DEF
+*                       - (defining in Mag_pocket_out/Mag_2_pocket_out of
+*                          CONFIG_xx.DEF)
+*-----------------------------------------------------------------------------
+
+#define /s    KL_nominal_2_posit_cw                    K-1000
+#define /s    KL_nominal_2_posit_ccw                   K+1000
+#define /s    KL_offset_toolmag2_2                     K+70
+#define /s    KL_magazine_2                            K+1            *;EUMACH Dual TC
+
+#define /s    ML_diff_lower_equal_half_mag_2           M
+#define /s    ML_nominal_2_greater_actual_posit        M
+#define /s    ML_TC_magazine_2_cw                      M
+#define /s    ML_TC_magazine_2_counter                 M
+#define /s    ML_TC_magazine_2_exact_position          M
+#define /s    ML_TC_magazine_2_reference               M
+#define /s    ML_TC_magazine_2_turn_manual_active      M
+#define /s    ML_TC_magazine_2_turn_cw                 M
+#define /s    ML_TC_magazine_2_turn_ccw                M
+#define /s    ML_TC_magazine_2_referencing             M              *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+
+#define /s    WL_Tool_Def_2_pocket_number              W
+#define /s    WL_Tool_Def_2_tool_number                W
+
+EXTERN Absolute
+
+GLOBAL Tool_magazine_2
+GLOBAL TC_mag_2_cw_turn
+GLOBAL TC_mag_2_ccw_turn
+
+;----------------------------
+LBL Tool_magazine_2
+;----------------------------
+
+  LN     MG_TC_auto_active
+  ON     MG_TC_magazine_2_active
+  EMT
+
+  LN     NP_M4074_strobe_TOOL_DEF
+  R      PN_M4094_quit_TOOL_DEF
+
+  L      WG_TC_mag_2_actual_2_pocket
+  ==     K+0
+  S      MG_TC_magazine_2_reference_necessary
+
+  L      MG_TC_magazine_2_reference_necessary
+  A      MG_control_operational
+  AN     MG_TC_help
+  =      MG_error_TC_magazine_2_reference
+  IFT
+    L      O_TC_magazine_2_cw
+    O      O_TC_magazine_2_ccw
+    A      MG_clock_1_s
+    R      MG_error_TC_magazine_2_reference
+  ENDI
+
+  L      I_TC_magazine_2_reference
+  AN     ML_TC_magazine_2_reference
+#if TC_magazine_2_reference_sensor = &active
+  A      MG_TC_magazine_2_reference_necessary
+#endif
+  IFT
+    L      K+0
+    =      WG_act_nom_2_pocket_difference
+
+    L      K+1
+    =      WG_TC_magazine_2_actual_pocket
+    =      WG_TC_mag_2_actual_2_pocket
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+  L      I_TC_magazine_2_reference
+  =      ML_TC_magazine_2_reference
+
+#if TC_magazine_2_pulse_counting = &Rising_edge                       *;EUMACH
+  L      I_TC_magazine_2_counter
+  AN     ML_TC_magazine_2_counter
+#else                                                                 *;EUMACH
+  LN     I_TC_magazine_2_counter                                      *;EUMACH
+  A      ML_TC_magazine_2_counter                                     *;EUMACH
+#endif                                                                *;EUMACH
+  A      O_TC_magazine_2_cw
+#if TC_magazine_2_reference_sensor = &active
+  AN     MG_TC_magazine_2_reference_necessary
+#endif
+  IFT
+    INC    WG_TC_magazine_2_actual_pocket
+    DEC    WG_act_nom_2_pocket_difference
+
+    L      WG_TC_magazine_2_actual_pocket
+    >      WG_MP7261_TC_magazine_2_max_pocket
+    IFT
+      L      K+1
+      =      WG_TC_magazine_2_actual_pocket
+    ENDI
+  ENDI
+
+#if TC_magazine_2_pulse_counting = &Rising_edge                       *;EUMACH
+  L      I_TC_magazine_2_counter
+  AN     ML_TC_magazine_2_counter
+#else                                                                 *;EUMACH
+  LN     I_TC_magazine_2_counter                                      *;EUMACH
+  A      ML_TC_magazine_2_counter                                     *;EUMACH
+#endif                                                                *;EUMACH
+  A      O_TC_magazine_2_ccw
+#if TC_magazine_2_reference_sensor = &active
+  AN     MG_TC_magazine_2_reference_necessary
+#endif
+  IFT
+    DEC    WG_TC_magazine_2_actual_pocket
+    DEC    WG_act_nom_2_pocket_difference
+
+    L      WG_TC_magazine_2_actual_pocket
+    ==     K+0
+    IFT
+      L      WG_MP7261_TC_magazine_2_max_pocket
+      =      WG_TC_magazine_2_actual_pocket
+    ENDI
+  ENDI
+
+  L      I_TC_magazine_2_counter
+  =      ML_TC_magazine_2_counter
+
+#if TC_magazine_2_pulse_counting = &Rising_edge                       *;EUMACH
+  L      I_TC_magazine_2_exact_position
+  AN     ML_TC_magazine_2_exact_position
+#else                                                                 *;EUMACH
+  LN     I_TC_magazine_2_exact_position                               *;EUMACH
+  A      ML_TC_magazine_2_exact_position                              *;EUMACH
+#endif                                                                *;EUMACH
+  A      O_TC_magazine_2_cw
+#if TC_magazine_2_reference_sensor = &active
+  AN     MG_TC_magazine_2_reference_necessary
+#endif
+  IFT
+    INC    WG_TC_mag_2_actual_2_pocket
+
+    L      WG_TC_mag_2_actual_2_pocket
+    >      WG_MP7261_TC_magazine_2_max_pocket
+    IFT
+      L      K+1
+      =      WG_TC_mag_2_actual_2_pocket
+    ENDI
+  ENDI
+
+#if TC_magazine_2_pulse_counting = &Rising_edge                       *;EUMACH
+  L      I_TC_magazine_2_exact_position
+  AN     ML_TC_magazine_2_exact_position
+#else                                                                 *;EUMACH
+  LN     I_TC_magazine_2_exact_position                               *;EUMACH
+  A      ML_TC_magazine_2_exact_position                              *;EUMACH
+#endif                                                                *;EUMACH
+  A      O_TC_magazine_2_ccw
+#if TC_magazine_2_reference_sensor = &active
+  AN     MG_TC_magazine_2_reference_necessary
+#endif
+  IFT
+    DEC    WG_TC_mag_2_actual_2_pocket
+
+    L      WG_TC_mag_2_actual_2_pocket
+    ==     K+0
+    IFT
+      L      WG_MP7261_TC_magazine_2_max_pocket
+      =      WG_TC_mag_2_actual_2_pocket
+    ENDI
+  ENDI
+
+  L      I_TC_magazine_2_exact_position
+  =      ML_TC_magazine_2_exact_position
+
+#if TC2_quit_while_tool_returning = &active                           *;EUMACH
+*;Without the following PLC, the following situation will occur.
+*;1. TOOL CALL XX
+*;2. TOOL DEF YY  <- Wait until tool on arm unit returing back to magazine pocket.
+*;3. L Xxxx Yxxx Fxxx .....
+  L      NP_M4074_strobe_TOOL_DEF                                     *;EUMACH
+  A      MG_TC2_automatic                                             *;EUMACH
+  S      PN_M4094_quit_TOOL_DEF                                       *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      NP_W268_tool_magazine_number                                 *;EUMACH Dual TC
+  DECW                                                                *;EUMACH Dual TC
+  ==     KL_magazine_2                                                *;EUMACH Dual TC
+  A      NP_M4074_strobe_TOOL_DEF
+  AN     MG_T_mag_2_interruption
+;  AN     MG_soft_key_TC2_mag_load_active							  *;EUMACH
+  AN     MG_TM2_started_by_Tool_Def
+  AN     MG_TM2_loading_active                                        *;EUMACH
+  A      I_TC_mag_2_guard_locked_closed                               *;EUMACH
+  S      MG_TM2_started_by_Tool_Def
+  IFT
+    L      NP_W262_tool_pocket_number
+    =      WL_Tool_Def_2_pocket_number
+    L      NP_W264_tool_number
+    =      WL_Tool_Def_2_tool_number
+  ENDI
+
+  L      MG_marker_one
+  S      TS_TC_magazine_2_exact_position
+
+  LN     MG_TC_magazine_2_start
+  =      TS_TC_magazine_2_timeout
+
+  LN     O_TC_mag_2_lock_pin_out
+  AN     I_TC_mag_2_lock_pin_in
+  =      O_TC_mag_2_lock_pin_in
+
+  CASE   BG_step_magazine_2
+    CM     Magazine_start              ;00
+    CM     Tool_def_quit               ;01
+    CM     Pocket_put_in               ;02
+    CM     Pocket_pos_in               ;03
+    CM     Magazine_direct             ;04
+    CM     Lock_pin_out                ;05
+    CM     Lock_pin_pos_out            ;06
+    CM     Magazine_nom_pos            ;07
+    CM     Time_exact_stop             ;08
+    CM     Lock_pin_pos_in             ;09
+    CM     Mag_exact_stop              ;10
+    CM     Standby_T_read              ;11
+    CM     Pocket_in_out               ;12
+    CM     Pocket_posit                ;13
+    CM     Magazine_end                ;14
+  ENDC
+
+  PLL
+  AN     MG_T_mag_2_interruption
+  S      TS_TC_magazine_2_timeout
+  IFT
+    INC    BG_step_magazine_2
+  ENDI
+
+  L      MG_TC_mag2_diagnosis
+  IFT
+    L      KL_offset_toolmag2_2
+    +      BG_step_magazine_2
+    =X
+
+    L      S#D0[X]
+    =      S1
+    INCX
+
+    L      S#D0[X]
+    =      S2
+    INCX
+
+    L      S#D0[X]
+    =      S3
+  ENDI
+
+  LN     MG_TC_magazine_2_start
+  EMT
+
+  L      MG_key_NC_start_p_pulse
+  R      MG_T_mag_2_interruption
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_TC_magazine_2_timeout
+
+  LN     TS_TC_magazine_2_timeout
+  AN     TR_TC_magazine_2_timeout
+  =      MG_error_TC_magazine_2_timeout
+  S      MG_T_mag_2_interruption
+
+*;EUMACH Original PLC --- When the following PLC is deleted, no magazine stop while NC stop
+;  L      MG_pulse_external_stop
+;  AN     NP_M4157_mode_restore_position
+;  O      MG_key_NC_stop
+;  S      MG_T_mag_2_interruption
+*;EUMACH Original PLC
+
+  L      MG_T_mag_2_interruption
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_guard_open
+  R      MG_TM2_started_by_Tool_Def
+
+*;Without modifying the following PLC, the following problem will occur.
+*;1. TOOL DEF in MDI/SBK mode, switch from automatic mode to manual mode
+*;   -> magazine 2 stops.
+*;2. TOOL CALL with magazine 2 rotating in SBK mode, switch from automatic mode
+*;   to manual mode -> magazine stops.
+*;3. Magazine 2 rotating and internal stop
+  L      MG_auto_manu_mode_change
+  AN     MG_TC_magazine_2_start                                       *;EUMACH
+;  O      MG_pulse_internal_stop                                      *;EUMACH Original PLC
+  O      MG_win_TC_arm_mag2_motor_overloaded                          *;EUMACH
+  ON     MG_control_operational
+  CMT    TC_magazine_reset
+
+EM
+
+;----------------------------
+LBL Magazine_start                     ;00
+
+  LN     I_TC_magazine_2_counter
+  ON     I_TC_magazine_2_exact_position
+#if TC2_lock_pin = &active                                            *;EUMACH
+  ON     I_TC_mag_2_lock_pin_in                                       *;EUMACH
+#endif                                                                *;EUMACH
+  AN     MG_TC2_automatic
+  S      MG_TC_magazine_2_reference_necessary
+
+#if TC_magazine_2_reference_sensor = &active
+  L      MG_TC_magazine_2_reference_necessary
+  A      MG_key_NC_start_p_pulse
+  A      MG_control_operational
+  A      MG_TC2_standby_position
+  AN     MG_TC_help
+  AN     MG_TM2_loading_active                                        *;EUMACH
+  A      I_TC_mag_2_guard_locked_closed                               *;EUMACH
+  S      MG_TC_magazine_2_start
+#endif
+
+  L      MG_TM2_started_by_Tool_Def
+  A      MG_TC2_standby_position
+  AN     MG_TC2_automatic
+  O      MG_TM2_started_by_Tool_Call
+  S      MG_TC_magazine_2_start
+
+#if TC_magazine_2_load_position_sensor = &active                      *;EUMACH
+  L      MG_TC_magazine_2_start                                       *;EUMACH
+;  A      I_TC_mag_2_guard_closed                                     *;EUMACH Original PLC
+  A      I_TC_mag_2_guard_locked_closed                               *;EUMACH
+  AN     MG_TM2_loading_active                                        *;EUMACH
+  AN     I_TC_mag_2_load_position_locked                              *;EUMACH
+  S      MG_error_TC_mag_2_load_pos_lock_necessary                    *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_TC_magazine_2_start
+#if TC_magazine_2_load_position_sensor = &active                      *;EUMACH
+  A      I_TC_mag_2_load_position_locked                              *;EUMACH
+#endif                                                                *;EUMACH
+  PSL
+  EMF
+
+  L      MG_TM2_started_by_Tool_Def
+  AN     MG_TM2_started_by_Tool_Call
+  R      MG_TM2_started_by_Tool_Def
+  IFT
+    L      WL_Tool_Def_2_pocket_number
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+  L      MG_TM2_started_by_Tool_Call
+  R      MG_TM2_started_by_Tool_Call
+  IFT
+    L      WG_TC2_pocket_number
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+  L      WG_TC_magazine_2_nominal_pocket
+  <=     K+0
+  A      MG_automatic_mode
+*$WS
+  AN     MG_edit_pocket_table
+  AN     ML_TC_magazine_2_turn_manual_active                          *;EUMACH
+  IFT
+    L      WG_TC_magazine_2_actual_pocket
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+#if TC_magazine_2_reference_sensor = &active
+  L      MG_TC_magazine_2_reference_necessary
+  IFT
+    L      K-1000
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+#endif
+
+  L      WG_TC_magazine_2_actual_pocket
+  ==     WG_TC_magazine_2_nominal_pocket
+  IFT
+    L      NP_M4074_strobe_TOOL_DEF
+    S      PN_M4094_quit_TOOL_DEF
+
+    PLL
+    A      MG_marker_zero
+    PSL
+
+    LN     NP_M4074_strobe_TOOL_DEF
+    JPT    TC_magazine_reset
+  ENDI
+
+EM
+
+;----------------------------
+LBL Tool_def_quit                      ;01
+
+  L      NP_TC_mag2_guard_and_panel                                   *;EUMACH
+  A      MG_TM2_loading_active                                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    PS     MG_marker_one                                              *;EUMACH
+  ELSE                                                                *;EUMACH
+    L      NP_M4074_strobe_TOOL_DEF
+    S      PN_M4094_quit_TOOL_DEF
+
+    LN     NP_M4074_strobe_TOOL_DEF
+    AN     MG_T_mag_2_interruption
+    R      MG_TM2_started_by_Tool_Def
+    PSL
+  ENDI                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL Pocket_put_in                      ;02
+
+  L      MG_marker_one
+  S      O_TC_mag_2_pocket_put_in
+  R      O_TC_mag_2_pocket_put_out
+  PSL
+
+EM
+
+;----------------------------
+LBL Pocket_pos_out
+
+#if TC2_pocket_90_degree_shift = &active
+  L      I_TC_mag_2_pocket_out
+  AN     I_TC_mag_2_pocket_in
+  AN     MG_T_mag_2_interruption
+  PSL
+
+  L      MG_T_mag_2_interruption
+  =      MG_win_TC2_pocket_put_out
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Pocket_pos_in                      ;03
+
+#if TC2_pocket_90_degree_shift = &active
+  LN     I_TC_mag_2_pocket_out
+  A      I_TC_mag_2_pocket_in
+  AN     MG_T_mag_2_interruption
+  PSL
+
+  L      MG_T_mag_2_interruption
+  =      MG_win_TC2_pocket_put_in
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Magazine_direct                    ;04
+
+  PS     MG_marker_one
+
+  L      WG_TC_magazine_2_actual_pocket
+  -      WG_TC_magazine_2_nominal_pocket
+  PSW
+  CM     Absolute
+  PLW
+  =      WG_act_nom_2_pocket_difference
+  <=[
+    L      WG_MP7261_TC_magazine_2_max_pocket
+    /      K+2
+  ]
+  =      ML_diff_lower_equal_half_mag_2
+  IFF
+    L      WG_MP7261_TC_magazine_2_max_pocket
+    -      WG_act_nom_2_pocket_difference
+    =      WG_act_nom_2_pocket_difference
+
+    PS     WG_act_nom_2_pocket_difference
+    CM     Absolute
+    PL     WG_act_nom_2_pocket_difference
+  ENDI
+
+  L      WG_TC_magazine_2_actual_pocket
+  >      WG_TC_magazine_2_nominal_pocket
+  =      ML_nominal_2_greater_actual_posit
+
+  L      ML_diff_lower_equal_half_mag_2
+  XO     ML_nominal_2_greater_actual_posit
+  =      ML_TC_magazine_2_cw
+
+EM
+
+;----------------------------
+LBL Lock_pin_out                       ;05
+
+  L      MG_marker_one
+  S      O_TC_mag_2_lock_pin_out
+  PSL
+
+EM
+
+;----------------------------
+LBL Lock_pin_pos_out                   ;06
+
+#if TC2_lock_pin = &active
+  LN     I_TC_mag_2_lock_pin_in
+  A      I_TC_mag_2_lock_pin_out
+  AN     MG_T_mag_2_interruption
+  PSL
+
+  L      MG_T_mag_2_interruption
+  =      MG_win_TC2_mag_lock_pin_out
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Magazine_nom_pos                   ;07
+
+  L      MG_TC_magazine_2_start
+  A      ML_TC_magazine_2_cw
+  =      O_TC_magazine_2_cw
+
+  L      MG_TC_magazine_2_start
+  AN     ML_TC_magazine_2_cw
+  =      O_TC_magazine_2_ccw
+
+  L      I_TC_magazine_2_counter
+  O      I_TC_magazine_2_exact_position
+;  AN     I_TC_mag_2_guard_closed                                     *;EUMACH Original PLC
+  AN     I_TC_mag_2_guard_locked_closed                               *;EUMACH
+;  AN     NP_guard_inactive                                           *;EUMACH
+  S      MG_T_mag_2_interruption
+
+  L      I_TC_magazine_2_counter
+  O      I_TC_magazine_2_exact_position
+  A      MG_T_mag_2_interruption
+  R      O_TC_magazine_2_cw
+  R      O_TC_magazine_2_ccw
+
+#if TC2_lock_pin = &active
+  L      I_TC_magazine_2_lock_pin_in
+  ON     I_TC_mag_2_lock_pin_out
+  R      O_TC_magazine_2_cw
+  R      O_TC_magazine_2_ccw
+#endif
+
+#if Tool_magazine_system_2 ! &Mag_type_03                             *;EUMACH
+  L      WG_TC_magazine_2_actual_pocket
+  <>     WG_TC_magazine_2_nominal_pocket
+  ON     I_TC_magazine_2_counter
+  ON     I_TC_magazine_2_exact_position
+  =      TS_TC_magazine_2_stop_delay
+
+  LN     TS_TC_magazine_2_stop_delay
+  AN     TR_TC_magazine_2_stop_delay
+  R      O_TC_magazine_2_cw
+  R      O_TC_magazine_2_ccw
+#if TC2_lock_pin = &active
+  R      O_TC_mag_2_lock_pin_out
+#endif
+  PSL
+#endif                                                                *;EUMACH
+
+*;EUMACH
+#if Tool_magazine_system_2 = &Mag_type_03
+  L      WG_TC_magazine_2_actual_pocket
+  <>     WG_TC_magazine_2_nominal_pocket
+  =      TS_TC_magazine_2_stop_delay
+
+  LN     TS_TC_magazine_2_stop_delay
+  AN     TR_TC_magazine_2_stop_delay
+  R      O_TC_mag_2_lock_pin_out
+
+  LN     O_TC_magazine_2_cw
+  AN     O_TC_magazine_2_ccw
+  AN     O_TC_mag_2_lock_pin_out
+  PSL
+#endif
+*;EUMACH
+
+#if (MT = &MT_2C)                                                     *;EUMACH
+  L      WG_act_nom_2_pocket_difference                               *;EUMACH
+  >=     K+1                                                          *;EUMACH
+#else                                                                 *;EUMACH
+  L      WG_act_nom_2_pocket_difference
+  >      K+1
+#endif                                                                *;EUMACH
+  AN     MG_T_mag_2_interruption
+#if TC2_lock_pin = &active
+  AN     I_TC_mag_2_lock_pin_in
+  A      I_TC_mag_2_lock_pin_out
+  A      O_TC_mag_2_lock_pin_out
+  AN     I_TC_mag_2_lock_pin_middle                                   *;EUMACH
+#endif
+  =      O_TC_magazine_2_rapid_traverse
+
+  L      O_TC_magazine_2_cw
+  O      O_TC_magazine_2_ccw
+  AN     O_TC_magazine_2_rapid_traverse
+*;EUMACH Original PLC
+;#if TC2_lock_pin = &active
+;  AN     I_TC_mag_2_lock_pin_in
+;  A      I_TC_mag_2_lock_pin_out
+;  A      O_TC_mag_2_lock_pin_out
+;#endif
+*;EUMACH Original PLC
+  =      O_TC_magazine_2_slow_motion
+
+#if TC2_lock_pin = &active
+  L      I_TC_mag_2_lock_pin_in
+  ON     I_TC_mag_2_lock_pin_out
+  A      O_TC_mag_2_lock_pin_out
+  A      MG_T_mag_2_interruption
+  =      MG_win_TC2_mag_lock_pin_out
+#endif
+
+  LN     ML_TC_magazine_2_turn_manual_active
+  A      I_TC_magazine_2_counter
+  A      ML_TC_magazine_2_turn_cw
+  R      ML_TC_magazine_2_turn_cw
+  CMT    Magazine_2_cw_stop
+
+  LN     ML_TC_magazine_2_turn_manual_active
+  A      I_TC_magazine_2_counter
+  A      ML_TC_magazine_2_turn_ccw
+  R      ML_TC_magazine_2_turn_ccw
+  CMT    Magazine_2_ccw_stop
+
+  L      MG_marker_one
+  R      ML_TC_magazine_2_turn_manual_active
+
+EM
+
+;----------------------------
+LBL Time_exact_stop                    ;08
+
+  L      MG_marker_one
+  R      TS_TC_magazine_2_exact_position
+
+#if Tool_changing_arm_2 = &Single_arm                                 *;EUMACH
+  L      NP_mag2_motor_with_internal_braking                          *;EUMACH
+  IFT                                                                 *;EUMACH
+    LN     TR_TC_magazine_2_exact_position                            *;EUMACH
+    PSL                                                               *;EUMACH
+  ELSE                                                                *;EUMACH
+    LN     TR_TC_magazine_2_exact_position                            *;EUMACH
+    AN     O_TC_magazine_2_cw_on                                      *;EUMACH
+    AN     O_TC_magazine_2_ccw_on                                     *;EUMACH
+    PSL                                                               *;EUMACH
+  ENDI                                                                *;EUMACH
+#else                                                                 *;EUMACH
+  LN     TR_TC_magazine_2_exact_position
+  PSL
+#endif                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL Lock_pin_pos_in                    ;09
+
+#if TC2_lock_pin = &active
+  L      I_TC_mag_2_lock_pin_in
+  AN     I_TC_mag_2_lock_pin_out
+  AN     I_TC_mag_2_lock_pin_middle                                   *;EUMACH
+  AN     MG_T_mag_2_interruption
+  PSL
+
+  L      MG_T_mag_2_interruption
+  =      MG_win_TC2_mag_lock_pin_in
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Mag_exact_stop                     ;10
+
+  L      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+  R      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+
+  L      MG_TC_magazine_2_reference_necessary                         *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+  S      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+
+  L      WG_TC_magazine_2_actual_pocket
+  <>     WG_TC_mag_2_actual_2_pocket
+  ON     I_TC_magazine_2_counter
+  ON     I_TC_magazine_2_exact_position
+  =      MG_TC_magazine_2_reference_necessary
+
+  PS     MG_marker_one
+
+EM
+
+;----------------------------
+LBL Standby_T_read                     ;11
+
+  PS     MG_marker_one
+
+#if TC2_pocket_90_degree_shift = &active
+  L      MG_automatic_mode
+  AN     MG_TC_magazine_2_reference_necessary
+  AN     MG_TM2_loading_active                                        *;EUMACH
+  AN     ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  S      MG_TC1_standby_tool_status_reading                           *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  S      MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+#endif                                                                *;EUMACH Dual TC
+#endif
+
+EM
+
+;----------------------------
+LBL Pocket_in_out                      ;12
+
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  LN     MG_TC2_standby_tool_status_reading                           *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  LN     MG_standby_tool_status_reading                               *;EUMACH magazine standby pocket tool status
+#endif                                                                *;EUMACH Dual TC
+  PSL
+  EMF
+
+#if TC2_pocket_90_degree_shift = &active
+  L      MG_manual_mode
+  O      NP_commissioning
+  O      MG_TC_magazine_2_reference_necessary
+  O      MG_TM2_loading_active                                        *;EUMACH
+  O      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+  EMT
+
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  L      BG_TC2_standby_tool_status                                   *;EUMACH Dual TC
+#else                                                                 *;EUMACH Dual TC
+  L      BG_standby_tool_status
+#endif                                                                *;EUMACH Dual TC
+  BT     K+1
+#if Mag_2_pocket_out = &active                                        *;EUMACH
+  =      MG_tool_oversized
+#else                                                                 *;EUMACH
+  =N     MG_tool_oversized                                            *;EUMACH
+#endif                                                                *;EUMACH
+
+  LN     MG_tool_oversized
+  R      O_TC_mag_2_pocket_put_in
+  S      O_TC_mag_2_pocket_put_out
+#endif
+
+EM
+
+;----------------------------
+LBL Pocket_posit                       ;13
+
+  L      MG_tool_oversized
+  O      MG_manual_mode
+  O      NP_commissioning
+  O      MG_TC_magazine_2_reference_necessary
+  O      MG_TM2_loading_active                                        *;EUMACH
+  O      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+  CMT    Pocket_pos_in
+  CMF    Pocket_pos_out
+
+EM
+
+;----------------------------
+LBL Magazine_end                       ;14
+
+  PS     MG_marker_zero
+
+LBL TC_magazine_reset
+
+  L      MG_marker_one
+  R      MG_TC_magazine_2_start
+  R      MG_T_mag_2_interruption
+  R      ML_TC_magazine_2_turn_manual_active
+  R      ML_TC_magazine_2_turn_ccw
+  R      ML_TC_magazine_2_turn_cw
+  R      ML_TC_magazine_2_referencing                                 *;EUMACH Fixed problem of CALL Modul 9091/9093 after magazine reference in automatic operation
+  R      O_TC_magazine_2_cw
+  R      O_TC_magazine_2_ccw
+  R      O_TC_magazine_2_rapid_traverse
+  R      O_TC_magazine_2_slow_motion
+
+  L      K+0
+  =      BG_step_magazine_2
+
+EM
+
+;----------------------------
+LBL TC_mag_2_cw_turn
+
+#if TC_magazine_2_reference_sensor = &active
+  L      MG_TC_magazine_2_reference_necessary
+  EMT
+#endif
+
+#if (TC2_middle_position_basic = &active) and (TC2_middle_position_exchange = &active) *;EUMACH
+  L      MG_tool_back_to_mag2                                         *;EUMACH
+  EMT                                                                 *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_manual_mode
+  O      MG_edit_pocket_table
+  AN     NP_TC_mag2_guard_and_panel                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    LN     I_key_TC_mag_2_automatic_control_mode                      *;EUMACH
+    AN     MG_TC_help                                                 *;EUMACH
+    O      MG_TC_help                                                 *;EUMACH
+    A      NP_TC_mag2_guard_and_panel                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  =      ML_TC_magazine_2_turn_manual_active
+  S      ML_TC_magazine_2_turn_cw
+
+  LN     MG_TC_magazine_2_start
+  S      MG_TC_magazine_2_start
+  IFT
+    L      KL_nominal_2_posit_cw
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+EM
+
+;----------------------------
+LBL Magazine_2_cw_stop
+
+  L      WG_TC_magazine_2_actual_pocket
+  +      K+1
+  =      WG_TC_magazine_2_nominal_pocket
+
+  L      WG_TC_magazine_2_nominal_pocket
+  >      WG_MP7261_TC_magazine_2_max_pocket
+  IFT
+    L      K+1
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+  L      K+1
+  =      WG_act_nom_2_pocket_difference
+
+EM
+
+;----------------------------
+LBL TC_mag_2_ccw_turn
+
+#if TC_magazine_2_reference_sensor = &active
+  L      MG_TC_magazine_2_reference_necessary
+  EMT
+#endif
+
+#if (TC2_middle_position_basic = &active) and (TC2_middle_position_exchange = &active) *;EUMACH
+  L      MG_tool_back_to_mag2                                         *;EUMACH
+  EMT                                                                 *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_manual_mode
+  O      MG_edit_pocket_table
+  AN     NP_TC_mag2_guard_and_panel                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    LN     I_key_TC_mag_2_automatic_control_mode                      *;EUMACH
+    AN     MG_TC_help                                                 *;EUMACH
+    O      MG_TC_help                                                 *;EUMACH
+    A      NP_TC_mag2_guard_and_panel                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  =      ML_TC_magazine_2_turn_manual_active
+  S      ML_TC_magazine_2_turn_ccw
+
+  LN     MG_TC_magazine_2_start
+  S      MG_TC_magazine_2_start
+  IFT
+    L      KL_nominal_2_posit_ccw
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+EM
+
+;----------------------------
+LBL Magazine_2_ccw_stop
+
+  L      WG_TC_magazine_2_actual_pocket
+  -      K+1
+  =      WG_TC_magazine_2_nominal_pocket
+
+  L      WG_TC_magazine_2_nominal_pocket
+  ==     K+0
+  IFT
+    L      WG_MP7261_TC_magazine_2_max_pocket
+    =      WG_TC_magazine_2_nominal_pocket
+  ENDI
+
+  L      K+1
+  =      WG_act_nom_2_pocket_difference
+
+EM

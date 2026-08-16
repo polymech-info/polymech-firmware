@@ -1,0 +1,34 @@
+﻿************************************
+          !!! Achtung !!!
+   nur für eingewiesene Bediener
+
+      Service Werkzeugwechsler
+        (Doppelarm-Greifer mit 
+           Transport-Wagen)
+
+   ! manuelle Betriebsart aktiv !
+   Aktivierung: Taste "NC-Start"
+************************************
+#201  S auf WZW Position
+#202  Z auf WZW Position
+#203  Y auf WZW Position
+#204  X auf WZW Position
+#205  WZ Schleuse auf
+#206  WZ Schleuse zu
+#207  Zange Spindel auf
+#208  Zange Spindel zu
+#209  Zange Magazin auf
+#210  Zange Magazin zu
+#211  Werkzeug entspannen
+#212  Werkzeug spannen
+#213  Greifer zu Spindel
+#214  Greifer zu Magazin
+#215  Greifer zu Grundstellung
+#216  Greifer ausheben
+#217  Greifer einsetzen
+#218  Greifer drehen cw (rechts)
+#219  Greifer drehen ccw (links)
+#220  Magazin drehen cw (rechts)
+#221  Magazin drehen ccw (links)
+#222  Magazin Referenz
+#223  Spindel-Werkzeug löschen (T0)

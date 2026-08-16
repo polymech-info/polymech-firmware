@@ -1,0 +1,1450 @@
+*-----------------------------------------------------------------------------
+*  PLC outputs / PLC inputs
+*    symbolic operands allways describing logic status one (=1)
+*
+* MB720/TE745 panel key & LED assignment
+* Key symbol      S01  S02  S03  S04  S05  S06  S07  S08  S09  S10  S11  S12    S13 (NC STOP)
+* Key input       I200 I201 I202 I203 I204 I205 I206 I207 I208 I209 I210 I211   I236
+* Key LED output  O900 O901 O902 O903 O904 O905 O906 O907 O908 O909 O910 O911   O936
+*
+* Key symbol      S14  S15  S16  S17  S18  S19  S20  S21  S21  S23  S24  S25    S26 (NC START)
+* Key input       I212 I213 I214 I215 I216 I217 I218 I219 I220 I221 I222 I223   I237
+* Key LED output  O912 O913 O914 O915 O916 O917 O918 O919 O920 O921 O922 O923   O937
+*
+* Key symbol      S27  S28  S29  S30  S31  S32  S33  S34  S35  S36  S37  S38    S39 (Power-on)
+* Key input       I224 I225 I226 I227 I228 I229 I230 I231 I232 I233 I234 I235   I238
+* Key LED output  O924 O925 O926 O927 O928 O929 O930 O931 O932 O933 O934 O935   O938
+*
+*  EUMACH
+*  VMC series with cam-driven arm (double arm) tool changer
+*-----------------------------------------------------------------------------
+
+#type
+
+*-----------------------------------------------------------------------------
+*  Outputs MB620 X7
+*-----------------------------------------------------------------------------
+
+*--- Key marker assignment, no O address allowed ---*
+   O_lamp_NC_start                          M
+   O_lamp_NC_stop                           M
+   O_lamp_power_on                          M
+   O_lamp_axis_1_minus                      M
+   O_lamp_axis_2_minus                      M
+   O_lamp_axis_3_minus                      M
+   O_lamp_axis_4_minus                      M
+   O_lamp_axis_5_minus                      M
+   O_lamp_axis_6_minus                      M
+   O_lamp_axis_7_minus                      M
+   O_lamp_axis_1_plus                       M
+   O_lamp_axis_2_plus                       M
+   O_lamp_axis_3_plus                       M
+   O_lamp_axis_4_plus                       M
+   O_lamp_axis_5_plus                       M
+   O_lamp_axis_6_plus                       M
+   O_lamp_axis_7_plus                       M
+   O_lamp_rapid_traverse                    M
+   O_lamp_spindle_start                     M
+   O_lamp_spindle_stop                      M
+   O_lamp_spindle_M5                        M
+   O_lamp_spindle_M3                        M
+   O_lamp_spindle_M4                        M
+   O_lamp_coolant_M08                       M
+   O_lamp_coolant_M07                       M
+   O_lamp_coolant_M307                      M
+   O_lamp_TC_enable                         M
+   O_lamp_chip_conveyor                     M
+   O_lamp_axes_motion_from_end_position     M
+   O_lamp_working_light                     M
+   O_lamp_guard_1_unlock                    M
+   O_lamp_air_through_spindle               M
+   O_lamp_dust_mist_collector               M
+   O_lamp_override_S_plus                   M                         *;EUMACH S% knob -> FMAX% knob
+   O_lamp_override_S_100                    M                         *;EUMACH S% knob -> FMAX% knob
+   O_lamp_override_S_minus                  M                         *;EUMACH S% knob -> FMAX% knob
+*--- Key marker assignment, no O address allowed ---*
+
+*----------------- 1st MB620 panel -----------------*
+#if Machine_panel = &MB620
+   O_lamp1_NC_start                         O200
+   O_lamp1_NC_stop                          O201
+   O_lamp1_power_on                         O202
+#endif
+*----------------- 1st MB620 panel -----------------*
+
+*----------------- 2nd MB620 panel -----------------*
+#if (Machine_panel = &MB620) or (Additional_machine_panel = &MB620_01)
+   O_lamp2_NC_start                         M
+   O_lamp2_NC_stop                          M
+   O_lamp2_power_on                         M
+#endif
+*----------------- 2nd MB620 panel -----------------*
+
+*----------------- 1st MB720/TE745 panel -----------------*
+#if (Machine_panel = &MB720) or (Machine_panel = &TE745)
+   O_lamp1_NC_start                         O937
+   O_lamp1_NC_stop                          O936
+   O_lamp1_power_on                         O938
+
+   O_lamp1_axis_X_minus                     O914
+   O_lamp1_axis_Y_minus                     O902
+   O_lamp1_axis_Z_minus                     O925
+   O_lamp1_axis_4_minus                     O926
+   O_lamp1_axis_5_minus                     O927
+   O_lamp1_axis_6_minus                     O928
+   O_lamp1_axis_7_minus                     M
+   O_lamp1_axis_X_plus                      O912
+   O_lamp1_axis_Y_plus                      O924
+   O_lamp1_axis_Z_plus                      O901
+   O_lamp1_axis_4_plus                      O900
+   O_lamp1_axis_5_plus                      O903
+   O_lamp1_axis_6_plus                      O904
+   O_lamp1_axis_7_plus                      M
+   O_lamp1_rapid_traverse                   O913
+   O_lamp1_axes_motion_from_end_position    O915
+
+   O_lamp1_air_through_spindle              M
+   O_lamp1_dust_mist_collector              O906
+
+#if Panel_S_start_stop = &active
+   O_lamp1_spindle_start                    O910
+   O_lamp1_spindle_stop                     O922
+   O_lamp1_spindle_M5                       M
+   O_lamp1_spindle_M3                       M
+   O_lamp1_spindle_M4                       M
+   O_lamp1_coolant_M08                      O911
+   O_lamp1_coolant_M07                      O935
+   O_lamp1_coolant_M307                     O932
+   O_lamp1_TC_enable                        O909
+   O_lamp1_chip_conveyor                    O923
+   O_lamp1_working_light                    O934
+   O_lamp1_guard_1_unlock                   O933
+#endif
+#if Panel_M03_M04_M05 = &active
+   O_lamp1_spindle_start                    M
+   O_lamp1_spindle_stop                     M
+   O_lamp1_spindle_M5                       O910
+   O_lamp1_spindle_M3                       O911
+   O_lamp1_spindle_M4                       O909
+   O_lamp1_coolant_M08                      O922
+   O_lamp1_coolant_M07                      O935
+   O_lamp1_coolant_M307                     O932
+   O_lamp1_TC_enable                        O921
+   O_lamp1_chip_conveyor                    O923
+   O_lamp1_working_light                    O934
+   O_lamp1_guard_1_unlock                   O933
+#endif
+*;EUMACH S% knob -> FMAX% knob
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &active)
+   O_lamp1_override_S_plus                  O905
+   O_lamp1_override_S_100                   O917
+   O_lamp1_override_S_minus                 O929
+#else
+   O_lamp1_override_S_plus                  M
+   O_lamp1_override_S_100                   M
+   O_lamp1_override_S_minus                 M
+#endif
+*;EUMACH S% knob -> FMAX% knob
+#endif
+*----------------- 1st MB720/TE745 panel -----------------*
+
+*-----------------------------------------------------------------------------
+*  Outputs PLB62xx
+*-----------------------------------------------------------------------------
+
+   O_lamp_tool_unclamped                    M
+   O_lamp_lubrication_on                    M
+   O_lamp_table_1                           M
+   O_lamp_table_2                           M
+   O_lamp_TC_pocket_loading                 M
+   O_lamp_TNC_alarm                         O216
+   O_lamp_program_end                       O223
+   O_lamp_special_mode                      M
+   O_lamp_PC_release                        M
+   O_program_run                            O252
+   O_power_on                               O215
+
+   O_servo_drive_release_X                  M
+   O_servo_drive_release_Y                  M
+   O_servo_drive_release_Z                  M
+   O_servo_drive_release_4                  M
+   O_servo_drive_release_5                  M
+   O_servo_drive_release_6                  M
+   O_servo_drive_release_7                  M
+   O_servo_drive_release_8                  M
+   O_servo_drive_release_9                  M
+   O_servo_drive_release_10                 M
+   O_servo_drive_release_11                 M
+   O_servo_drive_release_12                 M
+   O_servo_drive_release_13                 M
+   O_servo_drive_release_14                 M
+   O_servo_drive_release_15                 M
+   O_servo_drive_release_16                 M
+   O_servo_drive_release_S                  M
+   O_unclamping_X                           M
+   O_unclamping_Y                           M
+   O_unclamping_Z                           O214
+   O_unclamping_4                           M
+   O_unclamping_5                           M
+   O_unclamping_6                           M
+   O_unclamping_7                           M
+   O_unclamping_8                           M
+   O_unclamping_9                           M
+   O_unclamping_10                          M
+   O_unclamping_11                          M
+   O_unclamping_12                          M
+   O_unclamping_13                          M
+   O_unclamping_14                          M
+   O_unclamping_15                          M
+   O_unclamping_16                          M
+
+   O_chip_conveyor                          O227
+   O_chip_conveyor_back                     O228
+   O_spindle_blow_clean                     O230
+   O_tool_unclamping                        M
+   O_tool_clamping                          M
+   O_TC_magazine_cw                         M
+   O_TC_magazine_ccw                        M
+   O_TC_magazine_rapid_traverse             M
+   O_TC_magazine_slow_motion                M
+   O_TC_magazine_lock_pin_out               M
+   O_TC_magazine_lock_pin_in                M
+   O_TC_magazine_to_spindle_position        M
+   O_TC_magazine_to_basic_position          M
+   O_TC_pocket_put_out                      O231
+   O_TC_pocket_put_in                       O232
+   O_TC_magazine_load_position_unlock       M
+
+   O_TC_arm_put_out                         M
+   O_TC_arm_put_in                          M
+   O_TC_arm_turn_cw                         O233
+   O_TC_arm_turn_ccw                        O234
+   O_TC_arm_to_middle_position              M
+   O_TC_arm_to_spindle_position             M
+   O_TC_arm_to_basic_position               M
+   O_TC_arm_gripper_close                   M
+
+   O_pallet_in_machine_unclamping           M
+   O_pallet_in_machine_clamping             M
+
+* Definition from Profibus IOconfig
+*   O_PC_door_open                           M
+*   O_PC_door_close                          M
+*   O_PW_Schleuse_auf                        M
+*   O_PW_Schleuse_zu                         M
+*   O_PC_1_to_load_position                  M
+*   O_PC_1_to_machine_position               M
+*   O_PC_2_to_load_position                  M
+*   O_PC_2_to_machine_position               M
+*   O_PC_1_rapid_traverse                    M
+*   O_PC_2_rapid_traverse                    M
+
+   O_PC_release_stop_position               M
+   O_PC_release_machine_position            M
+   O_workpiece_unclamping                   M
+   O_PC_load_door_open                      M
+   O_PC_bit_0                               M
+   O_PC_bit_1                               M
+   O_PC_bit_2                               M
+   O_PC_bit_3                               M
+   O_PC_bit_4                               M
+   O_PC_bit_5                               M
+   O_PC_bit_6                               M
+   O_PC_bit_7                               M
+   O_PC_table_empty                         M
+   O_PC_start                               M
+
+   O_coolant_M07_on                         O251
+   O_coolant_M08_on                         O249
+   O_wye_delta_connection                   M
+   O_gear_range_1                           O237
+   O_gear_range_2                           O238
+   O_axes_motion_from_end_position          O218
+   O_hydraulic_on                           O254
+   O_start_index_table                      M
+
+   O_lubrication_on                         O224
+   O_working_light                          O217
+   O_TC_magazine_guard_unlock               O261
+   O_guard_1_unlock                         O219
+   O_guard_2_unlock                         M
+   O_release_special_mode                   M
+
+* Enter number of the output in MP4044
+   O_auto_power_off_after_END_PGM           O222
+
+*;EUMACH Additional Outputs
+   O_NC_self_test_completed                 O208
+   O_lubrication_2_on                       M
+   O_lamp_lubrication_2_on                  M
+   O_lubrication_3_on                       M
+   O_lamp_lubrication_3_on                  M
+   O_nut_lubrication_on                     M
+   O_ball_screw_cooling_unit                M
+   O_lubrication_pneumatic_spray_on         M
+   O_pneumatic_inlet_valve_on               O229                      *;CE 2008
+   O_clamping_4_output                      M
+   O_clamping_5_output                      M
+   O_clamping_6_output                      M
+   O_unclamping_6_output                    M
+   O_clamping_unclamping_4                  O253
+   O_clamping_unclamping_5                  O244
+   O_clamping_unclamping_6                  M
+   O_end_posit_axis_5                       M
+   O_tool_unclamping_valve                  O221
+   O_tool_clamping_valve                    O220
+   O_tool_unclamping_pneumatic_valve        M
+   O_air_blast                              O247
+   O_oil_mist                               M
+   O_coolant_motor                          O225
+   O_coolant_M07_pressure_relief_valve      M
+   O_coolant_chip_flush_on                  O248
+   O_coolant_chip_flush_motor               M
+   O_pneumatic_chip_flush_on                M
+   O_dust_mist_collector                    M
+   O_spindle_cooling_unit                   O226
+   O_spindle_gear_cooling_unit              M
+   O_scale_S_bearing_air_clean              M
+   O_S_oil_air_lube_pneumatic_on            M
+   O_S_oil_air_lube_unit_reset              M
+   O_S_rotary_joint_cooling_circulation     M
+   O_coolant_from_M8_tank_to_CTS_tank_on    O255
+   O_coolant_water_gun_on                   O250
+   O_CTS_blow_clean                         M
+   O_coolant_drain_valve_after_CTS          M
+   O_lamp_TC_magazine_guard_key             O262
+   O_TC_magazine_rotation_on                M
+   O_TC_magazine_cw_on                      O235
+   O_TC_magazine_ccw_on                     O236
+   O_TC_mag_tool_chain_pin_out              M
+   O_TC_mag_to_spindle_position             M
+   O_TC_mag_to_basic_position               M
+   O_TC_arm_to_magazine_position            M
+   O_TC_arm_standby_to_magazine             M
+   O_TC_arm_magazine_to_standby             M
+   O_TC_arm_standby_to_spindle              M
+   O_TC_arm_spindle_to_standby              M
+   O_TC_arm_grp_open_magazine_side          M
+   O_TC_arm_grp_open_spindle_side           M
+   O_TC_arm_grp_close_magazine_side         M
+   O_TC_arm_grp_close_spindle_side          M
+   O_TC_arm_to_spindle_area                 M
+   O_TC_arm_to_magazine_area                M
+   O_TC_arm_to_the_right                    M
+   O_TC_arm_to_the_left                     M
+   O_TC_arm_to_vertical_position            M
+   O_TC_arm_to_horizontal_position          M
+   O_TC_arm_sliding_rapid_traverse          M
+   O_TC_pocket_to_magazine_position         M
+   O_TC_pocket_to_TC_position               M
+   O_TC_pocket_clamp                        M
+   O_TC_pocket_unclamp                      M
+   O_TC_pocket_brace_on_at_TC_position      M
+   O_TC_pocket_brace_off_at_TC_position     M
+   O_ATC_door_opening                       M
+   O_ATC_door_closing                       M
+   O_TM_loading_T_acknowledgement           M                         *;TM loading T selection
+   O_TM_loading_T_status_0                  M                         *;TM loading T selection
+   O_TM_loading_T_status_1                  M                         *;TM loading T selection
+   O_TM_loading_D_link_enable               M                         *;TM loading T selection
+   O_TM_loading_D_link_clock                M                         *;TM loading T selection
+   O_TM_loading_D_link_0_data               M                         *;TM loading T selection, lowest bit of 4 bits
+   O_TM_loading_D_link_1_data               M                         *;TM loading T selection
+   O_TM_loading_D_link_2_data               M                         *;TM loading T selection
+   O_TM_loading_D_link_3_data               M                         *;TM loading T selection, highest bit of 4 bits
+   O_TM_loading_magazine_rotating           M                         *;TM loading T selection
+   O_spindle_inverter_M3                    M                         *;FAEMAT
+   O_buzzer_on                              M
+   O_tool_clamping_without_head             M
+   O_tool_unclamping_without_head           M
+   O_tool_clamping_with_head                M
+   O_tool_unclamping_with_head              M
+   O_S_blow_clean_with_V_H_head             M
+   O_S_blow_clean_without_V_H_head          M
+   O_V_H_head_clamping                      M
+   O_V_H_head_unclamping                    M
+   O_S_head_coupling_clamping               M
+   O_S_head_coupling_unclamping             M
+   O_3D_head_unclamping_pressure_increasing M                         *;EMENA
+   O_hydraulic_valve                        M
+   O_hydraulic_2_on                         M
+   O_hydraulic_2_balance_valve              M
+   O_hydraulic_2_balance_pressure_relief    M
+   O_hydraulic_2_tool_and_axes_clamp_valve  M
+   O_lamp_table_1_workpiece_loaded          M
+   O_lamp_table_2_workpiece_loaded          M
+   O_machine_in_table_1                     M
+   O_TC_X_OT_enable_alt_table               M
+   O_stretching_operation_cabinet_support   M
+   O_folding_operation_cabinet_support      M
+   O_2nd_panel_active                       M
+   O_PMC_thermal_comp_EREND                 M
+   O_BLUM_ENABLE0                           M                         *;BLUM
+   O_BLUM_ENABLE1                           M                         *;BLUM
+   O_BLUM_BARRIER_AIR_OFF                   M                         *;BLUM not used for BLUM pneumatic kit PNE-054-40
+   O_BLUM_SHUTTER_OPEN                      M                         *;BLUM
+   O_BLUM_ENABLE2                           M                         *;BLUM
+   O_TLM_TOOL_CLEANING                      O211                      *;BLUM/RENISHAW
+   O_fast_broken_tool                       O209                      *;RENISHAW
+   O_latch_mode                             O210                      *;RENISHAW
+   O_TLM_cover_opening                      M                         *;TLM
+   O_TLM_cover_closing                      M                         *;TLM
+   O_auto_door_1_opening                    M                         *;Automatic door
+   O_auto_door_2_opening                    M                         *;Automatic door
+   O_auto_door_1_closing                    M                         *;Automatic door
+   O_auto_door_2_closing                    M                         *;Automatic door
+   O_auto_door_1_opening_rapid              M                         *;Automatic door
+   O_auto_door_2_opening_rapid              M                         *;Automatic door
+   O_auto_door_1_closing_rapid              M                         *;Automatic door
+   O_auto_door_2_closing_rapid              M                         *;Automatic door
+   O_lamp_auto_door_1_open_key              M                         *;Automatic door
+   O_lamp_auto_door_2_open_key              M                         *;Automatic door
+   O_lamp_auto_door_1_close_key             M                         *;Automatic door
+   O_lamp_auto_door_2_close_key             M                         *;Automatic door
+
+*;Dual TC
+   O_TC_magazine_2_cw                       M
+   O_TC_magazine_2_ccw                      M
+   O_TC_magazine_2_rapid_traverse           M
+   O_TC_magazine_2_slow_motion              M
+   O_TC_mag_2_lock_pin_out                  M
+   O_TC_mag_2_lock_pin_in                   M
+   O_TC_mag_2_pocket_put_out                M
+   O_TC_mag_2_pocket_put_in                 M
+   O_TC_mag_2_load_position_unlock          M
+   O_TC_mag_2_guard_unlock                  M
+   O_TC_arm_2_put_out                       M
+   O_TC_arm_2_put_in                        M
+   O_TC_arm_2_turn_cw                       M
+   O_TC_arm_2_turn_ccw                      M
+   O_TC_arm_2_to_middle_position            M
+   O_TC_arm_2_standby_to_magazine           M
+   O_TC_arm_2_magazine_to_standby           M
+   O_TC_arm_2_standby_to_spindle            M
+   O_TC_arm_2_spindle_to_standby            M
+   O_TC_arm_2_grp_open_magazine_side        M
+   O_TC_arm_2_grp_open_spindle_side         M
+   O_TC_arm_2_grp_close_magazine_side       M
+   O_TC_arm_2_grp_close_spindle_side        M
+   O_ATC2_door_opening                      M
+   O_ATC2_door_closing                      M
+   O_lamp_TC2_pocket_loading                M
+   O_lamp_TC_mag_2_guard_key                M
+*;Dual TC
+
+*-----------------------------------------------------------------------------
+*  Outputs Handwheel HR 410 X23 (O109 - O111)
+*-----------------------------------------------------------------------------
+
+* Variant 45
+
+   O_HR410_lamp_spindle_M3                  M
+   O_HR410_lamp_NC_start                    O110
+   O_HR410_lamp_NC_stop                     O111
+*;EUMACH
+#if Panel_S_start_stop = &active
+   O_HR410_lamp_spindle_start               O109
+   O_HR410_lamp_spindle_stop                M
+#endif
+#if Panel_M03_M04_M05 = &active
+   O_HR410_lamp_spindle_start               M
+   O_HR410_lamp_spindle_stop                O109
+#endif
+*;EUMACH
+
+* Variant 44
+
+*  O_HR410_lamp_spindle_M3                  M
+   O_HR410_lamp_spindle_M5                  M
+   O_HR410_lamp_spindle_M4                  M
+
+*-----------------------------------------------------------------------------
+*  Inputs MB620 X6 & PLB62xx
+*-----------------------------------------------------------------------------
+
+   I_emergency_button_unlocked              I279
+
+* Emergency stop input 1 (ES.A) X9/7a of PLB62xx
+   I_control_operational                    I261
+
+   I_not_ref_end_posit_X                    I272
+   I_not_ref_end_posit_Y                    I273
+   I_not_ref_end_posit_Z                    I271
+   I_not_ref_end_posit_4                    M
+   I_not_ref_end_posit_5                    I330
+   I_not_ref_end_posit_6                    M
+   I_not_ref_end_posit_7                    M
+   I_not_ref_end_posit_8                    M
+   I_not_ref_end_posit_9                    M
+   I_not_ref_end_posit_10                   M
+   I_not_ref_end_posit_11                   M
+   I_not_ref_end_posit_12                   M
+   I_not_ref_end_posit_13                   M
+   I_not_ref_end_posit_14                   M
+   I_not_ref_end_posit_15                   M
+   I_not_ref_end_posit_16                   M
+   I_X_not_overtravelled                    M
+   I_X_Y_not_overtravelled                  M
+   I_X_Y_Z_not_overtravelled                I276
+/c I_X_Y_Z_4_not_overtravelled              M &MG_marker_one
+/c I_X_Y_Z_4_5_not_overtravelled            M &MG_marker_one
+   I_end_posit_axis_X                       M
+   I_end_posit_axis_Y                       M
+   I_end_posit_axis_Z                       M
+   I_end_posit_axis_4                       M
+   I_end_posit_axis_5                       M
+
+   I_clamped_axis_X                         M
+   I_clamped_axis_Y                         M
+   I_clamped_axis_Z                         M
+   I_clamped_axis_4                         M                         *;Do not assign Ixxx
+   I_clamped_axis_5                         M                         *;Do not assign Ixxx
+   I_clamped_axis_6                         M
+   I_clamped_axis_7                         M
+   I_clamped_axis_8                         M
+   I_clamped_axis_9                         M
+   I_clamped_axis_10                        M
+   I_clamped_axis_11                        M
+   I_clamped_axis_12                        M
+   I_clamped_axis_13                        M
+   I_clamped_axis_14                        M
+   I_clamped_axis_15                        M
+   I_clamped_axis_16                        M
+
+   I_unclamped_axis_X                       M
+   I_unclamped_axis_Y                       M
+   I_unclamped_axis_Z                       M
+   I_unclamped_axis_4                       M                         *;Do not assign Ixxx
+   I_unclamped_axis_5                       M                         *;Do not assign Ixxx
+   I_unclamped_axis_6                       M
+   I_unclamped_axis_7                       M
+   I_unclamped_axis_8                       M
+   I_unclamped_axis_9                       M
+   I_unclamped_axis_10                      M
+   I_unclamped_axis_11                      M
+   I_unclamped_axis_12                      M
+   I_unclamped_axis_13                      M
+   I_unclamped_axis_14                      M
+   I_unclamped_axis_15                      M
+   I_unclamped_axis_16                      M
+
+   I_guard_1_closed                         I277
+   I_guard_1_closed_locked                  I278
+/c I_guard_2_closed                         M &MG_marker_one
+/c I_guard_2_closed_locked                  M &MG_marker_one
+
+   I_circuit_breaker_ok                     M
+   I_pneumatic_pressure_ok                  I280
+#if HYD ! &HYD_type_03
+   I_hydraulic_pressure_ok                  I334
+#else
+   I_hydraulic_pressure_ok                  M
+#endif
+
+   I_gear_range_1                           I328
+   I_gear_range_2                           I329
+   I_index_table_in_position                M
+
+   I_tool_unclamped                         M                         *;Do not assign PLC input address.
+   I_tool_clamped                           M                         *;Do not assign PLC input address.
+   I_TC_arm_put_out                         M
+   I_TC_arm_put_in                          M
+   I_TC_arm_cw                              M
+   I_TC_arm_ccw                             M
+   I_TC_arm_middle_pos                      M
+   I_TC_arm_basic_pos                       M
+   I_TC_arm_spindle_pos                     M
+   I_TC_arm_brake_pos                       M
+   I_TC_pocket_out                          I323
+   I_TC_pocket_in                           I322
+   I_TC_arm_gripper_opened                  M
+   I_TC_magazine_reference                  I324
+   I_TC_magazine_exact_position             M                         *;Do not assign PLC input address.
+   I_TC_magazine_counter                    M                         *;Do not assign PLC input address.
+   I_TC_magazine_guard_closed               I371
+   I_TC_magazine_guard_locked_closed        I372
+   I_TC_magazine_in_spindle_position        M
+   I_TC_magazine_in_basic_position          M
+   I_TC_magazine_lock_pin_in                M
+   I_TC_magazine_lock_pin_out               M
+
+   I_tool_located_in_spindle                M                         *;Do not assign PLC input address.
+   I_tool_pocket_not_empty                  I326
+
+* Definition from Profibus IOconfig
+*   I_PC_door_opened                         M
+*   I_PC_door_closed                         M
+*   I_PC_position_1_occupy                   M
+*   I_PC_position_2_occupy                   M
+*   I_PC_1_in_stop_position                  M
+*   I_PC_2_in_stop_position                  M
+*   I_PC_1_in_load_position                  M
+*   I_PC_2_in_load_position                  M
+*   I_PC_1_in_machine_position               M
+*   I_PC_2_in_machine_position               M
+*   I_PC_load_door_closed                    M
+*   I_pallet_in_machine_unclamped            M
+*   I_pallet_in_machine_clamped              M
+*   I_key_workpiece_clamping_on_off          M
+*   I_key_PC_cabin_open                      M
+*   I_workpiece_unclamped                    M
+
+   I_alternat_table_partition_removed       M
+
+   I_PC_cabin_opened                        M
+   I_PC_cabin_closed                        M
+   I_PC_cabin_closed_locked                 M
+   I_PC_ready                               M
+   I_PC_alarm                               M
+   I_PC_3R_selected_in_auto_mode            M
+
+   I_lubricant_level_ok                     I295
+   I_lubricant_pressure_ok                  I296
+   I_coolant_level_ok                       I298
+   I_1st_additional_axis_mounted            I246
+
+/c I_PW_210_temperature_ok                  M &MG_marker_one
+/c I_DA300_pressure_ok                      M &MG_marker_one
+
+*;EUMACH Additional Inputs
+   I_light_beam_ok                          M
+   I_lubricant_2_level_ok                   M
+   I_lubricant_2_pressure_ok                M
+   I_lubricant_3_level_ok                   M
+   I_lubricant_3_pressure_ok                M
+   I_pneumatic_counter_weight_balancing_ok  M
+   I_axis_4_key_permissive_mode             M
+   I_axis_5_key_permissive_mode             M
+   I_IV_thermal_sensor_temperature_ok       M
+   I_V_thermal_sensor_temperature_ok        M
+   I_VI_thermal_sensor_temperature_ok       M
+   I_S_PTC_sensor_temperature_ok            M
+   I_SM1xx_temperature_ok                   M
+   I_pneumatic_fine_filter_ok               M
+   I_ref_end_position_4                     I308
+   I_guard_1_open                           M
+   I_guard_1_locked                         M
+   I_guard_2_open                           M
+   I_guard_2_locked                         M
+   I_scale_and_S_bearing_air_clean_ok       I304
+   I_nut_lubricant_level_ok                 M
+   I_nut_lubricant_pressure_ok              M
+/c I_oil_mist_unit_level_ok                 M &MG_marker_one
+   I_air_to_hydraulic_oil_level_sensor      I300
+   I_air_to_hydraulic_unit_oil_level_ok     M
+   I_clamped_axis_4_sensor                  I309 *;also for 4th axis clamping line high pressure signal
+   I_clamping_axis_4_low_pressure_inverse   M
+   I_unclamping_axis_4_high_pressure        M
+   I_unclamped_axis_4_sensor                I310 *;also for 4th axis unclamping line low pressure inverse signal
+   I_clamped_axis_5_sensor                  I331 *;also for 5th axis clamping line high pressure signal
+   I_clamping_axis_5_low_pressure_inverse   M
+   I_unclamping_axis_5_high_pressure        M
+   I_unclamped_axis_5_sensor                I332 *;also for 5th axis unclamping line low pressure inverse signal
+   I_clamped_unclamped_axis_5               M
+   I_unclamped_clamped_axis_5               M
+   I_secondary_guard_closed                 M
+   I_hydraulic_motor_circuit_breaker_ok     I333
+   I_ball_screw_cooling_unit_ok             M
+   I_spindle_cooling_unit_ok                I281
+   I_spindle_gear_cooling_unit_ok           M
+   I_S_gear_cooling_pump_circuit_breaker_ok M
+   I_spindle_fan_motor_circuit_breaker_ok   I282
+   I_feed_motor_1_fan_circuit_breaker_ok    M
+   I_feed_motor_2_fan_circuit_breaker_ok    M
+   I_feed_motor_3_fan_circuit_breaker_ok    M
+   I_coolant_motor_circuit_breaker_ok       I297
+   I_chip_conveyor_motor_circuit_breaker_ok I299
+   I_TC_arm_mag_motor_circuit_breaker_ok    I327
+   I_dust_mist_collector_circuit_breaker_ok M
+   I_cabinet_cooler_unit_ok                 I349
+   I_Z_not_overtravelled                    I274
+   I_X_Z_not_overtravelled                  I275
+   I_5_plus_overtravel_sensor               M
+   I_5_minus_overtravel_sensor              M
+   I_5_plus_overtravelled                   M                         *;Do not assign PLC input address.
+   I_5_minus_overtravelled                  M                         *;Do not assign PLC input address.
+/c I_X_Y_Z_4_5_plus_not_overtravelled       M &MG_marker_one
+/c I_X_Y_Z_4_5_minus_not_overtravelled      M &MG_marker_one
+   I_TC_magazine_counter_sensor             I325
+   I_TC_magazine_2nd_counter_sensor         M
+#if Tool_clamping_sensor_type = &Digital
+   I_tool_clamped_sensor                    I284
+#else
+   I_tool_clamped_sensor                    M
+#endif
+#if Tool_unclamping_sensor_type = &Digital
+#if (HSS = &HS_type_62) or (HSS = &HS_type_80)
+   I_tool_unclamped_sensor_inverse          I285
+   I_tool_unclamped_sensor                  M
+#else
+   I_tool_unclamped_sensor                  I285
+#endif
+#else
+   I_tool_unclamped_sensor                  M
+#endif
+#if Tool_unclamp_rod_gap_sensor = &active
+   I_tool_clamped_pneumatic_pressure_ok     M
+   I_tool_clamped_hydraulic_pressure_ok     M
+   I_tool_unclamp_rod_gap_ok                I344
+#else
+#if (HSS = &HS_type_61) or (HSS = &HS_type_62) or (HSS = &HS_type_80) or (HSS = &HS_type_296) or (HSS = &HS_type_299)
+   I_tool_clamped_pneumatic_pressure_ok     M
+   I_tool_clamped_hydraulic_pressure_ok     M
+   I_tool_unclamp_rod_gap_ok                M
+#else
+#if (HSS = &HS_type_41) or (HSS = &HS_type_42) or (HSS = &HS_type_43) or (HSS = &HS_type_51) or (HSS = &HS_type_60)
+   I_tool_clamped_pneumatic_pressure_ok     M
+   I_tool_clamped_hydraulic_pressure_ok     I344
+   I_tool_unclamp_rod_gap_ok                M
+#else
+   I_tool_clamped_pneumatic_pressure_ok     I344
+   I_tool_clamped_hydraulic_pressure_ok     M
+   I_tool_unclamp_rod_gap_ok                M
+#endif
+#endif
+#endif
+   I_tool_clamp_line_hydraulic_pressure_0   M                         *;CYTEC CYCON K11
+   I_TC_arm_basic_pos_sensor                I319
+   I_TC_arm_spindle_pos_sensor              I320
+   I_TC_arm_brake_pos_sensor                I321
+   I_TC_arm_magazine_pos                    M
+   I_TC_arm_sliding_deceleration            M
+   I_TC_arm_out_of_TC_area                  M
+   I_TC_arm_right_pos                       M
+   I_TC_arm_left_pos                        M
+   I_TC_arm_at_spindel_area                 M
+   I_TC_arm_at_magazine_area                M
+   I_TC_arm_in_vertical_pos                 M
+   I_TC_arm_in_horizontal_pos               M
+   I_TC_arm_spindle_pos_spindle_cylinder    M
+   I_TC_arm_basic_pos_spindle_cylinder      M
+   I_TC_arm_mag_pos_magazine_cylinder       M
+   I_TC_arm_basic_pos_magazine_cylinder     M
+   I_TC_arm_grp_opened_magazine_side        M
+   I_TC_arm_grp_closed_magazine_side        M
+   I_TC_arm_grp_opened_spindle_side         M
+   I_TC_arm_grp_closed_spindle_side         M
+   I_TC_magazine_guard_open_or_unlock       M
+   I_TC_mag_toolchain_pin_in                M
+   I_TC_mag_toolchain_pin_out               M
+   I_TC_magazine_lock_pin_middle            M
+   I_TC_pocket_in_magazine_position         M
+   I_TC_pocket_in_TC_position               M
+   I_TC_pocket_clamped                      M
+   I_TC_pocket_unclamped                    M
+   I_TC_pocket_brace_on_at_TC_position      M
+   I_TC_pocket_brace_off_at_TC_position     M
+   I_TC_mag_standby_pos_has_a_pocket        M
+   I_ATC_door_closed                        M
+   I_ATC_door_open                          M
+   I_machine_in_TC_area                     M
+   I_key_TC_mag_automatic_control_mode      I370
+   I_key_tool_unclamping                    I283
+   I_key_TC_magazine_cw                     I368
+   I_key_TC_magazine_ccw                    I369
+   I_key_TC_magazine_rapid                  M
+   I_key_TC_mag_load_unclamp_foot_switch    M
+   I_TC_mag_load_position_locked            M
+   I_TM_loading_T_enable                    M                         *;TM loading T selection
+   I_TM_loading_T_clock                     M                         *;TM loading T selection
+   I_TM_loading_T_data_0                    M                         *;TM loading T selection, lowest bit of 4 consecutive bits
+   I_TM_loading_T_data_1                    M                         *;TM loading T selection
+   I_TM_loading_T_data_2                    M                         *;TM loading T selection
+   I_TM_loading_T_data_3                    M                         *;TM loading T selection, highest bit of 4 consecutive bits
+   I_TM_loading_D_link_acknowledgement      M                         *;TM loading T selection
+   I_service_door_closed                    M
+/c I_hydraulic_oil_filter_ok                M &MG_marker_one
+   I_hydraulic_temperature_ok               M
+   I_hydraulic_2_balance_pressure_ok        M
+   I_hydraulic_2_balance_under_max_pressure M
+   I_hydraulic_2_T_axes_clamp_pressure_ok   M
+#if HYD = &HYD_type_03
+   I_hydraulic_pressure_low                 M
+#else
+   I_hydraulic_pressure_low                 M
+#endif
+   I_S_cooling_pressure_ok                  I303
+   I_S_gear_cooling_pressure_ok             M
+   I_S_oil_air_lube_pressure_ok             M
+   I_S_rotary_joint_cooling_circulation_ok  M
+   I_S_rpm_ok                               M                         *;FAEMAT only when rpm > 0
+   I_S_actual_not_0_rpm                     M                         *;FAEMAT
+#if CYTEC_CYCON_control = &active                                     *;CYTEC CYCON K11
+   I_CYTEC_S_K11_timeout                    M                         *;CYTEC CYCON K11
+#endif                                                                *;CYTEC CYCON K11
+#if Tool_clamping_sensor_type = &Digital
+   I_without_tool_clamped_sensor            I345
+#else
+   I_without_tool_clamped_sensor            M
+#endif
+   I_tool_clamped_without_tool              M                         *;Do not assign PLC input address.
+   I_S_oil_air_lube_unit_ok                 M                         *;MIXAIR2
+   I_S_oil_air_lube_MIXER_pressure_ok       M                         *;MIXAIR2
+   I_S_oil_air_lube_warning_level_ok        M                         *;MIXAIR2
+   I_S_oil_air_lube_alarm_level_ok          M                         *;MIXAIR2
+   I_CTS_tank_overflow_level_sensor         I379
+   I_CTS_tank_level_overflow                M
+   I_CTS_tank_high_level_sensor             I377
+   I_CTS_tank_high_level_ok                 M
+   I_CTS_tank_low_level_sensor              I378
+   I_CTS_tank_low_level_ok                  M
+   I_CTS_filter_ok                          I305
+   I_CTS_motor_outlet_pressure_ok           I376
+   I_CTS_tank_inlet_pressure_ok             M
+   I_coolant_motor_outlet_pressure_ok       M
+   I_paper_filter_motor_circuit_breaker_ok  M
+   I_paper_filter_CTS_tank_inlet_sensor     I375
+   I_paper_filter_out_of_paper              I380
+   I_tool_clamped_without_V_H_head          M
+   I_tool_unclamped_without_V_H_head        M
+   I_tool_clamped_with_V_H_head             M
+   I_tool_unclamped_with_V_H_head           M
+   I_spindle_with_3D_head                   M
+   I_spindle_without_3D_head                M
+   I_V_H_head_in_vertical_pos               M
+   I_V_H_head_in_horizontal_pos             M
+   I_V_H_head_clamped                       M
+   I_V_H_head_unclamped                     M
+   I_front_head_in_0_pos                    M
+   I_front_head_in_180_pos                  M
+   I_rear_head_in_0_pos                     M
+   I_hydraulic_valve_high_pressure          M
+   I_hydraulic_valve_low_pressure           M
+   I_Y_in_table_alternating_area            M
+   I_X_Z_partition_not_overtravelled        M
+   I_alternating_table_zone_overtravel      M
+   I_Y_within_travel_range                  M
+   I_Z_not_in_cover_interference_area       M
+   I_2nd_panel_active                       M
+   I_PMC_thermal_comp_EA0                   M
+   I_PMC_thermal_comp_EA1                   M
+   I_PMC_thermal_comp_ED0                   M
+   I_PMC_thermal_comp_ED1                   M
+   I_PMC_thermal_comp_ED2                   M
+   I_PMC_thermal_comp_ED3                   M
+   I_PMC_thermal_comp_ED4                   M
+   I_PMC_thermal_comp_ED5                   M
+   I_PMC_thermal_comp_ED6                   M
+   I_PMC_thermal_comp_ED7                   M
+   I_PMC_thermal_comp_ED8                   M
+   I_PMC_thermal_comp_ED9                   M
+   I_PMC_thermal_comp_ED10                  M
+   I_PMC_thermal_comp_ED11_sign             M
+   I_PMC_thermal_comp_ED12_AL_bit2          M
+   I_PMC_thermal_comp_ED13_unit_ok          M
+   I_PMC_thermal_comp_ED14_AL_bit1          M
+   I_PMC_thermal_comp_ED15_AL_bit0          M
+   I_PMC_thermal_comp_ESTB                  M
+   I_BLUM_LASER_OK                          M                         *;BLUM
+   I_BLUM_LASER_DYN_SIGNAL                  M                         *;BLUM
+   I_BLUM_LASER_STAT_SIGNAL                 M                         *;BLUM
+   I_RENISHAW_LASER_STATUS_SIGNAL           I256                      *;RENISHAW
+   I_TLM_cover_open                         M                         *;TLM
+   I_TLM_cover_closed                       M                         *;TLM
+   I_auto_door_1_open                       M                         *;Automatic door
+   I_auto_door_2_open                       M                         *;Automatic door
+   I_auto_door_1_mechanical_protect         M                         *;Automatic door
+   I_auto_door_2_mechanical_protect         M                         *;Automatic door
+   I_auto_door_1_ignore_mech_protect        M                         *;Automatic door
+   I_auto_door_2_ignore_mech_protect        M                         *;Automatic door
+   I_auto_door_1_opening_deceleration       M                         *;Automatic door
+   I_auto_door_2_opening_deceleration       M                         *;Automatic door
+   I_auto_door_1_closing_deceleration       M                         *;Automatic door
+   I_auto_door_2_closing_deceleration       M                         *;Automatic door
+   I_key_auto_door_1_open                   M                         *;Automatic door
+   I_key_auto_door_2_open                   M                         *;Automatic door
+   I_key_auto_door_1_close                  M                         *;Automatic door
+   I_key_auto_door_2_close                  M                         *;Automatic door
+
+*;Dual TC
+   I_TC_arm_mag_2_motor_circuit_breaker_ok  M
+   I_TC_mag_2_pocket_out                    M
+   I_TC_mag_2_pocket_in                     M
+   I_TC_magazine_2_reference                M
+   I_TC_magazine_2_exact_position           M
+   I_TC_magazine_2_counter                  M
+   I_TC_magazine_2_counter_sensor           M
+   I_TC_mag_2_guard_closed                  M
+   I_TC_mag_2_guard_locked_closed           M
+   I_TC_mag_2_lock_pin_in                   M
+   I_TC_mag_2_lock_pin_out                  M
+   I_TC_mag_2_in_spindle_position           M
+   I_TC_mag_2_in_basic_position             M
+   I_TC_mag_2_tool_pocket_not_empty         M
+   I_TC_arm_2_put_out                       M
+   I_TC_arm_2_put_in                        M
+   I_TC_arm_2_cw                            M
+   I_TC_arm_2_ccw                           M
+   I_TC_arm_2_spindle_pos_spindle_cylinder  M
+   I_TC_arm_2_basic_pos_spindle_cylinder    M
+   I_TC_arm_2_mag_pos_magazine_cylinder     M
+   I_TC_arm_2_basic_pos_magazine_cylinder   M
+   I_TC_arm_2_grp_opened_magazine_side      M
+   I_TC_arm_2_grp_closed_magazine_side      M
+   I_TC_arm_2_grp_opened_spindle_side       M
+   I_TC_arm_2_grp_closed_spindle_side       M
+   I_ATC2_door_closed                       M
+   I_ATC2_door_open                         M
+   I_key_TC_mag_2_automatic_control_mode    M
+   I_key_TC_magazine_2_cw                   M
+   I_key_TC_magazine_2_ccw                  M
+   I_key_TC_mag_2_load_unclamp_foot_switch  M
+   I_key_TC_mag_2_guard_unlock              M
+*;Dual TC
+
+*-----------------------------------------------------------------------------
+*  Input servo drive release (pulse enable SIMODRIVE)
+*-----------------------------------------------------------------------------
+
+* Machines with digital interface to inverter
+*-------------------------------------------
+* Emergency stop input 2 (ES.B) X9/7b of PLB62xx
+
+   I_servo_drive_release                    I262
+
+* Machines with analog interface to inverter
+*-------------------------------------------
+* (e.g. SIMODRIVE 611) servo drive release 9/64 (max. braking
+* performance for deceleration)
+* switch off pulse enable 9/63 delayed by hardware (K6/K7)
+* input for servo drive release TNC must be entered in MP4130.0
+* input I0 not supported by PLC Basic Program for this function
+* MP4130.0: <address>         ;Suppress the monitoring functions
+*
+*  I_servo_drive_release                    M
+
+* only for Siemens SIMODRIVE 611 (X111 72-73.1)
+
+/c I_Siemens_supply_recover_unit_operational M &MG_marker_one
+
+* only for Indramat Power Drive supply unit HVE (X7 3-4)
+
+/c I_Indramat_power_supply_ok               M &MG_marker_one
+
+*-----------------------------------------------------------------------------
+*  Inputs only for analog drives
+*-----------------------------------------------------------------------------
+
+/c I_temp_drives_power_stage_ok             M &MG_marker_one
+/c I_drives_operational                     M &MG_marker_one
+   I_spindle_operational                    M                         *;FAEMAT
+   I_spindle_temperature_ok                 M                         *;FAEMAT
+   I_spindle_I_max                          M
+   I_S_actual_equal_nominal_rpm             M
+   I_S_actual_lower_nominal_rpm             M
+
+*-----------------------------------------------------------------------------
+*  Inputs machine touch panel MB620/MB720/TE745
+*-----------------------------------------------------------------------------
+
+*--- Key marker assignment, no I address allowed ---*
+   I_key_axis_1_minus                       M
+   I_key_axis_2_minus                       M
+   I_key_axis_3_minus                       M
+   I_key_axis_4_minus                       M
+   I_key_axis_5_minus                       M
+   I_key_axis_6_minus                       M
+   I_key_axis_1_plus                        M
+   I_key_axis_2_plus                        M
+   I_key_axis_3_plus                        M
+   I_key_axis_4_plus                        M
+   I_key_axis_5_plus                        M
+   I_key_axis_6_plus                        M
+   I_key_axis_7_plus                        M
+   I_key_axis_7_minus                       M
+   I_key_axis_8_plus                        M
+   I_key_axis_8_minus                       M
+   I_key_axis_9_plus                        M
+   I_key_axis_9_minus                       M
+   I_key_axis_10_plus                       M
+   I_key_axis_10_minus                      M
+   I_key_axis_11_plus                       M
+   I_key_axis_11_minus                      M
+   I_key_axis_12_plus                       M
+   I_key_axis_12_minus                      M
+   I_key_axis_13_plus                       M
+   I_key_axis_13_minus                      M
+   I_key_axis_14_plus                       M
+   I_key_axis_14_minus                      M
+   I_key_axis_15_plus                       M
+   I_key_axis_15_minus                      M
+   I_key_axis_16_plus                       M
+   I_key_axis_16_minus                      M
+
+   I_key_enable_toolchange                  M
+   I_key_tool_unclamping_foot_switch        M
+
+   I_key_TC_magazine_guard_unlock           M
+   I_key_guard_unlock                       M
+   I_key_guard_2_unlock                     M
+   I_key_chip_conveyor                      M
+   I_key_spindle_M3                         M
+   I_key_spindle_M4                         M
+   I_key_spindle_M5                         M
+   I_key_coolant_M08                        M
+   I_key_NC_start                           M
+   I_key_NC_stop                            M
+   I_key_NC_stop_2_axes_spindle             M
+   I_key_rapid_traverse                     M
+   I_key_axes_motion_from_end_position      M
+   I_key_coolant_M07                        M
+   I_key_coolant_M307                       M
+
+   I_key_axes_plus                          M
+   I_key_axes_minus                         M
+   I_key_power_on                           M
+   I_key_lubrication_axes                   M
+   I_key_enable_table_1                     M
+   I_key_enable_table_2                     M
+   I_key_enable_new_workpiece_on_pallet     M
+   I_key_chip_conveyor_back                 M
+   I_key_working_light                      M
+   I_keylock_switch_special_mode            M
+
+   I_key_spindle_start                      M
+   I_key_spindle_stop                       M
+
+   I_key_air_through_S_M17                  M
+   I_key_dust_mist_collector                M
+   I_safety_mode_2                          M                         *;CE 2008
+   I_safety_mode_4                          M                         *;safety mode 4
+   I_key_override_S_plus                    M                         *;EUMACH S% knob -> FMAX% knob
+   I_key_override_S_100                     M                         *;EUMACH S% knob -> FMAX% knob
+   I_key_override_S_minus                   M                         *;EUMACH S% knob -> FMAX% knob
+*--- Key marker assignment, no I address allowed ---*
+
+*;Eumach Additional Inputs
+*;Machining area series
+*;If use the same keys from machine panel IV+/-, V+/- keys -> /c I_key_area1_axis_C_plus I(IV+ key).
+   I_key_area1_axis_C_plus                  M
+   I_key_area1_axis_C_minus                 M
+   I_key_area2_axis_C_plus                  M
+   I_key_area2_axis_C_minus                 M
+*;Machining area series
+
+*----------------- 1st MB620 panel -----------------*
+#if Machine_panel = &MB620
+   I_key1_axis_X_minus                      I215
+   I_key1_axis_Y_minus                      I202
+   I_key1_axis_Z_minus                      I227
+   I_key1_axis_4_minus                      I228
+   I_key1_axis_5_minus                      I229
+   I_key1_axis_6_minus                      I230
+   I_key1_axis_X_plus                       I213
+   I_key1_axis_Y_plus                       I226
+   I_key1_axis_Z_plus                       I201
+   I_key1_axis_4_plus                       I200
+   I_key1_axis_5_plus                       I203
+   I_key1_axis_6_plus                       I204
+   I_key1_axis_7_plus                       M
+   I_key1_axis_7_minus                      M
+   I_key1_axis_8_plus                       M
+   I_key1_axis_8_minus                      M
+   I_key1_axis_9_plus                       M
+   I_key1_axis_9_minus                      M
+   I_key1_axis_10_plus                      M
+   I_key1_axis_10_minus                     M
+   I_key1_axis_11_plus                      M
+   I_key1_axis_11_minus                     M
+   I_key1_axis_12_plus                      M
+   I_key1_axis_12_minus                     M
+   I_key1_axis_13_plus                      M
+   I_key1_axis_13_minus                     M
+   I_key1_axis_14_plus                      M
+   I_key1_axis_14_minus                     M
+   I_key1_axis_15_plus                      M
+   I_key1_axis_15_minus                     M
+   I_key1_axis_16_plus                      M
+   I_key1_axis_16_minus                     M
+
+#if Panel_S_start_stop = &active
+   I_key1_enable_toolchange                 I209
+   I_key1_tool_unclamping_foot_switch       M
+
+   I_key1_TC_magazine_guard_unlock          M
+   I_key1_guard_unlock                      I235
+   I_key1_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key1_chip_conveyor                     I224
+   I_key1_spindle_M3                        M
+   I_key1_spindle_M4                        M
+   I_key1_spindle_M5                        M
+   I_key1_coolant_M08                       I211
+   I_key1_NC_start                          I239
+   I_key1_NC_stop                           I240
+   I_key1_NC_stop_2_axes_spindle            M
+   I_key1_rapid_traverse                    I214
+   I_key1_axes_motion_from_end_position     I216
+   I_key1_coolant_M07                       I237
+
+   I_key1_axes_plus                         M
+   I_key1_axes_minus                        M
+   I_key1_power_on                          I243
+   I_key1_lubrication_axes                  M
+   I_key1_enable_table_1                    M
+   I_key1_enable_table_2                    M
+   I_key1_enable_new_workpiece_on_pallet    M
+   I_key1_chip_conveyor_back                M
+   I_key1_working_light                     I236
+   I_keylock1_switch_special_mode           M
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key1_enable_toolchange                 I222
+   I_key1_tool_unclamping_foot_switch       M
+
+   I_key1_TC_magazine_guard_unlock          M
+   I_key1_guard_unlock                      I235
+   I_key1_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key1_chip_conveyor                     I224
+   I_key1_spindle_M3                        I211
+   I_key1_spindle_M4                        I209
+   I_key1_spindle_M5                        I210
+   I_key1_coolant_M08                       I223
+   I_key1_NC_start                          I239
+   I_key1_NC_stop                           I240
+   I_key1_NC_stop_2_axes_spindle            M
+   I_key1_rapid_traverse                    I214
+   I_key1_axes_motion_from_end_position     I216
+   I_key1_coolant_M07                       I237
+
+   I_key1_axes_plus                         M
+   I_key1_axes_minus                        M
+   I_key1_power_on                          I243
+   I_key1_lubrication_axes                  M
+   I_key1_enable_table_1                    M
+   I_key1_enable_table_2                    M
+   I_key1_enable_new_workpiece_on_pallet    M
+   I_key1_chip_conveyor_back                M
+   I_key1_working_light                     I236
+   I_keylock1_switch_special_mode           M
+#endif
+
+#if Panel_S_start_stop = &active
+   I_key1_spindle_start                     I210
+   I_key1_spindle_stop                      I223
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key1_spindle_start                     M
+   I_key1_spindle_stop                      M
+#endif
+   I_key1_air_through_S_M17                 M
+   I_key1_dust_mist_collector               M
+   I_safety_mode_2_panel_1                  I244
+   I_safety_mode_4_panel_1                  I245
+#endif
+*----------------- 1st MB620 panel -----------------*
+
+*----------------- 2nd MB620 panel -----------------*
+#if (Machine_panel = &MB620) or (Additional_machine_panel = &MB620_01)
+   I_key2_axis_X_minus                      M
+   I_key2_axis_Y_minus                      M
+   I_key2_axis_Z_minus                      M
+   I_key2_axis_4_minus                      M
+   I_key2_axis_5_minus                      M
+   I_key2_axis_6_minus                      M
+   I_key2_axis_X_plus                       M
+   I_key2_axis_Y_plus                       M
+   I_key2_axis_Z_plus                       M
+   I_key2_axis_4_plus                       M
+   I_key2_axis_5_plus                       M
+   I_key2_axis_6_plus                       M
+   I_key2_axis_7_plus                       M
+   I_key2_axis_7_minus                      M
+   I_key2_axis_8_plus                       M
+   I_key2_axis_8_minus                      M
+   I_key2_axis_9_plus                       M
+   I_key2_axis_9_minus                      M
+   I_key2_axis_10_plus                      M
+   I_key2_axis_10_minus                     M
+   I_key2_axis_11_plus                      M
+   I_key2_axis_11_minus                     M
+   I_key2_axis_12_plus                      M
+   I_key2_axis_12_minus                     M
+   I_key2_axis_13_plus                      M
+   I_key2_axis_13_minus                     M
+   I_key2_axis_14_plus                      M
+   I_key2_axis_14_minus                     M
+   I_key2_axis_15_plus                      M
+   I_key2_axis_15_minus                     M
+   I_key2_axis_16_plus                      M
+   I_key2_axis_16_minus                     M
+
+#if Panel_S_start_stop = &active
+   I_key2_enable_toolchange                 M
+   I_key2_tool_unclamping_foot_switch       M
+
+   I_key2_TC_magazine_guard_unlock          M
+   I_key2_guard_unlock                      M
+   I_key2_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key2_chip_conveyor                     M
+   I_key2_spindle_M3                        M
+   I_key2_spindle_M4                        M
+   I_key2_spindle_M5                        M
+   I_key2_coolant_M08                       M
+   I_key2_NC_start                          M
+   I_key2_NC_stop                           M
+   I_key2_NC_stop_2_axes_spindle            M
+   I_key2_rapid_traverse                    M
+   I_key2_axes_motion_from_end_position     M
+   I_key2_coolant_M07                       M
+
+   I_key2_axes_plus                         M
+   I_key2_axes_minus                        M
+   I_key2_power_on                          M
+   I_key2_lubrication_axes                  M
+   I_key2_enable_table_1                    M
+   I_key2_enable_table_2                    M
+   I_key2_enable_new_workpiece_on_pallet    M
+   I_key2_chip_conveyor_back                M
+   I_key2_working_light                     M
+   I_keylock2_switch_special_mode           M
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key2_enable_toolchange                 M
+   I_key2_tool_unclamping_foot_switch       M
+
+   I_key2_TC_magazine_guard_unlock          M
+   I_key2_guard_unlock                      M
+   I_key2_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key2_chip_conveyor                     M
+   I_key2_spindle_M3                        M
+   I_key2_spindle_M4                        M
+   I_key2_spindle_M5                        M
+   I_key2_coolant_M08                       M
+   I_key2_NC_start                          M
+   I_key2_NC_stop                           M
+   I_key2_NC_stop_2_axes_spindle            M
+   I_key2_rapid_traverse                    M
+   I_key2_axes_motion_from_end_position     M
+   I_key2_coolant_M07                       M
+
+   I_key2_axes_plus                         M
+   I_key2_axes_minus                        M
+   I_key2_power_on                          M
+   I_key2_lubrication_axes                  M
+   I_key2_enable_table_1                    M
+   I_key2_enable_table_2                    M
+   I_key2_enable_new_workpiece_on_pallet    M
+   I_key2_chip_conveyor_back                M
+   I_key2_working_light                     M
+   I_keylock2_switch_special_mode           M
+#endif
+
+#if Panel_S_start_stop = &active
+   I_key2_spindle_start                     M
+   I_key2_spindle_stop                      M
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key2_spindle_start                     M
+   I_key2_spindle_stop                      M
+#endif
+   I_key2_air_through_S_M17                 M
+   I_safety_mode_2_panel_2                  M
+   I_safety_mode_4_panel_2                  M
+#endif
+*----------------- 2nd MB620 panel -----------------*
+
+*----------------- 1st MB720/TE745 panel -----------------*
+#if (Machine_panel = &MB720) or (Machine_panel = &TE745)
+   I_key1_axis_X_minus                      I214
+   I_key1_axis_Y_minus                      I202
+   I_key1_axis_Z_minus                      I225
+   I_key1_axis_4_minus                      I226
+   I_key1_axis_5_minus                      I227
+   I_key1_axis_6_minus                      I228
+   I_key1_axis_X_plus                       I212
+   I_key1_axis_Y_plus                       I224
+   I_key1_axis_Z_plus                       I201
+   I_key1_axis_4_plus                       I200
+   I_key1_axis_5_plus                       I203
+   I_key1_axis_6_plus                       I204
+   I_key1_axis_7_plus                       M
+   I_key1_axis_7_minus                      M
+   I_key1_axis_8_plus                       M
+   I_key1_axis_8_minus                      M
+   I_key1_axis_9_plus                       M
+   I_key1_axis_9_minus                      M
+   I_key1_axis_10_plus                      M
+   I_key1_axis_10_minus                     M
+   I_key1_axis_11_plus                      M
+   I_key1_axis_11_minus                     M
+   I_key1_axis_12_plus                      M
+   I_key1_axis_12_minus                     M
+   I_key1_axis_13_plus                      M
+   I_key1_axis_13_minus                     M
+   I_key1_axis_14_plus                      M
+   I_key1_axis_14_minus                     M
+   I_key1_axis_15_plus                      M
+   I_key1_axis_15_minus                     M
+   I_key1_axis_16_plus                      M
+   I_key1_axis_16_minus                     M
+
+#if Panel_S_start_stop = &active
+   I_key1_enable_toolchange                 I209
+   I_key1_tool_unclamping_foot_switch       M
+
+   I_key1_TC_magazine_guard_unlock          I367
+   I_key1_guard_unlock                      I233
+   I_key1_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key1_chip_conveyor                     I223
+   I_key1_spindle_M3                        M
+   I_key1_spindle_M4                        M
+   I_key1_spindle_M5                        M
+   I_key1_coolant_M08                       I211
+   I_key1_NC_start                          I237
+   I_key1_NC_stop                           I236
+   I_key1_NC_stop_2_axes_spindle            M
+   I_key1_rapid_traverse                    I213
+   I_key1_axes_motion_from_end_position     I215
+   I_key1_coolant_M07                       I235
+   I_key1_coolant_M307                      I232
+
+   I_key1_axes_plus                         M
+   I_key1_axes_minus                        M
+   I_key1_power_on                          I238
+   I_key1_lubrication_axes                  M
+   I_key1_enable_table_1                    M
+   I_key1_enable_table_2                    M
+   I_key1_enable_new_workpiece_on_pallet    M
+   I_key1_chip_conveyor_back                M
+   I_key1_working_light                     I234
+   I_keylock1_switch_special_mode           M
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key1_enable_toolchange                 I221
+   I_key1_tool_unclamping_foot_switch       M
+
+   I_key1_TC_magazine_guard_unlock          I367
+   I_key1_guard_unlock                      I233
+   I_key1_guard_2_unlock                    M                         *;If I address is assigned, 2 guard keys must be installed.
+   I_key1_chip_conveyor                     I223
+   I_key1_spindle_M3                        I211
+   I_key1_spindle_M4                        I209
+   I_key1_spindle_M5                        I210
+   I_key1_coolant_M08                       I222
+   I_key1_NC_start                          I237
+   I_key1_NC_stop                           I236
+   I_key1_NC_stop_2_axes_spindle            M
+   I_key1_rapid_traverse                    I213
+   I_key1_axes_motion_from_end_position     I215
+   I_key1_coolant_M07                       I235
+   I_key1_coolant_M307                      I232
+
+   I_key1_axes_plus                         M
+   I_key1_axes_minus                        M
+   I_key1_power_on                          I238
+   I_key1_lubrication_axes                  M
+   I_key1_enable_table_1                    M
+   I_key1_enable_table_2                    M
+   I_key1_enable_new_workpiece_on_pallet    M
+   I_key1_chip_conveyor_back                M
+   I_key1_working_light                     I234
+   I_keylock1_switch_special_mode           M
+#endif
+
+#if Panel_S_start_stop = &active
+   I_key1_spindle_start                     I210
+   I_key1_spindle_stop                      I222
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_key1_spindle_start                     M
+   I_key1_spindle_stop                      M
+#endif
+   I_key1_air_through_S_M17                 M
+   I_key1_dust_mist_collector               I206
+   I_safety_mode_2_panel_1                  I244
+   I_safety_mode_4_panel_1                  I245
+*;EUMACH S% knob -> FMAX% knob
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &active)
+   I_key1_override_S_plus                   I205
+   I_key1_override_S_100                    I217
+   I_key1_override_S_minus                  I229
+#else
+   I_key1_override_S_plus                   M
+   I_key1_override_S_100                    M
+   I_key1_override_S_minus                  M
+#endif
+*;EUMACH S% knob -> FMAX% knob
+#endif
+*----------------- 1st MB720/TE745 panel -----------------*
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel HR 330 X23 (I160 - I162)
+*-----------------------------------------------------------------------------
+
+   I_HR330_key_plus                         I160
+   I_HR330_key_minus                        I161
+   I_HR330_key_rapid_traverse               I162
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel HR 410 HR 410/420 X23 (I173 - I175 only HR 410)
+*-----------------------------------------------------------------------------
+
+   I_HR4x0_key_permissive_mode              I241
+
+* Variant 45
+
+   I_HR410_key_spindle_M3                   M
+   I_HR410_key_NC_start                     I174
+   I_HR410_key_NC_stop                      I175
+   I_HR410_key_spindle_jog                  M
+
+* Variant 44
+
+;  I_HR410_key_spindle_M3                   M
+   I_HR410_key_spindle_M5                   M
+   I_HR410_key_spindle_M4                   M
+
+*;Eumach Additional Inputs
+#if Panel_S_start_stop = &active
+   I_HR410_key_spindle_start                I173
+   I_HR410_key_spindle_stop                 M
+#endif
+#if Panel_M03_M04_M05 = &active
+   I_HR410_key_spindle_start                M
+   I_HR410_key_spindle_stop                 I173
+#endif
+
+*-----------------------------------------------------------------------------
+*  Inputs Handwheel Adapter HRA 110 X23 (I160 - I170)
+*-----------------------------------------------------------------------------
+
+/c I_HRA110_S1_Bit0                         I160
+/c I_HRA110_S1_Bit1                         I161
+/c I_HRA110_S1_Bit2                         I162
+/c I_HRA110_S1_Bit3                         I163
+/c I_HRA110_S1_Bit4                         I164
+/c I_HRA110_S1_Bit5                         I165
+/c I_HRA110_S1_Bit6                         I166
+/c I_HRA110_S1_Bit7                         I167
+
+/c I_HRA110_S2_Bit0                         I168
+/c I_HRA110_S2_Bit1                         I169
+/c I_HRA110_S2_Bit2                         I170
+/c I_HRA110_S2_Bit3                         I171
+/c I_HRA110_S2_Bit4                         I172
+/c I_HRA110_S2_Bit5                         I173
+/c I_HRA110_S2_Bit6                         I174
+/c I_HRA110_S2_Bit7                         I175
+
+*-----------------------------------------------------------------------------
+*  Input words for analog voltage sensors (IWxxx) (resolution = 0.01 V)
+*-----------------------------------------------------------------------------
+
+   IW_S_tool_clamp_unclamp_sensor_voltage   IW16
+
+*-----------------------------------------------------------------------------
+*  Input words for PT100 sensors (IWxxx) (resolution = 0.01 degree)
+*-----------------------------------------------------------------------------
+
+   IW_temp_S_front_bearing_Pt100            IW32
+   IW_temperature_machine_Pt100             IW34
+
+#if (HSS = &HS_type_41) or (HSS = &HS_type_43) or (HSS = &HS_type_51) or (HSS = &HS_type_61) or (HSS = &HS_type_62) or (HSS = &HS_type_80)
+/c IW_temperature_spindle_Pt100             IW &IW_temp_S_front_bearing_Pt100
+#else
+   IW_temperature_spindle_Pt100             IW36
+#endif
+
+#if S_rear_bearing_temperature_monitoring = &active
+   IW_temp_S_rear_bearing_Pt100             IW38
+#endif

@@ -1,0 +1,37 @@
+/* DIAGNOSE WZ-Magazin
+   -------------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAGNOSE WZ-Magazin";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %-28s\n",$SG_WZM_Diagnose_Zeile_1$/c;
+CURSOR=ON;
+"CASE(%2d): %-28s\n",$STG_WZM[0].BG_Schritt_WZM$/c,$SG_WZM_Diagnose_Zeile_2$/c;
+CURSOR=OFF;
+"(+1)    : %-28s\n\n",$SG_WZM_Diagnose_Zeile_3$/c;
+
+"WZ-Magazin Pos aktiv: %s\n",$STG_WZM[0].MG_WZM_Start$?"ja  ":"nein"/c;
+"\n";
+
+"T CALL Strobe M4073 :    %d\n",$NP_M4073_Strobe_TOOL_CALL$/c;
+"T DEF Strobe  M4074 :    %d\n\n",$NP_M4074_Strobe_TOOL_DEF$/c;
+
+"TOOL Platz     W262 : %4D\n",$NP_W262_Werkzeug_Platz_Nummer$/c;
+"TOOL Nummer    W264 : %4D\n\n",$NP_W264_Werkzeug_Nummer$/c;
+"TOOL Magazin   W268 : %4D\n\n",$NP_W268_Werkzeug_Magazin_Nummer$/c;
+
+"PLatz aktuell (IST) : %4D\n",$STG_WZM[0].WG_WZM_Ist_Platz$/c;
+"Platzdiff (SOLL-IST): %4D\n\n",$STG_WZM[0].WG_WZM_Ist_Soll_Platz_Differenz$/c;
+
+"I WZ-Mag Zähler     : %d\n",$STG_WZM[0].MG_I_WZM_Zaehler$/c;
+"I WZ-Mag Genauposit : %d\n",$STG_WZM[0].MG_I_WZM_Genauhalt$/c;
+"I WZ-Mag Referenz   : %d\n\n",$STG_WZM[0].MG_I_WZM_Referenz$/c;
+
+"O WZ-Mag Rechtslauf : %d\n",$STG_WZM[0].MG_O_WZM_Rechtslauf$/c;
+"O WZ-Mag Linkslauf  : %d\n",$STG_WZM[0].MG_O_WZM_Linkslauf$/c;
+"O WZ-Mag Eilgang    : %d\n",$STG_WZM[0].MG_O_WZM_Eilgang$/c;
+

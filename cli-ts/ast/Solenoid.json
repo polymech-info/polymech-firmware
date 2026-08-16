@@ -1,0 +1,4533 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "SOLENOID_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "SOLENOID_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<ArduinoLog.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<App.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<Component.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<enums.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/Modbus.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "system_lib_string",
+              "text": "<modbus/ModbusTCP.h>"
+            }
+          ]
+        },
+        {
+          "type": "preproc_include",
+          "children": [
+            {
+              "type": "#include",
+              "text": "#include"
+            },
+            {
+              "type": "string_literal",
+              "children": [
+                {
+                  "type": "\"",
+                  "text": "\""
+                },
+                {
+                  "type": "string_content",
+                  "text": "config-modbus.h"
+                },
+                {
+                  "type": "\"",
+                  "text": "\""
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "Bridge"
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "class_specifier",
+          "children": [
+            {
+              "type": "class",
+              "text": "class"
+            },
+            {
+              "type": "type_identifier",
+              "text": "Solenoid"
+            },
+            {
+              "type": "base_class_clause",
+              "children": [
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "Component"
+                }
+              ]
+            },
+            {
+              "type": "field_declaration_list",
+              "children": [
+                {
+                  "type": "{",
+                  "text": "{"
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "private",
+                      "text": "private"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "modbusAddress"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "MB_Registers"
+                    },
+                    {
+                      "type": "array_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbus_block"
+                        },
+                        {
+                          "type": "[",
+                          "text": "["
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "2"
+                        },
+                        {
+                          "type": "]",
+                          "text": "]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "mutable",
+                          "text": "mutable"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "m_modbus_view"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "unsigned",
+                          "text": "unsigned"
+                        },
+                        {
+                          "type": "long",
+                          "text": "long"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "lastOnTime"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "unsigned",
+                          "text": "unsigned"
+                        },
+                        {
+                          "type": "long",
+                          "text": "long"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "lastOffTime"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "lastOnDurationS"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "lastOffDurationS"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "access_specifier",
+                  "children": [
+                    {
+                      "type": "public",
+                      "text": "public"
+                    }
+                  ]
+                },
+                {
+                  "type": ":",
+                  "text": ":"
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "type_qualifier",
+                      "children": [
+                        {
+                          "type": "const",
+                          "text": "const"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "pin"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "field_identifier",
+                      "text": "value"
+                    },
+                    {
+                      "type": ";",
+                      "text": ";"
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "identifier",
+                          "text": "Solenoid"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Component"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "owner"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_pin"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_id"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_modbusAddress"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_initializer_list",
+                      "children": [
+                        {
+                          "type": ":",
+                          "text": ":"
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "Component"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "string_literal",
+                                  "children": [
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    },
+                                    {
+                                      "type": "string_content",
+                                      "text": "Solenoid"
+                                    },
+                                    {
+                                      "type": "\"",
+                                      "text": "\""
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_id"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "COMPONENT_DEFAULT"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "owner"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "pin"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_pin"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "modbusAddress"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "_modbusAddress"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "value"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "false",
+                                  "text": "false"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "lastOnTime"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "lastOffTime"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "millis"
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "lastOnDurationS"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ",",
+                          "text": ","
+                        },
+                        {
+                          "type": "field_initializer",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "lastOffDurationS"
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "setNetCapability"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "qualified_identifier",
+                                      "children": [
+                                        {
+                                          "type": "namespace_identifier",
+                                          "text": "OBJECT_NET_CAPS"
+                                        },
+                                        {
+                                          "type": "::",
+                                          "text": "::"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "E_NCAPS_MODBUS"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "subscript_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "m_modbus_block"
+                                    },
+                                    {
+                                      "type": "subscript_argument_list",
+                                      "children": [
+                                        {
+                                          "type": "[",
+                                          "text": "["
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        },
+                                        {
+                                          "type": "]",
+                                          "text": "]"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "INIT_MODBUS_BLOCK_TCP"
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "field_expression",
+                                          "children": [
+                                            {
+                                              "type": "this",
+                                              "text": "this"
+                                            },
+                                            {
+                                              "type": "->",
+                                              "text": "->"
+                                            },
+                                            {
+                                              "type": "field_identifier",
+                                              "text": "modbusAddress"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "qualified_identifier",
+                                          "children": [
+                                            {
+                                              "type": "namespace_identifier",
+                                              "text": "E_FN_CODE"
+                                            },
+                                            {
+                                              "type": "::",
+                                              "text": "::"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "FN_WRITE_COIL"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "MB_ACCESS_READ_WRITE"
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "string_literal",
+                                          "children": [
+                                            {
+                                              "type": "\"",
+                                              "text": "\""
+                                            },
+                                            {
+                                              "type": "string_content",
+                                              "text": "Solenoid State"
+                                            },
+                                            {
+                                              "type": "\"",
+                                              "text": "\""
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "null",
+                                          "children": [
+                                            {
+                                              "type": "nullptr",
+                                              "text": "nullptr"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "subscript_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "m_modbus_block"
+                                    },
+                                    {
+                                      "type": "subscript_argument_list",
+                                      "children": [
+                                        {
+                                          "type": "[",
+                                          "text": "["
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "1"
+                                        },
+                                        {
+                                          "type": "]",
+                                          "text": "]"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "INIT_MODBUS_BLOCK_TCP"
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "field_expression",
+                                          "children": [
+                                            {
+                                              "type": "this",
+                                              "text": "this"
+                                            },
+                                            {
+                                              "type": "->",
+                                              "text": "->"
+                                            },
+                                            {
+                                              "type": "field_identifier",
+                                              "text": "modbusAddress"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "1"
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "qualified_identifier",
+                                          "children": [
+                                            {
+                                              "type": "namespace_identifier",
+                                              "text": "E_FN_CODE"
+                                            },
+                                            {
+                                              "type": "::",
+                                              "text": "::"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "FN_WRITE_COIL"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "MB_ACCESS_READ_WRITE"
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "string_literal",
+                                          "children": [
+                                            {
+                                              "type": "\"",
+                                              "text": "\""
+                                            },
+                                            {
+                                              "type": "string_content",
+                                              "text": "Enabled"
+                                            },
+                                            {
+                                              "type": "\"",
+                                              "text": "\""
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "null",
+                                          "children": [
+                                            {
+                                              "type": "nullptr",
+                                              "text": "nullptr"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "m_modbus_view"
+                                    },
+                                    {
+                                      "type": ".",
+                                      "text": "."
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "data"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "m_modbus_block"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "assignment_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "m_modbus_view"
+                                    },
+                                    {
+                                      "type": ".",
+                                      "text": "."
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "count"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "2"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setup"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "setup"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "pinMode"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "pin"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "OUTPUT"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "digitalWrite"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "pin"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "value"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setValue"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "bool"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "newValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "value"
+                                    },
+                                    {
+                                      "type": "!=",
+                                      "text": "!="
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "newValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "assignment_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "value"
+                                        },
+                                        {
+                                          "type": "=",
+                                          "text": "="
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "newValue"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "digitalWrite"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "pin"
+                                            },
+                                            {
+                                              "type": ",",
+                                              "text": ","
+                                            },
+                                            {
+                                              "type": "conditional_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "value"
+                                                },
+                                                {
+                                                  "type": "?",
+                                                  "text": "?"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "HIGH"
+                                                },
+                                                {
+                                                  "type": ":",
+                                                  "text": ":"
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "LOW"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "if_statement",
+                                  "children": [
+                                    {
+                                      "type": "if",
+                                      "text": "if"
+                                    },
+                                    {
+                                      "type": "condition_clause",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "value"
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "compound_statement",
+                                      "children": [
+                                        {
+                                          "type": "{",
+                                          "text": "{"
+                                        },
+                                        {
+                                          "type": "comment",
+                                          "text": "// Turned ON\r"
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "assignment_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "lastOnTime"
+                                                },
+                                                {
+                                                  "type": "=",
+                                                  "text": "="
+                                                },
+                                                {
+                                                  "type": "call_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "millis"
+                                                    },
+                                                    {
+                                                      "type": "argument_list",
+                                                      "children": [
+                                                        {
+                                                          "type": "(",
+                                                          "text": "("
+                                                        },
+                                                        {
+                                                          "type": ")",
+                                                          "text": ")"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "assignment_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "lastOffDurationS"
+                                                },
+                                                {
+                                                  "type": "=",
+                                                  "text": "="
+                                                },
+                                                {
+                                                  "type": "binary_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "parenthesized_expression",
+                                                      "children": [
+                                                        {
+                                                          "type": "(",
+                                                          "text": "("
+                                                        },
+                                                        {
+                                                          "type": "binary_expression",
+                                                          "children": [
+                                                            {
+                                                              "type": "identifier",
+                                                              "text": "lastOnTime"
+                                                            },
+                                                            {
+                                                              "type": "-",
+                                                              "text": "-"
+                                                            },
+                                                            {
+                                                              "type": "identifier",
+                                                              "text": "lastOffTime"
+                                                            }
+                                                          ]
+                                                        },
+                                                        {
+                                                          "type": ")",
+                                                          "text": ")"
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "type": "/",
+                                                      "text": "/"
+                                                    },
+                                                    {
+                                                      "type": "number_literal",
+                                                      "text": "1000"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "}",
+                                          "text": "}"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "else_clause",
+                                      "children": [
+                                        {
+                                          "type": "else",
+                                          "text": "else"
+                                        },
+                                        {
+                                          "type": "compound_statement",
+                                          "children": [
+                                            {
+                                              "type": "{",
+                                              "text": "{"
+                                            },
+                                            {
+                                              "type": "comment",
+                                              "text": "// Turned OFF\r"
+                                            },
+                                            {
+                                              "type": "expression_statement",
+                                              "children": [
+                                                {
+                                                  "type": "assignment_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "lastOffTime"
+                                                    },
+                                                    {
+                                                      "type": "=",
+                                                      "text": "="
+                                                    },
+                                                    {
+                                                      "type": "call_expression",
+                                                      "children": [
+                                                        {
+                                                          "type": "identifier",
+                                                          "text": "millis"
+                                                        },
+                                                        {
+                                                          "type": "argument_list",
+                                                          "children": [
+                                                            {
+                                                              "type": "(",
+                                                              "text": "("
+                                                            },
+                                                            {
+                                                              "type": ")",
+                                                              "text": ")"
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": ";",
+                                                  "text": ";"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": "expression_statement",
+                                              "children": [
+                                                {
+                                                  "type": "assignment_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "lastOnDurationS"
+                                                    },
+                                                    {
+                                                      "type": "=",
+                                                      "text": "="
+                                                    },
+                                                    {
+                                                      "type": "binary_expression",
+                                                      "children": [
+                                                        {
+                                                          "type": "parenthesized_expression",
+                                                          "children": [
+                                                            {
+                                                              "type": "(",
+                                                              "text": "("
+                                                            },
+                                                            {
+                                                              "type": "binary_expression",
+                                                              "children": [
+                                                                {
+                                                                  "type": "identifier",
+                                                                  "text": "lastOffTime"
+                                                                },
+                                                                {
+                                                                  "type": "-",
+                                                                  "text": "-"
+                                                                },
+                                                                {
+                                                                  "type": "identifier",
+                                                                  "text": "lastOnTime"
+                                                                }
+                                                              ]
+                                                            },
+                                                            {
+                                                              "type": ")",
+                                                              "text": ")"
+                                                            }
+                                                          ]
+                                                        },
+                                                        {
+                                                          "type": "/",
+                                                          "text": "/"
+                                                        },
+                                                        {
+                                                          "type": "number_literal",
+                                                          "text": "1000"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": ";",
+                                                  "text": ";"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": "}",
+                                              "text": "}"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "notifyStateChange"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "setValueCmd"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "arg1"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "arg2"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "setValue"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "arg1"
+                                        },
+                                        {
+                                          "type": ">",
+                                          "text": ">"
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "bool"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getValue"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "value"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getLastOnDurationS"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "lastOnDurationS"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "uint32_t"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "getLastOffDurationS"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "lastOffDurationS"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "networkValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "address"
+                                    },
+                                    {
+                                      "type": "==",
+                                      "text": "=="
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "modbusAddress"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "return_statement",
+                                  "children": [
+                                    {
+                                      "type": "return",
+                                      "text": "return"
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "setValue"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "binary_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "networkValue"
+                                                },
+                                                {
+                                                  "type": ">",
+                                                  "text": ">"
+                                                },
+                                                {
+                                                  "type": "number_literal",
+                                                  "text": "0"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "else_clause",
+                              "children": [
+                                {
+                                  "type": "else",
+                                  "text": "else"
+                                },
+                                {
+                                  "type": "if_statement",
+                                  "children": [
+                                    {
+                                      "type": "if",
+                                      "text": "if"
+                                    },
+                                    {
+                                      "type": "condition_clause",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "binary_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "address"
+                                            },
+                                            {
+                                              "type": "==",
+                                              "text": "=="
+                                            },
+                                            {
+                                              "type": "binary_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "modbusAddress"
+                                                },
+                                                {
+                                                  "type": "+",
+                                                  "text": "+"
+                                                },
+                                                {
+                                                  "type": "number_literal",
+                                                  "text": "1"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "compound_statement",
+                                      "children": [
+                                        {
+                                          "type": "{",
+                                          "text": "{"
+                                        },
+                                        {
+                                          "type": "expression_statement",
+                                          "children": [
+                                            {
+                                              "type": "conditional_expression",
+                                              "children": [
+                                                {
+                                                  "type": "binary_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "networkValue"
+                                                    },
+                                                    {
+                                                      "type": ">",
+                                                      "text": ">"
+                                                    },
+                                                    {
+                                                      "type": "number_literal",
+                                                      "text": "0"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "?",
+                                                  "text": "?"
+                                                },
+                                                {
+                                                  "type": "call_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "enable"
+                                                    },
+                                                    {
+                                                      "type": "argument_list",
+                                                      "children": [
+                                                        {
+                                                          "type": "(",
+                                                          "text": "("
+                                                        },
+                                                        {
+                                                          "type": ")",
+                                                          "text": ")"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": ":",
+                                                  "text": ":"
+                                                },
+                                                {
+                                                  "type": "call_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "disable"
+                                                    },
+                                                    {
+                                                      "type": "argument_list",
+                                                      "children": [
+                                                        {
+                                                          "type": "(",
+                                                          "text": "("
+                                                        },
+                                                        {
+                                                          "type": ")",
+                                                          "text": ")"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "return_statement",
+                                          "children": [
+                                            {
+                                              "type": "return",
+                                              "text": "return"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "E_OK"
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "}",
+                                          "text": "}"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_INVALID_PARAMETER"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "address"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "address"
+                                    },
+                                    {
+                                      "type": "==",
+                                      "text": "=="
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "modbusAddress"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "return_statement",
+                                  "children": [
+                                    {
+                                      "type": "return",
+                                      "text": "return"
+                                    },
+                                    {
+                                      "type": "conditional_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "value"
+                                        },
+                                        {
+                                          "type": "?",
+                                          "text": "?"
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "1"
+                                        },
+                                        {
+                                          "type": ":",
+                                          "text": ":"
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "else_clause",
+                              "children": [
+                                {
+                                  "type": "else",
+                                  "text": "else"
+                                },
+                                {
+                                  "type": "if_statement",
+                                  "children": [
+                                    {
+                                      "type": "if",
+                                      "text": "if"
+                                    },
+                                    {
+                                      "type": "condition_clause",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "binary_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "address"
+                                            },
+                                            {
+                                              "type": "==",
+                                              "text": "=="
+                                            },
+                                            {
+                                              "type": "binary_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "modbusAddress"
+                                                },
+                                                {
+                                                  "type": "+",
+                                                  "text": "+"
+                                                },
+                                                {
+                                                  "type": "number_literal",
+                                                  "text": "1"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "compound_statement",
+                                      "children": [
+                                        {
+                                          "type": "{",
+                                          "text": "{"
+                                        },
+                                        {
+                                          "type": "return_statement",
+                                          "children": [
+                                            {
+                                              "type": "return",
+                                              "text": "return"
+                                            },
+                                            {
+                                              "type": "conditional_expression",
+                                              "children": [
+                                                {
+                                                  "type": "call_expression",
+                                                  "children": [
+                                                    {
+                                                      "type": "identifier",
+                                                      "text": "enabled"
+                                                    },
+                                                    {
+                                                      "type": "argument_list",
+                                                      "children": [
+                                                        {
+                                                          "type": "(",
+                                                          "text": "("
+                                                        },
+                                                        {
+                                                          "type": ")",
+                                                          "text": ")"
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "?",
+                                                  "text": "?"
+                                                },
+                                                {
+                                                  "type": "number_literal",
+                                                  "text": "1"
+                                                },
+                                                {
+                                                  "type": ":",
+                                                  "text": ":"
+                                                },
+                                                {
+                                                  "type": "number_literal",
+                                                  "text": "0"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ";",
+                                              "text": ";"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "}",
+                                          "text": "}"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "number_literal",
+                              "text": "0"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_write"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ",",
+                              "text": ","
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "sized_type_specifier",
+                                  "children": [
+                                    {
+                                      "type": "short",
+                                      "text": "short"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "networkValue"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "mb_tcp_write"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "field_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "reg"
+                                        },
+                                        {
+                                          "type": "->",
+                                          "text": "->"
+                                        },
+                                        {
+                                          "type": "field_identifier",
+                                          "text": "startAddress"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "networkValue"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_read"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "MB_Registers"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "reg"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "mb_tcp_read"
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "field_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "reg"
+                                        },
+                                        {
+                                          "type": "->",
+                                          "text": "->"
+                                        },
+                                        {
+                                          "type": "field_identifier",
+                                          "text": "startAddress"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "primitive_type",
+                      "text": "void"
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "mb_tcp_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "ModbusTCP"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "manager"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "type_identifier",
+                              "text": "ModbusBlockView"
+                            },
+                            {
+                              "type": "init_declarator",
+                              "children": [
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "blocksView"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "mb_tcp_blocks"
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "declaration",
+                          "children": [
+                            {
+                              "type": "type_identifier",
+                              "text": "Component"
+                            },
+                            {
+                              "type": "init_declarator",
+                              "children": [
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "thiz"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "=",
+                                  "text": "="
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "template_function",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "const_cast"
+                                        },
+                                        {
+                                          "type": "template_argument_list",
+                                          "children": [
+                                            {
+                                              "type": "<",
+                                              "text": "<"
+                                            },
+                                            {
+                                              "type": "type_descriptor",
+                                              "children": [
+                                                {
+                                                  "type": "type_identifier",
+                                                  "text": "Solenoid"
+                                                },
+                                                {
+                                                  "type": "abstract_pointer_declarator",
+                                                  "children": [
+                                                    {
+                                                      "type": "*",
+                                                      "text": "*"
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ">",
+                                              "text": ">"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "this",
+                                          "text": "this"
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "for_statement",
+                          "children": [
+                            {
+                              "type": "for",
+                              "text": "for"
+                            },
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "declaration",
+                              "children": [
+                                {
+                                  "type": "primitive_type",
+                                  "text": "int"
+                                },
+                                {
+                                  "type": "init_declarator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "i"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ";",
+                                  "text": ";"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "binary_expression",
+                              "children": [
+                                {
+                                  "type": "identifier",
+                                  "text": "i"
+                                },
+                                {
+                                  "type": "<",
+                                  "text": "<"
+                                },
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "blocksView"
+                                    },
+                                    {
+                                      "type": "->",
+                                      "text": "->"
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "count"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            },
+                            {
+                              "type": "update_expression",
+                              "children": [
+                                {
+                                  "type": "++",
+                                  "text": "++"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "i"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "MB_Registers"
+                                    },
+                                    {
+                                      "type": "init_declarator",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "info"
+                                        },
+                                        {
+                                          "type": "=",
+                                          "text": "="
+                                        },
+                                        {
+                                          "type": "subscript_expression",
+                                          "children": [
+                                            {
+                                              "type": "field_expression",
+                                              "children": [
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "blocksView"
+                                                },
+                                                {
+                                                  "type": "->",
+                                                  "text": "->"
+                                                },
+                                                {
+                                                  "type": "field_identifier",
+                                                  "text": "data"
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": "subscript_argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "[",
+                                                  "text": "["
+                                                },
+                                                {
+                                                  "type": "identifier",
+                                                  "text": "i"
+                                                },
+                                                {
+                                                  "type": "]",
+                                                  "text": "]"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "field_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "manager"
+                                            },
+                                            {
+                                              "type": "->",
+                                              "text": "->"
+                                            },
+                                            {
+                                              "type": "field_identifier",
+                                              "text": "registerModbus"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "thiz"
+                                            },
+                                            {
+                                              "type": ",",
+                                              "text": ","
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "info"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "type_identifier",
+                      "text": "ModbusBlockView"
+                    },
+                    {
+                      "type": "pointer_declarator",
+                      "children": [
+                        {
+                          "type": "*",
+                          "text": "*"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_blocks"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "type_qualifier",
+                              "children": [
+                                {
+                                  "type": "const",
+                                  "text": "const"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "pointer_expression",
+                              "children": [
+                                {
+                                  "type": "&",
+                                  "text": "&"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "m_modbus_view"
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "serial_register"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": "parameter_declaration",
+                              "children": [
+                                {
+                                  "type": "type_identifier",
+                                  "text": "Bridge"
+                                },
+                                {
+                                  "type": "pointer_declarator",
+                                  "children": [
+                                    {
+                                      "type": "*",
+                                      "text": "*"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "serial_register"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "field_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "bridge"
+                                    },
+                                    {
+                                      "type": "->",
+                                      "text": "->"
+                                    },
+                                    {
+                                      "type": "field_identifier",
+                                      "text": "registerMemberFunction"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "id"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "this",
+                                      "text": "this"
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "C_STR"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "string_literal",
+                                              "children": [
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                },
+                                                {
+                                                  "type": "string_content",
+                                                  "text": "setValue"
+                                                },
+                                                {
+                                                  "type": "\"",
+                                                  "text": "\""
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ",",
+                                      "text": ","
+                                    },
+                                    {
+                                      "type": "binary_expression",
+                                      "children": [
+                                        {
+                                          "type": "parenthesized_expression",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "ComponentFnPtr"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "&",
+                                          "text": "&"
+                                        },
+                                        {
+                                          "type": "qualified_identifier",
+                                          "children": [
+                                            {
+                                              "type": "namespace_identifier",
+                                              "text": "Solenoid"
+                                            },
+                                            {
+                                              "type": "::",
+                                              "text": "::"
+                                            },
+                                            {
+                                              "type": "identifier",
+                                              "text": "setValueCmd"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "function_definition",
+                  "children": [
+                    {
+                      "type": "sized_type_specifier",
+                      "children": [
+                        {
+                          "type": "short",
+                          "text": "short"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_declarator",
+                      "children": [
+                        {
+                          "type": "field_identifier",
+                          "text": "loop"
+                        },
+                        {
+                          "type": "parameter_list",
+                          "children": [
+                            {
+                              "type": "(",
+                              "text": "("
+                            },
+                            {
+                              "type": ")",
+                              "text": ")"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "virtual_specifier",
+                          "children": [
+                            {
+                              "type": "override",
+                              "text": "override"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "compound_statement",
+                      "children": [
+                        {
+                          "type": "{",
+                          "text": "{"
+                        },
+                        {
+                          "type": "expression_statement",
+                          "children": [
+                            {
+                              "type": "call_expression",
+                              "children": [
+                                {
+                                  "type": "qualified_identifier",
+                                  "children": [
+                                    {
+                                      "type": "namespace_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "::",
+                                      "text": "::"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "loop"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "argument_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "if_statement",
+                          "children": [
+                            {
+                              "type": "if",
+                              "text": "if"
+                            },
+                            {
+                              "type": "condition_clause",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "binary_expression",
+                                  "children": [
+                                    {
+                                      "type": "unary_expression",
+                                      "children": [
+                                        {
+                                          "type": "!",
+                                          "text": "!"
+                                        },
+                                        {
+                                          "type": "call_expression",
+                                          "children": [
+                                            {
+                                              "type": "identifier",
+                                              "text": "enabled"
+                                            },
+                                            {
+                                              "type": "argument_list",
+                                              "children": [
+                                                {
+                                                  "type": "(",
+                                                  "text": "("
+                                                },
+                                                {
+                                                  "type": ")",
+                                                  "text": ")"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "&&",
+                                      "text": "&&"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "value"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "compound_statement",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "expression_statement",
+                                  "children": [
+                                    {
+                                      "type": "call_expression",
+                                      "children": [
+                                        {
+                                          "type": "identifier",
+                                          "text": "setValue"
+                                        },
+                                        {
+                                          "type": "argument_list",
+                                          "children": [
+                                            {
+                                              "type": "(",
+                                              "text": "("
+                                            },
+                                            {
+                                              "type": "false",
+                                              "text": "false"
+                                            },
+                                            {
+                                              "type": ")",
+                                              "text": ")"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": ";",
+                                      "text": ";"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "return_statement",
+                          "children": [
+                            {
+                              "type": "return",
+                              "text": "return"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "E_OK"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "}",
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "}",
+                  "text": "}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": ";",
+          "text": ";"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+osr-ai chatgpt --query="- extract all tables, as markdown tables : function code/address, modbus function code, description, read/write 
+- extract all notes about modbus" --alt=true --debug=true --append=false --showPrompt=false --model="gpt-4o" --logLevel="debug" --skip=false --gui="electron" --assistant=true --files="C:\Users\mc007\Desktop\osr\osr-firmware\vendor\sako\RS485-780.pdf"

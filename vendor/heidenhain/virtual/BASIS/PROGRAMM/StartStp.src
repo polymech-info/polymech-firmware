@@ -1,0 +1,160 @@
+*-----------------------------------------------------------------------------
+*  NC-Start NC-Stop
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inaktiv                               K +0
+
+#define /s    ML_NC_Start_an_NC                        M
+#define /s    ML_Taste_betaetigt                       M
+
+#include Mac_Lib.inc
+
+GLOBAL NC_Start_Stop
+
+;----------------------------
+LBL NC_Start_Stop
+;----------------------------
+
+  L      MG_Taste_NC_Start_P_Impuls    ;P_Impuls setzt Fehlermeldungen zurück
+  =      ML_NC_Start_an_NC             ;1 PLC Zyklus nach MG_Taste_NC_Start_P_Impuls NC Start an NC
+
+  L      MG_Taste_NC_Start
+  AN     ML_Taste_betaetigt
+  =      MG_Taste_NC_Start_P_Impuls
+
+  LN     MG_Taste_NC_Start
+  A      ML_Taste_betaetigt
+  =      MG_Taste_NC_Start_N_Impuls
+
+  L      MG_Taste_NC_Stop
+  A      PN_M4560_NC_STOP_0_aktiv
+  =      MG_Taste_NC_Stop_P_Impuls
+
+  L      ML_NC_Start_an_NC
+  O      MG_NC_Start_von_Referenz
+  O      MG_NC_Start_von_AUTOSTART
+  O      MG_Energy_Opt_Warmlaufpgm_ein
+  A      MG_Steuer_Spannung_verzoegert_ein
+  AN     MG_WZW_Help
+  AN     MG_WZW_Service
+  AN     MG_PW_Help
+  AN     MG_BA_Testlauf
+  =      PN_M4564_NC_Start
+
+  L      DG_Tasten_sperren
+  AN     DG_PLC_Hilfs_Achsen
+  <>     KL_inaktiv
+#if CFG_FS = "aktiv"
+  O[
+    L      ApiToSafety.PP_GenSOM
+    ==     S_MODE_SOM_1
+    A      MG_Arbeitsraum_offen
+  ]
+#else
+  O      MG_Arbeitsraum_offen
+#endif
+  O      MG_Start_Sperre_Schmierung
+  A      MG_BA_Automatik
+  O      MG_Start_Sperre_Referenz
+  O      MG_Start_Sperre_Not_Halt_Test
+  O[
+    L      NP_M4153_BA_Programmlauf_Einzelsatz
+    A      MG_NC_Satz_Einlese_Sperre
+  ]
+  O      MG_Achsen_Not_Halt_Endlage
+  R      PN_M4564_NC_Start
+
+  L      MG_Taste_NC_Stop
+  =N     PN_M4560_NC_STOP_0_aktiv
+
+  L      MG_Taste_NC_Start
+  =      ML_Taste_betaetigt
+
+  L      MG_M00_programmierter_Halt
+  O      MG_M01_bedingter_Halt
+  O      MG_M02_Programm_ENDE
+  O      MG_M30_Programm_Ende
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M00_programmierter_Halt
+  AN     NP_M4158_BA_Satz_Vorlauf_aktiv
+  S      MG_programmierter_Halt_M00_aktiv
+
+  L      MG_M01_bedingter_Halt
+  AN     NP_M4158_BA_Satz_Vorlauf_aktiv
+  S      MG_bedingter_Halt_M01_aktiv
+
+  L      MG_Taste_NC_Start_P_Impuls
+  AN     MG_Arbeitsraum_offen
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Impuls_Internal_STOP
+  O      MG_Impuls_CE_Taste
+  ON     MG_Steuerung_betriebsbereit
+  R      MG_programmierter_Halt_M00_aktiv
+  R      MG_bedingter_Halt_M01_aktiv
+
+  L      MG_programmierter_Halt_M00_aktiv
+  AN     MG_Arbeitsraum_offen
+  =      PN_Fehler_M0_Programm_Halt
+
+  L      MG_bedingter_Halt_M01_aktiv
+  AN     MG_Arbeitsraum_offen
+  =      PN_Fehler_M1_wahlweise_Halt
+
+  LN     MG_WZW_Unterbrechung
+  ON     MG_Pendeln_Unterbrechung
+  A      MG_Stern_ein
+  O[
+    L      MG_BA_Manuell
+    A      MG_Achsen_in_Bewegung
+  ]
+  O      MG_Taste_NC_Start
+  =      O_LED_NC_Start
+
+  LN     O_LED_NC_Start
+  O      MG_Taste_NC_Stop
+  =      O_LED_NC_Stop
+
+  L      NP_M4175_Stern_blinkt
+  A      MG_Takt_1_s
+  A      MG_BA_Automatik
+  S      O_LED_NC_Start
+
+#if CFG_FS = "aktiv"
+  L      PN_Fehler_SOS_aktiv
+  IFT
+    L      MG_Takt_500_ms
+    =      O_LED_NC_Start
+  ENDI
+#endif
+
+;Autostart
+
+  L      NP_M4183_Zeit_aus_AUTOSTART_abgelaufen
+  IFT
+    LN     MG_Not_Halt_Kreis_geschlossen
+    =      MG_Steuerspannung_AUTOSTART_ein
+
+    L      NP_M4178_Externer_Not_Halt_aktiv
+    A      MG_Not_Halt_Kreis_geschlossen
+    IFT
+      PS     KG_Taste_CE
+      CM     9180                      ;Tastensimulation
+      PLX
+
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      MG_Steuer_Spannung_verzoegert_ein
+    AN     MG_Stern_ein
+    =      MG_NC_Start_von_AUTOSTART
+
+    L      MG_Stern_ein
+    ON     MG_BA_Automatik
+    R      NP_M4183_Zeit_aus_AUTOSTART_abgelaufen
+  ENDI
+
+EM

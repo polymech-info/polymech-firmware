@@ -1,0 +1,126 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "主轴"
+
+msgid "AXIS"
+msgstr "坐标轴"
+
+msgid "SCREEN"
+msgstr "屏幕"
+
+msgid "MACHINE"
+msgstr "机床"
+
+msgid "CONTROL"
+msgstr "控制器"
+
+msgid "LIGHT"
+msgstr "灯"
+
+msgid "LIGHT_1"
+msgstr "灯 1"
+
+msgid "LIGHT_2"
+msgstr "灯 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "气 总计"
+
+msgid "OEL_AGGREGATE"
+msgstr "油 总计"
+
+msgid "DRIVES"
+msgstr "驱动"
+
+msgid "MONDAY_SHORT"
+msgstr "星期一"
+
+msgid "TUESDAY_SHORT"
+msgstr "星期二"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "星期三"
+
+msgid "THURSDAY_SHORT"
+msgstr "星期四"
+
+msgid "FRIDAY_SHORT"
+msgstr "星期五"
+
+msgid "SUTURDAY_SHORT"
+msgstr "星期六"
+
+msgid "SUNDAY_SHORT"
+msgstr "星期天"
+
+msgid "SETUP"
+msgstr "安装"
+
+msgid "ADVANCED"
+msgstr "高级的"
+
+msgid "INFO"
+msgstr "信息"
+
+msgid "WARMUP_PROGRAM"
+msgstr "热机程序"
+
+msgid "STANDBY"
+msgstr "待机"
+
+msgid "SWITCH_OFF"
+msgstr "关闭"
+
+msgid "TIME"
+msgstr "时间"
+
+msgid "AXIS_FILTER"
+msgstr "坐标轴过滤器"
+
+msgid "SPINDLE_FILTER"
+msgstr "主轴过滤器"
+
+msgid "SWITCH_ON"
+msgstr "开机"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "通过 EnergyOpt 可以优化机床的能源使用"
+
+msgid "MILLISECOND"
+msgstr "毫秒"
+
+msgid "MILLISECONDS"
+msgstr "毫秒"
+
+msgid "SECOND"
+msgstr "秒"
+
+msgid "SECONDS"
+msgstr "秒"
+
+msgid "MINUTE"
+msgstr "分钟"
+
+msgid "MINUTES"
+msgstr "分钟"
+
+msgid "HOUR"
+msgstr "小时"
+
+msgid "HOURS"
+msgstr "小时"
+
+msgid "DAY"
+msgstr "天"
+
+msgid "DAYS"
+msgstr "天"
+
+msgid "WEEK"
+msgstr "周"
+
+msgid "WEEKS"
+msgstr "周"
+

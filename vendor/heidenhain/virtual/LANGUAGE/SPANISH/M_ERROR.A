@@ -1,0 +1,20 @@
+/* FEHLER QUEUE
+   ------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"TABLA DE ERRORES";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\nNo Stat Text                          \n";
+CURSOR=OFF;
+ERRQUE=17/c/l/s;
+
+"\n\n";
+" Status - C: CE posible\n";
+"          S: NC-STOP\n";
+"          E: Emergencia STOP\n";
+"          F: Paro de avances\n";
+"        0-2: Prioridad";

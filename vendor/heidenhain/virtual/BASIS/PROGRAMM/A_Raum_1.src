@@ -1,0 +1,81 @@
+*-----------------------------------------------------------------------------
+*  Arbeitsraum Überwachung
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Restweg_Wert                          K +4
+
+#define /s    ML_Arbeitsraum_Ueberwachung_aus          M
+#define /s    ML_Freifahren_aktiv                      M
+
+#include Mac_Lib.inc
+
+GLOBAL Arbeitsraum_UBW
+
+;----------------------------
+LBL Arbeitsraum_UBW
+;----------------------------
+
+  L      MG_M32_Arbeitsraum_Ueberwachung_aus
+  S      PN_M4092_Quit_M_Funktion
+  S      MG_SK_Arbeitsraum_Ueberwachung_aus
+
+  LN     MG_Steuerung_betriebsbereit
+  O      MG_BA_Wechsel_Manu_Auto
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Impuls_End_PGM_M02_M30
+  R      MG_SK_Arbeitsraum_Ueberwachung_aus
+
+*$WS - evtl. negativer Impuls Achsen in Position
+  LN     I_Taste_Ax01_Plus
+  AN     I_Taste_Ax01_Minus
+  AN     I_Taste_Ax02_Plus
+  AN     I_Taste_Ax02_Minus
+  A      ML_Freifahren_aktiv
+  R      MG_SK_Arbeitsraum_Ueberwachung_aus
+
+  L      I_Taste_Ax01_Plus
+  O      I_Taste_Ax01_Minus
+  O      I_Taste_Ax02_Plus
+  O      I_Taste_Ax02_Minus
+  =      ML_Freifahren_aktiv
+
+  L      MG_SK_Arbeitsraum_Ueberwachung_aus
+  AN     ML_Arbeitsraum_Ueberwachung_aus
+  S      PN_Fehler_Arbeitsraum_Ueberwachung_aus
+
+  LN     MG_SK_Arbeitsraum_Ueberwachung_aus
+  A      ML_Arbeitsraum_Ueberwachung_aus
+  R      PN_Fehler_Arbeitsraum_Ueberwachung_aus
+
+  L      MG_SK_Arbeitsraum_Ueberwachung_aus
+  =      ML_Arbeitsraum_Ueberwachung_aus
+
+  L      MG_SK_Arbeitsraum_Ueberwachung_aus
+  ON     MG_Referenz_Achsen_aufgenommen
+  R      PN_Fehler_Arbeitsraum_Schutz
+  EMT
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Y]
+  <      DG_Arbeitsraum_manu_Y
+  IFT
+    L      DG_Ref_Pos_Achse[KG_Achse_Z]
+    <      DG_Arbeitsraum_manu_Z
+    A      MG_Achsen_in_Bewegung
+    S      PN_Fehler_Arbeitsraum_Schutz
+  ENDI
+
+  L      MG_BA_Automatik
+  IFT
+    L      DG_Ziel_Pos_Achse[KG_Achse_Y]
+    <      DG_Arbeitsraum_auto_Y
+    IFT
+      L      DG_Ziel_Pos_Achse[KG_Achse_Z]
+      <      DG_Arbeitsraum_auto_Z
+      S      PN_Fehler_Arbeitsraum_Schutz
+    ENDI
+  ENDI
+
+EM

@@ -1,0 +1,192 @@
+*-----------------------------------------------------------------------------
+* Daten Austausch mit serieller Schnittstelle V24/V11
+*-----------------------------------------------------------------------------
+*  Modul Beschreibung
+*   - Modul für das senden und empfangen über die V24/V11 Schnittstelle
+*   - Die Aktivierung der Schnittstellen erfolgt mit Auswahl von Betriebsart
+*     (CFG_Mode_Vxx) und Schnitstelle (Interface_Vxx) in Datei OEM.CFG.
+*   - Sofort nach dem ersten PLC Zyklus sendet der Master Daten. Demgegenüber
+*     wartet Slave mit dem Senden bis er gültige Daten empfangen hat.
+*   - MP Einstellung Übertragungsprotokoll
+*       MP 5020.2  : %10101010  ;PLC-Modus (EXT3)
+*       MP 5020.3  : %10101010  ;PLC-Modus (EXT4)
+*       MP 5030.2  : 1          ;PLC-Modus (EXT3)
+*       MP 5030.3  : 1          ;PLC-Modus (EXT4)
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Interface_V24                         K +0
+#define /s    KL_Interface_V11                         K +1
+
+#if CFG_Interface_Vxx = "Interface_V24"
+#define /s    KL_Vxx_Interface                         K &KL_Interface_V24
+#endif
+
+#if CFG_Interface_Vxx = "Interface_V11"
+#define /s    KL_Vxx_Interface                         K &KL_Interface_V11
+#endif
+
+#define /s    KL_Parameter_aus_MP5xxx_2                K +0
+
+#define /s    ML_Vxx_Status                            M[16]
+#define /c    ML_Vxx_zugeordnet                        M &ML_Vxx_Status + 0
+#define /c    ML_Vxx_der_PLC_zugeordnet                M &ML_Vxx_Status + 1
+#define /c    ML_Vxx_betriebsbereit                    M &ML_Vxx_Status + 2
+#define /c    ML_Vxx_Sendepuffer_ist_leer              M &ML_Vxx_Status + 3
+#define /c    ML_Vxx_Fehler_beim_Senden                M &ML_Vxx_Status + 4
+#define /c    ML_Vxx_Empfangspuffer_voll               M &ML_Vxx_Status + 5
+#define /c    ML_Vxx_Fehler_beim_Empfangen             M &ML_Vxx_Status + 6
+#define /c    ML_Vxx_ETX_empfangen                     M &ML_Vxx_Status + 7
+#define /c    ML_Vxx_RxD_Zwischen_Puffer_Mod_9113      M &ML_Vxx_Status + 8
+
+#define /s    ML_Vxx_von_PLC_initialisieren            M
+#define /s    ML_Vxx_Slave_senden_bereit               M
+#define /s    ML_Vxx_Test_ein                          M
+
+#define /s    BL_Submit_Identifier                     B
+
+#include Mac_Lib.inc
+
+;----------------------------
+GLOBAL Daten_Transfer_Vxx
+;----------------------------
+
+LBL Daten_Transfer_Vxx
+
+;Zum Test im Debug Mode kann der Merker ML_Vxx_Test_ein gesetzt werden
+
+  L      ML_Vxx_Test_ein
+  IFT
+    LN     MG_Vxx_Daten_senden_ein
+    IFT
+      S      MG_Vxx_Daten_senden_ein
+
+      INC    DG_Vxx_Sende_Daten_07
+    ENDI
+
+    LN     MG_Vxx_Daten_empfangen_ein
+    S      MG_Vxx_Daten_empfangen_ein
+  ENDI
+
+;Status lesen
+
+  PS     KL_Vxx_Interface
+  CM     9102                          ;V11/V24 Schnittstelle: Status lesen
+  PLW
+  W=     ML_Vxx_Status
+  M_Modul_Fehler_anzeigen
+
+  L      ML_Vxx_Fehler_beim_Senden
+  S      PN_Fehler_Vxx_beim_Senden
+
+  L      ML_Vxx_Fehler_beim_Empfangen
+  S      PN_Fehler_Vxx_beim_Empfangen
+
+  LN     ML_Vxx_betriebsbereit
+  A      ML_Vxx_der_PLC_zugeordnet
+  S      PN_Fehler_Vxx_betriebsbereit
+
+  LN     MG_Vxx_Daten_senden_ein
+  AN     MG_Vxx_Daten_empfangen_ein
+  AN     ML_Vxx_der_PLC_zugeordnet
+  EMT
+
+  L      ML_Vxx_Fehler_beim_Senden
+  O      ML_Vxx_Fehler_beim_Empfangen
+  ON     ML_Vxx_betriebsbereit
+  A      ML_Vxx_der_PLC_zugeordnet
+  R      ML_Vxx_Slave_senden_bereit
+  S      PN_Fehler_Vxx_Daten_Transfer_PLC
+  S      ML_Vxx_von_PLC_initialisieren
+
+  RPLY   BL_Submit_Identifier
+  ==     K+0
+  IFT
+    SUBM   Submit_Daten_Transfer
+    =      BL_Submit_Identifier
+    ==     K+0
+    S      PN_Fehler_Submit_Spawn_Queue_voll
+  ENDI
+
+EM
+
+;----------------------------
+LBL Submit_Daten_Transfer
+;----------------------------
+
+;Schnittstelle freigeben
+
+  LN     MG_Vxx_Daten_senden_ein
+  AN     MG_Vxx_Daten_empfangen_ein
+  O      ML_Vxx_von_PLC_initialisieren
+  A      ML_Vxx_der_PLC_zugeordnet
+  IFT
+    R      ML_Vxx_von_PLC_initialisieren
+
+    PS     KL_Vxx_Interface            ;Schnittstelle freigeben
+    CM     9101                        ;V11/V24-Schnittstelle freigeben
+    M_Modul_Fehler_anzeigen
+
+EM
+  ENDI
+
+;Schnittstelle der PLC zuordnen
+
+  LN     ML_Vxx_der_PLC_zugeordnet
+  IFT
+    PS     KL_Vxx_Interface
+    PS     KL_Parameter_aus_MP5xxx_2
+    CM     9100                        ;V11/V24-Schnittstelle belegen
+    M_Modul_Fehler_anzeigen
+
+EM
+  ENDI
+
+;Daten Senden
+
+  L      ML_Vxx_Sendepuffer_ist_leer
+  A      ML_Vxx_der_PLC_zugeordnet
+  A      ML_Vxx_betriebsbereit
+  AN     ML_Vxx_Fehler_beim_Senden
+  A      MG_Vxx_Daten_senden_ein
+#if CFG_Mode_Vxx = "Slave_Vxx"
+  A      ML_Vxx_Slave_senden_bereit
+#endif
+  IFT
+    PS     KL_Vxx_Interface
+    PS     K &DG_Vxx_Sende_Daten_Begin
+    PS     K &DG_Vxx_Sende_Daten_End - &DG_Vxx_Sende_Daten_Begin + 4
+    CM     9105                        ;Binärdaten über V11/V24 senden
+    M_Modul_Fehler_anzeigen
+
+    L      MG_Eins_Merker
+    R      MG_Vxx_Daten_senden_ein
+  ENDI
+
+;Daten Empfangen
+
+  L      ML_Vxx_Empfangspuffer_voll
+  A      ML_Vxx_der_PLC_zugeordnet
+  A      ML_Vxx_betriebsbereit
+  AN     ML_Vxx_Fehler_beim_Empfangen
+  IFT
+    PS     KL_Vxx_Interface
+    PS     K &DG_Vxx_Empfangs_Daten_Begin
+    CM     9106                        ;Binärdaten von V11/V24 empfangen
+    PLW
+    >      K &DG_Vxx_Empfangs_Daten_End - &DG_Vxx_Empfangs_Daten_Begin + 4
+    S      PN_Fehler_Vxx_Puffer_Ueberlauf
+    M_Modul_Fehler_anzeigen
+
+    LN     NP_M4203_Fehler_Modul_9xxx
+    R      PN_Fehler_Vxx_Daten_Transfer_PLC
+    R      PN_Fehler_Vxx_betriebsbereit
+#if CFG_Mode_Vxx = "Slave_Vxx"
+    S      ML_Vxx_Slave_senden_bereit
+#endif
+
+    L      MG_Eins_Merker
+    R      MG_Vxx_Daten_empfangen_ein
+  ENDI
+
+EM

@@ -1,0 +1,384 @@
+*-----------------------------------------------------------------------------
+*  System configuration
+*-----------------------------------------------------------------------------
+*  Definition of symboles for conditional compilation
+*    - NC model
+*    - NC variant
+*
+*  machinespecific configuration please enter into config.def file !
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Maximum number of axes on TNC (total/digital)
+*-----------------------------------------------------------------------------
+
+#ifdef $iTNC530$
+
+#define       KG_max_number_axes                       K+14
+#define       TNC530                                   K+0
+
+#endif
+
+#ifndef KG_max_number_axes
+#error This PLC project only supports NC model iTNC530 !
+#endif
+
+#ifndef $340420$ and not $340421$ and not $340422$ and not $340423$ and not $340480$ and not $340481$
+#error This PLC project doesn't support NC variant !
+#endif
+
+*-----------------------------------------------------------------------------
+*  Constants definitions   (internal used, not for machine adaptation)
+*-----------------------------------------------------------------------------
+
+#define       inactive                                 0
+#define       active                                   1
+
+#define       Single_arm                               1
+#define       Double_arm                               2
+#define       Cam_driven_arm                           3
+#define       Pickup                                   4
+
+#define       PLC_axis                                 1
+#define       Pulse                                    2
+
+#define       Alternat_table                           1
+#define       3R_system                                2
+#define       2_PC_linear                              3
+#define       2_PC_rotat                               4
+
+#define       axis_X                                   0
+#define       axis_Y                                   1
+#define       axis_Z                                   2
+#define       axis_4                                   3
+#define       axis_5                                   4
+#define       axis_6                                   5
+#define       axis_7                                   6
+#define       axis_8                                   7
+#define       axis_9                                   8
+#define       axis_10                                  9
+#define       axis_11                                 10
+#define       axis_12                                 11
+#define       axis_13                                 12
+#define       axis_14                                 13
+#define       axis_15                                 14
+#define       axis_16                                 15
+
+#define       TC_type_01                               1
+#define       TC_type_02                               2
+#define       TC_type_03                               3
+#define       TC_type_04                               4
+#define       TC_type_05                               5
+#define       TC_type_06                               6
+#define       TC_type_07                               7
+#define       TC_type_08                               8
+#define       TC_type_09                               9
+#define       TC_type_10                              10
+#define       TC_type_11                              11
+#define       TC_type_12                              12
+#define       TC_type_13                              13
+#define       TC_type_14                              14
+#define       TC_type_15                              15
+#define       TC_type_16                              16
+
+*;EUMACH Dual TC
+#define       TC_2_type_01                             1
+#define       TC_2_type_02                             2
+#define       TC_2_type_03                             3
+#define       TC_2_type_04                             4
+#define       TC_2_type_05                             5
+#define       TC_2_type_06                             6
+#define       TC_2_type_07                             7
+#define       TC_2_type_08                             8
+#define       TC_2_type_09                             9
+#define       TC_2_type_10                            10
+#define       TC_2_type_11                            11
+#define       TC_2_type_12                            12
+#define       TC_2_type_13                            13
+#define       TC_2_type_14                            14
+#define       TC_2_type_15                            15
+#define       TC_2_type_16                            16
+*;EUMACH Dual TC
+
+#define       Mag_type_01                              1
+#define       Mag_type_02                              2
+#define       Mag_type_03                              3
+#define       Mag_type_04                              4
+#define       Mag_type_05                              5
+#define       Mag_type_06                              6
+#define       Mag_type_07                              7
+#define       Mag_type_08                              8
+#define       Mag_type_09                              9
+#define       Mag_type_10                             10
+#define       Mag_type_11                             11
+#define       Mag_type_12                             12
+#define       Mag_type_13                             13
+
+*;EUMACH Dual TC
+#define       Mag_2_type_01                            1
+#define       Mag_2_type_02                            2
+#define       Mag_2_type_03                            3
+#define       Mag_2_type_04                            4
+#define       Mag_2_type_05                            5
+#define       Mag_2_type_06                            6
+#define       Mag_2_type_07                            7
+#define       Mag_2_type_08                            8
+#define       Mag_2_type_09                            9
+#define       Mag_2_type_10                           10
+#define       Mag_2_type_11                           11
+#define       Mag_2_type_12                           12
+*;EUMACH Dual TC
+
+*;EUMACH Machine Type Constant Definitions
+#define       MT_11                                   11
+#define       MT_12                                   12
+#define       MT_13                                   13
+#define       MT_14                                   14
+#define       MT_15                                   15
+#define       MT_15A                                 151
+#define       MT_16                                   16
+#define       MT_17                                   17
+#define       MT_21                                   21
+#define       MT_22                                   22
+#define       MT_25                                   25
+#define       MT_25A                                 251
+#define       MT_25B                                 252
+#define       MT_26                                   26
+#define       MT_2B                                 2002
+#define       MT_2C                                 2003
+#define       MT_2D                                 2004
+#define       MT_2MV                               21322
+#define       MT_30                                   30
+#define       MT_31                                   31
+#define       MT_31A                                 311
+#define       MT_31B                                 312
+#define       MT_31C                                 313
+#define       MT_32                                   32
+#define       MT_32A                                 321
+#define       MT_32B                                 322
+#define       MT_33                                   33
+#define       MT_34                                   34
+#define       MT_34A                                 341
+#define       MT_35                                   35
+#define       MT_35A                                 351
+#define       MT_35B                                 352
+#define       MT_36                                   36
+#define       MT_36A                                 361
+#define       MT_36B                                 362
+#define       MT_37                                   37
+#define       MT_37A                                 371
+#define       MT_37B                                 372
+#define       MT_39                                   39
+#define       MT_39A                                 391
+#define       MT_3A                                 3001
+#define       MT_3AA                                3011
+#define       MT_3B                                 3002
+#define       MT_3BA                                3012
+
+*;EUMACH Machine Type Constant Definitions
+#define       No                                       0
+#define       Yes                                      1
+#define       Falling_edge                            -1
+#define       Rising_edge                              1
+#define       ATC_door                                10
+#define       Special                                 19
+
+*;EUMACH Nominal Position as Actual Position Constant Definitions
+#define       No_axis                                  0
+#define       4th_axis                                 4
+#define       5th_axis                                 5
+#define       6th_axis                                 6
+#define       4th_and_5th_axes                         9
+#define       4th_and_6th_axes                        10
+#define       5th_and_6th_axes                        11
+#define       4th_5th_6th_axes                        15
+
+*;EUMACH Safety Mode Definitions
+#define       Standard                                 1
+#define       DMx                                      9
+
+*;EUMACH Working Area Monitoring Constant Definitions
+#define       Square                                   1
+#define       Rectangular                              2
+
+#define       WAM_type_01                              1
+#define       WAM_type_02                              2
+
+*;EUMACH Machine Panel and Handwheel Panel Constant Definitions
+#define       MB620                                  620
+#define       MB720                                  720
+#define       TE745                                  745
+#define       MB620_01                              6201
+#define       2_knobs                                  2
+#define       3_knobs                                  3
+
+#define       Panel_type_00                            0
+#define       Panel_type_01                            1
+#define       Panel_type_02                            2
+#define       Panel_type_03                            3
+#define       Panel_type_04                            4
+#define       Panel_type_05                            5
+#define       Panel_type_06                            6
+#define       Panel_type_07                            7
+#define       Panel_type_08                            8
+#define       Panel_type_09                            9
+#define       Panel_type_10                           10
+#define       Panel_type_11                           11
+#define       Panel_type_12                           12
+#define       Panel_type_13                           13
+#define       Panel_type_14                           14
+
+*;EUMACH Hydraulic System Constant Definitions
+#define       HYD_type_01                              1
+#define       HYD_type_02                              2
+#define       HYD_type_03                              3
+#define       HYD_type_04                              4
+#define       HYD_type_05                              5
+#define       HYD_type_06                              6
+#define       HYD_type_07                              7
+#define       HYD_type_08                              8
+
+*;EUMACH Guard Locking Device Constant Definitions
+#define       ELAN                                     1
+#define       EUCHNER                                  2
+
+*;EUMACH Automatic Door System Constant Definitions
+#define       ADS_type_01                              1
+
+*;EUMACH Automatic Door System Constant Definitions
+#define       Oil                                      1
+#define       Grease                                   2
+
+*;EUMACH Axes Lubrication System Constant Definitions
+#define       LUBE_type_01                             1
+#define       LUBE_type_02                             2
+#define       LUBE_type_03                             3
+#define       LUBE_type_04                             4
+#define       LUBE_type_10                            10
+#define       LUBE_type_11                            11
+
+#define       LUBE2_type_01                            1
+#define       LUBE2_type_02                            2
+#define       LUBE2_type_10                           10
+#define       LUBE2_type_11                           11
+
+#define       LUBE3_type_01                            1
+#define       LUBE3_type_02                            2
+#define       LUBE3_type_10                           10
+#define       LUBE3_type_11                           11
+
+*;EUMACH High-speed Spindle Constant Definitions
+#define       Simple                                   1
+#define       MIXAIR2                                  2
+
+#define       Digital                                  0
+#define       Analog                                   1
+
+#define       Continuous                               1
+#define       M05_delay                                2
+
+#define       Stepless_rpm                             1
+#define       Step_rpm                                 2
+#define       Step_stepless_rpm                        3
+
+#define       PT100                                    1
+
+#define       HS_type_01                               1
+#define       HS_type_19                              19
+#define       HS_type_20                              20
+#define       HS_type_39                              39
+#define       HS_type_40                              40
+#define       HS_type_41                              41
+#define       HS_type_42                              42
+#define       HS_type_43                              43
+#define       HS_type_51                              51
+#define       HS_type_60                              60
+#define       HS_type_61                              61
+#define       HS_type_62                              62
+#define       HS_type_80                              80
+#define       HS_type_81                              81
+#define       HS_type_100                            100
+#define       HS_type_191                            191
+#define       HS_type_296                            296
+#define       HS_type_298                            298
+#define       HS_type_299                            299
+
+*;EUMACH CTS Tank System Constant Definitions
+#define       CTS_tank_01                              1
+#define       CTS_tank_02                              2
+#define       CTS_tank_03                              3
+#define       CTS_tank_04                              4
+#define       CTS_tank_05                              5
+#define       CTS_tank_06                              6
+#define       CTS_tank_07                              7
+
+*;EUMACH Vertical/Horizontal Universal Head Definitions
+#define       S_head_type_01                           1
+#define       S_head_type_02                           2
+#define       S_head_type_03                           3
+#define       S_head_type_04                           4
+#define       S_head_type_05                           5
+#define       S_head_type_06                           6
+#define       S_head_type_07                           7
+#define       S_head_type_08                           8
+#define       S_head_type_09                           9
+#define       S_head_type_10                          10
+
+*;EUMACH Thermal Compensation Type Definitions
+#define       T_comp_type_00                           0
+#define       T_comp_type_01                           1
+#define       T_comp_type_02                           2
+#define       T_comp_type_05                           5
+
+*;EUMACH OEM Cycle Type Definitions
+#define       CYCLE_type_00                            0
+#define       CYCLE_type_01                            1
+
+*;EUMACH Tool Measuring System Type Definitions
+#define       TT                                       0
+#define       BLUM_NT                                  1
+#define       RENISHAW_NC                              2
+
+#define       TLM_type_00                              0
+#define       TLM_type_01                              1
+#define       TLM_type_02                              2
+#define       TLM_type_10                             10
+#define       TLM_type_11                             11
+#define       TLM_type_12                             12
+
+*;EUMACH Soft Key Menu Type Definitions
+#define       SK_menu_00                               0
+#define       SK_menu_01                               1
+#define       SK_menu_02                               2
+#define       SK_menu_03                               3
+#define       SK_menu_04                               4
+#define       SK_menu_05                               5
+#define       SK_menu_06                               6
+#define       SK_menu_07                               7
+#define       SK_menu_08                               8
+#define       SK_menu_09                               9
+#define       SK_menu_10                              10
+#define       SK_menu_11                              11
+
+*;EUMACH Feed Motor Fan Overloaded Message Definitions
+#define       FMF_type_01                              1
+#define       FMF_type_02                              2
+#define       FMF_type_03                              3
+#define       FMF_type_23                             23
+#define       FMF_type_24                             24
+#define       FMF_type_25                             25
+#define       FMF_type_26                             26
+
+*;EUMACH Message for Axis Location Before Traverse Reference Point Definitions
+#define       REF_type_51                             51
+#define       REF_type_52                             52
+
+*;EUMACH Kinematics Configuration Definitions
+#define       KC_type_inactive                        -1
+#define       KC_type_service_mode                     0
+#define       KC_type_01                               1
+#define       KC_type_02                               2
+#define       KC_type_03                               3
+#define       KC_type_04                               4
+#define       KC_type_05                               5

@@ -1,0 +1,138 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Spindle"
+
+msgid "AXIS"
+msgstr "Axis"
+
+msgid "SCREEN"
+msgstr "Screen"
+
+msgid "MACHINE"
+msgstr "Machine"
+
+msgid "CONTROL"
+msgstr "Control"
+
+msgid "LIGHT"
+msgstr "Light"
+
+msgid "LIGHT_1"
+msgstr "Light 1"
+
+msgid "LIGHT_2"
+msgstr "Light 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Air aggregate"
+
+msgid "OEL_AGGREGATE"
+msgstr "Oil aggregate"
+
+msgid "DRIVES"
+msgstr "Drives"
+
+msgid "MONDAY_SHORT"
+msgstr "Mo"
+
+msgid "TUESDAY_SHORT"
+msgstr "Tu"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "We"
+
+msgid "THURSDAY_SHORT"
+msgstr "Th"
+
+msgid "FRIDAY_SHORT"
+msgstr "Fr"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Su"
+
+msgid "SUNDAY_SHORT"
+msgstr "Su"
+
+msgid "SETUP"
+msgstr "Setup"
+
+msgid "ADVANCED"
+msgstr "Advanced"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Warmup program"
+
+msgid "STANDBY"
+msgstr "Standby"
+
+msgid "SWITCH_OFF"
+msgstr "Switch off"
+
+msgid "TIME"
+msgstr "Time"
+
+msgid "AXIS_FILTER"
+msgstr "Axis filter"
+
+msgid "SPINDLE_FILTER"
+msgstr "Spindle filter"
+
+msgid "SWITCH_ON"
+msgstr "Switch on"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "With EnergyOpt you can optimize the \n"
+"energy performance of your \n"
+"machine tool. Unused electronic \n"
+"devices can be switch in standby mode\n"
+"or switch off completely .\n"
+"\n"
+"- Press the Softkey EDIT\n"
+"- Activate the relevant  devices \n"
+"  and chose a time. \n"
+"- Exit the edit mode with \n"
+"  the Softkey EDIT.\n"
+"- Enable or disable all options \n"
+"  with the Softkey ON/OFF  "
+
+msgid "MILLISECOND"
+msgstr "Millisecond"
+
+msgid "MILLISECONDS"
+msgstr "Millisecond"
+
+msgid "SECOND"
+msgstr "Second"
+
+msgid "SECONDS"
+msgstr "Seconds"
+
+msgid "MINUTE"
+msgstr "Minute"
+
+msgid "MINUTES"
+msgstr "Minutes"
+
+msgid "HOUR"
+msgstr "Hour"
+
+msgid "HOURS"
+msgstr "Hours"
+
+msgid "DAY"
+msgstr "Day"
+
+msgid "DAYS"
+msgstr "Days"
+
+msgid "WEEK"
+msgstr "Week"
+
+msgid "WEEKS"
+msgstr "Weeks"
+

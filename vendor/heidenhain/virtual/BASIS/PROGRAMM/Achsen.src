@@ -1,0 +1,2388 @@
+*-----------------------------------------------------------------------------
+*  Achs-Steuerung
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*  - Klemmbetrieb
+*      Der Klemmbetrieb kann mit M11/M10 oder FN19 aus- oder eingeschalten
+*      werden. Die Auswahl auf welche Achsen sich die M-Funktionen beziehen
+*      legt man mittels FN 19 fest. Der erste Zahlenwert stellt die Kennung
+*      dar und muss für Klemmbetrieb aus den Wert +99991 und Klemmbetrieb
+*      ein den Wert +99990 haben. Im 2. Zahlenwert übergibt man bitcodiert
+*      die Achsen. Dieser Wert wird remanent gespeichert und bleibt bis zur
+*      nächsten FN19 Ausgabe erhalten.
+*      z.B.:
+*        FN 19: PLC =+99991 / +24 -> Klemmbetrieb Achsen 4 und 5 aus
+*
+*  - Modul 9161 Reglerfreigabe des internen Stromreglers setzen
+*      Damit werden Strom- und Drehzahlregler der Antriebe eingeschalten
+*
+*  - Modul 9162 Bereitschaft der Drehzahlregler lesen
+*      Nach dem Einschalten des Strom- und Drehzahlreglers muss dieser erst
+*      die Bereitschaft zurück melden, bevor ggf. die Klemmung gelöst werden
+*      kann.
+*
+*  - Modul 9157 Statusabfrage Antriebs-Hardware
+*      Achsgruppen werden über X15x oder PL6xxx(HSCI - MP4132.x) verdrahtet.
+*      Das PLC Modul 9157 liefert den entsprechenden Status.
+*
+*  - Modul 9159 Vorwarnung Stillsetzung der Antriebe (Klemmung)
+*      Es kann die Achsbremse bereits aktiviert werden, während die CC einen
+*      Stillsetzung der Antriebe durchführt. Es wirken die Bremsüberlappungs-
+*      zeiten aus den Maschinenparametern MP2308 und MP2309.
+*
+*  - Modul 9148 Positionsanzeige
+*      Sollwert- statt Istwert-Anzeige kann für Achsen mit Hirth-Verzahnung
+*      aktiviert werden und ist aktiv wenn der Lageregler geöffnet wurde.
+*      Istwertanzeige, Kinematik, Bezugspunkt-Setzen ... beziehen sich dann
+*      auf den Sollwert.
+*
+*  - Modul 9146 Achs-Position einfrieren/freigeben
+*      Achsen im C-Achs-Betrieb oder mit Zentralantrieb werden wahlweise
+*      dem gemeinsamen Messgeraet zugeordnet.
+*
+*  - Modul 9145 Ist-Sollwert-Übernahme für bestimmte Achsen
+*      Beim Bestücken von Werkzeugen und inaktiven Antrieb kann das Magazin
+*      von Hand bewegt werden.
+*
+*  - Modul 9168 Status für Inbetriebnahme der PWM-Regler lesen
+*      Stromregler Inbetriebnahme Achsen sperren.
+*
+*  - Modul 9041 Achs-Koordinaten lesen (1/10000)
+*      Testen ob in Automatikbetrieb mit Hirth Achsen die Zielposition im
+*      Raster liegt.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_aktive_Handrad_Achse                  K +10
+#define /s    KL_aktive_Handrad_Achse_M118             K +23
+#define /s    KL_Istwerte_einfrieren                   K +0
+#define /s    KL_Istwerte_freigeben                    K +1
+#define /s    KL_inaktiv                               K -1
+#define /s    KL_aktiv                                 K +0
+#define /s    KL_Laufzeit_aus_MP                       K -1
+#define /s    KL_Antriebs_Freigabe_Regler_UM           K +0
+#define /s    KL_Antriebs_Freigaben_achscodiert        K +2
+#define /s    KL_Antriebs_Freigaben_Eingangspegel      K +3
+#define /s    KL_Mode_Sollwert_statt_Istwert           K +0
+#define /s    KL_PLC_Posit_inaktiv                     K +0
+#define /s    KL_Mode_inaktiv                          K +0
+#define /s    KL_Hirth_Achsen_initialisiert            K +0
+#define /s    KL_Achse_inaktiv                         K -1
+#if CFG_HSCI = "inaktiv"
+#define /s    KL_Achsgruppen_max_Anzahl                K +6
+#else
+#define /s    KL_Achsgruppen_max_Anzahl                K +8
+#endif
+
+#define /s    KL_Inbetriebnahme_Stromregler            K +2
+#define /s    KL_Spindel_in_D_Mode                     K +3
+#define /s    KL_Spindel_in_D_Mode_Bit0                K +0
+
+#define /s    ML_RF_Achse                              M[32]
+#define /s    ML_Klemmung_loesen                       M[32]
+#define /s    ML_geklemmt_Achse                        M[32]
+#define /s    ML_geloest_Achse                         M[32]
+#define /s    ML_Klemmbetrieb_Ein                      M[32]
+#define /s    ML_Klemmbetrieb_Aus                      M[32]
+#define /s    ML_Abschaltung_CCU                       M[32]
+#define /s    ML_Inbetriebnahme_I                      M[32]
+
+#define /s    ML_Antriebs_Freigabe_Test                M[8]
+#define /c    ML_Antriebs_Freigabe_1_Test              M &ML_Antriebs_Freigabe_Test + 0
+#define /c    ML_Antriebs_Freigabe_2_Test              M &ML_Antriebs_Freigabe_Test + 1
+#define /c    ML_Antriebs_Freigabe_3_Test              M &ML_Antriebs_Freigabe_Test + 2
+#define /c    ML_Antriebs_Freigabe_4_Test              M &ML_Antriebs_Freigabe_Test + 3
+#define /c    ML_Antriebs_Freigabe_5_Test              M &ML_Antriebs_Freigabe_Test + 4
+#define /c    ML_Antriebs_Freigabe_6_Test              M &ML_Antriebs_Freigabe_Test + 5
+#define /c    ML_Antriebs_Freigabe_7_Test              M &ML_Antriebs_Freigabe_Test + 6
+#define /c    ML_Antriebs_Freigabe_8_Test              M &ML_Antriebs_Freigabe_Test + 7
+
+#define /s    ML_Antriebs_Freigabe_war_aus             M[8]
+#define /c    ML_Antriebs_Freigabe_1_war_aus           M &ML_Antriebs_Freigabe_war_aus + 0
+#define /c    ML_Antriebs_Freigabe_2_war_aus           M &ML_Antriebs_Freigabe_war_aus + 1
+#define /c    ML_Antriebs_Freigabe_3_war_aus           M &ML_Antriebs_Freigabe_war_aus + 2
+#define /c    ML_Antriebs_Freigabe_4_war_aus           M &ML_Antriebs_Freigabe_war_aus + 3
+#define /c    ML_Antriebs_Freigabe_5_war_aus           M &ML_Antriebs_Freigabe_war_aus + 4
+#define /c    ML_Antriebs_Freigabe_6_war_aus           M &ML_Antriebs_Freigabe_war_aus + 5
+#define /c    ML_Antriebs_Freigabe_7_war_aus           M &ML_Antriebs_Freigabe_war_aus + 6
+#define /c    ML_Antriebs_Freigabe_8_war_aus           M &ML_Antriebs_Freigabe_war_aus + 7
+
+#define /c    ML_Antriebs_Freigabe_AG_MC               M[8]
+
+#define /s    ML_Hilfsmerker_Klemmbetrieb              M
+#define /s    ML_S_Sollwert_aus_Status_invers          M
+#define /s    ML_Zentralantrieb_aktiv                  M
+#define /s    ML_Zentralantrieb_bereit                 M
+#define /s    ML_FN19_Klemmen_Achsen                   M
+#define /s    ML_FN19_Loesen_Achsen                    M
+#define /s    ML_Ist_Soll_Uebernahme                   M
+#define /s    ML_Ist_Soll_Uebernahme_war_aktiv         M
+#define /s    ML_Inbetriebnahme_Stromregler            M
+#define /s    ML_Betriebsstundenzaehler_ein            M
+#define /s    ML_Reset_Achsen                          M
+#define /s    ML_Spindel_in_D_Mode                     M
+#define /s    ML_O_Klemmung_loesen                     M
+#define /s    ML_I_geklemmt_Achse                      M
+#define /s    ML_I_geloest_Achse                       M
+#define /s    ML_Taste_Achse_Plus                      M
+#define /s    ML_Taste_Achse_Minus                     M
+
+#define /s    BL_Achsgruppe_Index                      B
+#define /s    BL_Achs_Index                            B
+
+#define /s    WL_Antriebs_Freigaben_Eingangspegel      W
+#define /c    BL_X150_Antriebs_Freigaben_Eingangspegel B &WL_Antriebs_Freigaben_Eingangspegel + 0
+#define /c    BL_X151_Antriebs_Freigaben_Eingangspegel B &WL_Antriebs_Freigaben_Eingangspegel + 1
+
+#define /s    WL_Adr_O_Regler_Freigabe                 W
+#define /s    WL_Adr_O_Klemmung_loesen                 W
+#define /s    WL_Adr_I_geloest_Achse                   W
+#define /s    WL_Adr_I_geklemmt_Achse                  W
+#define /s    WL_Adr_I_Achse_Plus                      W
+#define /s    WL_Adr_I_Achse_Minus                     W
+#define /s    WL_Adr_O_LED_Achse_Plus                  W
+#define /s    WL_Adr_O_LED_Achse_Minus                 W
+
+#define /s    DL_Klemmbetrieb_Ein                      D
+#define /s    DL_Achsen_in_C_Achs_Betrieb              D
+#define /s    DL_Initialisieren                        D
+#define /s    DL_Achsen_Istwerte_freigeben             D
+#define /s    DL_Achsen_Istwerte_einfrieren            D
+#define /s    DL_Hirth_Achsen_initialisieren           D
+#define /s    DL_Achsen_waren_in_Position              D
+#define /s    DL_WZM_Achsen_bitcodiert                 D
+#define /s    DL_Gantry_Master_Slave_Vorschub_synchron D
+#define /s    DL_geregelte_Achsen                      D
+#define /s    DL_RF_Achsen                             D
+
+;*$WS Call 58816 - Bit in Position von Slave Achsen bleibt u.U. gesetzt
+#define /s    DL_Gantry_Master_Slave_Achsen            D
+#define /s    DL_LED_ausblenden                        D
+
+#define /s /r DL_Achsen_Vorwahl_Klemmbetrieb           D
+
+#define /s    DL_Inbetriebnahme_Stromregler            D
+
+#define /c    M_0                                      M 0
+#define /c    O_0                                      O 0
+#define /c    I_0                                      I 0
+
+#include Mac_Lib.inc
+
+GLOBAL Achsen
+
+;----------------------------
+LBL Achsen
+;----------------------------
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  IFT
+    L      DL_Achsen_Vorwahl_Klemmbetrieb
+    <=     K+0
+    IFT
+      L      KG_Achs_Bremse_aktiv
+      AN     KG_Einschaltstellung_Klemmbetrieb_aus
+      =      DL_Achsen_Vorwahl_Klemmbetrieb
+    ENDI
+  ENDI
+
+  CM     Freifahren
+
+  L      DG_Klemmbetrieb_Ein_extern
+  O      DG_Klemmbetrieb_Aus_extern
+  <>     K+0
+  O      NP_M4072_Strobe_M_Funktion
+  O      NP_M4075_Strobe_FN19
+  O      ML_Hilfsmerker_Klemmbetrieb
+  CMT    Klemmbetrieb
+
+  PS     KL_Inbetriebnahme_Stromregler
+  CM     9065                          ;Status Inbetriebnahme-Funktionen
+  PLW
+  =      DL_Inbetriebnahme_Stromregler
+  <>     KL_inaktiv
+  =      ML_Inbetriebnahme_Stromregler
+  M_Modul_Fehler_anzeigen
+
+  L      ML_Inbetriebnahme_Stromregler
+  IFT
+    PS     KL_Spindel_in_D_Mode
+    CM     9065                        ;Status Inbetriebnahme-Funktionen
+    PLW
+    BT     KL_Spindel_in_D_Mode_Bit0
+    =      ML_Spindel_in_D_Mode
+    IFT
+      L      MG_Sn_I_Getriebe_Stufe_1
+      ON     MG_Sn_I_Getriebe_Stufe_2
+      =      MG_Sn_O_Stern_Dreieck_Umschaltung
+    ELSE
+      LN     MG_Sn_I_Getriebe_Stufe_1
+      O      MG_Sn_I_Getriebe_Stufe_2
+      =      MG_Sn_O_Stern_Dreieck_Umschaltung
+    ENDI
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  CM     9159                          ;Vorwarnung Stillsetzung der Antriebe
+  PLW
+  O      DG_MP12_simulierte_Achsen
+  =      DG_Abschaltung_CCU
+  D=     ML_Abschaltung_CCU
+
+  M_Modul_Fehler_anzeigen
+
+  L      K+0
+  =X
+
+  REPEAT
+    L      DG_geregelte_Achsen
+    O      DG_Reset_Achsen
+    BTX
+    IFT
+      CASE   BG_Schritt_Achse[X]
+        CM     Initialisieren          ;00
+        CM     In_Position             ;01
+        CM     Regel_Kreise_ein        ;02
+        CM     Klemmung_auf            ;03
+        CM     Positionieren           ;04
+        CM     Strom_Drehz_aus         ;05
+        CM     Klemmung_zu             ;06
+        CM     LR_Kreis_auf            ;07
+        CM     Schritt_Ende            ;08
+      ENDC
+
+      PLL
+      IFT
+        INC    BG_Schritt_Achse[X]
+      ENDI
+
+      CM     Timer_Loesen
+      CM     Timer_Klemmen
+      CM     Timer_Timeout
+      CM     Timer_Warten
+      CM     Klemmungen
+
+      LN     DG_Freigabe_Achsen_MC_X15x_PL6xxx
+      A      DG_digitale_Antriebe
+      BTX
+      A      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+      O[
+        L      DG_Reset_Achsen
+        AN     DG_Antriebe_bereit_MC
+        BTX
+      ]
+#if CFG_FS = "aktiv"
+      O      MG_SS1_aus_Achsgruppe[X]
+#endif
+      IFT
+        L      K+0
+        =      BG_Schritt_Achse[X]
+      ENDI
+    ENDI
+
+    CM     LED
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  L      NP_M4180_F_Max_programmiert
+  A      MG_Achsen_in_Bewegung
+  O      MG_Taste_Eilgang
+  =      O_LED_Eilgang
+
+  L      ML_Klemmung_loesen[KG_3D_Kopf_Achse_1]
+  O      ML_Klemmung_loesen[KG_3D_Kopf_Achse_2]
+  R      MG_3D_Kopf_Achse_1_loesen_Service
+  R      MG_3D_Kopf_Achse_2_loesen_Service
+
+  LD     MG_PLC_Posit_aktiv
+  >      KL_PLC_Posit_inaktiv
+  =      MG_Achsen_PLC_Posit_aktiv
+
+  LN     MG_Steuer_Spannung_verzoegert_ein
+#if CFG_HSCI = "inaktiv"
+  ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+  ON     I_Antriebe_betriebsbereit
+*$WS 9066
+  ON     I_Siemens_E_R_Modul_betriebsbereit
+  ON     I_Indramat_Leistungsspannung_ok
+  RN     ML_Reset_Achsen
+  IFT
+    LN     ML_Reset_Achsen
+    S      ML_Reset_Achsen
+    IFT
+      L      DG_geregelte_Achsen
+      BC     KG_Spindel
+      =      DG_Reset_Achsen
+    ENDI
+  ENDI
+
+*$WS Fehlerauswertung testen
+  L      MG_Steuer_Spannung_verzoegert_ein
+  IFT
+    LN     I_Siemens_E_R_Modul_betriebsbereit
+    ON     I_Indramat_Leistungsspannung_ok
+#if CFG_HSCI = "inaktiv"
+    A      I_I32_ESB_Antriebs_Freigabe
+#endif
+    S      PN_Fehler_Versorgungsmodul_Antriebe
+  ENDI
+
+;Positionier Fehler für Achsen mit Soll- statt Istwert Anzeige (Hirth)
+
+  L      KG_Achs_Sollwert_statt_Istwert_verwenden
+  >      KL_aktiv
+  IFT
+    L      DL_Hirth_Achsen_initialisieren
+    <>     KL_Hirth_Achsen_initialisiert
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      PN_Fehler_Hirth_Achsen_initialisieren
+
+    L      DL_Hirth_Achsen_initialisieren
+    A      KG_Achs_Sollwert_statt_Istwert_verwenden
+    AN     NP_D1108_Achsen_in_Bewegung
+    =      DL_Hirth_Achsen_initialisieren
+
+    L      MG_Taste_CE
+    A      MG_Taste_NC_Stop
+    AN     MG_Steuer_Spannung_verzoegert_ein
+    IFT
+      S      PN_Fehler_Hirth_Achsen_initialisieren
+
+      L      KG_Achs_Sollwert_statt_Istwert_verwenden
+      A      DG_geregelte_Achsen
+      =      DL_Hirth_Achsen_initialisieren
+
+      PS     KL_Mode_inaktiv
+      PS     KL_Mode_Sollwert_statt_Istwert
+      CM     9148                      ;Positionsanzeige
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+;Magazin Achse
+
+#if KG_WZM_1_Achs_Index >= 0
+  L      DG_geregelte_Achsen
+  BT     KG_WZM_1_Achs_Index
+  AN     I_WZM_Tuer_zu_verriegelt
+  AN     MG_Tueren_inaktiv
+  =      ML_Ist_Soll_Uebernahme
+  IFT
+    L      K+0
+    BS     KG_WZM_1_Achs_Index
+    =      DL_WZM_Achsen_bitcodiert
+
+    L      K+0
+    =      BG_Schritt_Achse[KG_WZM_1_Achs_Index]
+
+    L      KG_WZM_2_Achs_Index
+    >      KL_Achse_inaktiv
+    IFT
+      L      DL_WZM_Achsen_bitcodiert
+      BS     KG_WZM_2_Achs_Index
+      =      DL_WZM_Achsen_bitcodiert
+
+      L      K+0
+      =      BG_Schritt_Achse[KG_WZM_2_Achs_Index]
+    ENDI
+
+    L      KG_Achs_Sollwert_statt_Istwert_verwenden
+    AN     DL_WZM_Achsen_bitcodiert
+    PSW
+    PS     KL_Mode_Sollwert_statt_Istwert
+    CM     9148                        ;Positionsanzeige
+    M_Modul_Fehler_anzeigen
+
+    PS     DL_WZM_Achsen_bitcodiert
+    CM     9145                        ;Ist-Sollwert-Übernahme für bestimmte Achsen
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  LN     ML_Ist_Soll_Uebernahme
+  A      ML_Ist_Soll_Uebernahme_war_aktiv
+  IFT
+    PS     KG_Achs_Sollwert_statt_Istwert_verwenden
+    PS     KL_Mode_Sollwert_statt_Istwert
+    CM     9148                        ;Positionsanzeige
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      ML_Ist_Soll_Uebernahme
+  =      ML_Ist_Soll_Uebernahme_war_aktiv
+#endif
+
+  CM     Antriebs_Freigaben
+  CM     Regler_Freigaben
+  CM     Betriebsstunden
+
+  L      DG_Antriebe_bereit_MC
+  A      DG_digitale_Antriebe
+  <>     DG_Strom_Drehzahl_Regler_ein
+  ON     I_Antriebe_betriebsbereit
+  AN     TS_Antriebe_bereit
+  AN     TR_Antriebe_bereit
+  ON     I_Siemens_E_R_Modul_betriebsbereit
+  A      MG_Steuer_Spannung_verzoegert_ein
+  AN     ML_Inbetriebnahme_Stromregler
+  S      PN_Fehler_Antriebe_betriebsbereit
+
+  M_Fehler_Antriebe_betriebsbereit
+
+EM
+
+;----------------------------
+LBL Initialisieren                     ;00
+
+  LN     DL_Initialisieren
+  BTX
+  IFT
+    L      DG_Achsen_mit_C_Achs_Betrieb
+    BTX
+    R      MG_Spindel_C_Achs_Betrieb_aktiv
+
+    L      MG_Eins_Merker
+    R      ML_RF_Achse[X]
+    R      ML_Klemmung_loesen[X]
+    R      ML_Klemmbetrieb_Aus[X]
+    R      ML_Klemmbetrieb_Ein[X]
+    R      ML_Inbetriebnahme_I[X]
+
+    L      DL_Klemmbetrieb_Ein
+    BCX
+    =      DL_Klemmbetrieb_Ein
+
+    L      DG_Klemmbetrieb_Aus
+    BCX
+    =      DG_Klemmbetrieb_Aus
+
+    L      DG_Strom_Drehzahl_Regler_ein
+    BCX
+    =      DG_Strom_Drehzahl_Regler_ein
+
+    L      DG_Tasten_sperren
+    BCX
+    =      DG_Tasten_sperren
+
+    L      DG_Achsen_Positionierung
+    BCX
+    =      DG_Achsen_Positionierung
+
+    L      DL_Achsen_in_C_Achs_Betrieb
+    BCX
+    =      DL_Achsen_in_C_Achs_Betrieb
+
+    L      DG_S_Achs_Aktivierung
+    BCX
+    =      DG_S_Achs_Aktivierung
+
+    L      DG_S_Achs_Freigabe
+    BCX
+    =      DG_S_Achs_Freigabe
+
+    L      DG_Klemmbetrieb_Ein_extern
+    BCX
+    =      DG_Klemmbetrieb_Ein_extern
+
+    L      DG_Klemmbetrieb_Aus_extern
+    BCX
+    =      DG_Klemmbetrieb_Aus_extern
+
+    L      DL_Gantry_Master_Slave_Achsen
+    BCX
+    =      DL_Gantry_Master_Slave_Achsen
+
+    L      DL_Gantry_Master_Slave_Vorschub_synchron
+    BCX
+    =      DL_Gantry_Master_Slave_Vorschub_synchron
+
+    L      DL_LED_ausblenden
+    BCX
+    =      DL_LED_ausblenden
+
+    L      DL_Initialisieren
+    BSX
+    =      DL_Initialisieren
+
+    L      DG_geregelte_Achsen
+    XO     DL_geregelte_Achsen
+    A      KG_Achs_Bremse_aktiv
+    BTX
+    IFT
+      L      KG_Einschaltstellung_Klemmbetrieb_aus
+      BTX
+      IFT
+        L      DG_Regelkreis_oeffnen_Aktivierung
+        BCX
+        =      DG_Regelkreis_oeffnen_Aktivierung
+      ELSE
+        L      DG_Regelkreis_oeffnen_Aktivierung
+        BSX
+        =      DG_Regelkreis_oeffnen_Aktivierung
+      ENDI
+
+      L      DG_geregelte_Achsen
+      BTX
+      IFT
+        L      DL_geregelte_Achsen
+        BSX
+        =      DL_geregelte_Achsen
+      ELSE
+        L      DL_geregelte_Achsen
+        BCX
+        =      DL_geregelte_Achsen
+      ENDI
+    ENDI
+
+    L      PN_D1128_Regelkreis_oeffnen_Aktivierung
+    BSX
+    =      PN_D1128_Regelkreis_oeffnen_Aktivierung
+
+    L      PN_D1132_Regelkreis_oeffnen
+    BSX
+    =      PN_D1132_Regelkreis_oeffnen
+
+    L      KG_Achsen_mit_gemeinsamen_Lagemessgeraet
+    A      DG_geregelte_Achsen
+    BTX
+    IFT
+      L      KG_Achsen_mit_gemeinsamen_Lagemessgeraet
+      A      DG_geregelte_Achsen
+      PSW
+      PS     KL_Istwerte_einfrieren
+      CM     9146                      ;Achs-Position einfrieren/freigeben
+      M_Modul_Fehler_anzeigen
+
+      L      DG_Achsen_Istwerte_eingefroren
+      BSX
+      =      DG_Achsen_Istwerte_eingefroren
+    ENDI
+
+    L      KG_Achs_Sollwert_statt_Istwert_verwenden
+    BTX
+    IFT
+      PS     KG_Achs_Sollwert_statt_Istwert_verwenden
+      PS     KL_Mode_Sollwert_statt_Istwert
+      CM     9148                      ;Positionsanzeige
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+  L      DG_Reset_Achsen
+  BCX
+  =      DG_Reset_Achsen
+
+  L      DG_geregelte_Achsen
+  BTX
+  A      MG_Maschinenparameter_gelesen
+  AN     ML_Reset_Achsen
+  PSL
+  IFT
+    L      DL_Initialisieren
+    BCX
+    =      DL_Initialisieren
+  ENDI
+
+EM
+
+;----------------------------
+LBL In_Position                        ;01
+
+  L      ML_Inbetriebnahme_Stromregler
+  IFT
+    L      DL_Inbetriebnahme_Stromregler
+    A      DG_MP2254_Feldwinkel_Achse_ein_PLC
+    BTX
+    A      MG_Taste_Eilgang
+    A      MG_Steuerung_betriebsbereit
+    =      ML_Inbetriebnahme_I[X]
+    IFT
+      L      DG_Strom_Drehzahl_Regler_ein
+      BSX
+      =      DG_Strom_Drehzahl_Regler_ein
+    ELSE
+      L      DG_Strom_Drehzahl_Regler_ein
+      BCX
+      =      DG_Strom_Drehzahl_Regler_ein
+    ENDI
+
+    PS     MG_Null_Merker
+    EM
+  ENDI
+
+  L      NP_D1104_Achsen_in_Position
+  A      DL_Achsen_in_C_Achs_Betrieb
+  BTX
+  IFT
+    R      MG_Spindel_C_Achs_Betrieb_aktiv
+
+    L      DL_Achsen_in_C_Achs_Betrieb
+    BCX
+    =      DL_Achsen_in_C_Achs_Betrieb
+  ENDI
+
+  L      KG_Achsen_mit_geklemmt_Signal
+  O      KG_Achsen_mit_geloest_Signal
+  A      NP_D1104_Achsen_in_Position
+  AN     NP_D1116_Referenz_notwendig
+  AN     DG_S_Achs_Aktivierung
+  AN     PN_D1144_Manuelles_Verfahren_plus
+  AN     PN_D1148_Manuelles_Verfahren_minus
+  BTX
+  AN     ML_geklemmt_Achse[X]
+  AN     MG_Inbetriebnahme
+  S      PN_Fehler_Klemmung
+
+  M_Fehler_Achs_Klemmung
+
+  LX
+  ==     BG_aktive_WZ_Achse
+  A      NP_M4030_Gewindebohren_aktiv
+  AN     NP_M4031_Gewindebohren_gesteuert
+  S      PN_Fehler_Klemmbetrieb_nicht_erlaubt
+
+#if CFG_S_in_Achs_Betrieb = "aktiv"
+  LX
+  ==     KG_S_Achs_Index
+  IFT
+    LN     NP_D1104_Achsen_in_Position
+    BT     KG_S_Achs_Index
+    S      PN_Fehler_kein_Interpolations_Drehen
+  ENDI
+#endif
+
+  LD     ML_Klemmbetrieb_Aus
+  ON     DG_Regelkreis_oeffnen_Aktivierung
+  ON     NP_D1104_Achsen_in_Position
+*$WS Call 58816 - Bit in Position von Slave Achsen bleibt u.U. gesetzt
+  O      DL_Gantry_Master_Slave_Achsen
+  O      DG_S_Achs_Aktivierung
+  BTX
+  PSL
+  S      TS_Achse_Timeout[X]
+  EMF
+
+  L      DG_Vorschub_Stop_Achsen
+  BSX
+  =      DG_Vorschub_Stop_Achsen
+
+  L      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Achsen
+    O      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Achsen
+  ENDI
+
+  L      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Achsen
+    O      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Achsen
+  ENDI
+
+  L      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Achsen
+    O      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Achsen
+  ENDI
+
+  L      KG_Achsen_mit_Zentralantrieb
+  O      DG_Achsen_mit_C_Achs_Betrieb
+  BTX
+  IFT
+    LD     ML_Klemmbetrieb_Aus
+    O      NP_D1100_Achsfreigaben
+    ON     NP_D1104_Achsen_in_Position
+    A[
+      L      KG_Achsen_mit_Zentralantrieb
+      O      DG_Achsen_mit_C_Achs_Betrieb
+    ]
+    BCX
+    <>     K+0
+    =      ML_Zentralantrieb_aktiv
+
+    L      ML_Zentralantrieb_aktiv
+    S      PN_Fehler_Zentralantrieb
+    R      MG_Spindel_C_Achs_Betrieb_aktiv
+    IFT
+      L      K+0
+      =      DL_Achsen_in_C_Achs_Betrieb
+    ENDI
+
+    L      KG_Achsen_mit_Zentralantrieb
+    O      DG_Achsen_mit_C_Achs_Betrieb
+    A      DG_Antriebe_bereit_MC
+    A      DG_digitale_Antriebe
+    <>     K+0
+    =      ML_Zentralantrieb_bereit
+
+    PLL
+    AN     ML_Zentralantrieb_bereit
+    AN     ML_Zentralantrieb_aktiv
+    PSL
+  ENDI
+
+  L      DG_Achsen_mit_C_Achs_Betrieb
+  BTX
+  IFT
+    S      MG_Spindel_C_Achs_Betrieb_aktiv
+
+    L      DL_Achsen_in_C_Achs_Betrieb
+    BSX
+    =      DL_Achsen_in_C_Achs_Betrieb
+
+    PLL
+    A[
+      L      DL_Achsen_in_C_Achs_Betrieb
+      BCX
+      ==     K+0
+    ]
+    A[
+      L      PN_M4007_S_M05_Sollwert_0_und_Status
+      O      PN_M4008_S_Sollwert_aus_Status_invers
+    ]
+    A      MG_Spindel_steht
+    PSL
+  ENDI
+
+#if (CFG_3D_Kopf = "aktiv") or (CFG_S_in_Achs_Betrieb = "aktiv")
+  PLL
+  PSL
+  IFT
+    L      DG_Achsen_mit_C_Achs_Betrieb
+    BTX
+    IFT
+      L      DG_S_Achs_Aktivierung
+      ==     K+0
+      IFT
+        L      DG_S_Achs_Aktivierung
+        BSX
+        =      DG_S_Achs_Aktivierung
+      ENDI
+
+      PLL
+      A[
+        L      DG_S_Achs_Freigabe
+        BTX
+      ]
+      AN     MG_3D_Kopf_Unterbrechung
+      PSL
+    ENDI
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL Regel_Kreise_ein                   ;02
+
+  CM     Strom_Drehz_ein
+  CM     LR_Kreis_zu
+
+  PLL
+  A[
+    PLL
+  ]
+  PSL
+
+EM
+
+;----------------------------
+LBL Strom_Drehz_ein
+
+  L      KG_Achsen_mit_gemeinsamen_Lagemessgeraet
+  BTX
+  IFT
+    L      DL_Achsen_Istwerte_freigeben
+    A      DG_Achsen_Istwerte_eingefroren
+    BSX
+    =      DL_Achsen_Istwerte_freigeben
+  ENDI
+
+  L      DG_Strom_Drehzahl_Regler_ein
+  BSX
+  A      DG_digitale_Antriebe
+  =      DG_Strom_Drehzahl_Regler_ein
+
+*$WS Bremsentest läuft für FS notwendig 9048
+  L      DG_Antriebe_bereit_MC
+;  AN     DG_Bremsen_Test_laeuft
+  AN     DG_Abschaltung_CCU
+  O      DG_MP12_simulierte_Achsen
+  ON     DG_digitale_Antriebe
+  BTX
+  PSL
+  R      ML_Inbetriebnahme_I[X]
+  S      TS_Achse_loesen[X]
+  S      TS_Achse_Timeout[X]
+
+  LN     ML_RF_Achse[X]
+  S      ML_RF_Achse[X]
+
+EM
+
+;----------------------------
+LBL LR_Kreis_zu
+
+  L      DG_Klemmbetrieb_Aus
+  ON     DG_Regelkreis_oeffnen_Aktivierung
+  BTX
+  IFT
+    L      DG_Regelkreis_oeffnen_Aktivierung
+    BCX
+    =      DG_Regelkreis_oeffnen_Aktivierung
+
+    L      PN_D1128_Regelkreis_oeffnen_Aktivierung
+    BCX
+    =      PN_D1128_Regelkreis_oeffnen_Aktivierung
+  ENDI
+
+  L      PN_D1132_Regelkreis_oeffnen
+  BCX
+  =      PN_D1132_Regelkreis_oeffnen
+
+  L      NP_D1100_Achsfreigaben
+  O      DG_MP12_simulierte_Achsen
+  BTX
+  PSL
+
+EM
+
+;----------------------------
+LBL Klemmung_auf                       ;03
+
+
+  LN     KG_Achs_Bremse_aktiv
+  BTX
+  IFT
+    PSL
+    CM     Gantry_Master_Slave
+    EM
+  ENDI
+
+; analoge Achsen
+
+  LN     DG_digitale_Antriebe
+  BTX
+  S      ML_Klemmung_loesen[X]
+
+  L      KG_Achsen_mit_geklemmt_Signal
+  O      KG_Achsen_mit_geloest_Signal
+  BTX
+  IFF
+    LN     TR_Achse_loesen[X]
+    PSL
+    CMT    Gantry_Master_Slave
+  ELSE
+    L      MG_Taste_NC_Start_P_Impuls
+    O      MG_Impuls_CE_Taste
+    S      TS_Achse_Timeout[X]
+
+    LN     ML_geloest_Achse[X]
+    S      TS_Achse_loesen[X]
+
+    LN     PN_Fehler_Klemmung
+    A      ML_geloest_Achse[X]
+    AN     TR_Achse_loesen[X]
+    PSL
+    CMT    Gantry_Master_Slave
+    EMT
+
+    L      TR_Achse_Timeout[X]
+    =      ML_RF_Achse[X]
+    SN     PN_Fehler_Klemmung
+    IFF
+      L      DG_Regelkreis_oeffnen_Aktivierung
+      BSX
+      =      DG_Regelkreis_oeffnen_Aktivierung
+    ENDI
+
+    M_Fehler_Achs_Klemmung
+
+  ENDI
+
+EM
+
+;----------------------------
+LBL Gantry_Master_Slave
+
+  L      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    PLL
+    IFT
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      A      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+      ==     KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+      PSL
+
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      BSX
+      =      DL_Gantry_Master_Slave_Vorschub_synchron
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    PLL
+    IFT
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      A      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+      ==     KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+      PSL
+
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      BSX
+      =      DL_Gantry_Master_Slave_Vorschub_synchron
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    PLL
+    IFT
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      A      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+      ==     KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+      PSL
+
+      L      DL_Gantry_Master_Slave_Vorschub_synchron
+      BSX
+      =      DL_Gantry_Master_Slave_Vorschub_synchron
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Positionieren                      ;04
+
+  LN     DG_Vorschub_Stop_Achsen
+  BTX
+  IFT
+    L      DG_Achsen_Positionierung
+    BSX
+    =      DG_Achsen_Positionierung
+  ENDI
+
+  L      DG_Vorschub_Stop_Achsen
+  BTX
+  IFT
+    L      DG_Vorschub_Stop_Achsen
+    BCX
+    =      DG_Vorschub_Stop_Achsen
+  ENDI
+
+  L      ML_Klemmbetrieb_Ein[X]
+  IFT
+    L      DG_Regelkreis_oeffnen_Aktivierung
+    BSX
+    =      DG_Regelkreis_oeffnen_Aktivierung
+  ENDI
+
+  L      KG_Achsen_mit_geklemmt_Signal
+  O      KG_Achsen_mit_geloest_Signal
+  BTX
+  AN     MG_Start_Sperre_Not_Halt_Test
+  IFT
+    LN     ML_geloest_Achse[X]
+    S      PN_Fehler_Klemmung
+
+    M_Fehler_Achs_Klemmung
+  ENDI
+
+  L      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Vorschub_synchron
+    AN     KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Vorschub_synchron
+
+;*$WS Call 58816 - Bit in Position von Slave Achsen bleibt u.U. gesetzt
+    L      NP_D1104_Achsen_in_Position
+    A      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    ==     KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    IFT
+      L      DL_Gantry_Master_Slave_Achsen
+      AN     KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+      =      DL_Gantry_Master_Slave_Achsen
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Vorschub_synchron
+    AN     KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Vorschub_synchron
+
+;*$WS Call 58816 - Bit in Position von Slave Achsen bleibt u.U. gesetzt
+    L      NP_D1104_Achsen_in_Position
+    A      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    ==     KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    IFT
+      L      DL_Gantry_Master_Slave_Achsen
+      AN     KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+      =      DL_Gantry_Master_Slave_Achsen
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+  BTX
+  IFT
+    L      DL_Gantry_Master_Slave_Vorschub_synchron
+    AN     KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    =      DL_Gantry_Master_Slave_Vorschub_synchron
+
+;*$WS Call 58816 - Bit in Position von Slave Achsen bleibt u.U. gesetzt
+    L      NP_D1104_Achsen_in_Position
+    A      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    ==     KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    IFT
+      L      DL_Gantry_Master_Slave_Achsen
+      AN     KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+      =      DL_Gantry_Master_Slave_Achsen
+    ENDI
+  ENDI
+
+  LD     MG_Achse_in_Hirth_Posit
+  ON     DG_Hirth_Achsen
+  A      DG_Regelkreis_oeffnen_Aktivierung
+  A      NP_D1104_Achsen_in_Position
+  AN     DL_Gantry_Master_Slave_Achsen
+  AN     DG_S_Achs_Freigabe
+  AN     DG_Achsen_Referenz_Pos_sicher
+  BTX
+  PSL
+  SN     TS_Achse_warten_in_Position[X]
+  IFT
+    L      DG_Tasten_sperren
+    BSX
+    =      DG_Tasten_sperren
+
+    L      DG_Achsen_Positionierung
+    BCX
+    =      DG_Achsen_Positionierung
+  ENDI
+
+  PLL
+  AN     TR_Achse_warten_in_Position[X]
+  O[
+    L      DG_Reset_Achsen
+    BTX
+  ]
+  PSL
+  R      ML_Klemmung_loesen[X]
+  S      TS_Achse_klemmen[X]
+  S      TS_Achse_Timeout[X]
+
+#if KG_Feldwinkel_in_PLC_speichern > 0
+  L      KG_Feldwinkel_in_PLC_speichern
+  BTX
+  IFT
+    LN     NP_D1104_Achsen_in_Position
+    A      DG_Achs_Feldwinkel_gueltig
+    BTX
+    IFT
+      L      DG_Achs_Feldwinkel_gueltig
+      BCX
+      =      DG_Achs_Feldwinkel_gueltig
+
+      L      DG_Achs_Feldwinkel_speichern
+      BCX
+      =      DG_Achs_Feldwinkel_speichern
+    ENDI
+
+    L      NP_D1104_Achsen_in_Position
+    AN     NP_D1116_Referenz_notwendig
+    AN     DG_Achs_Feldwinkel_gueltig
+    BTX
+    IFT
+      L      DG_Achs_Feldwinkel_speichern
+      BSX
+      =      DG_Achs_Feldwinkel_speichern
+    ENDI
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL Strom_Drehz_aus                    ;05
+
+  LN     KG_Achsen_mit_Strom_Regler_aktiv
+  BTX
+  IFT
+    L      DG_Strom_Drehzahl_Regler_ein
+    BCX
+    A      DG_digitale_Antriebe
+    =      DG_Strom_Drehzahl_Regler_ein
+  ENDI
+
+  LN     DG_Antriebe_bereit_MC
+  ON     DG_digitale_Antriebe
+  O      KG_Achsen_mit_Strom_Regler_aktiv
+  BTX
+  PSL
+  IFT
+    L      KG_Achsen_mit_geklemmt_Signal
+    O      KG_Achsen_mit_geloest_Signal
+    A      DG_digitale_Antriebe
+    AN     DG_3D_Kopf_Achsen
+    BTX
+    IFT                                ;Prüfung ob geklemmt bevor CCU abgeschaltet hat
+      LN     ML_geklemmt_Achse[X]
+      S      PN_Fehler_CC_Abschaltung
+
+      M_Fehler_CC_Abschaltung
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Klemmung_zu                        ;06
+
+  LN     KG_Achs_Bremse_aktiv
+  BTX
+  IFT
+    PSL
+    EM
+  ENDI
+
+  L      KG_Achsen_mit_geklemmt_Signal
+  O      KG_Achsen_mit_geloest_Signal
+  BTX
+  IFF
+    LN     TR_Achse_klemmen[X]
+    PSL
+  ELSE
+    L      MG_Taste_NC_Start_P_Impuls
+    O      MG_Impuls_CE_Taste
+    S      TS_Achse_Timeout[X]
+
+    LN     ML_geklemmt_Achse[X]
+    S      TS_Achse_klemmen[X]
+
+    LN     PN_Fehler_Klemmung
+    A      ML_geklemmt_Achse[X]
+    AN     TR_Achse_klemmen[X]
+    PSL
+    EMT
+
+    L      TR_Achse_Timeout[X]
+    =      ML_RF_Achse[X]
+    SN     PN_Fehler_Klemmung
+
+    M_Fehler_Achs_Klemmung
+
+  ENDI
+
+EM
+
+;----------------------------
+LBL LR_Kreis_auf                       ;07
+
+  L      DG_Achsen_mit_C_Achs_Betrieb
+  BTX
+  IFT
+    L      DG_S_Achs_Aktivierung
+    BCX
+    =      DG_S_Achs_Aktivierung
+  ENDI
+
+  LN     MG_3D_Kopf_aktiv
+  AN     MG_Spindel_C_Achs_Freigabe_aktiv
+  O[
+    LN     DG_Achsen_mit_C_Achs_Betrieb
+    BTX
+  ]
+  IFT
+    L      PN_D1128_Regelkreis_oeffnen_Aktivierung
+    BSX
+    =      PN_D1128_Regelkreis_oeffnen_Aktivierung
+
+    L      PN_D1132_Regelkreis_oeffnen
+    BSX
+    =      PN_D1132_Regelkreis_oeffnen
+  ENDI
+
+  LN     NP_D1100_Achsfreigaben
+  BTX
+  PSL
+  EMF
+
+  L      KG_Achsen_mit_gemeinsamen_Lagemessgeraet
+  BTX
+  IFT
+    L      DL_Achsen_Istwerte_einfrieren
+    AN     DG_Achsen_Istwerte_eingefroren
+    BSX
+    =      DL_Achsen_Istwerte_einfrieren
+  ENDI
+
+  L      ML_RF_Achse[X]
+  R      ML_RF_Achse[X]
+
+EM
+
+;----------------------------
+LBL Schritt_Ende                       ;08
+
+  L      DG_Tasten_sperren
+  BCX
+  =      DG_Tasten_sperren
+
+  PS     MG_Null_Merker
+
+  L      DG_Achsen_mit_C_Achs_Betrieb
+  BTX
+  IFT
+    L      DL_Achsen_in_C_Achs_Betrieb
+    BCX
+    =      DL_Achsen_in_C_Achs_Betrieb
+
+    L      DL_Achsen_in_C_Achs_Betrieb
+    ==     K+0
+    R      MG_Spindel_C_Achs_Betrieb_aktiv
+    S      MG_Spindel_ein_Achsen
+  ENDI
+
+  L      DG_Reset_Achsen
+  BTX
+  IFT
+    L      K+0
+    =      BG_Schritt_Achse[X]
+  ELSE
+    L      K+1
+    =      BG_Schritt_Achse[X]
+  ENDI
+
+EM
+
+;----------------------------
+LBL LED
+
+  L      KF Adr_I_Achse_Plus[X]
+  =      WL_Adr_I_Achse_Plus
+
+  L      KF Adr_I_Achse_Minus[X]
+  =      WL_Adr_I_Achse_Minus
+
+  L      WL_Adr_I_Achse_Plus
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_Achse_Plus]
+    =      ML_Taste_Achse_Plus
+  ELSE
+    L      I_0[WL_Adr_I_Achse_Plus]
+    =      ML_Taste_Achse_Plus
+  ENDI
+
+  L      WL_Adr_I_Achse_Minus
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_Achse_Minus]
+    =      ML_Taste_Achse_Minus
+  ELSE
+    L      I_0[WL_Adr_I_Achse_Minus]
+    =      ML_Taste_Achse_Minus
+  ENDI
+
+  L      KF Adr_LED_Achse_Plus[X]
+  =      WL_Adr_O_LED_Achse_Plus
+
+  L      KF Adr_LED_Achse_Minus[X]
+  =      WL_Adr_O_LED_Achse_Minus
+
+  LX
+  =      BL_Achs_Index
+
+#if CFG_Simulation = "aktiv"
+  L      BL_Achs_Index
+  ==     KG_Achse_A
+  IFT
+    L      BG_Achse_Index_A
+    <>     K -1
+    IFT
+      L      BG_Achse_Index_A
+      =      BL_Achs_Index
+
+      L      DL_LED_ausblenden
+      BS     BG_Achse_Index_A
+      =      DL_LED_ausblenden
+    ENDI
+  ENDI
+
+  L      BL_Achs_Index
+  ==     KG_Achse_B
+  IFT
+    L      BG_Achse_Index_B
+    <>     K -1
+    IFT
+      L      BG_Achse_Index_B
+      =      BL_Achs_Index
+
+      L      DL_LED_ausblenden
+      BS     BG_Achse_Index_B
+      =      DL_LED_ausblenden
+    ENDI
+  ENDI
+
+  L      BL_Achs_Index
+  ==     KG_Achse_C
+  IFT
+    L      BG_Achse_Index_C
+    <>     K -1
+    IFT
+      L      BG_Achse_Index_C
+      =      BL_Achs_Index
+
+      L      DL_LED_ausblenden
+      BS     BG_Achse_Index_C
+      =      DL_LED_ausblenden
+    ENDI
+  ENDI
+#endif
+
+  L      WL_Adr_O_LED_Achse_Plus
+  >=     KG_Output_Speicherbereich
+  IFT
+    L      NP_D1108_Achsen_in_Bewegung
+    AN     DG_Vorschub_Stop_Achsen
+    AN     NP_D1112_Verfahrrichtung_negativ
+    AN     DL_LED_ausblenden
+    BT     BL_Achs_Index
+    O      ML_Taste_Achse_Plus
+    AN     ML_Taste_Achse_Minus
+    =      M_0[WL_Adr_O_LED_Achse_Plus]
+  ELSE
+    L      NP_D1108_Achsen_in_Bewegung
+    AN     DG_Vorschub_Stop_Achsen
+    AN     NP_D1112_Verfahrrichtung_negativ
+    AN     DL_LED_ausblenden
+    BT     BL_Achs_Index
+    O      ML_Taste_Achse_Plus
+    AN     ML_Taste_Achse_Minus
+    =      O_0[WL_Adr_O_LED_Achse_Plus]
+  ENDI
+
+  L      WL_Adr_O_LED_Achse_Minus
+  >=     KG_Output_Speicherbereich
+  IFT
+    L      NP_D1108_Achsen_in_Bewegung
+    AN     DG_Vorschub_Stop_Achsen
+    A      NP_D1112_Verfahrrichtung_negativ
+    AN     DL_LED_ausblenden
+    BT     BL_Achs_Index
+    O      ML_Taste_Achse_Minus
+    AN     ML_Taste_Achse_Plus
+    =      M_0[WL_Adr_O_LED_Achse_Minus]
+  ELSE
+    L      NP_D1108_Achsen_in_Bewegung
+    AN     DG_Vorschub_Stop_Achsen
+    A      NP_D1112_Verfahrrichtung_negativ
+    AN     DL_LED_ausblenden
+    BT     BL_Achs_Index
+    O      ML_Taste_Achse_Minus
+    AN     ML_Taste_Achse_Plus
+    =      O_0[WL_Adr_O_LED_Achse_Minus]
+  ENDI
+
+EM
+
+;----------------------------
+LBL Regler_Freigaben
+
+  L      K+0
+  =X
+  REPEAT
+    L      KF Adr_O_Regler_Freigabe[X]
+    =      WL_Adr_O_Regler_Freigabe
+
+    L      WL_Adr_O_Regler_Freigabe
+    >=     KG_Output_Speicherbereich
+    IFT
+      L      ML_RF_Achse[X]
+      =      M_0[WL_Adr_O_Regler_Freigabe]
+    ELSE
+      L      ML_RF_Achse[X]
+      =      O_0[WL_Adr_O_Regler_Freigabe]
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  L      MG_TNC_digital
+  IFT
+    L      O_Regler_Freigabe_S1
+    O      O_Regler_Freigabe_S2
+*$WS    O      MG_Spindel_ein_Achsen
+    A      MG_Steuerung_betriebsbereit
+    A      MG_Spindel_digital
+    IFT
+      L      DG_Strom_Drehzahl_Regler_ein
+      BS     KG_Spindel
+      =      DG_Strom_Drehzahl_Regler_ein
+    ELSE
+      L      DG_Strom_Drehzahl_Regler_ein
+      BC     KG_Spindel
+      =      DG_Strom_Drehzahl_Regler_ein
+    ENDI
+
+    L      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+    IFT
+      L      DG_Strom_Drehzahl_Regler_ein
+      A      DG_Freigabe_Achsen_MC_X15x_PL6xxx
+      =      DG_Strom_Drehzahl_Regler_ein
+    ENDI
+
+    LN     MG_Steuerung_betriebsbereit
+#if CFG_HSCI = "inaktiv"
+    ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+    IFT
+      L      DG_Strom_Drehzahl_Regler_ein
+      AN     DG_digitale_Antriebe
+      =      DG_Strom_Drehzahl_Regler_ein
+    ENDI
+
+    PS     DG_Strom_Drehzahl_Regler_ein
+    CM     9161                        ;Reglerfreigabe des internen Stromreglers setzen
+    M_Modul_Fehler_anzeigen
+
+    L      MG_TNC_Programmierplatz_mit_PLC
+    IFT
+      L      DG_Strom_Drehzahl_Regler_ein
+      =      DG_Antriebe_bereit_MC
+      D=     MG_Antrieb_bereit
+    ENDI
+
+    L      DG_Antriebe_bereit_MC
+    A      DG_digitale_Antriebe
+    ==     DG_Strom_Drehzahl_Regler_ein
+    O      MG_Impuls_CE_Taste
+#if CFG_HSCI = "inaktiv"
+    ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+    =      TS_Antriebe_bereit
+  ELSE
+#if CFG_HSCI = "inaktiv"
+    LN     I_I32_ESB_Antriebs_Freigabe
+#else
+    L      MG_Arbeitsraum_offen
+#endif
+    =      TS_Antriebe_bereit
+  ENDI
+
+  LD     ML_RF_Achse
+  =      DL_RF_Achsen
+
+  L      DL_RF_Achsen
+  A      DG_geregelte_Achsen
+  AN     DG_digitale_Antriebe
+  O      DG_Antriebe_bereit_MC
+  =      DG_Antriebe_bereit_MC
+  D=     MG_Antrieb_bereit
+
+  LN     I_Antriebe_betriebsbereit
+  IFT
+    L      DG_Antriebe_bereit_MC
+    AN[
+      L      DG_geregelte_Achsen
+      AN     DG_digitale_Antriebe
+    ]
+    =      DG_Antriebe_bereit_MC
+    D=     MG_Antrieb_bereit
+  ENDI
+
+  L      DL_Achsen_Istwerte_freigeben
+  >      K+0
+  IFT
+
+    PS     DL_Achsen_Istwerte_freigeben
+    PS     KL_Istwerte_freigeben
+    CM     9146                        ;Achs-Position einfrieren/freigeben
+    M_Modul_Fehler_anzeigen
+
+    L      DG_Achsen_Istwerte_eingefroren
+    AN     DL_Achsen_Istwerte_freigeben
+    =      DG_Achsen_Istwerte_eingefroren
+
+    L      K+0
+    =      DL_Achsen_Istwerte_freigeben
+  ENDI
+
+  L      DL_Achsen_Istwerte_einfrieren
+  >      K+0
+  IFT
+
+    PS     DL_Achsen_Istwerte_einfrieren
+    PS     KL_Istwerte_einfrieren
+    CM     9146                        ;Achs-Position einfrieren/freigeben
+    M_Modul_Fehler_anzeigen
+
+    L      DG_Achsen_Istwerte_eingefroren
+    O      DL_Achsen_Istwerte_einfrieren
+    =      DG_Achsen_Istwerte_eingefroren
+
+    L      K+0
+    =      DL_Achsen_Istwerte_einfrieren
+  ENDI
+
+EM
+
+;----------------------------
+LBL Klemmungen
+
+; Einlesen Operanden-Adresse
+
+  L      KF Adr_O_Klemmung_loesen[X]
+  =      WL_Adr_O_Klemmung_loesen
+
+  L      KF Adr_I_geloest_Achse[X]
+  =      WL_Adr_I_geloest_Achse
+
+  L      KF Adr_I_geklemmt_Achse[X]
+  =      WL_Adr_I_geklemmt_Achse
+
+; Ausgang Bremsen
+
+  L      KG_Achs_Bremse_aktiv
+  BTX
+  IFT
+    L      MG_Antrieb_bereit[X]
+    AN     ML_Abschaltung_CCU[X]
+    O      ML_Klemmung_loesen[X]
+    O      ML_Inbetriebnahme_I[X]
+    O      MG_3D_Kopf_loesen[X]
+    =      ML_O_Klemmung_loesen
+
+    L      WL_Adr_O_Klemmung_loesen
+    >=     KG_Output_Speicherbereich
+    IFT
+      L      ML_O_Klemmung_loesen
+      =      M_0[WL_Adr_O_Klemmung_loesen]
+    ELSE
+      L      ML_O_Klemmung_loesen
+      =      O_0[WL_Adr_O_Klemmung_loesen]
+    ENDI
+  ENDI
+
+; Eingang geklemmt/gelöst
+
+  L      WL_Adr_I_geklemmt_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geklemmt_Achse]
+    =      ML_I_geklemmt_Achse
+  ELSE
+    L      I_0[WL_Adr_I_geklemmt_Achse]
+    =      ML_I_geklemmt_Achse
+  ENDI
+
+  L      WL_Adr_I_geloest_Achse
+  >=     KG_Input_Speicherbereich
+  IFT
+    L      M_0[WL_Adr_I_geloest_Achse]
+    =      ML_I_geloest_Achse
+  ELSE
+    L      I_0[WL_Adr_I_geloest_Achse]
+    =      ML_I_geloest_Achse
+  ENDI
+
+  L      KG_Achsen_mit_geklemmt_Signal
+  A      KG_Achsen_mit_geloest_Signal
+  BTX
+  IFT
+    L      ML_I_geklemmt_Achse
+    AN     ML_I_geloest_Achse
+    =      ML_geklemmt_Achse[X]
+
+    LN     ML_I_geklemmt_Achse
+    A      ML_I_geloest_Achse
+    =      ML_geloest_Achse[X]
+  ELSE
+    L      KG_Achsen_mit_geklemmt_Signal
+    BTX
+    IFT
+      L      ML_I_geklemmt_Achse
+      =      ML_geklemmt_Achse[X]
+      =N     ML_geloest_Achse[X]
+    ENDI
+
+    L      KG_Achsen_mit_geloest_Signal
+    BTX
+    IFT
+      L      ML_I_geloest_Achse
+      =N     ML_geklemmt_Achse[X]
+      =      ML_geloest_Achse[X]
+    ENDI
+  ENDI
+
+  L      DG_MP12_simulierte_Achsen
+  BTX
+  IFT
+    L      ML_Klemmung_loesen[X]
+    =      ML_geloest_Achse[X]
+    =N     ML_geklemmt_Achse[X]
+  ENDI
+
+EM
+
+;----------------------------
+LBL Klemmbetrieb
+
+  L      NP_M4075_Strobe_FN19
+  RN     ML_FN19_Klemmen_Achsen
+  RN     ML_FN19_Loesen_Achsen
+  IFT
+    L      NP_D280_FN19_Zahlenwert_1
+    /      K+10000
+    ==     K+99990
+    =      ML_FN19_Klemmen_Achsen
+
+    L      NP_D280_FN19_Zahlenwert_1
+    /      K+10000
+    ==     K+99991
+    =      ML_FN19_Loesen_Achsen
+
+    L      ML_FN19_Klemmen_Achsen
+    O      ML_FN19_Loesen_Achsen
+    IFT
+      L      NP_D284_FN19_Zahlenwert_2
+      /      K+10000
+      =      DL_Achsen_Vorwahl_Klemmbetrieb
+
+      L      KG_Achs_Bremse_aktiv
+      A      DL_Achsen_Vorwahl_Klemmbetrieb
+      <>     DL_Achsen_Vorwahl_Klemmbetrieb
+      S      PN_Fehler_Wert_unzulaessig
+
+      L      DG_geregelte_Achsen
+      A      DL_Achsen_Vorwahl_Klemmbetrieb
+      <>     DL_Achsen_Vorwahl_Klemmbetrieb
+      S      PN_Fehler_Wert_unzulaessig
+
+      L      PN_Fehler_Wert_unzulaessig
+      IFT
+        L      K +0
+        =      DL_Achsen_Vorwahl_Klemmbetrieb
+      ENDI
+    ENDI
+  ENDI
+
+  L      MG_M11_Loesen_Achsen
+  O      ML_FN19_Loesen_Achsen
+  IFT
+    L      DL_Achsen_Vorwahl_Klemmbetrieb
+    D=     ML_Klemmbetrieb_Aus
+  ELSE
+    L      K+0
+    D=     ML_Klemmbetrieb_Aus
+
+    L      MG_M44_Loesen_Achse_4
+    =      ML_Klemmbetrieb_Aus[KG_Achse_4]
+
+    L      MG_M45_Loesen_Achse_5
+    =      ML_Klemmbetrieb_Aus[KG_Achse_5]
+
+    L      MG_M46_Loesen_Achse_6
+    =      ML_Klemmbetrieb_Aus[KG_Achse_6]
+
+    LD     ML_Klemmbetrieb_Aus
+    O      DG_Klemmbetrieb_Aus_extern
+    D=     ML_Klemmbetrieb_Aus
+  ENDI
+
+  L      MG_M10_Klemmen_Achsen
+  O      ML_FN19_Klemmen_Achsen
+  IFT
+    L      DL_Achsen_Vorwahl_Klemmbetrieb
+    D=     ML_Klemmbetrieb_Ein
+  ELSE
+    L      K+0
+    D=     ML_Klemmbetrieb_Ein
+
+    L      MG_M64_Klemmen_Achse_4
+    =      ML_Klemmbetrieb_Ein[KG_Achse_4]
+
+    L      MG_M65_Klemmen_Achse_5
+    =      ML_Klemmbetrieb_Ein[KG_Achse_5]
+
+    L      MG_M66_Klemmen_Achse_6
+    =      ML_Klemmbetrieb_Ein[KG_Achse_6]
+
+    LD     ML_Klemmbetrieb_Ein
+    O      DG_Klemmbetrieb_Ein_extern
+    D=     ML_Klemmbetrieb_Ein
+  ENDI
+
+  L      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+  >      K+0
+  IFT
+    LD     ML_Klemmbetrieb_Ein
+    A      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Ein
+      O      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Ein
+    ENDI
+
+    LD     ML_Klemmbetrieb_Aus
+    A      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Aus
+      O      KG_Gruppe_1_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Aus
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+  >      K+0
+  IFT
+    LD     ML_Klemmbetrieb_Ein
+    A      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Ein
+      O      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Ein
+    ENDI
+
+    LD     ML_Klemmbetrieb_Aus
+    A      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Aus
+      O      KG_Gruppe_2_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Aus
+    ENDI
+  ENDI
+
+  L      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+  >      K+0
+  IFT
+    LD     ML_Klemmbetrieb_Ein
+    A      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Ein
+      O      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Ein
+    ENDI
+
+    LD     ML_Klemmbetrieb_Aus
+    A      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+    >      K+0
+    IFT
+      LD     ML_Klemmbetrieb_Aus
+      O      KG_Gruppe_3_mit_Gantry_Master_Slave_Mode
+      D=     ML_Klemmbetrieb_Aus
+    ENDI
+  ENDI
+
+  LD     ML_Klemmbetrieb_Ein
+  A      DG_geregelte_Achsen
+  D=     ML_Klemmbetrieb_Ein
+  =      DL_Klemmbetrieb_Ein
+
+  LD     ML_Klemmbetrieb_Aus
+  A      DG_geregelte_Achsen
+  D=     ML_Klemmbetrieb_Aus
+  =      DG_Klemmbetrieb_Aus
+
+  L      DL_Klemmbetrieb_Ein
+  <>     K+0
+  IFT
+    LN     NP_D1100_Achsfreigaben
+    A      DL_Klemmbetrieb_Ein
+    ==     DL_Klemmbetrieb_Ein
+    IFT
+      L      DG_Klemmbetrieb_Ein_extern
+      <>     K+0
+      IFT
+        L      K+0
+        =      DG_Klemmbetrieb_Ein_extern
+      ELSE
+        L      NP_M4072_Strobe_M_Funktion
+        S      PN_M4092_Quit_M_Funktion
+
+        L      NP_M4075_Strobe_FN19
+        S      PN_M4095_Quit_FN19
+      ENDI
+    ENDI
+  ENDI
+
+  L      DG_Klemmbetrieb_Aus
+  <>     K+0
+  IFT
+    L      NP_D1100_Achsfreigaben
+    O      DG_MP12_simulierte_Achsen
+    AN     DG_Vorschub_Stop_Achsen
+    A      DG_Klemmbetrieb_Aus
+    ==     DG_Klemmbetrieb_Aus
+    IFT
+      L      DG_Klemmbetrieb_Aus_extern
+      <>     K+0
+      IFT
+        L      K+0
+        =      DG_Klemmbetrieb_Aus_extern
+      ELSE
+        L      NP_M4072_Strobe_M_Funktion
+        S      PN_M4092_Quit_M_Funktion
+
+        L      NP_M4075_Strobe_FN19
+        S      PN_M4095_Quit_FN19
+      ENDI
+    ENDI
+  ENDI
+
+  L      NP_M4072_Strobe_M_Funktion
+  O      NP_M4075_Strobe_FN19
+  =      ML_Hilfsmerker_Klemmbetrieb
+
+EM
+
+;----------------------------
+LBL Timer_Loesen
+
+  L      TS_Achse_loesen[X]
+  R      TS_Achse_loesen[X]
+  IFT
+    LX
+    +      K&TR_Achse_loesen
+    PSW
+    PS     KL_Laufzeit_aus_MP
+    CM     9006                        ;PLC-Timerzeit setzen und Timer starten
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Timer_Klemmen
+
+  L      TS_Achse_klemmen[X]
+  R      TS_Achse_klemmen[X]
+  IFT
+    LX
+    +      K&TR_Achse_klemmen
+    PSW
+    PS     KL_Laufzeit_aus_MP
+    CM     9006                        ;PLC-Timerzeit setzen und Timer starten
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Timer_Timeout
+
+  L      TS_Achse_Timeout[X]
+  R      TS_Achse_Timeout[X]
+  IFT
+    LX
+    +      K&TR_Achse_Timeout
+    PSW
+    PS     KL_Laufzeit_aus_MP
+    CM     9006                        ;PLC-Timerzeit setzen und Timer starten
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Timer_Warten
+
+  L      TS_Achse_warten_in_Position[X]
+  R      TS_Achse_warten_in_Position[X]
+  IFT
+    LX
+    +      K&TR_Achse_warten_in_Position
+    PSW
+    PS     KL_Laufzeit_aus_MP
+    CM     9006                        ;PLC-Timerzeit setzen und Timer starten
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Freifahren
+
+  L      MG_Achsen_Not_Halt_Endlage
+  AN     O_Achsen_Freifahren
+  A      MG_Takt_1_s
+  O      O_Achsen_Freifahren
+  =      O_LED_Achsen_Freifahren
+
+  LN     I_Endlage_Achse_X
+  AN     I_Endlage_Achse_Y
+  AN     I_Endlage_Achse_Z
+  AN     I_Endlage_Achse_4
+  AN     I_Endlage_Achse_5
+  AN     MG_Achsen_Not_Halt_Endlage
+  AN     O_Achsen_Freifahren
+  EMT
+
+  L      MG_Taste_Achsen_Freifahren
+  S      MG_SK_Achsen_Freifahren
+
+  L      MG_SK_Achsen_Freifahren
+  S      O_Achsen_Freifahren
+
+  L      MG_BA_Automatik
+  O      NP_M4151_BA_Elektronisches_Handrad
+  O      NP_M4660_HR5x0_aktiv
+  AN     MG_Inbetriebnahme
+  ON     MG_Achsen_Not_Halt_Endlage
+  R      MG_SK_Achsen_Freifahren
+  R      O_Achsen_Freifahren
+
+
+  L      I_Endlage_Achse_X
+  O      I_Endlage_Achse_Y
+  O      I_Endlage_Achse_Z
+  O      I_Endlage_Achse_4
+  O      I_Endlage_Achse_5
+  =      MG_Achsen_Not_Halt_Endlage
+
+  LN     O_Achsen_Freifahren
+  AN     MG_Achsen_Not_Halt_Endlage
+  R      MG_Win_Endlage_Xp
+  R      MG_Win_Endlage_Xn
+  R      MG_Win_Endlage_Yp
+  R      MG_Win_Endlage_Yn
+  R      MG_Win_Endlage_Zp
+  R      MG_Win_Endlage_Zn
+  R      MG_Win_Endlage_4p
+  R      MG_Win_Endlage_4n
+  R      MG_Win_Endlage_5p
+  R      MG_Win_Endlage_5n
+
+  L      O_Achsen_Freifahren
+  O      MG_Achsen_Not_Halt_Endlage
+  =      PN_Fehler_Freifahren
+
+EM
+
+; Antriebs Freigabe Achsgruppen X150/X151 (MC) oder PL6xxx (MC6xxx - MP4132)
+
+;----------------------------
+LBL Antriebs_Freigaben
+
+#if CFG_FS = "aktiv"                   * SPLC_0013
+; Mischbetrieb mit nicht sicheren Achsen wird derzeitig nicht unterstützt
+; Slave Achsen sind immer nicht sicher ($WS FAQ)
+  L      MG_Eins_Merker
+  S      MG_Antriebs_Freigabe_Spindel
+
+  L      K$FF
+  B=     MG_Antriebs_Freigabe_AG_MC
+#else
+
+; Antriebs Freigaben Umrichter UM (ImpulsFreigaben)
+
+  PS     KL_Antriebs_Freigabe_Regler_UM
+  CM     9157                          ;Statusabfrage Antriebs-Hardware
+  PL     DG_Antriebs_Freigabe_Regler_UM
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  IFT
+*$WS Call xxxx DG_Freigabe_Achsen_X15x_PL6xxx bei Achsen im C-Achs-Betrieb nicht korrekt
+;    PS     KL_Antriebs_Freigaben_achscodiert
+;    CM     9157                        ;Statusabfrage Antriebs-Hardware
+;    PL     DG_Freigabe_Achsen_X15x_PL6xxx
+;    M_Modul_Fehler_anzeigen
+
+    PS     KL_Antriebs_Freigaben_Eingangspegel
+    CM     9157                        ;Statusabfrage Antriebs-Hardware
+    PL     WL_Antriebs_Freigaben_Eingangspegel
+    M_Modul_Fehler_anzeigen
+
+    L      BL_X150_Antriebs_Freigaben_Eingangspegel
+    O      BL_X151_Antriebs_Freigaben_Eingangspegel
+    B=     MG_Antriebs_Freigabe_AG_MC
+
+*$WS Call xxxx
+    L      K +0
+    =      BL_Achsgruppe_Index
+    =      DG_Freigabe_Achsen_MC_X15x_PL6xxx
+    REPEAT
+      L      BG_aktive_Achsgruppen
+      BT     BL_Achsgruppe_Index
+      IFT
+        L      MG_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+        IFT
+          L      DG_Freigabe_Achsen_MC_X15x_PL6xxx
+          O      DG_MP2040_0_Achsgruppe_1[BL_Achsgruppe_Index]
+          =      DG_Freigabe_Achsen_MC_X15x_PL6xxx
+        ENDI
+      ENDI
+
+      INC    BL_Achsgruppe_Index
+
+      L      BL_Achsgruppe_Index
+      >      KL_Achsgruppen_max_Anzahl
+    UNTILT
+
+    L      DG_Freigabe_Achsen_MC_X15x_PL6xxx
+    BT     KG_Spindel
+    ON     MG_Spindel_digital
+    =      MG_Antriebs_Freigabe_Spindel
+
+    LN     MG_Arbeitsraum_offen
+    O      MG_Tueren_inaktiv
+#if &I_Taste_HR_Zustimmbetrieb < KG_Input_Speicherbereich
+    O      I_Taste_HR_Zustimmbetrieb
+#endif
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_1_Test
+
+    L      I_WZM_Tuer_zu_verriegelt
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_2_Test
+
+    L      I_Arbeitsraum_2_zu_verriegelt
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_3_Test
+
+    L      I_Freigabe_Achsgruppe_4
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_4_Test
+
+    L      I_Freigabe_Achsgruppe_5
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_5_Test
+
+    L      I_Freigabe_Achsgruppe_6
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_6_Test
+
+    L      I_Freigabe_Achsgruppe_7
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_7_Test
+
+    L      I_Freigabe_Achsgruppe_8
+    O      MG_Tueren_inaktiv
+    A      MG_Steuer_Spannung_verzoegert_ein
+    =      ML_Antriebs_Freigabe_8_Test
+
+    L      MG_Eins_Merker
+    R      TS_Antriebs_Freigabe
+
+    L      K +0
+    =      BL_Achsgruppe_Index
+    REPEAT
+      L      BG_aktive_Achsgruppen
+      BT     BL_Achsgruppe_Index
+      IFT
+        L      ML_Antriebs_Freigabe_1_Test[BL_Achsgruppe_Index]
+        A      ML_Antriebs_Freigabe_1_war_aus[BL_Achsgruppe_Index]
+        O      MG_Impuls_CE_Taste
+        S      TS_Antriebs_Freigabe
+
+        LN     MG_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+        A      ML_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+        S      TS_Antriebs_Freigabe
+
+        LN     ML_Antriebs_Freigabe_1_Test[BL_Achsgruppe_Index]
+        =      ML_Antriebs_Freigabe_1_war_aus[BL_Achsgruppe_Index]
+
+        L      MG_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+        =      ML_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+
+        LN     MG_Antriebs_Freigabe_AG_MC[BL_Achsgruppe_Index]
+        A      ML_Antriebs_Freigabe_1_Test[BL_Achsgruppe_Index]
+        AN     TS_Antriebs_Freigabe
+        AN     TR_Antriebs_Freigabe
+        S      PN_Fehler_X15x_Antriebs_Freigabe
+
+        M_Fehler_X15x_Antriebs_Freigabe(BL_Achsgruppe_Index)
+      ENDI
+
+      INC    BL_Achsgruppe_Index
+
+      L      BL_Achsgruppe_Index
+      >      KL_Achsgruppen_max_Anzahl
+    UNTILT
+  ELSE
+    L      MG_Eins_Merker
+    S      MG_Antriebs_Freigabe_Spindel
+
+    L      K$FF
+    B=     MG_Antriebs_Freigabe_AG_MC
+
+    LN     I_Arbeitsraum_1_zu_verriegelt
+    ON     I_Arbeitsraum_2_zu_verriegelt
+    AN     MG_Tueren_inaktiv
+#if &I_Taste_HR_Zustimmbetrieb < KG_Input_Speicherbereich
+    AN     I_Taste_HR_Zustimmbetrieb
+#endif
+    ON     MG_Steuer_Spannung_verzoegert_ein
+    =      TS_Antriebs_Freigabe
+
+    L      I_I3_Steuerung_betriebsbereit
+    AN     I_I32_ESB_Antriebs_Freigabe
+    AN     TS_Antriebs_Freigabe
+    AN     TR_Antriebs_Freigabe
+    S      PN_Fehler_Not_Halt_ESA_ESB
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL Betriebsstunden
+
+  L      MG_Achsen_in_Bewegung
+  AN     ML_Betriebsstundenzaehler_ein
+  IFT
+    PS     KG_Betriebsstunden_Achsen
+    CM     9190                        ;Starten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  LN     MG_Achsen_in_Bewegung
+  A      ML_Betriebsstundenzaehler_ein
+  IFT
+    PS     KG_Betriebsstunden_Achsen
+    CM     9191                        ;Anhalten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_Achsen_in_Bewegung
+  =      ML_Betriebsstundenzaehler_ein
+
+EM
+
+;----------------------------
+KFIELD Adr_I_Achse_Plus                ;Änderung Symbolnamen wegen FS
+  K &I_Taste_Ax01_Plus                 ;I_Taste_Achse_X_Plus
+  K &I_Taste_Ax02_Plus                 ;I_Taste_Achse_Y_Plus
+  K &I_Taste_Ax03_Plus                 ;I_Taste_Achse_Z_Plus
+  K &I_Taste_Ax04_Plus                 ;I_Taste_Achse_4_Plus
+  K &I_Taste_Ax05_Plus                 ;I_Taste_Achse_5_Plus
+  K &I_Taste_Ax06_Plus                 ;I_Taste_Achse_6_Plus
+  K &I_Taste_Ax07_Plus                 ;I_Taste_Achse_7_Plus
+  K &I_Taste_Ax08_Plus                 ;I_Taste_Achse_8_Plus
+  K &I_Taste_Ax09_Plus                 ;I_Taste_Achse_9_Plus
+  K &I_Taste_Ax10_Plus                 ;I_Taste_Achse_10_Plus
+  K &I_Taste_Ax11_Plus                 ;I_Taste_Achse_11_Plus
+  K &I_Taste_Ax12_Plus                 ;I_Taste_Achse_12_Plus
+  K &I_Taste_Ax13_Plus                 ;I_Taste_Achse_13_Plus
+  K &I_Taste_Ax14_Plus                 ;I_Taste_Achse_14_Plus
+  K &I_Taste_Ax15_Plus                 ;I_Taste_Achse_15_Plus
+  K &I_Taste_Ax16_Plus                 ;I_Taste_Achse_16_Plus
+  K &I_Taste_Ax17_Plus                 ;I_Taste_Achse_17_Plus
+  K &I_Taste_Ax18_Plus                 ;I_Taste_Achse_18_Plus
+  K &I_Taste_Ax19_Plus                 ;I_Taste_Achse_19_Plus
+  K &I_Taste_Ax20_Plus                 ;I_Taste_Achse_20_Plus
+  K &I_Taste_Ax21_Plus                 ;I_Taste_Achse_21_Plus
+  K &I_Taste_Ax22_Plus                 ;I_Taste_Achse_22_Plus
+ENDK
+
+;----------------------------
+KFIELD Adr_I_Achse_Minus               ;Änderung Symbolnamen wegen FS
+  K &I_Taste_Ax01_Minus                ;I_Taste_Achse_X_Minus
+  K &I_Taste_Ax02_Minus                ;I_Taste_Achse_Y_Minus
+  K &I_Taste_Ax03_Minus                ;I_Taste_Achse_Z_Minus
+  K &I_Taste_Ax04_Minus                ;I_Taste_Achse_4_Minus
+  K &I_Taste_Ax05_Minus                ;I_Taste_Achse_5_Minus
+  K &I_Taste_Ax06_Minus                ;I_Taste_Achse_6_Minus
+  K &I_Taste_Ax07_Minus                ;I_Taste_Achse_7_Minus
+  K &I_Taste_Ax08_Minus                ;I_Taste_Achse_8_Minus
+  K &I_Taste_Ax09_Minus                ;I_Taste_Achse_9_Minus
+  K &I_Taste_Ax10_Minus                ;I_Taste_Achse_10_Minus
+  K &I_Taste_Ax11_Minus                ;I_Taste_Achse_11_Minus
+  K &I_Taste_Ax12_Minus                ;I_Taste_Achse_12_Minus
+  K &I_Taste_Ax13_Minus                ;I_Taste_Achse_13_Minus
+  K &I_Taste_Ax14_Minus                ;I_Taste_Achse_14_Minus
+  K &I_Taste_Ax15_Minus                ;I_Taste_Achse_15_Minus
+  K &I_Taste_Ax16_Minus                ;I_Taste_Achse_16_Minus
+  K &I_Taste_Ax17_Minus                ;I_Taste_Achse_17_Minus
+  K &I_Taste_Ax18_Minus                ;I_Taste_Achse_18_Minus
+  K &I_Taste_Ax19_Minus                ;I_Taste_Achse_19_Minus
+  K &I_Taste_Ax20_Minus                ;I_Taste_Achse_20_Minus
+  K &I_Taste_Ax21_Minus                ;I_Taste_Achse_21_Minus
+  K &I_Taste_Ax22_Minus                ;I_Taste_Achse_22_Minus
+ENDK
+
+;----------------------------
+KFIELD Adr_LED_Achse_Plus
+  K &O_LED_Achse_X_Plus
+  K &O_LED_Achse_Y_Plus
+  K &O_LED_Achse_Z_Plus
+  K &O_LED_Achse_4_Plus
+  K &O_LED_Achse_5_Plus
+  K &O_LED_Achse_6_Plus
+  K &O_LED_Achse_7_Plus
+  K &O_LED_Achse_8_Plus
+  K &O_LED_Achse_9_Plus
+  K &O_LED_Achse_10_Plus
+  K &O_LED_Achse_11_Plus
+  K &O_LED_Achse_12_Plus
+  K &O_LED_Achse_13_Plus
+  K &O_LED_Achse_14_Plus
+  K &O_LED_Achse_15_Plus
+  K &O_LED_Achse_16_Plus
+  K &O_LED_Achse_17_Plus
+  K &O_LED_Achse_18_Plus
+  K &O_LED_Achse_19_Plus
+  K &O_LED_Achse_20_Plus
+  K &O_LED_Achse_21_Plus
+  K &O_LED_Achse_22_Plus
+ENDK
+
+;----------------------------
+KFIELD Adr_LED_Achse_Minus
+  K &O_LED_Achse_X_Minus
+  K &O_LED_Achse_Y_Minus
+  K &O_LED_Achse_Z_Minus
+  K &O_LED_Achse_4_Minus
+  K &O_LED_Achse_5_Minus
+  K &O_LED_Achse_6_Minus
+  K &O_LED_Achse_7_Minus
+  K &O_LED_Achse_8_Minus
+  K &O_LED_Achse_9_Minus
+  K &O_LED_Achse_10_Minus
+  K &O_LED_Achse_11_Minus
+  K &O_LED_Achse_12_Minus
+  K &O_LED_Achse_13_Minus
+  K &O_LED_Achse_14_Minus
+  K &O_LED_Achse_15_Minus
+  K &O_LED_Achse_16_Minus
+  K &O_LED_Achse_17_Minus
+  K &O_LED_Achse_18_Minus
+  K &O_LED_Achse_19_Minus
+  K &O_LED_Achse_20_Minus
+  K &O_LED_Achse_21_Minus
+  K &O_LED_Achse_22_Minus
+ENDK
+
+;----------------------------
+KFIELD Adr_O_Regler_Freigabe
+  K &O_Regler_Freigabe_X
+  K &O_Regler_Freigabe_Y
+  K &O_Regler_Freigabe_Z
+  K &O_Regler_Freigabe_4
+  K &O_Regler_Freigabe_5
+  K &O_Regler_Freigabe_6
+  K &O_Regler_Freigabe_7
+  K &O_Regler_Freigabe_8
+  K &O_Regler_Freigabe_9
+  K &O_Regler_Freigabe_10
+  K &O_Regler_Freigabe_11
+  K &O_Regler_Freigabe_12
+  K &O_Regler_Freigabe_13
+  K &O_Regler_Freigabe_14
+  K &O_Regler_Freigabe_15
+  K &O_Regler_Freigabe_16
+  K &O_Regler_Freigabe_17
+  K &O_Regler_Freigabe_18
+  K &O_Regler_Freigabe_19
+  K &O_Regler_Freigabe_20
+  K &O_Regler_Freigabe_21
+  K &O_Regler_Freigabe_22
+ENDK
+
+;----------------------------
+KFIELD Adr_O_Klemmung_loesen           ;Änderung Symbolnamen wegen FS
+  K &O_Ax01_loesen                     ;O_Klemmung_loesen_X
+  K &O_Ax02_loesen                     ;O_Klemmung_loesen_Y
+  K &O_Ax03_loesen                     ;O_Klemmung_loesen_Z
+  K &O_Ax04_loesen                     ;O_Klemmung_loesen_4
+  K &O_Ax05_loesen                     ;O_Klemmung_loesen_5
+  K &O_Ax06_loesen                     ;O_Klemmung_loesen_6
+  K &O_Ax07_loesen                     ;O_Klemmung_loesen_7
+  K &O_Ax08_loesen                     ;O_Klemmung_loesen_8
+  K &O_Ax09_loesen                     ;O_Klemmung_loesen_9
+  K &O_Ax10_loesen                     ;O_Klemmung_loesen_10
+  K &O_Ax11_loesen                     ;O_Klemmung_loesen_11
+  K &O_Ax12_loesen                     ;O_Klemmung_loesen_12
+  K &O_Ax13_loesen                     ;O_Klemmung_loesen_13
+  K &O_Ax14_loesen                     ;O_Klemmung_loesen_14
+  K &O_Ax15_loesen                     ;O_Klemmung_loesen_15
+  K &O_Ax16_loesen                     ;O_Klemmung_loesen_16
+  K &O_Ax17_loesen                     ;O_Klemmung_loesen_17
+  K &O_Ax18_loesen                     ;O_Klemmung_loesen_18
+  K &O_Ax19_loesen                     ;O_Klemmung_loesen_19
+  K &O_Ax20_loesen                     ;O_Klemmung_loesen_20
+  K &O_Ax21_loesen                     ;O_Klemmung_loesen_21
+  K &O_Ax22_loesen                     ;O_Klemmung_loesen_22
+ENDK
+
+;----------------------------
+KFIELD Adr_I_geloest_Achse
+  K &I_geloest_Achse_X
+  K &I_geloest_Achse_Y
+  K &I_geloest_Achse_Z
+  K &I_geloest_Achse_4
+  K &I_geloest_Achse_5
+  K &I_geloest_Achse_6
+  K &I_geloest_Achse_7
+  K &I_geloest_Achse_8
+  K &I_geloest_Achse_9
+  K &I_geloest_Achse_10
+  K &I_geloest_Achse_11
+  K &I_geloest_Achse_12
+  K &I_geloest_Achse_13
+  K &I_geloest_Achse_14
+  K &I_geloest_Achse_15
+  K &I_geloest_Achse_16
+  K &I_geloest_Achse_17
+  K &I_geloest_Achse_18
+  K &I_geloest_Achse_19
+  K &I_geloest_Achse_20
+  K &I_geloest_Achse_21
+  K &I_geloest_Achse_22
+ENDK
+
+;----------------------------
+KFIELD Adr_I_geklemmt_Achse
+  K &I_geklemmt_Achse_X
+  K &I_geklemmt_Achse_Y
+  K &I_geklemmt_Achse_Z
+  K &I_geklemmt_Achse_4
+  K &I_geklemmt_Achse_5
+  K &I_geklemmt_Achse_6
+  K &I_geklemmt_Achse_7
+  K &I_geklemmt_Achse_8
+  K &I_geklemmt_Achse_9
+  K &I_geklemmt_Achse_10
+  K &I_geklemmt_Achse_11
+  K &I_geklemmt_Achse_12
+  K &I_geklemmt_Achse_13
+  K &I_geklemmt_Achse_14
+  K &I_geklemmt_Achse_15
+  K &I_geklemmt_Achse_16
+  K &I_geklemmt_Achse_17
+  K &I_geklemmt_Achse_18
+  K &I_geklemmt_Achse_19
+  K &I_geklemmt_Achse_20
+  K &I_geklemmt_Achse_21
+  K &I_geklemmt_Achse_22
+ENDK

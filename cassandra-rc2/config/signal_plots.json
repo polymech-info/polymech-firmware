@@ -1,0 +1,167 @@
+[
+    {
+        "slot": 0,
+        "name": "SampleSignalPlot_0",
+        "duration": 1800000,
+        "status": 4,
+        "enabled": true,
+        "elapsed": 0,
+        "remaining": 0,
+        "controlPoints": [
+            {
+                "id": 3,
+                "time": 27,
+                "name": "Start PID Controllers",
+                "description": "New control point",
+                "state": 0,
+                "type": 11,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            },
+            {
+                "id": 8,
+                "time": 1,
+                "name": "Write Holding Register",
+                "description": "null",
+                "state": 2,
+                "type": 2,
+                "arg_0": 704,
+                "arg_1": 7,
+                "arg_2": 0
+            },
+            {
+                "id": 4,
+                "time": 352,
+                "name": "Display Message",
+                "description": "Press !",
+                "state": 0,
+                "type": 7,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            },
+            {
+                "id": 6,
+                "time": 627,
+                "name": "Plastic melted",
+                "description": "New control point",
+                "state": 0,
+                "type": 7,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            },
+            {
+                "id": 7,
+                "time": 678,
+                "name": "Display Message",
+                "description": "Cooling down",
+                "state": 0,
+                "type": 7,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            },
+            {
+                "id": 5,
+                "time": 695,
+                "name": "Display Message",
+                "description": "Insert Die !",
+                "state": 0,
+                "type": 7,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            },
+            {
+                "id": 2,
+                "time": 1000,
+                "name": "Stop PID Controllers",
+                "description": "New control point",
+                "state": 0,
+                "type": 10,
+                "arg_0": 0,
+                "arg_1": 0,
+                "arg_2": 0
+            }
+        ],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "slot": 1,
+        "name": "ShortPlot_70s",
+        "duration": 70000,
+        "status": 0,
+        "enabled": false,
+        "elapsed": 0,
+        "remaining": 0,
+        "controlPoints": [
+            {
+                "id": 1,
+                "time": 250,
+                "name": "Valve Open",
+                "description": "Open valve at address 1",
+                "state": 2,
+                "type": 1,
+                "arg_0": 1,
+                "arg_1": 1,
+                "arg_2": 0
+            },
+            {
+                "id": 2,
+                "time": 750,
+                "name": "Valve Close",
+                "description": "Close valve at address 1",
+                "state": 2,
+                "type": 1,
+                "arg_0": 1,
+                "arg_1": 0,
+                "arg_2": 0
+            }
+        ],
+        "children": [
+            0,
+            1,
+            0,
+            0
+        ]
+    },
+    {
+        "slot": 2,
+        "name": "SignalPlot_922_Slot_2",
+        "duration": 0,
+        "status": 0,
+        "enabled": false,
+        "elapsed": 0,
+        "remaining": 0,
+        "controlPoints": [],
+        "children": [
+            0,
+            0,
+            1,
+            0
+        ]
+    },
+    {
+        "slot": 3,
+        "name": "SignalPlot_923_Slot_3",
+        "duration": 0,
+        "status": 0,
+        "enabled": false,
+        "elapsed": 0,
+        "remaining": 0,
+        "controlPoints": [],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+]

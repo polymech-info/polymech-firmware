@@ -1,0 +1,502 @@
+
+*-----------------------------------------------------------------------------
+*  PLC-Basis-Programm iTNC 530
+*-----------------------------------------------------------------------------
+*  Inhalt
+*
+*
+*-----------------------------------------------------------------------------
+*  Version / letzte Änderung
+*
+*  57 SP1 / 2016-04-20
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Pragma Anweisungen
+*-----------------------------------------------------------------------------
+
+#pragma symsort
+#pragma nsc
+#pragma dl 0
+#pragma struct
+#pragma range
+
+*$WS
+*#pragma genvariantdefines
+*#pragma srcpath c:\PLC\OemPGM\Standard
+*#pragma nsw
+
+*-----------------------------------------------------------------------------
+*  Definition belegbaren Speicherbereich
+*-----------------------------------------------------------------------------
+
+*M1000...M1089 fest belegt für M-Funktionen
+
+#define /mn   7000 9999                *Merker flüchtig max. 1000 - 9999 (1)
+#define /mr   200  999                 *Merker remanent max.    0 -  999 (1)
+
+#define /bn   7000 14999               *Byte flüchtig   max. 2048 - 9999 (1)
+#define /br   4    200                 *Byte remanent   max.    0 -  127 (1)
+
+#define /sn   1    99
+
+#define /tn   96   300
+
+* Legende:
+*   (1) - kann mit oem.cfg geändert werden
+
+*-----------------------------------------------------------------------------
+*  Definition globaler Operanden
+*-----------------------------------------------------------------------------
+
+#if CFG_FS = "aktiv"
+#define /g    ..\..\splc\splcApiMarker.def
+#endif
+
+#define /g    System.def
+#define /g    ASCIICod.def
+#define /g    GLB_NC.def
+#define /g    Intern.def
+#define /g    GLB_TCMB.def
+#define /g    IO_Config.def
+#define /g    ..\Softkeys\Softkeys.def
+
+#define /g    GLB_Q.def
+
+*-----------------------------------------------------------------------------
+*  Definition PLC-Programm-Module
+*-----------------------------------------------------------------------------
+
+#if CFG_HSCI = "inaktiv"
+USES InOutput.src
+EXTERN Input_lesen
+EXTERN Output_schreiben
+#endif
+
+USES Initial.src
+EXTERN Init_nach_Reset
+
+USES MP_Datei.src
+EXTERN MP_Teil_Datei
+
+USES MP_lesen.src
+EXTERN MP_lesen
+
+USES MP_Data_Tab_lesen.src
+EXTERN MP_Tab_editieren
+
+USES OEM_Funk.src
+EXTERN OEM_Funktion_Beginn
+EXTERN OEM_Funktion_Ende
+
+USES HRxx_Man.src
+EXTERN Manuell_Handrad
+EXTERN LED_Test
+
+USES Grund_Funktionen.src
+EXTERN Grund_Funktionen
+EXTERN Beginn_PLC_Zyklus
+EXTERN Ende_PLC_Zyklus
+
+USES Diagnose.src
+EXTERN Diagnose
+
+USES Hydrauli.src
+EXTERN Hydraulik
+
+USES FN19.src
+EXTERN FN19
+
+USES M_Funkt.src
+EXTERN M_Funktionen
+
+USES Achs_Kompensation.src
+EXTERN Achs_Kompensation
+
+#if CFG_Temperatur_Kompensation = "MP_Faktor"
+USES Temp_KP1.src
+EXTERN Temperatur_Komp
+#endif
+
+#if CFG_Temperatur_Kompensation = "Tabelle"
+USES Temp_KP2.src
+EXTERN Temperatur_Komp
+#endif
+
+USES PLC_Pset.src
+EXTERN PLC_Preset
+
+USES Axislimi.src
+EXTERN Axis_Limit
+
+USES Tueren.src
+EXTERN Tueren
+
+USES StartStp.src
+EXTERN NC_Start_Stop
+
+USES Referenz.src
+EXTERN Referenz_Achsen
+
+USES Hirth.src
+EXTERN Hirth
+
+#if CFG_3D_Kopf = "aktiv"
+USES 3D_Kopf.src
+EXTERN Kopf_3D
+#endif
+
+*#if 3D_Kopf_Wechsel = &aktiv
+USES 3D_Kopf_Wechsel.src
+EXTERN Kopf_3D_Wechsel
+*#endif
+
+USES Achsen.src
+EXTERN Achsen
+
+USES Teilapp.src
+EXTERN Teilapparat
+
+#if CFG_Schmierung_Achsen = "aktiv"
+USES Schmier.src
+EXTERN Schmierung
+#endif
+
+USES Getriebe.src
+EXTERN Spindel_Getriebe
+
+USES Getriebe_YD.src
+EXTERN Spindel_YD_Getriebe
+
+USES Spin_Ref.src
+EXTERN Spindel_Referenz
+
+USES Spindel.src
+EXTERN Spindel
+
+USES TastSyst.src
+EXTERN Tastsystem
+
+USES Richten.src
+EXTERN Spindel_Richten
+
+USES Kuehlmit.src
+EXTERN Kuehlmittel
+
+USES Spaene.src
+EXTERN Spaenefoerderer
+
+#if WZ_Greifer = &Einzelarm
+USES WZWHelp1.src
+EXTERN WZW_Help
+EXTERN WZW_Output_Backup
+EXTERN WZW_Output_Restore
+
+USES WZWAuto1.src
+EXTERN WZW_auto
+#endif
+
+#if WZ_Greifer = &Pickup
+USES WZWHelp4.src
+EXTERN WZW_Help
+EXTERN WZW_Output_Backup
+EXTERN WZW_Output_Restore
+
+USES WZWAuto4.src
+EXTERN WZW_auto
+#endif
+
+#if WZ_Greifer = &Doppelarm
+USES WZWHelp2.src
+EXTERN WZW_Help
+EXTERN WZW_Output_Backup
+EXTERN WZW_Output_Restore
+
+USES WZWAuto2.src
+EXTERN WZW_auto
+#endif
+
+#if WZ_Greifer = &WZW_Kurvenscheibe
+USES WZWHelp3.src
+EXTERN WZW_Help
+EXTERN WZW_Output_Backup
+EXTERN WZW_Output_Restore
+
+USES WZWAuto3.src
+USES WZ_Greif.src
+EXTERN WZW_auto
+#endif
+
+#if WZ_Magazin = &Asynchron
+USES WZ_Mag1.src
+EXTERN WZ_Magazin
+
+USES WZMBelad.src
+EXTERN WZM_Beladen
+#endif
+
+#if WZ_Magazin = &Impuls
+USES WZ_Mag2.src
+EXTERN WZ_Magazin
+
+USES WZMBelad.src
+EXTERN WZM_Beladen
+#endif
+
+USES WZWManu.src
+EXTERN WZW_manu
+
+USES WZ_Stat.src
+EXTERN WZ_Status
+
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+USES Pendeln.src
+EXTERN Pendel_Betrieb
+#endif
+
+#if CFG_Paletten_Wechsel = "PW_2_translat"
+USES PW_2_trans.src
+EXTERN Pal_Wechsler
+
+USES PW_Help.src
+EXTERN PW_Help
+EXTERN PW_Output_Backup
+EXTERN PW_Output_Restore
+#endif
+
+#if CFG_Paletten_Wechsel = "System_3R"
+USES PW_3R.SRC
+EXTERN Pal_Wechsler
+#endif
+
+USES Vorschub.src
+EXTERN Vorschubfreigabe
+
+#if CFG_Freies_Drehen = "aktiv"
+USES Drehen.src
+EXTERN Drehen
+#endif
+
+#if CFG_Arbeitsraum_Ueberwachung = "aktiv"
+USES A_Raum_1.src
+EXTERN Arbeitsraum_UBW
+#endif
+
+USES Window.src
+EXTERN PLC_Window
+
+#if CFG_Fehlermerker_zusaetzlich = "aktiv"
+USES Fehler.src
+EXTERN Fehler
+#endif
+
+#if CFG_Mode_Vxx ! "inaktiv"
+USES Daten_Transfer_Vxx.src
+EXTERN Daten_Transfer_Vxx
+#endif
+
+#if CFG_IPC_61x0 = "aktiv"
+USES IPC_61x0.src
+EXTERN IPC_61x0
+#endif
+
+USES Logbuch.src
+EXTERN Logbuch
+
+#if CFG_Python = "aktiv"
+USES Python.src
+EXTERN Python
+#endif
+
+#if CFG_Energy_Option = "aktiv"
+USES PY_Energy_Option.src
+EXTERN Energy_Option
+#endif
+
+#if CFG_PLC_PY_Server ! "inaktiv"
+USES PY_TCP_IP_Server.src
+EXTERN TCP_IP_Server
+#endif
+
+#if CFG_PLC_PY_Client_1  ! "inaktiv"
+USES PY_TCP_IP_Client_1.src
+EXTERN TCP_IP_Client
+#endif
+
+USES Simulation.src
+EXTERN Simulation_Beginn
+EXTERN Simulation_Ende
+
+#if CFG_FS = "aktiv"
+USES FS_Allgemein.src
+EXTERN FS_Allgemein
+
+#endif
+
+*-----------------------------------------------------------------------------
+*  Hauptprogramm
+*-----------------------------------------------------------------------------
+
+  CM     Beginn_PLC_Zyklus
+#if CFG_HSCI = "inaktiv"
+  CM     Input_lesen
+#endif
+
+#if WZ_Greifer ! &inaktiv
+  CM     WZW_Output_Restore
+#endif
+
+#if CFG_Paletten_Wechsel = "PW_2_translat"
+  CM     PW_Output_Restore
+#endif
+
+  LN     MG_TNC_initialisiert
+  CMT    Init_nach_Reset
+
+  CM     Simulation_Beginn
+  CM     Grund_Funktionen
+  CM     OEM_Funktion_Beginn
+
+#if CFG_FS = "aktiv"
+  CM     FS_Allgemein
+#endif
+
+  L      NP_M4174_1_PLC_Durchlauf_nach_MP_Edit
+  R      MG_Maschinenparameter_gelesen
+
+  LN     MG_Maschinenparameter_gelesen
+  CMT    MP_lesen
+
+  CM     MP_Teil_Datei
+
+#if CFG_Energy_Option = "aktiv"
+  CM     Energy_Option
+#endif
+
+#if CFG_PLC_PY_Server = "aktiv"
+  CM     TCP_IP_Server
+#endif
+
+#if CFG_PLC_PY_Client_1 = "aktiv"
+  CM     TCP_IP_Client
+#endif
+
+#if CFG_Python = "aktiv"
+  CM     Python
+#endif
+
+  CM     Manuell_Handrad
+  CM     MP_Tab_editieren
+  CM     Hydraulik
+  CM     Diagnose
+  CM     FN19
+  CM     M_Funktionen
+#if CFG_IPC_61x0 = "aktiv"
+  CM     IPC_61x0
+#endif
+  CM     Achs_Kompensation
+
+#if (CFG_Temperatur_Kompensation = "MP_Faktor") or (CFG_Temperatur_Kompensation = "Tabelle")
+  CM     Temperatur_Komp
+#endif
+  CM     PLC_Preset
+
+  CM     Axis_Limit
+  CM     Tueren
+  CM     NC_Start_Stop
+  CM     Referenz_Achsen
+
+#if CFG_Schmierung_Achsen = "aktiv"
+  CM     Schmierung
+#endif
+
+  L      MG_Spindel_mit_Stern_Dreieck_Umschaltung
+  CMT    Spindel_YD_Getriebe
+  CMF    Spindel_Getriebe
+  CM     Spindel_Referenz
+  CM     Spindel
+  CM     Tastsystem
+  CM     Spindel_Richten
+
+#if CFG_3D_Kopf = "aktiv"
+  CM     Kopf_3D
+#endif
+
+*#if 3D_Kopf_Wechsel = &aktiv
+  CM     Kopf_3D_Wechsel
+*#endif
+
+  CM     Hirth
+  CM     Achsen
+
+  CM     Teilapparat
+  CM     Kuehlmittel
+  CM     Spaenefoerderer
+  CM     WZW_manu
+
+#if WZ_Greifer ! &inaktiv
+  CM     WZW_Help
+  CM     WZW_auto
+#endif
+
+#if WZ_Magazin ! &inaktiv
+  CM     WZ_Magazin
+  CM     WZM_Beladen
+#endif
+
+  CM     WZ_Status
+
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+  CM     Pendel_Betrieb
+#endif
+
+#if CFG_Paletten_Wechsel = "PW_2_translat"
+  CM     PW_Help
+  CM     Pal_Wechsler
+#endif
+
+#if CFG_Paletten_Wechsel = "System_3R"
+  CM     Pal_Wechsler
+#endif
+
+  CM     Vorschubfreigabe
+
+#if CFG_Freies_Drehen = "aktiv"
+  CM     Drehen
+#endif
+
+#if CFG_Arbeitsraum_Ueberwachung = "aktiv"
+  CM     Arbeitsraum_UBW
+#endif
+
+  CM     PLC_Window
+
+#if CFG_Fehlermerker_zusaetzlich = "aktiv"
+  CM     Fehler
+#endif
+
+#if CFG_Mode_Vxx ! "inaktiv"
+  CM     Daten_Transfer_Vxx
+#endif
+
+  CM     Logbuch
+  CM     Simulation_Ende
+
+#if CFG_Paletten_Wechsel = "PW_2_translat"
+  CM     PW_Output_Backup
+#endif
+
+#if WZ_Greifer ! &inaktiv
+  CM     WZW_Output_Backup
+#endif
+
+  CM     OEM_Funktion_Ende
+  CM     LED_Test
+
+#if CFG_HSCI = "inaktiv"
+  CM     Output_schreiben
+#endif
+  CM     Ende_PLC_Zyklus
+
+EM

@@ -1,0 +1,1527 @@
+*-----------------------------------------------------------------------------
+*  Tool Manual
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#if Override_knobs = &2_knobs                                         *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%010
+#define /s    KL_absolute_without_software_limit_switch K%000         *;EUMACH
+#else                                                                 *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%110          *;EUMACH G00% override
+#define /s    KL_absolute_without_software_limit_switch K%100         *;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+#define /s    KL_tool_without_pocket                   K-1
+#define /s    KL_0_degree                              K+0            *;EUMACH
+
+#define /s    ML_TOOL_CALL_old                         M
+#define /s    ML_key_pressed                           M
+#define /s    ML_foot_switch_operated                  M
+#define /s    ML_TC_pos_X_manual_in_position           M              *;EUMACH
+#define /s    ML_TC_pos_Y_manual_in_position           M              *;EUMACH
+#define /s    ML_3D_head_axis_1_TC_manual_in_pos       M              *;EUMACH
+#define /s    ML_3D_head_axis_2_TC_manual_in_pos       M              *;EUMACH
+
+#define /s    BL_step_T_change                         B
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL TC_manual
+
+;----------------------------
+LBL TC_manual
+;----------------------------
+
+  L      PN_M4543_T_life_exceeded_TIME1
+  R      PN_M4543_T_life_exceeded_TIME1
+  S      PN_error_tool_life_max
+
+  LN     NP_M4073_strobe_TOOL_CALL
+  R      PN_M4093_quit_TOOL_CALL
+
+  L      NP_M4073_strobe_TOOL_CALL
+  O      NP_M4158_mode_block_scan
+  O      NP_M4520_TOOL_CALL_2nd_strobe
+  =      PN_M4539_T_status_inverse
+
+  L      I_tool_unclamped
+  ON     I_tool_clamped
+  O      O_tool_unclamping
+  AN     PN_M4539_T_status_inverse
+;  A      MG_automatic_mode                                           *;EUMACH Original PLC
+  A[                                                                  *;EUMACH
+    L      MG_manual_mode                                             *;EUMACH
+    AN     MG_TC_auto_active                                          *;EUMACH
+    AN     MG_TC_help                                                 *;EUMACH
+    AN     MG_TC_manual                                               *;EUMACH
+    O      MG_automatic_mode                                          *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_spindle_active                                            *;EUMACH
+  A      MG_power_delayed_on                                          *;EUMACH
+  AN     PN_error_tool_clamping_timeout                               *;EUMACH
+  S      PN_error_tool_not_clamped
+
+*;EUMACH CYCON K11
+#if CYTEC_CYCON_control = &active
+  L      O_tool_unclamping
+  =      TS_tool_clamp_line_pressure
+
+  LN     TS_tool_clamp_line_pressure
+  AN     TR_tool_clamp_line_pressure
+  AN     I_tool_clamp_line_hydraulic_pressure_0
+  =      PN_error_tool_clamping_line_pressure
+#endif
+*;EUMACH CYCON K11
+
+*;EUMACH LIFTOFF
+  LN     MG_TC_manual
+  AN     MG_TC_automatic
+  A      MG_TC_standby_position
+  ON     MG_TC_auto_active
+  =      PN_M4620_tool_LIFTOFF_release_M148
+*;EUMACH LIFTOFF
+
+  L      NP_M4521_TOOL_CALL_T_0_programmed
+  A      NP_M4520_TOOL_CALL_2nd_strobe
+  A      NP_M4073_strobe_TOOL_CALL
+  A      NP_TC_T0_auto_manu_necessary
+  S      PN_error_TOOL_CALL_T0_necessary
+  EMT
+
+  L      I_key_enable_toolchange
+  O      MG_soft_key_enable_toolchange
+  O      MG_HW_SK_TC_release                                          *;EUMACH MPG tool releasing
+  AN     ML_key_pressed
+  IFT
+    L      MG_manual_mode
+    AN     MG_TC_help
+    S      MG_TC_manual
+  ENDI
+
+  L      NP_M4073_strobe_TOOL_CALL
+  IFT
+    L      NP_W262_tool_pocket_number
+    ==     KL_tool_without_pocket
+    ON     MG_TC_auto_active
+    AN     NP_M4175_control_in_operation_flashes
+    AN     MG_TC_automatic
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+    AN     MG_TC2_automatic                                           *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+    S      MG_TC_manual
+    IFT
+      L      NP_W262_tool_pocket_number
+      =      WG_TC_pocket_number
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+      =      WG_TC2_pocket_number                                     *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+      L      NP_W264_tool_number
+      =      WG_TC_manu_tool_number
+    ENDI
+  ENDI
+
+;  L      NP_M4073_strobe_TOOL_CALL                                   *;EUMACH Original PLC
+  L      MG_TC_manual                                                 *;EUMACH
+  A      MG_clock_1_s
+  O      MG_test_lamps
+  =      O_lamp_TC_enable
+
+  L      I_tool_unclamped
+  ON     I_tool_clamped
+  O      MG_test_lamps
+  =      O_lamp_tool_unclamped
+
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  LN     O_tool_clamping
+  ON     I_tool_clamped
+  =      TS_solenoid_off_after_S_clamped
+
+  LN     TS_solenoid_off_after_S_clamped
+  AN     TR_solenoid_off_after_S_clamped
+;  O      PN_error_tool_clamping_timeout  *;For HSK tool shank, if this line is added, tool drops after error "tool clamping time-out" occurs.
+  R      O_tool_clamping
+
+  LN     O_tool_clamping
+  O      I_tool_clamped
+  =      TS_time_out_solenoid_off_after_S_clamped
+
+  LN     TS_time_out_solenoid_off_after_S_clamped
+  AN     TR_time_out_solenoid_off_after_S_clamped
+  S      PN_error_tool_clamping_timeout
+
+  L      O_tool_unclamping
+  R      PN_error_tool_clamping_timeout
+#else                                                                 *;EUMACH
+  L      I_tool_clamped                                               *;EUMACH
+  AN     O_tool_unclamping                                            *;EUMACH
+  A      MG_spindle_active                                            *;EUMACH
+  S      O_tool_clamping                                              *;EUMACH
+
+#if CYTEC_CYCON_control = &active                                     *;EUMACH CYCON K11
+  L      I_CYTEC_S_K11_timeout                                        *;EUMACH CYCON K11
+  S      PN_error_tool_clamping_unclamping                            *;EUMACH CYCON K11
+#endif                                                                *;EUMACH CYCON K11
+#endif                                                                *;EUMACH
+
+  CASE   BL_step_T_change
+    CM     TC_manual_start             ;00
+    CM     Jump_manu_mode              ;01  ---> (1)
+    CM     Y_start_safety              ;02
+    CM     Y_in_pos_safety             ;03
+    CM     Z_start_safety              ;04
+    CM     Z_in_pos_safety             ;05
+    CM     1st_ABC_start_manu          ;06
+    CM     1st_ABC_in_pos_manu         ;07
+    CM     2nd_ABC_start_manu          ;08
+    CM     2nd_ABC_in_pos_manu         ;09
+    CM     X_start_manu                ;10
+    CM     X_in_pos_manu               ;11
+    CM     Y_start_manu                ;12
+    CM     Y_in_pos_manu               ;13
+    CM     Z_start_manu                ;14
+    CM     Z_in_pos_manu               ;15
+    CM     Tool_manu_unclamping        ;16  <--- (1)
+    CM     Tool_manu_clamping          ;17
+    CM     T_change_disable            ;18
+    CM     T_change_quit               ;19
+    CM     Restore_necessary           ;20
+    CM     Restore_pos_ok              ;21
+    CM     T_Probe_on_off              ;22
+    CM     Tool_Call_quitt             ;23
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_T_change
+  ENDI
+
+  L      I_key_enable_toolchange
+  O      MG_soft_key_enable_toolchange
+  O      MG_HW_SK_TC_release                                          *;EUMACH MPG tool releasing
+  O      I_key_tool_unclamping
+  O      MG_soft_key_tool_unclamp
+  O      MG_HW_SK_TC_unclamp                                          *;EUMACH MPG tool releasing
+  =      ML_key_pressed
+
+  L      I_key_tool_unclamping_foot_switch
+  =      ML_foot_switch_operated
+
+  LN     MG_TC_manual
+  EMT
+
+  L      MG_NC_start_pulse
+  R      MG_TC_manu_interruption
+
+  L      MG_key_NC_stop
+  S      MG_TC_manu_interruption
+  S      PN_error_TC_timeout
+
+  L      MG_key_NC_start
+  R      PN_error_TC_timeout
+
+  L      MG_pulse_internal_stop
+  O      MG_manu_auto_mode_change
+  O      MG_auto_manu_mode_change
+  ON     MG_control_operational
+  CMT    TC_manual_reset
+
+EM
+
+;----------------------------
+LBL TC_manual_start                    ;00
+
+  L      MG_TC_manual
+  AN     MG_TC_automatic
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  AN     MG_TC2_automatic                                             *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  A      MG_spindle_stand_still
+  PSL
+  EMF
+
+  L      NP_TC_no_TOOL_CALL_monitoring_inactive                       *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      NP_M4073_strobe_TOOL_CALL                                  *;EUMACH
+    S      MG_tool_status_reading                                     *;EUMACH
+  ELSE                                                                *;EUMACH
+    L      NP_M4073_strobe_TOOL_CALL
+    S      MG_tool_status_reading
+    =N     MG_TC_without_Tool_Call
+  ENDI                                                                *;EUMACH
+
+EM
+
+;----------------------------
+LBL Jump_manu_mode                     ;01
+
+;  PS     MG_marker_one                                               *;EUMACH Original PLC
+
+  L      MG_marker_one                                                *;EUMACH
+  S      O_lamp_TC_enable                                             *;EUMACH
+  PSL                                                                 *;EUMACH
+
+  LN     NP_M4073_strobe_TOOL_CALL
+  O      NP_TC_position_manual_inactive
+  IFT
+    L      BL_step_T_change
+    +      K+14                                                       *;EUMACH
+    =      BL_step_T_change
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_start_safety                     ;02                            *;EUMACH
+
+#if Pos_Y_safety_manual = &active
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Y_safety
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    LN     I_spindle_without_3D_head
+    A      I_V_H_head_in_vertical_pos
+    IFT
+      PS     MG_marker_one
+    ELSE
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &active)
+      L      DG_position_axis_X_ref
+      -      NP_D832_TC_pos_X_manual
+      PSW
+      CM     Absolute
+      PLW
+      <      DG_MP1030_pos_window_X
+      =      ML_TC_pos_X_manual_in_position
+
+      L      DG_position_axis_Y_ref
+      -      NP_D836_TC_pos_Y_manual
+      PSW
+      CM     Absolute
+      PLW
+      <      DG_MP1030_pos_window_Y
+      =      ML_TC_pos_Y_manual_in_position
+
+      L      ML_TC_pos_X_manual_in_position
+      A      ML_TC_pos_Y_manual_in_position
+#else
+      L      MG_marker_one
+#endif
+      IFT
+        PS     MG_marker_one
+      ELSE
+        PS     KG_axis_Y
+        PS     NP_MP4231_11_TC_pos_Y_safety
+        L      NP_D772_feed_PLC_Y
+        /      K+10000
+        PSW
+        PS     KL_absolute_with_software_limit_switch
+        CM     9221
+        PLW
+        ==     K+0
+        PSL
+        M_display_module_error(KG_error_module_9221)
+      ENDI
+    ENDI
+  ENDI
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Y_in_pos_safety                    ;03                            *;EUMACH
+
+#if Pos_Y_safety_manual = &active
+  LN     I_spindle_without_3D_head
+  A      I_V_H_head_in_vertical_pos
+  IFT
+    PS     MG_marker_one
+  ELSE
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &active)
+    L      DG_position_axis_X_ref
+    -      NP_D832_TC_pos_X_manual
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_X
+    =      ML_TC_pos_X_manual_in_position
+
+    L      DG_position_axis_Y_ref
+    -      NP_D836_TC_pos_Y_manual
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_Y
+    =      ML_TC_pos_Y_manual_in_position
+
+    L      ML_TC_pos_X_manual_in_position
+    A      ML_TC_pos_Y_manual_in_position
+#else
+    L      MG_marker_one
+#endif
+    IFT
+      PS     MG_marker_one
+    ELSE
+      L      DG_position_axis_Y_ref
+      -      NP_MP4231_11_TC_pos_Y_safety
+      PSW
+      CM     Absolute
+      PLW
+      <      DG_MP1030_pos_window_Y
+      AN     PN_M4121_strobe_PLC_posit_axis_Y
+      AN     MG_TC_manu_interruption
+      PSL
+
+      L      MG_TC_manu_interruption
+      =      MG_win_TC_pos_Y_safety
+    ENDI
+  ENDI
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Z_start_safety                     ;04
+
+#if Pos_Z_safety_manual = &active                                     *;EUMACH
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Z_safety
+  IFT
+    PS     MG_marker_zero
+  ELSE
+#if (Pos_X_manual = &inactive) and (Pos_Y_manual = &inactive)         *;EUMACH
+    L      MG_marker_one                                              *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &inactive)           *;EUMACH
+#if (MT = &MT_22) or (MT = &MT_32B)                                   *;EUMACH
+    L      MG_marker_zero                                             *;EUMACH
+#else                                                                 *;EUMACH
+    L      DG_position_axis_X_ref
+    -      NP_D832_TC_pos_X_manual
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_X
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &inactive) and (Pos_Y_manual = &active)           *;EUMACH
+#if MT = &MT_3A                                                       *;EUMACH
+    LN     I_spindle_without_3D_head                                  *;EUMACH
+    A      I_V_H_head_in_horizontal_pos                               *;EUMACH
+    O      I_spindle_without_3D_head                                  *;EUMACH
+#else                                                                 *;EUMACH
+    L      DG_position_axis_Y_ref                                     *;EUMACH
+    -      NP_D836_TC_pos_Y_manual                                    *;EUMACH
+    PSW                                                               *;EUMACH
+    CM     Absolute                                                   *;EUMACH
+    PLW                                                               *;EUMACH
+    <      DG_MP1030_pos_window_Y                                     *;EUMACH
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &active)             *;EUMACH
+    L      DG_position_axis_X_ref                                     *;EUMACH
+    -      NP_D832_TC_pos_X_manual                                    *;EUMACH
+    PSW                                                               *;EUMACH
+    CM     Absolute                                                   *;EUMACH
+    PLW                                                               *;EUMACH
+    <      DG_MP1030_pos_window_X                                     *;EUMACH
+    =      ML_TC_pos_X_manual_in_position                             *;EUMACH
+
+    L      DG_position_axis_Y_ref                                     *;EUMACH
+    -      NP_D836_TC_pos_Y_manual                                    *;EUMACH
+    PSW                                                               *;EUMACH
+    CM     Absolute                                                   *;EUMACH
+    PLW                                                               *;EUMACH
+    <      DG_MP1030_pos_window_Y                                     *;EUMACH
+    =      ML_TC_pos_Y_manual_in_position                             *;EUMACH
+
+    L      ML_TC_pos_X_manual_in_position                             *;EUMACH
+    A      ML_TC_pos_Y_manual_in_position                             *;EUMACH
+#endif                                                                *;EUMACH
+    IFT
+      PS     MG_marker_one
+    ELSE
+      PS     KG_axis_Z
+      PS     NP_D844_TC_pos_Z_safety
+      L      NP_D776_feed_PLC_Z
+      /      K+10000
+      PSW
+      PS     KL_absolute_with_software_limit_switch
+      CM     9221
+      PLW
+      ==     K+0
+      PSL
+      M_display_module_error(KG_error_module_9221)
+    ENDI
+  ENDI
+#else                                                                 *;EUMACH
+  PS     MG_marker_one                                                *;EUMACH
+#endif                                                                *;EUMACH
+EM
+
+;----------------------------
+LBL Z_in_pos_safety                    ;05
+
+#if Pos_Z_safety_manual = &active                                     *;EUMACH
+#if (Pos_X_manual = &inactive) and (Pos_Y_manual = &inactive)         *;EUMACH
+  L      MG_marker_one                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &inactive)           *;EUMACH
+#if (MT = &MT_22) or (MT = &MT_32B)                                   *;EUMACH
+  L      MG_marker_zero                                               *;EUMACH
+#else                                                                 *;EUMACH
+  L      DG_position_axis_X_ref
+  -      NP_D832_TC_pos_X_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &inactive) and (Pos_Y_manual = &active)           *;EUMACH
+#if MT = &MT_3A                                                       *;EUMACH
+  LN     I_spindle_without_3D_head                                    *;EUMACH
+  A      I_V_H_head_in_horizontal_pos                                 *;EUMACH
+  O      I_spindle_without_3D_head                                    *;EUMACH
+#else                                                                 *;EUMACH
+  L      DG_position_axis_Y_ref                                       *;EUMACH
+  -      NP_D836_TC_pos_Y_manual                                      *;EUMACH
+  PSW                                                                 *;EUMACH
+  CM     Absolute                                                     *;EUMACH
+  PLW                                                                 *;EUMACH
+  <      DG_MP1030_pos_window_Y                                       *;EUMACH
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+#if (Pos_X_manual = &active) and (Pos_Y_manual = &active)             *;EUMACH
+  L      DG_position_axis_X_ref                                       *;EUMACH
+  -      NP_D832_TC_pos_X_manual                                      *;EUMACH
+  PSW                                                                 *;EUMACH
+  CM     Absolute                                                     *;EUMACH
+  PLW                                                                 *;EUMACH
+  <      DG_MP1030_pos_window_X                                       *;EUMACH
+  =      ML_TC_pos_X_manual_in_position                               *;EUMACH
+
+  L      DG_position_axis_Y_ref                                       *;EUMACH
+  -      NP_D836_TC_pos_Y_manual                                      *;EUMACH
+  PSW                                                                 *;EUMACH
+  CM     Absolute                                                     *;EUMACH
+  PLW                                                                 *;EUMACH
+  <      DG_MP1030_pos_window_Y                                       *;EUMACH
+  =      ML_TC_pos_Y_manual_in_position                               *;EUMACH
+
+  L      ML_TC_pos_X_manual_in_position                               *;EUMACH
+  A      ML_TC_pos_Y_manual_in_position                               *;EUMACH
+#endif                                                                *;EUMACH
+  IFT
+    PS     MG_marker_one
+  ELSE
+    L      DG_position_axis_Z_ref
+    -      NP_D844_TC_pos_Z_safety
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_Z
+    AN     PN_M4122_strobe_PLC_posit_axis_Z
+    AN     MG_TC_manu_interruption
+    PSL
+
+    L      MG_TC_manu_interruption
+    =      MG_win_TC_pos_Z_safety
+
+*;EUMACH
+#if (MT = &MT_22) or (MT = &MT_32B)
+    PLL
+    IFT
+      L      MG_axis_limit_2
+      S      MG_axis_limit_1
+      R      MG_axis_limit_2
+      R      MG_axis_limit_3
+      S      PN_M4135_strobe_axes_limit
+      R      PN_M4574_axis_limit_Bit_0
+      R      PN_M4575_axis_limit_Bit_1
+
+      LN     PN_M4135_strobe_axes_limit
+      PSL
+    ELSE
+      PS     MG_marker_zero
+    ENDI
+#endif
+*;EUMACH
+  ENDI
+#else                                                                 *;EUMACH
+  PS     MG_marker_one                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 1st_ABC_start_manu                 ;06
+
+#if (MT = &MT_22) or (MT = &MT_31C) or (MT = &MT_32A) or (MT = &MT_32B) or (MT = &MT_34A) or (MT = &MT_39) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if (MT = &MT_22) or (MT = &MT_32B)
+  L      DG_position_axis_X_ref[KG_3D_head_axis_1]
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X[KG_3D_head_axis_1]
+  ON[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_1
+  ]
+  =      ML_3D_head_axis_1_TC_manual_in_pos
+
+  L      ML_3D_head_axis_1_TC_manual_in_pos
+  IFT
+    PS     MG_marker_one
+  ELSE
+    L      MG_TC_manu_interruption
+#if KG_3D_head_axis_1 = &axis_4
+    =      MG_win_TC_pos_4
+#endif
+#if KG_3D_head_axis_1 = &axis_5
+    =      MG_win_TC_pos_5
+#endif
+#if KG_3D_head_axis_1 = &axis_6
+    =      MG_win_TC_pos_6
+#endif
+    IFT
+      PS     MG_marker_zero
+    ELSE
+      PS     KG_3D_head_axis_1
+      PS     KL_0_degree
+#if KG_3D_head_axis_1 = &axis_4
+      L      NP_D780_feed_PLC_4
+#endif
+#if KG_3D_head_axis_1 = &axis_5
+      L      NP_D784_feed_PLC_5
+#endif
+#if KG_3D_head_axis_1 = &axis_6
+      L      NP_D788_feed_PLC_6
+#endif
+      /      K+10000
+      PSW
+      PS     KL_absolute_with_software_limit_switch
+      CM     9221
+      PLW
+      ==     K+0
+      PSL
+      M_display_module_error(KG_error_module_9221)
+    ENDI
+  ENDI
+#endif
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if MT = &MT_32A
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_4
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_4
+    PS     NP_MP4231_3_TC_pos_4_manual
+    L      NP_D780_feed_PLC_4
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#endif
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if (MT = &MT_39) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_5
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_5
+    PS     NP_MP4231_4_TC_pos_5_manual
+    L      NP_D784_feed_PLC_5
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#endif
+
+*;EUMACH 1st rotary axis TC positioning depending on MP4310.9 bit E
+#if (MT = &MT_31C) or (MT = &MT_34A)
+  L      WG_controlled_axes
+  BT     KG_axis_5
+  A      NP_TC_position_V_automatic_active
+  IFT
+    L      MG_TC_manu_interruption
+    =      MG_win_TC_pos_5
+    IFT
+      PS     MG_marker_zero
+    ELSE
+      PS     KG_axis_5
+      PS     NP_MP4231_4_TC_pos_5_manual
+      L      NP_D784_feed_PLC_5
+      /      K+10000
+      PSW
+      PS     KL_absolute_with_software_limit_switch
+      CM     9221
+      PLW
+      ==     K+0
+      PSL
+      M_display_module_error(KG_error_module_9221)
+    ENDI
+  ELSE
+    PS     MG_marker_one
+  ENDI
+#endif
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 1st_ABC_in_pos_manu                ;07
+
+#if (MT = &MT_22) or (MT = &MT_31C) or (MT = &MT_32A) or (MT = &MT_32B) or (MT = &MT_34A) or (MT = &MT_39) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if (MT = &MT_22) or (MT = &MT_32B)
+  L      DG_position_axis_X_ref[KG_3D_head_axis_1]
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X[KG_3D_head_axis_1]
+#if KG_3D_head_axis_1 = &axis_4
+  AN     PN_M4123_strobe_PLC_posit_axis_4
+#endif
+#if KG_3D_head_axis_1 = &axis_5
+  AN     PN_M4124_strobe_PLC_posit_axis_5
+#endif
+#if KG_3D_head_axis_1 = &axis_6
+  AN     PN_M4125_strobe_PLC_posit_axis_6
+#endif
+  A[
+    LN     WG_hirth_axes
+    BT     KG_3D_head_axis_1
+    O[
+#if KG_3D_head_axis_1 = &axis_4
+      L      I_clamped_axis_4
+      AN     I_unclamped_axis_4
+#endif
+#if KG_3D_head_axis_1 = &axis_5
+      L      I_clamped_axis_5
+      AN     I_unclamped_axis_5
+#endif
+#if KG_3D_head_axis_1 = &axis_6
+      L      I_clamped_axis_6
+      AN     I_unclamped_axis_6
+#endif
+    ]
+  ]
+  ON[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_1
+  ]
+  PSL
+
+  L      MG_TC_manu_interruption
+#if KG_3D_head_axis_1 = &axis_4
+  =      MG_win_TC_pos_4
+#endif
+#if KG_3D_head_axis_1 = &axis_5
+  =      MG_win_TC_pos_5
+#endif
+#if KG_3D_head_axis_1 = &axis_6
+  =      MG_win_TC_pos_6
+#endif
+#endif
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if MT = &MT_32A
+  L      DG_position_axis_4_ref
+  -      NP_MP4231_3_TC_pos_4_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  AN     PN_M4123_strobe_PLC_posit_axis_4
+  AN     MG_TC_manu_interruption
+  A[
+    LN     WG_hirth_axes
+    BT     KG_axis_4
+    O[
+      L      I_clamped_axis_4
+      AN     I_unclamped_axis_4
+    ]
+  ]
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_4
+#endif
+
+*;EUMACH 1st rotary axis TC positioning necessary
+#if (MT = &MT_39) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+  L      DG_position_axis_5_ref
+  -      NP_MP4231_4_TC_pos_5_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_5
+  AN     PN_M4124_strobe_PLC_posit_axis_5
+  AN     MG_TC_manu_interruption
+  A[
+    LN     WG_hirth_axes
+    BT     KG_axis_5
+    O[
+      L      I_clamped_axis_5
+      AN     I_unclamped_axis_5
+    ]
+  ]
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_5
+#endif
+
+*;EUMACH 1st rotary axis TC positioning depending on MP4310.9 bit E
+#if (MT = &MT_31C) or (MT = &MT_34A)
+  L      WG_controlled_axes
+  BT     KG_axis_5
+  A      NP_TC_position_V_automatic_active
+  IFT
+    L      DG_position_axis_5_ref
+    -      NP_MP4231_4_TC_pos_5_manual
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_5
+    AN     PN_M4124_strobe_PLC_posit_axis_5
+    AN     MG_TC_manu_interruption
+    A[
+      LN     WG_hirth_axes
+      BT     KG_axis_5
+      O[
+        L      I_clamped_axis_5
+        AN     I_unclamped_axis_5
+      ]
+    ]
+    PSL
+
+    L      MG_TC_manu_interruption
+    =      MG_win_TC_pos_5
+  ELSE
+    PS     MG_marker_one
+  ENDI
+#endif
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 2nd_ABC_start_manu                 ;08
+
+#if (MT = &MT_22) or (MT = &MT_31C) or (MT = &MT_32A) or (MT = &MT_32B) or (MT = &MT_34A)
+
+*;EUMACH 2nd rotary axis TC positioning necessary
+#if (MT = &MT_22) or (MT = &MT_32B)
+  L      DG_position_axis_X_ref[KG_3D_head_axis_2]
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X[KG_3D_head_axis_2]
+  ON[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_2
+  ]
+  =      ML_3D_head_axis_2_TC_manual_in_pos
+
+  L      ML_3D_head_axis_2_TC_manual_in_pos
+  IFT
+    PS     MG_marker_one
+  ELSE
+    L      MG_TC_manu_interruption
+#if KG_3D_head_axis_2 = &axis_4
+    =      MG_win_TC_pos_4
+#endif
+#if KG_3D_head_axis_2 = &axis_5
+    =      MG_win_TC_pos_5
+#endif
+#if KG_3D_head_axis_2 = &axis_6
+    =      MG_win_TC_pos_6
+#endif
+    IFT
+      PS     MG_marker_zero
+    ELSE
+      PS     KG_3D_head_axis_2
+      PS     KL_0_degree
+#if KG_3D_head_axis_2 = &axis_4
+      L      NP_D780_feed_PLC_4
+#endif
+#if KG_3D_head_axis_2 = &axis_5
+      L      NP_D784_feed_PLC_5
+#endif
+#if KG_3D_head_axis_2 = &axis_6
+      L      NP_D788_feed_PLC_6
+#endif
+      /      K+10000
+      PSW
+      PS     KL_absolute_with_software_limit_switch
+      CM     9221
+      PLW
+      ==     K+0
+      PSL
+      M_display_module_error(KG_error_module_9221)
+    ENDI
+  ENDI
+#endif
+
+*;EUMACH 2nd rotary axis TC positioning necessary
+#if MT = &MT_32A
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_5
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_5
+    PS     NP_MP4231_4_TC_pos_5_manual
+    L      NP_D784_feed_PLC_5
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#endif
+
+*;EUMACH 2nd rotary axis TC positioning depending on MP4310.2 bit 5
+#if (MT = &MT_31C) or (MT = &MT_34A)
+  L      WG_controlled_axes
+  BT     KG_axis_4
+  A      NP_TC_position_IV_automatic_active
+  IFT
+    L      MG_TC_manu_interruption
+    =      MG_win_TC_pos_4
+    IFT
+      PS     MG_marker_zero
+    ELSE
+      PS     KG_axis_4
+      PS     NP_MP4231_3_TC_pos_4_manual
+      L      NP_D780_feed_PLC_4
+      /      K+10000
+      PSW
+      PS     KL_absolute_with_software_limit_switch
+      CM     9221
+      PLW
+      ==     K+0
+      PSL
+      M_display_module_error(KG_error_module_9221)
+    ENDI
+  ELSE
+    PS     MG_marker_one
+  ENDI
+#endif
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------                                         *;EUMACH
+LBL 2nd_ABC_in_pos_manu                ;09
+
+#if (MT = &MT_22) or (MT = &MT_31C) or (MT = &MT_32A) or (MT = &MT_32B) or (MT = &MT_34A)
+
+*;EUMACH 2nd rotary axis TC positioning necessary
+#if (MT = &MT_22) or (MT = &MT_32B)
+  L      DG_position_axis_X_ref[KG_3D_head_axis_2]
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X[KG_3D_head_axis_2]
+#if KG_3D_head_axis_2 = &axis_4
+  AN     PN_M4123_strobe_PLC_posit_axis_4
+#endif
+#if KG_3D_head_axis_2 = &axis_5
+  AN     PN_M4124_strobe_PLC_posit_axis_5
+#endif
+#if KG_3D_head_axis_2 = &axis_6
+  AN     PN_M4125_strobe_PLC_posit_axis_6
+#endif
+  A[
+    LN     WG_hirth_axes
+    BT     KG_3D_head_axis_2
+    O[
+#if KG_3D_head_axis_2 = &axis_4
+      L      I_clamped_axis_4
+      AN     I_unclamped_axis_4
+#endif
+#if KG_3D_head_axis_2 = &axis_5
+      L      I_clamped_axis_5
+      AN     I_unclamped_axis_5
+#endif
+#if KG_3D_head_axis_2 = &axis_6
+      L      I_clamped_axis_6
+      AN     I_unclamped_axis_6
+#endif
+    ]
+  ]
+  ON[
+    L      WG_controlled_axes
+    BT     KG_3D_head_axis_2
+  ]
+  PSL
+
+  PLL
+  IFT
+    LN     MG_axis_limit_3
+    R      MG_axis_limit_1
+    R      MG_axis_limit_2
+    S      MG_axis_limit_3
+    S      PN_M4135_strobe_axes_limit
+    R      PN_M4574_axis_limit_Bit_0
+    S      PN_M4575_axis_limit_Bit_1
+
+    LN     PN_M4135_strobe_axes_limit
+    PSL
+  ELSE
+    PS     MG_marker_zero
+  ENDI
+
+  L      MG_TC_manu_interruption
+#if KG_3D_head_axis_2 = &axis_4
+  =      MG_win_TC_pos_4
+#endif
+#if KG_3D_head_axis_2 = &axis_5
+  =      MG_win_TC_pos_5
+#endif
+#if KG_3D_head_axis_2 = &axis_6
+  =      MG_win_TC_pos_6
+#endif
+#endif
+
+*;EUMACH 2nd rotary axis TC positioning necessary
+#if MT = &MT_32A
+  L      DG_position_axis_5_ref
+  -      NP_MP4231_4_TC_pos_5_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_5
+  AN     PN_M4124_strobe_PLC_posit_axis_5
+  AN     MG_TC_manu_interruption
+  A[
+    LN     WG_hirth_axes
+    BT     KG_axis_5
+    O[
+      L      I_clamped_axis_5
+      AN     I_unclamped_axis_5
+    ]
+  ]
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_5
+#endif
+
+*;EUMACH 2nd rotary axis TC positioning depending on MP4310.2 bit 5
+#if (MT = &MT_31C) or (MT = &MT_34A)
+  L      WG_controlled_axes
+  BT     KG_axis_4
+  A      NP_TC_position_IV_automatic_active
+  IFT
+    L      DG_position_axis_4_ref
+    -      NP_MP4231_3_TC_pos_4_manual
+    PSW
+    CM     Absolute
+    PLW
+    <      DG_MP1030_pos_window_4
+    AN     PN_M4123_strobe_PLC_posit_axis_4
+    AN     MG_TC_manu_interruption
+    A[
+      LN     WG_hirth_axes
+      BT     KG_axis_4
+      O[
+        L      I_clamped_axis_4
+        AN     I_unclamped_axis_4
+      ]
+    ]
+    PSL
+
+    L      MG_TC_manu_interruption
+    =      MG_win_TC_pos_4
+  ELSE
+    PS     MG_marker_one
+  ENDI
+#endif
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL X_start_manu                       ;10
+
+#if Pos_X_manual = &active
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_X
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_X
+    PS     NP_D832_TC_pos_X_manual
+    L      NP_D768_feed_PLC_X
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL X_in_pos_manu                      ;11
+
+#if Pos_X_manual = &active
+  L      DG_position_axis_X_ref
+  -      NP_D832_TC_pos_X_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  AN     MG_TC_manu_interruption
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_X
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Y_start_manu                       ;12
+
+#if Pos_Y_manual = &active
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Y_manual
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_Y
+    PS     NP_D836_TC_pos_Y_manual
+    L      NP_D772_feed_PLC_Y
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Y_in_pos_manu                      ;13
+
+#if Pos_Y_manual = &active
+  L      DG_position_axis_Y_ref
+  -      NP_D836_TC_pos_Y_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  AN     MG_TC_manu_interruption
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Y_manual
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Z_start_manu                       ;14
+
+#if Pos_Z_manual = &active
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Z_manual
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_Z
+    PS     NP_D840_TC_pos_Z_manual
+    L      NP_D776_feed_PLC_Z
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Z_in_pos_manu                      ;15
+
+#if Pos_Z_manual = &active
+  L      DG_position_axis_Z_ref
+  -      NP_D840_TC_pos_Z_manual
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Z
+  AN     PN_M4122_strobe_PLC_posit_axis_Z
+  AN     MG_TC_manu_interruption
+  PSL
+
+  L      MG_TC_manu_interruption
+  =      MG_win_TC_pos_Z_manual
+#else
+  PS     MG_marker_one
+#endif
+
+EM
+
+;----------------------------
+LBL Tool_manu_unclamping               ;16
+
+  L      MG_marker_one
+  R      PN_error_quit_tool_change
+  R      PN_error_guard_close_quit_tool_change
+  R      PN_error_guard_open
+  S      O_lamp_TC_enable
+
+#if Head = &S_head_type_05                                          *;EUMACH
+  L      MG_soft_key_S_man_head                                       *;EUMACH
+  S      PN_error_guard_open_for_tool_replace                         *;EUMACH
+  IFT                                                                 *;EUMACH
+    LN     I_guard_1_closed                                           *;EUMACH
+    PSL                                                               *;EUMACH
+EM                                                                    *;EUMACH
+  ENDI                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  LN     MG_alternating_table_on                                      *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      I_key_tool_unclamping
+    O      I_key_tool_unclamping_foot_switch
+    O      MG_soft_key_tool_unclamp
+    O      MG_HW_SK_TC_unclamp                                        *;EUMACH MPG tool releasing
+    A      I_guard_1_closed
+    A      I_guard_2_closed                                           *;EUMACH
+    AN     NP_guard_inactive
+    S      PN_error_guard_closed
+  ELSE                                                                *;EUMACH
+    L      I_key_tool_unclamping                                      *;EUMACH
+    O      I_key_tool_unclamping_foot_switch                          *;EUMACH
+    O      MG_soft_key_tool_unclamp                                   *;EUMACH
+    O      MG_HW_SK_TC_unclamp                                        *;EUMACH MPG tool releasing
+    A[                                                                *;EUMACH
+      L      MG_axis_limit_1                                          *;EUMACH
+      A      I_guard_1_closed                                         *;EUMACH
+      O[                                                              *;EUMACH
+        L      MG_axis_limit_2                                        *;EUMACH
+        A      I_guard_2_closed                                       *;EUMACH
+      ]                                                               *;EUMACH
+    ]                                                                 *;EUMACH
+    AN     NP_guard_inactive                                          *;EUMACH
+    S      PN_error_guard_closed                                      *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  LN     MG_alternating_table_on
+  IFT
+    LN     I_guard_1_closed
+    ON     I_guard_2_closed
+    R      PN_error_guard_closed
+  ELSE
+    L      MG_alternating_table_on
+    A      MG_axis_limit_1
+;    AN     MG_guard_1_closed_locked                                  *;EUMACH Original PLC
+    AN     I_guard_1_closed                                           *;EUMACH
+    R      PN_error_guard_closed
+
+    L      MG_alternating_table_on
+    A      MG_axis_limit_2
+;    AN     MG_guard_2_closed_locked                                  *;EUMACH Original PLC
+    AN     I_guard_2_closed                                           *;EUMACH
+    R      PN_error_guard_closed
+  ENDI
+
+  LN     PN_error_guard_closed
+  =      PN_error_tool_unclamping
+
+  L      MG_clock_1_s
+  AN     O_tool_unclamping
+  =      O_lamp_tool_unclamped
+
+  L      MG_soft_key_tool_unclamp
+  O      MG_HW_SK_TC_unclamp                                          *;EUMACH MPG tool releasing
+  O      I_key_tool_unclamping
+  AN     ML_key_pressed
+  O      I_key_tool_unclamping_foot_switch
+  AN     PN_error_guard_closed
+  S      O_tool_unclamping
+  R      O_tool_clamping                                              *;EUMACH
+
+  L      I_key_enable_toolchange
+  O      MG_soft_key_enable_toolchange
+  O      MG_HW_SK_TC_release                                          *;EUMACH MPG tool releasing
+  AN     ML_key_pressed
+  A      MG_manual_mode
+  CMT    TC_manual_reset
+
+  PS     O_tool_unclamping
+
+EM
+
+;----------------------------
+LBL Tool_manu_clamping                 ;17
+
+#if Head = &S_head_type_05                                          *;EUMACH
+  L      MG_marker_one                                                *;EUMACH
+  R      PN_error_guard_open_for_tool_replace                         *;EUMACH
+
+  L      MG_soft_key_S_man_head                                       *;EUMACH
+  S      PN_error_tool_replace_and_guard_close                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    LN     MG_guard_open                                              *;EUMACH
+    PSL                                                               *;EUMACH
+EM                                                                    *;EUMACH
+  ENDI                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_marker_one
+  R      PN_error_tool_unclamping
+  S      PN_error_tool_clamping
+  R      PN_error_quit_tool_change
+  R      PN_error_guard_close_quit_tool_change
+  R      PN_error_end_tool_change_NC_start
+  R      PN_error_guard_open
+  S      O_lamp_TC_enable
+
+  L      MG_clock_1_s
+  A      O_tool_unclamping
+  =      O_lamp_tool_unclamped
+
+  L      MG_soft_key_tool_unclamp
+  O      MG_HW_SK_TC_unclamp                                          *;EUMACH MPG tool releasing
+  O      I_key_tool_unclamping
+  AN     ML_key_pressed
+  O[
+    LN     I_key_tool_unclamping_foot_switch
+    A      ML_foot_switch_operated
+  ]
+  R      O_tool_unclamping
+  S      O_tool_clamping                                              *;EUMACH
+
+  L      I_key_enable_toolchange
+  O      MG_soft_key_enable_toolchange
+  O      MG_HW_SK_TC_release                                          *;EUMACH MPG tool releasing
+  AN     ML_key_pressed
+  A      MG_manual_mode
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  AN     O_tool_clamping                                              *;EUMACH
+#endif                                                                *;EUMACH
+  CMT    TC_manual_reset
+
+  LN     O_tool_unclamping
+  PSL
+
+EM
+
+;----------------------------
+LBL T_change_disable                   ;18
+
+#if Head = &S_head_type_05                                          *;EUMACH
+  L      MG_marker_one                                                *;EUMACH
+  R      PN_error_tool_replace_and_guard_close                        *;EUMACH
+
+  L      MG_soft_key_S_man_head                                       *;EUMACH
+  S      PN_error_quit_tool_change                                    *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      I_key_enable_toolchange                                    *;EUMACH
+    O      MG_soft_key_enable_toolchange                              *;EUMACH
+    O      MG_HW_SK_TC_release                                        *;EUMACH MPG tool releasing
+    AN     ML_key_pressed                                             *;EUMACH
+    PSL                                                               *;EUMACH
+
+EM                                                                    *;EUMACH
+  ENDI                                                                *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      MG_marker_one
+  R      PN_error_tool_clamping
+
+  L      NP_guard_inactive
+  S      PN_error_quit_tool_change
+  SN     PN_error_guard_close_quit_tool_change
+
+  L      I_key_tool_unclamping
+  O      MG_soft_key_tool_unclamp
+  O      MG_HW_SK_TC_unclamp                                          *;EUMACH MPG tool releasing
+  AN     ML_key_pressed
+  O      I_key_tool_unclamping_foot_switch
+  A[
+    L      MG_guard_open
+    O      NP_guard_inactive
+  ]
+  S      O_tool_unclamping
+  R      O_tool_clamping                                              *;EUMACH
+  IFT
+    DEC    BL_step_T_change
+  ENDI
+
+  L      MG_clock_1_s
+  =      O_lamp_TC_enable
+
+  L      I_key_enable_toolchange
+  O      MG_soft_key_enable_toolchange
+  O      MG_HW_SK_TC_release                                          *;EUMACH MPG tool releasing
+  AN     ML_key_pressed
+  AN     MG_guard_open
+  PSL
+
+EM
+
+;----------------------------
+LBL T_change_quit                      ;19
+
+  L      MG_marker_one
+  R      PN_error_quit_tool_change
+  R      PN_error_guard_close_quit_tool_change
+  R      O_lamp_TC_enable                                             *;EUMACH
+
+  L      MG_key_NC_start
+  O      MG_manual_mode
+  =N     PN_error_end_tool_change_NC_start
+  PSL
+
+EM
+
+;----------------------------
+LBL Restore_necessary                  ;20
+
+  L      MG_control_in_operation_on
+  O      NP_M4157_mode_restore_position
+  O      MG_manual_mode
+  PSL
+
+EM
+
+;----------------------------
+LBL Restore_pos_ok                     ;21
+
+  L      MG_control_in_operation_on
+  AN     NP_M4157_mode_restore_position
+  O      MG_mode_block_scan_has_been_active
+  O      MG_manual_mode
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Probe_on_off                     ;22
+
+  PS     MG_marker_one
+
+*;EUMACH Original PLC---BASIC 53
+;  L      MG_manual_mode
+;  EMT
+
+;  L      BG_tool_status_new
+;  BT     K+0
+;  =      MG_touch_probe_active
+*;EUMACH Original PLC---BASIC 53
+
+EM
+
+;----------------------------
+LBL Tool_Call_quitt                    ;23
+
+  PS     MG_marker_zero
+
+  L      NP_M4073_strobe_TOOL_CALL
+  S      PN_M4093_quit_TOOL_CALL
+  IFT
+    L      NP_W264_tool_number
+    =      WG_tool_in_spindle
+  ENDI
+
+  LN     NP_M4073_strobe_TOOL_CALL
+  CMT    TC_manual_reset
+
+EM
+
+;----------------------------
+LBL TC_manual_reset
+
+  L      MG_marker_one
+  R      PN_error_tool_clamping
+  R      PN_error_tool_unclamping
+  R      PN_error_quit_tool_change
+  R      PN_error_guard_close_quit_tool_change
+  R      PN_error_end_tool_change_NC_start
+  R      MG_TC_manual
+  R      MG_TC_manu_interruption
+#if (Solenoid_off_after_tool_clamped = &inactive) or (CYTEC_CYCON_control = &active) *;EUMACH
+  R      O_tool_unclamping
+#endif                                                                *;EUMACH
+#if Head = &S_head_type_05                                            *;EUMACH
+  R      PN_error_guard_open_for_tool_replace                         *;EUMACH
+  R      PN_error_tool_replace_and_guard_close                        *;EUMACH
+#endif                                                                *;EUMACH
+
+  L      K+0
+  =      BL_step_T_change
+
+EM
+

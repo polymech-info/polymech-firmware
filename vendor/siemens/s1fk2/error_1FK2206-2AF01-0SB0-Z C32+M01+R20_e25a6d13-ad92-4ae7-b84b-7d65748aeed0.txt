@@ -1,0 +1,3 @@
+Error(s) while generating standard document(s) for article number 1FK2206-2AF01-0SB0-Z C32+M01+R20 and config id e25a6d13-ad92-4ae7-b84b-7d65748aeed0:
+
+Error generating document EPLAN_EDZ. Error cause: Error in spice docu service. Error while generate document 'EPLAN product data (EDZ format)' for article number '1FK2206-2AF01-0SB0-Z'.

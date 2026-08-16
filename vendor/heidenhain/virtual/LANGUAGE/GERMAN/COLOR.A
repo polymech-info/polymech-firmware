@@ -1,0 +1,41 @@
+/* Farb-Palette
+   ------------
+*/
+CHARSIZE= AUTO;
+LINEDIST=LINEDIST-1;
+"Color\n";
+COLOR=1;
+"Color  0:                             \n";
+CURSOR=ON;
+COLOR=1;
+"Color  1:                             \n";
+COLOR=2;
+"Color  2:                             \n";
+COLOR=3;
+"Color  3:                             \n";
+COLOR=4;
+"Color  4:                             \n";
+COLOR=5;
+"Color  5:                             \n";
+COLOR=6;
+"Color  6:                             \n";
+COLOR=7;
+"Color  7:                             \n";
+COLOR=8;
+"Color  8:                             \n";
+COLOR=9;
+"Color  9:                             \n";
+COLOR=10;
+"Color 10:                             \n";
+COLOR=11;
+"Color 11:                             \n";
+COLOR=12;
+"Color 12:                             \n";
+COLOR=13;
+"Color 13:                             \n";
+COLOR=14;
+"Color 14:                             \n";
+COLOR=15;
+"Color 15:                             \n";
+
+

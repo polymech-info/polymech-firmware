@@ -1,0 +1,124 @@
+*-----------------------------------------------------------------------------
+*  Kühlmittel innen/außen M07/M08
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_Taste_betaetigt                       M
+
+GLOBAL Kuehlmittel
+
+;----------------------------
+LBL Kuehlmittel
+;----------------------------
+
+  L      MG_M07_Kuehlmittel_innen_ein
+  O      MG_M08_Kuehlmittel_aussen_ein
+  O      MG_M09_Kuehlmittel_aus
+  O      MG_M17_Kuehlmittel_zusaetzlich
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_Taste_Kuehlmittel_M07
+  AN     ML_Taste_betaetigt
+  XO     PN_M4041_M07_MK_Status
+  =      PN_M4041_M07_MK_Status
+
+  L      MG_Taste_Kuehlmittel_M08
+  AN     ML_Taste_betaetigt
+  XO     PN_M4042_M08_MK_Status
+  =      PN_M4042_M08_MK_Status
+
+  L      MG_Taste_Kuehlmittel_M17
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_M17_MK_zusaetzlich
+  =      MG_SK_M17_MK_zusaetzlich
+
+  L      MG_Taste_Trocken_Bearbeitung
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_Trocken_Bearbeitung
+  =      MG_SK_Trocken_Bearbeitung
+
+  L      MG_Taste_Kuehlmittel_M07
+  O      MG_Taste_Kuehlmittel_M08
+  O      MG_Taste_Kuehlmittel_M17
+  O      MG_Taste_Trocken_Bearbeitung
+  =      ML_Taste_betaetigt
+
+  L      MG_M07_Kuehlmittel_innen_ein
+  S      PN_M4041_M07_MK_Status
+
+  L      PN_M4041_M07_MK_Status
+  AN     MG_Freigabe_M07_Kuehlmittel_innen
+  R      PN_M4041_M07_MK_Status
+  S      PN_Fehler_Freigabe_M07_WZ_inaktiv
+
+  L      MG_M08_Kuehlmittel_aussen_ein
+  O      MG_M13_Spindel_rechts_Kuehlmittel_ein
+  O      MG_M14_Spindel_links_Kuehlmittel_ein
+  S      PN_M4042_M08_MK_Status
+
+  L      MG_M17_Kuehlmittel_zusaetzlich
+  S      MG_SK_M17_MK_zusaetzlich
+
+  L      MG_M09_Kuehlmittel_aus
+  O      MG_Impuls_End_PGM_M02_M30
+  O      MG_BA_Wechsel_Auto_Manu
+  O      NP_M4073_Strobe_TOOL_CALL
+  ON     MG_Steuerung_betriebsbereit
+  R      PN_M4041_M07_MK_Status
+  R      PN_M4042_M08_MK_Status
+  R      MG_SK_M17_MK_zusaetzlich
+
+  L      MG_Impuls_End_PGM_M02_M30
+  ON     MG_Steuerung_betriebsbereit
+  R      MG_SK_Trocken_Bearbeitung
+
+  L      NP_M4002_S_Sollwert_0
+  O      PN_M4008_S_Sollwert_aus_Status_invers
+  AN     NP_M4030_Gewindebohren_aktiv
+  AN     MG_Kuehlmittel_ohne_Spindel_M3_M4
+  O      NP_M4158_BA_Satz_Vorlauf_aktiv
+  O      MG_WZW_manuell
+#if CFG_HSCI = "inaktiv"
+  ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+  ON     MG_Antriebs_Freigabe_1_Achsgruppe_MC
+  O      MG_Pendeln_aktiv
+  O      MG_SK_Trocken_Bearbeitung
+  =      PN_M4040_M07_M08_M09_MK_Status_invers
+
+  L      PN_M4041_M07_MK_Status
+  AN     PN_M4040_M07_M08_M09_MK_Status_invers
+  =      O_Kuehlmittel_M07_ein
+
+  L      PN_M4042_M08_MK_Status
+  AN     PN_M4040_M07_M08_M09_MK_Status_invers
+  =      O_Kuehlmittel_M08_ein
+
+  L      MG_SK_M17_MK_zusaetzlich
+  =      O_Kuehlmittel_M17_ein
+
+  LN     PN_M4041_M07_MK_Status
+  AN     PN_M4042_M08_MK_Status
+  R      PN_M4040_M07_M08_M09_MK_Status_invers
+
+  L      PN_M4041_M07_MK_Status
+  A      PN_M4040_M07_M08_M09_MK_Status_invers
+  A      MG_Takt_1_s
+  O      O_Kuehlmittel_M07_ein
+  =      O_LED_Kuehlmittel_M07
+
+  L      PN_M4042_M08_MK_Status
+  A      PN_M4040_M07_M08_M09_MK_Status_invers
+  A      MG_Takt_1_s
+  O      O_Kuehlmittel_M08_ein
+  =      O_LED_Kuehlmittel_M08
+
+  L      O_Kuehlmittel_M17_ein
+  =      O_LED_Kuehlmittel_M17
+
+  LN     I_Kuehlmittel_Fuellstand_ok
+  =      PN_Fehler_Kuehlmittel_fehlt
+
+EM

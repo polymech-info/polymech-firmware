@@ -1,0 +1,483 @@
+*-----------------------------------------------------------------------------
+*  Pallet Changer 3R
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolute_with_software_limit_switch   K%010
+
+#define /s    ML_stack_synchronize                     M
+#define /s    ML_key_pressed                           M
+#define /s    ML_PC_ready                              M
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+GLOBAL Pal_changer
+
+;----------------------------
+LBL Pal_changer
+;----------------------------
+
+  L      MG_guard_open
+  O      O_workpiece_unclamping
+  A      I_key_workpiece_clamping_on_off
+  AN     ML_key_pressed
+  XO     O_workpiece_unclamping
+  =      O_workpiece_unclamping
+
+  L      I_key_workpiece_clamping_on_off
+  =      ML_key_pressed
+
+  L      I_key_workpiece_clamping_on_off
+  AN     MG_control_in_operation_on
+  R      PN_error_workpiece_not_clamped
+
+  L      I_workpiece_unclamped
+  O      O_workpiece_unclamping
+*$WS I_pallet_holder_empty (signal should be provided by 3R)
+*
+  AN     MG_PC_pallet_holder_empty
+  AN     MG_M60_pallet_change
+  S      PN_error_workpiece_not_clamped
+
+  L      MG_PC_active
+  A      MG_pulse_internal_stop
+  S      MG_PC_check
+
+  LN     I_PC_cabin_closed
+  R      MG_PC_check
+
+  L      MG_PC_check
+  =      PN_error_PC_check
+
+  L      I_key_PC_cabin_open
+  AN     MG_PC_active
+  S      O_PC_load_door_open
+
+  L      I_PC_cabin_opened
+  R      O_PC_load_door_open
+
+  LN     I_PC_cabin_closed_locked
+  A      MG_power_delayed_on
+  =      PN_error_PC_guard_open
+  EMT
+
+  L      MG_PC_active
+  R      TS_PC_timeout
+  S      TS_PC_timer_universal
+
+  CASE   BG_step_pallet_change
+    CM     PC_activate                 ;00
+    CM     PC_automatic                ;01
+    CM     Z_start                     ;02
+    CM     Z_in_PC_pos                 ;03
+    CM     X_Y_start                   ;04
+    CM     X_in_PC_posit               ;05
+    CM     Y_in_PC_posit               ;06
+    CM     PW_door_open                ;07
+    CM     PW_door_opened              ;08
+    CM     PC_nomonal_position         ;09
+    CM     PC_time                     ;10
+    CM     PC_start                    ;11
+    CM     PC_time                     ;12
+    CM     PC_time                     ;13
+    CM     PC_time                     ;14
+    CM     PC_start_ok                 ;15
+    CM     PW_door_close               ;16
+    CM     PW_door_closed              ;17
+    CM     PC_quit                     ;18
+    CM     PC_end                      ;19
+  ENDC
+
+  PLL
+  S      TS_PC_timeout
+  IFT
+    INC    BG_step_pallet_change
+  ENDI
+
+*  L      MG_PC_diagnosis
+*  IFT
+*    L      KL_offset_PC_3R
+*    +      BG_step_PC
+*    =X
+*
+*    L      S#D0[X]
+*    =      S1
+*    INCX
+*
+*    L      S#D0[X]
+*    =      S2
+*    INCX
+*
+*    L      S#D0[X]
+*    =      S3
+*  ENDI
+
+  LN     MG_PC_active
+  EMT
+
+  L      I_PC_ready
+  S      ML_PC_ready
+
+  L      MG_NC_start_pulse
+  R      MG_PC_interruption
+
+  L      MG_key_NC_start
+  O      MG_pulse_CE_key
+  S      TS_PC_timeout
+
+  LN     TR_PC_timeout
+  AN     TS_PC_timeout
+  =      PN_error_PC_timeout
+  S      MG_PC_interruption
+
+  L      MG_key_NC_stop
+  O      MG_pulse_external_stop
+  O      I_PC_alarm
+  S      MG_PC_interruption
+
+  L      I_PC_alarm
+  S      PN_error_PC_alarm
+
+  L      MG_pulse_internal_stop
+  O      MG_auto_manu_mode_change
+  ON     MG_control_operational
+  CMT    PC_reset
+
+EM
+
+;----------------------------
+LBL PC_activate                        ;00
+
+  L      MG_M60_pallet_change
+  O      MG_M59_pallet_changer_vacate
+  A      I_PC_cabin_closed_locked
+  AN     I_PC_alarm
+  AN     MG_PC_interruption
+  S      MG_PC_active
+  PSL
+  EMF
+
+  LN     MG_M60_pallet_change
+  EMT
+
+  L      NP_D280_FN19_1st_value
+  <      K+0
+  O[
+    L      NP_D280_FN19_1st_value
+    >      NP_D924_number_pallet_pockets
+  ]
+  IFT
+    S      MG_PC_interruption
+    S      MG_win_PC_pal_number_not_permissible
+
+    PLL
+    A      MG_marker_zero
+    PSL
+  ENDI
+
+EM
+;----------------------------
+LBL PC_automatic                       ;01
+
+  LN     I_PC_3R_selected_in_auto_mode
+  O      MG_PC_interruption
+  =      MG_win_PC_automatic
+
+  L      I_PC_3R_selected_in_auto_mode
+  AN     MG_PC_interruption
+  PSL
+  EMF
+
+;----------------------------
+LBL PC_nomonal_position                ;09
+
+  PS     MG_marker_one
+
+  L      NP_D280_FN19_1st_value
+  /      K+10000
+  -      K+1
+  =      BG_pallet_number
+
+  L      BG_pallet_number
+  <      K+0
+  O      MG_M59_pallet_changer_vacate
+  IFT
+    LB     O_PC_bit_0
+    A      K%11000000
+    B=     O_PC_bit_0
+  ELSE
+    LB     O_PC_bit_0
+    A      K%11000000
+    O      BG_pallet_number
+    B=     O_PC_bit_0
+  ENDI
+
+EM
+
+;----------------------------
+LBL PC_start                           ;11
+
+  L      BG_pallet_number
+  <      K+0
+  O      MG_M59_pallet_changer_vacate
+  IFT
+    LN     MG_PC_interruption
+    S      O_PC_table_empty
+    S      MG_PC_pallet_holder_empty
+    PSL
+  ELSE
+    LN     MG_PC_interruption
+    S      O_PC_start
+    R      MG_PC_pallet_holder_empty
+    PSL
+  ENDI
+
+  L      MG_PC_interruption
+  =      MG_win_PC_start
+
+EM
+
+;----------------------------
+LBL PC_start_ok                        ;15
+
+  L      MG_marker_one
+  R      O_PC_table_empty
+  R      O_PC_start
+
+  LN     MG_PC_interruption
+  PSL
+
+  L      MG_PC_interruption
+  =      MG_win_PC_start
+
+EM
+
+;----------------------------
+LBL PW_door_open                       ;07
+
+  L      MG_marker_one
+  S      O_PC_door_open
+  R      O_PC_door_close
+  PSL
+
+EM
+
+;----------------------------
+LBL PW_door_opened                     ;08
+
+  L      I_PC_door_opened
+  AN     I_PC_door_closed
+  AN     MG_PC_interruption
+  PSL
+
+  L      MG_PC_interruption
+  =      MG_win_PC_door_open
+
+EM
+
+;----------------------------
+LBL PW_door_close                      ;18
+
+  L      MG_PC_interruption
+  =      MG_win_PC_door_close
+
+  L      ML_PC_ready
+  AN     MG_PC_interruption
+  R      O_PC_door_open
+  S      O_PC_door_close
+
+  L      ML_PC_ready
+  AN     MG_PC_interruption
+  PSL
+
+EM
+
+;----------------------------
+LBL PW_door_closed                     ;19
+
+  LN     I_PC_door_opened
+  A      I_PC_door_closed
+  AN     MG_PC_interruption
+  PSL
+
+  L      MG_PC_interruption
+  =      MG_win_PC_door_close
+
+EM
+
+;----------------------------
+LBL X_Y_start                          ;04
+
+  CM     PC_X_start
+  CM     PC_Y_start
+  PL     ML_stack_synchronize
+
+EM
+
+
+;----------------------------
+LBL Z_start                            ;02
+
+  L      MG_PC_interruption
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_Z
+    PS     NP_D956_PC_posit_Z
+    L      NP_D776_feed_PLC_Z
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_PC_pos                        ;03
+
+  L      MG_PC_interruption
+  =      MG_win_PC_posit_Z
+
+  L      DG_position_axis_Z_ref
+  -      NP_D956_PC_posit_Z
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Z
+  AN     PN_M4122_strobe_PLC_posit_axis_Z
+  AN     MG_PC_interruption
+  PSL
+
+EM
+
+;----------------------------
+LBL PC_X_start                         ;02
+
+  L      MG_PC_interruption
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_X
+    PS     NP_D940_PC_posit_X
+    L      NP_D768_feed_PLC_X
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+      M_display_module_error(KG_error_module_9221)
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_PC_posit                      ;05
+
+  L      MG_PC_interruption
+  =      MG_win_PC_posit_X
+
+  L      DG_position_axis_X_ref
+  -      NP_D940_PC_posit_X
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  AN     MG_PC_interruption
+  PSL
+
+EM
+
+;----------------------------
+LBL PC_Y_start                         ;12
+
+  L      MG_PC_interruption
+  IFT
+    PS     MG_marker_zero
+  ELSE
+    PS     KG_axis_Y
+    PS     NP_D952_PC_posit_Y
+    L      NP_D772_feed_PLC_Y
+    /      K+10000
+    PSW
+    PS     KL_absolute_with_software_limit_switch
+    CM     9221
+    PLW
+    ==     K+0
+    PSL
+    M_display_module_error(KG_error_module_9221)
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_in_PC_posit                      ;06
+
+  L      MG_PC_interruption
+  =      MG_win_PC_posit_Y
+
+  L      DG_position_axis_Y_ref
+  -      NP_D952_PC_posit_Y
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  AN     MG_PC_interruption
+  PSL
+
+EM
+
+;----------------------------
+LBL PC_quit                            ;17
+
+  L      MG_PC_interruption
+  =      MG_win_PC_finish
+
+  LN     NP_M4072_strobe_M_function
+  AN     MG_PC_interruption
+  PSL
+
+  L      ML_PC_ready
+  AN     MG_PC_interruption
+  S      PN_M4092_quit_M_function
+
+EM
+
+;----------------------------
+LBL PC_end                             ;20
+
+  PS     MG_marker_zero
+
+LBL PC_reset
+
+  L      MG_marker_one
+  R      ML_PC_ready
+  R      MG_PC_active
+  R      MG_PC_interruption
+  R      O_PC_start
+  R      O_PC_table_empty
+
+  L      K+0
+  =      BG_step_pallet_change
+
+EM
+
+;----------------------------
+LBL PC_time                            ;10 ;12 ;13 ;14
+
+  LN     TR_PC_timer_universal
+  =      TS_PC_timer_universal
+  PSL
+
+EM

@@ -1,0 +1,417 @@
+*-----------------------------------------------------------------------------
+*  Energy Option
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Mit diesem Programm wird die Energieeffizienz dieser Werkzeugmaschine
+*    verbessert. Nicht benötigte Verbraucher können in Bereitschaft bzw.
+*    abgeschaltet werden.
+*
+*-----------------------------------------------------------------------------
+
+
+; Lokale Definitionen   ML_Spawn_gestartet
+
+#define /s    ML_Engery_Option_initialisiert           M
+#define /s    ML_Achsen_in_Position                    M
+#define /s    ML_Spindel_steht_Temp                    M
+#define /s    ML_Maschine_in_Position                  M
+#define /s    ML_Energy_Opt_Freigabe                   M
+#define /s    ML_Energy_Opt_Freigabe_temp              M
+#define /s    ML_Energy_Opt_Freigabe_Impuls            M
+#define /s    ML_Autostart_Test                        M
+
+#define /s    KL_Shutdown_Mode_definiert_in_MP4040     K +2
+#define /s    KL_Format_Zeit_H_M                       K +15
+
+#define /s    BL_Identifier_Init                       B
+#define /s    BL_Identifier_Warmlauf                   B
+#define /s    BL_Return_Wert                           B
+
+#define /s    DL_Achsen_in_Klemmbetrieb                D
+#define /s    DL_Fehler_Energy_Opt                     D
+#define /s    DL_Exit_Energy_Opt                       D
+
+#define /s    KS_PY_Energy_Opt                         S"PLC:\\PYTHON\\energyOption.PY"
+
+
+#include Mac_Lib.inc
+
+GLOBAL Energy_Option
+
+;----------------------------
+LBL Energy_Option
+;----------------------------
+
+  LN     ML_Engery_Option_initialisiert
+  A      MG_Maschinenparameter_gelesen
+  IFT
+
+    RPLY   BL_Identifier_Init
+    ==     K+0
+    IFT
+      SUBM   Energy_Opt_INIT
+      =      BL_Identifier_Init
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+
+    ENDI
+  ENDI
+
+; Allgemeine Freigabe
+
+  L      MG_Energy_Opt_Ein
+  AN     MG_Energy_Opt_Edit_Ein
+  A      MG_Steuerung_betriebsbereit
+  AN     MG_Stern_ein
+  A      MG_TNC_initialisiert
+  AN     NP_M4173_1_PLC_Durchlauf_nach_Compile
+  A      MG_Referenz_Achsen_aufgenommen
+  A      MG_Maschinenparameter_gelesen
+  =      ML_Energy_Opt_Freigabe
+
+  L      ML_Energy_Opt_Freigabe
+  AN     ML_Energy_Opt_Freigabe_temp
+  =      ML_Energy_Opt_Freigabe_Impuls
+
+  L      ML_Energy_Opt_Freigabe
+  =      ML_Energy_Opt_Freigabe_temp
+
+; Autostart
+
+  L      MG_Impuls_1_min
+  O      ML_Autostart_Test
+  IFT
+    L      STG_Energy_Opt_Autostart.Wochentage
+    BT     DG_Wochentag
+    O      ML_Autostart_Test
+    IFT
+      L      SG_Time_H_M
+      ==     SG_Energy_Opt_Zeit_Ein
+      O      ML_Autostart_Test
+      IFT
+
+        L      MG_Eins_Merker
+        R      PN_Fehler_Energy_Opt_Standby_Maschine
+
+        L      STG_Energy_Opt_Autostart.Licht
+        AN     O_Arbeitsraum_Licht
+        S      MG_Energy_Opt_Licht_ein
+
+        L      PN_Fehler_Energy_Opt_Autostart
+        A      STG_Energy_Opt_Autostart.Maschine
+        A      MG_Not_Halt_entriegelt
+        AN     MG_Arbeitsraum_offen
+        AN     NP_M4660_HR5x0_aktiv
+        AN     NP_M4151_BA_Elektronisches_Handrad
+        AN     NP_M4660_HR5x0_aktiv
+        S      MG_Energy_Opt_Maschine_ein
+
+        L      MG_Energy_Opt_Maschine_ein
+        A      STG_Energy_Opt_Autostart.Antriebe
+        S      MG_Energy_Opt_Antriebe_ein
+
+        L      MG_Energy_Opt_Antriebe_ein
+        A      STG_Energy_Opt_Autostart.Warmlaufprogramm
+        A      MG_BA_Automatik
+
+        IFT
+          RPLY   BL_Identifier_Warmlauf
+          ==     K+0
+          IFT
+            SUBM   Warmlaufprogramm_anwaehlen
+            =      BL_Identifier_Warmlauf
+            ==     K+0
+            S      PN_Fehler_Submit_Spawn_Queue_voll
+
+          ENDI
+        ENDI
+
+        L      ML_Autostart_Test
+        R      ML_Autostart_Test
+      ENDI
+    ENDI
+  ENDI
+
+  L      MG_Energy_Opt_Maschine_ein
+  O      MG_Energy_Opt_Antriebe_ein
+  O      MG_Energy_Opt_Licht_ein
+  O      MG_Energy_Opt_Warmlaufpgm_ein
+  IFT
+
+    ; Maschine
+    L      MG_Steuerung_betriebsbereit
+    R      MG_Energy_Opt_Maschine_ein
+
+    ; Antriebe
+    L      MG_Energy_Opt_Antriebe_ein
+    A      NP_M4178_Externer_Not_Halt_aktiv
+    A      MG_Steuerung_betriebsbereit
+    IFT
+      PS     KG_Taste_CE
+      CM     9180                      ;Tastensimulation
+      PLX
+
+    M_Modul_Fehler_anzeigen
+
+      L      MG_Energy_Opt_Antriebe_ein
+      R      MG_Energy_Opt_Antriebe_ein
+    ENDI
+
+    ; Licht
+    L      O_Arbeitsraum_Licht
+    R      MG_Energy_Opt_Licht_ein
+
+    ; Warmlaufpgm
+    L      MG_Stern_ein
+    A      MG_Steuerung_betriebsbereit
+    R      MG_Energy_Opt_Warmlaufpgm_ein
+
+  ENDI
+
+  L      MG_N_Impuls_Steuerung_betriebsbereit
+  R      MG_Energy_Opt_Warmlaufpgm_ein
+
+  LN     MG_Steuerung_betriebsbereit
+  A      MG_Referenz_Achsen_aufgenommen
+  AN     MG_Arbeitsraum_offen
+  A      MG_Reset_Init_Macro_ausgefuehrt
+  A      MG_Not_Halt_entriegelt
+  A      STG_Energy_Opt_Autostart.Maschine
+  A      MG_Energy_Opt_Ein
+  AN     MG_Energy_Opt_Edit_Ein
+  =      PN_Fehler_Energy_Opt_Autostart
+  =      MG_Win_Energy_Opt_Autostart
+
+; Auswertung Achsen
+
+  * Timer starten
+  LN     NP_D1104_Achsen_in_Position
+  ==     K+0
+  AN     ML_Achsen_in_Position
+  IFT
+    L      STG_Energy_Opt_Achsen.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Achsen
+      PS     STG_Energy_Opt_Achsen.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+  LN     NP_D1104_Achsen_in_Position
+  ==     K+0
+  A      ML_Energy_Opt_Freigabe
+  =      ML_Achsen_in_Position
+  IFT
+    LN     TR_Energy_Opt_Achsen
+    S      STG_Energy_Opt_Achsen.M_Aktiv
+  ELSE
+    L      STG_Energy_Opt_Achsen.M_Aktiv
+    R      STG_Energy_Opt_Achsen.M_Aktiv
+  ENDI
+
+  * Aktivieren
+  L      STG_Energy_Opt_Achsen.M_Aktiv
+  AN     STG_Energy_Opt_Achsen.M_Aktiv_Temp
+  IFT
+    L      STG_Energy_Opt_Achsen.D_Filter
+    A      NP_D1100_Achsfreigaben
+    =      DL_Achsen_in_Klemmbetrieb
+    =      DG_Klemmbetrieb_Ein_extern
+  ENDI
+
+  * Deaktivieren
+  LN     STG_Energy_Opt_Achsen.M_Aktiv
+  A      STG_Energy_Opt_Achsen.M_Aktiv_Temp
+  O      ML_Energy_Opt_Freigabe_Impuls
+  IFT
+    L      DL_Achsen_in_Klemmbetrieb
+    =      DG_Klemmbetrieb_Aus_extern
+  ENDI
+
+  * temp fuer Impulsbildung
+  L      STG_Energy_Opt_Achsen.M_Aktiv
+  =      STG_Energy_Opt_Achsen.M_Aktiv_Temp
+
+; Auswertung Spindel
+
+  * Timer starten
+  L      MG_Spindel_steht
+  AN     ML_Spindel_steht_Temp
+  IFT
+    L      STG_Energy_Opt_Spindel.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Spindel
+      PS     STG_Energy_Opt_Spindel.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+  ENDI
+
+  L      MG_Spindel_steht
+  A      ML_Energy_Opt_Freigabe
+  AN     MG_Spindel_C_Achs_Betrieb_aktiv
+  AN     MG_Spindel_Richten_aktiv
+  A      ML_Energy_Opt_Freigabe
+  =      ML_Spindel_steht_Temp
+  IFT
+    LN     TR_Energy_Opt_Spindel
+    S      STG_Energy_Opt_Spindel.M_Aktiv
+  ELSE
+    L      STG_Energy_Opt_Spindel.M_Aktiv
+    R      STG_Energy_Opt_Spindel.M_Aktiv
+  ENDI
+
+  * Aktivieren
+  L      STG_Energy_Opt_Spindel.M_Aktiv
+  AN     STG_Energy_Opt_Spindel.M_Aktiv_Temp
+  IFT
+    * nb
+  ENDI
+
+  * Deaktivieren
+  LN     STG_Energy_Opt_Spindel.M_Aktiv
+  A      STG_Energy_Opt_Spindel.M_Aktiv_Temp
+  IFT
+    * nb
+  ENDI
+
+  * temp fuer Impulsbildung
+  L      STG_Energy_Opt_Spindel.M_Aktiv
+  =      STG_Energy_Opt_Spindel.M_Aktiv_Temp
+
+; Auswertung Maschine
+
+  LN     NP_D1104_Achsen_in_Position
+  ==     K+0
+  A      MG_Spindel_steht
+  AN     ML_Maschine_in_Position
+  A      ML_Energy_Opt_Freigabe
+  IFT
+    L      STG_Energy_Opt_Maschine.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Maschine
+      PS     STG_Energy_Opt_Maschine.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      STG_Energy_Opt_Steuerung.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Steuerung
+      PS     STG_Energy_Opt_Steuerung.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      STG_Energy_Opt_Licht.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Licht
+      PS     STG_Energy_Opt_Licht.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      STG_Energy_Opt_Luft.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Luft
+      PS     STG_Energy_Opt_Luft.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      STG_Energy_Opt_Oel.M_Ein
+    IFT
+      PS     K &TR_Energy_Opt_Oel
+      PS     STG_Energy_Opt_Oel.D_Zeit
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+  ENDI
+
+  LN     NP_D1104_Achsen_in_Position
+  ==     K+0
+  A      MG_Spindel_steht
+  A      ML_Energy_Opt_Freigabe
+  =      ML_Maschine_in_Position
+  IFT
+    LN     TR_Energy_Opt_Maschine
+    S      STG_Energy_Opt_Maschine.M_Aktiv
+    S      PN_Fehler_Energy_Opt_Standby_Maschine
+
+    LN     TR_Energy_Opt_Steuerung
+    S      STG_Energy_Opt_Steuerung.M_Aktiv
+
+    LN     TR_Energy_Opt_Licht
+    A      O_Arbeitsraum_Licht
+    S      STG_Energy_Opt_Licht.M_Aktiv
+
+    LN     TR_Energy_Opt_Luft
+    S      STG_Energy_Opt_Luft.M_Aktiv
+
+    LN     TR_Energy_Opt_Oel
+    S      STG_Energy_Opt_Oel.M_Aktiv
+
+  ELSE
+    L      MG_Eins_Merker
+    R      STG_Energy_Opt_Maschine.M_Aktiv
+    R      STG_Energy_Opt_Steuerung.M_Aktiv
+    R      STG_Energy_Opt_Licht.M_Aktiv
+    R      STG_Energy_Opt_Luft.M_Aktiv
+    R      STG_Energy_Opt_Oel.M_Aktiv
+
+  ENDI
+
+  LN     O_Arbeitsraum_Licht
+  R      STG_Energy_Opt_Licht.M_Aktiv
+
+; Timer setzten
+
+  L      MG_Eins_Merker
+  S      TR_Energy_Opt_Achsen
+  S      TR_Energy_Opt_Spindel
+  S      TR_Energy_Opt_Maschine
+  S      TR_Energy_Opt_Steuerung
+  S      TR_Energy_Opt_Licht
+  S      TR_Energy_Opt_Luft
+  S      TR_Energy_Opt_Oel
+
+EM
+
+;----------------------------
+LBL Warmlaufprogramm_anwaehlen
+
+  PS     K &SG_Energy_Opt_Programm
+  CM     9290                          ;Anwahl eines NC-Hauptprogramms
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  S      MG_Energy_Opt_Warmlaufpgm_ein
+
+EM
+
+;----------------------------
+LBL Energy_Opt_INIT
+
+  PS     S"Energy_Opt"
+  CM     9297                          ;Status einer Python-Instanz abfragen
+  PLW
+  ==     KG_Py_Python_Prozess_aktiv
+  IFF
+    PS     KG_Py_Mode_asynchron
+    PS     KG_Py_Speicher_10_MB
+    PS     KS_PY_Energy_Opt
+    PS     S"Energy_Opt"
+    PS     S"INIT"
+    CM     9295                        ;Starten eines Python-Prozesses
+    PL     DL_Fehler_Energy_Opt
+    PL     DL_Exit_Energy_Opt
+
+    M_Modul_Fehler_anzeigen
+
+    LN     ML_Engery_Option_initialisiert
+    S      ML_Engery_Option_initialisiert
+  ENDI
+
+EM
+

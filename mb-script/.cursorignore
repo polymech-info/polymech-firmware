@@ -1,0 +1,9 @@
+./.pio
+./.vscode
+./data
+./docs
+./examples
+./scripts
+./tmp
+./ref
+./README.md

@@ -1,0 +1,26 @@
+/* STATUS SPINDLE
+   --------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS SPINDLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"DRIVE ON       :     %d\n",O15/c;
+"ORIENTATION    :     %d\n",M4130/c;
+"LOOP OPEN      :     %d\n",M4012/c;
+"IN POSITION    :     %d\n",M4000/c;
+"NOT IN RAMP    :     %d\n",M4001/c;
+"ANALOG 0 V     :     %d\n",M4002/c;
+"SWING LEFT     :     %d\n",M4009/c;
+"SWING RIGHT    :     %d\n",M4010/c;
+"REV. MP3520    :     %d\n",M4011/c;
+"THREAD CYCL 2  :     %d\n",M4030/c;
+"THREAD CYCL 17 :     %d\n",M4031/c;
+"NOMINAL RPM    : %5d\n",W320/c;
+"ACTUAL RPM     : %5d\n",W322/c;
+"PROGRAMMED RPM : %5.0f\n",D356/n=3/c;

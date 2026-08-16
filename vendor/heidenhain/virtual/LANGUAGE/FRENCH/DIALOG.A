@@ -1,0 +1,2048 @@
+﻿Machine/poste programmat.  - 0/2
+Fact. échelle XYZ/Z        - 0/1
+Comportement avec cycles
+Facteur recouv. poches 0.1-1.414
+Tolér. traject. circ.  max 0.016
+Rotat. 3D act/inact  -  ..0/ ..1
+Graissage axes          [min]
+Manivelle désact./HR410      0/6
+Auto extinction sur END:PGM  0/1
+TT1x0 Position X           [REF]
+TT1x0 Position Y           [REF]
+TT1x0 Position Z           [REF]
+Paramètre utilisateur 13
+Paramètre utilisateur 14
+Paramètre utilisateur 15
+Paramètre utilisateur 16
+Durée fct broche1 =
+Durée fct broche2 =
+Durée fonct axes  =
+Durée fct hydraul =
+Durée fonction. 5 =
+Durée fonction. 6 =
+Durée fonction. 7 =
+Durée fonction. 8 =
+Durée fonction. 9 =
+Durée fonction 10 =
+Durée fonction 11 =
+Durée fonction 12 =
+Durée fonction 13 =
+* Titre boîte message éditeur tableau MP <- line 30
+Editeur tableau MP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Boutons Arrêt d'urgence
+-> déverrouiller
+H001 Axe sur fin de course X+
+-> contact clef -> dégag. fin course               .
+H002 Axe sur fin de course Y+
+-> contact clef -> dégag. fin course     .
+H003 Axe sur fin de course Z+
+-> contact clef -> dégag. fin course
+H004 Axe sur fin de course 4+
+-> contact clef -> dégag. fin course
+H005 Axe sur fin de course 5+
+-> contact clef -> dégag. fin course
+H006 Axe sur fin de course X-
+-> contact clef -> dégag. fin course
+H007 Axe sur fin de course Y-
+-> contact clef -> dégag. fin course
+H008 Axe sur fin de course Z-
+-> contact clef -> dégag. fin course
+H009 Axe sur fin de course 4-
+-> contact clef -> dégag. fin course
+H010 Axe sur fin de course 5-
+-> contact clef -> dégag. fin course
+H011 Position de chgt outil axe X
+->mode manuel-manivelle ->MOD ->Aide
+H012 Position de retrait outil axe Y
+->mode manuel-manivelle ->MOD ->Aide
+H013 Position de pose outil axe Y
+->mode manuel-manivelle ->MOD ->Aide
+H014 Position de chgt outil manuel en Y
+->mode manuel-manivelle ->MOD ->Aide
+H015 Position de retrait outil axe Z
+->mode manuel-manivelle ->MOD ->Aide
+H016 Position de pose outil axe Z
+->mode manuel-manivelle ->MOD ->Aide
+H017 Position de chgt outil manuel en Z
+->mode manuel-manivelle ->MOD ->Aide
+H018 Position de sécurité Z chgt outil
+->mode manuel-manivelle ->MOD ->Aide
+H019 Position de chgt outil broche(M19)
+->mode manuel-manivelle ->MOD ->Aide
+H020 Desserrer l'outil
+->mode manuel-manivelle ->MOD ->Aide
+H021  Serrer l'outil
+->mode manuel-manivelle ->MOD ->Aide
+H022 Lever le bras changeur
+->mode manuel-manivelle ->MOD ->Aide
+H023 Poser le bras du changeur
+->mode manuel-manivelle ->MOD ->Aide
+H024 Pivoter bras changeur à gauche/dr
+->mode manuel-manivelle ->MOD ->Aide
+H025 Fermer pinces changeur
+->mode manuel-manivelle ->MOD ->Aide
+H026 Ouvrir pinces changeur
+->mode manuel-manivelle ->MOD ->Aide
+H027 Magasin outil sur posit chgt outil
+->mode manuel-manivelle ->MOD ->Aide
+H028 Porte magasin d'outil ouverte
+->mode manuel-manivelle ->MOD ->Aide
+H029 Pince changeur magasin fermée
+->mode manuel-manivelle ->MOD ->Aide
+H030 Pince changeur magasin ouverte
+->mode manuel-manivelle ->MOD ->Aide
+H031 Position changeur magasin
+->mode manuel-manivelle ->MOD ->Aide
+H032 Porte changeur magasin fermée
+->mode manuel-manivelle ->MOD ->Aide
+H033 Chang. outil selon état
+-> Stop interne -> IMD -> TOOL CALL
+H034 Magasin outil vers broche
+->mode manuel-manivelle ->MOD ->Aide
+H035 Magasin outil vers position base
+->mode manuel-manivelle ->MOD ->Aide
+H036 Extraire poche magasin outils
+->mode manuel-manivelle ->MOD ->Aide
+H037 Rabattre poche magasin outils
+->mode manuel-manivelle ->MOD ->Aide
+H038 Ôter verrou magasin changeur
+->mode manuel-manivelle ->MOD ->Aide
+H039 Mettre verrou magasin changeur
+->mode manuel-manivelle ->MOD ->Aide
+H040 Bras changeur en position base
+->mode manuel-manivelle ->MOD ->Aide
+H041 Fonction chang. outil interdite
+->mode manuel-manivelle ->MOD ->Aide
+H042 Bras changeur vers position broche
+->mode manuel-manivelle ->MOD ->Aide
+H043 Bras changeur vers position mag.
+->mode manuel-manivelle ->MOD ->Aide
+H044 Bras changeur vers position base
+->mode manuel-manivelle ->MOD ->Aide
+H045 Bras changeur vers position interm
+->mode manuel-manivelle ->MOD ->Aide
+H046 Manivelle HR410 trait. touches
+par CN, FCT A-C par PLC   -> MP7645: 0
+H047 Strobe M/S/T/Q vers PLC pendant
+amorce séquence  -> MP7681: %110111
+H048 Le magasin outils est un axe PLC!
+Lettre minuscule              -> MP100
+H049 Type de manivelle non traitée
+-> MP7640: 0..6/11..13
+H050 Amorce de séquence PLC actif !
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 Arrêt PGM avec fct M nécessaire
+Bit 02  MP 7440: %xxxxx0xx
+H052 Erreur à l'ouverture du fichier
+-> module 9240
+H053 Erreur lecture tableau
+-> module 9255
+H054 Erreur écriture tableau
+-> module 9256
+H055 Erreur valeur non dans tableau
+-> module 9255
+H056 Sondes température Pt100 défect.
+-> vérifier connexion X48
+H057 Pt100, connexion non définie
+-> table compensation température
+H058 Position Axe X changeur palettes
+->mode manuel-manivelle ->MOD ->Aide
+H059 Position Axe Y changeur palettes
+->mode manuel-manivelle ->MOD ->Aide
+H060 Position Axe Z changeur palettes
+->mode manuel-manivelle ->MOD ->Aide
+H061 Activer changeur palettes auto.
+
+H062 Start changement palette
+->mode manuel-manivelle ->MOD ->Aide
+H063 Terminer changement palette
+->Touche NC-Start
+H064 Ouvrir verrou changement palette
+->mode manuel-manivelle ->MOD ->Aide
+H065 Fermer verrou changement palette
+->mode manuel-manivelle ->MOD ->Aide
+H066 Numéro de palette non autorisé
+
+H067 Desserrer palette (sur machine)
+->mode manuel-manivelle ->MOD ->Aide
+H068 Serrer palette (sur machine)
+->mode manuel-manivelle ->MOD ->Aide
+H069 Axes asservis MP10 non affecté
+-> Modifier MP2040.x
+H070 Position d'arrêt chgt palette
+->mode manuel-manivelle ->MOD ->Aide
+H071 Position axe X changeur palette 1
+->mode manuel-manivelle ->MOD ->Aide
+H072 Position axe X changeur palette 2
+->mode manuel-manivelle ->MOD ->Aide
+H073 Position base changeur palette
+->mode manuel-manivelle ->MOD ->Aide
+H074 Position base changeur palette 1
+->mode manuel-manivelle ->MOD ->Aide
+H075 Position base changeur palette 2
+->mode manuel-manivelle ->MOD ->Aide
+H076 Changeur pal vers pos. chargement
+->mode manuel-manivelle ->MOD ->Aide
+H077 Changeur palette vers machine
+->mode manuel-manivelle ->MOD ->Aide
+H078 Erreur détecteur poche chang pal
+->mode manuel-manivelle ->MOD ->Aide
+H079 Position axe 4 changeur palettes
+->mode manuel-manivelle ->MOD ->Aide
+H080 Changement gamme tête 3D
+
+H081 Orientation broche tête 3D
+
+H082 Couple de torsion tête 3D
+->mode manuel ->softkey tête 3D
+H083 Ouvrir verrou outil
+->mode manuel-manivelle ->MOD ->Aide
+H084 Fermer verrou outil
+->mode manuel-manivelle ->MOD ->Aide
+H085 Bras changeur vers pos. chgt out.
+->mode manuel-manivelle ->MOD ->Aide
+H086 Bras changeur vers position base
+->mode manuel-manivelle ->MOD ->Aide
+H087 Préposition. axe X chgt outil
+->mode manuel-manivelle ->MOD ->Aide
+H088 Alarme changeur palette
+
+H089 Vérifier changeur palette
+
+H090 Broche en mode axe C
+-> position broche (synchroniser)
+H091 Interface étendue - 20 boucles
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard interface - 16 loops
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 Optimis. energie
+-> AUTOSTART / pgm de chauffe actif
+H094 Activer potentiomètre Fmax
+       MP7620: Mettre à 1 Bit05 ou 09
+H048 Le magasin outils est un axe PLC!
+Lettre minuscule              -> MP100
+H096 PLC message
+
+H097 PLC message
+
+H098      oui  -> NC start
+non   -> NC stop
+H099
+-> NC start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC magazine - PLC axis *
+* TC magazine - Pulse counter *
+* TC auto - Single arm *
+* TC auto - Double arm *
+* TC auto - Cam driven arm *
+* TC auto - Pickup *
+
+
+
+Magazine_start
+Magazine_end
+Tool_def_quit
+Pocket_put_in
+Pocket_pos_in
+Pocket_in_out
+Pocket_posit
+T_magazine_start
+T_mag_in_position
+Decode_P_no
+Standby_T_read
+Magazine_direct
+Lock_pin_out
+Lock_pin_pos_out
+Magazine_nom_pos
+Time_exact_stop
+Lock_pin_pos_in
+Mag_exact_stop
+TC_magazine_cw
+TC_magazine_ccw
+
+TC_auto_start
+TC_auto_end
+Tool_spindle_ok
+T_mag_start
+Magazine_in_pos
+Mag_full_empty
+Spi_full_empty
+Mag_full
+Mag_empty
+Spi_empty_full
+Tool_lock_open
+Tool_lock_opened
+Tool_lock_close
+Tool_lock_closed
+S_start
+S_in_TC_pos
+XY_start
+X_start
+X_in_pos
+X_TC_pre_pos
+X_in_pre_pos
+Y_start
+Y_in_TC_pos
+Y_TC_pre_pos
+Y_in_pre_pos
+Z_start
+Z_in_TC_pos
+Z_start_safety
+Z_in_pos_safety
+Z1_in_out_start
+Z1_posit_in_out
+Z2_in_out_start
+Z2_posit_in_out
+Z3_in_start
+Z3_posit_in
+T_pocket_put_out
+T_pocket_pos_out
+T_pocket_time
+Pickup_values_read
+Pickup_put_out
+Pickup_put_out_ok
+Pickup_put_in
+Pickup_put_in_ok
+T_arm_put_out
+T_arm_pos_out
+T_arm_put_in
+T_arm_pos_in
+T_arm_to_spindle
+T_arm_on_spindle
+T_arm_to_magazine
+T_arm_on_magazine
+T_arm_to_middle
+T_arm_in_middle
+T_arm_to_basic
+T_arm_on_basic
+T_arm_to_cw_ccw
+T_arm_in_cw_ccw
+T_arm_middle_stop
+TC_arm_delay
+Jump_TC_arm
+T_pocket_in_out
+T_pocket_pos_ok
+T_gripper_close
+T_gripper_closed       .
+T_gripper_open
+T_gripper_opened
+T_gri_mag_open
+T_gri_mag_opened
+T_gri_mag_close
+T_gri_mag_closed
+T_gri_spi_open
+T_gri_spi_opened
+T_gri_spi_close
+T_gri_spi_closed
+T_standby_read
+TC_auto_time
+Mag_to_spindle
+Mag_in_spindle
+Tool_unclamping
+Tool_unclamped
+Tool_clamping
+Tool_clamped
+Time_put_out
+Tnew_store
+T0_in_status
+T0_Tnew_status
+Tnew_in_status
+T_status_ok
+Tool_Call_2nd
+Tool_Call_wait
+T_status_read
+Jump_clamping
+Mag_to_basic
+Mag_on_basic
+TOOL_CALL_quit
+Jump_T0_programed
+Jump_spindle_was_empty
+AC_in_TC_position
+T_gripper_to_cw_right
+T_gripper_to_ccw_left
+Tool_in magazine unlock
+Tool_in_magazine_unlocked
+Tool_in_magazine_lock
+Tool_in_magazine_locked
+TC_manual
+TC_manual_start
+Jump_BA_manual
+X_start_manual
+X_in_pos_manual
+Y_start_manual
+Y_in_pos_manual
+Z_start_manual
+Z_in_pos_manual
+Tool_manu_unclamping
+Tool_manu_clamping
+TC_disable
+TC_quit
+Restore_necessary
+Restore_pos_ok
+Tool_Call_quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+non défini
+Tension DC intermédiaire trop élevée
+Température radiateur trop élevée
+Court-circuit sur phase moteur avec Uz
+Courant DC intermédiaire trop élevé
+Tension d'alimentation non prête
+Courant de fuite trop élevé
+
+
+
+0 Pas d'erreur
+1 Valeur paramètre hors plage
+2 Paramètre non valide/n'existe pas
+3 Valeur adresse hors plage
+4 longueur bloc hors plage valeur
+5 Pas d'adresse de mot ou double-mot
+6 Valeur ne peut/ne doit pas être modifiée
+7 Fichier défectueux / ne peut être lu.
+8 Mode d'utilisation incorrect
+9 - Commande positionn. déjà exécutée
+10 - Pas de changeur outils défini
+11 caractères non permis
+12 Pas de fin de string, ou string incomplet
+13 Pas de connexion
+14 RS-232 occupé ou non attribué
+15 RS-232 buffer d'envoi non vide
+16 RS-232 buffer de réception vide
+17 RS-232 vitesse en baud non possible
+18 Erreur de transmission RS-232
+19 Pas d'asservissement de courant trouvé
+20 Module non appelé sur tâche submit
+21 Module appelé sans signal strobe
+22 Dépassement file de touche
+23 Dépassement file d'attente message erreur PLC
+24 Module a été appelé dans une tache submit
+25 Trop d'éléments pour champ de constantes
+26 Eléments du champ de constantes non permis
+27 Stop orientation S déjà actif
+28 La fonction du module est déjà active
+29 Fichier ouvert de type inattendu
+30 Le nom du champ n'est pas contenu
+31 La requête est incorrecte
+32 Aucune donnée correspond à requête
+33 Reference sur axe non franchie
+34 - Reset; appareil externe défectu.
+35 L'éditeur n'est pas actif
+36 Erreur diverse accès fichier
+37 Pas assez de mémoire système
+38 Erreur pendant compilation
+39 Entrée PLC rapide drive on
+40 Mise sous puiss. var. impossible
+41 Contrôle type numéro table outil
+42 Aliment. ne peut pas être coupée
+43 Module appelé mais no safety package
+44 Erreur ressources soft-key
+45 Module annulé
+46 Erreur Profibus ou ASI
+47
+48 -
+49 -
+50 -
+51 Fonction impossible, PLC510 uniqu.
+52 Fonction pas avec process. simple
+53 Aucune interface série disponible
+54 Fonction pas avec double proces.
+55 Fichier ne peut pas être bloqué
+56 Fichier non trouvé
+57 Option FCL non disponible
+58 Fonction canal CN non disponible
+59 Traitement (Phyton) non autorisé
+60 Sortie analogique X8/9 bloquée(HW)
+61 Fonction du module non supportée
+62 Symbole/identifier n'existe pas
+63 Erreur creation structure
+64 Handle inconnu/incorrect
+65 Mauvaise direction de donnée
+66 -
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

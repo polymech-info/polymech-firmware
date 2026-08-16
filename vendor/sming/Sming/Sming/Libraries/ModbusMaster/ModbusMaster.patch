@@ -1,0 +1,45 @@
+diff --git a/src/ModbusMaster.cpp b/src/ModbusMaster.cpp
+index cdcc534..b08a335 100644
+--- a/src/ModbusMaster.cpp
++++ b/src/ModbusMaster.cpp
+@@ -756,15 +756,12 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
+   // flush receive buffer before transmitting request
+   while (_serial->read() != -1);
+ 
+-  // transmit request
+   if (_preTransmission)
+   {
+     _preTransmission();
+   }
+-  for (i = 0; i < u16ModbusADUSize; i++)
+-  {
+-    _serial->write(u8ModbusADU[i]);
+-  }
++  _serial->write(u8ModbusADU, u16ModbusADUSize);
++  _serial->write((uint8_t)0);
+   
+   u16ModbusADUSize = 0;
+   _serial->flush();    // flush transmit buffer
+@@ -860,7 +857,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
+           break;
+       }
+     }
+-    if ((millis() - u32StartTime) > ku16MBResponseTimeout)
++    if ((millis() - u32StartTime) > MB_RESPONSE_TIMEOUT)
+     {
+       u8MBStatus = ku8MBResponseTimedOut;
+     }
+diff --git a/src/ModbusMaster.h b/src/ModbusMaster.h
+index 8ab0d52..b568a2c 100644
+--- a/src/ModbusMaster.h
++++ b/src/ModbusMaster.h
+@@ -254,9 +254,6 @@ class ModbusMaster
+     static const uint8_t ku8MBMaskWriteRegister          = 0x16; ///< Modbus function 0x16 Mask Write Register
+     static const uint8_t ku8MBReadWriteMultipleRegisters = 0x17; ///< Modbus function 0x17 Read Write Multiple Registers
+     
+-    // Modbus timeout [milliseconds]
+-    static const uint16_t ku16MBResponseTimeout          = 2000; ///< Modbus timeout [milliseconds]
+-    
+     // master function that conducts Modbus transactions
+     uint8_t ModbusMasterTransaction(uint8_t u8MBFunction);
+     

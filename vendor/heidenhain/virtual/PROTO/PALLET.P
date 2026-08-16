@@ -1,0 +1,161 @@
+BEGIN PALLET .P 
+#STRUCTBEGIN
+   NAME = PAL/PGM
+     TYPE = C
+     WIDTH = 3
+     DEC = 0
+     DIA-ENGLISH = Pallet=PAL / Program=PGM
+     DIA-GERMAN = Palette=PAL / Programm=PGM
+     DIA-CZECH = PALETA=PAL / PROGRAM=PGM
+     DIA-FRENCH = Palette=PAL / programme=PGM
+     DIA-ITALIAN = Pallet=PAL / programma=PGM
+     DIA-SPANISH = Palet=PAL / Programa=PGM
+     DIA-PORTUGUE = Palete=PAL / programa=PGM
+     DIA-SWEDISH = PALETT=PAL / PROGRAM=PGM
+     DIA-DANISH = PALETTE=PAL / PROGRAM=PGM
+     DIA-FINNISH = PALETTI=PAL / OHJELMA=PGM
+     DIA-DUTCH = Pallet=PAL / programma=PGM
+     DIA-POLISH = Paleta=PAL / Program=PGM
+     DIA-HUNGARIA = Paletta = PAL / Program = PGM
+     DIA-RUSSIAN = Menju=PAL / Programma=PGM
+   NAME = NAME
+     TYPE = C
+     WIDTH = 30
+     DEC = 0
+     DIA-ENGLISH = Pallet / NC program?
+     DIA-GERMAN = Palette / NC-Programm?
+     DIA-CZECH = PALETA / NC-PROGRAM?
+     DIA-FRENCH = Palette / programme CN?
+     DIA-ITALIAN = Pallet / programma NC?
+     DIA-SPANISH = Palet / Programa NC?
+     DIA-PORTUGUE = Palete / programa NC?
+     DIA-SWEDISH = PALETT / NC-PROGRAM?
+     DIA-DANISH = PALETTE / NC-PROGRAM?
+     DIA-FINNISH = PALETTI / NC-OHJELMA?
+     DIA-DUTCH = Pallet / NC-programma?
+     DIA-POLISH = Paleta / NC-program?
+     DIA-HUNGARIA = Paletta / NC program ?
+     DIA-RUSSIAN = Menju / NC programma?
+   NAME = DATUM
+     TYPE = C
+     WIDTH = 30
+     DEC = 0
+     DIA-ENGLISH = Datum table?
+     DIA-GERMAN = Nullpunkt-Tabelle?
+     DIA-CZECH = TABULKA NULOVYCH BODU?
+     DIA-FRENCH = Tableau points zero?
+     DIA-ITALIAN = Tabella punto zero?
+     DIA-SPANISH = Tabla de puntos cero?
+     DIA-PORTUGUE = Nome da tabela?
+     DIA-SWEDISH = NOLLPUNKTTABELL?
+     DIA-DANISH = NULPUNKT-TABEL?
+     DIA-FINNISH = NOLLAPISTETAULUKKO?
+     DIA-DUTCH = Nulpuntstabel?
+     DIA-POLISH = Tabela punktow bazowych?
+     DIA-HUNGARIA = Nullapontlista ?
+     DIA-RUSSIAN = Tablica nulewych tochek?
+   NAME = X
+     TYPE = N
+     WIDTH = 10
+     DEC = 4
+     DIA-ENGLISH = Datum?
+     DIA-GERMAN = Bezugspunkt?
+     DIA-CZECH = REFERENCNI BOD?
+     DIA-FRENCH = Point de reference?
+     DIA-ITALIAN = Punto di riferimento?
+     DIA-SPANISH = Punto de referencia?
+     DIA-PORTUGUE = Ponto de referencia?
+     DIA-SWEDISH = REFERENSPUNKT?
+     DIA-DANISH = UDGANGSPUNKT?
+     DIA-FINNISH = NOLLAPISTE?
+     DIA-DUTCH = Nulpunt?
+     DIA-POLISH = Punkt bazowy?
+     DIA-HUNGARIA = Bazispont ?
+     DIA-RUSSIAN = Tochka odniesienia?
+   NAME = Y
+     TYPE = N
+     WIDTH = 10
+     DEC = 4
+     DIA-ENGLISH = Datum?
+     DIA-GERMAN = Bezugspunkt?
+     DIA-CZECH = REFERENCNI BOD?
+     DIA-FRENCH = Point de reference?
+     DIA-ITALIAN = Punto di riferimento?
+     DIA-SPANISH = Punto de referencia?
+     DIA-PORTUGUE = Ponto de referencia?
+     DIA-SWEDISH = REFERENSPUNKT?
+     DIA-DANISH = UDGANGSPUNKT?
+     DIA-FINNISH = NOLLAPISTE?
+     DIA-DUTCH = Nulpunt?
+     DIA-POLISH = Punkt bazowy?
+     DIA-HUNGARIA = Bazispont ?
+     DIA-RUSSIAN = Tochka odniesienia?
+   NAME = Z
+     TYPE = N
+     WIDTH = 10
+     DEC = 4
+     DIA-ENGLISH = Datum?
+     DIA-GERMAN = Bezugspunkt?
+     DIA-CZECH = REFERENCNI BOD?
+     DIA-FRENCH = Point de reference?
+     DIA-ITALIAN = Punto di riferimento?
+     DIA-SPANISH = Punto de referencia?
+     DIA-PORTUGUE = Ponto de referencia?
+     DIA-SWEDISH = REFERENSPUNKT?
+     DIA-DANISH = UDGANGSPUNKT?
+     DIA-FINNISH = NOLLAPISTE?
+     DIA-DUTCH = Nulpunt?
+     DIA-POLISH = Punkt bazowy?
+     DIA-HUNGARIA = Bazispont ?
+     DIA-RUSSIAN = Tochka odniesienia?
+#STRUCTEND
+NR      PAL/PGM NAME                           DATUM                          X          Y          Z
+0       PAL     1                                                                                              
+1       PGM     1.H                                                                                            
+2       PAL     2                                                                                              
+3       PGM     1.H                                                                                            
+4       PAL     3                                                                                              
+5       PGM     1.H                                                                                            
+6       PAL     4                                                                                              
+7       PGM     1.H                                                                                            
+8       PAL     5                                                                                              
+9       PGM     1.H                                                                                            
+10      PAL     6                                                                                              
+11      PGM     1.H                                                                                            
+12      PAL     7                                                                                              
+13      PGM     1.H                                                                                            
+14      PAL     8                                                                                              
+15      PGM     1.H                                                                                            
+16      PAL     9                                                                                              
+17      PGM     1.H                                                                                            
+18      PAL     10                                                                                             
+19      PGM     1.H                                                                                            
+20      PAL     11                                                                                             
+21      PGM     1.H                                                                                            
+22      PAL     12                                                                                             
+23      PGM     1.H                                                                                            
+24      PAL     13                                                                                             
+25      PGM     1.H                                                                                            
+26      PAL     14                                                                                             
+27      PGM     1.H                                                                                            
+28      PAL     15                                                                                             
+29      PGM     1.H                                                                                            
+30      PAL     16                                                                                             
+31      PGM     1.H                                                                                            
+32      PAL     17                                                                                             
+33      PGM     1.H                                                                                            
+34      PAL     18                                                                                             
+35      PGM     1.H                                                                                            
+36      PAL     19                                                                                             
+37      PGM     1.H                                                                                            
+38      PAL     20                                                                                             
+39      PGM     1.H                                                                                            
+40      PAL     21                                                                                             
+41      PGM     1.H                                                                                            
+42      PAL     22                                                                                             
+43      PGM     1.H                                                                                            
+44      PAL     23                                                                                             
+45      PGM     1.H                                                                                            
+46      PAL     24                                                                                             
+47      PGM     1.H                                                                                            
+[END]

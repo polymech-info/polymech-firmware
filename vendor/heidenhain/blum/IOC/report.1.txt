@@ -1,0 +1,2167 @@
+==========================================================================================
+=====================  E A - I N I T                          ============================
+==========================================================================================
+
+report file created : Mon Jun 28 16:54:47 2021
+
+
+
+==========================================================================================
+=====================  E A - I N I T   H A R D W A R E        ============================
+==========================================================================================
+
+Connection to HardwareServer (hwsQue) OK
+
+SIMULATION of hardware is initialzed
+- file for simulation: /mnt/plc/fieldbusSimu.cfg
+
+PROFIBUS simulation:
+  simulation  : 2 = no simulation
+HSCI simulation:
+  simulation  : 2 = no simulation
+  number of simulated clients : 0
+SPI simulation:
+  simulation  : 2 = no simulation
+  number of simulated clients: 0
+     Module IDs: -
+
+ IOC_SYSTEM_PROFIBUS  NOT available
+ IOC_SYSTEM_HSCI      available
+ IOC_SYSTEM_PROFINET  NOT available
+ IOC_SYSTEM_INTERNAL  NOT available
+
+
+==========================================================================================
+=====================  H S C I  - H A R D W A R E             ============================
+==========================================================================================
+ 28.06.2021 16:54:47.018 <0> HSCI hardware available
+
+ 28.06.2021 16:54:47.018 <0> HSCI module information
+
+  module ID | name
+------------+---------------------------------------
+   255      | empty slot 
+   250      | bus module FS 
+   249      | bus module 
+     6      | system module 
+     7      | system module FS 
+     8      | PLD H 16-08 
+     9      | PLD H 08-04 FS 
+    10      | PLA H 04-00-04 
+    11      | MOP digital in 3x13 
+    12      | MOP digital in 3x13 FS 
+    13      | MOP digital out 
+    14      | MOP override 
+    15      | MOP analog 
+    16      | PLD H 08-16 
+    17      | PLD H 04-08 FS 
+    18      | PLA H 03-03-03 
+    19      | PLA H 00-12-00 
+    20      | PLR H 00-08 
+    21      | PLX H 08-01-08 
+    22      | UEC - PLD H 41-23-CONTR 
+    23      | MOP digital in 4x11 
+    24      | MOP digital in 4x11 FS 
+    25      | UEC - PLD H 01-00-CONTR FS 
+    26      | UEC - PLD H 38-20-CONTR 
+    27      | UEC - PLD H 08-08 FS 
+    28      | UEC - PLD H 00-08 
+    29      | UEC - PLD H 08-00 
+    30      | UEC - PLD H 24-16 
+    31      | PLA H 08-04-04 
+    32      | PLB6000 digital in 
+    33      | PLB6000 digital out 
+    34      | PLB6000 override 
+    35      | PLB6000 digital in FS 
+    41      | PLD H 04-04-04 HSLS FS 
+    42      | MOP digital out LED 
+
+
+ 28.06.2021 16:54:47.034 <0> HSCI version information
+
+                 |            | Hardware                  | Firmware
+                 | name       | ID             SN         | ID               date
+-----------------+------------+---------------------------+---------------------------------------
+HSCI address 0
+== master
+                 | MC65XX     | 1071202-03     --         | --               -- 
+                 | HSCI       | --             --         | G92 V23.0        -- 
+-----------------+------------+---------------------------+---------------------------------------
+HSCI address 1
+== X500 - client[0] - PL[0]
+    - cabinet    | MB 6XXX    | 784803-01      47358715B  | 649585-09        Nov 26 2013  14:58:33 
+    - module[0]  |  BM  (249) | 598299-04      47358715B  | 649585-09        Nov 26 2013  14:58:33 
+    - module[1]  |  IO  ( 11) | 598299-04      --         |                  --  -- 
+    - module[2]  |  IO  ( 42) | 598299-04      --         |                  --  -- 
+    - module[3]  |  IO  ( 14) | 598299-04      --         |                  --  -- 
+    - module[4]  |  IO  ( 15) | 598299-04      --         |                  --  -- 
+-----------------+------------+---------------------------+---------------------------------------
+HSCI address 2
+== X500 - client[1] - CC[0]
+    - cabinet    | CCU        | 649465-04      47635936A  | 340542 007 SP09  12.09.2014 08:35  
+-----------------+------------+---------------------------+---------------------------------------
+HSCI address 3
+== X500 - client[2] - PL[1]
+    - cabinet    | PL 6XXX    | 630054-03      46123784D  | 650416-10SP04    Feb 26 2014  07:11:42 
+    - module[0]  |  BM  (249) | 592519-04      46123784D  | 650416-10SP04    Feb 26 2014  07:11:42 
+    - module[1]  |  SYS (  6) | 592547-04      --         | 651595-05        --  -- 
+    - module[2]  |  IO  (  8) | 594576-04      --         | 650953-04        --  -- 
+    - module[3]  |  IO  (  8) | 594576-04      --         | 650953-04        --  -- 
+    - module[4]  |  IO  (  8) | 594576-04      --         | 650953-04        --  -- 
+    - module[5]  |  IO  ( 16) | 658671-04      --         | 659678-03SP02    --  -- 
+
+
+
+  HSCI     X500/  client plIdx  plIdx  ccIdx  ccIdx  uecIdx  
+  address   X501         abs.   HWST   abs    HWST           
+------------------------------------------------------------ 
+   1       X500   [0]     0      0     -1     -1     -1     
+   2       X500   [1]    -1     -1      0      0     -1     
+   3       X500   [2]     1      1     -1     -1     -1     
+
+
+
+ 28.06.2021 16:54:47.271 <0> CalculateMemoryRange:
+    headerMemSize = 100    size of input extention = 68    size of output extention = 68
+    headerMemSize corrected to 104
+    readMemSize adjusted for 64Bit alignment, added 4 bytes
+    readMemSize = 72
+    writeMemSize adjusted for 64Bit alignment, added 4 bytes
+    writeMemSize = 72
+
+ 28.06.2021 16:54:47.271 <0> sendMessage CONFIG_CREATE
+ 28.06.2021 16:54:47.281 <0> NETSRV_IS_RUNNING (NetServerState::HSCI_BASIC_INIT) 
+ 28.06.2021 16:54:47.292 <0> NETSRV_IS_READY_FOR_ASYNC 
+ 28.06.2021 16:54:47.402 <0> PL_CMD: ACMD_Get_BufSize PL[0] 
+          HP    readLen= 64Byte writeLen= 64Byte
+          LP    readLen= 36Byte writeLen= 20Byte
+          ASYNC readLen=768Byte writeLen=1532Byte
+ 28.06.2021 16:54:47.424 <0> PL_CMD: ACMD_Get_BufSize PL[1] 
+          HP    readLen=  4Byte writeLen=  4Byte
+          LP    readLen= 28Byte writeLen= 20Byte
+          ASYNC readLen=1532Byte writeLen=768Byte
+ 28.06.2021 16:54:47.754 <0> CalculateMemoryRange:
+    headerMemSize = 100    size of input extention = 68    size of output extention = 68
+    headerMemSize corrected to 104
+    readMemSize adjusted for 64Bit alignment, added 4 bytes
+    readMemSize = 136
+    writeMemSize adjusted for 64Bit alignment, added 4 bytes
+    writeMemSize = 112
+
+ 28.06.2021 16:54:47.754 <0> sendMessage SET_PL_INFO - client[0]/PL[0] 
+                        - readLength_A/writeLength_A  36/20 
+                        - readLength_B/writeLength_B  0/0 
+
+ 28.06.2021 16:54:47.765 <0> sendMessage SET_PL_INFO - client[2]/PL[1] 
+                        - readLength_A/writeLength_A  28/20 
+                        - readLength_B/writeLength_B  0/0 
+
+ 28.06.2021 16:54:47.776 <0> sendMessage SET_DMA
+    offsetMcToPlBuffer[0]: 0H offsetMcToPlBuffer[1]: 70H  dmaMcToPlLength: 70H
+    offsetPlToMcBuffer[0]: 68H offsetPlToMcBuffer[1]: F0H  dmaPlToMcLength: 88H
+    dmaPlToMcBaseRaw[0]: 1D3F0068H dmaPlToMcBaseRaw[1]: 1D3F00F0H
+    dmaMcToPlBaseRaw[0]: 1D3EC000H dmaMcToPlBaseRaw[1]: 1D3EC070H
+
+ 28.06.2021 16:54:47.787 <0> sendMessage GET_TOPOLOGY
+  HSCI_TOPOLOGY msgClients=3 
+
+
+==========================================================================================
+=====================  P R O F I N E T  - H A R D W A R E             ====================
+==========================================================================================
+ 28.06.2021 16:54:47.798 <0> PROFINET hardware NOT available
+
+
+==========================================================================================
+=====================  P R O F I B U S - H A R D W A R E      ============================
+==========================================================================================
+ 28.06.2021 16:54:47.798 <0> PROFIBUS hardware NOT available
+
+
+==========================================================================================
+=====================  I N T E R N A L - H A R D W A R E      ============================
+==========================================================================================
+ 28.06.2021 16:54:47.798 <0> INTERNAL hardware NOT available
+
+
+==========================================================================================
+=====================  E A - I N I T   C O N F I G            ============================
+==========================================================================================
+
+options
+  STD (push front)
+
+EaKonflib version  : 1400
+File IOC           : /mnt/plc/IOC/CC6106_PLB6206.IOC
+File PLCCOMP       : /mnt/plc/BASIC_51/OEM.CFG
+ 28.06.2021 16:54:47.799 <0> IOC START READER
+IOC version        : 3
+IOC sub-version    : 0
+IOC source         : IOconfig
+IOC source version : 200
+IOC time stamp     : 1421029480
+
+ 28.06.2021 16:54:47.822 <0> IOC START PROVID.V3
+IocReader: ============================================================
+IocReader: Topology in Provider:
+IocReader: ============================================================
+IocReader: EaConfigVersion
+IocReader: SourceInfoV3
+IocReader: WholeConfigV3 "HEIDENHAIN IOconfig CONFIG"
+IocReader: FixedConfigV3 "HEIDENHAIN IOconfig CONFIG"
+IocReader: EaBlockV3 "STD"
+IocReader: EaBlockV3 "6206-4=8I16O"
+IocReader: EaBlockV3 "6206-4=0"
+IocReader: EaBlockV3 "6206-5=16I8O"
+IocReader: EaBlockV3 "6206-5=0"
+IocReader: EaBlockV3 "6206-6=16I8O"
+IocReader: EaBlockV3 "6206-6=0"
+IocReader: EaBlockV3 "6206-6=8I4O4PT"
+IocReader: EaBlockV3 "6206-6=4I0O4PT"
+IocReader: HsciParameterV3 "HSCI"
+IocReader: | HsciMasterV3 "HSCI_Master"
+IocReader: | | HsciSlaveV3 "MB720"
+IocReader: | | | HsciSlaveModuleV3 "Bus Module$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BM_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BM_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BM_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word05"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word06"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word07"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word17"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word25"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word31"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word32a"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_MB720###MODULE_DIAG_BusModule_Word32b"
+IocReader: | | | HsciSlaveModuleV3 "Bus Module$B"
+IocReader: | | | HsciSlaveModuleV3 "Digital Input$A"
+IocReader: | | | | NamedIOV3 "STD###I200_key_S1$A"
+IocReader: | | | | NamedIOV3 "STD###I201_key_S2$A"
+IocReader: | | | | NamedIOV3 "STD###I202_key_S3$A"
+IocReader: | | | | NamedIOV3 "STD###I203_key_S4$A"
+IocReader: | | | | NamedIOV3 "STD###I204_key_S5$A"
+IocReader: | | | | NamedIOV3 "STD###I205_key_S6$A"
+IocReader: | | | | NamedIOV3 "STD###I206_key_S7$A"
+IocReader: | | | | NamedIOV3 "STD###I207_key_S8$A"
+IocReader: | | | | NamedIOV3 "STD###I208_key_S9$A"
+IocReader: | | | | NamedIOV3 "STD###I209_key_S10$A"
+IocReader: | | | | NamedIOV3 "STD###I210_key_S11$A"
+IocReader: | | | | NamedIOV3 "STD###I211_key_S12$A"
+IocReader: | | | | NamedIOV3 "STD###I212_key_S14$A"
+IocReader: | | | | NamedIOV3 "STD###I213_key_S15$A"
+IocReader: | | | | NamedIOV3 "STD###I214_key_S16$A"
+IocReader: | | | | NamedIOV3 "STD###I215_key_S17$A"
+IocReader: | | | | NamedIOV3 "STD###I216_key_S18$A"
+IocReader: | | | | NamedIOV3 "STD###I217_key_S19$A"
+IocReader: | | | | NamedIOV3 "STD###I218_key_S20$A"
+IocReader: | | | | NamedIOV3 "STD###I219_key_S21$A"
+IocReader: | | | | NamedIOV3 "STD###I220_key_S22$A"
+IocReader: | | | | NamedIOV3 "STD###I221_key_S23$A"
+IocReader: | | | | NamedIOV3 "STD###I222_key_S24$A"
+IocReader: | | | | NamedIOV3 "STD###I223_key_S25$A"
+IocReader: | | | | NamedIOV3 "STD###I224_key_S27$A"
+IocReader: | | | | NamedIOV3 "STD###I225_key_S28$A"
+IocReader: | | | | NamedIOV3 "STD###I226_key_S29$A"
+IocReader: | | | | NamedIOV3 "STD###I227_key_S30$A"
+IocReader: | | | | NamedIOV3 "STD###I228_key_S31$A"
+IocReader: | | | | NamedIOV3 "STD###I229_key_S32$A"
+IocReader: | | | | NamedIOV3 "STD###I230_key_S33$A"
+IocReader: | | | | NamedIOV3 "STD###I231_key_S34$A"
+IocReader: | | | | NamedIOV3 "STD###I232_key_S35$A"
+IocReader: | | | | NamedIOV3 "STD###I233_key_S36$A"
+IocReader: | | | | NamedIOV3 "STD###I234_key_S37$A"
+IocReader: | | | | NamedIOV3 "STD###I235_key_S38$A"
+IocReader: | | | | NamedIOV3 "STD###I236_key_NC_STOP$A"
+IocReader: | | | | NamedIOV3 "STD###I237_key_NC_START$A"
+IocReader: | | | | NamedIOV3 "STD###I238_key_power_on$A"
+IocReader: | | | | NamedIOV3 "STD###I239_X31.5$A"
+IocReader: | | | | NamedIOV3 "STD###I240_X31.8$A"
+IocReader: | | | | NamedIOV3 "STD###I241_key_permissive_button$A"
+IocReader: | | | | NamedIOV3 "STD###I242_X6.2$A"
+IocReader: | | | | NamedIOV3 "STD###I243_X6.3$A"
+IocReader: | | | | NamedIOV3 "STD###I244_key_mode_2$A"
+IocReader: | | | | NamedIOV3 "STD###I245_key_mode_4$A"
+IocReader: | | | | NamedIOV3 "STD###I246_X6.6$A"
+IocReader: | | | | NamedIOV3 "STD###I247_X6.7$A"
+IocReader: | | | | NamedIOV3 "STD###I248_X6.8$A"
+IocReader: | | | HsciSlaveModuleV3 "Digital Input$B"
+IocReader: | | | HsciSlaveModuleV3 "Digital Output LED$A"
+IocReader: | | | | NamedIOV3 "STD###O900_LED_S1$A"
+IocReader: | | | | NamedIOV3 "STD###O901_LED_S2$A"
+IocReader: | | | | NamedIOV3 "STD###O902_LED_S3$A"
+IocReader: | | | | NamedIOV3 "STD###O903_LED_S4$A"
+IocReader: | | | | NamedIOV3 "STD###O904_LED_S5$A"
+IocReader: | | | | NamedIOV3 "STD###O905_LED_S6$A"
+IocReader: | | | | NamedIOV3 "STD###O906_LED_S7$A"
+IocReader: | | | | NamedIOV3 "STD###O907_LED_S8$A"
+IocReader: | | | | NamedIOV3 "STD###O908_LED_S9$A"
+IocReader: | | | | NamedIOV3 "STD###O909_LED_S10$A"
+IocReader: | | | | NamedIOV3 "STD###O910_LED_S11$A"
+IocReader: | | | | NamedIOV3 "STD###O911_LED_S12$A"
+IocReader: | | | | NamedIOV3 "STD###O912_LED_S14$A"
+IocReader: | | | | NamedIOV3 "STD###O913_LED_S15$A"
+IocReader: | | | | NamedIOV3 "STD###O914_LED_S16$A"
+IocReader: | | | | NamedIOV3 "STD###O915_LED_S17$A"
+IocReader: | | | | NamedIOV3 "STD###O916_LED_S18$A"
+IocReader: | | | | NamedIOV3 "STD###O917_LED_S19$A"
+IocReader: | | | | NamedIOV3 "STD###O918_LED_S20$A"
+IocReader: | | | | NamedIOV3 "STD###O919_LED_S21$A"
+IocReader: | | | | NamedIOV3 "STD###O920_LED_S22$A"
+IocReader: | | | | NamedIOV3 "STD###O921_LED_S23$A"
+IocReader: | | | | NamedIOV3 "STD###O922_LED_S24$A"
+IocReader: | | | | NamedIOV3 "STD###O923_LED_S25$A"
+IocReader: | | | | NamedIOV3 "STD###O924_LED_S27$A"
+IocReader: | | | | NamedIOV3 "STD###O925_LED_S28$A"
+IocReader: | | | | NamedIOV3 "STD###O926_LED_S29$A"
+IocReader: | | | | NamedIOV3 "STD###O927_LED_S30$A"
+IocReader: | | | | NamedIOV3 "STD###O928_LED_S31$A"
+IocReader: | | | | NamedIOV3 "STD###O929_LED_S32$A"
+IocReader: | | | | NamedIOV3 "STD###O930_LED_S33$A"
+IocReader: | | | | NamedIOV3 "STD###O931_LED_S34$A"
+IocReader: | | | | NamedIOV3 "STD###O932_LED_S35$A"
+IocReader: | | | | NamedIOV3 "STD###O933_LED_S36$A"
+IocReader: | | | | NamedIOV3 "STD###O934_LED_S37$A"
+IocReader: | | | | NamedIOV3 "STD###O935_LED_S38$A"
+IocReader: | | | | NamedIOV3 "STD###O936_LED_NC_STOP$A"
+IocReader: | | | | NamedIOV3 "STD###O937_LED_NC_START$A"
+IocReader: | | | | NamedIOV3 "STD###O938_LED_power_on$A"
+IocReader: | | | | NamedIOV3 "STD###O200_X7.1$A"
+IocReader: | | | | NamedIOV3 "STD###O201_X7.2$A"
+IocReader: | | | | NamedIOV3 "STD###O202_X7.3$A"
+IocReader: | | | | NamedIOV3 "STD###O203_X7.4$A"
+IocReader: | | | | NamedIOV3 "STD###O204_X7.5$A"
+IocReader: | | | | NamedIOV3 "STD###O205_X7.6$A"
+IocReader: | | | | NamedIOV3 "STD###O206_X7.7$A"
+IocReader: | | | | NamedIOV3 "STD###O207_X7.8$A"
+IocReader: | | | HsciSlaveModuleV3 "Digital Output LED$B"
+IocReader: | | | HsciSlaveModuleV3 "Override$A"
+IocReader: | | | | NamedIOV3 "STD###IW_POTI_1$A"
+IocReader: | | | | NamedIOV3 "STD###IW_POTI_2$A"
+IocReader: | | | | NamedIOV3 "STD###IW_POTI_3$A"
+IocReader: | | | HsciSlaveModuleV3 "Override$B"
+IocReader: | | | HsciSlaveModuleV3 "Analog$A"
+IocReader: | | | | NamedIOV3 "STD###IW_ANALOG_3_3_VOLT$A"
+IocReader: | | | | NamedIOV3 "STD###IW_ANALOG_5_VOLT$A"
+IocReader: | | | | NamedIOV3 "STD###IW_ANALOG_24_VOLT$A"
+IocReader: | | | | NamedIOV3 "STD###IW_ANALOG_1_5_VOLT$A"
+IocReader: | | | | NamedIOV3 "STD###IW_TEMP_SENSOR$A"
+IocReader: | | | HsciSlaveModuleV3 "Analog$B"
+IocReader: | | HsciSlaveV3 "CC 6106"
+IocReader: | | HsciSlaveV3 "PL 6206"
+IocReader: | | | HsciSlaveModuleV3 "Bus Module (1)$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word05"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word06"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word07"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word08"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word09"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word10"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word11"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word12"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word13"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word14"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word15"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word16"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word17"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word25"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word31"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word32a"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word32b"
+IocReader: | | | HsciSlaveModuleV3 "Bus Module (1)$B"
+IocReader: | | | HsciSlaveModuleV3 "System Module$A"
+IocReader: | | | | NamedIOV3 "STD###I249$A"
+IocReader: | | | | NamedIOV3 "STD###I250$A"
+IocReader: | | | | NamedIOV3 "STD###I251$A"
+IocReader: | | | | NamedIOV3 "STD###I252$A"
+IocReader: | | | | NamedIOV3 "STD###I253$A"
+IocReader: | | | | NamedIOV3 "STD###I254$A"
+IocReader: | | | | NamedIOV3 "STD###I255$A"
+IocReader: | | | | NamedIOV3 "STD###I256$A"
+IocReader: | | | | NamedIOV3 "STD###I257$A"
+IocReader: | | | | NamedIOV3 "STD###I258$A"
+IocReader: | | | | NamedIOV3 "STD###I259$A"
+IocReader: | | | | NamedIOV3 "STD###I260$A"
+IocReader: | | | | NamedIOV3 "STD###I261_ESA$A"
+IocReader: | | | | NamedIOV3 "STD###I262_ESB$A"
+IocReader: | | | | NamedIOV3 "STD###I263_RO208$A"
+IocReader: | | | | NamedIOV3 "STD###I264_RO209$A"
+IocReader: | | | | NamedIOV3 "STD###I265_RO210$A"
+IocReader: | | | | NamedIOV3 "STD###I266_RO211$A"
+IocReader: | | | | NamedIOV3 "STD###I267_RO212$A"
+IocReader: | | | | NamedIOV3 "STD###I268_RO213$A"
+IocReader: | | | | NamedIOV3 "STD###I269_RO214$A"
+IocReader: | | | | NamedIOV3 "STD###I270_RO_MC_RDY$A"
+IocReader: | | | | NamedIOV3 "STD###O208$A"
+IocReader: | | | | NamedIOV3 "STD###O209$A"
+IocReader: | | | | NamedIOV3 "STD###O210$A"
+IocReader: | | | | NamedIOV3 "STD###O211$A"
+IocReader: | | | | NamedIOV3 "STD###O212$A"
+IocReader: | | | | NamedIOV3 "STD###O213$A"
+IocReader: | | | | NamedIOV3 "STD###O214$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05a0"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05a6"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05b"
+IocReader: | | | HsciSlaveModuleV3 "System Module$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00$A"
+IocReader: | | | | NamedIOV3 "STD###I271$A"
+IocReader: | | | | NamedIOV3 "STD###I272$A"
+IocReader: | | | | NamedIOV3 "STD###I273$A"
+IocReader: | | | | NamedIOV3 "STD###I274$A"
+IocReader: | | | | NamedIOV3 "STD###I275$A"
+IocReader: | | | | NamedIOV3 "STD###I276$A"
+IocReader: | | | | NamedIOV3 "STD###I277$A"
+IocReader: | | | | NamedIOV3 "STD###I278$A"
+IocReader: | | | | NamedIOV3 "STD###I279$A"
+IocReader: | | | | NamedIOV3 "STD###I280$A"
+IocReader: | | | | NamedIOV3 "STD###I281$A"
+IocReader: | | | | NamedIOV3 "STD###I282$A"
+IocReader: | | | | NamedIOV3 "STD###I283$A"
+IocReader: | | | | NamedIOV3 "STD###I284$A"
+IocReader: | | | | NamedIOV3 "STD###I285$A"
+IocReader: | | | | NamedIOV3 "STD###I286$A"
+IocReader: | | | | NamedIOV3 "STD###I287_RO215$A"
+IocReader: | | | | NamedIOV3 "STD###I288_RO216$A"
+IocReader: | | | | NamedIOV3 "STD###I289_RO217$A"
+IocReader: | | | | NamedIOV3 "STD###I290_RO218$A"
+IocReader: | | | | NamedIOV3 "STD###I291_RO219$A"
+IocReader: | | | | NamedIOV3 "STD###I292_RO220$A"
+IocReader: | | | | NamedIOV3 "STD###I293_RO221$A"
+IocReader: | | | | NamedIOV3 "STD###I294_RO222$A"
+IocReader: | | | | NamedIOV3 "STD###O215$A"
+IocReader: | | | | NamedIOV3 "STD###O216$A"
+IocReader: | | | | NamedIOV3 "STD###O217$A"
+IocReader: | | | | NamedIOV3 "STD###O218$A"
+IocReader: | | | | NamedIOV3 "STD###O219$A"
+IocReader: | | | | NamedIOV3 "STD###O220$A"
+IocReader: | | | | NamedIOV3 "STD###O221$A"
+IocReader: | | | | NamedIOV3 "STD###O222$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (1)$A"
+IocReader: | | | | NamedIOV3 "STD###I295$A"
+IocReader: | | | | NamedIOV3 "STD###I296$A"
+IocReader: | | | | NamedIOV3 "STD###I297$A"
+IocReader: | | | | NamedIOV3 "STD###I298$A"
+IocReader: | | | | NamedIOV3 "STD###I299$A"
+IocReader: | | | | NamedIOV3 "STD###I300$A"
+IocReader: | | | | NamedIOV3 "STD###I301$A"
+IocReader: | | | | NamedIOV3 "STD###I302$A"
+IocReader: | | | | NamedIOV3 "STD###I303$A"
+IocReader: | | | | NamedIOV3 "STD###I304$A"
+IocReader: | | | | NamedIOV3 "STD###I305$A"
+IocReader: | | | | NamedIOV3 "STD###I306$A"
+IocReader: | | | | NamedIOV3 "STD###I307$A"
+IocReader: | | | | NamedIOV3 "STD###I308$A"
+IocReader: | | | | NamedIOV3 "STD###I309$A"
+IocReader: | | | | NamedIOV3 "STD###I310$A"
+IocReader: | | | | NamedIOV3 "STD###I311_RO223$A"
+IocReader: | | | | NamedIOV3 "STD###I312_RO224$A"
+IocReader: | | | | NamedIOV3 "STD###I313_RO225$A"
+IocReader: | | | | NamedIOV3 "STD###I314_RO226$A"
+IocReader: | | | | NamedIOV3 "STD###I315_RO227$A"
+IocReader: | | | | NamedIOV3 "STD###I316_RO228$A"
+IocReader: | | | | NamedIOV3 "STD###I317_RO229$A"
+IocReader: | | | | NamedIOV3 "STD###I318_RO230$A"
+IocReader: | | | | NamedIOV3 "STD###O223$A"
+IocReader: | | | | NamedIOV3 "STD###O224$A"
+IocReader: | | | | NamedIOV3 "STD###O225$A"
+IocReader: | | | | NamedIOV3 "STD###O226$A"
+IocReader: | | | | NamedIOV3 "STD###O227$A"
+IocReader: | | | | NamedIOV3 "STD###O228$A"
+IocReader: | | | | NamedIOV3 "STD###O229$A"
+IocReader: | | | | NamedIOV3 "STD###O230$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (1)$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (2)$A"
+IocReader: | | | | NamedIOV3 "STD###I319$A"
+IocReader: | | | | NamedIOV3 "STD###I320$A"
+IocReader: | | | | NamedIOV3 "STD###I321$A"
+IocReader: | | | | NamedIOV3 "STD###I322$A"
+IocReader: | | | | NamedIOV3 "STD###I323$A"
+IocReader: | | | | NamedIOV3 "STD###I324$A"
+IocReader: | | | | NamedIOV3 "STD###I325$A"
+IocReader: | | | | NamedIOV3 "STD###I326$A"
+IocReader: | | | | NamedIOV3 "STD###I327$A"
+IocReader: | | | | NamedIOV3 "STD###I328$A"
+IocReader: | | | | NamedIOV3 "STD###I329$A"
+IocReader: | | | | NamedIOV3 "STD###I330$A"
+IocReader: | | | | NamedIOV3 "STD###I331$A"
+IocReader: | | | | NamedIOV3 "STD###I332$A"
+IocReader: | | | | NamedIOV3 "STD###I333$A"
+IocReader: | | | | NamedIOV3 "STD###I334$A"
+IocReader: | | | | NamedIOV3 "STD###I335_RO231$A"
+IocReader: | | | | NamedIOV3 "STD###I336_RO232$A"
+IocReader: | | | | NamedIOV3 "STD###I337_RO233$A"
+IocReader: | | | | NamedIOV3 "STD###I338_RO234$A"
+IocReader: | | | | NamedIOV3 "STD###I339_RO235$A"
+IocReader: | | | | NamedIOV3 "STD###I340_RO236$A"
+IocReader: | | | | NamedIOV3 "STD###I341_RO237$A"
+IocReader: | | | | NamedIOV3 "STD###I342_RO238$A"
+IocReader: | | | | NamedIOV3 "STD###O231$A"
+IocReader: | | | | NamedIOV3 "STD###O232$A"
+IocReader: | | | | NamedIOV3 "STD###O233$A"
+IocReader: | | | | NamedIOV3 "STD###O234$A"
+IocReader: | | | | NamedIOV3 "STD###O235$A"
+IocReader: | | | | NamedIOV3 "STD###O236$A"
+IocReader: | | | | NamedIOV3 "STD###O237$A"
+IocReader: | | | | NamedIOV3 "STD###O238$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (2)$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 08-16-00$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I343$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I344$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I345$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I346$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I347$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I348$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I349$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I350$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I351_RO239$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I352_RO240$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I353_RO241$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I354_RO242$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I355_RO243$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I356_RO244$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I357_RO245$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I358_RO246$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I359_RO247$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I360_RO248$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I361_RO249$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I362_RO250$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I363_RO251$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I364_RO252$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I365_RO253$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###I366_RO254$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O239$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O240$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O241$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O242$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O243$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O244$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O245$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O246$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O247$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O248$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O249$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O250$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O251$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O252$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O253$A"
+IocReader: | | | | NamedIOV3 "6206-4=8I16O###O254$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_8_16"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_8"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 08-16-00$B"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot$A"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (3)$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I367$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I368$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I369$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I370$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I371$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I372$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I373$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I374$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I375$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I376$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I377$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I378$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I379$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I380$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I381$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I382$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I383_RO255$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I384_RO256$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I385_RO257$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I386_RO258$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I387_RO259$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I388_RO260$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I389_RO261$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###I390_RO262$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O255$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O256$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O257$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O258$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O259$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O260$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O261$A"
+IocReader: | | | | NamedIOV3 "6206-5=16I8O###O262$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (3)$B"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot (1)$A"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot (1)$B"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (4)$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I391$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I392$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I393$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I394$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I395$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I396$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I397$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I398$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I399$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I400$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I401$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I402$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I403$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I404$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I405$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I406$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I407_RO263$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I408_RO264$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I409_RO265$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I410_RO266$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I411_RO267$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I412_RO268$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I413_RO269$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###I414_RO270$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O263$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O264$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O265$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O266$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O267$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O268$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O269$A"
+IocReader: | | | | NamedIOV3 "6206-6=16I8O###O270$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0"
+IocReader: | | | HsciSlaveModuleV3 "PLD-H 16-08-00 (4)$B"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot (2)$A"
+IocReader: | | | HsciSlaveModuleV3 "Empty Slot (2)$B"
+IocReader: | | | HsciSlaveModuleV3 "PLA-H 08-04-04$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###OW0_X66-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###OW2_X66-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###OW4_X67-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###OW6_X67-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW16_X46-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW18_X46-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW20_X47-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW22_X47-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW24_X48-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW26_X48-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW28_X49-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW30_X49-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW32_PT100_X81-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW34_PT100_X81-b$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW36_PT100_X82-a$A"
+IocReader: | | | | NamedIOV3 "6206-6=8I4O4PT###IW38_PT100_X82-b$A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE0"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE2"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE4"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE5"
+IocReader: | | | | HsciSlaveModuleDiagV3 "JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE6"
+IocReader: | | | HsciSlaveModuleV3 "PLA-H 08-04-04$B"
+IocReader: ============================================================
+ 28.06.2021 16:54:47.827 <0> IOC START SERVER
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Input data set created: Mon Jan 12 10:24:40 2015
+    by IOconfig
+creation tool: HEIDENHAIN IOconfig
+    data format: 0003
+    file status: is executable
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  1 whole configuration descriptor(s)
+      1 HEIDENHAIN IOconfig CONFIG
+             prefered configuration: HEIDENHAIN IOconfig CONFIG
+             other fixed configurations:
+                      HEIDENHAIN IOconfig CONFIG
+
+  1 fixed configuration(s)
+      1. HEIDENHAIN IOconfig CONFIG
+              STD
+
+  9 EaBlock data set(s)
+      1. 6206-6=4I0O4PT
+      2. 6206-6=8I4O4PT
+      3. 6206-6=0
+      4. 6206-6=16I8O
+      5. 6206-5=0
+      6. 6206-5=16I8O
+      7. 6206-4=0
+      8. 6206-4=8I16O
+      9. STD
+
+  0 Profibus Parameter data set(s)
+
+  1 HSCI Parameter data set(s)
+      1. HSCI
+
+  1 HSCI Master data set(s)
+      1. HSCI_Master 
+
+  3 HSCI Slave data set(s)
+      1. MB720 
+      2. CC 6106 
+      3. PL 6206 
+
+  34 HSCI Slave Module data set(s)
+      1. B - PLA-H 08-04-04$B (Module of >PL 6206<)
+      2. A - PLA-H 08-04-04$A (Module of >PL 6206<)
+      3. B - Empty Slot (2)$B (Module of >PL 6206<)
+      4. A - Empty Slot (2)$A (Module of >PL 6206<)
+      5. B - PLD-H 16-08-00 (4)$B (Module of >PL 6206<)
+      6. A - PLD-H 16-08-00 (4)$A (Module of >PL 6206<)
+      7. B - Empty Slot (1)$B (Module of >PL 6206<)
+      8. A - Empty Slot (1)$A (Module of >PL 6206<)
+      9. B - PLD-H 16-08-00 (3)$B (Module of >PL 6206<)
+      10. A - PLD-H 16-08-00 (3)$A (Module of >PL 6206<)
+      11. B - Empty Slot$B (Module of >PL 6206<)
+      12. A - Empty Slot$A (Module of >PL 6206<)
+      13. B - PLD-H 08-16-00$B (Module of >PL 6206<)
+      14. A - PLD-H 08-16-00$A (Module of >PL 6206<)
+      15. B - PLD-H 16-08-00 (2)$B (Module of >PL 6206<)
+      16. A - PLD-H 16-08-00 (2)$A (Module of >PL 6206<)
+      17. B - PLD-H 16-08-00 (1)$B (Module of >PL 6206<)
+      18. A - PLD-H 16-08-00 (1)$A (Module of >PL 6206<)
+      19. B - PLD-H 16-08-00$B (Module of >PL 6206<)
+      20. A - PLD-H 16-08-00$A (Module of >PL 6206<)
+      21. B - System Module$B (Module of >PL 6206<)
+      22. A - System Module$A (Module of >PL 6206<)
+      23. B - Bus Module (1)$B (Module of >PL 6206<)
+      24. A - Bus Module (1)$A (Module of >PL 6206<)
+      25. B - Analog$B (Module of >MB720<)
+      26. A - Analog$A (Module of >MB720<)
+      27. B - Override$B (Module of >MB720<)
+      28. A - Override$A (Module of >MB720<)
+      29. B - Digital Output LED$B (Module of >MB720<)
+      30. A - Digital Output LED$A (Module of >MB720<)
+      31. B - Digital Input$B (Module of >MB720<)
+      32. A - Digital Input$A (Module of >MB720<)
+      33. B - Bus Module$B (Module of >MB720<)
+      34. A - Bus Module$A (Module of >MB720<)
+
+  106 ModuleDiag data set(s)
+      1. JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE6
+      2. JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE5
+      3. JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE4
+      4. JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE2
+      5. JH_HSCI_PL6xxx###MODULE_DIAG_PLAH_8_4_4_BYTE0
+      6. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      7. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      8. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      9. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      10. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      11. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      12. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      13. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      14. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8
+      15. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      16. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      17. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      18. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      19. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      20. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      21. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      22. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      23. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8
+      24. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      25. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      26. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      27. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      28. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      29. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      30. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_8
+      31. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      32. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      33. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_8_16
+      34. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      35. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      36. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      37. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      38. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      39. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      40. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      41. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      42. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8
+      43. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      44. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      45. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      46. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      47. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      48. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      49. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      50. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      51. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8
+      52. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      53. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      54. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      55. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      56. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      57. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      58. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SC_0
+      59. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_SCALL
+      60. JH_HSCI_PL6xxx###MODULE_DIAG_PLDH_16_8
+      61. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      62. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      63. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      64. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      65. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      66. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      67. JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05b
+      68. JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05a6
+      69. JH_HSCI_PL6xxx###MODULE_DIAG_SysModule_Word05a0
+      70. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3B
+      71. JH_HSCI_PL6xxx###MODULE_DIAG_ERR3A
+      72. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2B
+      73. JH_HSCI_PL6xxx###MODULE_DIAG_ERR2A
+      74. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1B
+      75. JH_HSCI_PL6xxx###MODULE_DIAG_ERR1A
+      76. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word32b
+      77. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word32a
+      78. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word31
+      79. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word25
+      80. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word17
+      81. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word16
+      82. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word15
+      83. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word14
+      84. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word13
+      85. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word12
+      86. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word11
+      87. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word10
+      88. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word09
+      89. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word08
+      90. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word07
+      91. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word06
+      92. JH_HSCI_PL6xxx###MODULE_DIAG_BusModule_Word05
+      93. JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR2A
+      94. JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR1B
+      95. JH_HSCI_PL6xxx###MODULE_DIAG_BM_ERR1A
+      96. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word32b
+      97. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word32a
+      98. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word31
+      99. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word25
+      100. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word17
+      101. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word07
+      102. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word06
+      103. JH_HSCI_MB720###MODULE_DIAG_BusModule_Word05
+      104. JH_HSCI_MB720###MODULE_DIAG_BM_ERR2A
+      105. JH_HSCI_MB720###MODULE_DIAG_BM_ERR1B
+      106. JH_HSCI_MB720###MODULE_DIAG_BM_ERR1A
+
+
+options overview
+- must not definite
+- matching options in order of options in IOC-File
+options in IOC
+  STD
+  6206-4=8I16O
+  6206-4=0
+  6206-5=16I8O
+  6206-5=0
+  6206-6=16I8O
+  6206-6=0
+  6206-6=8I4O4PT
+  6206-6=4I0O4PT
+options from MP/ configuration
+  STD
+  0 (NOT relevant)
+  1 (NOT relevant)
+  0 (NOT relevant)
+  4 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  2 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  -1 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  0 (NOT relevant)
+  6206-4=8I16O
+  6206-5=0
+  6206-6=0
+
+options valid (all)     : STD;6206-4=8I16O;6206-5=0;6206-6=0;
+options valid (PROFIBUS): 
+options valid (HSCI)    : STD;6206-4=8I16O;6206-5=0;6206-6=0;
+options valid (PROFINET): 
+options valid (INTERNAL): 
+
+Profibus Master data sets: 0
+
+HSCI Master data sets: 1
+      Master: HSCI_Master
+         Bus: HSCI
+starting Configuration: auto
+number of EA-Blocks  =  4
+           STD
+           6206-4=8I16O
+           6206-5=0
+           6206-6=0
+
+
+Block 0 : STD
+    HSCI slave base data sets: 3
+      Slave 0 : MB720
+      Slave 1 : CC 6106
+NOTE: CC-slave from IOC not considered!
+
+      Slave 2 : PL 6206
+    HSCI modul data sets: 20
+      Modul 0 : Bus Module$A  
+       HDD/Libray name :           Bus Module   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 1 : Bus Module$B  
+       HDD/Libray name :           Bus Module   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 2 : Digital Input$A  
+       HDD/Libray name :        Digital Input   SlaveName: MB720
+        NamedIO  count: 49
+          I200_key_S1 (STD###I200_key_S1$A)
+          I201_key_S2 (STD###I201_key_S2$A)
+          I202_key_S3 (STD###I202_key_S3$A)
+          I203_key_S4 (STD###I203_key_S4$A)
+          I204_key_S5 (STD###I204_key_S5$A)
+          I205_key_S6 (STD###I205_key_S6$A)
+          I206_key_S7 (STD###I206_key_S7$A)
+          I207_key_S8 (STD###I207_key_S8$A)
+          I208_key_S9 (STD###I208_key_S9$A)
+          I209_key_S10 (STD###I209_key_S10$A)
+          I210_key_S11 (STD###I210_key_S11$A)
+          I211_key_S12 (STD###I211_key_S12$A)
+          I212_key_S14 (STD###I212_key_S14$A)
+          I213_key_S15 (STD###I213_key_S15$A)
+          I214_key_S16 (STD###I214_key_S16$A)
+          I215_key_S17 (STD###I215_key_S17$A)
+          I216_key_S18 (STD###I216_key_S18$A)
+          I217_key_S19 (STD###I217_key_S19$A)
+          I218_key_S20 (STD###I218_key_S20$A)
+          I219_key_S21 (STD###I219_key_S21$A)
+          I220_key_S22 (STD###I220_key_S22$A)
+          I221_key_S23 (STD###I221_key_S23$A)
+          I222_key_S24 (STD###I222_key_S24$A)
+          I223_key_S25 (STD###I223_key_S25$A)
+          I224_key_S27 (STD###I224_key_S27$A)
+          I225_key_S28 (STD###I225_key_S28$A)
+          I226_key_S29 (STD###I226_key_S29$A)
+          I227_key_S30 (STD###I227_key_S30$A)
+          I228_key_S31 (STD###I228_key_S31$A)
+          I229_key_S32 (STD###I229_key_S32$A)
+          I230_key_S33 (STD###I230_key_S33$A)
+          I231_key_S34 (STD###I231_key_S34$A)
+          I232_key_S35 (STD###I232_key_S35$A)
+          I233_key_S36 (STD###I233_key_S36$A)
+          I234_key_S37 (STD###I234_key_S37$A)
+          I235_key_S38 (STD###I235_key_S38$A)
+          I236_key_NC_STOP (STD###I236_key_NC_STOP$A)
+          I237_key_NC_START (STD###I237_key_NC_START$A)
+          I238_key_power_on (STD###I238_key_power_on$A)
+          I239_X31.5 (STD###I239_X31.5$A)
+          I240_X31.8 (STD###I240_X31.8$A)
+          I241_key_permissive_button (STD###I241_key_permissive_button$A)
+          I242_X6.2 (STD###I242_X6.2$A)
+          I243_X6.3 (STD###I243_X6.3$A)
+          I244_key_mode_2 (STD###I244_key_mode_2$A)
+          I245_key_mode_4 (STD###I245_key_mode_4$A)
+          I246_X6.6 (STD###I246_X6.6$A)
+          I247_X6.7 (STD###I247_X6.7$A)
+          I248_X6.8 (STD###I248_X6.8$A)
+      Modul 3 : Digital Input$B  
+       HDD/Libray name :        Digital Input   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 4 : Digital Output LED$A  
+       HDD/Libray name :   Digital Output LED   SlaveName: MB720
+        NamedIO  count: 47
+          O900_LED_S1 (STD###O900_LED_S1$A)
+          O901_LED_S2 (STD###O901_LED_S2$A)
+          O902_LED_S3 (STD###O902_LED_S3$A)
+          O903_LED_S4 (STD###O903_LED_S4$A)
+          O904_LED_S5 (STD###O904_LED_S5$A)
+          O905_LED_S6 (STD###O905_LED_S6$A)
+          O906_LED_S7 (STD###O906_LED_S7$A)
+          O907_LED_S8 (STD###O907_LED_S8$A)
+          O908_LED_S9 (STD###O908_LED_S9$A)
+          O909_LED_S10 (STD###O909_LED_S10$A)
+          O910_LED_S11 (STD###O910_LED_S11$A)
+          O911_LED_S12 (STD###O911_LED_S12$A)
+          O912_LED_S14 (STD###O912_LED_S14$A)
+          O913_LED_S15 (STD###O913_LED_S15$A)
+          O914_LED_S16 (STD###O914_LED_S16$A)
+          O915_LED_S17 (STD###O915_LED_S17$A)
+          O916_LED_S18 (STD###O916_LED_S18$A)
+          O917_LED_S19 (STD###O917_LED_S19$A)
+          O918_LED_S20 (STD###O918_LED_S20$A)
+          O919_LED_S21 (STD###O919_LED_S21$A)
+          O920_LED_S22 (STD###O920_LED_S22$A)
+          O921_LED_S23 (STD###O921_LED_S23$A)
+          O922_LED_S24 (STD###O922_LED_S24$A)
+          O923_LED_S25 (STD###O923_LED_S25$A)
+          O924_LED_S27 (STD###O924_LED_S27$A)
+          O925_LED_S28 (STD###O925_LED_S28$A)
+          O926_LED_S29 (STD###O926_LED_S29$A)
+          O927_LED_S30 (STD###O927_LED_S30$A)
+          O928_LED_S31 (STD###O928_LED_S31$A)
+          O929_LED_S32 (STD###O929_LED_S32$A)
+          O930_LED_S33 (STD###O930_LED_S33$A)
+          O931_LED_S34 (STD###O931_LED_S34$A)
+          O932_LED_S35 (STD###O932_LED_S35$A)
+          O933_LED_S36 (STD###O933_LED_S36$A)
+          O934_LED_S37 (STD###O934_LED_S37$A)
+          O935_LED_S38 (STD###O935_LED_S38$A)
+          O936_LED_NC_STOP (STD###O936_LED_NC_STOP$A)
+          O937_LED_NC_START (STD###O937_LED_NC_START$A)
+          O938_LED_power_on (STD###O938_LED_power_on$A)
+          O200_X7.1 (STD###O200_X7.1$A)
+          O201_X7.2 (STD###O201_X7.2$A)
+          O202_X7.3 (STD###O202_X7.3$A)
+          O203_X7.4 (STD###O203_X7.4$A)
+          O204_X7.5 (STD###O204_X7.5$A)
+          O205_X7.6 (STD###O205_X7.6$A)
+          O206_X7.7 (STD###O206_X7.7$A)
+          O207_X7.8 (STD###O207_X7.8$A)
+      Modul 5 : Digital Output LED$B  
+       HDD/Libray name :   Digital Output LED   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 6 : Override$A  
+       HDD/Libray name :             Override   SlaveName: MB720
+        NamedIO  count: 3
+          IW_POTI_1 (STD###IW_POTI_1$A)
+          IW_POTI_2 (STD###IW_POTI_2$A)
+          IW_POTI_3 (STD###IW_POTI_3$A)
+      Modul 7 : Override$B  
+       HDD/Libray name :             Override   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 8 : Analog$A  
+       HDD/Libray name :               Analog   SlaveName: MB720
+        NamedIO  count: 5
+          IW_ANALOG_3_3_VOLT (STD###IW_ANALOG_3_3_VOLT$A)
+          IW_ANALOG_5_VOLT (STD###IW_ANALOG_5_VOLT$A)
+          IW_ANALOG_24_VOLT (STD###IW_ANALOG_24_VOLT$A)
+          IW_ANALOG_1_5_VOLT (STD###IW_ANALOG_1_5_VOLT$A)
+          IW_TEMP_SENSOR (STD###IW_TEMP_SENSOR$A)
+      Modul 9 : Analog$B  
+       HDD/Libray name :               Analog   SlaveName: MB720
+        NamedIO  count: 0
+      Modul 10 : Bus Module (1)$A  
+       HDD/Libray name :           Bus Module   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 11 : Bus Module (1)$B  
+       HDD/Libray name :           Bus Module   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 12 : System Module$A  
+       HDD/Libray name :        System Module   SlaveName: PL 6206
+        NamedIO  count: 29
+          I249 (STD###I249$A)
+          I250 (STD###I250$A)
+          I251 (STD###I251$A)
+          I252 (STD###I252$A)
+          I253 (STD###I253$A)
+          I254 (STD###I254$A)
+          I255 (STD###I255$A)
+          I256 (STD###I256$A)
+          I257 (STD###I257$A)
+          I258 (STD###I258$A)
+          I259 (STD###I259$A)
+          I260 (STD###I260$A)
+          I261_ESA (STD###I261_ESA$A)
+          I262_ESB (STD###I262_ESB$A)
+          I263_RO208 (STD###I263_RO208$A)
+          I264_RO209 (STD###I264_RO209$A)
+          I265_RO210 (STD###I265_RO210$A)
+          I266_RO211 (STD###I266_RO211$A)
+          I267_RO212 (STD###I267_RO212$A)
+          I268_RO213 (STD###I268_RO213$A)
+          I269_RO214 (STD###I269_RO214$A)
+          I270_RO_MC_RDY (STD###I270_RO_MC_RDY$A)
+          O208 (STD###O208$A)
+          O209 (STD###O209$A)
+          O210 (STD###O210$A)
+          O211 (STD###O211$A)
+          O212 (STD###O212$A)
+          O213 (STD###O213$A)
+          O214 (STD###O214$A)
+      Modul 13 : System Module$B  
+       HDD/Libray name :        System Module   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 14 : PLD-H 16-08-00$A  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 32
+          I271 (STD###I271$A)
+          I272 (STD###I272$A)
+          I273 (STD###I273$A)
+          I274 (STD###I274$A)
+          I275 (STD###I275$A)
+          I276 (STD###I276$A)
+          I277 (STD###I277$A)
+          I278 (STD###I278$A)
+          I279 (STD###I279$A)
+          I280 (STD###I280$A)
+          I281 (STD###I281$A)
+          I282 (STD###I282$A)
+          I283 (STD###I283$A)
+          I284 (STD###I284$A)
+          I285 (STD###I285$A)
+          I286 (STD###I286$A)
+          I287_RO215 (STD###I287_RO215$A)
+          I288_RO216 (STD###I288_RO216$A)
+          I289_RO217 (STD###I289_RO217$A)
+          I290_RO218 (STD###I290_RO218$A)
+          I291_RO219 (STD###I291_RO219$A)
+          I292_RO220 (STD###I292_RO220$A)
+          I293_RO221 (STD###I293_RO221$A)
+          I294_RO222 (STD###I294_RO222$A)
+          O215 (STD###O215$A)
+          O216 (STD###O216$A)
+          O217 (STD###O217$A)
+          O218 (STD###O218$A)
+          O219 (STD###O219$A)
+          O220 (STD###O220$A)
+          O221 (STD###O221$A)
+          O222 (STD###O222$A)
+      Modul 15 : PLD-H 16-08-00$B  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 16 : PLD-H 16-08-00 (1)$A  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 32
+          I295 (STD###I295$A)
+          I296 (STD###I296$A)
+          I297 (STD###I297$A)
+          I298 (STD###I298$A)
+          I299 (STD###I299$A)
+          I300 (STD###I300$A)
+          I301 (STD###I301$A)
+          I302 (STD###I302$A)
+          I303 (STD###I303$A)
+          I304 (STD###I304$A)
+          I305 (STD###I305$A)
+          I306 (STD###I306$A)
+          I307 (STD###I307$A)
+          I308 (STD###I308$A)
+          I309 (STD###I309$A)
+          I310 (STD###I310$A)
+          I311_RO223 (STD###I311_RO223$A)
+          I312_RO224 (STD###I312_RO224$A)
+          I313_RO225 (STD###I313_RO225$A)
+          I314_RO226 (STD###I314_RO226$A)
+          I315_RO227 (STD###I315_RO227$A)
+          I316_RO228 (STD###I316_RO228$A)
+          I317_RO229 (STD###I317_RO229$A)
+          I318_RO230 (STD###I318_RO230$A)
+          O223 (STD###O223$A)
+          O224 (STD###O224$A)
+          O225 (STD###O225$A)
+          O226 (STD###O226$A)
+          O227 (STD###O227$A)
+          O228 (STD###O228$A)
+          O229 (STD###O229$A)
+          O230 (STD###O230$A)
+      Modul 17 : PLD-H 16-08-00 (1)$B  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 18 : PLD-H 16-08-00 (2)$A  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 32
+          I319 (STD###I319$A)
+          I320 (STD###I320$A)
+          I321 (STD###I321$A)
+          I322 (STD###I322$A)
+          I323 (STD###I323$A)
+          I324 (STD###I324$A)
+          I325 (STD###I325$A)
+          I326 (STD###I326$A)
+          I327 (STD###I327$A)
+          I328 (STD###I328$A)
+          I329 (STD###I329$A)
+          I330 (STD###I330$A)
+          I331 (STD###I331$A)
+          I332 (STD###I332$A)
+          I333 (STD###I333$A)
+          I334 (STD###I334$A)
+          I335_RO231 (STD###I335_RO231$A)
+          I336_RO232 (STD###I336_RO232$A)
+          I337_RO233 (STD###I337_RO233$A)
+          I338_RO234 (STD###I338_RO234$A)
+          I339_RO235 (STD###I339_RO235$A)
+          I340_RO236 (STD###I340_RO236$A)
+          I341_RO237 (STD###I341_RO237$A)
+          I342_RO238 (STD###I342_RO238$A)
+          O231 (STD###O231$A)
+          O232 (STD###O232$A)
+          O233 (STD###O233$A)
+          O234 (STD###O234$A)
+          O235 (STD###O235$A)
+          O236 (STD###O236$A)
+          O237 (STD###O237$A)
+          O238 (STD###O238$A)
+      Modul 19 : PLD-H 16-08-00 (2)$B  
+       HDD/Libray name :       PLD-H 16-08-00   SlaveName: PL 6206
+        NamedIO  count: 0
+
+
+Block 1 : 6206-4=8I16O
+    HSCI modul data sets: 2
+      Modul 0 : PLD-H 08-16-00$A  
+       HDD/Libray name :       PLD-H 08-16-00   SlaveName: PL 6206
+        NamedIO  count: 40
+          I343 (6206-4=8I16O###I343$A)
+          I344 (6206-4=8I16O###I344$A)
+          I345 (6206-4=8I16O###I345$A)
+          I346 (6206-4=8I16O###I346$A)
+          I347 (6206-4=8I16O###I347$A)
+          I348 (6206-4=8I16O###I348$A)
+          I349 (6206-4=8I16O###I349$A)
+          I350 (6206-4=8I16O###I350$A)
+          I351_RO239 (6206-4=8I16O###I351_RO239$A)
+          I352_RO240 (6206-4=8I16O###I352_RO240$A)
+          I353_RO241 (6206-4=8I16O###I353_RO241$A)
+          I354_RO242 (6206-4=8I16O###I354_RO242$A)
+          I355_RO243 (6206-4=8I16O###I355_RO243$A)
+          I356_RO244 (6206-4=8I16O###I356_RO244$A)
+          I357_RO245 (6206-4=8I16O###I357_RO245$A)
+          I358_RO246 (6206-4=8I16O###I358_RO246$A)
+          I359_RO247 (6206-4=8I16O###I359_RO247$A)
+          I360_RO248 (6206-4=8I16O###I360_RO248$A)
+          I361_RO249 (6206-4=8I16O###I361_RO249$A)
+          I362_RO250 (6206-4=8I16O###I362_RO250$A)
+          I363_RO251 (6206-4=8I16O###I363_RO251$A)
+          I364_RO252 (6206-4=8I16O###I364_RO252$A)
+          I365_RO253 (6206-4=8I16O###I365_RO253$A)
+          I366_RO254 (6206-4=8I16O###I366_RO254$A)
+          O239 (6206-4=8I16O###O239$A)
+          O240 (6206-4=8I16O###O240$A)
+          O241 (6206-4=8I16O###O241$A)
+          O242 (6206-4=8I16O###O242$A)
+          O243 (6206-4=8I16O###O243$A)
+          O244 (6206-4=8I16O###O244$A)
+          O245 (6206-4=8I16O###O245$A)
+          O246 (6206-4=8I16O###O246$A)
+          O247 (6206-4=8I16O###O247$A)
+          O248 (6206-4=8I16O###O248$A)
+          O249 (6206-4=8I16O###O249$A)
+          O250 (6206-4=8I16O###O250$A)
+          O251 (6206-4=8I16O###O251$A)
+          O252 (6206-4=8I16O###O252$A)
+          O253 (6206-4=8I16O###O253$A)
+          O254 (6206-4=8I16O###O254$A)
+      Modul 1 : PLD-H 08-16-00$B  
+       HDD/Libray name :       PLD-H 08-16-00   SlaveName: PL 6206
+        NamedIO  count: 0
+
+
+Block 2 : 6206-5=0
+    HSCI modul data sets: 2
+      Modul 0 : Empty Slot (1)$A  
+       HDD/Libray name :           Empty Slot   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 1 : Empty Slot (1)$B  
+       HDD/Libray name :           Empty Slot   SlaveName: PL 6206
+        NamedIO  count: 0
+
+
+Block 3 : 6206-6=0
+    HSCI modul data sets: 2
+      Modul 0 : Empty Slot (2)$A  
+       HDD/Libray name :           Empty Slot   SlaveName: PL 6206
+        NamedIO  count: 0
+      Modul 1 : Empty Slot (2)$B  
+       HDD/Libray name :           Empty Slot   SlaveName: PL 6206
+        NamedIO  count: 0
+
+HSCI Parameter data sets: 1
+                Master: 0    HSCI
+
+
+==========================================================================================
+=====================  H S C I - C O N F I G                  ============================
+==========================================================================================
+
+  HSCI_TOPOLOGY clients=3: PL  CC  PL 
+   Check Modules ID
+    PL[0]  channel[0]  number of modules: IOC-file=5  hardware=5  hardwareServer=5 
+    Module ID:  IOC = 249   hardware = 249   hws = 249
+    Module ID:  IOC =  11   hardware =  11   hws =  11
+    Module ID:  IOC =  42   hardware =  42   hws =  42
+    Module ID:  IOC =  14   hardware =  14   hws =  14
+    Module ID:  IOC =  15   hardware =  15   hws =  15
+   Check Modules ID
+    PL[1]  channel[0]  number of modules: IOC-file=8  hardware=10  hardwareServer=6 
+    Module ID:  IOC = 249   hardware = 249   hws = 249
+    Module ID:  IOC =   6   hardware =   6   hws =   6
+    Module ID:  IOC =   8   hardware =   8   hws =   8
+    Module ID:  IOC =   8   hardware =   8   hws =   8
+    Module ID:  IOC =   8   hardware =   8   hws =   8
+    Module ID:  IOC =  16   hardware =  16   hws =  16
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+   Check Modules ID
+    PL[0]  channel[1]  number of modules: IOC-file=5  hardware=0  hardwareServer=0 
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+   Check Modules ID
+    PL[1]  channel[1]  number of modules: IOC-file=8  hardware=0  hardwareServer=0 
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+    Module ID:  IOC = 255   hardware = 255   hws = 255
+
+  DMA  HSCI-PL-TO-MC (inputs) 
+   Header at 0xb3e0b000 (data) with size = 100 Byte
+   BUFFER [0]  at 0xb3e0b068 with size = 68 Byte
+     PL[0] channel[A] 
+        at 0xb3e0b068 with size = 36 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b068/ +0x0000 (start) 
+        at 0xb3e0b070/ +0x0008 (state) 
+     PL[1] channel[A] 
+        at 0xb3e0b08c with size = 28 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b08c/ +0x0024 (start) 
+        at 0xb3e0b094/ +0x002c (state) 
+     PL[0] channel[B] 
+        at 0xb3e0b0a8 with size =  0 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b0a8/ +0x0040 (start) 
+        at 0xb3e0b0b0/ +0x0048 (state) 
+        at 0xb3e0b0a8 with size = 0 Byte/ FS = 0 Byte
+        at 0xb3e0b0a8/ +0x0040 (read outputs) 
+     PL[1] channel[B] 
+        at 0xb3e0b0a8 with size =  0 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b0a8/ +0x0040 (start) 
+        at 0xb3e0b0b0/ +0x0048 (state) 
+        at 0xb3e0b0a8 with size = 0 Byte/ FS = 0 Byte
+        at 0xb3e0b0a8/ +0x0040 (read outputs) 
+     + Ext.    at 0xb3e0b0ac with size = 68 Byte
+   BUFFER [1]  at 0xb3e0b0f0 with size = 68 Byte
+     PL[0] channel[A] 
+        at 0xb3e0b0f0 with size = 36 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b0f0/ +0x0088 (start) 
+        at 0xb3e0b0f8/ +0x0090 (state) 
+     PL[1] channel[A] 
+        at 0xb3e0b114 with size = 28 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b114/ +0x00ac (start) 
+        at 0xb3e0b11c/ +0x00b4 (state) 
+     PL[0] channel[B] 
+        at 0xb3e0b130 with size =  0 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b130/ +0x00c8 (start) 
+        at 0xb3e0b138/ +0x00d0 (state) 
+        at 0xb3e0b130 with size = 0 Byte/ FS = 0 Byte
+        at 0xb3e0b130/ +0x00c8 (read outputs) 
+     PL[1] channel[B] 
+        at 0xb3e0b130 with size =  0 Byte/ therefrom FS =  0 Byte
+        at 0xb3e0b130/ +0x00c8 (start) 
+        at 0xb3e0b138/ +0x00d0 (state) 
+        at 0xb3e0b130 with size = 0 Byte/ FS = 0 Byte
+        at 0xb3e0b130/ +0x00c8 (read outputs) 
+     + Ext.    at 0xb3e0b134 with size = 68 Byte
+  DMA  HSCI-MC-TO-PL (outputs) 
+   BUFFER [0]  at 0xb3e07000 with size = 44 Byte
+     PL[0] channel[A] 
+        at 0xb3e07000 with size = 20 Byte/ FS = 0 Byte
+        at 0xb3e07000/ +0x0000 (start) 
+        at 0xb3e07008/ +0x0008 (command) 
+     PL[1] channel[A] 
+        at 0xb3e07014 with size = 20 Byte/ FS = 0 Byte
+        at 0xb3e07014/ +0x0014 (start) 
+        at 0xb3e0701c/ +0x001c (command) 
+     + Ext.    at 0xb3e0702c with size = 68 Byte
+   BUFFER [1]  at 0xb3e07070 with size = 44 Byte
+     PL[0] channel[A] 
+        at 0xb3e07070 with size = 20 Byte/ FS = 0 Byte
+        at 0xb3e07070/ +0x0070 (start) 
+        at 0xb3e07078/ +0x0078 (command) 
+     PL[1] channel[A] 
+        at 0xb3e07084 with size = 20 Byte/ FS = 0 Byte
+        at 0xb3e07084/ +0x0084 (start) 
+        at 0xb3e0708c/ +0x008c (command) 
+     + Ext.    at 0xb3e0709c with size = 68 Byte
+
+ 28.06.2021 16:54:47.834 <0> SetSystemClamps
+  SetSystemOverride - slave/modul: 0/3  address: 0x14 
+  SetSystemSpecialClamp MC_RDY - slave/modul: 1/1  address: 0x32/80 
+
+
+ 28.06.2021 16:54:47.834 <0> sendMessage SYSTEMCLAMP_SET
+   dmaInputByteAddress: 0x32 
+   dmaInputBitAddress : 0x80 
+   TAG: 66191952
+ CheckParam   0/ 0  no relevant param for the module
+ CheckParam   0/ 1  no relevant param for the module
+ CheckParam   0/ 2  no relevant param for the module
+ CheckParam   0/ 3  no relevant param for the module
+ CheckParam   0/ 4  no relevant param for the module
+ CheckParam   1/ 0  no relevant param for the module
+ CheckParam   1/ 1  param for the module available
+
+ 28.06.2021 16:54:47.845 <0> sendMessage ASYNC_TO_PL (ACMD_WriteParam) - PL[1] DeviceType=6  0x000A9650, 0x000E0000, ..  
+   paraHeader: 0xe0000
+   para[0]: 0x0000007F, para[1]: 0x00000000
+   para[2]: 0x00000000, para[3]: 0x00000000
+ 28.06.2021 16:54:47.878 <0> PL_CMD: ACMD_WriteParam PL[1] 
+
+ CheckParam   1/ 2  param for the module available
+
+ 28.06.2021 16:54:47.878 <0> sendMessage ASYNC_TO_PL (ACMD_WriteParam) - PL[1] DeviceType=6  0x000A9750, 0x000E0001, ..  
+   paraHeader: 0xe0001
+   para[0]: 0x000000FF, para[1]: 0x00000000
+   para[2]: 0x00000000, para[3]: 0x00000000
+ 28.06.2021 16:54:47.900 <0> PL_CMD: ACMD_WriteParam PL[1] 
+
+ CheckParam   1/ 3  param for the module available
+
+ 28.06.2021 16:54:47.900 <0> sendMessage ASYNC_TO_PL (ACMD_WriteParam) - PL[1] DeviceType=6  0x000A9850, 0x000E0002, ..  
+   paraHeader: 0xe0002
+   para[0]: 0x000000FF, para[1]: 0x00000000
+   para[2]: 0x00000000, para[3]: 0x00000000
+ 28.06.2021 16:54:47.922 <0> PL_CMD: ACMD_WriteParam PL[1] 
+
+ CheckParam   1/ 4  param for the module available
+
+ 28.06.2021 16:54:47.922 <0> sendMessage ASYNC_TO_PL (ACMD_WriteParam) - PL[1] DeviceType=6  0x000A9950, 0x000E0003, ..  
+   paraHeader: 0xe0003
+   para[0]: 0x000000FF, para[1]: 0x00000000
+   para[2]: 0x00000000, para[3]: 0x00000000
+ 28.06.2021 16:54:47.944 <0> PL_CMD: ACMD_WriteParam PL[1] 
+
+ CheckParam   1/ 5  param for the module available
+
+ 28.06.2021 16:54:47.944 <0> sendMessage ASYNC_TO_PL (ACMD_WriteParam) - PL[1] DeviceType=6  0x000A9A50, 0x000E0004, ..  
+   paraHeader: 0xe0004
+   para[0]: 0x0000FFFF, para[1]: 0x00000000
+   para[2]: 0x00000000, para[3]: 0x00000000
+ 28.06.2021 16:54:47.966 <0> PL_CMD: ACMD_WriteParam PL[1] 
+
+ CheckParam   1/ 6  no relevant param for the module
+ CheckParam   1/ 7  no relevant param for the module
+
+ 28.06.2021 16:54:47.966 <0> sendMessage CONFIG_READY
+
+ 28.06.2021 16:54:47.977 <0> sendMessage GET_TIMING
+OnHsciTiming: Got valid timing values for 3 clients
+   000002-000005 (HP-LP)
+   000000-000000 (HP-LP)
+   000002-000005 (HP-LP)
+
+
+==========================================================================================
+=====================  E A - I N I T   P L C - P I            ============================
+==========================================================================================
+
+
+
+==========================================================================================
+=====================  H S C I  - P L C   P I                 ============================
+==========================================================================================
+
+
+ 28.06.2021 16:54:48.013 <512> sendMessage CLEAR_ALL_FI (fast inputs)
+ 28.06.2021 16:54:48.023 <515> NETSRV_IS_RUNNING (NetServerState::ALL_SERVICES_READY) 
+
+
+==========================================================================================
+=====================  E A - I N I T   S U M M A R Y          ============================
+==========================================================================================
+
+============  raw COPY TABLES ========================================================
+ProfibusInputList
+Table size: 0
+ProfibusOutputList
+Table size: 0
+ProfibusJhDiagList
+Table size: 0
+HsciA_InputList
+Table size: 175
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:001 DestOffset:0200  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6488
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:002 DestOffset:0201  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6489
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:004 DestOffset:0202  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6490
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:008 DestOffset:0203  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6491
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:016 DestOffset:0204  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6492
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:032 DestOffset:0205  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6493
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:064 DestOffset:0206  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6494
+Dir:3 CpType:2 SrcOffset:0012 SrcOffsetB:0000 SrcBit:128 DestOffset:0207  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6495
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:001 DestOffset:0208  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6496
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:002 DestOffset:0209  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6497
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:004 DestOffset:0210  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6498
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:008 DestOffset:0211  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6499
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:032 DestOffset:0212  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6500
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:064 DestOffset:0213  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6501
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:128 DestOffset:0214  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6502
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:001 DestOffset:0215  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6503
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:002 DestOffset:0216  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6504
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:004 DestOffset:0217  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6505
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:008 DestOffset:0218  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6506
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:016 DestOffset:0219  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6507
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:032 DestOffset:0220  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6508
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:064 DestOffset:0221  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6509
+Dir:3 CpType:2 SrcOffset:0014 SrcOffsetB:0000 SrcBit:128 DestOffset:0222  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6510
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:001 DestOffset:0223  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6511
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:004 DestOffset:0224  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6512
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:008 DestOffset:0225  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6513
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:016 DestOffset:0226  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6514
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:032 DestOffset:0227  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6515
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:064 DestOffset:0228  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6516
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:128 DestOffset:0229  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6517
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:001 DestOffset:0230  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6518
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:002 DestOffset:0231  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6519
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:004 DestOffset:0232  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6520
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:008 DestOffset:0233  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6521
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:016 DestOffset:0234  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6522
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:032 DestOffset:0235  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6523
+Dir:3 CpType:2 SrcOffset:0013 SrcOffsetB:0000 SrcBit:016 DestOffset:0236  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6524
+Dir:3 CpType:2 SrcOffset:0015 SrcOffsetB:0000 SrcBit:002 DestOffset:0237  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6525
+Dir:3 CpType:2 SrcOffset:0016 SrcOffsetB:0000 SrcBit:064 DestOffset:0238  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6526
+Dir:3 CpType:2 SrcOffset:0017 SrcOffsetB:0000 SrcBit:008 DestOffset:0239  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6527
+Dir:3 CpType:2 SrcOffset:0017 SrcOffsetB:0000 SrcBit:016 DestOffset:0240  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6528
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:001 DestOffset:0241  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6529
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:002 DestOffset:0242  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6530
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:004 DestOffset:0243  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6531
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:008 DestOffset:0244  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6532
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:016 DestOffset:0245  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6533
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:032 DestOffset:0246  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6534
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:064 DestOffset:0247  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6535
+Dir:3 CpType:2 SrcOffset:0018 SrcOffsetB:0000 SrcBit:128 DestOffset:0248  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6536
+Dir:3 CpType:6 SrcOffset:0020 SrcOffsetB:0000 SrcBit:001 DestOffset:0000  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6584
+Dir:3 CpType:6 SrcOffset:0022 SrcOffsetB:0000 SrcBit:001 DestOffset:0002  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6585
+Dir:3 CpType:6 SrcOffset:0024 SrcOffsetB:0000 SrcBit:001 DestOffset:0004  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6586
+Dir:3 CpType:6 SrcOffset:0026 SrcOffsetB:0000 SrcBit:001 DestOffset:0006  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6587
+Dir:3 CpType:6 SrcOffset:0028 SrcOffsetB:0000 SrcBit:001 DestOffset:0008  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6588
+Dir:3 CpType:6 SrcOffset:0030 SrcOffsetB:0000 SrcBit:001 DestOffset:0010  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6589
+Dir:3 CpType:6 SrcOffset:0032 SrcOffsetB:0000 SrcBit:001 DestOffset:0012  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6590
+Dir:3 CpType:6 SrcOffset:0034 SrcOffsetB:0000 SrcBit:001 DestOffset:0014  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6591
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:001 DestOffset:0249  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6592
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:002 DestOffset:0250  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6593
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:004 DestOffset:0251  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6594
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:008 DestOffset:0252  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6595
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:016 DestOffset:0253  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6596
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:032 DestOffset:0254  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6597
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:064 DestOffset:0255  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6598
+Dir:3 CpType:2 SrcOffset:0048 SrcOffsetB:0000 SrcBit:128 DestOffset:0256  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6599
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:001 DestOffset:0257  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6600
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:002 DestOffset:0258  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6601
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:004 DestOffset:0259  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6602
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:008 DestOffset:0260  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6603
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:016 DestOffset:0261  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6604
+Dir:3 CpType:2 SrcOffset:0049 SrcOffsetB:0000 SrcBit:032 DestOffset:0262  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6605
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:001 DestOffset:0263  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6606
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:002 DestOffset:0264  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6607
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:004 DestOffset:0265  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6608
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:008 DestOffset:0266  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6609
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:016 DestOffset:0267  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6610
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:032 DestOffset:0268  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6611
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:064 DestOffset:0269  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6612
+Dir:3 CpType:2 SrcOffset:0050 SrcOffsetB:0000 SrcBit:128 DestOffset:0270  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6613
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:001 DestOffset:0271  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6621
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:002 DestOffset:0272  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6622
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:004 DestOffset:0273  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6623
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:008 DestOffset:0274  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6624
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:016 DestOffset:0275  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6625
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:032 DestOffset:0276  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6626
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:064 DestOffset:0277  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6627
+Dir:3 CpType:2 SrcOffset:0051 SrcOffsetB:0000 SrcBit:128 DestOffset:0278  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6628
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:001 DestOffset:0279  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6629
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:002 DestOffset:0280  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6630
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:004 DestOffset:0281  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6631
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:008 DestOffset:0282  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6632
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:016 DestOffset:0283  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6633
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:032 DestOffset:0284  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6634
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:064 DestOffset:0285  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6635
+Dir:3 CpType:2 SrcOffset:0052 SrcOffsetB:0000 SrcBit:128 DestOffset:0286  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6636
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:001 DestOffset:0287  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6637
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:002 DestOffset:0288  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6638
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:004 DestOffset:0289  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6639
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:008 DestOffset:0290  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6640
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:016 DestOffset:0291  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6641
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:032 DestOffset:0292  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6642
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:064 DestOffset:0293  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6643
+Dir:3 CpType:2 SrcOffset:0053 SrcOffsetB:0000 SrcBit:128 DestOffset:0294  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6644
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:001 DestOffset:0295  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6653
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:002 DestOffset:0296  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6654
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:004 DestOffset:0297  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6655
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:008 DestOffset:0298  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6656
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:016 DestOffset:0299  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6657
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:032 DestOffset:0300  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6658
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:064 DestOffset:0301  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6659
+Dir:3 CpType:2 SrcOffset:0054 SrcOffsetB:0000 SrcBit:128 DestOffset:0302  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6660
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:001 DestOffset:0303  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6661
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:002 DestOffset:0304  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6662
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:004 DestOffset:0305  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6663
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:008 DestOffset:0306  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6664
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:016 DestOffset:0307  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6665
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:032 DestOffset:0308  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6666
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:064 DestOffset:0309  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6667
+Dir:3 CpType:2 SrcOffset:0055 SrcOffsetB:0000 SrcBit:128 DestOffset:0310  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6668
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:001 DestOffset:0311  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6669
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:002 DestOffset:0312  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6670
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:004 DestOffset:0313  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6671
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:008 DestOffset:0314  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6672
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:016 DestOffset:0315  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6673
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:032 DestOffset:0316  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6674
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:064 DestOffset:0317  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6675
+Dir:3 CpType:2 SrcOffset:0056 SrcOffsetB:0000 SrcBit:128 DestOffset:0318  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6676
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:001 DestOffset:0319  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6685
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:002 DestOffset:0320  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6686
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:004 DestOffset:0321  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6687
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:008 DestOffset:0322  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6688
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:016 DestOffset:0323  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6689
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:032 DestOffset:0324  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6690
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:064 DestOffset:0325  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6691
+Dir:3 CpType:2 SrcOffset:0057 SrcOffsetB:0000 SrcBit:128 DestOffset:0326  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6692
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:001 DestOffset:0327  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6693
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:002 DestOffset:0328  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6694
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:004 DestOffset:0329  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6695
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:008 DestOffset:0330  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6696
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:016 DestOffset:0331  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6697
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:032 DestOffset:0332  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6698
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:064 DestOffset:0333  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6699
+Dir:3 CpType:2 SrcOffset:0058 SrcOffsetB:0000 SrcBit:128 DestOffset:0334  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6700
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:001 DestOffset:0335  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6701
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:002 DestOffset:0336  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6702
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:004 DestOffset:0337  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6703
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:008 DestOffset:0338  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6704
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:016 DestOffset:0339  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6705
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:032 DestOffset:0340  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6706
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:064 DestOffset:0341  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6707
+Dir:3 CpType:2 SrcOffset:0059 SrcOffsetB:0000 SrcBit:128 DestOffset:0342  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6708
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:001 DestOffset:0343  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6717
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:002 DestOffset:0344  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6718
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:004 DestOffset:0345  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6719
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:008 DestOffset:0346  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6720
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:016 DestOffset:0347  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6721
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:032 DestOffset:0348  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6722
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:064 DestOffset:0349  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6723
+Dir:3 CpType:2 SrcOffset:0060 SrcOffsetB:0000 SrcBit:128 DestOffset:0350  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6724
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:001 DestOffset:0351  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6725
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:002 DestOffset:0352  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6726
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:004 DestOffset:0353  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6727
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:008 DestOffset:0354  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6728
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:016 DestOffset:0355  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6729
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:032 DestOffset:0356  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6730
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:064 DestOffset:0357  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6731
+Dir:3 CpType:2 SrcOffset:0061 SrcOffsetB:0000 SrcBit:128 DestOffset:0358  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6732
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:001 DestOffset:0359  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6733
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:002 DestOffset:0360  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6734
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:004 DestOffset:0361  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6735
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:008 DestOffset:0362  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6736
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:016 DestOffset:0363  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6737
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:032 DestOffset:0364  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6738
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:064 DestOffset:0365  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6739
+Dir:3 CpType:2 SrcOffset:0062 SrcOffsetB:0000 SrcBit:128 DestOffset:0366  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6740
+HsciA_OutputList
+Table size: 94
+Dir:4 CpType:0 SrcOffset:0900 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6537
+Dir:4 CpType:0 SrcOffset:0901 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6538
+Dir:4 CpType:0 SrcOffset:0902 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6539
+Dir:4 CpType:0 SrcOffset:0903 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6540
+Dir:4 CpType:0 SrcOffset:0904 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6541
+Dir:4 CpType:0 SrcOffset:0905 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6542
+Dir:4 CpType:0 SrcOffset:0906 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6543
+Dir:4 CpType:0 SrcOffset:0907 SrcOffsetB:0000 SrcBit:128 DestOffset:0013  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6544
+Dir:4 CpType:0 SrcOffset:0908 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6545
+Dir:4 CpType:0 SrcOffset:0909 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6546
+Dir:4 CpType:0 SrcOffset:0910 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6547
+Dir:4 CpType:0 SrcOffset:0911 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6548
+Dir:4 CpType:0 SrcOffset:0912 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6549
+Dir:4 CpType:0 SrcOffset:0913 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6550
+Dir:4 CpType:0 SrcOffset:0914 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6551
+Dir:4 CpType:0 SrcOffset:0915 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6552
+Dir:4 CpType:0 SrcOffset:0916 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6553
+Dir:4 CpType:0 SrcOffset:0917 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6554
+Dir:4 CpType:0 SrcOffset:0918 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6555
+Dir:4 CpType:0 SrcOffset:0919 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6556
+Dir:4 CpType:0 SrcOffset:0920 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6557
+Dir:4 CpType:0 SrcOffset:0921 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6558
+Dir:4 CpType:0 SrcOffset:0922 SrcOffsetB:0000 SrcBit:128 DestOffset:0015  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6559
+Dir:4 CpType:0 SrcOffset:0923 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6560
+Dir:4 CpType:0 SrcOffset:0924 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6561
+Dir:4 CpType:0 SrcOffset:0925 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6562
+Dir:4 CpType:0 SrcOffset:0926 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6563
+Dir:4 CpType:0 SrcOffset:0927 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6564
+Dir:4 CpType:0 SrcOffset:0928 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6565
+Dir:4 CpType:0 SrcOffset:0929 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6566
+Dir:4 CpType:0 SrcOffset:0930 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6567
+Dir:4 CpType:0 SrcOffset:0931 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6568
+Dir:4 CpType:0 SrcOffset:0932 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6569
+Dir:4 CpType:0 SrcOffset:0933 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6570
+Dir:4 CpType:0 SrcOffset:0934 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6571
+Dir:4 CpType:0 SrcOffset:0935 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6572
+Dir:4 CpType:0 SrcOffset:0936 SrcOffsetB:0000 SrcBit:128 DestOffset:0014  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6573
+Dir:4 CpType:0 SrcOffset:0937 SrcOffsetB:0000 SrcBit:128 DestOffset:0016  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6574
+Dir:4 CpType:0 SrcOffset:0938 SrcOffsetB:0000 SrcBit:128 DestOffset:0017  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6575
+Dir:4 CpType:0 SrcOffset:0200 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6576
+Dir:4 CpType:0 SrcOffset:0201 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6577
+Dir:4 CpType:0 SrcOffset:0202 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6578
+Dir:4 CpType:0 SrcOffset:0203 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6579
+Dir:4 CpType:0 SrcOffset:0204 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6580
+Dir:4 CpType:0 SrcOffset:0205 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6581
+Dir:4 CpType:0 SrcOffset:0206 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6582
+Dir:4 CpType:0 SrcOffset:0207 SrcOffsetB:0000 SrcBit:128 DestOffset:0012  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6583
+Dir:4 CpType:0 SrcOffset:0208 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6614
+Dir:4 CpType:0 SrcOffset:0209 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6615
+Dir:4 CpType:0 SrcOffset:0210 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6616
+Dir:4 CpType:0 SrcOffset:0211 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6617
+Dir:4 CpType:0 SrcOffset:0212 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6618
+Dir:4 CpType:0 SrcOffset:0213 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6619
+Dir:4 CpType:0 SrcOffset:0214 SrcOffsetB:0000 SrcBit:128 DestOffset:0032  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6620
+Dir:4 CpType:0 SrcOffset:0215 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6645
+Dir:4 CpType:0 SrcOffset:0216 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6646
+Dir:4 CpType:0 SrcOffset:0217 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6647
+Dir:4 CpType:0 SrcOffset:0218 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6648
+Dir:4 CpType:0 SrcOffset:0219 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6649
+Dir:4 CpType:0 SrcOffset:0220 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6650
+Dir:4 CpType:0 SrcOffset:0221 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6651
+Dir:4 CpType:0 SrcOffset:0222 SrcOffsetB:0000 SrcBit:128 DestOffset:0033  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6652
+Dir:4 CpType:0 SrcOffset:0223 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6677
+Dir:4 CpType:0 SrcOffset:0224 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6678
+Dir:4 CpType:0 SrcOffset:0225 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6679
+Dir:4 CpType:0 SrcOffset:0226 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6680
+Dir:4 CpType:0 SrcOffset:0227 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6681
+Dir:4 CpType:0 SrcOffset:0228 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6682
+Dir:4 CpType:0 SrcOffset:0229 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6683
+Dir:4 CpType:0 SrcOffset:0230 SrcOffsetB:0000 SrcBit:128 DestOffset:0034  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6684
+Dir:4 CpType:0 SrcOffset:0231 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6709
+Dir:4 CpType:0 SrcOffset:0232 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6710
+Dir:4 CpType:0 SrcOffset:0233 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6711
+Dir:4 CpType:0 SrcOffset:0234 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6712
+Dir:4 CpType:0 SrcOffset:0235 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6713
+Dir:4 CpType:0 SrcOffset:0236 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6714
+Dir:4 CpType:0 SrcOffset:0237 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6715
+Dir:4 CpType:0 SrcOffset:0238 SrcOffsetB:0000 SrcBit:128 DestOffset:0035  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6716
+Dir:4 CpType:0 SrcOffset:0239 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6741
+Dir:4 CpType:0 SrcOffset:0240 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6742
+Dir:4 CpType:0 SrcOffset:0241 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6743
+Dir:4 CpType:0 SrcOffset:0242 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6744
+Dir:4 CpType:0 SrcOffset:0243 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6745
+Dir:4 CpType:0 SrcOffset:0244 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6746
+Dir:4 CpType:0 SrcOffset:0245 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6747
+Dir:4 CpType:0 SrcOffset:0246 SrcOffsetB:0000 SrcBit:128 DestOffset:0036  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6748
+Dir:4 CpType:0 SrcOffset:0247 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:001 SplcOffset:0000 PosNamedIoList:0000 index:6749
+Dir:4 CpType:0 SrcOffset:0248 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:002 SplcOffset:0000 PosNamedIoList:0000 index:6750
+Dir:4 CpType:0 SrcOffset:0249 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:004 SplcOffset:0000 PosNamedIoList:0000 index:6751
+Dir:4 CpType:0 SrcOffset:0250 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:008 SplcOffset:0000 PosNamedIoList:0000 index:6752
+Dir:4 CpType:0 SrcOffset:0251 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:016 SplcOffset:0000 PosNamedIoList:0000 index:6753
+Dir:4 CpType:0 SrcOffset:0252 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:032 SplcOffset:0000 PosNamedIoList:0000 index:6754
+Dir:4 CpType:0 SrcOffset:0253 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:064 SplcOffset:0000 PosNamedIoList:0000 index:6755
+Dir:4 CpType:0 SrcOffset:0254 SrcOffsetB:0000 SrcBit:128 DestOffset:0037  DestOffsetB:0000 DestBit:128 SplcOffset:0000 PosNamedIoList:0000 index:6756
+ProfiNetInputList
+Table size: 0
+ProfiNetOutputList
+Table size: 0
+InternalInputList
+Table size: 0
+InternalOutputList
+Table size: 0
+============  End of raw COPY TABLES =================================================
+informations about the process interface (PI) 
+  supported I  from NC: I0  - I999 
+  supported O  from NC: O0  - O999 
+  supported IB from NC: IB0 - IB999 
+  supported OB from NC: OB0 - OB999 
+
+  used IO counts (all I,IB,IW,ID and O,OB,OW,OD): 
+    max. usable IO counts per system: 1000 
+
+    PROFIBUS : Inputs =   0, Outputs =   0 
+    HSCI     : Inputs = 175, Outputs =  94 
+    PROFINET : Inputs =   0, Outputs =   0 
+    INTERNAL : Inputs =   0, Outputs =   0 
+    -------------------------------------------- 
+    overall  : Inputs = 175, Outputs =  94 
+
+informations about the Copy Table 
+  Dir (kind of direction) 
+     1: PROFIBUS Input   
+     2: PROFIBUS Output  
+     3: HSCI     Input   
+     4: HSCI     Output  
+     5: HSCI FS  Input   
+     6: HSCI FS  Output  
+     7: PROFINET Input   
+     8: PROFINET Output  
+     9: INTERNAL Input   
+    10: INTERNAL Output  
+
+  CPM (kind of copy mode)
+     0: bitToBit
+     1: byte
+     2: byteToBit
+     4: bitFlank 
+     5: bitFromByte 
+     3: word 
+     6: wordNoSwap 
+     7: dword 
+     8: dwordNoSwap
+     9: wordTo0_01Volt 
+    10: wordTo0_01Degree 
+    11: Volt0_01ToWord 
+    12: wordTo0_0001Volt 
+    13: wordTo0_0001Degree 
+    14: Volt0_0001ToWord 
+    15: bitEdgeLow 
+    16: bitEdgeHigh 
+    17: bitEdge 
+    18: Volt0_01ToWordA 
+    19: Volt0_0001ToWordA 
+
+
+PROFIBUS: no Inputs configured
+
+PROFIBUS: no Outputs configured
+
+HSCI: List of Inputs:
+Dir  | CPM | Source| S-Bit|  Dest |D-Bit| PLC     | SPLC    | IO-Name (Key)
+  3  |  2  | 000cH | 01H  | 00c8H | 80H | I 200   |         | I200_key_S1 (STD###I200_key_S1$A)
+  3  |  2  | 000cH | 02H  | 00c9H | 80H | I 201   |         | I201_key_S2 (STD###I201_key_S2$A)
+  3  |  2  | 000cH | 04H  | 00caH | 80H | I 202   |         | I202_key_S3 (STD###I202_key_S3$A)
+  3  |  2  | 000cH | 08H  | 00cbH | 80H | I 203   |         | I203_key_S4 (STD###I203_key_S4$A)
+  3  |  2  | 000cH | 10H  | 00ccH | 80H | I 204   |         | I204_key_S5 (STD###I204_key_S5$A)
+  3  |  2  | 000cH | 20H  | 00cdH | 80H | I 205   |         | I205_key_S6 (STD###I205_key_S6$A)
+  3  |  2  | 000cH | 40H  | 00ceH | 80H | I 206   |         | I206_key_S7 (STD###I206_key_S7$A)
+  3  |  2  | 000cH | 80H  | 00cfH | 80H | I 207   |         | I207_key_S8 (STD###I207_key_S8$A)
+  3  |  2  | 000dH | 01H  | 00d0H | 80H | I 208   |         | I208_key_S9 (STD###I208_key_S9$A)
+  3  |  2  | 000dH | 02H  | 00d1H | 80H | I 209   |         | I209_key_S10 (STD###I209_key_S10$A)
+  3  |  2  | 000dH | 04H  | 00d2H | 80H | I 210   |         | I210_key_S11 (STD###I210_key_S11$A)
+  3  |  2  | 000dH | 08H  | 00d3H | 80H | I 211   |         | I211_key_S12 (STD###I211_key_S12$A)
+  3  |  2  | 000dH | 20H  | 00d4H | 80H | I 212   |         | I212_key_S14 (STD###I212_key_S14$A)
+  3  |  2  | 000dH | 40H  | 00d5H | 80H | I 213   |         | I213_key_S15 (STD###I213_key_S15$A)
+  3  |  2  | 000dH | 80H  | 00d6H | 80H | I 214   |         | I214_key_S16 (STD###I214_key_S16$A)
+  3  |  2  | 000eH | 01H  | 00d7H | 80H | I 215   |         | I215_key_S17 (STD###I215_key_S17$A)
+  3  |  2  | 000eH | 02H  | 00d8H | 80H | I 216   |         | I216_key_S18 (STD###I216_key_S18$A)
+  3  |  2  | 000eH | 04H  | 00d9H | 80H | I 217   |         | I217_key_S19 (STD###I217_key_S19$A)
+  3  |  2  | 000eH | 08H  | 00daH | 80H | I 218   |         | I218_key_S20 (STD###I218_key_S20$A)
+  3  |  2  | 000eH | 10H  | 00dbH | 80H | I 219   |         | I219_key_S21 (STD###I219_key_S21$A)
+  3  |  2  | 000eH | 20H  | 00dcH | 80H | I 220   |         | I220_key_S22 (STD###I220_key_S22$A)
+  3  |  2  | 000eH | 40H  | 00ddH | 80H | I 221   |         | I221_key_S23 (STD###I221_key_S23$A)
+  3  |  2  | 000eH | 80H  | 00deH | 80H | I 222   |         | I222_key_S24 (STD###I222_key_S24$A)
+  3  |  2  | 000fH | 01H  | 00dfH | 80H | I 223   |         | I223_key_S25 (STD###I223_key_S25$A)
+  3  |  2  | 000fH | 04H  | 00e0H | 80H | I 224   |         | I224_key_S27 (STD###I224_key_S27$A)
+  3  |  2  | 000fH | 08H  | 00e1H | 80H | I 225   |         | I225_key_S28 (STD###I225_key_S28$A)
+  3  |  2  | 000fH | 10H  | 00e2H | 80H | I 226   |         | I226_key_S29 (STD###I226_key_S29$A)
+  3  |  2  | 000fH | 20H  | 00e3H | 80H | I 227   |         | I227_key_S30 (STD###I227_key_S30$A)
+  3  |  2  | 000fH | 40H  | 00e4H | 80H | I 228   |         | I228_key_S31 (STD###I228_key_S31$A)
+  3  |  2  | 000fH | 80H  | 00e5H | 80H | I 229   |         | I229_key_S32 (STD###I229_key_S32$A)
+  3  |  2  | 0010H | 01H  | 00e6H | 80H | I 230   |         | I230_key_S33 (STD###I230_key_S33$A)
+  3  |  2  | 0010H | 02H  | 00e7H | 80H | I 231   |         | I231_key_S34 (STD###I231_key_S34$A)
+  3  |  2  | 0010H | 04H  | 00e8H | 80H | I 232   |         | I232_key_S35 (STD###I232_key_S35$A)
+  3  |  2  | 0010H | 08H  | 00e9H | 80H | I 233   |         | I233_key_S36 (STD###I233_key_S36$A)
+  3  |  2  | 0010H | 10H  | 00eaH | 80H | I 234   |         | I234_key_S37 (STD###I234_key_S37$A)
+  3  |  2  | 0010H | 20H  | 00ebH | 80H | I 235   |         | I235_key_S38 (STD###I235_key_S38$A)
+  3  |  2  | 000dH | 10H  | 00ecH | 80H | I 236   |         | I236_key_NC_STOP (STD###I236_key_NC_STOP$A)
+  3  |  2  | 000fH | 02H  | 00edH | 80H | I 237   |         | I237_key_NC_START (STD###I237_key_NC_START$A)
+  3  |  2  | 0010H | 40H  | 00eeH | 80H | I 238   |         | I238_key_power_on (STD###I238_key_power_on$A)
+  3  |  2  | 0011H | 08H  | 00efH | 80H | I 239   |         | I239_X31.5 (STD###I239_X31.5$A)
+  3  |  2  | 0011H | 10H  | 00f0H | 80H | I 240   |         | I240_X31.8 (STD###I240_X31.8$A)
+  3  |  2  | 0012H | 01H  | 00f1H | 80H | I 241   |         | I241_key_permissive_button (STD###I241_key_permissive_button$A)
+  3  |  2  | 0012H | 02H  | 00f2H | 80H | I 242   |         | I242_X6.2 (STD###I242_X6.2$A)
+  3  |  2  | 0012H | 04H  | 00f3H | 80H | I 243   |         | I243_X6.3 (STD###I243_X6.3$A)
+  3  |  2  | 0012H | 08H  | 00f4H | 80H | I 244   |         | I244_key_mode_2 (STD###I244_key_mode_2$A)
+  3  |  2  | 0012H | 10H  | 00f5H | 80H | I 245   |         | I245_key_mode_4 (STD###I245_key_mode_4$A)
+  3  |  2  | 0012H | 20H  | 00f6H | 80H | I 246   |         | I246_X6.6 (STD###I246_X6.6$A)
+  3  |  2  | 0012H | 40H  | 00f7H | 80H | I 247   |         | I247_X6.7 (STD###I247_X6.7$A)
+  3  |  2  | 0012H | 80H  | 00f8H | 80H | I 248   |         | I248_X6.8 (STD###I248_X6.8$A)
+  3  |  6  | 0014H | 01H  | 0000H | 80H | IW0     |         | IW_POTI_1 (STD###IW_POTI_1$A)
+  3  |  6  | 0016H | 01H  | 0002H | 80H | IW2     |         | IW_POTI_2 (STD###IW_POTI_2$A)
+  3  |  6  | 0018H | 01H  | 0004H | 80H | IW4     |         | IW_POTI_3 (STD###IW_POTI_3$A)
+  3  |  6  | 001aH | 01H  | 0006H | 80H | IW6     |         | IW_ANALOG_3_3_VOLT (STD###IW_ANALOG_3_3_VOLT$A)
+  3  |  6  | 001cH | 01H  | 0008H | 80H | IW8     |         | IW_ANALOG_5_VOLT (STD###IW_ANALOG_5_VOLT$A)
+  3  |  6  | 001eH | 01H  | 000aH | 80H | IW10    |         | IW_ANALOG_24_VOLT (STD###IW_ANALOG_24_VOLT$A)
+  3  |  6  | 0020H | 01H  | 000cH | 80H | IW12    |         | IW_ANALOG_1_5_VOLT (STD###IW_ANALOG_1_5_VOLT$A)
+  3  |  6  | 0022H | 01H  | 000eH | 80H | IW14    |         | IW_TEMP_SENSOR (STD###IW_TEMP_SENSOR$A)
+  3  |  2  | 0030H | 01H  | 00f9H | 80H | I 249   |         | I249 (STD###I249$A)
+  3  |  2  | 0030H | 02H  | 00faH | 80H | I 250   |         | I250 (STD###I250$A)
+  3  |  2  | 0030H | 04H  | 00fbH | 80H | I 251   |         | I251 (STD###I251$A)
+  3  |  2  | 0030H | 08H  | 00fcH | 80H | I 252   |         | I252 (STD###I252$A)
+  3  |  2  | 0030H | 10H  | 00fdH | 80H | I 253   |         | I253 (STD###I253$A)
+  3  |  2  | 0030H | 20H  | 00feH | 80H | I 254   |         | I254 (STD###I254$A)
+  3  |  2  | 0030H | 40H  | 00ffH | 80H | I 255   |         | I255 (STD###I255$A)
+  3  |  2  | 0030H | 80H  | 0100H | 80H | I 256   |         | I256 (STD###I256$A)
+  3  |  2  | 0031H | 01H  | 0101H | 80H | I 257   |         | I257 (STD###I257$A)
+  3  |  2  | 0031H | 02H  | 0102H | 80H | I 258   |         | I258 (STD###I258$A)
+  3  |  2  | 0031H | 04H  | 0103H | 80H | I 259   |         | I259 (STD###I259$A)
+  3  |  2  | 0031H | 08H  | 0104H | 80H | I 260   |         | I260 (STD###I260$A)
+  3  |  2  | 0031H | 10H  | 0105H | 80H | I 261   |         | I261_ESA (STD###I261_ESA$A)
+  3  |  2  | 0031H | 20H  | 0106H | 80H | I 262   |         | I262_ESB (STD###I262_ESB$A)
+  3  |  2  | 0032H | 01H  | 0107H | 80H | I 263   |         | I263_RO208 (STD###I263_RO208$A)
+  3  |  2  | 0032H | 02H  | 0108H | 80H | I 264   |         | I264_RO209 (STD###I264_RO209$A)
+  3  |  2  | 0032H | 04H  | 0109H | 80H | I 265   |         | I265_RO210 (STD###I265_RO210$A)
+  3  |  2  | 0032H | 08H  | 010aH | 80H | I 266   |         | I266_RO211 (STD###I266_RO211$A)
+  3  |  2  | 0032H | 10H  | 010bH | 80H | I 267   |         | I267_RO212 (STD###I267_RO212$A)
+  3  |  2  | 0032H | 20H  | 010cH | 80H | I 268   |         | I268_RO213 (STD###I268_RO213$A)
+  3  |  2  | 0032H | 40H  | 010dH | 80H | I 269   |         | I269_RO214 (STD###I269_RO214$A)
+  3  |  2  | 0032H | 80H  | 010eH | 80H | I 270   |         | I270_RO_MC_RDY (STD###I270_RO_MC_RDY$A)
+  3  |  2  | 0033H | 01H  | 010fH | 80H | I 271   |         | I271 (STD###I271$A)
+  3  |  2  | 0033H | 02H  | 0110H | 80H | I 272   |         | I272 (STD###I272$A)
+  3  |  2  | 0033H | 04H  | 0111H | 80H | I 273   |         | I273 (STD###I273$A)
+  3  |  2  | 0033H | 08H  | 0112H | 80H | I 274   |         | I274 (STD###I274$A)
+  3  |  2  | 0033H | 10H  | 0113H | 80H | I 275   |         | I275 (STD###I275$A)
+  3  |  2  | 0033H | 20H  | 0114H | 80H | I 276   |         | I276 (STD###I276$A)
+  3  |  2  | 0033H | 40H  | 0115H | 80H | I 277   |         | I277 (STD###I277$A)
+  3  |  2  | 0033H | 80H  | 0116H | 80H | I 278   |         | I278 (STD###I278$A)
+  3  |  2  | 0034H | 01H  | 0117H | 80H | I 279   |         | I279 (STD###I279$A)
+  3  |  2  | 0034H | 02H  | 0118H | 80H | I 280   |         | I280 (STD###I280$A)
+  3  |  2  | 0034H | 04H  | 0119H | 80H | I 281   |         | I281 (STD###I281$A)
+  3  |  2  | 0034H | 08H  | 011aH | 80H | I 282   |         | I282 (STD###I282$A)
+  3  |  2  | 0034H | 10H  | 011bH | 80H | I 283   |         | I283 (STD###I283$A)
+  3  |  2  | 0034H | 20H  | 011cH | 80H | I 284   |         | I284 (STD###I284$A)
+  3  |  2  | 0034H | 40H  | 011dH | 80H | I 285   |         | I285 (STD###I285$A)
+  3  |  2  | 0034H | 80H  | 011eH | 80H | I 286   |         | I286 (STD###I286$A)
+  3  |  2  | 0035H | 01H  | 011fH | 80H | I 287   |         | I287_RO215 (STD###I287_RO215$A)
+  3  |  2  | 0035H | 02H  | 0120H | 80H | I 288   |         | I288_RO216 (STD###I288_RO216$A)
+  3  |  2  | 0035H | 04H  | 0121H | 80H | I 289   |         | I289_RO217 (STD###I289_RO217$A)
+  3  |  2  | 0035H | 08H  | 0122H | 80H | I 290   |         | I290_RO218 (STD###I290_RO218$A)
+  3  |  2  | 0035H | 10H  | 0123H | 80H | I 291   |         | I291_RO219 (STD###I291_RO219$A)
+  3  |  2  | 0035H | 20H  | 0124H | 80H | I 292   |         | I292_RO220 (STD###I292_RO220$A)
+  3  |  2  | 0035H | 40H  | 0125H | 80H | I 293   |         | I293_RO221 (STD###I293_RO221$A)
+  3  |  2  | 0035H | 80H  | 0126H | 80H | I 294   |         | I294_RO222 (STD###I294_RO222$A)
+  3  |  2  | 0036H | 01H  | 0127H | 80H | I 295   |         | I295 (STD###I295$A)
+  3  |  2  | 0036H | 02H  | 0128H | 80H | I 296   |         | I296 (STD###I296$A)
+  3  |  2  | 0036H | 04H  | 0129H | 80H | I 297   |         | I297 (STD###I297$A)
+  3  |  2  | 0036H | 08H  | 012aH | 80H | I 298   |         | I298 (STD###I298$A)
+  3  |  2  | 0036H | 10H  | 012bH | 80H | I 299   |         | I299 (STD###I299$A)
+  3  |  2  | 0036H | 20H  | 012cH | 80H | I 300   |         | I300 (STD###I300$A)
+  3  |  2  | 0036H | 40H  | 012dH | 80H | I 301   |         | I301 (STD###I301$A)
+  3  |  2  | 0036H | 80H  | 012eH | 80H | I 302   |         | I302 (STD###I302$A)
+  3  |  2  | 0037H | 01H  | 012fH | 80H | I 303   |         | I303 (STD###I303$A)
+  3  |  2  | 0037H | 02H  | 0130H | 80H | I 304   |         | I304 (STD###I304$A)
+  3  |  2  | 0037H | 04H  | 0131H | 80H | I 305   |         | I305 (STD###I305$A)
+  3  |  2  | 0037H | 08H  | 0132H | 80H | I 306   |         | I306 (STD###I306$A)
+  3  |  2  | 0037H | 10H  | 0133H | 80H | I 307   |         | I307 (STD###I307$A)
+  3  |  2  | 0037H | 20H  | 0134H | 80H | I 308   |         | I308 (STD###I308$A)
+  3  |  2  | 0037H | 40H  | 0135H | 80H | I 309   |         | I309 (STD###I309$A)
+  3  |  2  | 0037H | 80H  | 0136H | 80H | I 310   |         | I310 (STD###I310$A)
+  3  |  2  | 0038H | 01H  | 0137H | 80H | I 311   |         | I311_RO223 (STD###I311_RO223$A)
+  3  |  2  | 0038H | 02H  | 0138H | 80H | I 312   |         | I312_RO224 (STD###I312_RO224$A)
+  3  |  2  | 0038H | 04H  | 0139H | 80H | I 313   |         | I313_RO225 (STD###I313_RO225$A)
+  3  |  2  | 0038H | 08H  | 013aH | 80H | I 314   |         | I314_RO226 (STD###I314_RO226$A)
+  3  |  2  | 0038H | 10H  | 013bH | 80H | I 315   |         | I315_RO227 (STD###I315_RO227$A)
+  3  |  2  | 0038H | 20H  | 013cH | 80H | I 316   |         | I316_RO228 (STD###I316_RO228$A)
+  3  |  2  | 0038H | 40H  | 013dH | 80H | I 317   |         | I317_RO229 (STD###I317_RO229$A)
+  3  |  2  | 0038H | 80H  | 013eH | 80H | I 318   |         | I318_RO230 (STD###I318_RO230$A)
+  3  |  2  | 0039H | 01H  | 013fH | 80H | I 319   |         | I319 (STD###I319$A)
+  3  |  2  | 0039H | 02H  | 0140H | 80H | I 320   |         | I320 (STD###I320$A)
+  3  |  2  | 0039H | 04H  | 0141H | 80H | I 321   |         | I321 (STD###I321$A)
+  3  |  2  | 0039H | 08H  | 0142H | 80H | I 322   |         | I322 (STD###I322$A)
+  3  |  2  | 0039H | 10H  | 0143H | 80H | I 323   |         | I323 (STD###I323$A)
+  3  |  2  | 0039H | 20H  | 0144H | 80H | I 324   |         | I324 (STD###I324$A)
+  3  |  2  | 0039H | 40H  | 0145H | 80H | I 325   |         | I325 (STD###I325$A)
+  3  |  2  | 0039H | 80H  | 0146H | 80H | I 326   |         | I326 (STD###I326$A)
+  3  |  2  | 003aH | 01H  | 0147H | 80H | I 327   |         | I327 (STD###I327$A)
+  3  |  2  | 003aH | 02H  | 0148H | 80H | I 328   |         | I328 (STD###I328$A)
+  3  |  2  | 003aH | 04H  | 0149H | 80H | I 329   |         | I329 (STD###I329$A)
+  3  |  2  | 003aH | 08H  | 014aH | 80H | I 330   |         | I330 (STD###I330$A)
+  3  |  2  | 003aH | 10H  | 014bH | 80H | I 331   |         | I331 (STD###I331$A)
+  3  |  2  | 003aH | 20H  | 014cH | 80H | I 332   |         | I332 (STD###I332$A)
+  3  |  2  | 003aH | 40H  | 014dH | 80H | I 333   |         | I333 (STD###I333$A)
+  3  |  2  | 003aH | 80H  | 014eH | 80H | I 334   |         | I334 (STD###I334$A)
+  3  |  2  | 003bH | 01H  | 014fH | 80H | I 335   |         | I335_RO231 (STD###I335_RO231$A)
+  3  |  2  | 003bH | 02H  | 0150H | 80H | I 336   |         | I336_RO232 (STD###I336_RO232$A)
+  3  |  2  | 003bH | 04H  | 0151H | 80H | I 337   |         | I337_RO233 (STD###I337_RO233$A)
+  3  |  2  | 003bH | 08H  | 0152H | 80H | I 338   |         | I338_RO234 (STD###I338_RO234$A)
+  3  |  2  | 003bH | 10H  | 0153H | 80H | I 339   |         | I339_RO235 (STD###I339_RO235$A)
+  3  |  2  | 003bH | 20H  | 0154H | 80H | I 340   |         | I340_RO236 (STD###I340_RO236$A)
+  3  |  2  | 003bH | 40H  | 0155H | 80H | I 341   |         | I341_RO237 (STD###I341_RO237$A)
+  3  |  2  | 003bH | 80H  | 0156H | 80H | I 342   |         | I342_RO238 (STD###I342_RO238$A)
+  3  |  2  | 003cH | 01H  | 0157H | 80H | I 343   |         | I343 (6206-4=8I16O###I343$A)
+  3  |  2  | 003cH | 02H  | 0158H | 80H | I 344   |         | I344 (6206-4=8I16O###I344$A)
+  3  |  2  | 003cH | 04H  | 0159H | 80H | I 345   |         | I345 (6206-4=8I16O###I345$A)
+  3  |  2  | 003cH | 08H  | 015aH | 80H | I 346   |         | I346 (6206-4=8I16O###I346$A)
+  3  |  2  | 003cH | 10H  | 015bH | 80H | I 347   |         | I347 (6206-4=8I16O###I347$A)
+  3  |  2  | 003cH | 20H  | 015cH | 80H | I 348   |         | I348 (6206-4=8I16O###I348$A)
+  3  |  2  | 003cH | 40H  | 015dH | 80H | I 349   |         | I349 (6206-4=8I16O###I349$A)
+  3  |  2  | 003cH | 80H  | 015eH | 80H | I 350   |         | I350 (6206-4=8I16O###I350$A)
+  3  |  2  | 003dH | 01H  | 015fH | 80H | I 351   |         | I351_RO239 (6206-4=8I16O###I351_RO239$A)
+  3  |  2  | 003dH | 02H  | 0160H | 80H | I 352   |         | I352_RO240 (6206-4=8I16O###I352_RO240$A)
+  3  |  2  | 003dH | 04H  | 0161H | 80H | I 353   |         | I353_RO241 (6206-4=8I16O###I353_RO241$A)
+  3  |  2  | 003dH | 08H  | 0162H | 80H | I 354   |         | I354_RO242 (6206-4=8I16O###I354_RO242$A)
+  3  |  2  | 003dH | 10H  | 0163H | 80H | I 355   |         | I355_RO243 (6206-4=8I16O###I355_RO243$A)
+  3  |  2  | 003dH | 20H  | 0164H | 80H | I 356   |         | I356_RO244 (6206-4=8I16O###I356_RO244$A)
+  3  |  2  | 003dH | 40H  | 0165H | 80H | I 357   |         | I357_RO245 (6206-4=8I16O###I357_RO245$A)
+  3  |  2  | 003dH | 80H  | 0166H | 80H | I 358   |         | I358_RO246 (6206-4=8I16O###I358_RO246$A)
+  3  |  2  | 003eH | 01H  | 0167H | 80H | I 359   |         | I359_RO247 (6206-4=8I16O###I359_RO247$A)
+  3  |  2  | 003eH | 02H  | 0168H | 80H | I 360   |         | I360_RO248 (6206-4=8I16O###I360_RO248$A)
+  3  |  2  | 003eH | 04H  | 0169H | 80H | I 361   |         | I361_RO249 (6206-4=8I16O###I361_RO249$A)
+  3  |  2  | 003eH | 08H  | 016aH | 80H | I 362   |         | I362_RO250 (6206-4=8I16O###I362_RO250$A)
+  3  |  2  | 003eH | 10H  | 016bH | 80H | I 363   |         | I363_RO251 (6206-4=8I16O###I363_RO251$A)
+  3  |  2  | 003eH | 20H  | 016cH | 80H | I 364   |         | I364_RO252 (6206-4=8I16O###I364_RO252$A)
+  3  |  2  | 003eH | 40H  | 016dH | 80H | I 365   |         | I365_RO253 (6206-4=8I16O###I365_RO253$A)
+  3  |  2  | 003eH | 80H  | 016eH | 80H | I 366   |         | I366_RO254 (6206-4=8I16O###I366_RO254$A)
+
+HSCI: List of Outputs:
+Dir  | CPM | Source| S-Bit|  Dest |D-Bit| PLC     | SPLC    | IO-Name (Key)
+  4  |  0  | 0384H | 80H  | 000dH | 01H | O 900   |         | O900_LED_S1 (STD###O900_LED_S1$A)
+  4  |  0  | 0385H | 80H  | 000dH | 02H | O 901   |         | O901_LED_S2 (STD###O901_LED_S2$A)
+  4  |  0  | 0386H | 80H  | 000dH | 04H | O 902   |         | O902_LED_S3 (STD###O902_LED_S3$A)
+  4  |  0  | 0387H | 80H  | 000dH | 08H | O 903   |         | O903_LED_S4 (STD###O903_LED_S4$A)
+  4  |  0  | 0388H | 80H  | 000dH | 10H | O 904   |         | O904_LED_S5 (STD###O904_LED_S5$A)
+  4  |  0  | 0389H | 80H  | 000dH | 20H | O 905   |         | O905_LED_S6 (STD###O905_LED_S6$A)
+  4  |  0  | 038aH | 80H  | 000dH | 40H | O 906   |         | O906_LED_S7 (STD###O906_LED_S7$A)
+  4  |  0  | 038bH | 80H  | 000dH | 80H | O 907   |         | O907_LED_S8 (STD###O907_LED_S8$A)
+  4  |  0  | 038cH | 80H  | 000eH | 01H | O 908   |         | O908_LED_S9 (STD###O908_LED_S9$A)
+  4  |  0  | 038dH | 80H  | 000eH | 02H | O 909   |         | O909_LED_S10 (STD###O909_LED_S10$A)
+  4  |  0  | 038eH | 80H  | 000eH | 04H | O 910   |         | O910_LED_S11 (STD###O910_LED_S11$A)
+  4  |  0  | 038fH | 80H  | 000eH | 08H | O 911   |         | O911_LED_S12 (STD###O911_LED_S12$A)
+  4  |  0  | 0390H | 80H  | 000eH | 20H | O 912   |         | O912_LED_S14 (STD###O912_LED_S14$A)
+  4  |  0  | 0391H | 80H  | 000eH | 40H | O 913   |         | O913_LED_S15 (STD###O913_LED_S15$A)
+  4  |  0  | 0392H | 80H  | 000eH | 80H | O 914   |         | O914_LED_S16 (STD###O914_LED_S16$A)
+  4  |  0  | 0393H | 80H  | 000fH | 01H | O 915   |         | O915_LED_S17 (STD###O915_LED_S17$A)
+  4  |  0  | 0394H | 80H  | 000fH | 02H | O 916   |         | O916_LED_S18 (STD###O916_LED_S18$A)
+  4  |  0  | 0395H | 80H  | 000fH | 04H | O 917   |         | O917_LED_S19 (STD###O917_LED_S19$A)
+  4  |  0  | 0396H | 80H  | 000fH | 08H | O 918   |         | O918_LED_S20 (STD###O918_LED_S20$A)
+  4  |  0  | 0397H | 80H  | 000fH | 10H | O 919   |         | O919_LED_S21 (STD###O919_LED_S21$A)
+  4  |  0  | 0398H | 80H  | 000fH | 20H | O 920   |         | O920_LED_S22 (STD###O920_LED_S22$A)
+  4  |  0  | 0399H | 80H  | 000fH | 40H | O 921   |         | O921_LED_S23 (STD###O921_LED_S23$A)
+  4  |  0  | 039aH | 80H  | 000fH | 80H | O 922   |         | O922_LED_S24 (STD###O922_LED_S24$A)
+  4  |  0  | 039bH | 80H  | 0010H | 01H | O 923   |         | O923_LED_S25 (STD###O923_LED_S25$A)
+  4  |  0  | 039cH | 80H  | 0010H | 04H | O 924   |         | O924_LED_S27 (STD###O924_LED_S27$A)
+  4  |  0  | 039dH | 80H  | 0010H | 08H | O 925   |         | O925_LED_S28 (STD###O925_LED_S28$A)
+  4  |  0  | 039eH | 80H  | 0010H | 10H | O 926   |         | O926_LED_S29 (STD###O926_LED_S29$A)
+  4  |  0  | 039fH | 80H  | 0010H | 20H | O 927   |         | O927_LED_S30 (STD###O927_LED_S30$A)
+  4  |  0  | 03a0H | 80H  | 0010H | 40H | O 928   |         | O928_LED_S31 (STD###O928_LED_S31$A)
+  4  |  0  | 03a1H | 80H  | 0010H | 80H | O 929   |         | O929_LED_S32 (STD###O929_LED_S32$A)
+  4  |  0  | 03a2H | 80H  | 0011H | 01H | O 930   |         | O930_LED_S33 (STD###O930_LED_S33$A)
+  4  |  0  | 03a3H | 80H  | 0011H | 02H | O 931   |         | O931_LED_S34 (STD###O931_LED_S34$A)
+  4  |  0  | 03a4H | 80H  | 0011H | 04H | O 932   |         | O932_LED_S35 (STD###O932_LED_S35$A)
+  4  |  0  | 03a5H | 80H  | 0011H | 08H | O 933   |         | O933_LED_S36 (STD###O933_LED_S36$A)
+  4  |  0  | 03a6H | 80H  | 0011H | 10H | O 934   |         | O934_LED_S37 (STD###O934_LED_S37$A)
+  4  |  0  | 03a7H | 80H  | 0011H | 20H | O 935   |         | O935_LED_S38 (STD###O935_LED_S38$A)
+  4  |  0  | 03a8H | 80H  | 000eH | 10H | O 936   |         | O936_LED_NC_STOP (STD###O936_LED_NC_STOP$A)
+  4  |  0  | 03a9H | 80H  | 0010H | 02H | O 937   |         | O937_LED_NC_START (STD###O937_LED_NC_START$A)
+  4  |  0  | 03aaH | 80H  | 0011H | 40H | O 938   |         | O938_LED_power_on (STD###O938_LED_power_on$A)
+  4  |  0  | 00c8H | 80H  | 000cH | 01H | O 200   |         | O200_X7.1 (STD###O200_X7.1$A)
+  4  |  0  | 00c9H | 80H  | 000cH | 02H | O 201   |         | O201_X7.2 (STD###O201_X7.2$A)
+  4  |  0  | 00caH | 80H  | 000cH | 04H | O 202   |         | O202_X7.3 (STD###O202_X7.3$A)
+  4  |  0  | 00cbH | 80H  | 000cH | 08H | O 203   |         | O203_X7.4 (STD###O203_X7.4$A)
+  4  |  0  | 00ccH | 80H  | 000cH | 10H | O 204   |         | O204_X7.5 (STD###O204_X7.5$A)
+  4  |  0  | 00cdH | 80H  | 000cH | 20H | O 205   |         | O205_X7.6 (STD###O205_X7.6$A)
+  4  |  0  | 00ceH | 80H  | 000cH | 40H | O 206   |         | O206_X7.7 (STD###O206_X7.7$A)
+  4  |  0  | 00cfH | 80H  | 000cH | 80H | O 207   |         | O207_X7.8 (STD###O207_X7.8$A)
+  4  |  0  | 00d0H | 80H  | 0020H | 01H | O 208   |         | O208 (STD###O208$A)
+  4  |  0  | 00d1H | 80H  | 0020H | 02H | O 209   |         | O209 (STD###O209$A)
+  4  |  0  | 00d2H | 80H  | 0020H | 04H | O 210   |         | O210 (STD###O210$A)
+  4  |  0  | 00d3H | 80H  | 0020H | 08H | O 211   |         | O211 (STD###O211$A)
+  4  |  0  | 00d4H | 80H  | 0020H | 10H | O 212   |         | O212 (STD###O212$A)
+  4  |  0  | 00d5H | 80H  | 0020H | 20H | O 213   |         | O213 (STD###O213$A)
+  4  |  0  | 00d6H | 80H  | 0020H | 40H | O 214   |         | O214 (STD###O214$A)
+  4  |  0  | 00d7H | 80H  | 0021H | 01H | O 215   |         | O215 (STD###O215$A)
+  4  |  0  | 00d8H | 80H  | 0021H | 02H | O 216   |         | O216 (STD###O216$A)
+  4  |  0  | 00d9H | 80H  | 0021H | 04H | O 217   |         | O217 (STD###O217$A)
+  4  |  0  | 00daH | 80H  | 0021H | 08H | O 218   |         | O218 (STD###O218$A)
+  4  |  0  | 00dbH | 80H  | 0021H | 10H | O 219   |         | O219 (STD###O219$A)
+  4  |  0  | 00dcH | 80H  | 0021H | 20H | O 220   |         | O220 (STD###O220$A)
+  4  |  0  | 00ddH | 80H  | 0021H | 40H | O 221   |         | O221 (STD###O221$A)
+  4  |  0  | 00deH | 80H  | 0021H | 80H | O 222   |         | O222 (STD###O222$A)
+  4  |  0  | 00dfH | 80H  | 0022H | 01H | O 223   |         | O223 (STD###O223$A)
+  4  |  0  | 00e0H | 80H  | 0022H | 02H | O 224   |         | O224 (STD###O224$A)
+  4  |  0  | 00e1H | 80H  | 0022H | 04H | O 225   |         | O225 (STD###O225$A)
+  4  |  0  | 00e2H | 80H  | 0022H | 08H | O 226   |         | O226 (STD###O226$A)
+  4  |  0  | 00e3H | 80H  | 0022H | 10H | O 227   |         | O227 (STD###O227$A)
+  4  |  0  | 00e4H | 80H  | 0022H | 20H | O 228   |         | O228 (STD###O228$A)
+  4  |  0  | 00e5H | 80H  | 0022H | 40H | O 229   |         | O229 (STD###O229$A)
+  4  |  0  | 00e6H | 80H  | 0022H | 80H | O 230   |         | O230 (STD###O230$A)
+  4  |  0  | 00e7H | 80H  | 0023H | 01H | O 231   |         | O231 (STD###O231$A)
+  4  |  0  | 00e8H | 80H  | 0023H | 02H | O 232   |         | O232 (STD###O232$A)
+  4  |  0  | 00e9H | 80H  | 0023H | 04H | O 233   |         | O233 (STD###O233$A)
+  4  |  0  | 00eaH | 80H  | 0023H | 08H | O 234   |         | O234 (STD###O234$A)
+  4  |  0  | 00ebH | 80H  | 0023H | 10H | O 235   |         | O235 (STD###O235$A)
+  4  |  0  | 00ecH | 80H  | 0023H | 20H | O 236   |         | O236 (STD###O236$A)
+  4  |  0  | 00edH | 80H  | 0023H | 40H | O 237   |         | O237 (STD###O237$A)
+  4  |  0  | 00eeH | 80H  | 0023H | 80H | O 238   |         | O238 (STD###O238$A)
+  4  |  0  | 00efH | 80H  | 0024H | 01H | O 239   |         | O239 (6206-4=8I16O###O239$A)
+  4  |  0  | 00f0H | 80H  | 0024H | 02H | O 240   |         | O240 (6206-4=8I16O###O240$A)
+  4  |  0  | 00f1H | 80H  | 0024H | 04H | O 241   |         | O241 (6206-4=8I16O###O241$A)
+  4  |  0  | 00f2H | 80H  | 0024H | 08H | O 242   |         | O242 (6206-4=8I16O###O242$A)
+  4  |  0  | 00f3H | 80H  | 0024H | 10H | O 243   |         | O243 (6206-4=8I16O###O243$A)
+  4  |  0  | 00f4H | 80H  | 0024H | 20H | O 244   |         | O244 (6206-4=8I16O###O244$A)
+  4  |  0  | 00f5H | 80H  | 0024H | 40H | O 245   |         | O245 (6206-4=8I16O###O245$A)
+  4  |  0  | 00f6H | 80H  | 0024H | 80H | O 246   |         | O246 (6206-4=8I16O###O246$A)
+  4  |  0  | 00f7H | 80H  | 0025H | 01H | O 247   |         | O247 (6206-4=8I16O###O247$A)
+  4  |  0  | 00f8H | 80H  | 0025H | 02H | O 248   |         | O248 (6206-4=8I16O###O248$A)
+  4  |  0  | 00f9H | 80H  | 0025H | 04H | O 249   |         | O249 (6206-4=8I16O###O249$A)
+  4  |  0  | 00faH | 80H  | 0025H | 08H | O 250   |         | O250 (6206-4=8I16O###O250$A)
+  4  |  0  | 00fbH | 80H  | 0025H | 10H | O 251   |         | O251 (6206-4=8I16O###O251$A)
+  4  |  0  | 00fcH | 80H  | 0025H | 20H | O 252   |         | O252 (6206-4=8I16O###O252$A)
+  4  |  0  | 00fdH | 80H  | 0025H | 40H | O 253   |         | O253 (6206-4=8I16O###O253$A)
+  4  |  0  | 00feH | 80H  | 0025H | 80H | O 254   |         | O254 (6206-4=8I16O###O254$A)
+
+PROFINET: no Inputs configured
+
+PROFINET: no Outputs configured
+
+INTERNAL: no Inputs configured
+
+INTERNAL: no Outputs configured
+
+
+==========================================================================================
+=====================  E A - I N I T   F I N I S H            ============================
+==========================================================================================
+

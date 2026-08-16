@@ -1,0 +1,156 @@
+BEGIN Z_PROBE_0.TAB 
+#STRUCTBEGIN
+   NAME = Z_V3C
+     TYPE = C
+     WIDTH = 34
+     DEC = 0
+     DIA-ENGLISH = Parameter ?
+     DIA-GERMAN = Parameter ?
+     DIA-CZECH = Parameter ?
+     DIA-FRENCH = Parameter ?
+     DIA-ITALIAN = Parameter ?
+     DIA-SPANISH = Parameter ?
+     DIA-PORTUGUE = Parameter ?
+     DIA-SWEDISH = Parameter ?
+     DIA-DANISH = Parameter ?
+     DIA-FINNISH = Parameter ?
+     DIA-DUTCH = Parameter ?
+     DIA-POLISH = Parameter ?
+     DIA-HUNGARIA = Parameter ?
+   NAME = Value
+     TYPE = N
+     WIDTH = 14
+     DEC = 6
+     DIA-ENGLISH = Parameter Value ?
+     DIA-GERMAN = Parameter Wert ?
+     DIA-CZECH = Parameter Value ?
+     DIA-FRENCH = Parameter Value ?
+     DIA-ITALIAN = Parameter Value ?
+     DIA-SPANISH = Parameter Value ??
+     DIA-PORTUGUE = Parameter Value ?
+     DIA-SWEDISH = Parameter Value ?
+     DIA-DANISH = Parameter Value ?
+     DIA-FINNISH = Parameter Value ?
+     DIA-DUTCH = Parameter Value ?
+     DIA-POLISH = Parameter Value ?
+     DIA-HUNGARIA = Parameter Value ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 60
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = COMENTARIO ?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = MEGJEGYZES ?
+#STRUCTEND
+NR      Z_V3C                              Value          Comment
+0       Blum Software Version              +3.03          Example: V3A=3.01, V3B=3.02, V3C=3.03                      . 
+1       Marker address table selection     +0             0=Z_PROBE_0.TAB />1000=Mxx for Z_PROBE_x.TAB selection     . 
+2       Error number offset                971            1st ErrorTextLine+offs: +300 in ERROR.A/ +0 in FN14_ERROR.A. 
+3       Execute program 578.H/579.H        +0             Program execution: 0=no/ 1=yes                             . 
+4       Program stop at breakage (Q199>0)  +0             Program stop: 0=no/ 1=if Q199>=1/ 2=if Q199=2              . 
+5       No. of repetitive meas. if DL>LTOL +1             Number of repetitions (input range: 0-3)                   . 
+6       No. of reattempts at failure       +1             Number of reattempts  (input range: 0-9)                   . 
+7       Execute program Z3D_POS.H          +1             Search center of measuring surface in axis R+N: 0=no/ 1=yes. 
+8       Execute program Z_CLEAN.H          +0             Clean measuring surface+tool: 0=no/ 1=surface/ 2=tool      . 
+9       reserved                           +0             reserved                                                   . 
+10      Safety distance to meas. element   +6.0           Prepositioning to meas. element (5-50mm)                   . 
+11      Axial meas. position for R-measure +4.0           Distance meas. element middle-top (1-10mm)                 . 
+12      Max. deflection of meas. element   +4.0           Stroke from initial to end position (<=10mm)               . 
+13      Retract after oriented measurement +5.0           Retract distance from meas. element (3-50mm)               . 
+14      Retract after rotating measurement +0.2           Retract distance from meas. element (0.1-2mm)              . 
+15      reserved                           +0             reserved                                                   . 
+16      reserved                           +0             reserved                                                   . 
+17      reserved                           +0             reserved                                                   . 
+18      Spindle orientation angle [°]      +0             Tool orientation: -1=inaktiv/ 0-360=spindle angle in [°]   . 
+19      Function spindle orientation       +19            Spindle orientation via: -1=NC/ 0=inaktiv/ +nn=Mnn M-Code  . 
+20      Elect. connection + meas. input    +2             0=cable-X113/ 1=IC,RC-X112/ 2=IC,RC-X113/ 3=cable-X112     . 
+21      Mode to enable tool setter         +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+22      Mode to disable tool setter        +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+23      Mode to switch on tool setter      +1             -1000=RS232.H/-nn=MCODE.H/0=auto/1=Start/+nn=Mnn/>1000=Mxx . 
+24      Mode to switch off tool setter     +1             -1000=RS232.H/-nn=MCODE.H/0=auto/1=Start/+nn=Mnn/>1000=Mxx . 
+25      Mode tool cleaning function on     +0             -nn=Mnn in MCODE.H/0=off/+nn=Mnn in CYC/>1000=Mxx marker   . 
+26      Dwell time [s] tool cleaning on    +0             Waiting time tool cleaning on  (>=0s)                      . 
+27      Mode tool cleaning function off    +0             -nn=Mnn in MCODE.H/0=off/+nn=Mnn in CYC/>1000=Mxx marker   . 
+28      Dwell time [s] tool cleaning off   +0             Waiting time tool cleaning off (>=0s)                      . 
+29      Type of tool meas. system (L/ L+R) +1             Probe type: 0=Z-Nano,Z-Pico (1D,only L)/ 1=Z-3D,ZX (3D,L+R). 
+30      Rapid feedrate                     2500           F(rapid): Feedrate for large positioning ways              . 
+31      Positioning feedrate               1000           F(pos):   Feedrate for small positioning ways              . 
+32      Search run measuring feedrate      +1000          F(search):Default=1000mm/min (<=5000mm/min)                . 
+33      Precise measuring feedrate         +200           F(meas):  Default= 500mm/min (<=2000mm/min)                . 
+34      Meas. procedure (feed/tolerance)   +0             Procedure: 0=const. tol/ 1=variable tol/ 2=const. feedrate . 
+35      Max. measuring error               +0.005         Max. meas. error at rotating spindle (0.001-0.1mm/revs)    . 
+36      Max. circumference speed           +40            Max. speed at outside cutter radius (10-100m/min)          . 
+37      Max. spindle rotation speed        +1000          Max. spindle rotation speed (360-1000rpm)                  . 
+38      Repeated measurements              +2             Number of single measurements=2 (1-3)                      . 
+39      Confidence range for measurements  +0.005         Permitted spread tolerance=0.005 (0.002-0.999mm)           . 
+40      Axis number length axis L          +2             Axis number L: X=0/ Y=1/ Z=2                               . 
+41      Axis number radius axis R          0              Axis number R: X=0/ Y=1/ Z=2                               . 
+42      Axis number auxil. axis N          1              Axis number N: X=0/ Y=1/ Z=2/ axis locked=-1               . 
+43      Meas. position length axis L       247.031        Coordinate L of the center of measuring surface (REF)      . 
+44      Meas. position radius axis R       162.2132       Coordinate R of the center of measuring surface (REF)      . 
+45      Meas. position auxil. axis N       522.9871       Coordinate N of the center of measuring surface (REF)      . 
+46      Radius of meas. element in axis L  +10.0          Radius of meas. element (plate) for L-measurement (<=15mm) . 
+47      Radius of meas. element in axis R  +15.0          Radius of meas. element (plate) for R-measurement (<=25mm) . 
+48      Radius of meas. element in axis N  +15.0          Radius of meas. element (plate) for N-measurement (<=25mm) . 
+49      reserved                           +0             reserved                                                   . 
+50      Approach side length axis L        +1             Approach side axis L from: positive=+1/negative=-1 side    . 
+51      Approach side radius axis R        -1             Approach side axis R from: positive=+1/negative=-1 side    . 
+52      Approach side auxil. axis N        -1             Approach side axis N from: positive=+1/negative=-1/locked=0. 
+53      reserved                           +0             reserved                                                   . 
+54      reserved                           +0             reserved                                                   . 
+55      reserved                           +0             reserved                                                   . 
+56      Wear tolerance LTOL                +0.05          Wear tolerance at LTOL=0 (>=0.01mm)                        . 
+57      Wear tolerance RTOL                +0.05          Wear tolerance at RTOL=0 (>=0.01mm)                        . 
+58      Breakage tolerance LBREAK          +2.0           Breakage tolerance at LBREAK=0 (>=0.5mm)                   . 
+59      Breakage tolerance RBREAK          +1.0           Breakage tolerance at RBREAK=0 (>=0.5mm)                   . 
+60      Min. tool length                   +60.0          Lmin: min. tool length to be measured                      . 
+61      Max. tool length                   +200.0         Lmax: max. tool length to be measured                      . 
+62      Min. tool radius                   +0.5           Rmin: min. tool radius to be measured                      . 
+63      Max. tool radius                   +40.0          Rmax: max. tool radius to be measured                      . 
+64      Additive tool length correction    +0             Lnull: additive length offset of zero tool, default=0.0mm  . 
+65      Additive tool radius correction    +0             Rnull: additive radius offset of zero tool, default=0.0mm  . 
+66      Type of length value L in TOOL.T   +0             Ltool: 0=actual value/ 1=difference to nom. value L in Q348. 
+67      Type of radius value R in TOOL.T   +0             Rtool: 0=actual value/ 1=difference to nom. value R in Q349. 
+68      reserved                           +0             reserved                                                   . 
+69      reserved                           +0             reserved                                                   . 
+70      SES displacement line 71-79        -1             Soft end switch displacement: -1=disabled/ +1=enabled      . 
+71      Soft end switch L-                 +0.0           Temporary negative soft end switch position L-axis (REF)   . 
+72      Soft end switch L+                 +0.0           Temporary positive soft end switch position L-axis (REF)   . 
+73      Soft end switch R-                 +0.0           Temporary negative soft end switch position R-axis (REF)   . 
+74      Soft end switch R+                 +0.0           Temporary positive soft end switch position R-axis (REF)   . 
+75      Soft end switch N-                 +0.0           Temporary negative soft end switch position N-axis (REF)   . 
+76      Soft end switch N+                 +0.0           Temporary positive soft end switch position N-axis (REF)   . 
+77      Retract position length axis L     +0.0           Retract position of L-axis after SES displacement (REF)    . 
+78      Retract position radius axis R     +0.0           Retract position of R-axis after SES displacement (REF)    . 
+79      Retract position auxil. axis N     +0.0           Retract position of N-axis after SES displacement (REF)    . 
+80      Safety position in length axis L   +500.0         Retract position of L-axis at cycle end (REF)              . 
+81      reserved                           +0             reserved                                                   . 
+82      reserved                           +0             reserved                                                   . 
+83      reserved                           +0             reserved                                                   . 
+84      Positioning of A-axis              +0             Positioning of an existing A-axis: 0=no/ 1=yes             . 
+85      Position of A-axis [°]             +0             Measuring position/angle of A-axis in [°] (REF)            . 
+86      Positioning of B-axis              +0             Positioning of an existing B-axis: 0=no/ 1=yes             . 
+87      Position of B-axis [°]             +0             Measuring position/angle of B-axis in [°] (REF)            . 
+88      Positioning of C-axis              +0             Positioning of an existing C-axis: 0=no/ 1=yes             . 
+89      Position of C-axis [°]             +0             Measuring position/angle of C-axis in [°] (REF)            . 
+90      Calibration value length axis L    44.86375       Automatic entry in cycle 561                               . 
+91      Calibration value radius axis R    162.4443       Automatic entry in cycle 561                               . 
+92      Calibration value auxil. axis N    524.661975     Automatic entry in cycle 561                               . 
+93      Temp. reference value    TCREF-L   44.86375       Automatic entry in cycle 561                               . 
+94      Temp. reference value    TCREF-R   162.4443       Automatic entry in cycle 561                               . 
+95      Temp. reference value    TCREF-N   524.661975     Automatic entry in cycle 561                               . 
+96      Temp. displacement value TCDIF-L   0              Automatic entry in cycle 561                               . 
+97      Temp. displacement value TCDIF-R   0              Automatic entry in cycle 561                               . 
+98      Temp. displacement value TCDIF-N   0              Automatic entry in cycle 561                               . 
+99      reserved                           +0             reserved                                                   . 
+[END]

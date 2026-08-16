@@ -1,0 +1,9 @@
+\n  M70 - PLC preset desactivo
+\n  M71 - limites ejes 1
+\n  M72 - limites ejes 2
+\n  M73 - limites ejes 3
+\n  M79 - PLC preset activo
+\n  M80 - contador piezas activo
+\n  M81 - contador de piezas inactivo
+\n  M82 - Control consumo htas. activo
+\n  M83 - Control consumo htas. inactivo

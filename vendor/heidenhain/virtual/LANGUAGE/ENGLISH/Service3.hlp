@@ -1,0 +1,31 @@
+﻿************************************
+        !!! attention !!!
+       only for supervisor
+       X, Y, Z can be moved by
+       X+, X-, Y+, Y-, Z+, Z- key
+          or handwheel
+       service tool changer
+    (double arm cam driven type)
+************************************
+#301  S to toolchange position
+#302  Z to toolchange position
+#303  Y to toolchange position
+#304  X to toolchange position
+#305  Tool lock open
+#306  Tool lock close
+#307  Tool unclamping
+#308  Tool clamping
+#309  Tool pliers close
+#310  Tool pliers open
+#311  Tool pocket put out
+#312  Tool pocket put in
+#313  Tool arm to unclamping pos
+#314  Tool arm to clamping pos
+#315  Tool arm to basic pos
+#316  Tool arm back to clamp pos
+#317  Tool arm back to unclamp pos
+#318  Tool arm back to basic pos
+#319  Magazine turn cw (right)
+#320  Magazine turn ccw (left)
+#321  Magazine reference
+#322  Delete spindle status (T0)

@@ -1,0 +1,92 @@
+{
+  "master": "cassandra-master",
+  "slaves": [
+    "cassandra-2"
+  ],
+  "partitions": [
+    {
+      "name": "Cassandra Bank Alpha",
+      "controllers": [
+        {
+          "slaveid": 10,
+          "name": "Karina",
+          "enabled": true
+        },
+        {
+          "slaveid": 11,
+          "name": "Castor",
+          "enabled": true
+        },
+        {
+          "slaveid": 12,
+          "name": "Cetus",
+          "enabled": true
+        },
+        {
+          "slaveid": 13,
+          "name": "Corona",
+          "enabled": true
+        }
+      ]
+    },
+    {
+      "name": "Cassandra Bank Beta",
+      "controllers": [
+        {
+          "slaveid": 14,
+          "name": "Coma B",
+          "enabled": true
+        },
+        {
+          "slaveid": 15,
+          "name": "Corvus",
+          "enabled": true
+        },
+        {
+          "slaveid": 16,
+          "name": "Crater",
+          "enabled": true
+        },
+        {
+          "slaveid": 17,
+          "name": "Crux",
+          "enabled": true
+        }
+      ],
+      "startslaveid": 14,
+      "numcontrollers": 4
+    }
+  ],
+  "settings": [
+    {
+      "enabled": true,
+      "id": 0,
+      "name": "Always use Sequential Heating",
+      "group": "heating",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": 280
+    },
+    {
+      "enabled": true,
+      "id": 0,
+      "name": "Always stop PID controllers when Profile finished",
+      "group": "pid",
+      "flags": 0,
+      "parent": 0,
+      "type": "bool",
+      "value": 280
+    },
+    {
+      "enabled": true,
+      "id": 0,
+      "name": "Max. Temperature",
+      "group": "safety",
+      "flags": 0,
+      "parent": 0,
+      "type": "long",
+      "value": 280
+    }
+  ]
+}

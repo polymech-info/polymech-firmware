@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cassandra RC2</title>
+    <meta name="description" content="Cassandra RC2">
+    <meta name="author" content="Cassandra RC2">
+    <meta property="og:title" content="Cassandra RC2">
+    <meta property="og:description" content="Cassandra RC2">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lovable_dev">
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </head>
+
+  <body>
+    <div id="root"></div>
+  
+
+<script>
+(function() {
+  const assets = [
+  {
+    "tagName": "script",
+    "attrs": {
+      "type": "module",
+      "crossorigin": "",
+      "src": "/assets/index.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/lodash.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/vendor.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/react-dom.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/radix.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/react.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/d3.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/recharts.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "modulepreload",
+      "crossorigin": "",
+      "href": "/assets/zod.js"
+    }
+  },
+  {
+    "tagName": "link",
+    "attrs": {
+      "rel": "stylesheet",
+      "crossorigin": "",
+      "href": "/assets/index.css"
+    }
+  }
+];
+  let index = 0;
+
+  function loadNext() {
+    if (index >= assets.length) {
+      console.log('All assets loaded sequentially.');
+      window.dispatchEvent(new CustomEvent('allAssetsLoaded'));
+      return;
+    }
+
+    const asset = assets[index];
+    const element = document.createElement(asset.tagName);
+
+    for (const attr in asset.attrs) {
+      element.setAttribute(attr, asset.attrs[attr]);
+    }
+
+    const next = () => {
+      console.log('Loaded: ', asset.attrs.src || asset.attrs.href);
+      index++;
+      loadNext();
+    };
+
+    element.onload = next;
+    element.onerror = () => {
+      console.error('Failed to load asset:', asset.attrs.src || asset.attrs.href);
+      next(); // Continue with the next asset
+    };
+
+    document.head.appendChild(element);
+  }
+
+  loadNext();
+})();
+</script></body></html>

@@ -1,0 +1,130 @@
+﻿- Check electrical connection to IC55/IF59 and X12/X13
+- Check type of probe and meas.input P20 in Z_PROBE_0.TAB 
+- Check enable mode of probe P21 in Z_PROBE_0.TAB 
+- Check activation mode of probe P23 in Z_PROBE_0.TAB 
+- Check programing TC/DUO of probe and IC55/IF59
+- Check alignment of IR-receiver to the probe
+- Check battery capacity
+1                                                         |
+- Check rest position of the meas. surface
+- Check easy deflection of the stylus
+- Check/remove contamination on chip protection shield
+- Check battery capacity
+2                                                         |
+- Change battery of the probe as soon as possible
+- Keep up the programing mode TC/DUO of the probe
+3                                                         |
+reserved
+4                                                         |
+- Parameter approach side length axis P50=+1/-1
+- Parameter approach side radius axis P51=+1/-1
+- Parameter approach side auxil. axis P52=+1/-1
+- P50,P51,P52=0 is not allowed
+5                                                         |
+reserved
+6                                                         |
+- Check tool data L,R in TOOL.T
+- Check meas. positions ROFFS,LOFFS in TOOL.T
+- Check meas. positions P43,P44,P45 in Z_PROBE_0.TAB 
+- Check calibration values P90,P91,P92 in Z_PROBE_0.TAB 
+- Check min/max tool length P60,P61 in Z_PROBE_0.TAB 
+- Check min/max tool radius P62,P63 in Z_PROBE_0.TAB 
+- Repeat measurement with modified parameter
+7                                                         |
+- Load tool via TOOL CALL # into the spindle
+- Repeat measurement
+8                                                         |
+- Check min/max tool length P60,P61 in Z_PROBE_0.TAB
+- Check min/max tool radius P62,P63 in Z_PROBE_0.TAB
+9                                                         |
+- Check/remove contamination from tool and meas. surface
+- Increase scattering tolerance Q362 if required
+- Repeat measurement
+10                                                        |
+- Check tolerance LTOL,RTOL resp. LBREAK,RBREAK in TOOL.T
+- Check tool wear or tool breakage
+- Check/remove contamination on the tool and meas. surface
+- Unlock the tool in TOOL.T and repeat measurement
+11                                                        |
+- Check tool parameter L,R,ROFFS,LOFFS in TOOL.T
+- Check radius of meas. surface P46,P47,P48 in Z_PROBE_0.TAB
+- Repeat measurement with modified parameters
+- Softend switch L: SE L- <(P43+P50*(P60-P12))    < SE L+
+- Softend switch L: SE L- <(P43+P50*(P61+P10))    < SE L+
+- Softend switch R: SE R- <(P44+P51*(P62+P47-P12))< SE R+
+- Softend switch R: SE R- <(P44+P51*(P63+P47+P10))< SE R+
+- Softend switch N: SE N- <(P45+P52*(P62+P48-P12))< SE N+
+- Softend switch N: SE N- <(P45+P52*(P63+P48+P10))< SE N+
+12                                                        |
+- Define the tool axis via TOOL CALL # command
+- Check length axis number P40 in Z_PROBE_0.TAB
+13                                                        |
+reserved
+14                                                        |
+- Check and correct tool parameter L,R,DL,DR,ROFFS,LOFFS,
+  LTOL,RTOL,LBREAK,RBREAK,CUT,TL in TOOL.T
+- Repeat measurement with modified parameter
+15                                                        |
+- Check and correct the cycle call parameter:
+  0<=Q350<=2, 0<=Q351<=3, 0<=Q352<=1
+  1<=Q361<=9, 0.0001<=Q362<=0.9999
+- Repeat measurement with modified parameter
+16                                                        |
+Check the following parameter in PLC:\BLUM\Z_PROBE_0.TAB:
+Faulty parameter in line Pxx = (Q190-16)*1000
+- Software version                      P0
+- Program stop at breakage           0<=P4 <=2
+- Safety distance to surface         5<=P10<=50
+- Max. deflection of stylus          1<=P12<=10
+- Retract after oriented measurement 3<=P13<=50
+- Retract after rotating measurement 0.1<=P14<=2
+- Spindle orientation               -1<=P18<=360
+- M-Code spindle orientation        -1<=P19<=999
+- Type of toolsetter                 0<=P20<=3
+- Positioning feedrate                  P30>=P31
+- Measuring feedrate                    P32>=P33
+- Measuring procedure                0<=P34<=2
+- Radius meas. surface               3<=P46,47,48<=25
+- Meas.position-calib.value L     P43-2<P90<P43+2
+- Meas.position-calib.value R     P44-2<P91<P44+2
+- Softend switch L: SE L- <(P43+P50*(P60-P12))    < SE L+
+- Softend switch L: SE L- <(P43+P50*(P61+P10))    < SE L+
+- Softend switch R: SE R- <(P44+P51*(P62+P47-P12))< SE R+
+- Softend switch R: SE R- <(P44+P51*(P63+P47+P10))< SE R+
+- Softend switch N: SE N- <(P45+P52*(P62+P48-P12))< SE N+
+- Softend switch N: SE N- <(P45+P52*(P63+P48+P10))< SE N+
+17                                                        |
+reserved
+18                                                        |
+reserved
+19                                                        |
+- Contact machine or control manufacturer
+- Request NC Software update from your machine manufacturer
+- Do not repeat measurement!
+20                                                        |
+reserved
+21                                                        |
+- Check the existence and formatting of the following files:
+  Check parameter file O:\TABLE\Z_PROBE_x.ZPR (x=0-7)
+  Check configuration file O:\CONFIG\Z_PROBE.CFG
+- Close parameter file Z_PROBE_x.ZPR in the text editor
+- Check parameter P1='table selection' in Z_PROBE_x.ZPR
+22                                                        |
+- Check the existence and formatting of the following files:
+  Check parameter file O:\TABLE\Z_PROBE_x.ZPR (x=0-7)
+  Check configuration file O:\CONFIG\Z_PROBE.CFG
+- Close parameter file Z_PROBE_x.ZPR in the text editor
+- Check parameter P1='table selection' in Z_PROBE_x.ZPR
+23                                                        |
+- Close the tool table TOOL.T in the text editor
+- Check the definitions of the active tool number in TOOL.T
+- The following tool parameters must exist in TOOL.T:
+  L,R,DL,DR,ROFFS,LOFFS,LTOL,RTOL,LBREAK,RBREAK,
+  CUT,TL,DIRECT
+24                                                        |
+- Close the tool table TOOL.T in the text editor
+- Check the definitions of the active tool number in TOOL.T
+- The following tool parameters must exist in TOOL.T:
+  L,R,DL,DR,ROFFS,LOFFS,LTOL,RTOL,LBREAK,RBREAK,
+  CUT,TL,DIRECT
+25                                                        |

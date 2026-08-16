@@ -1,0 +1,2048 @@
+﻿Sturing/ Programmeerplaats  0/2
+Schaalfaktor xyz/z         0/1
+Instelling freescykli
+Overlapfaktor 0.1-1.414
+Eindpunttolerantie cirkel
+3D rotatie Uit/aan      ..0/ ..1
+Smering assen           [min]
+Handwiel Uit/HR410          0/6
+Schermkleurpallet       [0..3]
+TT1x0 positie X           [REF]
+TT1x0 positie Y           [REF]
+TT1x0 positie Z           [REF]
+Gebruikerparameter 13
+Gebruikerparameter 14
+Gebruikerparameter 15
+Gebruikerparameter 16
+Looptijd spindel 1=
+Looptijd spindel 2=
+Looptijd assen    =
+Looptijd hydrauliek
+PLC teller  5     =
+PLC teller  6     =
+PLC teller  7     =
+PLC teller  8     =
+PLC teller  9     =
+PLC teller  10    =
+PLC teller  11    =
+PLC teller  12    =
+PLC teller  13    =
+*Titelbox MP Tabelleneditor <- lijn 30
+MP Tabel editor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Noodstopknop ingedrukt
+-> vrijmaken
+H001 As op eindeloop X+
+-> druk toets -> beweeg van eindeloop
+H002 As op eindeloop Y+
+-> druk toets -> beweeg van eindeloop
+H003 As op eindeloop Z+
+-> druk toets -> beweeg van eindeloop
+H004 As op eindeloop 4+
+-> druk toets -> beweeg van eindeloop
+H005 As op eindeloop 5+
+-> druk toets -> beweeg van eindeloop
+H006 As op eindeloop X-
+-> druk toets -> beweeg van eindeloop
+H007 As op eindeloop Y-
+-> druk toets -> beweeg van eindeloop
+H008 As op eindeloop Z-
+-> druk toets -> beweeg van eindeloop
+H009 As op eindeloop 4-
+-> druk toets -> beweeg van eindeloop
+H010 As op eindeloop 5-
+-> druk toets -> beweeg van eindeloop
+H011 As X Tool wissel positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H012 As Y Tool wissel positie naar uit
+->Hand/Handwiel werkstand  ->MOD ->Help
+H013 As Y Tool wissel positie naar in
+->Hand/Handwiel werkstand  ->MOD ->Help
+H014 As Y Tool wissel positie manual
+->Hand/Handwiel werkstand  ->MOD ->Help
+H015 As Z Tool wissel positie naar uit
+->Hand/Handwiel werkstand  ->MOD ->Help
+H16 As Z Tool wissel positie naar in
+->Hand/Handwiel werkstand  ->MOD ->Help
+H017 As Z Tool wissel positie manual
+->Hand/Handwiel werkstand  ->MOD ->Help
+H018 As Z Tool wissel veilige positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H019 Spindel Tool wissel positie (M19)
+->Hand/Handwiel werkstand  ->MOD ->Help
+H020 Tool ontklemmen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H021 Tool klemmen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H022 Arm Tool wisselaar naar uit
+->Hand/Handwiel werkstand  ->MOD ->Help
+H023 Arm Tool wisselaar naar in
+->Hand/Handwiel werkstand  ->MOD ->Help
+H024 Arm Tool wisselaar draai naar einde
+->Hand/Handwiel werkstand  ->MOD ->Help
+H025 Tool wisselaar grijper sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H026 Tool wisselaar grijper openen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H027 Tool grijper aan spindel sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H028 Tool grijper aan spindel openen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H029 Toolgrijper aan magazijn sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H030 Tool grijper aan magazijn openen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H031 Wisselaar magazijnpositie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H032 Wisselaar magazijn deur sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H033 Tool volgens status inwisselen
+-> Interne stop -> MDI -> TOOL CALL
+H034 Wisselaar magazijn naar spindel
+->Hand/Handwiel werkstand  ->MOD ->Help
+H035 Wisselaar magazijn naar basisstand
+->Hand/Handwiel werkstand  ->MOD ->Help
+H036 Wisselaar magaz pocket naar uit
+->Hand/Handwiel werkstand  ->MOD ->Help
+H037 Wisselaar magazijn pocket naar in
+->Hand/Handwiel werkstand  ->MOD ->Help
+H038 Wisselaar magazijn indexpen uit
+->Hand/Handwiel werkstand  ->MOD ->Help
+H039 Wisselaar magazijn indexpen in
+->Hand/Handwiel werkstand  ->MOD ->Help
+H040 Arm Tool wisselaar basisstand
+->Hand/Handwiel werkstand  ->MOD ->Help
+H041 Arm T wisselaar functie niet vrij
+->Hand/Handwiel werkstand  ->MOD ->Help
+H042 Arm wisselaar naar spindel pos
+->Hand/Handwiel werkstand  ->MOD ->Help
+H043 Arm wisselaar naar magazijn
+->Hand/Handwiel werkstand  ->MOD ->Help
+H044 Arm wisselaar naar basisstand
+->Hand/Handwiel werkstand  ->MOD ->Help
+H045 Arm wisselaar naar middenstand
+->Hand/Handwiel werkstand  ->MOD ->Help
+H046 Handwiel HR410 verwerking toetsen
+NC, FCT A-C door PLC  -> MP7645: 0
+H047 M/S/T/Q strobe naar PLC tijdens
+blokvoorloop       -> MP7681: %110111
+H048 Wisselaar magazijn is een PLC-as!
+kleine letter             -> MP100
+H049 Handwieltype niet ondersteund
+-> MP7640: O..11
+H050 Blokvoorloop PLC actief !
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 PGM stop met Mfunctie nodig
+Bit 02  MP 7440: %xxxxx0xx
+H052 Fout bij openen bestand
+-> module 9240
+H053 Fout bij lezen tabel
+-> module 9255
+H054 Fout bij schrijven naar tabel
+-> module 9256
+H055 Fout waarde niet in tabel
+-> module 9255
+H056 Temperatuur sensors Pt100
+-> controleer verbinding X48
+H057 Pt100 interface niet bepaald
+-> temperatuurtabel kompensatie
+H058 X-As PW positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H059 Y-as PW positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H060 Z-as PW positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H061 Aktiveer automatische PW
+
+H062 Start palletwissel
+->Hand/Handwiel werkstand  ->MOD ->Help
+H063 Palletwissel uitgevoerd
+-> NC-Start toets
+H064 Deur palletwisselaar openen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H065 Deur palletwisselaar sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H066 Palletnummer niet toegelaten
+
+H067 Pallet ontklemmen (in machine)
+->Hand/Handwiel werkstand  ->MOD ->Help
+H068 Pallet klemmen (in machine)
+->Hand/Handwiel werkstand  ->MOD ->Help
+H069 As niet toegewezen in MP10
+-> Wijzig MP2040.x
+H070 Wachtpositie palletwisselaar
+->Hand/Handwiel werkstand  ->MOD ->Help
+H071 PW1 X-as positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H072 PW2 X-as positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H073 Basispositie palletwisselaar
+->Hand/Handwiel werkstand  ->MOD ->Help
+H074 Basispositie PW1
+->Hand/Handwiel werkstand  ->MOD ->Help
+H075 Basispositie PW2
+->Hand/Handwiel werkstand  ->MOD ->Help
+H076 PW naar beladingspositie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H077 Palletwisselaar naar machine
+->Hand/Handwiel werkstand  ->MOD ->Help
+H078 Fout plaatssensoren PW
+->Hand/Handwiel werkstand  ->MOD ->Help
+H079 PW positie 4de as
+->Hand/Handwiel werkstand  ->MOD ->Help
+H080 Gammawissel voor 3D-kop
+
+H081 Spindelorientering voor 3D-kop
+
+H082 Draaimoment 3D-kop
+->Hand werkstand->Softkey 3D-kop
+H083 Deur T-wisselaar openen
+->Hand/Handwiel werkstand  ->MOD ->Help
+H084 Deur T-wisselaar sluiten
+->Hand/Handwiel werkstand  ->MOD ->Help
+H085 T-wissel naar pickup positie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H086 T-Wissel naar pickup basispositie
+->Hand/Handwiel werkstand  ->MOD ->Help
+H087 X-As naar voorpositionering
+->Hand/Handwiel werkstand  ->MOD ->Help
+H088 Alarm palletwisselaar
+
+H089 Palletwisselaar controleren
+
+H090 Spindel in C-as bedrijf
+-> Spindel positie (synchroniseer)
+H091 Uitgebreide interface-20kringen
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standaard interface - 16 kringen
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> AUTOSTART / warmloopprogramma loopt
+H094 Fmax Override aktivieren
+       MP7620: Bit05 oder Bit09 setzen
+H048 Wisselaar magazijn is een PLC-as!
+kleine letter             -> MP100
+H096 PLC melding
+
+H097 PLC melding
+
+H098 Ja -> NC-Start
+Nee -> NC-Stop
+H099
+-> NC-Start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC magazijn - PLC as *
+* TC magazijn - Pulsteller*
+* TC auto - Enkele arm *
+* TC auto - Dubbele arm *
+* TC auto - Nokkengestuurd*
+* TC auto - Pickup *
+
+
+
+Magazijn Start
+Magazijn einde
+Tool def bevestigen
+T pocket inbrengen
+Pocket is in
+Pocket in/uit
+Pocket positie
+T-magazijn start
+T-magazijn in positie
+Lees plaatsnummer
+Lees standbynummer
+Magazijn richting
+Indexpen uitsturen
+Indexpen is uit
+Nominale positie magazijn
+Tijd voor fijnstop
+Indexpen is ingetrokken
+Fijnstop magazijn bereikt
+WZ-Magazin cw (rechts)
+WZ-Magazin ccw (links)
+
+GW auto start
+GW auto stop
+Spindelgereedschap OK
+T-magazijn start
+Magazijn in positie
+Magazijn vol/leeg
+Spindel vol/leeg
+Magazijn vol
+Magazijn leeg
+Spindel leeg/vol
+Deur T-wisselaar openen
+Deur T-wisselaar geopend
+Deur T-wisselaar sluiten
+Deur T-wisselaar gesloten
+Spindel start
+Spindel in GW positie
+X-Y start
+X start
+X in positie
+X in GW voorpositionering
+X in voorste positie
+Y start
+Y in GW positie
+Y GW voorpositioneren
+Y in voorste GW positie
+Z-start
+Z in GW positie
+Z start veiligheidspositie
+Z in veiligheidspositie
+Z1 in/uit start
+Z1 in positie in/uit
+Z2 in/uit start
+Z2 in positie in/uit
+Z3 in start
+Z3 in inpositie
+T pocket uitbrengen
+T pocket uitgebracht
+T pocket tijdsbewaking
+Pickup waarden gelezen
+Pickup naar uithefpositie
+Pickup uitheffen OK
+Pickup naar opneempositie
+Pickup in opneempositie
+T-arm uitbrengen
+T-arm uitgebracht
+T-arm intrekken
+T-arm ingetrokken
+T-arm naar spindel
+T-arm in spindelpositie
+T-arm naar magazijn
+T-arm in magazijnpositie
+T-arm naar middenpositie
+T-arm in middenpositie
+T-arm naar basispositie
+T-arm in basispositie
+T-arm draaien CW-CCW
+T-arm in CW-CCW positie
+T-arm stop in middenpositie
+T-arm vertraging
+Overspringen T-arm
+T-pocket in/uit
+T pocket positie ok
+T grijper sluiten
+T-grijper gesloten
+T grijper openen
+T grijper geopend
+T grijper mag. zijde openen
+T grijper mag. zijde geopend
+T grijper mag. zijde sluiten
+T grijp. mag. zijde gesloten
+T grijper spin. zijde openen
+T grijp. spin. zijde geopend
+T grijp. spind. zijde sluiten
+T grijp. spin. zijde gesloten
+Standby T lezen
+TC auto tijd
+magazijn naar spindel
+Magazijn in spindelpositie
+Gereedschap ontklemmen
+Gereedschap ontklemd
+Gereedschap klemmen
+Gereedschap ontklemd
+Uitheftijd
+Opslaan nieuw gereedschap
+T0 in status
+T0-Tnieuw status
+T nieuw in status
+T status OK
+2-de ToolCall
+Wachten ToolCall
+T status lezen
+Klemmen overspringen
+Magazijn naar basispositie
+Magazijn in basispositie
+Afmelden ToolCall
+Sprung_T0_programmiert
+Sprung_Spindel_war_leer
+3D-Kopf in WZW-Position
+WZ-Greifer cw (rechts)
+WZ-Greifer ccw (links)
+WZ in Magazin entriegeln
+WZ in Magazin entriegelt
+WZ in Magazin verriegeln
+WZ in Magazin verriegelt
+WZW Manuell
+WZW manuell Start
+Sprung BA manuell
+X Start manuell
+X in Pos manuell
+Y Start manuell
+Y in Pos manuell
+Z Start manuell
+Z in Pos manuell
+WZ manu entspannen
+WZ manu spannen
+WZW Abwahl
+WZW Quittung
+Wiederanf notwendig
+Wiederanfahren ok
+Tool Call quitt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nicht definiert
+Zwischenkreis-Spannung zu groß
+Kühlkörper-Temperatur zu hoch
+Kurzschluss einer Motorphase mit Uz
+Zwischenkreisstrom zu groß
+Versorgungsmodul nicht betriebsbereit
+Leckstrom zu hoch
+
+
+
+0 Geen fout
+1 Parameter buiten ingavebereik
+2 Parameter ongeldig/bestaat niet
+3 Adres buiten waardebereik
+4 Bloklengte buiten waardebereik
+5 Geen Woord- of. Dubbel-Woordadres
+6 Waarde mag niet gewijzigd worden
+7 Foutief bestand
+8 Verkeerde werkstand
+9 Positioneerbevel reeds uitgevoerd
+10 Geen gereedschapswissel bepaald
+11 Niet toegestane tekens
+12 Geen einde of onvolledige String
+13 Geen verbinding
+14 V24-bezet of niet toegewezen
+15 V24-zendbuffer niet leeg
+16 V24-ontvangstbuffer leeg
+17 V24-Baudrate niet mogelijk
+18 V24-overdrachtsfout
+19 Geen stroomregelaar beschikbaar
+20 Moduleoproep niet vanuit SUBMIT
+21 Moduloproep zonder Strobe
+22 Overloop toetsenrij
+23 Overloop PLC-Foutmeldingsrij
+24 Moduleoproep uit SUBMIT-Job
+25 Te veel elementen in Konstantenveld
+26 Niet toegelaten elementen K-veld
+27 Spindel-Orientering reeds actief
+28 Modul-functie is reeds actief
+29 Geopend bestand is foutief type
+30 Veldnaam bestaat niet in bestand
+31 Foutieve syntax Query-voorwaarde
+32 Geen gegevens op Query-voorwaarde
+33 As nog niet gerefereerd
+34 Reset, extern apparaat defect
+35 Editor is niet actief
+36 Algemene fout bestandstoegang
+37 Te weinig syteemgeheugen
+38 Fout bij vertalen
+39 Snelle PLC ingang vermogen aan
+40 Vermogen inschakelen niet mogelijk
+41 Typecontrole nummering T-tabel
+42 Powerfail kan niet uitgeschakeld
+43 Module zonder SG-Pakket opgeroepen
+44 Fout Softkey-bestanden
+45 Module afbreuk
+46 Profibus- of ASI-fout
+47 -
+48 -
+49 -
+50 -
+51 functie niet mogelijk, geen PL510
+52 Geen functie voor enkelprocessor
+53 Geen seriele poort beschikbaar
+54 Geen functie voor dubbelprocessor
+55 Bestand kon niet gesloten worden
+56 Bestand niet gevonden
+57 FCL Optie niet beschikbaar
+58 Functie NC kanaal niet mogelijk
+59 Proces (Phyton) niet toegelaten
+60 Analoge uitg X8/9 vergrendeld (HW)
+61 Module functie niet ondersteund
+62 Symbool/Identifier bestaat niet
+63 Fout bij aanleggen structuur
+64 Handeling onbekend/foutief
+65 Foutieve datarichting
+66 -
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+100 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+{
+    "name": "Basic IFS (HOST)",
+    "base_config": "basic_ifs",
+    "arch": "Host",
+    "partitions": {
+        "rom0": {
+            "size": "480K"
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "homing_threshold": 5,
+    "pressing_threshold": 20,
+    "highload_threshold": 3000,
+    "maxload_threshold": 3200,
+    "sp_deadband_percent": 3,
+    "min_load": 10,
+    "balance_interval": 50,
+    "balance_min_pv_diff": 100,
+    "balance_max_pv_diff": 250,
+    "max_stall_activations": 4,
+    "interlocked": true,
+    "mode": 7
+}

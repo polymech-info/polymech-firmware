@@ -1,0 +1,27 @@
+*-----------------------------------------------------------------------------
+*  Index table
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+GLOBAL Index_table
+
+;----------------------------
+LBL Index_table
+;----------------------------
+
+  L      MG_M21_start_index_table
+  A      MG_pulse_M_function
+  =      TS_start_index_table
+
+  L      TR_start_index_table
+  O      TS_start_index_table
+  =      O_start_index_table
+
+  L      I_index_table_in_position
+  AN     O_start_index_table
+  A      MG_M21_start_index_table
+  S      PN_M4092_quit_M_function
+
+EM

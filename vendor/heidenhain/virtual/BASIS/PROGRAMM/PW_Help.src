@@ -1,0 +1,763 @@
+*-----------------------------------------------------------------------------
+*  PW Help - Service
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Bei angewählter Help-Datei (SERVICE.HLP) lassen sich in Betriebsart
+*    Manuell mittels NC-Start-Taste einzelne Funktionen des PW aufrufen.
+*-----------------------------------------------------------------------------
+
+#define /s    ML_PW_Pos_X                              M
+#define /s    ML_PW_Pos_4                              M
+#define /s    ML_PW_1_war_in_Belade_Position           M
+#define /s    ML_PW_2_war_in_Belade_Position           M
+#define /s    ML_PW_1_war_in_Maschinen_Position        M
+#define /s    ML_PW_2_war_in_Maschinen_Position        M
+#define /s    ML_PW_1_war_in_Halt_Position             M
+#define /s    ML_PW_2_war_in_Halt_Position             M
+#define /s    ML_Stack_synchronisieren                 M
+
+
+#define /s /r ML_PW_Schleuse_auf                       M
+#define /s /r ML_PW_Schleuse_zu                        M
+#define /s /r ML_Palette_in_Maschine_entspannen        M
+#define /s /r ML_Palette_in_Maschine_spannen           M
+
+#define /s    BL_Schritt_PW_Help                       B
+
+#include Mac_Lib.inc
+
+EXTERN Start_Posit
+EXTERN In_Posit
+
+GLOBAL PW_Help
+GLOBAL PW_Output_Restore
+GLOBAL PW_Output_Backup
+
+;----------------------------
+LBL PW_Help
+;----------------------------
+
+  L      MG_Paletten_Wechsel_Pendeln_inaktiv
+  EMT
+
+  LN     I_PW_1_in_Belade_Position
+  AN     I_PW_1_in_Maschinen_Position
+  AN     I_PW_1_in_Halt_Position
+  =      O_PW_1_Eilgang
+
+  LN     I_PW_2_in_Belade_Position
+  AN     I_PW_2_in_Maschinen_Position
+  AN     I_PW_2_in_Halt_Position
+  =      O_PW_2_Eilgang
+
+  CM     PW_Grund_Stellung
+
+  L      PN_Fehler_Funktion_OK
+  A      MG_PW_Help
+  R      PN_Fehler_Funktion_OK
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  /      K+100
+  <>     K+6
+  A      MG_PW_Help
+  CMT    PW_Service_Reset
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  /      K+100
+  ==     K+6
+  A[
+    L      MG_BA_Manuell
+    AN     MG_BA_Editieren
+    O      MG_Inbetriebnahme
+  ]
+  =      MG_PW_Help
+  R      PN_Fehler_PW_Grund_Stellung
+  EMF
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  <>     BL_Schritt_PW_Help
+  ON     MG_Steuerung_betriebsbereit
+  CMT    PW_Service_Reset
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  =      BL_Schritt_PW_Help
+
+  LN     MG_Steuerung_betriebsbereit
+  EMT
+
+  CASE   BL_Schritt_PW_Help
+    CM     PW_EndOfModul               ;00
+    CM     B_auf_0_Grad                ;01
+    CM     X_zu_Platz_1                ;02
+    CM     X_zu_Platz_2                ;03
+    CM     PW_Schleuse_auf             ;04
+    CM     PW_Schleuse_zu              ;05
+    CM     PW_Pal_entspannen           ;06
+    CM     PW_Pal_spannen              ;07
+    CM     PW_1_zu_Halt_Pos            ;08
+    CM     PW_1_zu_Belade_Pos          ;09
+    CM     PW_1_zu_Maschinen_Pos       ;10
+    CM     PW_2_zu_Halt_Pos            ;11
+    CM     PW_2_zu_Belade_Pos          ;12
+    CM     PW_2_zu_Maschinen_Pos       ;13
+  ENDC
+
+LBL PW_EndOfModul
+
+EM
+
+;----------------------------
+LBL B_auf_0_Grad                       ;01
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_4
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     B_in_0_Grad
+
+  L      ML_PW_Pos_4
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      PN_M4123_Strobe_PLC_Posit_Achse_4
+  EMT
+
+  PS     KG_Achse_4
+  PS     K +0
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL B_in_0_Grad
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_4
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_4
+  PS     K +0
+  CM     In_Posit
+  PLL
+  =      ML_PW_Pos_4
+
+EM
+
+;----------------------------
+LBL X_zu_Platz_1                       ;02
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     X_in_PW_Pos_1
+
+  L      ML_PW_Pos_X
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      PN_M4120_Strobe_PLC_Posit_Achse_X
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_1_X
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL X_in_PW_Pos_1
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_1_X
+  CM     In_Posit
+  PLL
+  =      ML_PW_Pos_X
+
+EM
+
+;----------------------------
+LBL X_zu_Platz_2                       ;03
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     X_in_PW_Pos_2
+
+  L      ML_PW_Pos_X
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      PN_M4120_Strobe_PLC_Posit_Achse_X
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_2_X
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL X_in_PW_Pos_2
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_Pendel_Pos_2_X
+  CM     In_Posit
+  PLL
+  =      ML_PW_Pos_X
+
+EM
+
+;----------------------------
+LBL PW_Schleuse_auf                    ;04
+
+  CM     B_in_0_Grad
+
+  LN     ML_PW_Pos_4
+  =      MG_Win_PW_Posit_4
+
+  LN     MG_Win_PW_Posit_4
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_PW_Schleuse_auf
+  R      O_PW_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_Schleuse_auf
+  R      O_PW_Schleuse_zu
+
+  L      I_PW_Schleuse_auf
+  AN     I_PW_Schleuse_zu
+  S      O_PW_Schleuse_auf
+  R      O_PW_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_Schleuse_zu                     ;05
+
+  L      I_PW_Platz_1_belegt
+  AN     I_PW_1_in_Belade_Position
+  O[
+    LN     I_PW_Platz_1_belegt
+    AN     I_PW_1_in_Maschinen_Position
+  ]
+  =      MG_Win_PW_1_in_Grundstellung
+
+  L      I_PW_Platz_2_belegt
+  AN     I_PW_2_in_Belade_Position
+  O[
+    LN     I_PW_Platz_2_belegt
+    AN     I_PW_2_in_Maschinen_Position
+  ]
+  =      MG_Win_PW_2_in_Grundstellung
+
+  LN     MG_Win_PW_1_in_Grundstellung
+  AN     MG_Win_PW_2_in_Grundstellung
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_PW_Schleuse_auf
+  S      O_PW_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_Schleuse_zu
+  R      O_PW_Schleuse_auf
+
+  LN     I_PW_Schleuse_auf
+  A      I_PW_Schleuse_zu
+  R      O_PW_Schleuse_auf
+  S      O_PW_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_Pal_entspannen                  ;06
+
+  L      MG_Taste_NC_Start
+  S      O_Palette_in_Maschine_entspannen
+  R      O_Palette_in_Maschine_spannen
+
+  L      I_Palette_in_Maschine_entspannt
+  AN     I_Palette_in_Maschine_gespannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_Pal_spannen                     ;07
+
+  L      MG_Taste_NC_Start
+  R      O_Palette_in_Maschine_entspannen
+  S      O_Palette_in_Maschine_spannen
+
+  LN     I_Palette_in_Maschine_entspannt
+  A      I_Palette_in_Maschine_gespannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_1_zu_Halt_Pos                   ;08
+
+  CM     X_in_PW_Pos_1
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_1_Pos_X
+
+  L      I_PW_1_in_Belade_Position
+  S      ML_PW_1_war_in_Belade_Position
+
+  L      I_PW_1_in_Maschinen_Position
+  S      ML_PW_1_war_in_Maschinen_Position
+
+  L      I_PW_1_in_Halt_Position
+  S      ML_PW_1_war_in_Halt_Position
+
+  LN     I_Palette_in_Maschine_entspannt
+  O      I_Palette_in_Maschine_gespannt
+  AN     ML_PW_1_war_in_Maschinen_Position
+  AN     ML_PW_1_war_in_Halt_Position
+  =      MG_Win_Pal_in_Maschine_entspannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  LN     ML_PW_1_war_in_Belade_Position
+  AN     ML_PW_1_war_in_Maschinen_Position
+  AN     ML_PW_1_war_in_Halt_Position
+  =      MG_Win_PW_keine_Ausgangsstellung
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_entspannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_1_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  IFT
+    L      ML_PW_1_war_in_Belade_Position
+    R      O_PW_1_zu_Belade_Position
+    S      O_PW_1_zu_Maschinen_Position
+
+    L      ML_PW_1_war_in_Maschinen_Position
+    S      O_PW_1_zu_Belade_Position
+    R      O_PW_1_zu_Maschinen_Position
+  ENDI
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+
+  L      I_PW_1_in_Halt_Position
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_1_zu_Belade_Pos                 ;09
+
+  CM     X_in_PW_Pos_1
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_1_Pos_X
+
+  LN     I_Palette_in_Maschine_entspannt
+  O      I_Palette_in_Maschine_gespannt
+  =      MG_Win_Pal_in_Maschine_entspannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_entspannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_1_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+
+  L      I_PW_1_in_Belade_Position
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_1_zu_Maschinen_Pos              ;10
+
+  CM     X_in_PW_Pos_1
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_1_Pos_X
+
+  L      I_Palette_in_Maschine_entspannt
+  ON     I_Palette_in_Maschine_gespannt
+  =      MG_Win_Pal_in_Maschine_spannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_spannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_1_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_PW_1_zu_Belade_Position
+  S      O_PW_1_zu_Maschinen_Position
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+
+  L      I_PW_1_in_Maschinen_Position
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_2_zu_Halt_Pos                   ;11
+
+  CM     X_in_PW_Pos_2
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_2_Pos_X
+
+  L      I_PW_2_in_Belade_Position
+  S      ML_PW_2_war_in_Belade_Position
+
+  L      I_PW_2_in_Maschinen_Position
+  S      ML_PW_2_war_in_Maschinen_Position
+
+  L      I_PW_2_in_Halt_Position
+  S      ML_PW_2_war_in_Halt_Position
+
+  LN     I_Palette_in_Maschine_entspannt
+  O      I_Palette_in_Maschine_gespannt
+  AN     ML_PW_2_war_in_Maschinen_Position
+  AN     ML_PW_2_war_in_Halt_Position
+  =      MG_Win_Pal_in_Maschine_entspannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  LN     ML_PW_2_war_in_Belade_Position
+  AN     ML_PW_2_war_in_Maschinen_Position
+  AN     ML_PW_2_war_in_Halt_Position
+  =      MG_Win_PW_keine_Ausgangsstellung
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_entspannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_2_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  IFT
+    L      ML_PW_2_war_in_Belade_Position
+    R      O_PW_2_zu_Belade_Position
+    S      O_PW_2_zu_Maschinen_Position
+
+    L      ML_PW_2_war_in_Maschinen_Position
+    S      O_PW_2_zu_Belade_Position
+    R      O_PW_2_zu_Maschinen_Position
+  ENDI
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+
+  L      I_PW_2_in_Halt_Position
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_2_zu_Belade_Pos                 ;12
+
+  CM     X_in_PW_Pos_2
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_2_Pos_X
+
+  LN     I_Palette_in_Maschine_entspannt
+  O      I_Palette_in_Maschine_gespannt
+  =      MG_Win_Pal_in_Maschine_entspannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_entspannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_2_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+
+  L      I_PW_2_in_Belade_Position
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_2_zu_Maschinen_Pos              ;13
+
+  CM     X_in_PW_Pos_2
+
+  LN     ML_PW_Pos_X
+  =      MG_Win_PW_2_Pos_X
+
+  L      I_Palette_in_Maschine_entspannt
+  ON     I_Palette_in_Maschine_gespannt
+  =      MG_Win_Pal_in_Maschine_spannen
+
+  LN     I_PW_Schleuse_auf
+  O      I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_auf
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_Pal_in_Maschine_spannen
+  AN     MG_Win_PW_Schleuse_auf
+  AN     MG_Win_PW_2_Pos_X
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_PW_2_zu_Belade_Position
+  S      O_PW_2_zu_Maschinen_Position
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+
+  L      I_PW_2_in_Maschinen_Position
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL PW_Grund_Stellung
+
+  L      I_PW_Platz_1_belegt
+  A      I_PW_1_in_Belade_Position
+  O[
+    LN     I_PW_Platz_1_belegt
+    A      I_PW_1_in_Maschinen_Position
+  ]
+  A[
+    L      I_PW_2_in_Belade_Position
+    A      I_PW_Platz_2_belegt
+    O[
+      L      I_PW_2_in_Maschinen_Position
+      AN     I_PW_Platz_2_belegt
+    ]
+  ]
+  =      MG_PW_Antriebe_in_Grund_Stellung
+
+  L      MG_PW_Antriebe_in_Grund_Stellung
+  AN     I_PW_Schleuse_auf
+  A      I_PW_Schleuse_zu
+  AN     I_Palette_in_Maschine_entspannt
+  A      I_Palette_in_Maschine_gespannt
+  =      MG_PW_Grund_Stellung
+
+  L      MG_PW_aktiv
+  O      MG_PW_Help
+  EMT
+
+  LN     MG_PW_Grund_Stellung
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_PW_Grund_Stellung
+  EMF
+
+  L      I_PW_Platz_1_belegt
+  AN     I_PW_1_in_Belade_Position
+  O[
+    LN     I_PW_Platz_1_belegt
+    AN     I_PW_1_in_Maschinen_Position
+  ]
+  =      MG_Win_PW_1_in_Grundstellung
+
+  L      I_PW_Platz_2_belegt
+  AN     I_PW_2_in_Belade_Position
+  O[
+    LN     I_PW_Platz_2_belegt
+    AN     I_PW_2_in_Maschinen_Position
+  ]
+  =      MG_Win_PW_2_in_Grundstellung
+
+  L      I_Palette_in_Maschine_entspannt
+  ON     I_Palette_in_Maschine_gespannt
+  =      MG_Win_Pal_in_Maschine_spannen
+
+  L      I_PW_Schleuse_auf
+  ON     I_PW_Schleuse_zu
+  =      MG_Win_PW_Schleuse_zu
+
+EM
+
+;----------------------------
+LBL PW_Service_Reset
+
+  L      MG_Eins_Merker
+  R      O_PW_1_zu_Belade_Position
+  R      O_PW_1_zu_Maschinen_Position
+  R      O_PW_2_zu_Belade_Position
+  R      O_PW_2_zu_Maschinen_Position
+  R      PN_M4120_Strobe_PLC_Posit_Achse_X
+  R      PN_Fehler_Funktion_OK
+  R      ML_PW_1_war_in_Belade_Position
+  R      ML_PW_2_war_in_Belade_Position
+  R      ML_PW_1_war_in_Maschinen_Position
+  R      ML_PW_2_war_in_Maschinen_Position
+  R      ML_PW_1_war_in_Halt_Position
+  R      ML_PW_2_war_in_Halt_Position
+  R      MG_Win_PW_1_Pos_X
+  R      MG_Win_PW_2_Pos_X
+  R      MG_Win_PW_Schleuse_auf
+  R      MG_Win_PW_Schleuse_zu
+  R      MG_Win_Pal_in_Maschine_entspannen
+  R      MG_Win_Pal_in_Maschine_spannen
+  R      MG_Win_PW_keine_Ausgangsstellung
+  R      MG_Win_PW_1_in_Grundstellung
+  R      MG_Win_PW_2_in_Grundstellung
+
+EM
+
+;----------------------------
+LBL PW_Output_Restore
+
+  L      MG_Paletten_Wechsel_Pendeln_inaktiv
+  EMT
+
+  LN     I_PW_1_in_Halt_Position
+  AN     I_PW_2_in_Halt_Position
+  R      O_PW_Freigabe_Halt_Position
+
+  LN     I_PW_1_in_Maschinen_Position
+  AN     I_PW_2_in_Maschinen_Position
+  R      O_PW_Freigabe_Maschinen_Position
+
+  L      ML_Palette_in_Maschine_entspannen
+  =      O_Palette_in_Maschine_entspannen
+
+  L      ML_Palette_in_Maschine_spannen
+  =      O_Palette_in_Maschine_spannen
+
+  L      ML_PW_Schleuse_auf
+  =      O_PW_Schleuse_auf
+
+  L      ML_PW_Schleuse_zu
+  =      O_PW_Schleuse_zu
+
+EM
+
+;----------------------------
+LBL PW_Output_Backup
+
+  L      MG_Paletten_Wechsel_Pendeln_inaktiv
+  EMT
+
+  L      O_PW_1_zu_Belade_Position
+  O      O_PW_1_zu_Maschinen_Position
+  A      I_PW_1_in_Halt_Position
+  S      O_PW_Freigabe_Halt_Position
+
+  L      O_PW_2_zu_Belade_Position
+  O      O_PW_2_zu_Maschinen_Position
+  A      I_PW_2_in_Halt_Position
+  S      O_PW_Freigabe_Halt_Position
+
+  L      O_PW_1_zu_Belade_Position
+  O      O_PW_1_zu_Maschinen_Position
+  A      I_PW_1_in_Maschinen_Position
+  S      O_PW_Freigabe_Maschinen_Position
+
+  L      O_PW_2_zu_Belade_Position
+  O      O_PW_2_zu_Maschinen_Position
+  A      I_PW_2_in_Maschinen_Position
+  S      O_PW_Freigabe_Maschinen_Position
+
+  LN     MG_Steuerung_betriebsbereit
+  R      O_Palette_in_Maschine_entspannen
+  R      O_Palette_in_Maschine_spannen
+  R      O_PW_Schleuse_auf
+  R      O_PW_Schleuse_zu
+  EMT
+
+  L      O_Palette_in_Maschine_entspannen
+  =      ML_Palette_in_Maschine_entspannen
+
+  L      O_Palette_in_Maschine_spannen
+  =      ML_Palette_in_Maschine_spannen
+
+  L      O_PW_Schleuse_auf
+  =      ML_PW_Schleuse_auf
+
+  L      O_PW_Schleuse_zu
+  =      ML_PW_Schleuse_zu
+
+EM

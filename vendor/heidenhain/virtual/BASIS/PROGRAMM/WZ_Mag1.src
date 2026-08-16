@@ -1,0 +1,734 @@
+*-----------------------------------------------------------------------------
+*  Werkzeug Magazin als asynchrone Achse
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*  PLC Status (Tool Table):
+*    #Bit 1 (%00000010) - WZ mit Überlänge
+*                       - (WZ Platz nicht ausklappen nach TOOL DEF)
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolut                               K +0
+#define /s    KL_inkremental                           K +1
+#define /s    KL_WZM_Achse_inaktiv                     K -1
+#define /s    KL_String_Anzahl                         K +3
+
+#define /s    ML_WZM_Diagnose                   M
+#define /s    ML_debug_WZM                             M
+#define /s    ML_debug_WZM_Stop                        M
+
+#define /s /r ML_O_WZM_Platz_ausklappen                M [&KG_max_WZM_Anzahl]
+#define /s /r ML_O_WZM_Platz_einklappen                M [&KG_max_WZM_Anzahl]
+
+#define /s    BL_WZM_Index                             B
+#define /s    BL_WZM_Achs_Index                        B
+#define /s    BL_String_Index                          B
+
+#define /s    WL_Zeile_Dialog_Datei                    W
+#define /s    WL_Stack_synchronisieren                 W
+
+EXTERN Absolut
+
+GLOBAL WZM_rechts_drehen
+GLOBAL WZM_links_drehen
+GLOBAL WZ_Magazin
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL WZ_Magazin
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  EMT
+
+  CM     WZM_n_Input_lesen
+
+  LN     NP_M4074_Strobe_TOOL_DEF
+  R      PN_M4094_Quit_TOOL_DEF
+
+  L      K+0
+  =      BL_WZM_Index
+
+  L      MG_Eins_Merker
+  R      MG_WZM_n_Start_aktiv
+  R      TS_WZM_Timeout
+
+  REPEAT
+    L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+    =      BL_WZM_Achs_Index
+    <>     KL_WZM_Achse_inaktiv
+    IFT
+      CM     Status_Achse
+
+      LN     STG_WZM[BL_WZM_Index].MG_Status[KG_Referenz_OK]
+      S      STG_WZM[BL_WZM_Index].MG_Posit_0_Grad
+
+      L      STG_WZM[BL_WZM_Index].MG_Status[KG_Referenz_OK]
+      AN     STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+      A      STG_WZM[BL_WZM_Index].MG_Posit_0_Grad
+      R      STG_WZM[BL_WZM_Index].MG_Posit_0_Grad
+      IFT
+        L      STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+        =      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+
+        CM     WZM_Start
+      ENDI
+
+      L      MG_Steuer_Spannung_verzoegert_ein
+      CMT    Decodieren_P_Nummer
+
+      L      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+      <>     STG_WZM[BL_WZM_Index].WL_WZM_Ist_Platz
+      S      MG_WZ_Vorwahl_Status_lesen
+
+      L      MG_WZ_Vorwahl_Status_lesen
+      A      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+      IFT
+        L      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+        =      STG_WZM[BL_WZM_Index].WG_WZM_Soll_Platz
+      ENDI
+
+      L      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+      =      STG_WZM[BL_WZM_Index].WL_WZM_Ist_Platz
+
+      L      STG_WZM[BL_WZM_Index].MG_Status[KG_asynchrone_Achse]
+      A      MG_Inbetriebnahme
+      CMT    Override
+
+      LN     MG_Steuerung_betriebsbereit
+      CMT    WZM_Stop
+
+      L      DG_Achsen_Positionierung
+      BT     BL_WZM_Achs_Index
+      AN     STG_WZM[BL_WZM_Index].ML_WZM_Taste_manuell_betaetigt
+      A      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+      =      ML_debug_WZM_Stop
+      CMT    WZM_Stop_Raster
+
+      L      STG_WZM[BL_WZM_Index].ML_WZM_Taste_manuell_betaetigt
+      R      STG_WZM[BL_WZM_Index].ML_WZM_Taste_manuell_betaetigt
+
+      L      BG_WZM_Index_Tool_Call
+      ==     BL_WZM_Index
+      A      NP_M4074_Strobe_TOOL_DEF
+      AN     STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+      AN     MG_WZM_Beladen_aktiv
+      AN     STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+      S      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+      S      MG_WZM_Tool_Def_aktiv
+      IFT
+        L      NP_W262_Werkzeug_Platz_Nummer
+        =      STG_WZM[BL_WZM_Index].WL_Tool_Def_Platz_Nummer
+        L      NP_W264_Werkzeug_Nummer
+        =      STG_WZM[BL_WZM_Index].WL_Tool_Def_Werkzeug_Nummer
+      ENDI
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+      L      ML_O_WZM_Platz_ausklappen[BL_WZM_Index]
+      =      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+
+      L      ML_O_WZM_Platz_einklappen[BL_WZM_Index]
+      =      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+
+      L      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_ausgeklappt
+      ON     STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_eingeklappt
+      AN     MG_Achse_in_Position_bit[BL_WZM_Achs_Index]
+      AN     STG_WZM[BL_WZM_Index].MG_WZM_Start
+      R      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+      S      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+      IFT
+        L      DG_Vorschub_Stop_Hilfsachsen
+        BS     BL_WZM_Achs_Index
+        =      DG_Vorschub_Stop_Hilfsachsen
+      ELSE
+        L      DG_Vorschub_Stop_Hilfsachsen
+        BC     BL_WZM_Achs_Index
+        =      DG_Vorschub_Stop_Hilfsachsen
+      ENDI
+#endif
+
+      L      STG_WZM[BL_WZM_Index].MG_WZM_Start
+      R      TS_WZM_Timeout
+
+      CASE   STG_WZM[BL_WZM_Index].BG_Schritt_WZM
+        CM     WZ_Magazin_Start        ;00
+        CM     Tool_Def_Quit           ;01
+        CM     Mag_Platz_ein           ;02
+        CM     Mag_Platz_Pos_ein       ;03
+        CM     WZ_Mag_Start            ;04
+        CM     WZ_Mag_in_Position      ;05
+        CM     Decodieren_P_Nr         ;06
+        CM     T_Vorwahl_Status        ;07
+        CM     Mag_Platz_ein_aus       ;08
+        CM     Mag_Platz_Posit         ;09
+        CM     WZ_Magazin_Ende         ;10
+      ENDC
+
+      PLL
+      AN     STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+      S      TS_WZM_Timeout
+      =      STG_WZM[BL_WZM_Index].ML_Schritt_Start
+      IFT
+        INC    STG_WZM[BL_WZM_Index].BG_Schritt_WZM
+      ENDI
+
+      L      MG_WZM_Diagnose
+      CMT    Diagnose_String
+
+      L      STG_WZM[BL_WZM_Index].MG_WZM_Start
+      S      MG_WZM_n_Start_aktiv
+      IFT
+        L      STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_Fehler]
+        =      PN_Fehler_Posit_WZM
+
+        L      MG_Taste_NC_Start_P_Impuls
+        R      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+        S      TS_WZM_Timeout
+
+        LN     TS_WZM_Timeout
+        AN     TR_WZM_Timeout
+        =      PN_Fehler_WZM_Timeout
+        S      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+
+        L      MG_Impuls_External_STOP
+        AN     NP_M4157_BA_Restore_Position_aktiv
+        O      MG_Taste_NC_Stop
+        R      TR_WZM_Timeout
+        S      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+
+        L      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+        O      MG_Impuls_End_PGM_M02_M30
+        O      MG_Arbeitsraum_offen
+        R      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+
+        L      MG_Impuls_Internal_STOP
+        O      MG_Impuls_WZW_Help
+        O      MG_Impuls_WZW_Service
+        ON     MG_Steuerung_betriebsbereit
+        CMT    WZ_Magazin_Reset
+
+        L      PN_Fehler_WZM_Timeout
+        IFT
+          CM     Diagnose_String
+
+          PS     K &PN_Fehler_WZM_Timeout - 4800
+          PS     K &SG_WZM_Diagnose_Zeile_2
+          PS     STG_WZM[BL_WZM_Index].BG_Schritt_WZM
+          PS     STG_WZM[BL_WZM_Index].BG_Schritt_WZM
+          CM     9084                  ;PLC-Fehlermeldung anzeigen
+          M_Modul_Fehler_anzeigen
+        ENDI
+      ENDI
+    ENDI
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+    =      ML_O_WZM_Platz_ausklappen[BL_WZM_Index]
+
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+    =      ML_O_WZM_Platz_einklappen[BL_WZM_Index]
+#endif
+
+    INC    BL_WZM_Index
+
+    L      BL_WZM_Index
+    >=     WG_WZM_Anzahl
+    O      ML_debug_WZM
+  UNTILT
+
+  CM     WZM_n_Output_schreiben
+
+EM
+
+;----------------------------
+LBL Diagnose_String
+
+  L      K +0
+  =      BL_String_Index
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].BG_Schritt_WZM
+  =      STG_WZM[BG_WZM_Index_Tool_Call].BL_Schritt_WZM
+  REPEAT
+    L      STG_WZM[BG_WZM_Index_Tool_Call].BL_Schritt_WZM
+    =X
+
+    L      KF Diagnose[X]
+    =      WL_Zeile_Dialog_Datei
+    =X
+
+    L      S#D0[X]
+    =      SG_WZM_Diagnose_Zeile_1[BL_String_Index]
+
+    INC    STG_WZM[BG_WZM_Index_Tool_Call].BL_Schritt_WZM
+    INC    BL_String_Index
+    INCX
+
+    L      BL_String_Index
+    >=     KL_String_Anzahl
+  UNTILT
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].BG_Schritt_WZM
+  =      STG_WZM[BG_WZM_Index_Tool_Call].BL_Schritt_WZM
+
+EM
+
+;----------------------------
+LBL WZ_Magazin_Start                   ;00
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+  O      STG_WZM[BL_WZM_Index].MG_WZM_Beladen_Entladen_Start
+  A      MG_WZW_Grund_Stellung
+  AN     MG_WZW_automatisch
+  O      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Call
+  O      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  S      STG_WZM[BL_WZM_Index].MG_WZM_Start
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Start
+  PSL
+  EMF
+
+  L      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  EMT
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Beladen_Entladen_Start
+  IFT
+    L      STG_WZM[BL_WZM_Index].WG_WZM_Beladen_Soll_Platz
+    =      STG_WZM[BL_WZM_Index].WG_WZM_Soll_Platz
+  ENDI
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+  AN     STG_WZM[BL_WZM_Index].MG_WZM_Tool_Call
+  IFT
+    L      STG_WZM[BL_WZM_Index].WL_Tool_Def_Platz_Nummer
+    =      STG_WZM[BL_WZM_Index].WG_WZM_Soll_Platz
+  ENDI
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Call
+  R      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Call
+  IFT
+    L      WG_WZW_Platz_Nummer
+    =      STG_WZM[BL_WZM_Index].WG_WZM_Soll_Platz
+  ENDI
+
+  L      STG_WZM[BL_WZM_Index].WG_WZM_Soll_Platz
+  X      STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+  =      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+
+  L      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+  <      DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+  EMT
+
+  L      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+  MOD    DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+  =      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+
+EM
+
+;----------------------------
+LBL Tool_Def_Quit                      ;01
+
+  L      NP_M4074_Strobe_TOOL_DEF
+  S      PN_M4094_Quit_TOOL_DEF
+
+  LN     NP_M4074_Strobe_TOOL_DEF
+  AN     STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+  R      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Def
+  PSL
+
+EM
+
+;----------------------------
+LBL Mag_Platz_ein                      ;02
+
+  L      MG_Eins_Merker
+  S      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+  R      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+  PSL
+
+EM
+
+;----------------------------
+LBL Mag_Platz_Pos_ein                  ;03
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  LN     STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_ausgeklappt
+  A      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_eingeklappt
+  AN     STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Mag_Start                       ;04
+
+  PS     MG_Eins_Merker
+  CM     WZM_Start
+
+EM
+
+;----------------------------
+LBL WZ_Mag_in_Position                 ;05
+
+  L      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+  IFT
+    L      DG_Vorschub_Stop_Hilfsachsen
+    BS     BL_WZM_Achs_Index
+    =      DG_Vorschub_Stop_Hilfsachsen
+  ELSE
+    L      DG_Vorschub_Stop_Hilfsachsen
+    BC     BL_WZM_Achs_Index
+    =      DG_Vorschub_Stop_Hilfsachsen
+  ENDI
+
+  L      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+  -      DG_Ref_Pos_Achse[BL_WZM_Achs_Index]
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster[BL_WZM_Achs_Index]
+  O[
+    L      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+    ==     K+0
+    A[
+      L      DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+      -      DG_Ref_Pos_Achse[BL_WZM_Achs_Index]
+      <      DG_MP1030_Pos_Fenster[BL_WZM_Achs_Index]
+    ]
+  ]
+  O      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  AN     STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  AN     PN_Fehler_WZM_Timeout
+  PSL
+
+  L      KG_Achs_Bremse_aktiv
+  A      DG_Regelkreis_oeffnen_Aktivierung
+  A      NP_D1100_Achsfreigaben
+  BT     BL_WZM_Achs_Index
+  IFT
+    PLL
+    A      MG_Null_Merker
+    PSL
+  ENDI
+
+  PLL
+  PSL
+  R      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+
+EM
+
+;----------------------------
+LBL Decodieren_P_Nr                    ;06
+
+  PS     MG_Eins_Merker
+
+  CM     Decodieren_P_Nummer
+
+EM
+
+;----------------------------
+LBL T_Vorwahl_Status                   ;07
+
+  L      MG_Eins_Merker
+  S      MG_WZ_Vorwahl_Status_lesen
+  PSL
+
+EM
+
+;----------------------------
+LBL Mag_Platz_ein_aus                  ;08
+
+  LN     MG_WZ_Vorwahl_Status_lesen
+  PSL
+  EMF
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  L      MG_BA_Manuell
+  O      MG_WZM_Beladen_aktiv
+  EMT
+
+  L      BG_WZ_Vorwahl_Status
+  BT     K+1
+  =      MG_WZ_Ueberlaenge
+
+  LN     MG_WZ_Ueberlaenge
+  R      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+  S      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+#endif
+
+EM
+
+;----------------------------
+LBL Mag_Platz_Posit                    ;09
+
+  L      MG_WZ_Ueberlaenge
+  O      MG_BA_Manuell
+  O      MG_WZM_Beladen_aktiv
+  CMT    Mag_Platz_Pos_ein
+  CMF    Mag_Platz_Pos_aus
+
+EM
+
+;----------------------------
+LBL Mag_Platz_Pos_aus
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  L      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_ausgeklappt
+  AN     STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_eingeklappt
+  AN     STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Magazin_Ende                    ;10
+
+  PS     MG_Null_Merker
+
+LBL WZ_Magazin_Reset
+
+  L      MG_Eins_Merker
+  R      STG_WZM[BL_WZM_Index].MG_WZM_Start
+  R      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  R      STG_WZM[BL_WZM_Index].MG_WZM_Unterbrechung
+  R      STG_WZM[BL_WZM_Index].MG_WZM_Beladen_Entladen_Start
+  R      MG_SK_WZ_Beladen
+  R      MG_SK_WZ_Entladen
+  R      MG_WZM_Tool_Def_aktiv
+
+  L      K+0
+  =      STG_WZM[BL_WZM_Index].BG_Schritt_WZM
+
+  L      DG_Vorschub_Stop_Hilfsachsen
+  BC     BL_WZM_Achs_Index
+  =      DG_Vorschub_Stop_Hilfsachsen
+
+  CM     WZM_Stop
+
+  L      S"            "
+  =      SG_WZM_Diagnose_Zeile_1
+  =      SG_WZM_Diagnose_Zeile_2
+  =      SG_WZM_Diagnose_Zeile_3
+
+EM
+
+;----------------------------
+LBL Override
+
+  PS     STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+
+  L      NP_W496_Faktor_Eilgang_Override_NC
+  <      K+10000
+  IFT
+    PS     NP_W496_Faktor_Eilgang_Override_NC
+  ELSE
+    PS     K+10000
+  ENDI
+
+  CM     9124                          ;PLC-Achse Override
+  PL     WL_Stack_synchronisieren
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL WZM_rechts_drehen
+
+  L      BG_WZM_Index_Tool_Call
+  =      BL_WZM_Index
+
+  L      MG_Eins_Merker
+  =      STG_WZM[BL_WZM_Index].ML_WZM_Taste_manuell_betaetigt
+
+  L      STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  AN     STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  EMT
+
+  LN     DG_Tasten_sperren
+  BT     BL_WZM_Achs_Index
+  S      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  EMF
+
+  L      DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+  =      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+
+EM
+
+;----------------------------
+LBL WZM_links_drehen
+
+  L      BG_WZM_Index_Tool_Call
+  =      BL_WZM_Index
+
+  L      MG_Eins_Merker
+  =      STG_WZM[BL_WZM_Index].ML_WZM_Taste_manuell_betaetigt
+
+  L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+  =      BL_WZM_Achs_Index
+
+  L      STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  AN     STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  EMT
+
+  LN     DG_Tasten_sperren
+  BT     BL_WZM_Achs_Index
+  S      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  EMF
+
+  L-     DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+  =      STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+
+EM
+
+;----------------------------
+LBL WZM_Start
+
+  L      STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  ON     MG_Steuer_Spannung_verzoegert_ein
+  ON     MG_Antriebs_Freigabe_2_Achsgruppe_MC
+  ON     I_Antriebe_betriebsbereit
+  EMT
+
+  PS     BL_WZM_Achs_Index
+  PS     STG_WZM[BL_WZM_Index].DG_WZM_Soll_Position
+  PS     DG_Vorschub_PLC_Pos[BL_WZM_Achs_Index]
+
+  L      STG_WZM[BL_WZM_Index].ML_WZM_Start_manuell
+  IFT
+    PS     KL_inkremental
+  ELSE
+    PS     KL_absolut
+  ENDI
+  CM     9120                          ;PLC-Achse positionieren
+  PL     WL_Stack_synchronisieren
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL WZM_Stop
+
+  LN     STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  EMT
+
+  PS     BL_WZM_Achs_Index
+  CM     9121                          ;PLC-Achse stoppen
+  PL     WL_Stack_synchronisieren
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL WZM_Stop_Raster
+
+  LN     STG_WZM[BL_WZM_Index].MG_Status[KG_Posit_aktiv]
+  EMT
+
+  PS     BL_WZM_Achs_Index
+  CM     9125                          ;PLC-Achse auf der nächsten Raster-Position   stoppen
+  PL     WL_Stack_synchronisieren
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Status_Achse
+
+  PS     BL_WZM_Achs_Index
+  CM     9122                          ;Statusabfrage einer PLC-Achse
+  PLW
+  B=     STG_WZM[BL_WZM_Index].MG_Status[KG_asynchrone_Achse]
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Decodieren_P_Nummer
+
+  L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+  =      BL_WZM_Achs_Index
+
+  L      STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+  /      K+2
+  +      DG_Ref_Pos_Achse[BL_WZM_Achs_Index]
+  /      STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+  =      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+  ==     K+0
+  IFT
+    L      STG_WZM[BL_WZM_Index].WG_MP7261_WZM_max_Platz
+    =      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+  ENDI
+
+  L      STG_WZM[BL_WZM_Index].WG_WZM_Ist_Platz
+  +      STG_WZM[BL_WZM_Index].DG_WZM_Offset_Beladeplatz
+  -      K+1
+  MOD    STG_WZM[BL_WZM_Index].WG_MP7261_WZM_max_Platz
+  +      K+1
+  =      STG_WZM[BL_WZM_Index].WG_WZM_Beladen_Ist_Platz
+
+EM
+
+;----------------------------
+LBL WZM_n_Input_lesen
+
+#if CFG_Simulation = "inaktiv"
+  L      I_WZM_1_Platz_ausgeklappt
+  =      STG_WZM[KG_WZM_1_Index].MG_I_WZM_Platz_ausgeklappt
+
+  L      I_WZM_1_Platz_eingeklappt
+  =      STG_WZM[KG_WZM_1_Index].MG_I_WZM_Platz_eingeklappt
+
+  L      I_WZM_1_Platz_belegt
+  =      STG_WZM[KG_WZM_1_Index].MG_I_WZM_Platz_belegt
+
+  L      I_WZM_2_Platz_ausgeklappt
+  =      STG_WZM[KG_WZM_2_Index].MG_I_WZM_Platz_ausgeklappt
+
+  L      I_WZM_2_Platz_eingeklappt
+  =      STG_WZM[KG_WZM_2_Index].MG_I_WZM_Platz_eingeklappt
+
+  L      I_WZM_2_Platz_belegt
+  =      STG_WZM[KG_WZM_2_Index].MG_I_WZM_Platz_belegt
+#endif
+
+EM
+
+;----------------------------
+LBL WZM_n_Output_schreiben
+
+  L      STG_WZM[KG_WZM_1_Index].MG_O_WZM_Platz_ausklappen
+  =      O_WZM_1_Platz_ausklappen
+
+  L      STG_WZM[KG_WZM_1_Index].MG_O_WZM_Platz_einklappen
+  =      O_WZM_1_Platz_einklappen
+
+  L      STG_WZM[KG_WZM_2_Index].MG_O_WZM_Platz_ausklappen
+  =      O_WZM_2_Platz_ausklappen
+
+  L      STG_WZM[KG_WZM_2_Index].MG_O_WZM_Platz_einklappen
+  =      O_WZM_2_Platz_einklappen
+
+EM
+
+KFIELD Diagnose
+  KG_Dia_WZ_Magazin_PLC_Achse          ;-1
+  KG_Dia_WZ_Magazin_Start              ;00
+  KG_Dia_Tool_Def_Quit                 ;01
+  KG_Dia_Mag_Platz_ein                 ;02
+  KG_Dia_Mag_Platz_Pos_ein             ;03
+  KG_Dia_WZ_Mag_Start                  ;04
+  KG_Dia_WZ_Mag_in_Position            ;05
+  KG_Dia_Decodieren_P_Nr               ;06
+  KG_Dia_T_Vorwahl_Status              ;07
+  KG_Dia_Mag_Platz_ein_aus             ;08
+  KG_Dia_Mag_Platz_Posit               ;09
+  KG_Dia_WZ_Magazin_Ende               ;10
+  KG_Dia_leer                          ;11
+ENDK
+

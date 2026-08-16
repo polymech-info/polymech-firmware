@@ -1,0 +1,166 @@
+[
+    {
+        "id": 910,
+        "type": 1,
+        "name": "Cas-Master-Lower-Cell-HDPE",
+        "description": "",
+        "duration": 1800000,
+        "max": 165,
+        "slot": 0,
+        "enabled": true,
+        "signalPlot": 0,
+        "pressureProfile": 0,
+        "controlPoints": [
+            {
+                "x": 0,
+                "y": 895
+            },
+            {
+                "x": 400,
+                "y": 1000
+            },
+            {
+                "x": 816,
+                "y": 1000
+            },
+            {
+                "x": 1000,
+                "y": 750
+            }
+        ],
+        "targetRegisters": [
+            1227,
+            1245,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "id": 911,
+        "type": 1,
+        "name": "Post-Die-Pressing",
+        "description": "",
+        "duration": 3600000,
+        "max": 150,
+        "slot": 1,
+        "enabled": false,
+        "signalPlot": -1,
+        "pressureProfile": -1,
+        "controlPoints": [
+            {
+                "x": 0,
+                "y": 950
+            },
+            {
+                "x": 663,
+                "y": 1000
+            },
+            {
+                "x": 1000,
+                "y": 0
+            }
+        ],
+        "targetRegisters": [
+            1227,
+            1245,
+            1299,
+            1317,
+            0,
+            0,
+            0,
+            0
+        ],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "id": 912,
+        "type": 1,
+        "name": "TempProfile_912_Slot_2",
+        "description": "",
+        "duration": 0,
+        "max": 0,
+        "slot": 2,
+        "enabled": false,
+        "signalPlot": -1,
+        "pressureProfile": -1,
+        "controlPoints": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1000,
+                "y": 1000
+            }
+        ],
+        "targetRegisters": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    },
+    {
+        "id": 913,
+        "type": 1,
+        "name": "TempProfile_913_Slot_3",
+        "description": "",
+        "duration": 0,
+        "max": 0,
+        "slot": 3,
+        "enabled": false,
+        "signalPlot": -1,
+        "pressureProfile": -1,
+        "controlPoints": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1000,
+                "y": 1000
+            }
+        ],
+        "targetRegisters": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "children": [
+            0,
+            0,
+            0,
+            0
+        ]
+    }
+]

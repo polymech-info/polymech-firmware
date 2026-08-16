@@ -1,0 +1,815 @@
+*-----------------------------------------------------------------------------
+*  Simulation
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*    Mit diesem Modul werden Maschinen-Signale simuliert. Der Einsatz darf
+*    nur an einem Steuerungs-Prüf-Gerät (SPG) oder Motor-Simulations-Unit
+*    (MSU) erfolgen !
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Pendel_Time                           K +12
+#define /s    KL_WZ_Mag_Referenz_Sekunden              K +5
+#define /s    KL_WZ_ohne_Platz                         K -1
+#define /s    KL_Not_Halt_Test_168_Stunden             K +10080
+#define /s    KL_inaktiv                               K +0
+
+#define /s    ML_WZ_Greifer_Kurvenscheibe_Impuls       M
+#define /s    ML_MBxxx_nicht_angeschlossen             M
+#define /s    ML_MBxxx_ohne_Override                   M
+#define /s    ML_Eilgang_Simulation                    M
+#define /s    ML_debug_Getriebe_Stufe_2                M
+#define /s    ML_WZM_Tuer_zu                           M
+#define /s    ML_IO_Simulation_aktiv                   M
+#define /s    ML_IO_Simulation_war_aktiv               M
+#define /s    ML_Arbeitsraum_auf                       M
+#define /s    ML_Taste_Alt_X_TNC_Not_Halt              M
+#define /s    ML_Alt_X_TNC_Not_Halt_war_aktiv          M
+#define /s    ML_Alt_X_TNC_Not_Halt_aktiv              M
+#define /s    ML_debug_Arbeitsraum_entriegeln          M
+#define /s    ML_debug_IO_Simulation                   M
+
+#define /s    ML_Test                                  M
+#define /s    O_BCD_Anzeige                            M [8]
+#define /s    I_BCD_Anzeige                            M [8]
+#define /s    WL_Test                                  W
+#define /s    WL_Hex                                   W
+#define /s    WL_Dec                                   W
+
+#define /s /c I_Eingaenge_X42                          I42
+#define /s /c I_Eingaenge_X46                          I128
+
+#define /s    BL_WZ_Greifer_Kurvenscheibe_Position     B
+#define /s    BL_WZM_Referenz                          B
+#define /s    BL_Getriebe_Pendeln                      B
+#define /s    BL_WZM_Index                             B
+
+GLOBAL Simulation_Beginn
+GLOBAL Simulation_Ende
+
+;----------------------------
+LBL Simulation_Beginn
+;----------------------------
+
+  L      NP_D296_IO_Simulation_Identifier
+  <>     KL_inaktiv
+  R      ML_MBxxx_ohne_Override
+  =      ML_IO_Simulation_aktiv
+
+#if CFG_Simulation = "aktiv"
+  LN     ML_IO_Simulation_aktiv
+  A      ML_IO_Simulation_war_aktiv
+  O      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  IFT
+    L      NP_W496_Faktor_Eilgang_Override_NC
+    +      NP_W494_Faktor_Vorschub_Override_NC
+    +      NP_W492_S_Override_NC
+    ==     K+0
+    S      ML_MBxxx_ohne_Override
+  ENDI
+#endif
+
+#ifdef $ITNC530PROG$
+  L      KL_Not_Halt_Test_168_Stunden
+  =      DG_Zeit_naechster_Not_Halt_Test
+#endif
+
+  L      MG_TNC_Programmierplatz_mit_PLC
+  IFT
+    LN     O_Arbeitsraum_1_entriegeln
+    =      I_Arbeitsraum_1_zu_verriegelt
+    =      I_Arbeitsraum_1_zu
+
+    LN     O_Arbeitsraum_2_entriegeln
+    =      I_Arbeitsraum_2_zu_verriegelt
+    =      I_Arbeitsraum_2_zu
+
+    LN     PN_D1132_Regelkreis_oeffnen
+    A      DG_geregelte_Achsen
+    =      NP_D1100_Achsfreigaben
+
+    L      KL_Not_Halt_Test_168_Stunden
+    =      DG_Zeit_naechster_Not_Halt_Test
+
+#if CFG_Maschinen_Typ ! "SU_530"
+    LD     I_Eingaenge_X46
+    A      K$01FFFFFF
+    ==     K+0
+    =      ML_MBxxx_nicht_angeschlossen
+
+    L      MG_iTNC530_PC_Programmierplatz
+    O      ML_MBxxx_nicht_angeschlossen
+    AN     ML_IO_Simulation_aktiv
+    IFT
+      L      MG_Eins_Merker
+      R      I_Taste_NC_Start
+      R      I_Taste_NC_Stop
+      S      I_Taste_NC_Stop_0_aktiv
+      R      I_Taste_Achsen_Plus
+      R      I_Taste_Achsen_Minus
+    ENDI
+#endif
+
+#if CFG_Simulation = "aktiv"
+    LN     MG_iTNC530_PC_Programmierplatz
+    S      I_I3_Steuerung_betriebsbereit
+    S      I_I32_ESB_Antriebs_Freigabe
+
+#if ($VARIANTBASE$ = 606424) or ($VARIANTBASE$ = 606425)
+    LN     NP_M4260_Steuerung_nicht_betriebsbereit
+    =      I_I3_Steuerung_betriebsbereit
+    =      I_I32_ESB_Antriebs_Freigabe
+
+    L      ML_IO_Simulation_aktiv
+    IFT
+      L      I_I3_Steuerung_betriebsbereit
+      A      I_Arbeitsraum_1_zu_verriegelt
+      =      I_I32_ESB_Antriebs_Freigabe
+    ENDI
+#endif
+#endif
+
+    L      MG_iTNC530_PC_Programmierplatz
+    O      ML_MBxxx_ohne_Override
+    AN     ML_IO_Simulation_aktiv
+    IFT
+      L      K+10000
+      =      NP_W496_Faktor_Eilgang_Override_NC
+      =      PN_W752_Faktor_Eilgang_Override_PLC
+      =      NP_W494_Faktor_Vorschub_Override_NC
+      =      PN_W766_Faktor_Vorschub_Override_PLC
+      =      NP_W492_S_Override_NC
+      =      PN_W764_S_Override_PLC
+    ENDI
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Alt_X_TNC_Not_Halt
+    =      ML_Taste_Alt_X_TNC_Not_Halt
+
+    L      ML_Taste_Alt_X_TNC_Not_Halt
+    AN     ML_Alt_X_TNC_Not_Halt_war_aktiv
+    XO     ML_Alt_X_TNC_Not_Halt_aktiv
+    =      ML_Alt_X_TNC_Not_Halt_aktiv
+    R      I_I3_Steuerung_betriebsbereit
+    R      I_I32_ESB_Antriebs_Freigabe
+
+    L      ML_Taste_Alt_X_TNC_Not_Halt
+    =      ML_Alt_X_TNC_Not_Halt_war_aktiv
+
+    L      MG_Eins_Merker
+    AN     ML_IO_Simulation_aktiv
+    S      I_Not_Halt_entriegelt
+
+    L      ML_debug_IO_Simulation
+    S      ML_IO_Simulation_aktiv
+
+    L      ML_IO_Simulation_aktiv
+    IFT
+      LN     I_Not_Halt_entriegelt
+      O      PN_Fehler_StSpg_aus_Shut_down
+      S      ML_Alt_X_TNC_Not_Halt_aktiv
+
+      L      I_Taste_Steuerspannung_ein
+      R      ML_Alt_X_TNC_Not_Halt_aktiv
+    ENDI
+
+    L      ML_IO_Simulation_aktiv
+    =      ML_IO_Simulation_war_aktiv
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Ctrl_S_NC_Start
+    S      I_Taste_NC_Start
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Ctrl_X_NC_Stop
+    ON     MG_Steuerung_betriebsbereit
+    R      I_Taste_NC_Stop_0_aktiv
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Ctrl_Y_NC_Start_Stop
+    S      I_Taste_NC_Start
+    R      I_Taste_NC_Stop_0_aktiv
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Ctrl_Cursor_up_Achsen_plus
+    S      I_Taste_Achsen_Plus
+
+    L      NP_W274_Tasten_Code_betaetigte_Taste
+    ==     KG_Tasten_Ctrl_Cursor_down_Achsen_minus
+    S      I_Taste_Achsen_Minus
+
+    LN     MG_Spindel_2_aktiv
+    IFT
+      L      NP_W256_G_Code_Spindel
+      ==     K+0
+      =      I_S1_Getriebe_Stufe_1
+      =N     I_S1_Getriebe_Stufe_2
+    ELSE
+      L      NP_W256_G_Code_Spindel
+      ==     K+0
+      =      I_S2_Getriebe_Stufe_1
+      =N     I_S2_Getriebe_Stufe_2
+    ENDI
+  ENDI
+
+#if CFG_Simulation = "aktiv"
+#if (CFG_Maschinen_Typ = "MSU_530") or (CFG_Maschinen_Typ = "SU_530")
+  L      I_Taste_FN3
+  =      I_Taste_WZM_Tuer_entriegeln
+#if CFG_Maschinen_Typ = "SU_530"
+  L      I_I3_Steuerung_betriebsbereit
+  =      I_ESA_Steuerung_betriebsbereit
+  =      I_ESB_Steuerung_betriebsbereit
+#endif
+#endif
+
+  LN     MG_WZM_Beladen_aktiv
+  IFT
+    L      I_WZM_Tuer_zu
+    AN     ML_WZM_Tuer_zu
+    R      O_WZM_Tuer_entriegeln
+
+    L      I_WZM_Tuer_zu
+    =      ML_WZM_Tuer_zu
+
+    L      MG_Taste_WZM_Tuer_entriegeln
+    S      O_WZM_Tuer_entriegeln
+  ENDI
+
+  L      BG_MP4031_Anzahl_angeschlossene_PL
+  >      K+0
+  IFT
+    L      MG_Eins_Merker
+    S      PN_Fehler_Maschinen_Simulation_aktiv
+  ENDI
+
+#if CFG_FS = "inaktiv"                 * SPLC_0027
+  LD     I_Eingaenge_X42
+  A      K$FFFFFF00
+  >      K+0
+  S      PN_Fehler_Maschinen_Simulation_aktiv
+
+  LD     I_Eingaenge_X42
+  A      K$FF700000
+  >      K+0
+  S      PN_Fehler_Maschinen_Simulation_aktiv
+#endif
+
+  L      O_Schmierung_ein
+  =      I_Schmierung_Druck_ok
+
+  LN     I_Schmierung_Oelstand_ok
+  S      I_Schmierung_Oelstand_ok
+
+  L      MG_Eins_Merker
+  =      I_PW_210_Temperatur_ok
+
+  L      MG_Eins_Merker
+  =      I_DA400_Druck_ok
+
+#if CFG_FS = "inaktiv"                 * SPLC_0026
+  LN     MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  IFT
+    L      MG_Eins_Merker
+    =      I_WZM_Tuer_zu
+    =      I_WZM_Tuer_zu_verriegelt
+  ENDI
+#endif
+
+  L      NP_M4001_S_Sollwert_nicht_in_Rampe
+  =      I_S1_Nist_gleich_Nsoll
+  =      I_S2_Nist_gleich_Nsoll
+
+  L      NP_M4002_S_Sollwert_0
+  =      I_S1_Nist_kleiner_Nmin
+  =      I_S2_Nist_kleiner_Nmin
+
+  L      O_S1_entspannen
+  =      I_S1_WZ_entspannt
+  =N     I_S1_WZ_gespannt
+
+  L      O_S2_entspannen
+  =      I_S2_WZ_entspannt
+  =N     I_S2_WZ_gespannt
+
+  L      O_WZM_entriegeln
+  =N     I_WZM_verriegelt
+  =      I_WZM_entriegelt
+
+  L      MG_Impuls_M_Funktion
+  A      MG_M61_Pendeln_Seite_1
+  S      I_Taste_Pendeln_Seite_1
+
+  L      MG_Impuls_M_Funktion
+  A      MG_M62_Pendeln_Seite_2
+  S      I_Taste_Pendeln_Seite_2
+
+  L      K+0
+  =      BL_WZM_Index
+  REPEAT
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Rechtslauf
+    O      STG_WZM[BL_WZM_Index].MG_O_WZM_Linkslauf
+    IFT
+      INC    STG_WZM[BL_WZM_Index].WL_WZM_Simulation_Zaehler
+
+      L      STG_WZM[BL_WZM_Index].WL_WZM_Simulation_Zaehler
+      MOD    K+25
+      <      K+12
+      =      STG_WZM[BL_WZM_Index].MG_I_WZM_Zaehler
+
+      L      STG_WZM[BL_WZM_Index].WL_WZM_Simulation_Zaehler
+      MOD    K+25
+      >=     K+6
+      A[
+        L      STG_WZM[BL_WZM_Index].WL_WZM_Simulation_Zaehler
+        MOD    K+25
+        <=     K+8
+      ]
+      =      STG_WZM[BL_WZM_Index].MG_I_WZM_Genauhalt
+    ELSE
+      L      K+6
+      =      STG_WZM[BL_WZM_Index].WL_WZM_Simulation_Zaehler
+    ENDI
+
+    LN     STG_WZM[BL_WZM_Index].MG_O_WZM_Rechtslauf
+    AN     STG_WZM[BL_WZM_Index].MG_O_WZM_Linkslauf
+    S      STG_WZM[BL_WZM_Index].MG_I_WZM_Zaehler
+    S      STG_WZM[BL_WZM_Index].MG_I_WZM_Genauhalt
+
+    L      MG_Taste_NC_Start_P_Impuls
+    A      STG_WZM[BL_WZM_Index].MG_WZM_Referenz_notwendig
+    IFT
+      L      KL_WZ_Mag_Referenz_Sekunden
+      =      BL_WZM_Referenz
+    ENDI
+
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Rechtslauf
+    O      STG_WZM[BL_WZM_Index].MG_O_WZM_Linkslauf
+    A      MG_Impuls_1_s
+    A      STG_WZM[BL_WZM_Index].MG_WZM_Referenz_notwendig
+    IFT
+      DEC    BL_WZM_Referenz
+    ENDI
+
+    L      BL_WZM_Referenz
+    <=     K+0
+    A      STG_WZM[BL_WZM_Index].MG_I_WZM_Zaehler
+    A      STG_WZM[BL_WZM_Index].MG_I_WZM_Genauhalt
+    A      STG_WZM[BL_WZM_Index].MG_WZM_Referenz_notwendig
+    =      STG_WZM[BL_WZM_Index].MG_I_WZM_Referenz
+
+    L      BG_Schritt_WZW
+#if WZ_Greifer = &Einzelarm
+    <      K+22
+#else
+    <      K+25
+#endif
+    IFT
+      L      NP_M4521_TOOL_CALL_T_0_programmiert
+      =N     STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+#if WZ_Greifer > &Einzelarm
+      L      WG_Werkzeug_in_Spindel
+      >      K+0
+#endif
+      =      I_S1_WZ_ist_in_Spindel
+      =      I_S2_WZ_ist_in_Spindel
+    ELSE
+      L      BG_Schritt_WZW
+#if WZ_Greifer = &Einzelarm
+      <      K+30
+#else
+      <      K+32
+#endif
+      IFT
+        L      MG_Eins_Merker
+        =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+      ELSE
+
+#if CFG_WZW_System ! "inaktiv"
+#if Mittel_Position_WZ_Wechsel = &aktiv
+        LN     NP_M4521_TOOL_CALL_T_0_programmiert
+        =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+#else
+        L      NP_M4521_TOOL_CALL_T_0_programmiert
+        =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+#endif
+#endif
+
+#if WZ_Greifer > &Einzelarm
+        L      WG_WZW_auto_neue_Werkzeug_Nummer
+        >      K+0
+        =      I_S1_WZ_ist_in_Spindel
+        =      I_S2_WZ_ist_in_Spindel
+#else
+        L      WG_WZW_auto_Werkzeug_Nummer
+        >      K+0
+        =      I_S1_WZ_ist_in_Spindel
+        =      I_S2_WZ_ist_in_Spindel
+#endif
+      ENDI
+    ENDI
+
+#if WZ_Greifer = &Pickup
+    LN     NP_M4521_TOOL_CALL_T_0_programmiert
+    =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+
+    L      BG_Schritt_WZW
+    <      K+21
+    IFT
+      L      NP_M4521_TOOL_CALL_T_0_programmiert
+      =      I_S1_WZ_ist_in_Spindel
+      =      I_S2_WZ_ist_in_Spindel
+    ENDI
+
+    L      BG_Schritt_WZW
+    >      K+38
+    IFT
+      L      NP_W262_Werkzeug_Platz_Nummer
+      ==     KL_WZ_ohne_Platz
+      O      NP_M4521_TOOL_CALL_T_0_programmiert
+      =N     I_S1_WZ_ist_in_Spindel
+      =N     I_S2_WZ_ist_in_Spindel
+    ENDI
+
+#endif
+
+#if CFG_WZ_Transport_Wagen = "aktiv"
+    L      BG_Schritt_WZW
+    <      K+15
+    IFT
+      LN     NP_M4521_TOOL_CALL_T_0_programmiert
+      =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+    ELSE
+      L      MG_Null_Merker
+      =      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_belegt
+    ENDI
+#endif
+
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_einklappen
+    A      MG_Impuls_1_s
+    R      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_ausgeklappt
+    S      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_eingeklappt
+
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Platz_ausklappen
+    A      MG_Impuls_1_s
+    S      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_ausgeklappt
+    R      STG_WZM[BL_WZM_Index].MG_I_WZM_Platz_eingeklappt
+
+    L      STG_WZM[BL_WZM_Index].MG_O_WZM_Index_ausheben
+    =N     STG_WZM[BL_WZM_Index].MG_I_WZM_Index_eingesetzt
+    =      STG_WZM[BL_WZM_Index].MG_I_WZM_Index_ausgehoben
+
+    INC    BL_WZM_Index
+
+    L      BL_WZM_Index
+    >=     WG_WZM_Anzahl
+  UNTILT
+
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  S      I_WZ_Greifer_cw_rechts
+  R      I_WZ_Greifer_ccw_links
+  R      I_WZ_Greifer_ausgehoben
+  S      I_WZ_Greifer_eingesetzt
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  AN     I_WZ_Greifer_ccw_links
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_cw_rechts
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_ccw_links
+
+  L      O_WZ_Greifer_drehen_ccw_links
+  AN     I_WZ_Greifer_cw_rechts
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_ccw_links
+
+  L      O_WZ_Greifer_drehen_ccw_links
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_cw_rechts
+
+  L      O_WZ_Greifer_zu_Mittelstellung
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_Mittelstellung
+
+  LN     O_WZ_Greifer_ausheben
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_ausgehoben
+  S      I_WZ_Greifer_eingesetzt
+
+  L      O_WZ_Greifer_ausheben
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_ausgehoben
+  R      I_WZ_Greifer_eingesetzt
+
+  L      O_WZM_zu_Spindel
+  A      MG_Impuls_1_s
+  S      I_WZM_in_Spindel
+  R      I_WZM_in_Grund_Stellung
+
+  LN     O_WZM_zu_Spindel
+  A      MG_Impuls_1_s
+  R      I_WZM_in_Spindel
+  S      I_WZM_in_Grund_Stellung
+
+#if CFG_WZ_Transport_Wagen = "aktiv"
+  L      O_WZ_Greifer_Zange_1_auf
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_Zange_1_auf
+
+  LN     O_WZ_Greifer_Zange_1_auf
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_Zange_1_auf
+
+  L      O_WZ_Greifer_Zange_2_auf
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_Zange_2_auf
+
+  LN     O_WZ_Greifer_Zange_2_auf
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_Zange_2_auf
+
+  L      O_WZ_Greifer_zu_Spindel
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_Spindel_Position
+  R      I_WZ_Greifer_Magazin_Position
+  R      I_WZ_Greifer_Grundstellung
+
+  L      O_WZ_Greifer_zu_Magazin
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_Spindel_Position
+  S      I_WZ_Greifer_Magazin_Position
+  R      I_WZ_Greifer_Grundstellung
+
+  L      O_WZ_Greifer_zu_Grundstellung
+  A      MG_Impuls_1_s
+  O      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  R      I_WZ_Greifer_Spindel_Position
+  R      I_WZ_Greifer_Magazin_Position
+  S      I_WZ_Greifer_Grundstellung
+#else
+  LN     O_WZ_Greifer_Zangen_zu
+  A      MG_Impuls_1_s
+  S      I_WZ_Greifer_Zangen_auf
+
+  L      O_WZ_Greifer_Zangen_zu
+  A      MG_Impuls_1_s
+  R      I_WZ_Greifer_Zangen_auf
+
+  L      O_WZ_Greifer_zu_Spindel
+  =      I_WZ_Greifer_Spindel_Position
+
+  L      O_WZ_Greifer_zu_Grundstellung
+  =      I_WZ_Greifer_Grundstellung
+#endif
+
+  L      O_WZ_Schleuse_auf
+  =      I_WZ_Schleuse_auf
+  =N     I_WZ_Schleuse_zu
+
+  L      O_WZ_Pickup_ausfahren
+  =      I_WZ_Pickup_ausgefahren
+  =N     I_WZ_Pickup_eingefahren
+
+
+#if WZ_Greifer = &WZW_Kurvenscheibe
+
+*  L   I_WZ_Greifer_Brems_Position
+*  O   I_WZ_Greifer_mitte
+*  =   MG_WZ_Greifer_Brems_Position
+
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  S      I_WZ_Greifer_Brems_Position
+  IFT
+    L      K+0
+    =      BL_WZ_Greifer_Kurvenscheibe_Position
+  ENDI
+
+  L      MG_Impuls_1_s
+  XO     ML_WZ_Greifer_Kurvenscheibe_Impuls
+  =      ML_WZ_Greifer_Kurvenscheibe_Impuls
+
+  L      MG_Impuls_1_s
+  A      ML_WZ_Greifer_Kurvenscheibe_Impuls
+  A      O_WZ_Greifer_drehen_cw_rechts
+  IFT
+    INC    BL_WZ_Greifer_Kurvenscheibe_Position
+  ENDI
+
+  L      MG_Impuls_1_s
+  A      ML_WZ_Greifer_Kurvenscheibe_Impuls
+  A      O_WZ_Greifer_drehen_ccw_links
+  IFT
+    DEC    BL_WZ_Greifer_Kurvenscheibe_Position
+  ENDI
+
+  L      BL_WZ_Greifer_Kurvenscheibe_Position
+  >      K+3
+  IFT
+    L      K+0
+    =      BL_WZ_Greifer_Kurvenscheibe_Position
+  ENDI
+
+  L      BL_WZ_Greifer_Kurvenscheibe_Position
+  <      K+0
+  IFT
+    L      K+3
+    =      BL_WZ_Greifer_Kurvenscheibe_Position
+  ENDI
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  O      O_WZ_Greifer_drehen_ccw_links
+  A      MG_Impuls_1_s
+  AN     ML_WZ_Greifer_Kurvenscheibe_Impuls
+  S      I_WZ_Greifer_Brems_Position
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  O      O_WZ_Greifer_drehen_ccw_links
+  A      MG_Impuls_1_s
+  A      ML_WZ_Greifer_Kurvenscheibe_Impuls
+  R      I_WZ_Greifer_Brems_Position
+
+  L      BL_WZ_Greifer_Kurvenscheibe_Position
+  ==     K+0
+  =      I_WZ_Greifer_Grundstellung
+
+  L      BL_WZ_Greifer_Kurvenscheibe_Position
+  ==     K+1
+  O[
+    L      BL_WZ_Greifer_Kurvenscheibe_Position
+    ==     K+3
+  ]
+  =      I_WZ_Greifer_Spindel_Position
+
+  L      BL_WZ_Greifer_Kurvenscheibe_Position
+  ==     K+2
+  =      I_WZ_Greifer_Mittelstellung
+  R      I_WZ_Greifer_Brems_Position
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  O      O_WZ_Greifer_drehen_ccw_links
+#if WZ_Zange = &aktiv
+  AN     ML_WZ_Greifer_Kurvenscheibe_Impuls
+#else
+  A      ML_WZ_Greifer_Kurvenscheibe_Impuls
+#endif
+  R      I_WZ_Greifer_Grundstellung
+  R      I_WZ_Greifer_Spindel_Position
+  R      I_WZ_Greifer_Mittelstellung
+
+#endif
+
+  L      NP_W256_G_Code_Spindel
+  >      K+1
+  A      PN_M4134_Strobe_G_Stufe_Drehzahl
+  IFT
+    L      K+1
+    =      NP_W256_G_Code_Spindel
+  ENDI
+
+  LN     MG_Spindel_mit_Stern_Dreieck_Umschaltung
+  IFT
+    LN     NP_M4070_Strobe_G_Code
+    IFT
+      L      KL_Pendel_Time
+      =      BL_Getriebe_Pendeln
+
+      LN     MG_Spindel_2_aktiv
+      IFT
+        L      NP_W256_G_Code_Spindel
+        ==     K+0
+        =      I_S1_Getriebe_Stufe_1
+        =N     I_S1_Getriebe_Stufe_2
+      ELSE
+        L      NP_D364_S_Soll_Drehzahl
+        =      NP_D368_S_Ist_Drehzahl
+
+        L      NP_W256_G_Code_Spindel
+        ==     K+0
+        =      I_S2_Getriebe_Stufe_1
+        =N     I_S2_Getriebe_Stufe_2
+      ENDI
+    ELSE
+      L      MG_Eins_Merker
+      R      I_S1_Getriebe_Stufe_1
+      R      I_S1_Getriebe_Stufe_2
+      R      I_S2_Getriebe_Stufe_1
+      R      I_S2_Getriebe_Stufe_2
+
+      L      BL_Getriebe_Pendeln
+      <      K+0
+      IFT
+        LN     MG_Spindel_2_aktiv
+        IFT
+          L      NP_W256_G_Code_Spindel
+          ==     K+0
+          S      I_S1_Getriebe_Stufe_1
+          SN     I_S1_Getriebe_Stufe_2
+        ELSE
+          L      NP_W256_G_Code_Spindel
+          ==     K+0
+          S      I_S2_Getriebe_Stufe_1
+          SN     I_S2_Getriebe_Stufe_2
+        ENDI
+      ENDI
+
+      L      MG_Impuls_250_ms
+      IFT
+        DEC    BL_Getriebe_Pendeln
+      ENDI
+    ENDI
+  ENDI
+
+  L      ML_debug_Getriebe_Stufe_2
+  R      I_S1_Getriebe_Stufe_2
+
+  L      MG_Spindel_2_aktiv
+  =      I_S2_Spindel_aktiv
+
+  LN     MG_3D_Kopf_Setup_ok
+  S      MG_3D_Kopf_Setup_ok
+#endif
+
+EM
+
+;----------------------------
+LBL Simulation_Ende
+;----------------------------
+
+#if CFG_Simulation = "aktiv"
+
+  L      ML_Eilgang_Simulation
+  O      MG_SK_Taste_Eilgang
+  S      PN_M4561_Eilgang
+
+  L      MG_Eins_Merker
+  R      O_S1_Getriebe_Stufe_1
+  R      O_S1_Getriebe_Stufe_2
+  R      O_S2_Getriebe_Stufe_1
+  R      O_S2_Getriebe_Stufe_2
+
+  LN     MG_Steuer_Spannung_verzoegert_ein
+  R      PN_Fehler_Werkzeug_nicht_gespannt
+
+  L      MG_Taste_NC_Start
+  A      MG_Taste_NC_Stop
+  S      MG_Fehler_ausblenden
+
+  L      MG_Fehler_ausblenden
+  R      PN_Fehler_Spindel_Nsoll
+
+  L      ML_Test
+  IFT
+    R      ML_Test
+
+    INC    WL_Test
+
+    PS     WL_Test
+    CM     Dec_Hex_Wandlung
+    PLW
+    =      WL_Hex
+    B=     O_BCD_Anzeige
+
+    LB     O_BCD_Anzeige
+    PSW
+    CM     Hex_Dec_Wandlung
+    PLW
+    =      WL_Dec
+  ENDI
+
+EM
+
+LBL Hex_Dec_Wandlung
+  PLW
+  PSW
+  /      K+16
+  X      K+10
+  +[
+    PLW
+    MOD    K+16
+  ]
+  PSW
+
+EM
+
+LBL Dec_Hex_Wandlung
+  PLW
+  PSW
+  /      K+10
+  X      K+16
+  +[
+    PLW
+    MOD    K+10
+  ]
+  PSW
+
+#endif
+
+EM

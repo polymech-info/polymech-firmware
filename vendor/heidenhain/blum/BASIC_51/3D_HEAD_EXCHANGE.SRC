@@ -1,0 +1,22 @@
+*-----------------------------------------------------------------------------
+*  3D head exchange
+*-----------------------------------------------------------------------------
+*  Module Description
+*    - will be prepeared
+*
+*-----------------------------------------------------------------------------
+
+#include Mac_Lib.inc
+
+GLOBAL 3D_head_exchange
+
+;----------------------------
+LBL 3D_head_exchange
+;----------------------------
+
+  L      MG_M55_B_C_head_exchange
+  O      MG_M56_B_head_exchange
+  O      MG_M57_3D_head_replace
+  S      PN_M4092_quit_M_function
+
+EM

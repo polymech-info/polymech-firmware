@@ -1,0 +1,27 @@
+﻿************************************
+!!! ATENCION !!!
+solo para personal cualificado
+X, Y, Z  pueden ser movidos por
+teclas   X+, X-, Y+, Y-, Z+, Z-
+o volante electronico
+Servicio CH de doble brazo
+Confirmar con tecla "NC start" en MANUAL
+************************************
+#201  Orienta cabezal para cambio hta.
+#202  Z a posicion de cambio hta.
+#203  Y a posicion de cambio hta.
+#204  X a posicion de cambio hta.
+#205  Desbloquear herramienta
+#206  Bloquear herramienta
+#207  Abrir pinzas
+#208  Cerrar pinzas
+#209  Soltar herramienta
+#210  Atar herramienta
+#211  Extraer brazo cambiador
+#212  Introducir brazo cambiador
+#213  Brazo cambiador giro dcha.
+#214  Brazo cambiador giro izda.
+#215  Almacen giro a dchas.
+#216  Almacen giro a izdas.
+#217  Referenciar almacen
+#218  Borrar datos de Hta. (T0)

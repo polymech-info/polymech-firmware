@@ -1,0 +1,953 @@
+*-----------------------------------------------------------------------------
+*  Toolchange Help - Service (double arm, cam driven)
+*-----------------------------------------------------------------------------
+*  Module Description
+*    In manual mode it is possible to start several tool changer functions
+*    by using a selected help file (SERVICE_31.HLP>.
+*
+*  EUMACH
+*  VMC series with cam-driven arm tool changer
+*-----------------------------------------------------------------------------
+
+#if Override_knobs = &2_knobs                                         *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%010
+#define /s    KL_absolute_without_software_limit_switch K%000         *;EUMACH
+#else                                                                 *;EUMACH G00% override
+#define /s    KL_absolute_with_software_limit_switch   K%110          *;EUMACH G00% override
+#define /s    KL_absolute_without_software_limit_switch K%100         *;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+#define /s    ML_T0_selection_ok                       M
+#define /s    ML_TC_pos_Z_put_in                       M
+#define /s    ML_TC_pos_Y_put_in                       M
+#define /s    ML_TC_pos_X                              M
+#define /s    ML_key_NC_start_stop_p_pulse             M
+#define /s    ML_key_NC_start_stop                     M
+#define /s    ML_TC_arm_brake                          M
+#define /s    ML_TC_arm_brake_p_pulse                  M
+#define /s    ML_TC_arm_spindle_pos                    M
+#define /s    ML_TC_arm_spindle_pos_p_pulse            M
+#define /s    ML_TC_arm_basic_pos                      M
+#define /s    ML_TC_arm_basic_pos_p_pulse              M
+
+
+#define /s /r ML_TC_arm_gripper_close                  M
+#define /s /r ML_TC_arm_put_in                         M
+#define /s /r ML_TC_arm_put_out                        M
+
+#define /s    BL_step_help                             B
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+EXTERN TC_mag_cw_turn
+EXTERN TC_mag_ccw_turn
+EXTERN TC_arm_position
+EXTERN TC_arm_direction
+
+GLOBAL TC_Help
+GLOBAL Output_Restore
+GLOBAL Output_Backup
+
+;----------------------------
+LBL TC_Help
+;----------------------------
+
+  LN     MG_TC_auto_active
+  EMT
+
+  L      MG_key_NC_stop
+  A      MG_key_NC_start
+  AN     ML_key_NC_start_stop
+  =      ML_key_NC_start_stop_p_pulse
+
+  L      MG_key_NC_stop
+  A      MG_key_NC_start
+  =      ML_key_NC_start_stop
+
+  L      I_TC_arm_brake_pos
+  AN     ML_TC_arm_brake
+  =      ML_TC_arm_brake_p_pulse
+
+  L      I_TC_arm_brake_pos
+  =      ML_TC_arm_brake
+
+  L      I_TC_arm_spindle_pos
+  AN     ML_TC_arm_spindle_pos
+  =      ML_TC_arm_spindle_pos_p_pulse
+
+  L      I_TC_arm_spindle_pos
+  =      ML_TC_arm_spindle_pos
+
+  L      I_TC_arm_basic_pos
+  AN     ML_TC_arm_basic_pos
+  =      ML_TC_arm_basic_pos_p_pulse
+
+  L      I_TC_arm_basic_pos
+  =      ML_TC_arm_basic_pos
+
+  CM     Basic_position
+
+  L      PN_error_function_ok
+  R      PN_error_function_ok
+
+  L      NP_W270_help_file_line_number
+  /      K+100
+  <>     K+3
+  A      MG_TC_help
+  CMT    Help_reset
+
+  LN     MG_TC_help                                                   *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      K+0                                                        *;EUMACH
+    =      BL_step_help                                               *;EUMACH
+  ENDI                                                                *;EUMACH
+
+  L      NP_W270_help_file_line_number
+  /      K+100
+  ==     K+3
+  A[
+    L      MG_manual_mode
+    AN     MG_edit_mode
+    O      NP_commissioning
+  ]
+  =      MG_TC_help
+  R      PN_error_TC_basic_position
+  EMF
+
+  L      NP_W270_help_file_line_number
+  MOD    K+100
+  <>     BL_step_help
+  ON     MG_control_operational
+  CMT    Help_reset
+
+  L      NP_W270_help_file_line_number
+  MOD    K+100
+  =      BL_step_help
+
+  LN     MG_control_operational
+*;EUMACH safety mode
+#if SFM = &DMx
+  O      PN_error_safety_mode_2
+  O      MG_safety_mode_4
+#endif
+  EMT
+
+  CASE   BL_step_help
+    CM     EndOfModul                  ;00
+    CM     S_TC_position               ;01
+    CM     Z_TC_posit_start            ;02
+    CM     Y_TC_posit_start            ;03
+    CM     X_TC_posit_start            ;04
+    CM     TC_unclamping               ;05
+    CM     TC_clamping                 ;06
+    CM     TC_gripper_close            ;07
+    CM     TC_gripper_open             ;08
+    CM     TC_pocket_put_out           ;09
+    CM     TC_pocket_put_in            ;10
+    CM     TC_arm_to_unclamping_pos    ;11
+    CM     TC_arm_to_clamping_pos      ;12
+    CM     TC_arm_to_basic_pos         ;13
+    CM     TC_arm_back_to_clamping_pos ;14
+    CM     TC_arm_back_to_unclamping_pos ;15
+    CM     TC_arm_back_to_basic_pos    ;16
+    CM     TC_magazine_cw              ;17
+    CM     TC_magazine_ccw             ;18
+    CM     TC_magazine_ref             ;19
+    CM     T0_selection                ;20
+  ENDC
+
+LBL EndOfModul
+
+EM
+
+;----------------------------
+LBL S_TC_position                      ;01
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+  =      MG_win_tool_clamping
+
+  L      MG_key_NC_start
+  AN     MG_win_TC_arm_standby
+  AN     MG_win_tool_clamping
+  AN     MG_spindle_in_TC_position
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  A      MG_spindle_with_ROD
+  S      MG_TC_spindle_orientation_on
+
+  L      MG_spindle_in_TC_position
+  ON     MG_spindle_with_ROD
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL Z_TC_posit_start                   ;02
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_Z
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     Z_in_TC_Pos
+
+  L      ML_TC_pos_Z_put_in
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4122_strobe_PLC_posit_axis_Z
+  EMT
+
+  PS     KG_axis_Z
+  PS     NP_D824_TC_position_Z_put_in
+  L      NP_D776_feed_PLC_Z
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL Z_in_TC_Pos
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_Z
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_Z_ref
+  -      NP_D824_TC_position_Z_put_in
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Z
+  AN     PN_M4122_strobe_PLC_posit_axis_Z
+  =      ML_TC_pos_Z_put_in
+
+EM
+
+;----------------------------
+LBL Y_TC_posit_start                   ;03
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_Y
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     Y_in_TC_Pos
+
+  L      ML_TC_pos_Y_put_in
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4121_strobe_PLC_posit_axis_Y
+  EMT
+
+  PS     KG_axis_Y
+  PS     NP_D816_TC_position_Y_put_in
+  L      NP_D772_feed_PLC_Y
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL Y_in_TC_Pos
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_Y
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_Y_ref
+  -      NP_D816_TC_position_Y_put_in
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_Y
+  AN     PN_M4121_strobe_PLC_posit_axis_Y
+  =      ML_TC_pos_Y_put_in
+
+EM
+
+;----------------------------
+LBL X_TC_posit_start                   ;04
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  CM     X_in_TC_Pos
+
+  L      ML_TC_pos_X
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start
+  O      PN_M4120_strobe_PLC_posit_axis_X
+  EMT
+
+  PS     KG_axis_X
+  PS     NP_D808_TC_position_X
+  L      NP_D768_feed_PLC_X
+  /      K+10000
+  PSW
+  PS     KL_absolute_with_software_limit_switch
+  CM     9221
+  PLX
+  M_display_module_error(KG_error_module_9221)
+
+EM
+
+;----------------------------
+LBL X_in_TC_Pos
+
+  L      NP_W1032_reference_nesessary
+  BT     KG_axis_X
+  =      PN_error_reference_necessary
+  EMT
+
+  L      DG_position_axis_X_ref
+  -      NP_D808_TC_position_X
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_X
+  AN     PN_M4120_strobe_PLC_posit_axis_X
+  =      ML_TC_pos_X
+
+EM
+
+;----------------------------
+LBL TC_unclamping                      ;05
+
+  L      MG_key_NC_start
+#if Head = &S_head_type_05                                            *;EUMACH
+  AN     MG_soft_key_S_man_head                                       *;EUMACH
+#endif                                                                *;EUMACH
+  S      O_tool_unclamping
+  R      O_tool_clamping
+
+  LN     I_tool_clamped
+  A      I_tool_unclamped
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_clamping                        ;06
+
+  L      MG_key_NC_start
+  R      O_tool_unclamping
+  S      O_tool_clamping
+
+  L      I_tool_clamped
+  AN     I_tool_unclamped
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  AN     O_tool_clamping                                              *;EUMACH
+#endif                                                                *;EUMACH
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_gripper_close                   ;07
+
+  LN     MG_spindle_in_TC_position
+  A      MG_spindle_with_ROD
+  =      MG_win_TC_pos_S
+
+  L      MG_key_NC_start
+  AN     MG_win_TC_pos_S
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  S      O_TC_arm_gripper_close
+
+  LN     I_TC_arm_gripper_opened
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_gripper_open                    ;08
+
+  L      MG_key_NC_start
+  R      O_TC_arm_gripper_close
+
+  L      I_TC_arm_gripper_opened
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_pocket_put_out                  ;09
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+  LN     I_TC_magazine_counter
+  ON     I_TC_magazine_exact_position
+#if TC_lock_pin = &active                                             *;EUMACH
+  ON     I_TC_magazine_lock_pin_in                                    *;EUMACH
+  O      I_TC_magazine_lock_pin_out                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_win_magazine_pocket_pos                                   *;EUMACH
+
+  LN     MG_win_magazine_pocket_pos                                   *;EUMACH
+  AN     MG_win_TC_arm_standby
+  AN     O_TC_magazine_cw
+  AN     O_TC_magazine_ccw
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  S      O_TC_pocket_put_out
+  R      O_TC_pocket_put_in
+
+  L      I_TC_pocket_out
+  AN     I_TC_pocket_in
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_pocket_put_in                   ;10
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+  LN     I_TC_magazine_counter
+  ON     I_TC_magazine_exact_position
+#if TC_lock_pin = &active                                             *;EUMACH
+  ON     I_TC_magazine_lock_pin_in                                    *;EUMACH
+  O      I_TC_magazine_lock_pin_out                                   *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_win_magazine_pocket_pos                                   *;EUMACH
+
+  LN     MG_win_magazine_pocket_pos                                   *;EUMACH
+  AN     MG_win_TC_arm_standby
+  AN     O_TC_magazine_cw
+  AN     O_TC_magazine_ccw
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_pocket_put_out
+  S      O_TC_pocket_put_in
+
+  LN     I_TC_pocket_out
+  A      I_TC_pocket_in
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_to_unclamping_pos           ;11
+
+  LN     MG_TC_arm_on_basic
+  AN     MG_TC_arm_to_unclamping
+  =      MG_win_TC_arm_function_inhibited
+
+  CM     Z_in_TC_Pos
+
+  LN     ML_TC_pos_Z_put_in
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_TC_pos_Z_put_in
+
+  LN     MG_spindle_in_TC_position
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  A      MG_spindle_with_ROD
+  =      MG_win_TC_pos_S
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_clamping
+
+  LN     I_TC_pocket_out
+  O      I_TC_pocket_in
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_TC_pocket_put_out
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_clamping
+  A[
+    L      MG_TC_arm_on_basic
+    AN     MG_win_TC_pos_Z_put_in
+    AN     MG_win_TC_pos_S
+    AN     MG_win_TC_pocket_put_out
+    O      MG_TC_arm_to_unclamping
+  ]
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  S      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_spindle_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_unclamping
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_to_clamping_pos             ;12
+
+  LN     MG_TC_arm_on_unclamping
+  AN     MG_TC_arm_exchanging
+  =      MG_win_TC_arm_function_inhibited
+
+  LN     I_tool_unclamped
+  O      I_tool_clamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_unclamping
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_unclamping
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  S      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_spindle_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_clamping
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_to_basic_pos                ;13
+
+  LN     MG_TC_arm_on_clamping
+  AN     MG_TC_arm_to_basic
+  =      MG_win_TC_arm_function_inhibited
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_clamping
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_clamping
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  S      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+  S      MG_pocket_table_checking                                     *;EUMACH
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_basic_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_basic
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_back_to_clamping_pos        ;14
+
+  LN     MG_TC_arm_on_basic
+  AN     MG_TC_arm_to_basic
+  =      MG_win_TC_arm_function_inhibited
+
+  CM     Z_in_TC_Pos
+
+  LN     ML_TC_pos_Z_put_in
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_TC_pos_Z_put_in
+
+  LN     MG_spindle_in_TC_position
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  A      MG_spindle_with_ROD
+  =      MG_win_TC_pos_S
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_clamping
+
+  LN     I_TC_pocket_out
+  O      I_TC_pocket_in
+  A      MG_TC_arm_on_basic
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_TC_pocket_put_out
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_clamping
+  A[
+    L      MG_TC_arm_on_basic
+    AN     MG_win_TC_pos_Z_put_in
+    AN     MG_win_TC_pos_S
+    AN     MG_win_TC_pocket_put_out
+    O      MG_TC_arm_to_basic
+  ]
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  S      O_TC_arm_turn_ccw
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_spindle_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_clamping
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_back_to_unclamping_pos      ;15
+
+  LN     MG_TC_arm_on_clamping
+  AN     MG_TC_arm_exchanging
+  =      MG_win_TC_arm_function_inhibited
+
+  LN     I_tool_unclamped
+  O      I_tool_clamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_unclamping
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_unclamping
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  S      O_TC_arm_turn_ccw
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_spindle_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_unclamping
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_arm_back_to_basic_pos           ;16
+
+  LN     MG_TC_arm_on_unclamping
+  AN     MG_TC_arm_to_unclamping
+  =      MG_win_TC_arm_function_inhibited
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+  AN     MG_win_TC_arm_function_inhibited
+  =      MG_win_tool_clamping
+
+  LN     MG_win_TC_arm_function_inhibited
+  AN     MG_win_tool_clamping
+  A      MG_key_NC_start_p_pulse
+  AN     MG_win_TC_arm_mag_motor_overloaded                           *;EUMACH
+  O      ML_key_NC_start_stop_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  S      O_TC_arm_turn_ccw
+  S      MG_pocket_table_checking                                     *;EUMACH
+
+  L      ML_TC_arm_brake_p_pulse
+  O      ML_TC_arm_basic_pos_p_pulse
+  A      I_TC_arm_brake_pos
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+
+  L      MG_TC_arm_on_basic
+  =      PN_error_function_ok
+
+EM
+
+;----------------------------
+LBL TC_magazine_cw                     ;17
+
+;  LN     I_TC_magazine_guard_closed                                  *;EUMACH Original PLC
+  LN     I_TC_magazine_guard_locked_closed                            *;EUMACH
+  =      MG_win_TC_magazine_close_guard
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+  LN     MG_win_TC_magazine_close_guard
+  AN     MG_win_TC_arm_standby
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  CMT    TC_mag_cw_turn
+
+EM
+
+;----------------------------
+LBL TC_magazine_ccw                    ;18
+
+;  LN     I_TC_magazine_guard_closed                                  *;EUMACH Original PLC
+  LN     I_TC_magazine_guard_locked_closed                            *;EUMACH
+  =      MG_win_TC_magazine_close_guard
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+  LN     MG_win_TC_magazine_close_guard
+  AN     MG_win_TC_arm_standby
+  A      MG_key_NC_start
+  O[
+    L      MG_key_NC_stop
+    A      MG_key_NC_start
+  ]
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  CMT    TC_mag_ccw_turn
+
+EM
+
+;----------------------------
+LBL TC_magazine_ref                    ;19
+
+#if Tool_magazine = &Pulse
+#if TC_magazine_reference_sensor = &active
+  L      MG_TC_magazine_reference_necessary
+  =      PN_error_function_ok
+
+  L      MG_key_NC_start_p_pulse
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  S      MG_TC_magazine_reference_necessary
+
+#else
+  L      WG_TC_magazine_actual_pocket
+  ==     K+1
+  A[
+    L      WG_TC_magazine_actual_2_pocket
+    ==     K+1
+  ]
+  =      PN_error_function_ok
+  R      MG_TC_magazine_reference_necessary
+
+  L      MG_key_NC_start_p_pulse
+  =      I_TC_magazine_reference
+
+#endif
+#endif
+
+#if Tool_magazine = &PLC_axis
+*$WS Referenzaufnahme asynchrone Achse über Modul
+#endif
+EM
+
+;----------------------------
+LBL T0_selection                       ;20
+
+  L      ML_T0_selection_ok
+  =      PN_error_function_ok
+
+  LN     MG_key_NC_start_p_pulse
+  EMT
+
+  L      K+0
+  =      NP_W264_tool_number
+  =      WG_tool_in_spindle
+
+  L      MG_marker_one
+  S      PN_M4538_tool_selection_from_PLC_W264
+  S      ML_T0_selection_ok
+  S      MG_pocket_table_checking
+  S      MG_tool_status_reading                                       *;EUMACH BASIC 53
+;  R      MG_touch_probe_active                                       *;EUMACH Original PLC---BASIC 53
+
+EM
+
+;----------------------------
+LBL Basic_position
+
+  L      I_tool_clamped
+  AN     I_tool_unclamped
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  AN     O_tool_clamping                                              *;EUMACH
+  AN     O_tool_unclamping                                            *;EUMACH
+#endif                                                                *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH
+  AN     O_tool_unclamping                                            *;EUMACH
+#endif                                                                *;EUMACH
+  A      I_TC_arm_basic_pos
+  AN     I_TC_arm_spindle_pos
+  A      I_TC_arm_brake_pos
+#if TC_gripper = &active
+  A      I_TC_arm_gripper_opened
+#endif
+  =      MG_TC_standby_position
+
+  L      MG_TC_automatic
+  O      MG_TC_manual
+  O      MG_TC_help
+  EMT
+
+  LN     MG_TC_standby_position
+  A      MG_power_delayed_on
+  S      PN_error_TC_basic_position
+
+  LN     I_tool_clamped
+  O      I_tool_unclamped
+#if (Solenoid_off_after_tool_clamped = &active) and (CYTEC_CYCON_control = &inactive) *;EUMACH
+  O      O_tool_clamping                                              *;EUMACH
+  O      O_tool_unclamping                                            *;EUMACH
+#endif                                                                *;EUMACH
+#if CYTEC_CYCON_control = &active                                     *;EUMACH
+  O      O_tool_unclamping                                            *;EUMACH
+#endif                                                                *;EUMACH
+  =      MG_win_tool_clamping
+
+  LN     I_TC_arm_basic_pos
+  O      I_TC_arm_spindle_pos
+  ON     I_TC_arm_brake_pos
+  =      MG_win_TC_arm_standby
+
+#if TC_gripper = &active
+  LN     I_TC_arm_gripper_opened
+  =      MG_win_TC_gripper_open
+#endif
+
+EM
+
+;----------------------------
+LBL Help_reset
+
+  L      MG_marker_one
+  R      PN_M4120_strobe_PLC_posit_axis_X
+  R      PN_M4121_strobe_PLC_posit_axis_Y
+  R      PN_M4122_strobe_PLC_posit_axis_Z
+  R      PN_M4123_strobe_PLC_posit_axis_4
+  R      PN_M4124_strobe_PLC_posit_axis_5
+  R      PN_M4125_strobe_PLC_posit_axis_6
+  R      ML_T0_selection_ok
+  R      PN_error_function_ok
+  R      PN_error_TC_basic_position
+  R      PN_error_TC_magazine_reference
+  R      MG_win_TC_pos_X
+  R      MG_win_TC_pos_Y_put_out
+  R      MG_win_TC_pos_Y_put_in
+  R      MG_win_TC_pos_Z_put_out
+  R      MG_win_TC_pos_Z_put_in
+  R      MG_win_TC_pos_S
+  R      MG_win_tool_clamping
+  R      MG_win_tool_unclamping
+  R      MG_win_TC_magazine_close_guard
+  R      MG_win_TC_gripper_open
+  R      MG_win_TC_arm_turn
+  R      MG_win_TC_arm_put_in
+  R      MG_win_TC_arm_put_out
+  R      MG_win_TC_pocket_put_out
+  R      MG_win_TC_arm_standby
+  R      MG_win_TC_arm_function_inhibited
+  R      O_TC_arm_turn_cw
+  R      O_TC_arm_turn_ccw
+  R      PN_error_reference_necessary                                 *;EUMACH
+  R      MG_win_magazine_pocket_pos                                   *;EUMACH
+
+EM
+
+;----------------------------
+LBL Output_Restore
+
+  CM     TC_arm_position
+
+  L      ML_TC_arm_gripper_close
+  =      O_TC_arm_gripper_close
+
+EM
+
+;----------------------------
+LBL Output_Backup
+
+  CM     TC_arm_direction
+
+  LN     I_control_operational
+  R      O_TC_arm_gripper_close
+  EMT
+
+  L      O_TC_arm_gripper_close
+  =      ML_TC_arm_gripper_close
+
+EM

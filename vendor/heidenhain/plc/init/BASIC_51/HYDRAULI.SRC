@@ -1,0 +1,206 @@
+*-----------------------------------------------------------------------------
+*  Hydraulic
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_hydraulic_on                          M              *;EUMACH
+
+GLOBAL Hydraulic
+
+;----------------------------
+LBL Hydraulic
+;----------------------------
+
+*;EUMACH Original PLC
+;Variant 2 (Hydraulic pumpe on allways, monitoring pressure sensor)
+;
+;  L      MG_control_operational
+;  A      O_hydraulic_on
+;  AN     I_hydraulic_pressure_ok
+;  S      PN_error_hydraulic_pressure
+
+;  LN     TR_hydraulic_pressure_ok
+;  A      O_hydraulic_on
+;  S      PN_error_hydraulic_pressure
+
+;  L      I_hydraulic_pressure_ok
+;  O      MG_pulse_CE_key
+;  O      NP_M4172_1st_PLC_run_after_power_on
+;  =      TS_hydraulic_pressure_ok
+;  R      PN_error_hydraulic_pressure
+
+;  L      I_emergency_button_unlocked
+;  A      TR_hydraulic_pressure_ok
+;  A      O_hydraulic_on
+;  =      O_hydraulic_on
+*;EUMACH Original PLC
+
+*;EUMACH Hydraulic system
+;Variant 3 (Pump on after control-on, monitoring pressure/temperature sensor)
+
+#if (Hydraulic_ctrl_by_timer_plus_pressure = &inactive) and (Hydraulic_ctrl_by_pressure = &inactive)
+  L      O_hydraulic_on
+  AN     ML_hydraulic_on
+  O      I_hydraulic_pressure_ok
+  =      TS_hydraulic_pressure_ok
+
+#if Hydraulic_valve_pressure = &active
+  L      O_hydraulic_on
+  AN     ML_hydraulic_on
+  ON     I_hydraulic_valve_low_pressure
+  =      TS_hydraulic_valve_pressure_ok
+#endif
+
+  L      O_hydraulic_on
+  =      ML_hydraulic_on
+
+  L      O_hydraulic_on
+  AN     TS_hydraulic_pressure_ok
+  AN     TR_hydraulic_pressure_ok
+  A      MG_power_delayed_on
+  S      PN_error_hydraulic_pressure
+
+#if Hydraulic_valve_pressure = &active
+  L      O_hydraulic_on
+  AN     TS_hydraulic_valve_pressure_ok
+  AN     TR_hydraulic_valve_pressure_ok
+  A      MG_power_delayed_on
+  S      PN_error_hydraulic_valve_pressure
+#endif
+
+#if HYD ! &inactive
+  LN     TR_extern_DC_voltage_off_on
+  AN     PN_error_hydraulic_pressure
+#if Hydraulic_valve_pressure = &active
+  AN     PN_error_hydraulic_valve_pressure
+#endif
+  AN     MG_win_hydraulic_motor_overloaded
+  =      O_hydraulic_on
+#endif
+
+#if Hydraulic_valve_pressure = &active
+  L      O_hydraulic_on
+  A      I_hydraulic_valve_low_pressure
+  S      O_hydraulic_valve
+
+  L      I_hydraulic_valve_high_pressure
+  ON     O_hydraulic_on
+  R      O_hydraulic_valve
+#endif
+
+  LN     I_hydraulic_temperature_ok
+  A      MG_power_delayed_on
+  S      PN_error_hydraulic_temperature
+#endif
+
+#if (Hydraulic_ctrl_by_timer_plus_pressure = &active) or (Hydraulic_ctrl_by_pressure = &active)
+#if Hydraulic_ctrl_by_pressure = &active
+;Variant 1 (Pumpe on while I_hydraulic_pressure_ok=0, pump off while I_hydraulic_pressure_ok=1. Pressure range setting sensor such as HYDAC EDS8000 must be used)
+
+  LN     I_hydraulic_pressure_ok
+  A      MG_control_operational
+  AN     MG_win_hydraulic_motor_overloaded
+  AN     PN_error_hydraulic_pressure
+  =      O_hydraulic_on
+  =N     TS_hydraulic_pressure_ok
+
+#if Hydraulic_oil_filter = &active
+  LN     TR_hydraulic_pressure_ok
+  A      MG_control_operational
+  AN     I_hydraulic_oil_filter_ok
+  AN     MG_win_hydraulic_motor_overloaded
+  S      PN_error_hydraulic_filter
+#endif
+
+  LN     TR_hydraulic_pressure_ok
+  A      MG_control_operational
+  AN     PN_error_hydraulic_filter
+  AN     MG_win_hydraulic_motor_overloaded
+  S      PN_error_hydraulic_pressure
+#endif
+
+#if Hydraulic_ctrl_by_timer_plus_pressure = &active
+;Variant 4 (Pump on while I_hydraulic_pressure_ok=0, pump off after I_hydraulic_pressure_ok=1 + timer delay)
+
+  L      O_tool_unclamping
+  AN     I_tool_unclamped
+  O[
+    L      O_tool_clamping
+    AN     I_tool_clamped
+  ]
+  A      MG_spindle_active
+  ON     I_hydraulic_pressure_ok
+  =      TS_hydraulic_pressure_ok
+
+  L      TS_hydraulic_pressure_ok
+  O      TR_hydraulic_pressure_ok
+  AN     TR_extern_DC_voltage_off_on
+  AN     MG_win_hydraulic_motor_overloaded
+  =      O_hydraulic_on
+#endif
+#endif
+
+#if Hydraulic_2_ctrl_by_pressure = &active
+#if Hydraulic_2_gravity_balance_valve = &active
+;Variant 1 (Pumpe on while I_hydraulic_2_balance_pressure_ok=0, pump off while I_hydraulic_2_balance_pressure_ok=1. Pressure range setting sensor such as HYDAC EDS8000 must be used)
+
+  LN     I_hydraulic_2_balance_pressure_ok
+  A[                                                                  *;prevent hydraulic pressure pumping from affecting Z-axis servo lag during program running
+    LN     NP_M4153_mode_program_run_single_block
+    AN     NP_M4154_mode_program_run_full_sequence
+    AN     NP_M4176_control_in_operation_on_or_flashes
+    O[
+      LN     MG_TC_auto_active
+      AN     NP_M4176_control_in_operation_on_or_flashes
+      O      MG_TC_automatic
+      O      MG_TC_manual
+      A[
+        L      NP_M4153_mode_program_run_single_block
+        O      NP_M4154_mode_program_run_full_sequence
+      ]
+    ]
+  ]
+  A      MG_control_operational
+  AN     MG_win_hydraulic_motor_overloaded
+  AN     PN_error_hydraulic_pressure
+  =N     TS_hydraulic_2_balance_pressure_ok
+  =      O_hydraulic_2_balance_valve
+
+  LN     TR_hydraulic_2_balance_pressure_ok
+  A      MG_control_operational
+  AN     MG_win_hydraulic_motor_overloaded
+  S      PN_error_hydraulic_pressure
+
+#if Hydraulic_2_gravity_over_pressure_valve = &active
+  LN     I_hydraulic_2_balance_under_max_pressure
+  =      O_hydraulic_2_balance_pressure_relief
+  S      MG_error_balance_over_max_pressure
+#endif
+#endif
+
+#if Hydraulic_2_tool_and_axes_clamp_valve = &active
+;Variant 1 (Pumpe on while I_hydraulic_2_T_axes_clamp_pressure_ok=0, pump off while I_hydraulic_2_T_axes_clamp_pressure_ok=1. Pressure range setting sensor such as HYDAC EDS8000 must be used)
+
+  LN     I_hydraulic_2_T_axes_clamp_pressure_ok
+  A      MG_control_operational
+  AN     MG_win_hydraulic_motor_overloaded
+  AN     PN_error_hydraulic_pressure
+  =N     TS_hydraulic_2_T_axes_clamp_pressure_ok
+  =      O_hydraulic_2_tool_and_axes_clamp_valve
+
+  LN     TR_hydraulic_2_T_axes_clamp_pressure_ok
+  A      MG_control_operational
+  AN     MG_win_hydraulic_motor_overloaded
+  S      PN_error_hydraulic_pressure
+#endif
+
+  L      O_hydraulic_2_balance_valve
+  O      O_hydraulic_2_tool_and_axes_clamp_valve
+  =      O_hydraulic_2_on
+#endif
+
+*;EUMACH Hydraulic system
+
+EM

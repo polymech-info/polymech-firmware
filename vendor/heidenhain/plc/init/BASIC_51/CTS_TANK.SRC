@@ -1,0 +1,226 @@
+*-----------------------------------------------------------------------------
+*  Coolant from Coolant Tank to CTS Tank
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    BL_step_CTS_tank                         B
+
+#define /s    ML_CTS_tank_processing                   M
+#define /s    ML_from_M8_tank_to_CTS_tank_on           M
+#define /s    ML_power_on_CTS_tank_refilling           M
+
+GLOBAL CTS_tank
+
+;----------------------------
+LBL CTS_tank
+;----------------------------
+
+  L      NP_paper_filter_device_active
+  A      I_paper_filter_out_of_paper
+  A      MG_power_delayed_on
+  S      PN_error_paper_filter_out_of_paper
+
+#if M7TK = &CTS_tank_01
+  L      MG_marker_one
+  S      CS_CTS_tank_low_level
+
+  CASE   BL_step_CTS_tank
+    CM     CTS_tank_start              ;00
+    CM     CTS_tank_on                 ;01
+    CM     CTS_tank_quit               ;02
+    CM     CTS_tank_end                ;03
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_CTS_tank
+  ENDI
+
+  L      ML_from_M8_tank_to_CTS_tank_on
+  AN     PN_error_coolant_level_low
+  AN     MG_win_coolant_motor_overloaded
+  A      MG_control_operational
+  =      O_coolant_from_M8_tank_to_CTS_tank_on
+
+  LN     I_CTS_tank_low_level_ok
+  A      I_CTS_tank_high_level_ok
+  A      MG_control_operational
+  S      PN_error_CTS_tank_level
+
+  L      PN_error_CTS_tank_level
+  O      PN_error_CTS_tank_level_low
+  CMT    CTS_tank_reset
+
+EM
+
+;----------------------------
+LBL CTS_tank_start                     ;00
+
+  LN     I_CTS_tank_low_level_ok
+  AN     I_CTS_tank_high_level_ok
+  S      ML_CTS_tank_processing
+
+  L      ML_CTS_tank_processing
+  PSL
+
+EM
+
+;----------------------------
+LBL CTS_tank_on                        ;01
+
+  L      MG_marker_one
+  S      ML_from_M8_tank_to_CTS_tank_on
+  PSL
+
+EM
+
+;----------------------------
+LBL CTS_tank_quit                      ;02
+
+  L      I_CTS_tank_high_level_ok
+  PSL
+  EMT
+
+  L      MG_marker_one
+  R      CS_CTS_tank_low_level
+
+  L      O_coolant_from_M8_tank_to_CTS_tank_on
+  AN     I_CTS_tank_low_level_ok
+  =      CD_CTS_tank_low_level
+
+  LN     CS_CTS_tank_low_level
+  AN     CR_CTS_tank_low_level
+  S      PN_error_CTS_tank_level_low
+
+EM
+
+;----------------------------
+LBL CTS_tank_end                       ;03
+
+  PS     MG_marker_zero
+
+;----------------------------
+LBL CTS_tank_reset
+
+  L      MG_marker_one
+  R      ML_CTS_tank_processing
+  R      ML_from_M8_tank_to_CTS_tank_on
+
+  L      K+0
+  =      BL_step_CTS_tank
+#endif
+
+#if (M7TK = &CTS_tank_02) or (M7TK = &CTS_tank_04)
+#if M7TK = &CTS_tank_04
+  L      I_CTS_tank_inlet_pressure_ok
+  ON     O_coolant_from_M8_tank_to_CTS_tank_on
+  O      NP_paper_filter_device_active
+  =      TS_CTS_tank_inlet_pressure
+
+  LN     TS_CTS_tank_inlet_pressure
+  AN     TR_CTS_tank_inlet_pressure
+  A      MG_control_operational
+  S      PN_error_CTS_tank_inlet_pressure
+#endif
+
+  L      O_coolant_M07_on
+  A      I_CTS_tank_high_level_ok
+  S      MG_M8_tank_to_CTS_tank_off
+
+  L      O_coolant_M07_on
+  AN     I_CTS_tank_high_level_ok
+  AN     I_CTS_tank_low_level_ok
+  ON     O_coolant_M07_on
+  R      MG_M8_tank_to_CTS_tank_off
+
+  L      O_coolant_M07_on
+  AN     MG_M8_tank_to_CTS_tank_off
+  AN     PN_error_CTS_tank_level
+  AN     PN_error_coolant_level_low
+  AN     PN_error_CTS_tank_inlet_pressure
+  AN     PN_error_CTS_tank_overflow
+  AN     MG_win_coolant_motor_overloaded
+  AN     MG_win_paper_filter_motor_overloaded
+  =      O_coolant_from_M8_tank_to_CTS_tank_on
+
+  LN     O_coolant_from_M8_tank_to_CTS_tank_on
+  =      CS_CTS_tank_low_level
+
+  LN     I_CTS_tank_low_level_ok
+  =      CD_CTS_tank_low_level
+
+  LN     CS_CTS_tank_low_level
+  AN     CR_CTS_tank_low_level
+  S      PN_error_CTS_tank_level_low
+
+  LN     I_CTS_tank_low_level_ok
+  A      I_CTS_tank_high_level_ok
+  A      MG_control_operational
+  S      PN_error_CTS_tank_level
+#endif
+
+#if (M7TK = &CTS_tank_05) or (M7TK = &CTS_tank_06) or (M7TK = &CTS_tank_07)
+*; If CTS tank level low sensor is using magnetic switch (instead of float
+*; switch), make sure when the coolant level is lower than the low position, the
+*; magnetic switch still has to be detected.
+*; If CTS tank level high sensor is using magnetic switch (instead of float
+*; switch), make sure when the coolant level is higher than the high position,
+*; the magnetic switch still has to be detected.
+  L      I_CTS_tank_inlet_pressure_ok
+  ON     O_coolant_from_M8_tank_to_CTS_tank_on
+  O      NP_paper_filter_device_active
+  =      TS_CTS_tank_inlet_pressure
+
+  LN     TS_CTS_tank_inlet_pressure
+  AN     TR_CTS_tank_inlet_pressure
+  A      MG_control_operational
+  S      PN_error_CTS_tank_inlet_pressure
+
+  LN     O_coolant_from_M8_tank_to_CTS_tank_on
+  =      CS_CTS_tank_low_level
+
+  L      I_CTS_tank_low_level_ok
+  A      MG_control_operational
+  =      CD_CTS_tank_low_level
+
+  LN     CS_CTS_tank_low_level
+  AN     CR_CTS_tank_low_level
+  S      PN_error_CTS_tank_level_low
+
+  L      I_CTS_tank_low_level_ok
+  A      I_CTS_tank_high_level_ok
+  A      MG_control_operational
+  S      PN_error_CTS_tank_level
+
+  L      I_CTS_tank_level_overflow
+  A      MG_control_operational
+  S      PN_error_CTS_tank_overflow
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  S      ML_power_on_CTS_tank_refilling
+
+  L      ML_power_on_CTS_tank_refilling
+  A      I_CTS_tank_high_level_ok
+  A      MG_control_operational
+  R      ML_power_on_CTS_tank_refilling
+  S      PN_error_initial_coolant_level
+
+  L      I_CTS_tank_low_level_ok
+  O      ML_power_on_CTS_tank_refilling
+  A      MG_control_operational
+  S      O_coolant_from_M8_tank_to_CTS_tank_on
+
+  L      I_CTS_tank_high_level_ok
+  O      PN_error_CTS_tank_level
+  O      PN_error_CTS_tank_level_low
+  O      PN_error_coolant_level_low
+  O      PN_error_CTS_tank_inlet_pressure
+  O      PN_error_CTS_tank_overflow
+  O      MG_win_coolant_motor_overloaded
+  O      MG_win_paper_filter_motor_overloaded
+  R      O_coolant_from_M8_tank_to_CTS_tank_on
+#endif
+
+EM

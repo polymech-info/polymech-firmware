@@ -1,0 +1,74 @@
+; PLC Softkey Definition File
+
+; This file is maintained by PLCsoftkey32
+; Do not modify this file manually!
+
+; Creation date:   Mon Apr 19 13:26:53 2004
+; Softkey project: Softkey_BMX.spm
+
+; Softkey constants:
+
+#define SK_back K0
+#define SK_machine K1
+#define SK_spindle K2
+#define SK_tool K3
+#define SK_diagnosis K4
+#define SK_NC_start K5
+#define SK_NC_stop K6
+#define SK_axes_minus K7
+#define SK_axes_plus K8
+#define SK_working_area K9
+#define SK_emergency_end K10
+#define SK_auto_power_off K11
+#define SK_coolant_M08 K12
+#define SK_coolant_M07 K13
+#define SK_lubrication K14
+#define SK_chip_conveyor K15
+#define SK_chip_conveyor_back K16
+#define SK_alternating_table K17
+#define SK_3D_head K18
+#define SK_3D_head_enter K19
+#define SK_spindle_on K20
+#define SK_spindle_off K21
+#define SK_spindle_tip_cw K22
+#define SK_spindle_tip_ccw K23
+#define SK_spindle_M19 K24
+#define SK_TC_enable_quit K25
+#define SK_T_unclamp_clamp K26
+#define SK_TC_magazine_load K27
+#define SK_TC_magazine_cw K28
+#define SK_TC_magazine_ccw K29
+#define SK_T_torque_monitoring K30
+#define SK_error_queue K31
+#define SK_machine_diagnosis K32
+#define SK_status K33
+#define SK_documentation K34
+#define SK_diagnosis_1_drive K35
+#define SK_diagnosis_2_drive K36
+#define SK_diagnosis_3_drive K37
+#define SK_diagnosis_TC K38
+#define SK_diagnosis_TC_magazine K39
+#define SK_temp_compensation K40
+#define SK_temp_compensation_set K41
+#define SK_docu_M_function K42
+#define SK_docu_IO_interface K43
+#define SK_mode_line0_PLC_window K44
+#define SK_mode_line1_PLC_window K45
+#define SK_docu_graphic K46
+#define SK_status_general K47
+#define SK_status_axes K48
+#define SK_status_spindle K49
+#define SK_status_strobe K50
+#define SK_status_PLC_posit K51
+
+; Menu constants:
+
+#define RootMenu K0
+#define row_machine K1
+#define row_spindle K2
+#define row_tool K3
+#define row_diagnosis K4
+#define row_machine_diagnosis K5
+#define row_documentation K6
+#define row_status K7
+#define row_service K8

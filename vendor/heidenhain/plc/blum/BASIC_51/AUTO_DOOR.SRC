@@ -1,0 +1,623 @@
+*-----------------------------------------------------------------------------
+*  Automatic Door
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_END_PGM_M02_M30                       M
+#define /s    ML_power_delayed_on                      M
+#define /s    ML_power_delayed_on_n_pulse              M
+#define /s    ML_new_workpiece_table_1                 M
+#define /s    ML_new_workpiece_table_2                 M
+
+GLOBAL Automatic_door
+
+;----------------------------
+LBL Automatic_door
+;----------------------------
+
+#if ADS ! &inactive
+#if Pallet_changer = &Alternat_table
+  L      MG_pulse_END_PGM_M02_M30
+  A      NP_auto_guard_unlock_on_END_PGM
+  S      ML_END_PGM_M02_M30
+
+*;Door closing
+  LN     MG_alternating_table_on
+  IFT
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    A[
+      LN     I_key_auto_door_1_open
+      A      I_key_auto_door_1_close
+      O[
+        LN     I_key_auto_door_2_open
+        A      I_key_auto_door_2_close
+      ]
+    ]
+    S      O_auto_door_1_closing
+    S      O_auto_door_2_closing
+    R      O_auto_door_1_opening
+    R      O_auto_door_2_opening
+  ELSE
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    AN     I_key_auto_door_1_open
+    A      I_key_auto_door_1_close
+    A      MG_axis_limit_1
+    O[
+      LN     I_key_auto_door_1_open
+      A      I_key_auto_door_1_close
+      A      MG_axis_limit_2
+    ]
+    O[
+      L      MG_new_workpiece_table_1
+      AN     ML_new_workpiece_table_1
+    ]
+    S      O_auto_door_1_closing
+    R      O_auto_door_1_opening
+
+    L      MG_new_workpiece_table_1
+    =      ML_new_workpiece_table_1
+
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    AN     I_key_auto_door_2_open
+    A      I_key_auto_door_2_close
+    A      MG_axis_limit_2
+    O[
+      LN     I_key_auto_door_2_open
+      A      I_key_auto_door_2_close
+      A      MG_axis_limit_1
+    ]
+    O[
+      L      MG_new_workpiece_table_2
+      AN     ML_new_workpiece_table_2
+    ]
+    S      O_auto_door_2_closing
+    R      O_auto_door_2_opening
+
+    L      MG_new_workpiece_table_2
+    =      ML_new_workpiece_table_2
+  ENDI
+
+*;Door opening
+  LN     MG_alternating_table_on
+  IFT
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    A[
+      L      I_key_auto_door_1_open
+      AN     I_key_auto_door_1_close
+      O[
+        L      I_key_auto_door_2_open
+        AN     I_key_auto_door_2_close
+      ]
+    ]
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+      A[
+        L      I_key_auto_door_1_open
+        AN     I_key_auto_door_1_close
+        O[
+          L      I_key_auto_door_2_open
+          AN     I_key_auto_door_2_close
+        ]
+      ]
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &NO                             *;EUMACH Dual TC
+    AN     MG_TC_magazine_2_start                                     *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+    R      ML_END_PGM_M02_M30
+    S      O_auto_door_1_opening
+    S      O_auto_door_2_opening
+    R      O_auto_door_1_closing
+    R      O_auto_door_2_closing
+
+    LN     I_auto_door_1_ignore_mech_protect
+    AN     I_guard_1_closed_locked
+    O[
+      LN     I_auto_door_2_ignore_mech_protect
+      AN     I_guard_2_closed_locked
+    ]
+    A[
+      L      I_auto_door_1_mechanical_protect
+      O      I_auto_door_2_mechanical_protect
+    ]
+    A[
+      L      O_auto_door_1_closing
+      O      O_auto_door_2_closing
+    ]
+    S      O_auto_door_1_opening
+    S      O_auto_door_2_opening
+    R      O_auto_door_1_closing
+    R      O_auto_door_2_closing
+  ELSE
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    A      I_key_auto_door_1_open
+    AN     I_key_auto_door_1_close
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_unlock
+    ]
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+      A      I_key_auto_door_1_open
+      AN     I_key_auto_door_1_close
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC_door_closed
+      O      I_ATC_door_open
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+    A      MG_axis_limit_1
+    R      ML_END_PGM_M02_M30
+    S      O_auto_door_1_opening
+    R      O_auto_door_1_closing
+
+    L      MG_axis_limit_2
+    AN     MG_new_workpiece_table_1
+    A      I_key_auto_door_1_open
+    AN     I_key_auto_door_1_close
+    S      O_auto_door_1_opening
+    R      O_auto_door_1_closing
+
+    LN     I_auto_door_1_ignore_mech_protect
+    AN     I_guard_1_closed_locked
+    A      I_auto_door_1_mechanical_protect
+    A      O_auto_door_1_closing
+    S      O_auto_door_1_opening
+    R      O_auto_door_1_closing
+
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+    A      I_key_auto_door_2_open
+    AN     I_key_auto_door_2_close
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_2_unlock
+    ]
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+      A      I_key_auto_door_2_open
+      AN     I_key_auto_door_2_close
+    ]
+#endif
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+#if TC_mag_2_in_motion_guard_unlock = &No
+    AN     MG_TC_magazine_2_start
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC2_door_closed
+      O      I_ATC2_door_open
+      A      MG_TC_magazine_2_start
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_TC_magazine_2_start
+#endif
+#endif
+#else                                                                 *;EUMACH Dual TC
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC_door_closed
+      O      I_ATC_door_open
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+#endif                                                                *;EUMACH Dual TC
+    A      MG_axis_limit_2
+    R      ML_END_PGM_M02_M30
+    S      O_auto_door_2_opening
+    R      O_auto_door_2_closing
+
+    L      MG_axis_limit_1
+    AN     MG_new_workpiece_table_2
+    A      I_key_auto_door_2_open
+    AN     I_key_auto_door_2_close
+    S      O_auto_door_2_opening
+    R      O_auto_door_2_closing
+
+    LN     I_auto_door_2_ignore_mech_protect
+    AN     I_guard_2_closed_locked
+    A      I_auto_door_2_mechanical_protect
+    A      O_auto_door_2_closing
+    S      O_auto_door_2_opening
+    R      O_auto_door_2_closing
+  ENDI
+
+*;Rapid
+  L      O_auto_door_1_opening
+  AN     I_auto_door_1_opening_deceleration
+  S      O_auto_door_1_opening_rapid
+  R      O_auto_door_1_closing_rapid
+
+  LN     O_auto_door_1_opening
+  O      I_auto_door_1_opening_deceleration
+  R      O_auto_door_1_opening_rapid
+
+  L      O_auto_door_1_closing
+  AN     I_auto_door_1_closing_deceleration
+  S      O_auto_door_1_closing_rapid
+  R      O_auto_door_1_opening_rapid
+
+  LN     O_auto_door_1_closing
+  O      I_auto_door_1_closing_deceleration
+  R      O_auto_door_1_closing_rapid
+
+  L      O_auto_door_2_opening
+  AN     I_auto_door_2_opening_deceleration
+  S      O_auto_door_2_opening_rapid
+  R      O_auto_door_2_closing_rapid
+
+  LN     O_auto_door_2_opening
+  O      I_auto_door_2_opening_deceleration
+  R      O_auto_door_2_opening_rapid
+
+  L      O_auto_door_2_closing
+  AN     I_auto_door_2_closing_deceleration
+  S      O_auto_door_2_closing_rapid
+  R      O_auto_door_2_opening_rapid
+
+  LN     O_auto_door_2_closing
+  O      I_auto_door_2_closing_deceleration
+  R      O_auto_door_2_closing_rapid
+
+*;Reset
+  LN     MG_power_delayed_on
+  A      ML_power_delayed_on
+  =      ML_power_delayed_on_n_pulse
+
+  L      MG_power_delayed_on
+  =      ML_power_delayed_on
+
+  L      ML_power_delayed_on_n_pulse
+  ON     I_emergency_button_unlocked
+  R      O_auto_door_1_opening
+  R      O_auto_door_2_opening
+  R      O_auto_door_1_closing
+  R      O_auto_door_2_closing
+  R      O_auto_door_1_opening_rapid
+  R      O_auto_door_2_opening_rapid
+  R      O_auto_door_1_closing_rapid
+  R      O_auto_door_2_closing_rapid
+
+*;Time-out
+  L      O_auto_door_1_opening
+  AN     O_auto_door_1_closing
+  AN     I_auto_door_1_open
+  =N     TS_auto_door_1_opening
+
+  LN     TS_auto_door_1_opening
+  AN     TR_auto_door_1_opening
+  S      PN_error_auto_door_1_open_closed
+
+  L      O_auto_door_1_closing
+  AN     O_auto_door_1_opening
+  AN     I_guard_1_closed_locked
+  =N     TS_auto_door_1_closing
+
+  LN     TS_auto_door_1_closing
+  AN     TR_auto_door_1_closing
+  S      PN_error_auto_door_1_open_closed
+
+  L      O_auto_door_2_opening
+  AN     O_auto_door_2_closing
+  AN     I_auto_door_2_open
+  =N     TS_auto_door_2_opening
+
+  LN     TS_auto_door_2_opening
+  AN     TR_auto_door_2_opening
+  S      PN_error_auto_door_2_open_closed
+
+  L      O_auto_door_2_closing
+  AN     O_auto_door_2_opening
+  AN     I_guard_2_closed_locked
+  =N     TS_auto_door_2_closing
+
+  LN     TS_auto_door_2_closing
+  AN     TR_auto_door_2_closing
+  S      PN_error_auto_door_2_open_closed
+
+*;Key lamps
+  L      I_guard_1_closed
+  AN     I_guard_1_closed_locked
+  O[
+    L      I_guard_2_closed
+    AN     I_guard_2_closed_locked
+  ]
+  A      MG_clock_1_s
+  A      MG_guard_test_ok
+  O[
+    L      O_auto_door_1_opening
+    AN     I_auto_door_1_open
+    O[
+      L      O_auto_door_2_opening
+      AN     I_auto_door_2_open
+    ]
+  ]
+  AN     MG_alternating_table_on
+  O[
+    L      MG_axis_limit_1
+    AN     I_guard_1_closed_locked
+    O[
+      L      MG_axis_limit_2
+      AN     MG_new_workpiece_table_1
+      AN     PN_error_enable_table_1
+    ]
+    A      I_guard_1_closed
+    AN     MG_clock_1_s
+    A      MG_guard_test_ok
+    O[
+      L      O_auto_door_1_opening
+      AN     I_auto_door_1_open
+    ]
+    AN     MG_enable_alternating_table
+    A      MG_alternating_table_on
+  ]
+  =      O_lamp_auto_door_1_open_key
+
+  L      I_guard_1_closed
+  AN     I_guard_1_closed_locked
+  O[
+    L      I_guard_2_closed
+    AN     I_guard_2_closed_locked
+  ]
+  A      MG_clock_1_s
+  A      MG_guard_test_ok
+  O[
+    L      O_auto_door_1_opening
+    AN     I_auto_door_1_open
+    O[
+      L      O_auto_door_2_opening
+      AN     I_auto_door_2_open
+    ]
+  ]
+  AN     MG_alternating_table_on
+  O[
+    L      MG_axis_limit_2
+    AN     I_guard_2_closed_locked
+    O[
+      L      MG_axis_limit_1
+      AN     MG_new_workpiece_table_2
+      AN     PN_error_enable_table_2
+    ]
+    A      I_guard_2_closed
+    AN     MG_clock_1_s
+    A      MG_guard_test_ok
+    O[
+      L      O_auto_door_2_opening
+      AN     I_auto_door_2_open
+    ]
+    AN     MG_enable_alternating_table
+    A      MG_alternating_table_on
+  ]
+  =      O_lamp_auto_door_2_open_key
+
+  L      I_auto_door_1_open
+  A      I_auto_door_2_open
+  O[
+    LN     I_guard_1_closed_locked
+    ON     I_guard_2_closed_locked
+    AN     MG_guard_test_ok
+  ]
+  A      MG_clock_1_s
+  O[
+    L      I_guard_1_closed
+    AN     I_guard_1_closed_locked
+    O[
+      L      I_guard_2_closed
+      AN     I_guard_2_closed_locked
+    ]
+    AN     MG_clock_1_s
+    A      MG_guard_test_ok
+  ]
+  O[
+    L      O_auto_door_1_closing
+    AN     I_guard_1_closed_locked
+    O[
+      L      O_auto_door_2_closing
+      AN     I_guard_2_closed_locked
+    ]
+  ]
+  AN     MG_alternating_table_on
+  O[
+    L      I_auto_door_1_open
+    O[
+      LN     I_guard_1_closed_locked
+      AN     MG_guard_test_ok
+    ]
+    A      MG_clock_1_s
+    O[
+      L      I_guard_1_closed
+      AN     I_guard_1_closed_locked
+      A      MG_clock_1_s
+      A      MG_guard_test_ok
+    ]
+    O[
+      L      O_auto_door_1_closing
+      AN     I_guard_1_closed_locked
+    ]
+    AN     MG_enable_alternating_table
+    A      MG_alternating_table_on
+  ]
+  =      O_lamp_auto_door_1_close_key
+
+  L      I_auto_door_1_open
+  A      I_auto_door_2_open
+  O[
+    LN     I_guard_1_closed_locked
+    ON     I_guard_2_closed_locked
+    AN     MG_guard_test_ok
+  ]
+  A      MG_clock_1_s
+  O[
+    L      I_guard_1_closed
+    AN     I_guard_1_closed_locked
+    O[
+      L      I_guard_2_closed
+      AN     I_guard_2_closed_locked
+    ]
+    AN     MG_clock_1_s
+    A      MG_guard_test_ok
+  ]
+  O[
+    L      O_auto_door_1_closing
+    AN     I_guard_1_closed_locked
+    O[
+      L      O_auto_door_2_closing
+      AN     I_guard_2_closed_locked
+    ]
+  ]
+  AN     MG_alternating_table_on
+  O[
+    L      I_auto_door_2_open
+    O[
+      LN     I_guard_2_closed_locked
+      AN     MG_guard_test_ok
+    ]
+    A      MG_clock_1_s
+    O[
+      L      I_guard_2_closed
+      AN     I_guard_2_closed_locked
+      A      MG_clock_1_s
+      A      MG_guard_test_ok
+    ]
+    O[
+      L      O_auto_door_2_closing
+      AN     I_guard_2_closed_locked
+    ]
+    AN     MG_enable_alternating_table
+    A      MG_alternating_table_on
+  ]
+  =      O_lamp_auto_door_2_close_key
+#endif
+#endif
+
+EM

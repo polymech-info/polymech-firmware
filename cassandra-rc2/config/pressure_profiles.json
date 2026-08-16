@@ -1,0 +1,38 @@
+[
+  {
+      "id": 920,
+      "type": 2,
+      "name": "Default Pressure Profile",
+      "description": "",
+      "duration": 1740000,
+      "max": 100,
+      "enabled": true,
+      "controlPoints": [
+          {
+              "x": 0,
+              "y": 700
+          },
+          {
+              "x": 590,
+              "y": 1000
+          },
+          {
+              "x": 1000,
+              "y": 1000
+          },
+          {
+              "x": 1000,
+              "y": 0
+          }
+      ],
+      "targetRegisters": [
+          703
+      ],
+      "children": [
+          0,
+          0,
+          0,
+          0
+      ]
+  }
+]

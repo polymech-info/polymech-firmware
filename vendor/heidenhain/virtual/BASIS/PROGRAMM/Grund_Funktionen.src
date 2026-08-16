@@ -1,0 +1,1259 @@
+*-----------------------------------------------------------------------------
+*  Grund-Funktionen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*    Zur Erweiterung der vorhandenen NC/PLC-Schnittstelle werden noch zu-
+*    sätzliche Funktionen bereitgestellt.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolut_mit_Software_Endschalter      K %0010
+#define /s    KL_absolut_ohne_Software_Endschalter     K %0000
+#define /s    KL_MP1060_Beschleunigung                 K +0
+#define /s    KL_MP1088_Ruck                           K +0
+#define /s    KL_2_Sekunden                            K +2
+#define /s    KL_6_Sekunden                            K +6
+#define /s    KL_60_Sekunden                           K +60
+#define /s    KL_3600_Sekunden                         K +3600
+
+#define /s    KL_Hauptbetriebsart_Editor               K +0
+#define /s    KL_Bildschirmmodus                       K +4
+#define /s    KL_ueberlagerte_BA_Maschine              K +3
+#define /s    KL_Editor_ueberlagerte_BA_Maschine       K +28
+#define /s    KL_WZ_Tabelle                            K +3
+#define /s    KL_Platz_Tabelle                         K +4
+#define /s    KL_Referenz_Wert                         K +7
+#define /s    KL_Ist_Wert                              K +1
+#define /s    KL_Ueberwachung_ein_Antriebe_PLC_Input   K +0
+#define /s    KL_Ueberwachung_aus_Antriebe_PLC_Input   K +1
+#define /s    KL_Eingang_I0                            K +0
+#define /s    KL_DCM_Status                            K +0
+#define /s    KL_MP_Einspeichern                       K +95148
+#define /s    KL_PLC_Programmierung                    K +807667
+#define /s    KL_aktiv                                 K +1
+#define /s    KL_Laufzeit_aus_MP                       K -1
+#define /s    KL_NC_Macro_aktiv                        K +1
+#define /s    KL_NC_Macro_abgebrochen                  K -2
+#define /s    KL_aktive_WZ_Achse                       K +100
+#define /s    KL_0_Test_Tasten_Queue                   K +0
+#define /s    KL_inaktiv                               K -1
+#define /s    KL_TEMPCOMP_Kinematik                    K +8
+#define /s    KL_COMPTAB_Kinematik                     K +12
+#define /s    KL_WZM_auto                              K +1
+#define /s    KL_Achsgruppe_8_bit                      K +7
+#define /s    KL_bit_0                                 K +0
+#define /s    KL_Format_Zeit_H_M                       K +15
+#define /s    KL_Word_Wertebereich                     K $7FFF
+#define /s    KL_kein_Fehler                           K +0
+#define /s    KL_Nummer_angezeigte_Fehlermeldung       K -2
+#define /s    KL_Handrad_Achse_bitcodiert              K +10
+#define /s    KL_M118_aktiv                            K +23
+#define /s    KL_Tab_Editor_aktive_Zeile               K +1000
+#define /s    KL_PLC_Posit_aktiv                       K +2
+#define /s    KL_Achse_nicht_geregelt_asynchron_Slave  K +2
+#define /s    KL_Restweg_Wert                          K +4
+#define /s    KL_0_Bergrenzung_aktiv                   K +0
+#define /s    KL_360_Grad                              K +3600000
+#define /s    KL_Mode_1_Felwinkel_Ermittlung_aktiv     K +1
+#define /s    KL_nicht_benutzt                         K +0
+
+#define /s    ML_Sekunde_ungerade                      M
+#define /s    ML_Sekunde_gerade                        M
+#define /s    ML_Sekunde_0                             M
+#define /s    ML_END_PGM_M02_M30                       M
+#define /s    ML_Stern_blinkt                          M
+#define /s    ML_BA_Edit_Testlauf                      M
+#define /s    ML_BA_Restore_Posit_aktiv                M
+#define /s    ML_Takt_250_ms                           M
+#define /s    ML_Takt_500_ms                           M
+#define /s    ML_Edit_WZ_Tabelle_war_aktiv             M
+#define /s    ML_Edit_Platz_Tabelle_war_aktiv          M
+#define /s    ML_Zusatz_Achse_war_montiert             M
+#define /s    ML_Reset_Init_Macro_gestartet            M
+#define /s    ML_WZW_Help_war_aktiv                    M
+#define /s    ML_WZW_Service_war_aktiv                 M
+#define /s    ML_Internal_STOP                         M
+#define /s    ML_BA_Manuell_Unterbrechung              M
+#define /s    ML_Einlese_Sperre_Einzelsatz             M
+#define /s    ML_Wert_unzulaessig                      M
+#define /s    ML_Stack_synchronisieren                 M
+
+#define /s    BL_Takt_250_ms                           B
+#define /s    BL_Reset_Init_Macro                      B
+#define /s    BL_Anzahl_Tasten_in_Queue                B
+#define /s    BL_Achsgruppe_Index                      B
+#define /s    BL_Achs_Index                            B
+#define /s    BL_Modus                                 B
+#define /s    BL_Status                                B
+
+#define /s    WL_WZ_Magazin_Nummer_alt                 W
+#define /s    WL_Nummer_aktives_NC_Macro               W
+
+#define /s    DL_Vorschub                              D
+#define /s    DL_Soll_Position                         D
+#define /s    DL_Pos_Differenz                         D
+
+#include Mac_Lib.inc
+
+GLOBAL Grund_Funktionen
+GLOBAL Absolut
+GLOBAL Beginn_PLC_Zyklus
+GLOBAL Ende_PLC_Zyklus
+GLOBAL In_Posit
+GLOBAL Start_Posit
+GLOBAL Start_Posit_Parameter
+GLOBAL Stop_Posit
+GLOBAL S_in_Posit
+
+;----------------------------
+LBL Beginn_PLC_Zyklus
+;----------------------------
+
+  L      K+0
+  =      BG_Modul_Fehler_Queue
+
+EM
+
+;----------------------------
+LBL Grund_Funktionen
+;----------------------------
+
+;Sekunden-Takt (0.5S, 1S)
+
+  LN     TR_Impuls_125_ms
+  =      TS_Impuls_125_ms
+  =      MG_Impuls_125_ms
+
+  L      MG_Takt_250_ms
+  XO     MG_Impuls_125_ms
+  =      MG_Takt_250_ms
+
+  L      MG_Takt_250_ms
+  AN     ML_Takt_250_ms
+  =      MG_Impuls_250_ms
+
+  L      MG_Takt_250_ms
+  =      ML_Takt_250_ms
+
+  L      MG_Takt_250_ms
+  A      MG_Impuls_125_ms
+  XO     MG_Takt_500_ms
+  =      MG_Takt_500_ms
+
+  L      MG_Takt_500_ms
+  AN     ML_Takt_500_ms
+  =      MG_Impuls_500_ms
+
+  L      MG_Takt_500_ms
+  =      ML_Takt_500_ms
+
+  L      MG_Takt_500_ms
+  A      MG_Impuls_250_ms
+  XO     MG_Takt_1_s
+  =      MG_Takt_1_s
+
+  CM     9195                          ;Auslesen der Echtzeituhr
+  PL     DG_Echtzeituhr
+  M_Modul_Fehler_anzeigen
+
+  L      DG_Echtzeituhr
+  MOD    KL_2_Sekunden
+  PSW
+  ==     K+1
+  =      ML_Sekunde_ungerade
+
+  LN     ML_Sekunde_ungerade
+  XO     ML_Sekunde_gerade
+  =      MG_Impuls_1_s
+
+  PLW
+  ==     K+0
+  =      ML_Sekunde_gerade
+
+  L      DG_Echtzeituhr
+  MOD    KL_6_Sekunden
+  >=     K+3
+  =      MG_Takt_3_s
+
+  L      DG_Echtzeituhr
+  MOD    KL_3600_Sekunden
+  ==     K+1
+  A      ML_Sekunde_0
+  =      MG_Impuls_1_h
+
+  L      DG_Echtzeituhr
+  MOD    KL_60_Sekunden
+  PSW
+  ==     K+1
+  A      ML_Sekunde_0
+  =      MG_Impuls_1_min
+
+  PLW
+  ==     K+0
+  =      ML_Sekunde_0
+
+  L      MG_Impuls_1_min
+  IFT
+    PS     DG_Echtzeituhr
+    PS     K &SG_Time_H_M
+    PS     KL_Format_Zeit_H_M
+    CM     9055                        ;Uhrzeit (binär) in formatierten String wandeln
+
+    L      DG_Echtzeituhr
+    ;  /      K+60
+    ;  =      DL_Unix_Systemzeit_Minuten
+    ;  /      K+60
+    ;  =      DL_Unix_Systemzeit_Stunden
+    ;  /      K+24
+    ;  =      DL_Unix_Systemzeit_Tage
+    /      K+86400
+    +      K+3                         * 4:Montag=1 3:Montag=0
+    MOD    K+7
+    =      DG_Wochentag
+  ENDI
+
+;Steuerspannung AUS/EIN -t->
+
+#if CFG_FS = "aktiv"
+  L      I_Steuerung_betriebsbereit
+  AN     NP_M4282_Start_Abschaltkanaele
+  AN[
+    L      ApiFromSafety.NN_GenStop
+    ==     S_STOP_SS1
+  ]
+  AN[
+    L      ApiFromSafety.NN_GenStop
+    ==     S_STOP_SS1F
+  ]
+  =      MG_Not_Halt_Kreis_geschlossen
+#else
+#if CFG_HSCI = "aktiv"
+  L      I_ESA_Steuerung_betriebsbereit
+  A      I_ESB_Steuerung_betriebsbereit
+  =      MG_Not_Halt_Kreis_geschlossen
+
+  LN     I_ESA_Steuerung_betriebsbereit
+  XO     I_ESB_Steuerung_betriebsbereit
+  =      TS_Not_Halt_Test_2_Kanaele
+
+  L      I_ESA_Steuerung_betriebsbereit
+  XO     I_ESB_Steuerung_betriebsbereit
+  AN     TR_Not_Halt_Test_2_Kanaele
+  S      PN_Fehler_Not_Halt_ESA_ESB
+#else
+  L      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  IFT
+; Antriebsfreigabe mit X150/1
+    L      I_I3_Steuerung_betriebsbereit
+    A      I_I32_ESB_Antriebs_Freigabe
+    =      MG_Not_Halt_Kreis_geschlossen
+
+    LN     I_I3_Steuerung_betriebsbereit
+    XO     I_I32_ESB_Antriebs_Freigabe
+    =      TS_Not_Halt_Test_2_Kanaele
+
+    L      I_I3_Steuerung_betriebsbereit
+    XO     I_I32_ESB_Antriebs_Freigabe
+    AN     TR_Not_Halt_Test_2_Kanaele
+    S      PN_Fehler_Not_Halt_ESA_ESB
+  ELSE
+; Antriebsfreigabe mit I32
+    L      I_I3_Steuerung_betriebsbereit
+    =      MG_Not_Halt_Kreis_geschlossen
+  ENDI
+#endif
+#endif
+
+  L      MG_Not_Halt_Kreis_geschlossen
+  AN     MG_Steuerung_betriebsbereit
+  =      MG_P_Impuls_Steuerung_betriebsbereit
+
+  LN     MG_Not_Halt_Kreis_geschlossen
+  A      MG_Steuerung_betriebsbereit
+  =      MG_N_Impuls_Steuerung_betriebsbereit
+
+  L      MG_Not_Halt_Kreis_geschlossen
+  AN     NP_M4178_Externer_Not_Halt_aktiv
+  =      MG_Steuerung_betriebsbereit
+
+  LN     MG_Steuerung_betriebsbereit
+  =      TS_Steuer_Spannung_aus_ein
+
+  L      MG_Steuerung_betriebsbereit
+  AN     TR_Steuer_Spannung_aus_ein
+  =      MG_Steuer_Spannung_verzoegert_ein
+
+  L      MG_Not_Halt_Kreis_geschlossen
+  =      TS_Steuer_Spannung_ein_aus
+
+;NOT-HALT entriegelt
+
+#if Cfg_FS = "aktiv"
+  L      I_MA_Not_Halt_Kreis_geschlossen
+  A      I_MB_Not_Halt_Kreis_geschlossen
+  A      I_HR_Not_Halt_Kreis_geschlossen
+#else
+  L      I_Not_Halt_entriegelt
+#endif
+  =      MG_Not_Halt_entriegelt
+
+;Betriebsarten und -Wechsel
+
+  L      NP_M4150_BA_Manueller_Betrieb
+  O      NP_M4151_BA_Elektronisches_Handrad
+  O      NP_M4155_BA_Referenzaufnahme
+  O      NP_M4156_BA_Softkey_Manual_Operation
+  O      NP_M4157_BA_Restore_Position_aktiv
+  =      MG_BA_Manuell
+
+  LN     MG_BA_Manuell
+  AN     MG_BA_Automatik
+  =      MG_BA_Wechsel_Manu_Auto
+
+  L      MG_BA_Manuell
+  A      MG_BA_Automatik
+  =      MG_BA_Wechsel_Auto_Manu
+
+  L      NP_M4156_BA_Softkey_Manual_Operation
+  O      NP_M4157_BA_Restore_Position_aktiv
+  R      MG_BA_Wechsel_Manu_Auto
+  R      MG_BA_Wechsel_Auto_Manu
+
+  L      NP_M4152_BA_Positionieren_Handeingabe
+  O      NP_M4153_BA_Programmlauf_Einzelsatz
+  O      NP_M4154_BA_Programmlauf_Satzfolge
+  AN     NP_M4156_BA_Softkey_Manual_Operation
+  AN     NP_M4157_BA_Restore_Position_aktiv
+  =      MG_BA_Automatik
+
+  PS     KL_Hauptbetriebsart_Editor
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  BT     K+0
+  =      ML_BA_Edit_Testlauf
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_Bildschirmmodus
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  BT     K+0
+  =      MG_BA_Editieren
+  M_Modul_Fehler_anzeigen
+
+  L      ML_BA_Edit_Testlauf
+  A      MG_BA_Editieren
+  =      MG_BA_Testlauf
+
+  PS     KL_ueberlagerte_BA_Maschine
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  PSW
+  ==     KL_WZ_Tabelle
+  =      MG_WZ_Tabelle_angewaehlt
+
+  PLW
+  PSW
+  ==     KL_Platz_Tabelle
+  =      MG_Platz_Tabelle_angewaehlt
+
+  PLW
+  >=     KL_WZ_Tabelle
+  =      MG_Tabellen_Editor_aktiv
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_Editor_ueberlagerte_BA_Maschine
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  PSW
+  ==     KL_Platz_Tabelle
+  =      MG_Edit_Platz_Tabelle
+
+  PLW
+  ==     KL_WZ_Tabelle
+  =      MG_Edit_WZ_Tabelle
+  M_Modul_Fehler_anzeigen
+
+  LN     MG_Edit_WZ_Tabelle
+  A      ML_Edit_WZ_Tabelle_war_aktiv
+  S      MG_WZ_Status_lesen
+
+  L      MG_Edit_WZ_Tabelle
+  =      ML_Edit_WZ_Tabelle_war_aktiv
+
+  LN     MG_Edit_Platz_Tabelle
+  A      ML_Edit_Platz_Tabelle_war_aktiv
+  AN     NP_M4176_Stern_ein_oder_blinkt
+  S      MG_WZ_Status_lesen
+  S      MG_WZ_Spindel_Vorwahl
+  S      MG_WZ_Vorwahl_Status_lesen
+
+  L      MG_Edit_Platz_Tabelle
+  =      ML_Edit_Platz_Tabelle_war_aktiv
+
+  PS     KL_aktive_WZ_Achse
+  CM     9035                          ;NC-Statusinformationen lesen
+  PL     BG_aktive_WZ_Achse
+  M_Modul_Fehler_anzeigen
+
+  LN     NP_M4157_BA_Restore_Position_aktiv
+  AN     NP_M4158_BA_Satz_Vorlauf_aktiv
+  R      MG_Satzvorlauf_war_aktiv
+
+  L      NP_M4158_BA_Satz_Vorlauf_aktiv
+  S      MG_Satzvorlauf_war_aktiv
+
+  PS     KL_DCM_Status
+  CM     9064                          ;Statusinformation Kollisionsüberwachung
+  PLW
+  ==     KL_aktiv
+  =      MG_DCM_aktiv
+  M_Modul_Fehler_anzeigen
+
+  L      MG_WZW_Help
+  AN     ML_WZW_Help_war_aktiv
+  =      MG_Impuls_WZW_Help
+
+  L      MG_WZW_Help
+  =      ML_WZW_Help_war_aktiv
+
+  L      MG_WZW_Service
+  AN     ML_WZW_Service_war_aktiv
+  =      MG_Impuls_WZW_Service
+
+  L      MG_WZW_Service
+  =      ML_WZW_Service_war_aktiv
+
+;Nummer des aktiven WZ-Magazin
+
+  L      NP_W268_Werkzeug_Magazin_Nummer
+  <>     WL_WZ_Magazin_Nummer_alt
+  A[
+    L      NP_W268_Werkzeug_Magazin_Nummer
+    >=     KL_WZM_auto
+  ]
+  IFT
+    L      NP_W268_Werkzeug_Magazin_Nummer
+    DECW
+    =      BG_WZM_Index_Tool_Call
+
+    L      NP_W268_Werkzeug_Magazin_Nummer
+    =      WL_WZ_Magazin_Nummer_alt
+  ENDI
+
+;M2, M30, END PGM
+
+  L      NP_M4170_END_PGM_M02_M30_abgearbeitet
+  AN     ML_END_PGM_M02_M30
+  =      MG_Impuls_End_PGM_M02_M30
+
+  L      NP_M4170_END_PGM_M02_M30_abgearbeitet
+  =      ML_END_PGM_M02_M30
+
+;Schlüsselzahlen
+
+  L      NP_D276_Schluesselzahl
+  ==     KL_MP_Einspeichern
+  =      MG_MP_Einspeichern
+
+  L      NP_D276_Schluesselzahl
+  ==     KL_PLC_Programmierung
+  =      MG_PLC_Programmierung
+
+;Status NC Programmende
+
+*$WS Debug Fenster
+  CM     9320                          ;Lesen von Informationen bzgl. NC-Programmende
+  PL     WG_NC_PGM_Ende_Ursache_PGM_Ende
+  PL     WG_NC_PGM_Ende_Fehlerklasse
+  PL     WG_NC_PGM_Ende_Hilfenummer
+  PL     WG_NC_PGM_Ende_Satznummer
+  PL     WG_NC_PGM_Ende_Zusatzinformation
+  M_Modul_Fehler_anzeigen
+
+;External/Internal STOP
+
+  L      NP_M4176_Stern_ein_oder_blinkt
+  R      NP_M4185_Internal_STOP
+
+  L      NP_M4221_PET_Tabelle_NC_STOP
+  ON     PN_M4560_NC_STOP_0_aktiv
+  A      NP_M4176_Stern_ein_oder_blinkt
+  A      MG_BA_Manuell
+  S      ML_BA_Manuell_Unterbrechung
+
+  L      MG_Impuls_Internal_STOP
+  O      MG_BA_Automatik
+  R      ML_BA_Manuell_Unterbrechung
+
+  L      NP_M4185_Internal_STOP
+  AN     ML_Internal_STOP
+  O[
+    L      ML_BA_Manuell_Unterbrechung
+    AN     NP_M4176_Stern_ein_oder_blinkt
+  ]
+  =      MG_Impuls_Internal_STOP
+
+  L      NP_M4185_Internal_STOP
+  =      ML_Internal_STOP
+
+  L      NP_M4175_Stern_blinkt
+  AN     ML_Stern_blinkt
+  AN     NP_M4158_BA_Satz_Vorlauf_aktiv
+  =      MG_Impuls_External_STOP
+
+  L      NP_M4176_Stern_ein_oder_blinkt
+  AN     NP_M4175_Stern_blinkt
+  =      MG_Stern_ein
+  =N     MG_Freigabe_PLC_Strobe
+
+  L      MG_Stern_ein
+  A      ML_Stern_blinkt
+  AN     NP_M4157_BA_Restore_Position_aktiv
+  AN     NP_M4193_RUNCANCEL_Makro_aktiv
+  =      MG_Impuls_NC_Start
+
+  L      NP_M4175_Stern_blinkt
+  =      ML_Stern_blinkt
+
+  L      ML_BA_Restore_Posit_aktiv
+  AN     MG_Taste_NC_Stop
+  AN     NP_M4221_PET_Tabelle_NC_STOP
+  R      MG_Impuls_External_STOP
+
+  L      NP_M4157_BA_Restore_Position_aktiv
+  =      ML_BA_Restore_Posit_aktiv
+
+;NC STOP / NC START
+
+  LN     PN_M4560_NC_STOP_0_aktiv
+  O      MG_Impuls_External_STOP
+  S      MG_NC_Stop_aktiv
+
+  L      PN_M4564_NC_Start
+  O      MG_BA_Manuell
+  O      MG_Impuls_Internal_STOP
+  O      MG_Taste_S_M3
+  R      MG_NC_Stop_aktiv
+
+  L      MG_Taste_NC_Start
+  O      MG_Taste_S_M3
+  O      MG_BA_Automatik
+  R      MG_NC_Stop_in_BA_Manuell
+
+  L      MG_Taste_NC_Stop
+  A      MG_BA_Manuell
+  S      MG_NC_Stop_in_BA_Manuell
+
+;CE-Taste betätigt
+
+  L      NP_W274_Tasten_Code_betaetigte_Taste
+  ==     KG_Taste_CE
+  O      NP_M4668_HR5x0_Taste_Ctrl
+  AN     MG_Taste_CE
+  =      MG_Impuls_CE_Taste
+  S      MG_Submit_CE_Taste
+
+  L      NP_W274_Tasten_Code_betaetigte_Taste
+  ==     KG_Taste_CE
+  O      NP_M4668_HR5x0_Taste_Ctrl
+  =      MG_Taste_CE
+
+;Tasten Impuls Kennung (z.B. Betätigung > 0,5s)
+
+  L      MG_Eins_Merker
+  S      TS_Tasten_Impuls_Kennung
+
+;Achsfreigaben
+
+  L      NP_D1100_Achsfreigaben
+  D=     MG_Achsfreigabe_bit
+
+;Antriebe bereit
+
+  CM     9162                          ;Bereitschaft der Drehzahlregler lesen
+  PLW
+  O[
+    L      DG_Strom_Drehzahl_Regler_ein
+    A      DG_MP12_simulierte_Achsen
+  ]
+  =      DG_Antriebe_bereit_MC
+  D=     MG_Antrieb_bereit
+  M_Modul_Fehler_anzeigen
+
+;Feldwinkel Ermittlung aktiv
+
+  PS     KL_Mode_1_Felwinkel_Ermittlung_aktiv
+  CM     9065                          ;Status Inbetriebnahme-Funktionen
+  PL     DG_Feldwinkel_Ermittlung_aktiv
+  M_Modul_Fehler_anzeigen
+
+;Achsen in Position
+
+  L      NP_D1104_Achsen_in_Position
+  ==     K-1
+  =      MG_Achsen_in_Position
+
+  L      NP_D1104_Achsen_in_Position
+  A      DG_geregelte_NC_Achsen
+  ==     DG_geregelte_NC_Achsen
+  =      MG_NC_Achsen_in_Position
+
+  L      NP_D1104_Achsen_in_Position
+  D=     MG_Achse_in_Position_bit
+
+;Achsen in Bewegung
+
+  L      NP_D1108_Achsen_in_Bewegung
+  >      K+0
+  =      MG_Achsen_in_Bewegung
+
+  L      NP_D1108_Achsen_in_Bewegung
+  D=     MG_Achse_in_Bewegung_bit
+
+;Achsen Status PLC Positionierung
+
+  L      K+0
+  =X
+
+  REPEAT
+    L      DG_geregelte_Achsen
+    BTX
+    A      MG_Maschinenparameter_gelesen
+    A      MG_Maschinenparameter_synchron
+    CMT    Status_PLC_Pos
+
+    L      DG_geregelte_Achsen
+    A      DG_digitale_Antriebe
+    BTX
+    A      MG_Maschinenparameter_gelesen
+    A      MG_Maschinenparameter_synchron
+    CMT    Status_Drehmoment
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+;Referenz aufgenommen
+
+  L      NP_D1116_Referenz_notwendig
+  A      DG_geregelte_Achsen
+  AN     DG_MP12_simulierte_Achsen
+  AN     DG_Slave_Achsen
+  ==     K+0
+  AN     MG_Referenz_aktiv
+  A      MG_Maschinenparameter_gelesen
+  =      MG_Referenz_Achsen_aufgenommen
+
+  L      NP_D1116_Referenz_notwendig
+  AN     DG_MP12_simulierte_Achsen
+  D=     MG_Referenz_notwendig_bit
+
+;angewähle Handrad Achsen
+
+  PS     KL_Handrad_Achse_bitcodiert   ;Nummer Status-Information
+  CM     9035                          ;NC-Statusinformationen lesen
+  PL     DG_Handrad_Achsen
+  M_Modul_Fehler_anzeigen
+
+;Handrad-Überlagerung (M118)
+  PS     KL_M118_aktiv                 ;Nummer Status-Information
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  <>     K+0
+  =      MG_M118_aktiv
+  M_Modul_Fehler_anzeigen
+
+;Rueckmeldung FN19
+
+  LN     NP_M4075_Strobe_FN19
+  R      PN_M4095_Quit_FN19
+
+  L      NP_M4075_Strobe_FN19
+  S      MG_FN19_Daten_neu
+
+;Spindel-Positionen lesen
+
+  PS     K&DG_Position_Achse_S_Ist
+  CM     9044                          ;Lesen der Spindel-Koordinaten durch die PLC
+  M_Modul_Fehler_anzeigen
+
+;Achs-Positionen lesen
+
+  PS     K&DG_Ref_Pos_Achse
+  PS     KL_Referenz_Wert
+  CM     9041                          ;Achskoordinaten lesen (1/10000)
+  M_Modul_Fehler_anzeigen
+
+  PS     K&DG_Ist_Pos_Achse
+  PS     KL_Ist_Wert
+  CM     9041                          ;Achskoordinaten lesen (1/10000)
+  M_Modul_Fehler_anzeigen
+
+;Achsfehler Temperaturkompensation Kinematik (TEMPCOMP)
+
+  PS     K&DG_Temp_Komp_Kinematik
+  PS     KL_TEMPCOMP_Kinematik
+  CM     9041                          ;Achskoordinaten lesen (1/10000)
+  M_Modul_Fehler_anzeigen
+
+;Achsfehler Kompensation Kinematik (COMPTAB)
+
+  PS     K&DG_Comp_Tab_Kinematik
+  PS     KL_COMPTAB_Kinematik
+  CM     9041                          ;Achskoordinaten lesen (1/10000)
+  M_Modul_Fehler_anzeigen
+
+;Überwachungsfunktion aus und IST/SOLL-Wertübernahme solange Zeit aus MP1150.1 läuft
+
+  L      MG_Achsen_in_Bewegung
+  =      TS_Achsen_in_Bewegung
+
+#if CFG_HSCI = "inaktiv"
+
+; - Fall 1 Achsfreigabe mit I32, nicht HSCI (eine Achsgruppe)
+
+  L      WG_MP4130_Ixx_Ueberwachungsfunktion_aus
+  >=     KL_Eingang_I0
+  AN     MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  A      TR_Achsen_in_Bewegung
+  AN     MG_TNC_Programmierplatz_mit_PLC
+  IFT
+    L      KL_Ueberwachung_aus_Antriebe_PLC_Input
+    =      PN_W522_schnelle_PLC_Eingaenge
+  ELSE
+    L      KL_Ueberwachung_ein_Antriebe_PLC_Input
+    =      PN_W522_schnelle_PLC_Eingaenge
+  ENDI
+
+; - Fall 2 Achsfreigabe mit X150/1, nicht HSCI (nur erste Achsgruppe)
+
+  L      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  A      TR_Achsen_in_Bewegung
+  AN     MG_TNC_Programmierplatz_mit_PLC
+  IFT
+    L      PN_W524_Antriebsfreigabe_Achsgruppen
+    BS     KL_bit_0
+    =      PN_W524_Antriebsfreigabe_Achsgruppen
+  ELSE
+    L      PN_W524_Antriebsfreigabe_Achsgruppen
+    BC     KL_bit_0
+    =      PN_W524_Antriebsfreigabe_Achsgruppen
+  ENDI
+
+#else
+
+; - Fall 3 Achsfreigabe über MP4132.x mit HSCI (max. 8 Achsgruppen)
+
+  L      K +0
+  =      BL_Achsgruppe_Index
+  REPEAT
+    L      DG_MP2040_0_Achsgruppe_1[BL_Achsgruppe_Index]
+    A      K$7FFFFFFF
+    A      NP_D1108_Achsen_in_Bewegung
+    <>     K +0
+    IFT
+      L      BL_Achsgruppe_Index
+      +      K &TR_Achsgruppe_01_in_Bewegung
+      PSW
+      PS     KL_Laufzeit_aus_MP
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    L      TR_Achsgruppe_01_in_Bewegung[BL_Achsgruppe_Index]
+    AN     MG_TNC_Programmierplatz_mit_PLC
+    IFT
+      L      PN_W524_Antriebsfreigabe_Achsgruppen
+      BS     BL_Achsgruppe_Index
+      =      PN_W524_Antriebsfreigabe_Achsgruppen
+    ELSE
+      L      PN_W524_Antriebsfreigabe_Achsgruppen
+      BC     BL_Achsgruppe_Index
+      =      PN_W524_Antriebsfreigabe_Achsgruppen
+    ENDI
+
+    INC    BL_Achsgruppe_Index
+
+    L      BL_Achsgruppe_Index
+    >      KL_Achsgruppe_8_bit
+  UNTILT
+
+#endif
+
+;Lift off
+
+  LN     MG_WZW_automatisch
+  =      PN_M4620_WZ_LIFTOFF_Freigabe_M148
+
+;Automatische Aktivierung von Zusatz-Achsen (z.B. Teilapparate)
+
+  L      I_Zusatz_Achse_montiert
+  XO     ML_Zusatz_Achse_war_montiert
+  AN     NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  AN     NP_M4173_1_PLC_Durchlauf_nach_Compile
+  S      PN_Fehler_Anwahl_Zusatz_Achse
+
+  L      I_Zusatz_Achse_montiert
+  =      ML_Zusatz_Achse_war_montiert
+
+;Auswertung NC Makros
+
+  L      WG_Nummer_aktives_NC_Macro
+  <>     WL_Nummer_aktives_NC_Macro
+  IFT
+    L      WL_Nummer_aktives_NC_Macro
+    =      WG_Nummer_letztes_aktives_NC_Macro
+  ENDI
+
+  L      WG_Nummer_aktives_NC_Macro
+  =      WL_Nummer_aktives_NC_Macro
+
+;Aktuelle Satznummer (Virtual Maschine)
+
+  PS     K &SG_Name_aktuelles_NC_PGM
+  CM     9321                          ;Aktuelle Satznummer des NC-Programms
+  PL     DG_aktuelle_Satz_Nr_NC_PGM
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Absolut
+;----------------------------
+
+  PLW
+  PSW
+  >=     K+0
+  EMT
+  PLW
+  XON    K+0
+  +      K+1
+  PSW
+
+EM
+
+;----------------------------
+LBL Start_Posit                        ;Start PLC Positionierung
+;----------------------------
+
+  PL     DL_Soll_Position
+  PL     BL_Achs_Index
+
+  PS     BL_Achs_Index
+  PS     DL_Soll_Position
+  PS     DG_Vorschub_PLC_Pos[BL_Achs_Index]
+  PS     KL_MP1060_Beschleunigung
+  PS     KL_MP1088_Ruck
+  PS     KL_absolut_mit_Software_Endschalter
+  CM     9227                          ;Positionieren von Hilfs- und NC-Achsen
+  PL     BL_Status
+
+  L      BL_Status
+  ==     KL_kein_Fehler
+  PSL
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Start_Posit_Parameter              ;Start PLC Positionierung mit Parametern
+;----------------------------
+
+  PL     BL_Modus
+  PL     DL_Vorschub
+  PL     DL_Soll_Position
+  PL     BL_Achs_Index
+
+  PS     BL_Achs_Index
+  PS     DL_Soll_Position
+  PS     DL_Vorschub
+  PS     KL_MP1060_Beschleunigung
+  PS     KL_MP1088_Ruck
+  PS     BL_Modus
+  CM     9227                          ;Positionieren von Hilfs- und NC-Achsen
+  PL     BL_Status
+
+  L      BL_Status
+  ==     KL_kein_Fehler
+  PSL
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Stop_Posit                         ;Stop PLC Positionierung
+;----------------------------
+
+  PL     BL_Achs_Index
+
+  L      DG_PLC_Hilfs_Achsen
+  BT     BL_Achs_Index
+  IFT
+    PS     BL_Achs_Index
+    CM     9121                        ;PLC-Achse stoppen
+    PL     BL_Status
+  ELSE
+    PS     BL_Achs_Index
+    PS     KL_nicht_benutzt
+    CM     9224                        ;Stoppen von PLC-Positionierungen
+    PL     BL_Status
+  ENDI
+
+  L      BL_Status
+  ==     KL_kein_Fehler
+  PSL
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL In_Posit                           ;Abfrage Achse in Position
+;----------------------------
+
+  PL     DL_Soll_Position
+  PL     BL_Achs_Index
+
+  L      DG_Ref_Pos_Achse[BL_Achs_Index]
+  -      DL_Soll_Position
+  PSW
+  CM     Absolut
+  PLW
+  =      DL_Pos_Differenz
+  <=     DG_MP1030_Pos_Fenster[BL_Achs_Index]
+  AN     MG_PLC_Posit_aktiv[BL_Achs_Index]
+  A      MG_Achse_in_Position_bit[BL_Achs_Index]
+  PSL
+  EMT
+
+  LN     DG_Modulo_Achse
+  BT     BL_Achs_Index
+  EMT
+
+  PL     ML_Stack_synchronisieren
+
+  L      DG_MP810_Modulo_Wert[BL_Achs_Index]
+  -      DL_Pos_Differenz
+  <=     DG_MP1030_Pos_Fenster[BL_Achs_Index]
+  AN     MG_PLC_Posit_aktiv[BL_Achs_Index]
+  A      MG_Achse_in_Position_bit[BL_Achs_Index]
+  PSL
+
+EM
+
+;----------------------------
+LBL S_in_Posit                         ;Abfrage Achse in Position
+;----------------------------
+
+  PL     DL_Soll_Position
+
+  L      DG_Position_Achse_S_Ist
+  -      DL_Soll_Position
+  PSW
+  CM     Absolut
+  PLW
+  =      DL_Pos_Differenz
+  <=     DG_Pos_Fenster_S
+  A      NP_M4000_S_in_Position
+  AN     NP_M4018_S_keine_Referenz
+  A      MG_Spindel_steht
+  PSL
+  EMT
+
+  PL     ML_Stack_synchronisieren
+
+  L      KL_360_Grad
+  -      DL_Pos_Differenz
+  <=     DG_Pos_Fenster_S
+  A      NP_M4000_S_in_Position
+  AN     NP_M4018_S_keine_Referenz
+  A      MG_Spindel_steht
+  PSL
+
+EM
+
+;----------------------------
+LBL Status_PLC_Pos
+;----------------------------
+
+  L      DG_PLC_Hilfs_Achsen
+  AN     DG_Slave_Achsen
+  BTX
+  IFT
+    PSX
+    CM     9122                        ;Statusabfrage einer PLC-Achse
+    PLW
+    BT     KL_PLC_Posit_aktiv
+    =      MG_PLC_Posit_aktiv[X]
+    M_Modul_Fehler_anzeigen
+  ELSE
+    PSX
+    CM     9222                        ;Abfrage des Status einer PLC-Positionierung
+    PLW
+    PSW
+    ==     KL_PLC_Posit_aktiv
+    =      MG_PLC_Posit_aktiv[X]
+    PL     BG_Status_PLC_Posit[X]
+
+    L      NP_W1022_Modul_Fehlerstatus
+    ==     KL_Achse_nicht_geregelt_asynchron_Slave
+    IFT
+      L      K +0
+      =      NP_W1022_Modul_Fehlerstatus
+    ELSE
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    PS     K&DG_Restweg_Achse
+    PS     KL_Restweg_Wert
+    CM     9041                        ;Achskoordinaten lesen (1/10000)
+    M_Modul_Fehler_anzeigen
+
+    L      DG_Restweg_Achse[X]
+    +      DG_Ref_Pos_Achse[X]
+    =      DG_Ziel_Pos_Achse[X]
+  ENDI
+
+EM
+
+;----------------------------
+LBL Status_Drehmoment
+;----------------------------
+
+*$WS in Maske aufnehmen
+  PS     KL_0_Bergrenzung_aktiv
+  PSX
+  CM     9129                          ;Status der Drehmomentbegrenzung durch PLC
+  PLW
+  ==     KL_aktiv
+  IFT
+    L      DG_Achsen_Moment_Begrenzung_PLC
+    BSX
+    =      DG_Achsen_Moment_Begrenzung_PLC
+  ELSE
+    L      DG_Achsen_Moment_Begrenzung_PLC
+    BCX
+    =      DG_Achsen_Moment_Begrenzung_PLC
+  ENDI
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Ende_PLC_Zyklus
+;----------------------------
+
+;Softkey Tasten betätigt
+
+  L      NP_W302_PLC_Softkey_Nummer_horizontal
+  <>     KL_inaktiv
+  =      MG_SK_horizontal_betaetigt
+
+  L      NP_W304_PLC_Softkey_Nummer_vertikal
+  <>     KL_inaktiv
+  =      MG_SK_vertikal_betaetigt
+
+;NC-Satz Einlese-Sperre
+
+  L      MG_NC_Satz_Einlese_Sperre
+  A      NP_M4154_BA_Programmlauf_Satzfolge
+  A      NP_M4176_Stern_ein_oder_blinkt
+  AN     ML_Einlese_Sperre_Einzelsatz
+  CMT    Taste_Einzelsatz
+
+  L      ML_Einlese_Sperre_Einzelsatz
+  A      NP_M4153_BA_Programmlauf_Einzelsatz
+  AN     NP_M4176_Stern_ein_oder_blinkt
+  CMT    Taste_Folgesatz
+
+;Achsfehler Kompensation
+
+  L      MG_Eins_Merker
+  R      ML_Wert_unzulaessig
+
+  L-     WG_Achs_Kompensation_X
+  +      WG_Temp_Kompensation_X
+  =      PN_W576_Kompensation_Achsfehler_X
+  PSW
+  CM     Absolut
+  PLW
+  >      KL_Word_Wertebereich
+  S      ML_Wert_unzulaessig
+
+  L-     WG_Achs_Kompensation_Y
+  +      WG_Temp_Kompensation_Y
+  =      PN_W578_Kompensation_Achsfehler_Y
+  PSW
+  CM     Absolut
+  PLW
+  >      KL_Word_Wertebereich
+  S      ML_Wert_unzulaessig
+
+  L-     WG_Achs_Kompensation_Z
+  +      WG_Temp_Kompensation_Z
+  =      PN_W580_Kompensation_Achsfehler_Z
+  PSW
+  CM     Absolut
+  PLW
+  >      KL_Word_Wertebereich
+  S      ML_Wert_unzulaessig
+
+  L      ML_Wert_unzulaessig
+  IFT
+    S      PN_Fehler_Wert_unzulaessig
+
+    L      K+0
+    =      PN_W576_Kompensation_Achsfehler_X
+    =      PN_W578_Kompensation_Achsfehler_Y
+    =      PN_W580_Kompensation_Achsfehler_Z
+  ENDI
+
+#if CFG_Timer_MP4111_zusaetzlich       = "aktiv"
+  L      K+0
+  =X
+
+  REPEAT
+    L      TS_Timer[X]
+    IFT
+      LX
+      +      K &TR_Timer
+      PSW
+      PS     KL_Laufzeit_aus_MP
+      CM     9006                      ;PLC-Timerzeit setzen und Timer starten
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    INCX
+
+    LX
+    >      K &TS_Timer_Ende - &TS_Timer
+  UNTILT
+#endif
+
+  LN     MG_Eins_Merker
+  O      MG_Null_Merker
+  S      PN_Fehler_eins_null_Merker_modifiziert
+
+  L      ML_Reset_Init_Macro_gestartet
+  AN     NP_M4176_Stern_ein_oder_blinkt
+  AN     NP_M4193_RUNCANCEL_Makro_aktiv
+  S      MG_Reset_Init_Macro_ausgefuehrt
+  R      ML_Reset_Init_Macro_gestartet
+  IFT
+    L      K +0
+    =      DG_Tasten_sperren
+  ENDI
+
+  LN     ML_Reset_Init_Macro_gestartet
+  AN     MG_Reset_Init_Macro_ausgefuehrt
+  IFT
+    LD     MG_PLC_Posit_aktiv
+    ==     K+0
+    A      MG_Referenz_Achsen_aufgenommen
+    A      MG_Steuer_Spannung_verzoegert_ein
+    AN     MG_Getriebe_initialisieren
+    IFT
+      L      MG_Spindel_Referenz_mit_Sensor
+      S      MG_Spindel_Referenz_aktiv
+
+      RPLY   BL_Reset_Init_Macro
+      <>     K+0
+      EMT
+
+      SUBM   Reset_Init_Macro
+      =      BL_Reset_Init_Macro
+      ==     K+0
+      S      PN_Fehler_Submit_Spawn_Queue_voll
+      IFF
+        L      DG_geregelte_Achsen
+        BC     KG_Spindel
+        =      DG_Tasten_sperren
+      ENDI
+    ENDI
+  ENDI
+
+  PS     KL_Nummer_angezeigte_Fehlermeldung
+  CM     9087                          ;Status PLC-Fehlermeldung abfragen
+  PL     WG_Fehlernummer_angezeigt
+  M_Modul_Fehler_anzeigen
+
+  LN     MG_Inbetriebnahme
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM
+
+;----------------------------
+LBL Reset_Init_Macro
+
+  PS     S"STARTUPCANCEL"
+  CM     9291                          ;Starten eines NC-Makros
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Eins_Merker
+  S      ML_Reset_Init_Macro_gestartet
+
+EM
+
+;----------------------------
+LBL Taste_Einzelsatz
+
+  PS     KL_0_Test_Tasten_Queue
+  CM     9180                          ;Tastensimulation
+  PL     BL_Anzahl_Tasten_in_Queue
+
+  M_Modul_Fehler_anzeigen
+
+  L      BL_Anzahl_Tasten_in_Queue
+  ==     K+0
+  IFT
+    PS     KG_Taste_Einzelsatz_Betriebsart
+    CM     9180                        ;Tastensimulation
+    PL     BL_Anzahl_Tasten_in_Queue
+
+    M_Modul_Fehler_anzeigen
+
+    LN     NP_M4203_Fehler_Modul_9xxx
+    S      ML_Einlese_Sperre_Einzelsatz
+  ENDI
+
+EM
+
+;----------------------------
+LBL Taste_Folgesatz
+
+  PS     KL_0_Test_Tasten_Queue
+  CM     9180                          ;Tastensimulation
+  PL     BL_Anzahl_Tasten_in_Queue
+
+  M_Modul_Fehler_anzeigen
+
+  L      BL_Anzahl_Tasten_in_Queue
+  ==     K+0
+  IFT
+    PS     KG_Taste_Folgesatz_Betriebsart
+    CM     9180                        ;Tastensimulation
+    PL     BL_Anzahl_Tasten_in_Queue
+
+    M_Modul_Fehler_anzeigen
+
+    L      MG_Eins_Merker
+    R      ML_Einlese_Sperre_Einzelsatz
+  ENDI
+
+EM
+

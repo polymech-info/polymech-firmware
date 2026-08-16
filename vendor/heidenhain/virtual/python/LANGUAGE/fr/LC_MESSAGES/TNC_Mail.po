@@ -1,0 +1,54 @@
+msgid "SETUP"
+msgstr "Config"
+
+msgid "MAIL"
+msgstr "Courriel"
+
+msgid "EVENTS"
+msgstr "évènements"
+
+msgid "FROM"
+msgstr "De"
+
+msgid "TO"
+msgstr "A"
+
+msgid "CC"
+msgstr "Cc"
+
+msgid "BCC"
+msgstr "Bcc"
+
+msgid "SUBJECT"
+msgstr "Sujet"
+
+msgid "PLC_EVENTS"
+msgstr "évènements PLC"
+
+msgid "NAME"
+msgstr "Nom"
+
+msgid "PLC_ADDRESS"
+msgstr "Adresse PLC"
+
+msgid "TRIGGER"
+msgstr "Déclencheur"
+
+msgid "SERVER"
+msgstr "Serveur"
+
+msgid "USER"
+msgstr "Utilisateur"
+
+msgid "PASSWORD"
+msgstr "Mot de passe"
+
+msgid "MAIL_TEXT"
+msgstr "Texte courriel"
+
+msgid "HEADLINE"
+msgstr "En tête"
+
+msgid "FOOTER"
+msgstr "Pied de page"
+

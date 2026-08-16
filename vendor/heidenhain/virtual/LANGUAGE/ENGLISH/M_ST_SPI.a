@@ -1,0 +1,29 @@
+/* STATUS SPINDLE
+   --------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS SPINDLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"Drive release  :     %d\n",$O_Regler_Freigabe_S1$/c;
+"Drive ready    :     %d\n",$MG_Antrieb_bereit[31]$/c;
+"Orientation    :     %d\n",M4130/c;
+"Loop open      :     %d\n",M4012/c;
+"in position    :     %d\n",M4000/c;
+"no reference   :     %d\n",M4018/c;
+"not in ramp    :     %d\n",M4001/c;
+"nominal value 0:     %d\n",M4002/c;
+"Rotation left  :     %d\n",M4009/c;
+"Rotation right :     %d\n",M4010/c;
+"Speed MP3520   :     %d\n",M4011/c;
+"Thread CYCL 2  :     %d\n",M4030/c;
+"Thread CYCL 17 :     %d\n",M4031/c;
+"nominal rpm    : %5.0f\n",D364/n=0/c;
+"actual rpm     : %5.0f\n",D368/n=0/c;
+"End speed      : %5.0f\n",D372/n=0/c;
+"Programmed rpm : %5.0f\n",D356/n=3/c;

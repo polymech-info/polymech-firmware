@@ -1,0 +1,1008 @@
+*-----------------------------------------------------------------------------
+*  Guard with and without safety guard locking
+*-----------------------------------------------------------------------------
+*  Module Description
+*    use on guards without safety guard locking also the following inputs
+*      - I_guard_1_closed_locked
+*      - I_guard_1_closed
+*      - I_guard_2_closed_locked
+*      - I_guard_2_closed
+*
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_key_pressed                           M
+#define /s    ML_key_2_pressed                         M              *;EUMACH
+#define /s    ML_guard_1_has_been_opened               M
+#define /s    ML_guard_2_has_been_opened               M
+#define /s    ML_guard_test_ok                         M
+#define /s    ML_END_PGM_M02_M30                       M
+#define /s    ML_guard_lock_by_I_key_guard_unlock      M              *;EUMACH
+#define /s    ML_I_guard_1_closed                      M              *;EUMACH
+#define /s    ML_I_guard_1_closed_p_pulse              M              *;EUMACH
+#define /s    ML_I_guard_1_2_closed                    M              *;EUMACH 5XT
+#define /s    ML_I_guard_1_2_closed_p_pulse            M              *;EUMACH 5XT
+#define /s    ML_new_workpiece_table_1                 M              *;EUMACH
+#define /s    ML_new_workpiece_table_2                 M              *;EUMACH
+
+GLOBAL Guard
+
+;----------------------------
+LBL Guard
+;----------------------------
+
+  L      NP_guard_inactive
+  R      O_guard_1_unlock                                             *;EUMACH
+  R      O_guard_2_unlock                                             *;EUMACH
+  EMT
+
+#if Pallet_changer = &Alternat_table
+  LN     MG_guard_1_closed_locked
+  ON     MG_guard_2_closed_locked                                     *;EUMACH
+  O[                                                                  *;EUMACH
+    LN     I_guard_1_closed_locked                                    *;EUMACH
+    ON     I_guard_2_closed_locked                                    *;EUMACH
+    AN     ML_guard_test_ok                                           *;EUMACH
+  ]                                                                   *;EUMACH
+#else
+  LN     I_guard_1_closed_locked
+  ON     I_guard_2_closed_locked
+#endif
+*;EUMACH Original PLC from BASIC 51-R04
+*;       When guard is open, the error message still appears, but cannot
+*;       move the axes due to NC STOP in PET Table.
+;  =      PN_error_guard_open
+;  =      MG_guard_open
+
+;  L      MG_TC_manual
+;  R      PN_error_guard_open
+*;EUMACH Original PLC from BASIC 51-R04
+
+*;EUMACH Modified as previous PLC BASIC version
+  S      PN_error_guard_open
+  =      MG_guard_open
+
+  LN     NP_M4176_control_in_operation_on_or_flashes
+  A      MG_automatic_mode
+  O      MG_manual_mode
+  AN     MG_guard_open
+  O[
+    L      I_servo_drive_release
+    A      MG_servo_drive_release_1st_axes_group
+    O      MG_TC_manual
+  ]
+  A      ML_guard_test_ok                                             *;EUMACH
+#if SFM = &DMx                                                        *;EUMACH CE 2008
+  O      MG_safety_mode_2_p_pulse                                     *;EUMACH CE 2008
+  O      MG_safety_mode_4_p_pulse                                     *;EUMACH CE 2008
+;  O      PN_error_safety_mode_2                                       *;EUMACH CE 2008
+;  O      PN_error_safety_mode_4_1                                     *;EUMACH CE 2008
+#endif                                                                *;EUMACH CE 2008
+  R      PN_error_guard_open
+*;EUMACH Modified as previous PLC BASIC version
+
+*;EUMACH CE Sep 06 2008
+#if SFM = &Standard
+  L      NP_M4152_mode_posit_with_manual_input
+  O      NP_M4153_mode_program_run_single_block
+  O      NP_M4154_mode_program_run_full_sequence
+  A      NP_M4176_control_in_operation_on_or_flashes
+  AN     NP_M4175_control_in_operation_flashes
+  S      MG_NC_program_operating
+
+  L      NP_M4150_mode_manual
+  O      NP_M4151_mode_electronic_handwheel
+  O      NP_M4155_mode_pass_over_reference
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_pulse_internal_stop
+  ON     I_control_operational
+  R      MG_NC_program_operating
+
+#if Pallet_changer = &Alternat_table
+  LN     MG_guard_1_closed_locked
+  A      MG_axis_limit_1
+  O[
+    LN     MG_guard_2_closed_locked
+    A      MG_axis_limit_2
+  ]
+  O[
+    LN     MG_guard_1_closed_locked
+    ON     MG_guard_2_closed_locked
+    A      MG_axis_limit_3
+  ]
+  O[
+    LN     I_guard_1_closed_locked
+    ON     I_guard_2_closed_locked
+    AN     ML_guard_test_ok
+  ]
+#else
+  LN     I_guard_1_closed_locked
+  ON     I_guard_2_closed_locked
+#endif
+  AN     PN_error_safety_mode_2
+  A      MG_NC_program_operating
+  S      MG_guard_open_operation_hold
+
+  LN     MG_guard_open
+  A      MG_key_NC_start
+  O      PN_error_safety_mode_2
+  ON     MG_NC_program_operating
+  R      MG_guard_open_operation_hold
+#endif
+*;EUMACH CE Sep 06 2008
+
+#if Pallet_changer = &Alternat_table                                  *;EUMACH 5XT
+*;EUMACH 5XT
+  LN     MG_alternating_table_on
+  IFT
+;    L      I_guard_1_closed
+;    AN     ML_I_guard_1_closed
+;    =      ML_I_guard_1_closed_p_pulse
+
+;    L      I_guard_1_closed
+;    =      ML_I_guard_1_closed
+
+;    L      I_guard_2_closed
+;    AN     ML_I_guard_2_closed
+;    =      ML_I_guard_2_closed_p_pulse
+
+;    L      I_guard_2_closed
+;    =      ML_I_guard_2_closed
+
+;    L      ML_I_guard_2_closed_p_pulse
+;    A      O_guard_1_unlock
+;    A      I_guard_1_closed
+;    O      ML_I_guard_1_closed_p_pulse
+;    R      O_guard_1_unlock
+
+;    L      ML_I_guard_1_closed_p_pulse
+;    A      O_guard_2_unlock
+;    A      I_guard_2_closed
+;    O      ML_I_guard_2_closed_p_pulse
+;    R      O_guard_2_unlock
+
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    L      I_guard_1_closed
+    A      I_guard_2_closed
+    AN     ML_I_guard_1_2_closed
+    =      ML_I_guard_1_2_closed_p_pulse
+
+    L      I_guard_1_closed
+    A      I_guard_2_closed
+    =      ML_I_guard_1_2_closed
+
+    L      ML_I_guard_1_2_closed_p_pulse
+    R      O_guard_1_unlock
+    R      O_guard_2_unlock
+#endif                                                                *;EUMACH Safety confirmation
+
+    L      O_guard_1_unlock
+    A      I_guard_1_closed
+    A[
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+    ]
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+#if &I_key1_guard_2_unlock < 1000
+    A[
+      L      I_key_guard_unlock
+      AN     ML_key_pressed
+      O[
+        L      I_key_guard_2_unlock
+        AN     ML_key_2_pressed
+      ]
+    ]
+#else
+    A      I_key_guard_unlock
+    AN     ML_key_pressed
+#endif
+#else                                                                 *;EUMACH Safety confirmation
+    A      I_key_safety_confirmation                                  *;EUMACH Safety confirmation
+    AN     ML_key_pressed                                             *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    A      ML_guard_test_ok
+    =      ML_guard_lock_by_I_key_guard_unlock
+    R      O_guard_1_unlock
+    R      O_guard_2_unlock
+
+*;EUMACH Guard unlock while EMG
+    L      O_guard_1_unlock
+    A      I_guard_1_closed
+    A[
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+    ]
+    A      NP_auto_guard_unlock_EMG
+    A      MG_p_pulse_control_operational
+    R      O_guard_1_unlock
+    R      O_guard_2_unlock
+*;EUMACH Guard unlock while EMG
+  ELSE
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    LN     I_guard_1_closed
+    R      O_guard_1_unlock
+
+    LN     I_guard_2_closed
+    R      O_guard_2_unlock
+#endif                                                                *;EUMACH Safety confirmation
+
+    L      MG_axis_limit_1
+    IFT
+      L      O_guard_1_unlock
+      A      I_guard_1_closed
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A      I_key_safety_confirmation                                *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed
+      A      ML_guard_test_ok
+      =      ML_guard_lock_by_I_key_guard_unlock
+      R      O_guard_1_unlock
+
+*;EUMACH Guard unlock while EMG
+      L      O_guard_1_unlock
+      A      I_guard_1_closed
+      A      NP_auto_guard_unlock_EMG
+      A      MG_p_pulse_control_operational
+      R      O_guard_1_unlock
+*;EUMACH Guard unlock while EMG
+    ELSE
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+#if &I_key1_guard_2_unlock < 1000
+      A      I_key_guard_2_unlock
+      AN     ML_key_2_pressed
+#else
+      A      I_key_guard_unlock
+      AN     ML_key_pressed
+#endif
+#else                                                                 *;EUMACH Safety confirmation
+      A      I_key_safety_confirmation                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed                                           *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      A      ML_guard_test_ok
+      =      ML_guard_lock_by_I_key_guard_unlock
+      R      O_guard_2_unlock
+
+*;EUMACH Guard unlock while EMG
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+      A      NP_auto_guard_unlock_EMG
+      A      MG_p_pulse_control_operational
+      R      O_guard_2_unlock
+*;EUMACH Guard unlock while EMG
+    ENDI
+  ENDI
+*;EUMACH 5XT
+#else                                                                 *;EUMACH 5XT
+  LN     NP_2_guards_with_one_unlock_output                           *;EUMACH
+  IFT                                                                 *;EUMACH
+    LN     I_guard_1_closed
+    R      O_guard_1_unlock
+  ELSE                                                                *;EUMACH
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    L      I_guard_1_closed                                           *;EUMACH
+    AN     ML_I_guard_1_closed                                        *;EUMACH
+    =      ML_I_guard_1_closed_p_pulse                                *;EUMACH
+
+    L      I_guard_1_closed                                           *;EUMACH
+    =      ML_I_guard_1_closed                                        *;EUMACH
+
+    L      ML_I_guard_1_closed_p_pulse                                *;EUMACH
+    R      O_guard_1_unlock                                           *;EUMACH
+#endif                                                                *;EUMACH Safety confirmation
+  ENDI                                                                *;EUMACH
+
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  LN     I_guard_2_closed
+  R      O_guard_2_unlock
+#endif                                                                *;EUMACH Safety confirmation
+
+  L      O_guard_1_unlock
+  A      I_guard_1_closed                                             *;EUMACH
+;#if &I_guard_2_closed < 1000                                         *;EUMACH
+;  O      O_guard_2_unlock                                            *;EUMACH Original PLC
+#if &O_guard_2_unlock < 1000                                          *;EUMACH
+  A[                                                                  *;EUMACH
+    L      O_guard_2_unlock                                           *;EUMACH
+    A      I_guard_2_closed                                           *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+  A      I_key_safety_confirmation                                    *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+  AN     ML_key_pressed
+  A      ML_guard_test_ok                                             *;EUMACH
+  =      ML_guard_lock_by_I_key_guard_unlock                          *;EUMACH
+  R      O_guard_1_unlock
+  R      O_guard_2_unlock
+
+*;EUMACH Guard unlock while EMG
+  L      O_guard_1_unlock
+  A      I_guard_1_closed
+#if &O_guard_2_unlock < 1000
+  A[
+    L      O_guard_2_unlock
+    A      I_guard_2_closed
+  ]
+#endif
+  A      NP_auto_guard_unlock_EMG
+  A      MG_p_pulse_control_operational
+  A      ML_guard_test_ok
+  R      O_guard_1_unlock
+  R      O_guard_2_unlock
+*;EUMACH Guard unlock while EMG
+#endif                                                                *;EUMACH 5XT
+
+  L      MG_pulse_END_PGM_M02_M30
+  A      NP_auto_guard_unlock_on_END_PGM
+  S      ML_END_PGM_M02_M30
+
+  LN     MG_alternating_table_on                                      *;EUMACH ==w/o partition start==
+  IFT                                                                 *;EUMACH
+    L      MG_automatic_mode
+;    AN     NP_M4176_control_in_operation_on_or_flashes                *;EUMACH Original PLC
+    AN     MG_control_in_operation_on                                 *;EUMACH
+    O      MG_manual_mode
+    O      MG_TC_manual
+#if &I_key1_guard_2_unlock < 1000                                     *;EUMACH
+    A[                                                                *;EUMACH
+      L      I_key_guard_unlock                                       *;EUMACH
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+      O      I_key_guard_unlock_additional_panel                      *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed                                           *;EUMACH
+      O[                                                              *;EUMACH
+        L      I_key_guard_2_unlock                                   *;EUMACH
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+;        O      I_key_guard_2_unlock_additional_panel ;not fedined yet*;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+        AN     ML_key_2_pressed                                       *;EUMACH
+      ]                                                               *;EUMACH
+    ]                                                                 *;EUMACH
+#else                                                                 *;EUMACH
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+    A[                                                                *;EUMACH Safety confirmation
+      L      I_key_guard_unlock                                       *;EUMACH Safety confirmation
+      O      I_key_guard_unlock_additional_panel                      *;EUMACH Safety confirmation
+    ]                                                                 *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    AN     ML_key_pressed                                             *;EUMACH
+#endif                                                                *;EUMACH
+    AN     ML_guard_lock_by_I_key_guard_unlock                        *;EUMACH
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace                       *;EUMACH
+    O[                                                                *;EUMACH Guard unlock while EMG
+      L      NP_auto_guard_unlock_EMG                                 *;EUMACH Guard unlock while EMG
+      AN     MG_control_operational                                   *;EUMACH Guard unlock while EMG
+    ]                                                                 *;EUMACH Guard unlock while EMG
+    AN     MG_S_blow_clean_after_CTS                                  *;EUMACH
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_unlock
+    ]
+*;EUMACH safety mode 4
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+#if &I_key1_guard_2_unlock < 1000
+      A[
+        L      I_key_guard_unlock
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+        O      I_key_guard_unlock_additional_panel                    *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+        AN     ML_key_pressed
+        O[
+          L      I_key_guard_2_unlock
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+;          O      I_key_guard_2_unlock_additional_panel ;not fedined yet*;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+          AN     ML_key_2_pressed
+        ]
+      ]
+#else
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A[                                                              *;EUMACH Safety confirmation
+        L      I_key_guard_unlock                                     *;EUMACH Safety confirmation
+        O      I_key_guard_unlock_additional_panel                    *;EUMACH Safety confirmation
+      ]                                                               *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed
+#endif
+      AN     ML_guard_lock_by_I_key_guard_unlock
+    ]
+#endif
+*;EUMACH safety mode 4
+*;EUMACH
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &No
+    AN     MG_TC_magazine_2_start
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+*;EUMACH
+    R      ML_END_PGM_M02_M30
+    S      O_guard_1_unlock
+    S      O_guard_2_unlock                                           *;EUMACH ==w/o partition end==
+  ELSE
+*;EUMACH                                                              *;EUMACH ==w/ partition start==
+#if &I_key1_guard_2_unlock < 1000                                     *;EUMACH --2 guard keys start--
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+    A[                                                                *;EUMACH Safety confirmation
+      L      I_key_guard_unlock                                       *;EUMACH Safety confirmation
+      O      I_key_guard_unlock_additional_panel                      *;EUMACH Safety confirmation
+    ]                                                                 *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    AN     ML_key_pressed
+    AN     ML_guard_lock_by_I_key_guard_unlock
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    O[                                                                *;EUMACH Guard unlock while EMG
+      L      NP_auto_guard_unlock_EMG                                 *;EUMACH Guard unlock while EMG
+      AN     MG_control_operational                                   *;EUMACH Guard unlock while EMG
+    ]                                                                 *;EUMACH Guard unlock while EMG
+    AN     MG_S_blow_clean_after_CTS                                  *;EUMACH
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_unlock
+    ]
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A[                                                              *;EUMACH Safety confirmation
+        L      I_key_guard_unlock                                     *;EUMACH Safety confirmation
+        O      I_key_guard_unlock_additional_panel                    *;EUMACH Safety confirmation
+      ]                                                               *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed
+      AN     ML_guard_lock_by_I_key_guard_unlock
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC_door_closed
+      O      I_ATC_door_open
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+    A      MG_axis_limit_1
+    R      ML_END_PGM_M02_M30
+    S      O_guard_1_unlock
+
+    L      MG_automatic_mode
+    AN     MG_control_in_operation_on
+    O      MG_manual_mode
+    O      MG_TC_manual
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    A      I_key_guard_2_unlock
+#else                                                                 *;EUMACH Safety confirmation
+    A[                                                                *;EUMACH Safety confirmation
+      L      I_key_guard_2_unlock                                     *;EUMACH Safety confirmation
+;      O      I_key_guard_2_unlock_additional_panel ;not fedined yet  *;EUMACH Safety confirmation
+    ]                                                                 *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    AN     ML_key_2_pressed
+    AN     ML_guard_lock_by_I_key_guard_unlock
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    O[                                                                *;EUMACH Guard unlock while EMG
+      L      NP_auto_guard_unlock_EMG                                 *;EUMACH Guard unlock while EMG
+      AN     MG_control_operational                                   *;EUMACH Guard unlock while EMG
+    ]                                                                 *;EUMACH Guard unlock while EMG
+    AN     MG_S_blow_clean_after_CTS                                  *;EUMACH
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_2_unlock
+    ]
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_2_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A[                                                              *;EUMACH Safety confirmation
+        L      I_key_guard_2_unlock                                   *;EUMACH Safety confirmation
+;        O      I_key_guard_2_unlock_additional_panel ;not fedined yet*;EUMACH Safety confirmation
+    ]                                                                 *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      A      I_key_guard_2_unlock
+      AN     ML_key_2_pressed
+      AN     ML_guard_lock_by_I_key_guard_unlock
+    ]
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &No
+    AN     MG_TC_magazine_2_start
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC2_door_closed
+      O      I_ATC2_door_open
+      A      MG_TC_magazine_2_start
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_TC_magazine_2_start
+#endif
+#endif
+    A      MG_axis_limit_2
+    R      ML_END_PGM_M02_M30
+    S      O_guard_2_unlock                                           *;EUMACH --2 guard keys end--
+#else
+*;EUMACH                                                              *;EUMACH --1 guard keys start--
+    L      MG_automatic_mode
+;    AN     NP_M4176_control_in_operation_on_or_flashes                *;EUMACH Original PLC
+    AN     MG_control_in_operation_on                                 *;EUMACH
+    O      MG_manual_mode
+    O      MG_TC_manual
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+    A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+    A[                                                                *;EUMACH Safety confirmation
+      L      I_key_guard_unlock                                       *;EUMACH Safety confirmation
+      O      I_key_guard_unlock_additional_panel                      *;EUMACH Safety confirmation
+    ]                                                                 *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    AN     ML_key_pressed
+    AN     ML_guard_lock_by_I_key_guard_unlock
+    O      PN_error_tool_unclamping
+    O      ML_END_PGM_M02_M30
+    O      PN_error_guard_open_for_tool_replace
+    O[                                                                *;EUMACH Guard unlock while EMG
+      L      NP_auto_guard_unlock_EMG                                 *;EUMACH Guard unlock while EMG
+      AN     MG_control_operational                                   *;EUMACH Guard unlock while EMG
+    ]                                                                 *;EUMACH Guard unlock while EMG
+    AN     MG_S_blow_clean_after_CTS                                  *;EUMACH
+    AN     MG_spindle_reference_active
+    A[
+      L      MG_spindle_stand_still
+      ON     MG_spindle_active
+    ]
+    AN     MG_axes_in_motion
+    O[
+      L      O_release_special_mode
+      A      I_key_guard_unlock
+    ]
+*;EUMACH safety mode 4
+#if SFM ! &inactive
+    O[
+      L      MG_safety_mode_4
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A[                                                              *;EUMACH Safety confirmation
+        L      I_key_guard_unlock                                     *;EUMACH Safety confirmation
+        O      I_key_guard_unlock_additional_panel                    *;EUMACH Safety confirmation
+      ]                                                               *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      AN     ML_key_pressed
+      AN     ML_guard_lock_by_I_key_guard_unlock
+    ]
+#endif
+*;EUMACH safety mode 4
+#if TC_mag_in_motion_guard_unlock = &No
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &No
+    AN     MG_TC_magazine_2_start
+#endif
+#if TC_mag_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC_door_closed
+      O      I_ATC_door_open
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if TC_mag_2_in_motion_guard_unlock = &ATC_door
+    AN[
+      LN     I_ATC2_door_closed
+      O      I_ATC2_door_open
+      A      MG_TC_magazine_2_start
+    ]
+#endif
+#if TC_mag_in_motion_guard_unlock = &Special
+#if MT = &MT_31A
+    AN[
+      L      I_TC_magazine_in_spindle_position
+      ON     I_TC_magazine_in_basic_position
+      A[
+        L      MG_T_select_start                                      *;EUMACH standby tool loading/unloading
+        O      MG_TC_magazine_start
+      ]
+    ]
+#endif
+#if MT = &MT_31B
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#endif
+#endif
+    R      ML_END_PGM_M02_M30
+    IFT
+      L      MG_axis_limit_1
+      S      O_guard_1_unlock
+
+      L      MG_axis_limit_2
+      S      O_guard_2_unlock
+    ENDI
+#endif                                                                *;EUMACH --1 guard key end--
+  ENDI                                                                *;EUMACH ==w/ partition end==
+
+*;EUMACH
+  L      MG_automatic_mode
+  AN     MG_control_in_operation_on
+  O      MG_manual_mode
+#if &I_key1_guard_2_unlock < 1000
+  A[
+    L      I_key_guard_unlock
+    O      I_key_guard_2_unlock
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+    O      I_key_guard_unlock_additional_panel                        *;EUMACH Safety confirmation
+;    O      I_key_guard_2_unlock_additional_panel ;not fedined yet    *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    AN     MG_alternating_table_on
+    O[
+      L      MG_axis_limit_1
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+      A      I_key_guard_unlock
+#else                                                                 *;EUMACH Safety confirmation
+      A[                                                              *;EUMACH Safety confirmation
+        L      I_key_guard_unlock                                     *;EUMACH Safety confirmation
+        O      I_key_guard_unlock_additional_panel                    *;EUMACH Safety confirmation
+      ]                                                               *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      O[
+        L      MG_axis_limit_2
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+        A      I_key_guard_2_unlock
+#else                                                                 *;EUMACH Safety confirmation
+        A[                                                            *;EUMACH Safety confirmation
+          L      I_key_guard_2_unlock                                 *;EUMACH Safety confirmation
+;          O      I_key_guard_2_unlock_additional_panel ;not defined yet *;EUMACH Safety confirmation
+        ]                                                             *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+      ]
+      A      MG_alternating_table_on
+    ]
+  ]
+#else
+  A      I_key_guard_unlock
+#endif
+  O[
+    L      MG_soft_key_S_man_head
+    A      MG_soft_key_S_man_head_unclamp
+    AN     O_S_head_coupling_unclamping
+  ]
+  AN     MG_spindle_stand_still
+  A      MG_spindle_active
+  A      MG_control_operational
+  =      PN_error_spindle_stop_necessary
+*;EUMACH
+
+#if Pallet_changer = &Alternat_table
+  L      MG_alternating_table_on
+  A      MG_axis_limit_2
+  AN     MG_new_workpiece_table_1
+  AN     MG_enable_alternating_table                                  *;EUMACH
+  A      I_not_ref_end_posit_Y                                        *;EUMACH
+  S      O_guard_1_unlock
+
+  L      MG_alternating_table_on
+  A      MG_axis_limit_1
+  AN     MG_new_workpiece_table_2
+  AN     MG_enable_alternating_table                                  *;EUMACH
+  A      I_not_ref_end_posit_Y                                        *;EUMACH
+  S      O_guard_2_unlock
+
+*;EUMACH
+  L      MG_new_workpiece_table_1
+  AN     ML_new_workpiece_table_1
+  R      O_guard_1_unlock
+
+  L      MG_new_workpiece_table_1
+  =      ML_new_workpiece_table_1
+
+  L      MG_new_workpiece_table_2
+  AN     ML_new_workpiece_table_2
+  R      O_guard_2_unlock
+
+  L      MG_new_workpiece_table_2
+  =      ML_new_workpiece_table_2
+
+  L      MG_alternating_table_on
+  A      MG_axis_limit_2
+  A      MG_new_workpiece_table_1
+#if ADS = &inactive
+  AN     O_guard_1_unlock
+#else
+  AN     O_auto_door_1_opening
+  A      O_auto_door_1_closing
+#endif
+  =N     TS_guard_1_signal
+
+  L      MG_alternating_table_on
+  A      MG_axis_limit_1
+  A      MG_new_workpiece_table_2
+#if ADS = &inactive
+  AN     O_guard_2_unlock
+#else
+  AN     O_auto_door_2_opening
+  A      O_auto_door_2_closing
+#endif
+  =N     TS_guard_2_signal
+
+  LN     TS_guard_1_signal
+  AN     TR_guard_1_signal
+  AN     I_guard_1_closed_locked
+  O[
+    LN     TS_guard_2_signal
+    AN     TR_guard_2_signal
+    AN     I_guard_2_closed_locked
+  ]
+  =      PN_error_guard_signal
+
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  L      O_guard_1_unlock
+  A      I_guard_1_closed
+  A      MG_clock_1_s
+  ON     I_guard_1_closed
+  ON     ML_guard_test_ok
+  O      MG_test_lamps
+  =      O_lamp_guard_1_unlock
+#else                                                                 *;EUMACH Safety confirmation
+  LN     I_guard_1_closed                                             *;EUMACH Safety confirmation
+  ON     ML_guard_test_ok                                             *;EUMACH Safety confirmation
+  O      MG_test_lamps                                                *;EUMACH Safety confirmation
+  =      O_lamp_guard_1_unlock                                        *;EUMACH Safety confirmation
+  =      O_lamp_guard_unlock_additional_panel                         *;EUMACH Safety confirmation
+                                                                      *;EUMACH Safety confirmation
+  L      O_guard_1_unlock                                             *;EUMACH Safety confirmation
+  A      I_guard_1_closed                                             *;EUMACH Safety confirmation
+  A      MG_clock_1_s                                                 *;EUMACH Safety confirmation
+  O      MG_test_lamps                                                *;EUMACH Safety confirmation
+  =      O_lamp_safety_confirmation                                   *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  L      O_guard_1_unlock
+  A      I_guard_1_closed
+  A      MG_clock_1_s
+  ON     I_guard_1_closed
+  A      MG_axis_limit_1
+  AN     I_alternating_table_zone_overtravel
+  O[
+    L      O_guard_1_unlock
+    A      I_guard_1_closed
+    O[
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+    ]
+    A      MG_clock_1_s
+    ON     I_guard_1_closed
+    ON     I_guard_2_closed
+    A      MG_axis_limit_3
+  ]
+  ON     ML_guard_test_ok
+  =      O_lamp_guard_1_key
+#else                                                                 *;EUMACH Safety confirmation
+; In preparation
+#endif                                                                *;EUMACH Safety confirmation
+
+#if Door_lock_safety_confirmation_panel ! &active                     *;EUMACH Safety confirmation
+  L      O_guard_2_unlock
+  A      I_guard_2_closed
+  A      MG_clock_1_s
+  ON     I_guard_2_closed
+  A      MG_axis_limit_2
+  AN     I_alternating_table_zone_overtravel
+  O[
+    L      O_guard_1_unlock
+    A      I_guard_1_closed
+    O[
+      L      O_guard_2_unlock
+      A      I_guard_2_closed
+    ]
+    A      MG_clock_1_s
+    ON     I_guard_1_closed
+    ON     I_guard_2_closed
+    A      MG_axis_limit_3
+  ]
+  ON     ML_guard_test_ok
+  =      O_lamp_guard_2_key
+#else                                                                 *;EUMACH Safety confirmation
+; In preparation
+#endif                                                                *;EUMACH Safety confirmation
+*;EUMACH
+*;EUMACH Safety confirmation
+#else
+#if Door_lock_safety_confirmation_panel ! &active
+  L      O_guard_1_unlock
+  A      I_guard_1_closed
+  A      MG_clock_1_s
+  ON     I_guard_1_closed
+  ON     ML_guard_test_ok
+  O      MG_test_lamps
+  =      O_lamp_guard_1_unlock
+#else
+  LN     I_guard_1_closed
+  ON     ML_guard_test_ok
+  O      MG_test_lamps
+  =      O_lamp_guard_1_unlock
+  =      O_lamp_guard_unlock_additional_panel
+
+  L      O_guard_1_unlock
+#if Light_beam_protection = &active                                 *;EUMACH Safety confirmation
+  O      PN_error_light_beam_blocked                                *;EUMACH Safety confirmation
+  A      I_light_beam_ok                                            *;EUMACH Safety confirmation
+#endif                                                              *;EUMACH Safety confirmation
+  A      I_guard_1_closed
+  O      PN_error_power_on_safety_confirmation
+  A      MG_clock_1_s
+  O      MG_test_lamps
+  =      O_lamp_safety_confirmation
+#endif
+*;EUMACH Safety confirmation
+#endif
+
+  L      I_key_guard_unlock
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+  O      I_key_safety_confirmation                                    *;EUMACH Safety confirmation
+  O      I_key_guard_unlock_additional_panel                          *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+  =      ML_key_pressed
+
+  L      I_key_guard_2_unlock                                         *;EUMACH
+;  O      I_key_guard_2_unlock_additional_panel  ;not defined yet     *;EUMACH Safety confirmation
+  =      ML_key_2_pressed                                             *;EUMACH
+
+  L      I_keylock_switch_special_mode
+  =      O_release_special_mode
+  IFT
+    LN     MG_TC_automatic
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+    AN     MG_TC2_automatic                                           *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+    AN     PN_M4041_M07_MK_status
+    R      MG_guard_open
+    R      PN_error_guard_open
+
+    L      MG_TC_manual
+    R      O_release_special_mode
+
+    L      PN_error_guard_open
+    ON     MG_guard_open
+    A      MG_clock_1_s
+    R      O_lamp_special_mode
+  ENDI
+
+  L      ML_guard_test_ok
+  EMT
+
+  LN     I_guard_1_closed
+  S      ML_guard_1_has_been_opened
+
+  LN     ML_guard_1_has_been_opened
+  =      O_guard_1_unlock
+
+;#if &I_guard_2_closed < 1000                                         *;EUMACH Original PLC
+#if ADS = &inactive                                                   *;EUMACH
+#if &O_guard_2_unlock < 1000                                          *;EUMACH
+  LN     I_guard_2_closed
+  S      ML_guard_2_has_been_opened
+#else                                                                 *;EUMACH
+  LN     ML_guard_2_has_been_opened
+  S      ML_guard_2_has_been_opened
+#endif                                                                *;EUMACH
+#else                                                                 *;EUMACH
+#if &O_auto_door_2_opening < 1000                                     *;EUMACH
+  LN     I_guard_2_closed                                             *;EUMACH
+  S      ML_guard_2_has_been_opened                                   *;EUMACH
+#else                                                                 *;EUMACH
+  LN     ML_guard_2_has_been_opened                                   *;EUMACH
+  S      ML_guard_2_has_been_opened                                   *;EUMACH
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+  LN     ML_guard_2_has_been_opened
+  =      O_guard_2_unlock
+
+  L      I_guard_1_closed_locked
+  A      I_guard_2_closed_locked
+#if ADS ! &ADS_type_01                                                *;EUMACH
+  A      ML_guard_1_has_been_opened
+  A      ML_guard_2_has_been_opened
+#endif                                                                *;EUMACH
+  S      ML_guard_test_ok
+  S      MG_guard_test_ok                                             *;EUMACH
+
+EM

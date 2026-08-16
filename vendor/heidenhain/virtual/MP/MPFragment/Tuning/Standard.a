@@ -1,0 +1,228 @@
+             ;Machine Parameters Tuning Cycle
+             ;Tuning Mode: Standard (tuning off)
+             ;
+             ;Legend:
+             ;  = :value same as standard
+             ;  > :value higher than standard
+             ;  < :value lower than standard
+             ;  - :value has no effect
+             ;--------------------------------------------------------------
+             ;MP1070 Radial acceleration
+             ;Input: 0.001 to 100 [m/s^2]
+             ;       exact     smooth    rough
+             ;       <         =         >
+MP 1070    : 0.5
+             ;--------------------------------------------------------------
+             ;MP1085 Max. permissible axis-specific jerk during machining
+             ;       movements for the operating modes
+             ;       "Program Run Full Sequence," "Program Run Single Block,"
+             ;       and "Positioning with Manual Data Input" and
+             ;       PLC-Positioning, as long as feed rate not FMAX or
+             ;       feed rate < value in MP1090.
+             ;       (up to now for all axis in MP1090.0)
+             ;            MP1060.x^2 * 60000
+             ; MP1085.x >= ------------------
+             ;               MP1010.x
+             ;Input: 0.1 to 1000 [m/s^3]
+             ;       exact     smooth    rough
+             ;       <         =         >
+MP 1085.0  : 10
+MP 1085.1  : 10
+MP 1085.2  : 10
+MP 1085.3  : 10
+MP 1085.4  : 10
+MP 1085.5  : 10
+MP 1085.6  : 10
+MP 1085.7  : 10
+MP 1085.8  : 10
+MP 1085.9  : 10
+MP 1085.10 : 10
+MP 1085.11 : 10
+MP 1085.12 : 10
+MP 1085.13 : 10
+             ;--------------------------------------------------------------
+             ;MP1090 Limitation of contouring jerk as a result from
+             ;       MP1085.x or MP1086.x
+             ;            MP1060^2 * 60000
+             ; MP1090 >= ------------------
+             ;               MP1010
+             ;Input: 0.1 to 1000 [m/s^3]
+             ;       0 = not active
+             ;       exact     smooth    rough
+             ;       <         =         >
+MP 1090.0  : 10         ;Jerk limitation for feed rate < Fmax
+             ;       exact     smooth    rough
+             ;       =         =         =
+MP 1090.1  : 20         ;Jerk limitation for feed rate = Fmax
+             ;--------------------------------------------------------------
+             ;MP1200 Nominal position value filter
+             ;Input: 0 = Single filter
+             ;       1 = Double filter (not used)
+             ;       2 = HSC filter
+             ;       3 = "Advanced HSC filter"
+             ;       exact     smooth    rough
+             ;       2         0(3)      0
+MP 1200    : 0
+             ;--------------------------------------------------------------
+             ;MP1202 Cycle 32 3D milling - predefined tolerance
+             ;Input: 0,0000 to 3,0000 [mm]
+             ;       exact     smooth    rough
+             ;       <         =         >
+MP 1202.0  : 0.03       ;Corners with movement with machining feed rate
+             ;       exact     smooth    rough
+             ;       =         =         =
+MP 1202.1  : 0.25       ;Corners with movement with rapid traverse
+             ;--------------------------------------------------------------
+             ;MP1210 Cut-off frequency for single filter
+             ;Input: 0,0 to 166,0 [Hz]
+             ;       exact     smooth    rough
+             ;       >         =         >
+MP 1210    : 20
+             ;--------------------------------------------------------------
+             ;MP1212 Cut-off frequency for for HSC filter
+             ;Input: 0,0 to 166,0 [Hz]
+             ;       exact     smooth    rough
+             ;       >         =         -
+MP 1212    : 12
+             ;--------------------------------------------------------------
+             ;MP1213 Cut-off frequency for "advanced HSC filter"
+             ;Input: 0,0 to 166,0 [Hz]
+             ;       exact     smooth    rough
+             ;       -         =         -
+MP 1213    : 12
+             ;--------------------------------------------------------------
+             ;MP1222 Tolerance at changes of curvature for HSC filter
+             ;Input: 0 = Ignore tolerance
+             ;       1 = Do not ignore tolerance
+             ;       exact     smooth    rough
+             ;       1         0         0
+MP 1222    : 0
+             ;--------------------------------------------------------------
+             ;MP1223 Tolerance at changes of curvature for
+             ;       "advanced HSC filter"
+             ;Input: 0 = Ignore tolerance
+             ;       1 = Do not ignore tolerance
+             ;       exact     smooth    rough
+             ;       1         0         0
+MP 1223    : 0
+             ;--------------------------------------------------------------
+             ;MP1230 Jerk at corners for single filter
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       =         =         >
+MP 1230.0  : 10
+MP 1230.1  : 10
+MP 1230.2  : 10
+MP 1230.3  : 10
+MP 1230.4  : 10
+MP 1230.5  : 10
+MP 1230.6  : 10
+MP 1230.7  : 10
+MP 1230.8  : 10
+MP 1230.9  : 10
+MP 1230.10 : 10
+MP 1230.11 : 10
+MP 1230.12 : 10
+MP 1230.13 : 10
+             ;--------------------------------------------------------------
+             ;MP1232 Jerk at corners for HSC filter
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       =         =         >
+MP 1232.0  : 10
+MP 1232.1  : 10
+MP 1232.2  : 10
+MP 1232.3  : 10
+MP 1232.4  : 10
+MP 1232.5  : 10
+MP 1232.6  : 10
+MP 1232.7  : 10
+MP 1232.8  : 10
+MP 1232.9  : 10
+MP 1232.10 : 10
+MP 1232.11 : 10
+MP 1232.12 : 10
+MP 1232.13 : 10
+             ;--------------------------------------------------------------
+             ;MP1233 Jerk at corners for "advanced HSC filter"
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       =         =         >
+MP 1233.0  : 10
+MP 1233.1  : 10
+MP 1233.2  : 10
+MP 1233.3  : 10
+MP 1233.4  : 10
+MP 1233.5  : 10
+MP 1233.6  : 10
+MP 1233.7  : 10
+MP 1233.8  : 10
+MP 1233.9  : 10
+MP 1233.10 : 10
+MP 1233.11 : 10
+MP 1233.12 : 10
+MP 1233.13 : 10
+             ;--------------------------------------------------------------
+             ;MP1240 Jerk at changes of curvature for single filter
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       = MP123x  1000-off  1000-off
+MP 1240.0  : 1000
+MP 1240.1  : 1000
+MP 1240.2  : 1000
+MP 1240.3  : 1000
+MP 1240.4  : 1000
+MP 1240.5  : 1000
+MP 1240.6  : 1000
+MP 1240.7  : 1000
+MP 1240.8  : 1000
+MP 1240.9  : 1000
+MP 1240.10 : 1000
+MP 1240.11 : 1000
+MP 1240.12 : 1000
+MP 1240.13 : 1000
+             ;--------------------------------------------------------------
+             ;MP1242 Jerk at changes of curvature for HSC filter
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       = MP123x  1000-off  1000-off
+MP 1242.0  : 1000
+MP 1242.1  : 1000
+MP 1242.2  : 1000
+MP 1242.3  : 1000
+MP 1242.4  : 1000
+MP 1242.5  : 1000
+MP 1242.6  : 1000
+MP 1242.7  : 1000
+MP 1242.8  : 1000
+MP 1242.9  : 1000
+MP 1242.10 : 1000
+MP 1242.11 : 1000
+MP 1242.12 : 1000
+MP 1242.13 : 1000
+             ;--------------------------------------------------------------
+             ;MP1243 Jerk at changes of curvature for "advanced HSC filter"
+             ;Input: 0,1 to 1000,0 [m/s^3]
+             ;       exact     smooth    rough
+             ;       = MP123x  1000-off  1000-off
+MP 1243.0  : 1000
+MP 1243.1  : 1000
+MP 1243.2  : 1000
+MP 1243.3  : 1000
+MP 1243.4  : 1000
+MP 1243.5  : 1000
+MP 1243.6  : 1000
+MP 1243.7  : 1000
+MP 1243.8  : 1000
+MP 1243.9  : 1000
+MP 1243.10 : 1000
+MP 1243.11 : 1000
+MP 1243.12 : 1000
+MP 1243.13 : 1000
+             ;--------------------------------------------------------------
+             ;MP1522 Speed smoothing
+             ;Input: 0 to 60 [ms]
+             ;       exact     smooth    rough
+             ;       0         0..30     0..30
+MP 1522    : 20
+

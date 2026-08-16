@@ -1,0 +1,1398 @@
+*-----------------------------------------------------------------------------
+*  Spindel 1/2
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    - 2-Spindel-Betrieb kann mittels MP4020 Bit_5 aktiviert werden
+*
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Spindel_1                             K +0
+#define /s    KL_Spindel_2                             K +1
+#define /s    KL_aktive_Spindel                        K +0
+#define /s    KL_1_Prozent                             K +100
+#define /s    KL_5_Prozent                             K +500
+#define /s    KL_10_Prozent                            K +1000
+#define /s    KL_100_Prozent                           K +10000
+#define /s    KL_Getriebe_Stufe_0                      K +0
+
+#define /s    ML_S_Nist_kleiner_Nmin                   M
+#define /s    ML_S_Sollwert_aus_Status_invers          M
+#define /s    ML_Spindel_verzoegert_Stop               M
+#define /s    ML_S_Stop                                M
+#define /s    ML_S_Drehzahl_Ist_Soll_Uebernahme        M
+#define /s    ML_BS_Zaehler_ein                        M
+#define /s    ML_BS_Zaehler_war_ein                    M
+#define /s    ML_Spindel_initialisiert                 M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_S_Override_initialisiert              M
+#define /s    ML_S_Hochlauf_erreicht                   M
+#define /s    ML_S_C_Achs_Init                         M
+
+#if CFG_FS = "aktiv"                   * SPLC_0012
+#define /s    ML_Regler_Freigabe                       M
+#endif
+
+#define /s    BL_S1_S2_Umschaltung                     B
+#define /s    BL_Schritt_S_C_Achs                      B
+#define /s    BL_Achsgruppe_FS_Index                   B
+
+#define /s    WL_S_Override_NC                         W
+#define /s    WL_S_Override_PLC                        W
+#define /s    WL_Faktor_S_Override_NC                  W
+
+#define /s    DL_Offset                                D
+
+#include Mac_Lib.inc
+
+#if (CFG_Override_Eilgang_statt_Spindel  = "inaktiv") or (CFG_S_in_Achs_Betrieb = "aktiv")
+EXTERN Absolut
+#endif
+
+GLOBAL Spindel
+
+;----------------------------
+LBL Spindel
+;----------------------------
+
+  LN     MG_Maschinenparameter_gelesen
+  EMT
+
+  CM     Spindel_Umschaltung
+
+#if CFG_FS = "aktiv"                   * SPLC_0011
+  L      BG_MP601_Achsgruppe_FS_Spindeln[BG_Index_Sn]
+  =      BL_Achsgruppe_FS_Index
+#endif
+
+  L      MG_Spindel_Richten_aktiv
+  AN     PN_M4011_S_Drehzahl_aus_MP3520_0
+  O      MG_Spindel_Referenz_aktiv
+  O      NP_M4000_S_in_Position
+  O      NP_M4017_S_geregelt_in_Bewegung
+  O      NP_M4031_Gewindebohren_gesteuert
+  A      MG_Spindel_mit_Messgeraet
+#if CFG_HSCI = "inaktiv"
+  A      I_I32_ESB_Antriebs_Freigabe
+#endif
+  A      MG_Antriebs_Freigabe_Spindel
+#if CFG_FS = "aktiv"                   * SPLC_0011
+  AN[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  AN[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+  AN[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  AN[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+#endif
+  =N     PN_M4012_S_Regelkreis_oeffnen
+
+  LN     MG_Stern_ein
+  O      PN_Fehler_M3_M4_fehlt
+  A      MG_Taste_S_M3
+  O      MG_M03_Spindel_rechts_ein
+  O      MG_M13_Spindel_rechts_Kuehlmittel_ein
+  R      MG_M04_war_aktiv
+  S      PN_M4005_S_M03_Sollwert_und_Status
+  R      PN_M4006_S_M04_Sollwert_und_Status
+  R      PN_M4007_S_M05_Sollwert_0_und_Status
+  R      ML_S_Sollwert_aus_Status_invers
+
+  LN     MG_Stern_ein
+  O      PN_Fehler_M3_M4_fehlt
+  A      MG_Taste_S_M4
+  O      MG_M04_Spindel_links_ein
+  O      MG_M14_Spindel_links_Kuehlmittel_ein
+  S      MG_M04_war_aktiv
+  R      PN_M4005_S_M03_Sollwert_und_Status
+  S      PN_M4006_S_M04_Sollwert_und_Status
+  R      PN_M4007_S_M05_Sollwert_0_und_Status
+  R      ML_S_Sollwert_aus_Status_invers
+
+  L      PN_M4005_S_M03_Sollwert_und_Status
+  O      PN_M4006_S_M04_Sollwert_und_Status
+  A[
+    L      NP_W256_G_Code_Spindel
+    ==     KL_Getriebe_Stufe_0
+  ]
+  A      MG_Getriebe_Stufe_0_vorhanden
+  S      PN_Fehler_Getriebe_Schaltung
+
+  L      PN_M4005_S_M03_Sollwert_und_Status
+  O      PN_M4006_S_M04_Sollwert_und_Status
+  A      MG_Spindel_C_Achs_Freigabe_aktiv
+  AN     ML_S_Sollwert_aus_Status_invers
+  AN     MG_M26_Interpolations_Drehen_ein
+  S      PN_Fehler_Interpolations_Drehen_aktiv
+
+  L      MG_Taste_S_M5
+  O      MG_WZW_Spindel_Richten_ein
+  AN     NP_M4176_Stern_ein_oder_blinkt
+  AN     MG_Achs_Tasten_speichern
+  O      MG_M05_Spindel_aus
+  O      MG_M18_Spindel_Referenz
+  O      MG_M19_Spindel_Richten_0_Grad
+  O      MG_M20_Spindel_Richten_CYCL_13
+  O      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+  O      NP_M4073_Strobe_TOOL_CALL
+  O      MG_WZW_Help
+  O      MG_WZW_Service
+  O      MG_3D_Tastsystem_aktiv
+  O      MG_3D_Kopf_Achse_1_loesen_Service
+  O      MG_3D_Kopf_Achse_2_loesen_Service
+  ON     MG_Steuerung_betriebsbereit
+  O[
+    L      MG_BA_Wechsel_Auto_Manu
+    O      MG_NC_Stop_in_BA_Manuell
+    O      MG_Impuls_Internal_STOP
+    O      MG_Impuls_End_PGM_M02_M30
+    AN     MG_kein_Spindel_Stop_mit_Taste_NC_Stop
+  ]
+  O[
+    L      NP_W256_G_Code_Spindel
+    ==     KL_Getriebe_Stufe_0
+    A      MG_Getriebe_Stufe_0_vorhanden
+  ]
+#if CFG_FS = "aktiv"                   * SPLC_0011
+*$WS->$FG besser M3 invers
+;  O[
+;    L      DG_Abschaltung_CCU
+;    BT     KG_Spindel
+;    A      NP_M4280_Stop_Reaktion_ist_aktiv
+;  ]
+#endif
+  R      PN_M4005_S_M03_Sollwert_und_Status
+  R      PN_M4006_S_M04_Sollwert_und_Status
+  S      PN_M4007_S_M05_Sollwert_0_und_Status
+
+  L      MG_Spindel_aus
+  O      NP_M4030_Gewindebohren_aktiv
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  A      MG_M05_Spindel_aus
+  O[
+    L      MG_M03_Spindel_rechts_ein
+    O      MG_M04_Spindel_links_ein
+    O      MG_M13_Spindel_rechts_Kuehlmittel_ein
+    O      MG_M14_Spindel_links_Kuehlmittel_ein
+    AN     MG_3D_Tastsystem_aktiv
+  ]
+  S      PN_M4092_Quit_M_Funktion
+
+  LN     MG_Spindel_aktiv
+  EMT
+
+  L      MG_Stern_ein
+  A      MG_BA_Automatik
+  AN     MG_NC_Stop_aktiv
+  AN     NP_M4193_RUNCANCEL_Makro_aktiv
+  O      MG_Taste_S_M3
+  O      PN_M4007_S_M05_Sollwert_0_und_Status
+  O      MG_Spindel_ein_Getriebe
+  R      ML_S_Sollwert_aus_Status_invers
+
+  L      MG_Spindel_ein_Achsen
+  AN     MG_3D_Kopf_aktiv
+  R      MG_Spindel_ein_Achsen
+  R      ML_S_Sollwert_aus_Status_invers
+
+  L      MG_Taste_S_Stop
+  S      ML_S_Stop
+
+  L      NP_M4221_PET_Tabelle_NC_STOP
+  O      NP_M4223_PET_Tabelle_NC_Abbruch
+  O      ML_S_Stop
+  ON     MG_kein_Spindel_Stop_mit_Taste_NC_Stop
+  IFT
+    L      MG_NC_Stop_aktiv
+;$WS    O      MG_NC_Stop_in_BA_Manuell
+    O      NP_M4221_PET_Tabelle_NC_STOP
+    O      NP_M4223_PET_Tabelle_NC_Abbruch
+    A[
+      L      MG_Achsen_in_Position
+      O      NP_M4151_BA_Elektronisches_Handrad
+      O      NP_M4660_HR5x0_aktiv
+    ]
+    AN     MG_Achs_Tasten_speichern
+    =N     TS_Spindel_verzoegert_Stop
+
+    LN     TS_Spindel_verzoegert_Stop
+    AN     TR_Spindel_verzoegert_Stop
+    S      ML_S_Sollwert_aus_Status_invers
+
+    L      MG_Spindel_steht
+    R      ML_S_Stop
+  ENDI
+
+  L      MG_Taste_S_M5
+  A      NP_M4175_Stern_blinkt
+  O      NP_M4070_Strobe_G_Code
+  O      MG_programmierter_Halt_M00_aktiv
+  O      PN_Fehler_Arbeitsraum_offen
+  O      PN_Fehler_Getriebe_Schaltung
+  O      PN_Fehler_Spindel_1_2_Aktivierung
+  O      NP_M4158_BA_Satz_Vorlauf_aktiv
+  O      MG_WZW_manuell
+  O      MG_Spindel_C_Achs_Betrieb_aktiv
+  ON     MG_Getriebe_Stufe_ok
+  O      MG_Sn_I_WZ_entspannt
+  ON     MG_Sn_I_WZ_gespannt
+#if CFG_FS = "aktiv"                   * SPLC_0011
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+#endif
+  S      ML_S_Sollwert_aus_Status_invers
+
+  L      PN_M4007_S_M05_Sollwert_0_und_Status
+  R      ML_S_Sollwert_aus_Status_invers
+
+  CM     Spindel_LED
+
+  CM     Spindel_tippen
+
+;Regler Freigabe
+
+  LN     PN_M4007_S_M05_Sollwert_0_und_Status
+  AN     ML_S_Sollwert_aus_Status_invers
+  O      PN_M4009_S_pendeln_links
+  O      PN_M4010_S_pendeln_rechts
+  O      PN_M4011_S_Drehzahl_aus_MP3520_0
+  ON     PN_M4012_S_Regelkreis_oeffnen
+  IFT
+    S      O_Regler_Freigabe_S1
+    R      O_Regler_Freigabe_S2
+
+    L      MG_Spindel_2_aktiv
+    R      O_Regler_Freigabe_S1
+    S      O_Regler_Freigabe_S2
+  ENDI
+
+  L      PN_M4007_S_M05_Sollwert_0_und_Status
+  O      ML_S_Sollwert_aus_Status_invers
+  A      PN_M4012_S_Regelkreis_oeffnen
+  A      MG_Spindel_steht
+*$WS Unterbrechung sollte ausschalten
+  A[
+    LN     NP_M4030_Gewindebohren_aktiv
+    O      MG_NC_Stop_aktiv
+  ]
+  AN     PN_M4009_S_pendeln_links
+  AN     PN_M4010_S_pendeln_rechts
+  ON     MG_Steuer_Spannung_verzoegert_ein
+#if CFG_HSCI = "inaktiv"
+  ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+  ON     MG_Antriebs_Freigabe_Spindel
+  O      MG_YD_Umschaltung_drehzahlabhaengig
+  R      O_Regler_Freigabe_S1
+  R      O_Regler_Freigabe_S2
+
+#if CFG_FS = "aktiv"                   * SPLC_0012
+  L      DG_sichere_Spindeln
+  BT     BG_Index_Sn
+  IFT
+    LN     O_Regler_Freigabe_S1
+    AN     O_Regler_Freigabe_S2
+    O      MG_Antrieb_bereit[KG_Spindel]
+    O[
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      <>     S_STATE_STO
+      A[
+        L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+        <>     S_STATE_STO_O
+      ]
+      A      ApiToSafety.PP_AxGrpActivate[BL_Achsgruppe_FS_Index]
+    ]
+    O[
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      ==     S_STATE_SOS
+    ]
+    R      MG_S_Aktivierung_fehlt
+
+    L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+    ==     S_STATE_STO
+    O[
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      ==     S_STATE_STO_O
+    ]
+    O[
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      ==     S_STATE_SOS
+      A      MG_MP549_Achsgruppe_SS2_Reaktion_SOS[BG_Index_Sn]
+    ]
+    A[
+      L      O_Regler_Freigabe_S1
+      O      O_Regler_Freigabe_S2
+    ]
+    S      MG_S_Aktivierung_fehlt
+
+    L      O_Regler_Freigabe_S1
+    O      O_Regler_Freigabe_S2
+    AN     ML_Regler_Freigabe
+    AN     ApiToSafety.PP_AxGrpActivate[BL_Achsgruppe_FS_Index]
+    S      MG_S_Aktivierung_fehlt
+
+    L      O_Regler_Freigabe_S1
+    O      O_Regler_Freigabe_S2
+    =      ML_Regler_Freigabe
+
+    L      MG_S_Aktivierung_fehlt
+    R      O_Regler_Freigabe_S1
+    R      O_Regler_Freigabe_S2
+
+    L      MG_S_Aktivierung_fehlt
+    S      MG_Taste_S_M3_M4_gesperrt
+
+    L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+    >=     S_STATE_SOS
+    AN[
+      L      I_Taste_S_M3_M4
+      O      I_Taste_S_M3
+      O      I_Taste_S_M4
+    ]
+    R      MG_Taste_S_M3_M4_gesperrt
+
+    L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+    <      S_STATE_SOS
+    AN     MG_S_Aktivierung_fehlt
+    R      MG_Taste_S_M3_M4_gesperrt
+  ELSE
+    L      MG_Eins_Merker
+    R      MG_S_Aktivierung_fehlt
+  ENDI
+#endif
+
+  L      WG_Motor_Temperatur_S
+  >=     STG_Spindel[BG_Index_Sn].DG_Luefter_ein_Temperatur
+  A      MG_Not_Halt_entriegelt
+  S      O_S1_Spindel_Luefter
+  S      O_S2_Spindel_Luefter
+
+  L      WG_Motor_Temperatur_S
+  <=     STG_Spindel[BG_Index_Sn].DG_Luefter_aus_Temperatur
+  R      O_S1_Spindel_Luefter
+  R      O_S2_Spindel_Luefter
+
+  L      BG_Index_Sn
+  ==     KL_Spindel_1
+  RN     O_S1_Spindel_Luefter
+  R      O_S2_Spindel_Luefter
+
+  L      MG_Spindel_digital
+  IFT
+    LN     PN_M4007_S_M05_Sollwert_0_und_Status
+    AN     MG_Antrieb_bereit[KG_Spindel]
+    AN     MG_YD_Umschaltung_drehzahlabhaengig
+    O      ML_S_Sollwert_aus_Status_invers
+    =      PN_M4008_S_Sollwert_aus_Status_invers
+  ELSE
+    LN     PN_M4007_S_M05_Sollwert_0_und_Status
+    A      TR_Regler_Freigabe_S
+    O      ML_S_Sollwert_aus_Status_invers
+    =      PN_M4008_S_Sollwert_aus_Status_invers
+  ENDI
+
+;Betriebsstunden Zähler S1/S2
+
+  L      PN_M4012_S_Regelkreis_oeffnen
+  O      NP_M4030_Gewindebohren_aktiv
+  O      NP_M4031_Gewindebohren_gesteuert
+  A[
+    L      O_Regler_Freigabe_S1
+    O      O_Regler_Freigabe_S2
+  ]
+  =      ML_BS_Zaehler_ein
+
+  L      ML_BS_Zaehler_ein
+  AN     ML_BS_Zaehler_war_ein
+  IFT
+    LN     MG_Spindel_2_aktiv
+    IFT
+      PS     KG_Betriebsstunden_S1
+    ELSE
+      PS     KG_Betriebsstunden_S2
+    ENDI
+    CM     9190                        ;Starten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  LN     ML_BS_Zaehler_ein
+  A      ML_BS_Zaehler_war_ein
+  IFT
+    LN     MG_Spindel_2_aktiv
+    IFT
+      PS     KG_Betriebsstunden_S1
+    ELSE
+      PS     KG_Betriebsstunden_S2
+    ENDI
+    CM     9191                        ;Anhalten Betriebsstundenzähler
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      ML_BS_Zaehler_ein
+  =      ML_BS_Zaehler_war_ein
+
+  L      MG_S_Nist_gleich_Nsoll
+  AN     ML_S_Nist_kleiner_Nmin
+  AN     NP_M4002_S_Sollwert_0
+  =      MG_Spindel_Drehzahl_N_ok
+
+  L      ML_S_Nist_kleiner_Nmin
+  O      MG_Spindel_C_Achs_Betrieb_aktiv
+  A      MG_S_Nist_gleich_Nsoll
+  A      NP_M4001_S_Sollwert_nicht_in_Rampe
+  A      NP_M4002_S_Sollwert_0
+  =      MG_Spindel_steht
+
+  L      PN_M4007_S_M05_Sollwert_0_und_Status
+  O      PN_M4008_S_Sollwert_aus_Status_invers
+  A      MG_Spindel_steht
+  AN     MG_Antrieb_bereit[KG_Spindel]
+  AN     O_Regler_Freigabe_S1
+  AN     O_Regler_Freigabe_S2
+  =      MG_Spindel_aus
+
+  CM     Spindel_Diagnose
+  CM     Fehlermeldungen
+  CM     Spindel_Reduzierung
+  CM     Spindel_Override
+#if CFG_S_in_Achs_Betrieb = "aktiv"
+  CM     Spindel_C_Achs_Betrieb
+#endif
+
+  L      MG_S_Override_kein_F_Stop
+  CMT    Override_bewegt
+
+EM
+
+;----------------------------
+LBL Spindel_Reduzierung
+
+  L      K+99999999
+  =      PN_D604_Max_S_Drehzahl_PLC
+
+  LN     MG_Achsen_in_Bewegung
+  R      MG_Arbeitsraum_war_offen
+
+  LN     I_Arbeitsraum_1_zu_verriegelt
+  ON     I_Arbeitsraum_2_zu_verriegelt
+  AN     MG_Pendeln_ein
+  O[
+    LN     I_Arbeitsraum_1_zu_verriegelt
+    A      MG_Axis_Limit_1
+    O[
+      ON     I_Arbeitsraum_2_zu_verriegelt
+      A      MG_Axis_Limit_2
+    ]
+  ]
+  AN     MG_Tueren_inaktiv
+  AN     MG_SLS_Betriebsart_2_Einrichten
+  AN     MG_SLS_Betriebsart_3
+  AN     MG_SLS_Betriebsart_4
+  S      MG_Arbeitsraum_war_offen
+
+#if CFG_FS = "inaktiv"
+  L      MG_SLS_Betriebsart_4
+  IFT
+    L      STG_Spindel[BG_Index_Sn].DG_Betriebsart_4_Drehzahl
+    =      PN_D604_Max_S_Drehzahl_PLC
+  ENDI
+
+  L      MG_SLS_Betriebsart_3
+  IFT
+    L      STG_Spindel[BG_Index_Sn].DG_Betriebsart_3_Drehzahl
+    =      PN_D604_Max_S_Drehzahl_PLC
+  ENDI
+
+  L      MG_Arbeitsraum_war_offen
+  O      MG_WZW_Help
+  O      MG_WZW_Service
+  O      MG_PW_Help
+  O      MG_SLS_Betriebsart_2_Einrichten
+  IFT
+    L      STG_Spindel[BG_Index_Sn].DG_Betriebsart_2_Drehzahl
+    =      PN_D604_Max_S_Drehzahl_PLC
+  ENDI
+#else
+  L      MG_WZW_Help
+  O      MG_WZW_Service
+  O      MG_PW_Help
+  IFT
+    L      STG_Spindel[BG_Index_Sn].DG_Betriebsart_2_Drehzahl
+    =      PN_D604_Max_S_Drehzahl_PLC
+  ENDI
+#endif
+
+*$$WS
+;    LN     MG_S1_Test_Smax_bei_WZ_Laenge_inaktiv[BG_Index_Sn]
+;    IFT
+;      LN     PN_M4007_S_M05_Sollwert_0_und_Status
+;      AN     PN_M4008_S_Sollwert_aus_Status_invers
+;      O[
+;        L      NP_D356_S_Programmierte_Drehzahl_NC
+;        <>     DL_letzte_Programmierte_Drehzahl_NC
+;      ]
+;      A[
+;        L      NP_D356_S_Programmierte_Drehzahl_NC
+;        >      DG_max_S_Drehzahl_T_Laenge
+;      ]
+;      S      PN_Fehler_Smax_bei_T_Laenge
+;
+;      L      NP_D356_S_Programmierte_Drehzahl_NC
+;      <=     DG_max_S_Drehzahl_T_Laenge
+;      R      PN_Fehler_Smax_bei_T_Laenge
+;
+;      L      NP_D356_S_Programmierte_Drehzahl_NC
+;      =      DL_letzte_Programmierte_Drehzahl_NC
+;
+;      L      DG_max_S_Drehzahl_T_Laenge
+;      =      PN_D604_Max_S_Drehzahl_PLC
+;    ENDI
+
+;  L      MG_S_Schmierung_Einlauf
+;  IFT
+;    L      DG_S1_Einlauf_max_Drehzahl[BG_Index_Sn]
+;    <      PN_D604_Max_S_Drehzahl_PLC
+;    IFT
+;      L      DG_S1_Einlauf_max_Drehzahl[BG_Index_Sn]
+;      =      PN_D604_Max_S_Drehzahl_PLC
+;    ENDI
+;  ENDI
+
+EM
+
+;----------------------------
+LBL Spindel_Diagnose
+
+  L      MG_Spindel_digital
+  O      MG_Spindel_mit_Messgeraet
+  IFT
+    L      MG_Spindel_mit_Uf_Steller_Betrieb
+    IFT
+      L      DG_Motor_Ist_Drehzahl_S
+      /      K+1000
+      =      DG_Spindel_Ist_Drehzahl
+    ELSE
+      L      NP_D368_S_Ist_Drehzahl
+      =      DG_Spindel_Ist_Drehzahl
+    ENDI
+
+    L      NP_D372_S_Enddrehzahl
+    <=     K+100
+    IFT
+      L      NP_D372_S_Enddrehzahl
+      -      DG_Spindel_Ist_Drehzahl
+      <      STG_Spindel[BG_Index_Sn].DG_n_Diff_100
+      =      MG_S_Nist_gleich_Nsoll
+    ELSE
+      L      DG_Spindel_Ist_Drehzahl
+      X      K+100
+      /      NP_D372_S_Enddrehzahl
+      >      STG_Spindel[BG_Index_Sn].DG_n_soll
+      =      MG_S_Nist_gleich_Nsoll
+    ENDI
+
+    L      DG_Spindel_Ist_Drehzahl
+    <      STG_Spindel[BG_Index_Sn].DG_n_min
+    A[
+      L      PN_M4007_S_M05_Sollwert_0_und_Status
+      O      ML_S_Sollwert_aus_Status_invers
+    ]
+    =      ML_S_Nist_kleiner_Nmin
+    S      MG_S_Nist_gleich_Nsoll
+  ENDI
+
+  LN     MG_Spindel_digital
+  AN     MG_Spindel_mit_Messgeraet
+  IFT
+    LN     MG_Spindel_2_aktiv
+    IFT
+
+#if &I_S1_Nist_gleich_Nsoll > 999
+      L      NP_M4001_S_Sollwert_nicht_in_Rampe
+      =      I_S1_Nist_gleich_Nsoll
+#endif
+
+      L      I_S1_Nist_gleich_Nsoll
+      =      MG_S_Nist_gleich_Nsoll
+
+#if &I_S1_Nist_kleiner_Nmin > 999
+      L      NP_M4002_S_Sollwert_0
+      =      I_S1_Nist_kleiner_Nmin
+#endif
+
+      L      I_S1_Nist_kleiner_Nmin
+      =      ML_S_Nist_kleiner_Nmin
+
+    ELSE
+
+#if &I_S2_Nist_gleich_Nsoll > 999
+      L      NP_M4001_S_Sollwert_nicht_in_Rampe
+      =      I_S2_Nist_gleich_Nsoll
+#endif
+
+      L      I_S2_Nist_gleich_Nsoll
+      =      MG_S_Nist_gleich_Nsoll
+
+#if &I_S2_Nist_kleiner_Nmin > 999
+      L      NP_M4002_S_Sollwert_0
+      =      I_S2_Nist_kleiner_Nmin
+#endif
+
+      L      I_S2_Nist_kleiner_Nmin
+      =      ML_S_Nist_kleiner_Nmin
+
+    ENDI
+  ENDI
+
+  L      MG_Spindel_digital
+  EMT
+
+  L      NP_W480_LE_Spannungs_Eingang_0[BG_Index_Sn]
+  X      STG_Spindel[BG_Index_Sn].DG_Faktor_Auslastungsanzeige
+  /      K+10
+  =      WG_Motor_Auslastung_S
+
+  LN     I_S1_Spindel_Temperatur_ok
+  AN     MG_Spindel_2_aktiv
+  S      PN_Fehler_Motor_Tmax
+  IFT
+    L      KG_Spindel
+    =X
+    M_Fehler_Motor_Tmax
+  ENDI
+
+  LN     I_S2_Spindel_Temperatur_ok
+  A      MG_Spindel_2_aktiv
+  S      PN_Fehler_Motor_Tmax
+  IFT
+    L      KG_Spindel
+    =X
+    M_Fehler_Motor_Tmax
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spindel_tippen
+
+  LN     PN_M4007_S_M05_Sollwert_0_und_Status
+  AN     PN_M4008_S_Sollwert_aus_Status_invers
+  O      MG_Spindel_Richten_aktiv
+  ON     MG_BA_Manuell
+  O      MG_WZW_manuell
+  EMT
+
+  L      MG_3D_Kopf_Achse_1_loesen_Service
+  O      MG_3D_Kopf_Achse_2_loesen_Service
+  IFT
+    L      MG_Taste_S_M3_tippen
+    =      PN_M4010_S_pendeln_rechts
+
+    L      MG_Taste_S_M4_tippen
+    =      PN_M4009_S_pendeln_links
+  ELSE
+    L      MG_Taste_S_M3_tippen
+    O      MG_Taste_S_M4_tippen
+    =      PN_M4011_S_Drehzahl_aus_MP3520_0
+
+    L      MG_Taste_S_M4_tippen
+    =      PN_M4014_S_Umkehr_Drehrichtung
+  ENDI
+
+  L      PN_M4011_S_Drehzahl_aus_MP3520_0
+  AN     PN_M4014_S_Umkehr_Drehrichtung
+  =      O_LED_S_M3_tippen
+
+  L      PN_M4011_S_Drehzahl_aus_MP3520_0
+  A      PN_M4014_S_Umkehr_Drehrichtung
+  =      O_LED_S_M4_tippen
+
+EM
+
+;----------------------------
+LBL Spindel_LED
+
+  L      PN_M4005_S_M03_Sollwert_und_Status
+  O      MG_Taste_S_M3
+  =      O_LED_S_M3
+
+  L      PN_M4006_S_M04_Sollwert_und_Status
+  O      MG_Taste_S_M4
+  =      O_LED_S_M4
+
+  L      O_LED_S_M3
+  O      O_LED_S_M4
+  =      O_LED_S_M3_M4
+
+  L      PN_M4008_S_Sollwert_aus_Status_invers
+  AN     MG_Takt_1_s
+  R      O_LED_S_M3
+  R      O_LED_S_M4
+  R      O_LED_S_M3_M4
+
+  L      ML_S_Nist_kleiner_Nmin
+  O      MG_Taste_S_M5
+  =      O_LED_S_M5
+
+EM
+
+;----------------------------
+LBL Fehlermeldungen
+
+  LN     MG_Steuer_Spannung_verzoegert_ein
+  S      TS_Spindel_N_Aenderung
+  EMT
+
+  L      MG_S_Nist_gleich_Nsoll
+  O      MG_Spindel_steht
+  O      MG_Taste_NC_Start
+#if CFG_FS = "aktiv"
+  O      MG_S_Aktivierung_fehlt        * SPLC_0012
+#endif
+  =      TS_Spindel_N_Aenderung
+
+  LN     TR_Spindel_N_Aenderung
+  AN     NP_M4002_S_Sollwert_0
+  S      PN_Fehler_Spindel_Nsoll
+
+  LN     TR_Spindel_N_Aenderung
+  AN     TS_Spindel_N_Aenderung
+  A      NP_M4002_S_Sollwert_0
+  S      PN_Fehler_Spindel_Nnull
+
+  L      MG_Spindel_digital
+  EMT
+
+  LN     MG_Spindel_2_aktiv
+  IFT
+    L      I_S1_Spindel_I_max
+    =      PN_Fehler_Spindel_I_max
+
+    LN     O_Regler_Freigabe_S1
+    =      TS_Regler_Freigabe_S
+
+    LN     I_S1_Spindel_betriebsbereit
+    AN     TR_Regler_Freigabe_S
+    AN     TS_Regler_Freigabe_S
+    S      PN_Fehler_Spindel_betriebsbereit
+  ELSE
+    L      I_S2_Spindel_I_max
+    =      PN_Fehler_Spindel_I_max
+
+    LN     O_Regler_Freigabe_S2
+    =      TS_Regler_Freigabe_S
+
+    LN     I_S2_Spindel_betriebsbereit
+    AN     TR_Regler_Freigabe_S
+    AN     TS_Regler_Freigabe_S
+    S      PN_Fehler_Spindel_betriebsbereit
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spindel_Override
+
+#if CFG_Override_Eilgang_statt_Spindel  = "aktiv"
+
+  L      MG_Taste_Override_S_100
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_Override_S_100
+  =      MG_SK_Override_S_100
+
+  L      MG_SK_Override_S_100
+  ON     ML_S_Override_initialisiert
+  IFT
+    S      ML_S_Override_initialisiert
+
+    L      KL_100_Prozent
+    =      WL_S_Override_PLC
+  ENDI
+
+  L      MG_Taste_Override_S_plus
+  O      MG_SK_Override_S_plus
+  IFT
+    R      MG_SK_Override_S_100
+
+    LN     ML_Taste_betaetigt
+    IFT
+      L      WL_S_Override_PLC
+      +      KL_1_Prozent
+      =      WL_S_Override_PLC
+    ENDI
+
+    LN     TR_Tasten_Impuls_Kennung
+    A      MG_Impuls_250_ms
+    IFT
+      L      WL_S_Override_PLC
+      +      KL_5_Prozent
+      /      KL_5_Prozent
+      X      KL_5_Prozent
+      =      WL_S_Override_PLC
+    ENDI
+  ENDI
+
+  L      MG_Taste_Override_S_minus
+  O      MG_SK_Override_S_minus
+  IFT
+    R      MG_SK_Override_S_100
+
+    LN     ML_Taste_betaetigt
+    IFT
+      L      WL_S_Override_PLC
+      -      KL_1_Prozent
+      =      WL_S_Override_PLC
+    ENDI
+
+    LN     TR_Tasten_Impuls_Kennung
+    A      MG_Impuls_250_ms
+    IFT
+      L      WL_S_Override_PLC
+      -      KL_1_Prozent
+      /      KL_5_Prozent
+      X      KL_5_Prozent
+      =      WL_S_Override_PLC
+    ENDI
+  ENDI
+
+  L      WL_S_Override_PLC
+  =      PN_W764_S_Override_PLC
+
+  L      MG_Taste_Override_S_plus
+  O      MG_Taste_Override_S_minus
+  O      MG_SK_Override_S_plus
+  O      MG_SK_Override_S_minus
+  O      MG_Taste_Override_S_100
+  =      ML_Taste_betaetigt
+  R      TS_Tasten_Impuls_Kennung
+#else
+  L      MG_Taste_Override_S_100
+  AN     ML_Taste_betaetigt
+  XO     MG_SK_Override_S_100
+  =      MG_SK_Override_S_100
+  IFT
+    L      KL_100_Prozent
+    =      PN_W764_S_Override_PLC
+
+    L      NP_W492_S_Override_NC
+    -      WL_Faktor_S_Override_NC
+    PSW
+    CM     Absolut
+    PLW
+    >=     KL_10_Prozent
+    R      MG_SK_Override_S_100
+  ELSE
+    L      NP_W492_S_Override_NC
+    =      WL_Faktor_S_Override_NC
+  ENDI
+
+  L      MG_Taste_Override_S_100
+  =      ML_Taste_betaetigt
+#endif
+
+  L      PN_W764_S_Override_PLC
+  >      WG_MP3310_0_S_Override_max[BG_Index_Sn]
+  IFT
+    L      WG_MP3310_0_S_Override_max[BG_Index_Sn]
+    =      PN_W764_S_Override_PLC
+    =      WL_S_Override_PLC
+  ENDI
+
+  L      PN_W764_S_Override_PLC
+  <      WG_MP3310_1_S_Override_min[BG_Index_Sn]
+  IFT
+    L      WG_MP3310_1_S_Override_min[BG_Index_Sn]
+    =      PN_W764_S_Override_PLC
+    =      WL_S_Override_PLC
+  ENDI
+
+EM
+
+;----------------------------
+LBL Override_bewegt
+
+  L      NP_W492_S_Override_NC
+  -      WL_S_Override_NC
+  PSW
+  CM     Absolut
+  PLW
+  >      KL_1_Prozent
+  A      ML_S_Hochlauf_erreicht
+  =      TS_S_Override_bewegt
+  S      TR_S_Override_bewegt
+
+  L      MG_Spindel_Drehzahl_N_ok
+  S      ML_S_Hochlauf_erreicht
+
+  L      MG_Spindel_steht
+  R      ML_S_Hochlauf_erreicht
+  R      TR_S_Override_bewegt
+
+  L      NP_W492_S_Override_NC
+  =      WL_S_Override_NC
+
+EM
+
+;----------------------------
+LBL Spindel_Umschaltung
+
+  LN     MG_2_Spindel_Betrieb_aktiv
+  IFT
+    L      MG_M41_Spindel_1
+    O      MG_M42_Spindel_2
+    S      PN_Fehler_M_Befehl_ohne_Funktion
+
+    EM
+  ENDI
+
+  CASE   BL_S1_S2_Umschaltung
+    CM     Aktivierung                 ;00
+    CM     Umschaltung                 ;01
+    CM     Umschaltung_ok              ;02
+    CM     MP_lesen                    ;03
+    CM     Getriebe_init               ;04
+    CM     Spindel_S2_ein_aus          ;05
+    CM     M_Quittung                  ;06
+    CM     S_Umschaltung_Ende          ;07
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_S1_S2_Umschaltung
+  ENDI
+
+  LN     MG_Spindel_1_aktiv
+  R      O_Regler_Freigabe_S1
+
+  LN     MG_Spindel_2_aktiv
+  R      O_Regler_Freigabe_S2
+
+  LN     MG_Steuerung_betriebsbereit
+  CMT    S_Umschaltung_Reset
+
+EM
+
+;----------------------------
+LBL Aktivierung
+
+  L      MG_Spindel_2_aktiv
+  XO     I_S2_Spindel_aktiv
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+
+  L      BG_Index_Sn
+  <>     KL_Spindel_1
+  A      MG_Spindel_1_aktiv
+  A      ML_Spindel_initialisiert
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+
+  L      BG_Index_Sn
+  <>     KL_Spindel_2
+  A      MG_Spindel_2_aktiv
+  A      ML_Spindel_initialisiert
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+
+  LN     MG_Spindel_1_aktiv
+  AN     MG_Spindel_2_aktiv
+#ifdef CFG_Prog_Station_OEM or CFG_Prog_Station_public
+  A      ML_Spindel_initialisiert
+#endif
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+
+  L      MG_M41_Spindel_1
+  A      MG_Spindel_1_aktiv
+  O[
+    L      MG_M42_Spindel_2
+    A      MG_Spindel_2_aktiv
+  ]
+  S      PN_M4092_Quit_M_Funktion
+  JPT    S_Umschaltung_Ende
+
+  L      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+  A      PN_M4007_S_M05_Sollwert_0_und_Status
+  A      MG_Steuerung_betriebsbereit
+  A      MG_Spindel_aus
+  ON     ML_Spindel_initialisiert
+  A      MG_Maschinenparameter_gelesen
+  S      MG_Spindel_Wechsel_aktiv
+  PSL
+
+EM
+
+;----------------------------
+LBL Umschaltung
+
+  PS     K+0
+  PS     KL_aktive_Spindel
+  CM     9179                          ;Statusinformationen Spindeln
+  PL     BG_Index_Sn
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Index_Sn
+  <>     KL_Spindel_1
+  A      MG_M41_Spindel_1
+  IFT
+    PS     KL_Spindel_1
+    CM     9175                        ;Spindel umschalten
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_Spindel_2_aktiv
+  AN     ML_Spindel_initialisiert
+  O      MG_M42_Spindel_2
+  A[
+    L      BG_Index_Sn
+    <>     KL_Spindel_2
+  ]
+  IFT
+    PS     KL_Spindel_2
+    CM     9175                        ;Spindel umschalten
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  PSL
+
+  L      NP_M4203_Fehler_Modul_9xxx
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+  JPT    S_Umschaltung_Reset
+
+EM
+
+;----------------------------
+LBL Umschaltung_ok
+
+  L      MG_Eins_Merker
+  R      MG_Spindel_1_aktiv
+  R      MG_Spindel_2_aktiv
+  R      MG_Spindel_aktiv
+
+  PS     K+0
+  PS     KL_aktive_Spindel
+  CM     9179                          ;Statusinformationen Spindeln
+  PL     BG_Index_Sn
+  M_Modul_Fehler_anzeigen
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  S      PN_M4015_S_Referenz_Reset
+  PSL
+
+  L      NP_M4203_Fehler_Modul_9xxx
+  S      PN_Fehler_Spindel_1_2_Aktivierung
+  JPT    S_Umschaltung_Reset
+
+  L      BG_Index_Sn
+  ==     KL_Spindel_1
+  S      MG_Spindel_1_aktiv
+
+  L      BG_Index_Sn
+  ==     KL_Spindel_2
+  S      MG_Spindel_2_aktiv
+
+EM
+
+;----------------------------
+LBL MP_lesen
+
+  L      MG_Eins_Merker
+  R      MG_Maschinenparameter_gelesen
+  PSL
+
+EM
+
+;----------------------------
+LBL Getriebe_init
+
+  L      MG_Maschinenparameter_gelesen
+  S      MG_Getriebe_initialisieren
+  PSL
+
+EM
+
+;----------------------------
+LBL Spindel_S2_ein_aus
+
+  L      MG_Spindel_1_aktiv
+  A      I_S2_Spindel_aktiv
+  =      PN_Fehler_S2_Spindel_ablegen
+
+  L      MG_Spindel_2_aktiv
+  AN     I_S2_Spindel_aktiv
+  =      PN_Fehler_S2_Spindel_einsetzen
+
+  LN     PN_Fehler_S2_Spindel_einsetzen
+  AN     PN_Fehler_S2_Spindel_ablegen
+  ON     ML_Spindel_initialisiert
+  PSL
+
+EM
+
+;----------------------------
+LBL M_Quittung
+
+  LN     NP_M4072_Strobe_M_Funktion
+  AN     MG_Getriebe_initialisieren
+  AN     PN_M4134_Strobe_G_Stufe_Drehzahl
+  S      ML_Spindel_initialisiert
+  PSL
+
+  L      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+  AN     MG_Getriebe_initialisieren
+  AN     PN_M4134_Strobe_G_Stufe_Drehzahl
+  S      PN_M4092_Quit_M_Funktion
+
+EM
+
+;----------------------------
+LBL S_Umschaltung_Ende
+
+  PS     MG_Null_Merker
+
+LBL S_Umschaltung_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Spindel_Wechsel_aktiv
+  R      PN_M4015_S_Referenz_Reset
+
+  L      K+0
+  =      BL_S1_S2_Umschaltung
+
+EM
+
+#if CFG_S_in_Achs_Betrieb = "aktiv"
+;----------------------------
+LBL Spindel_C_Achs_Betrieb
+
+;*--> $WS Minimal-Lösung ohne Synchronisierung Spindel Position
+;  L      DG_S_Achs_Aktivierung
+;  BT     KG_S_Achs_Index
+;  A      MG_Spindel_aus
+;  IFT
+;    L      DG_S_Achs_Aktivierung
+;    BS     KG_S_Achs_Index
+;    =      DG_S_Achs_Freigabe
+;
+;    L      NP_D1104_Achsen_in_Position
+;    BT     KG_S_Achs_Index
+;    AN     NP_M4075_Strobe_FN19
+;    AN     MG_M11_Loesen_Achsen
+;    IFT
+;      L      DG_S_Achs_Freigabe
+;      BC     KG_S_Achs_Index
+;      =      DG_S_Achs_Freigabe
+;    ENDI
+;  ENDI
+;
+;EM
+;*<--
+  L      MG_Maschinenparameter_gelesen
+  AN     ML_S_C_Achs_Init
+  S      ML_S_C_Achs_Init
+  CMT    C_Ref_Vorgabe_
+
+  CASE   BL_Schritt_S_C_Achs
+    CM     C_Achs_ein                  ;00
+    CM     C_Klemmbetrieb_Aus          ;01
+    CM     C_Achs_Aktivierung          ;02
+    CM     C_Freigabe_ein              ;03
+    CM     C_in_Regelung               ;04
+    CM     C_Ref_Vorgabe               ;05
+    CM     C_M_Quitt                   ;06
+    CM     C_Achs_aus                  ;07
+    CM     C_Freigabe_aus              ;08
+    CM     C_Klemmbetrieb_ein          ;09
+    CM     C_in_Klemmung               ;10
+    CM     C_M_Quitt                   ;11
+    CM     C_Achs_Ende                 ;12
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_S_C_Achs
+  ENDI
+
+  L      MG_Spindel_C_Achs_Betrieb_aktiv
+  R      PN_Fehler_Spindel_Nsoll
+  R      PN_Fehler_Spindel_Nnull
+
+  LN     MG_Steuerung_betriebsbereit
+  CMT    C_Achs_Reset
+
+EM
+
+;----------------------------
+LBL C_Achs_ein                         ;00
+
+  L      MG_M27_Interpolations_Drehen_aus
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M26_Interpolations_Drehen_ein
+  S      MG_Spindel_C_Achs_Freigabe_aktiv
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Klemmbetrieb_Aus                 ;01
+
+  PS     MG_Eins_Merker
+
+  L      DG_Klemmbetrieb_Aus_extern
+  BS     KG_S_Achs_Index
+  =      DG_Klemmbetrieb_Aus_extern
+
+EM
+
+;----------------------------
+LBL C_Achs_Aktivierung                 ;02
+
+  L      DG_S_Achs_Aktivierung
+  BT     KG_S_Achs_Index
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Freigabe_ein                     ;03
+
+  L      MG_Spindel_aus
+  PSL
+  IFT
+    L      DG_S_Achs_Aktivierung
+    BS     KG_S_Achs_Index
+    =      DG_S_Achs_Freigabe
+  ENDI
+
+EM
+
+;----------------------------
+LBL C_in_Regelung                      ;04
+
+  LN     DG_Klemmbetrieb_Aus_extern
+  BT     KG_S_Achs_Index
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Ref_Vorgabe                      ;05
+
+  PS     MG_Eins_Merker
+
+LBL C_Ref_Vorgabe_
+
+  PS     KG_S_Achs_Index
+  PS     DG_Position_Achse_S_Ist
+  CM     9147                          ;Refwert-Vorgabe für programmierte Achse
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL C_M_Quitt                          ;06 ;11
+
+  L      MG_M26_Interpolations_Drehen_ein
+  O      MG_M27_Interpolations_Drehen_aus
+  S      PN_M4092_Quit_M_Funktion
+
+  LN     MG_M26_Interpolations_Drehen_ein
+  AN     MG_M27_Interpolations_Drehen_aus
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Achs_aus                         ;07
+
+  L      MG_M26_Interpolations_Drehen_ein
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M27_Interpolations_Drehen_aus
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Freigabe_aus                     ;08
+
+  L      NP_D1104_Achsen_in_Position
+  BT     KG_S_Achs_Index
+  PSL
+  IFT
+    R      MG_Spindel_C_Achs_Freigabe_aktiv
+
+    L      DG_S_Achs_Freigabe
+    BC     KG_S_Achs_Index
+    =      DG_S_Achs_Freigabe
+
+    L      DG_S_Achs_Aktivierung
+    BC     KG_S_Achs_Index
+    =      DG_S_Achs_Aktivierung
+  ENDI
+
+EM
+
+;----------------------------
+LBL C_Klemmbetrieb_ein                 ;09
+
+  PS     MG_Eins_Merker
+
+  L      DG_Klemmbetrieb_Ein_extern
+  BS     KG_S_Achs_Index
+  =      DG_Klemmbetrieb_Ein_extern
+
+EM
+
+;----------------------------
+LBL C_in_Klemmung                      ;10
+
+  LN     DG_Klemmbetrieb_Ein_extern
+  BT     KG_S_Achs_Index
+  PSL
+
+EM
+
+;----------------------------
+LBL C_Achs_Ende                        ;12
+
+  PS     MG_Null_Merker
+
+;----------------------------
+LBL C_Achs_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Spindel_C_Achs_Freigabe_aktiv
+
+  L      K+0
+  =      BL_Schritt_S_C_Achs
+
+EM
+#endif
+

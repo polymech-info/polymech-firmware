@@ -1,0 +1,67 @@
+/* Diagnosis axes/spindle
+   ----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"DIAG AXES/SPINDLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"    X    Y    Z    4    5    6      S \n";
+CURSOR=OFF;
+"Motor Temperature [Degree] \n";
+" %4D %4D %4D %4D %4D %4D   %4D\n",
+$WG_drive_temperature_X$/c,$WG_drive_temperature_Y$/c,
+$WG_drive_temperature_Z$/c,$WG_drive_temperature_4$/c,
+$WG_drive_temperature_5$/c,$WG_drive_temperature_6$/c,
+$WG_drive_temperature_S$/c;
+"Motor Utilization [%%] \n";
+" %4D %4D %4D %4D %4D %4D   %4D\n",
+$WG_drive_utilization_X$/c,$WG_drive_utilization_Y$/c,
+$WG_drive_utilization_Z$/c,$WG_drive_utilization_4$/c,
+$WG_drive_utilization_5$/c,$WG_drive_utilization_6$/c,
+$WG_drive_utilization_S$/c;
+"Motor rpm [1/min] \n";
+"%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F %+6.0F\n",
+$DG_actual_drive_rpm_X$/n=3/c,$DG_actual_drive_rpm_Y$/n=3/c,
+$DG_actual_drive_rpm_Z$/n=3/c,$DG_actual_drive_rpm_4$/n=3/c,
+$DG_actual_drive_rpm_5$/n=3/c,$DG_actual_drive_rpm_6$/n=3/c,
+$DG_actual_drive_rpm_S$/n=3/c;
+CURSOR=ON;
+"                 S  X  Y  Z  4  5  6  \n";
+CURSOR=OFF;
+"I2T Warning   :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_I2t_S_pre_warning$/c,$MG_I2t_X_pre_warning$/c,
+$MG_I2t_Y_pre_warning$/c,$MG_I2t_Z_pre_warning$/c,
+$MG_I2t_4_pre_warning$/c,$MG_I2t_5_pre_warning$/c,
+$MG_I2t_6_pre_warning$/c;
+"I2T Limitation:  -  %D  %D  %D  %D  %D  %D\n",
+$MG_I2t_X_limitation$/c,$MG_I2t_Y_limitation$/c,
+$MG_I2t_Z_limitation$/c,$MG_I2t_4_limitation$/c,
+$MG_I2t_5_limitation$/c,$MG_I2t_6_limitation$/c;
+"Inverter Tmax :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_inverter_S_Tmax$/c,$MG_inverter_X_Tmax$/c,
+$MG_inverter_Y_Tmax$/c,$MG_inverter_Z_Tmax$/c,
+$MG_inverter_4_Tmax$/c,$MG_inverter_5_Tmax$/c,
+$MG_inverter_6_Tmax$/c;
+"Drives ready  :  %D  %D  %D  %D  %D  %D  %D\n",
+$MG_servo_drive_ready_S$/c,$MG_servo_drive_ready_X$/c,
+$MG_servo_drive_ready_Y$/c,$MG_servo_drive_ready_Z$/c,
+$MG_servo_drive_ready_4$/c,$MG_servo_drive_ready_5$/c,
+$MG_servo_drive_ready_6$/c;
+"no Reference  :  %D  %D  %D  %D  %D  %D  %D\n",
+$NP_M4018_S_no_reference$/c,$MG_reference_X_necessary_bit$/c,
+$MG_reference_Y_necessary_bit$/c,$MG_reference_Z_necessary_bit$/c,
+$MG_reference_4_necessary_bit$/c,$MG_reference_5_necessary_bit$/c,
+$MG_reference_6_necessary_bit$/c;
+"Axes Release  :  -  %D  %D  %D  %D  %D  %D\n",
+$MG_axis_release_X_bit$/c,$MG_axis_release_Y_bit$/c,
+$MG_axis_release_Z_bit$/c,$MG_axis_release_4_bit$/c,
+$MG_axis_release_5_bit$/c,$MG_axis_release_6_bit$/c;
+"in Motion     :  %D  %D  %D  %D  %D  %D  %D\n",
+$NP_M4017_S_controlled_in_motion$/c,$MG_axis_X_in_motion_bit$/c,
+$MG_axis_Y_in_motion_bit$/c,$MG_axis_Z_in_motion_bit$/c,
+$MG_axis_4_in_motion_bit$/c,$MG_axis_5_in_motion_bit$/c,
+$MG_axis_6_in_motion_bit$/c;

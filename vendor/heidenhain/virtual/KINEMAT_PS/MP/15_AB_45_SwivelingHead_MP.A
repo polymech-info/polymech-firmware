@@ -1,0 +1,74 @@
+             ;--------------------------------------------------------------
+             ;MP10 Aktive Achsen
+             ;Eingabe: %..987654321 bitcodiert
+             ;2109876543210987654ZYX
+MP 10      : %0000000000000000011111
+             ;--------------------------------------------------------------
+             ;MP100 Zuordnung Achsbezeichnung
+             ;Eingabe: WvUcBaZyX
+             ; X = NC-Achsen (Grossbuchstaben)
+             ; x = PLC-Achsen (Kleinbuchstaben)
+             ; - = nicht angezeigte Achsen
+             ;109876543210987654ZYX
+MP 100.0   : -----------------BAZYX;Verfahrbereich 1
+MP 100.1   : -----------------BAZYX;Verfahrbereich 2
+MP 100.2   : -----------------BAZYX;Verfahrbereich 3
+             ;--------------------------------------------------------------
+             ;MP410 Achskennzeichnung für Achstasten IV und V
+             ;Eingabe: A/B/C/U/V/W
+MP 410.3   : A
+MP 410.4   : B
+             ;--------------------------------------------------------------
+             ;MP810   Anzeige-Modus für Drehachsen und PLC-Hilfsachsen
+             ;Eingabe: 0,0000 bis +-99 999,9999
+             ;         0 = Anzeige +-99 999,9999
+             ;             Softwareendschalter aktiv
+             ;       <>0 = Modulo-Wert für Anzeige
+             ;             Software-Endschalter inaktiv
+MP 810.3   : 0
+MP 810.4   : 0
+MP 810.5   : 0
+             ;--------------------------------------------------------------
+             ;MP91x + Verfahrbereiche (Aktivierung über PLC)
+             ;Eingabe: -99999,9999 bis +99999,9999 [mm] bzw. [Grad]
+             ;+Endschalter für 1. Verfahrbereich
+MP 910.3   : +200
+MP 910.4   : +120
+MP 910.5   : +0
+             ;--------------------------------------------------------------
+             ;+Endschalter für 2. Verfahrbereich
+MP 911.3   : +200
+MP 911.4   : +120
+MP 911.5   : +0
+             ;--------------------------------------------------------------
+             ;+Endschalter für 3. Verfahrbereich
+MP 912.3   : +200
+MP 912.4   : +120
+MP 912.5   : +0
+             ;--------------------------------------------------------------
+             ;MP92x - Verfahrbereiche (Aktivierung über PLC)
+             ;Eingabe: -99999,9999 bis +99999,9999 [mm] bzw. [Grad]
+             ;-Endschalter für 1. Verfahrbereich
+MP 920.3   : -200
+MP 920.4   : -120
+MP 920.5   : +0
+             ;--------------------------------------------------------------
+             ;-Endschalter für 2. Verfahrbereich
+MP 921.3   : -200
+MP 921.4   : -120
+MP 921.5   : +0
+             ;--------------------------------------------------------------
+             ;-Endschalter für 3. Verfahrbereich
+MP 922.3   : -200
+MP 922.4   : -120
+MP 922.5   : +0
+             ;--------------------------------------------------------------
+             ;MP7291 Angezeigte Achsen
+             ;Eingabe: SWvUcBaZyX
+             ; X = NC-Achsen (Grossbuchstaben)
+             ; x = PLC-Achsen (Kleinbuchstaben)
+             ; - = nicht angezeigte Achsen
+             ;987654ZYX
+MP 7291.0  : S----BAZYX;Verfahrbereich 1
+MP 7291.1  : S----BAZYX;Verfahrbereich 2
+MP 7291.2  : S----BAZYX;Verfahrbereich 3

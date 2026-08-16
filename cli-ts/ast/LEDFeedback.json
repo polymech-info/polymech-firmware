@@ -1,0 +1,2352 @@
+{
+  "type": "translation_unit",
+  "children": [
+    {
+      "type": "preproc_ifdef",
+      "children": [
+        {
+          "type": "#ifndef",
+          "text": "#ifndef"
+        },
+        {
+          "type": "identifier",
+          "text": "LED_FEEDBACK_H"
+        },
+        {
+          "type": "preproc_def",
+          "children": [
+            {
+              "type": "#define",
+              "text": "#define"
+            },
+            {
+              "type": "identifier",
+              "text": "LED_FEEDBACK_H"
+            }
+          ]
+        },
+        {
+          "type": "preproc_ifdef",
+          "children": [
+            {
+              "type": "#ifdef",
+              "text": "#ifdef"
+            },
+            {
+              "type": "identifier",
+              "text": "ENABLE_LED_FEEDBACK"
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<ArduinoLog.h>"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "string_literal",
+                  "children": [
+                    {
+                      "type": "\"",
+                      "text": "\""
+                    },
+                    {
+                      "type": "string_content",
+                      "text": "config.h"
+                    },
+                    {
+                      "type": "\"",
+                      "text": "\""
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// For LED_UPDATE_INTERVAL_MS potentially\r"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<App.h>"
+                },
+                {
+                  "type": "comment",
+                  "text": "// If needed by Component or others\r"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<Component.h>"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<Adafruit_NeoPixel.h>"
+                },
+                {
+                  "type": "comment",
+                  "text": "// NeoPixel library\r"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "system_lib_string",
+                  "text": "<modbus/ModbusTCP.h>"
+                },
+                {
+                  "type": "comment",
+                  "text": "// For Modbus interaction base\r"
+                }
+              ]
+            },
+            {
+              "type": "preproc_include",
+              "children": [
+                {
+                  "type": "#include",
+                  "text": "#include"
+                },
+                {
+                  "type": "string_literal",
+                  "children": [
+                    {
+                      "type": "\"",
+                      "text": "\""
+                    },
+                    {
+                      "type": "string_content",
+                      "text": "config-modbus.h"
+                    },
+                    {
+                      "type": "\"",
+                      "text": "\""
+                    }
+                  ]
+                },
+                {
+                  "type": "comment",
+                  "text": "// For Modbus addresses/constants\r"
+                }
+              ]
+            },
+            {
+              "type": "comment",
+              "text": "// Forward declare if necessary\r"
+            },
+            {
+              "type": "class_specifier",
+              "children": [
+                {
+                  "type": "class",
+                  "text": "class"
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "Bridge"
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            },
+            {
+              "type": "comment",
+              "text": "// Define max registers needed (Mode + potential future params like Brightness)\r"
+            },
+            {
+              "type": "preproc_def",
+              "children": [
+                {
+                  "type": "#define",
+                  "text": "#define"
+                },
+                {
+                  "type": "identifier",
+                  "text": "MAX_LED_FEEDBACK_REGISTERS"
+                },
+                {
+                  "type": "preproc_arg",
+                  "text": "3\r"
+                }
+              ]
+            },
+            {
+              "type": "class_specifier",
+              "children": [
+                {
+                  "type": "class",
+                  "text": "class"
+                },
+                {
+                  "type": "type_identifier",
+                  "text": "LEDFeedback"
+                },
+                {
+                  "type": "base_class_clause",
+                  "children": [
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "public",
+                          "text": "public"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "type_identifier",
+                      "text": "Component"
+                    }
+                  ]
+                },
+                {
+                  "type": "field_declaration_list",
+                  "children": [
+                    {
+                      "type": "{",
+                      "text": "{"
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "public",
+                          "text": "public"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Define modes for the LED strip\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "enum_specifier",
+                          "children": [
+                            {
+                              "type": "enum",
+                              "text": "enum"
+                            },
+                            {
+                              "type": "class",
+                              "text": "class"
+                            },
+                            {
+                              "type": "type_identifier",
+                              "text": "LEDMode"
+                            },
+                            {
+                              "type": ":",
+                              "text": ":"
+                            },
+                            {
+                              "type": "type_identifier",
+                              "text": "ushort"
+                            },
+                            {
+                              "type": "enumerator_list",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "OFF"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "FADE_R_B"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Fade Red <-> Blue\r"
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "RANGE"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "2"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Display a level 0-100\r"
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "TRI_COLOR_BLINK"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "3"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Three sections blinking\r"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// Add more modes later, e.g., SOLID_COLOR, RAINBOW\r"
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Define Modbus register offsets relative to base address\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "enum_specifier",
+                          "children": [
+                            {
+                              "type": "enum",
+                              "text": "enum"
+                            },
+                            {
+                              "type": "class",
+                              "text": "class"
+                            },
+                            {
+                              "type": "type_identifier",
+                              "text": "LEDRegOffset"
+                            },
+                            {
+                              "type": ":",
+                              "text": ":"
+                            },
+                            {
+                              "type": "type_identifier",
+                              "text": "ushort"
+                            },
+                            {
+                              "type": "enumerator_list",
+                              "children": [
+                                {
+                                  "type": "{",
+                                  "text": "{"
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "MODE"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "enumerator",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "LEVEL"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "1"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// For RANGE mode level (0-100)\r"
+                                },
+                                {
+                                  "type": "comment",
+                                  "text": "// BRIGHTNESS = 2 // Add later if needed\r"
+                                },
+                                {
+                                  "type": "}",
+                                  "text": "}"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "private",
+                          "text": "private"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// General Configuration & State\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_identifier",
+                          "text": "ushort"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_pin"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// NeoPixel data pin\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_identifier",
+                          "text": "ushort"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_pixelCount"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Number of pixels in the strip\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "type_identifier",
+                          "text": "ushort"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbusAddr"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Base Modbus address\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "Adafruit_NeoPixel"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_strip"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// NeoPixel Object\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "LEDMode"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_mode"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "qualified_identifier",
+                          "children": [
+                            {
+                              "type": "namespace_identifier",
+                              "text": "LEDMode"
+                            },
+                            {
+                              "type": "::",
+                              "text": "::"
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "OFF"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Current active mode\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "unsigned",
+                              "text": "unsigned"
+                            },
+                            {
+                              "type": "long",
+                              "text": "long"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_lastUpdateMs"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "0"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Timestamp of the last general LED update\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Modbus Definitions\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "MB_Registers"
+                        },
+                        {
+                          "type": "array_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "m_modbusBlocks"
+                            },
+                            {
+                              "type": "[",
+                              "text": "["
+                            },
+                            {
+                              "type": "identifier",
+                              "text": "MAX_LED_FEEDBACK_REGISTERS"
+                            },
+                            {
+                              "type": "]",
+                              "text": "]"
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ushort"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbusBlockCount"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "0"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ModbusBlockView"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_modbusView"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// --- LEDMode::FADE_R_B ---\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// State\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "float"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_fadeProgress"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "0.0f"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// 0.0 to 1.0 for fade\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "bool"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_fadingUp"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "false",
+                          "text": "false"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Direction of fade (false = C1->C2, true = C2->C1)\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Colors (could be made configurable later)\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "primitive_type",
+                          "text": "uint32_t"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_color1"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "call_expression",
+                          "children": [
+                            {
+                              "type": "qualified_identifier",
+                              "children": [
+                                {
+                                  "type": "namespace_identifier",
+                                  "text": "Adafruit_NeoPixel"
+                                },
+                                {
+                                  "type": "::",
+                                  "text": "::"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "Color"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "255"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Red\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_qualifier",
+                          "children": [
+                            {
+                              "type": "const",
+                              "text": "const"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "primitive_type",
+                          "text": "uint32_t"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_color2"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "call_expression",
+                          "children": [
+                            {
+                              "type": "qualified_identifier",
+                              "children": [
+                                {
+                                  "type": "namespace_identifier",
+                                  "text": "Adafruit_NeoPixel"
+                                },
+                                {
+                                  "type": "::",
+                                  "text": "::"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "Color"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "argument_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "0"
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "number_literal",
+                                  "text": "255"
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Blue\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Helper\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "uint32_t"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "calculateFadeColor"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "type_qualifier",
+                              "children": [
+                                {
+                                  "type": "const",
+                                  "text": "const"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "handleModeFadeRB"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// --- LEDMode::RANGE ---\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// State\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ushort"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_rangeLevel"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "0"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Level for RANGE mode (0-100)\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Helper\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "handleModeRange"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// --- LEDMode::TRI_COLOR_BLINK ---\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// State\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "bool"
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_triColorBlinkStateOn"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "true",
+                          "text": "true"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "unsigned",
+                              "text": "unsigned"
+                            },
+                            {
+                              "type": "long",
+                              "text": "long"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "field_identifier",
+                          "text": "m_lastBlinkToggleMs"
+                        },
+                        {
+                          "type": "=",
+                          "text": "="
+                        },
+                        {
+                          "type": "number_literal",
+                          "text": "0"
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Helper\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "handleModeTriColorBlink"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// General Private Helpers\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "handleModeOff"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Handles LEDMode::OFF\r"
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "public",
+                          "text": "public"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "declaration",
+                      "children": [
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "identifier",
+                              "text": "LEDFeedback"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "Component"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "owner"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ushort"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "_pin"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ushort"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "_pixelCount"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ushort"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "_id"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ushort"
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "_modbusAddress"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_definition",
+                      "children": [
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "destructor_name",
+                              "children": [
+                                {
+                                  "type": "~",
+                                  "text": "~"
+                                },
+                                {
+                                  "type": "identifier",
+                                  "text": "LEDFeedback"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "default_method_clause",
+                          "children": [
+                            {
+                              "type": "=",
+                              "text": "="
+                            },
+                            {
+                              "type": "default",
+                              "text": "default"
+                            },
+                            {
+                              "type": ";",
+                              "text": ";"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Default destructor is likely fine\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Component Lifecycle\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "setup"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "loop"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "info"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "optional_parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "sized_type_specifier",
+                                      "children": [
+                                        {
+                                          "type": "short",
+                                          "text": "short"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "val0"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "optional_parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "sized_type_specifier",
+                                      "children": [
+                                        {
+                                          "type": "short",
+                                          "text": "short"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "val1"
+                                    },
+                                    {
+                                      "type": "=",
+                                      "text": "="
+                                    },
+                                    {
+                                      "type": "number_literal",
+                                      "text": "0"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "function_definition",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "debug"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "compound_statement",
+                          "children": [
+                            {
+                              "type": "{",
+                              "text": "{"
+                            },
+                            {
+                              "type": "return_statement",
+                              "children": [
+                                {
+                                  "type": "return",
+                                  "text": "return"
+                                },
+                                {
+                                  "type": "call_expression",
+                                  "children": [
+                                    {
+                                      "type": "identifier",
+                                      "text": "info"
+                                    },
+                                    {
+                                      "type": "argument_list",
+                                      "children": [
+                                        {
+                                          "type": "(",
+                                          "text": "("
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        },
+                                        {
+                                          "type": ",",
+                                          "text": ","
+                                        },
+                                        {
+                                          "type": "number_literal",
+                                          "text": "0"
+                                        },
+                                        {
+                                          "type": ")",
+                                          "text": ")"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ";",
+                                  "text": ";"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "}",
+                              "text": "}"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Mode Control (optional direct methods)\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// void setMode(LEDMode newMode);\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// LEDMode getMode() const { return m_mode; }\r"
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Modbus Interface\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_write"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "MB_Registers"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "reg"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ",",
+                                  "text": ","
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "sized_type_specifier",
+                                      "children": [
+                                        {
+                                          "type": "short",
+                                          "text": "short"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "identifier",
+                                      "text": "networkValue"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_read"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "MB_Registers"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "reg"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "mb_tcp_register"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "ModbusTCP"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "manager"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "type_identifier",
+                          "text": "ModbusBlockView"
+                        },
+                        {
+                          "type": "pointer_declarator",
+                          "children": [
+                            {
+                              "type": "*",
+                              "text": "*"
+                            },
+                            {
+                              "type": "function_declarator",
+                              "children": [
+                                {
+                                  "type": "field_identifier",
+                                  "text": "mb_tcp_blocks"
+                                },
+                                {
+                                  "type": "parameter_list",
+                                  "children": [
+                                    {
+                                      "type": "(",
+                                      "text": "("
+                                    },
+                                    {
+                                      "type": ")",
+                                      "text": ")"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "type_qualifier",
+                                  "children": [
+                                    {
+                                      "type": "const",
+                                      "text": "const"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "virtual_specifier",
+                                  "children": [
+                                    {
+                                      "type": "override",
+                                      "text": "override"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Serial Interface\r"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "sized_type_specifier",
+                          "children": [
+                            {
+                              "type": "short",
+                              "text": "short"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "serial_register"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": "parameter_declaration",
+                                  "children": [
+                                    {
+                                      "type": "type_identifier",
+                                      "text": "Bridge"
+                                    },
+                                    {
+                                      "type": "pointer_declarator",
+                                      "children": [
+                                        {
+                                          "type": "*",
+                                          "text": "*"
+                                        },
+                                        {
+                                          "type": "identifier",
+                                          "text": "bridge"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "access_specifier",
+                      "children": [
+                        {
+                          "type": "protected",
+                          "text": "protected"
+                        }
+                      ]
+                    },
+                    {
+                      "type": ":",
+                      "text": ":"
+                    },
+                    {
+                      "type": "field_declaration",
+                      "children": [
+                        {
+                          "type": "primitive_type",
+                          "text": "void"
+                        },
+                        {
+                          "type": "function_declarator",
+                          "children": [
+                            {
+                              "type": "field_identifier",
+                              "text": "notifyStateChange"
+                            },
+                            {
+                              "type": "parameter_list",
+                              "children": [
+                                {
+                                  "type": "(",
+                                  "text": "("
+                                },
+                                {
+                                  "type": ")",
+                                  "text": ")"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "virtual_specifier",
+                              "children": [
+                                {
+                                  "type": "override",
+                                  "text": "override"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": ";",
+                          "text": ";"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "comment",
+                      "text": "// Override if mode change notification is useful\r"
+                    },
+                    {
+                      "type": "}",
+                      "text": "}"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": ";",
+              "text": ";"
+            },
+            {
+              "type": "#endif",
+              "text": "#endif"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "text": "// LED_FEEDBACK_H \r"
+        },
+        {
+          "type": "#endif",
+          "text": "#endif"
+        }
+      ]
+    },
+    {
+      "type": "comment",
+      "text": "// ENABLE_LED_FEEDBACK"
+    }
+  ]
+}

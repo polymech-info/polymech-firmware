@@ -1,0 +1,456 @@
+*-----------------------------------------------------------------------------
+*  Diagnosis - fuses, temperature, current
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inactive                              K+0
+#define /s    KL_shutdown_PLC_still_operable           K+0
+#define /s    KL_shutdown_mode_defined_in_MP4040       K+2
+#define /s    KL_emergency_stop_test_168_hours         K+10080
+#define /s    KL_monitoring_temp_too_high              K+4            *;EUMACH 5XT
+#define /s    KL_brake_test_active_inactive            K+0            *;EUMACH
+#define /s    KL_active                                K+1            *;EUMACH
+
+#define /s    ML_auto_power_off                        M
+#define /s    ML_key_pressed                           M
+#define /s    ML_init_control_operational              M
+#define /s    ML_key_power_on_pressed                  M
+
+#define /s    BL_identifier                            B
+#define /s    BL_identifier_1                          B
+
+#include Mac_Lib.inc
+
+GLOBAL Diagnostic
+
+;----------------------------
+LBL Diagnostic
+
+  LN     MG_machine_parameter_are_read
+  =      PN_error_reading_machine_parameters
+
+;  LN     I_emergency_button_unlocked                                 *;EUMACH HI4xxx and before
+;  =      MG_win_emergency_stop_button                                *;EUMACH HI4xxx and before
+
+  LN     I_end_posit_axis_X                                           *;EUMACH HI5000 and after
+  AN     I_end_posit_axis_Y
+  AN     I_end_posit_axis_Z
+  AN     I_end_posit_axis_4
+  AN     I_end_posit_axis_5
+#if MT = &MT_2MV                                                      *;EUMACH
+  AN     I_end_posit_axis_7                                           *;EUMACH
+#endif                                                                *;EUMACH
+  O      O_axes_motion_from_end_position
+  AN     I_emergency_button_unlocked
+  =      MG_win_emergency_stop_button
+
+  LN     I_circuit_breaker_ok
+  =      PN_error_circuit_breaker
+
+  LN     I_PW_210_temperature_ok
+  S      PN_error_PW_210_temperature_max
+
+  LN     I_DA300_pressure_ok
+  S      PN_error_DA300_pressure
+
+  L      I_pneumatic_pressure_ok                                      *;EUMACH
+#if SFM ! &inactive                                                   *;EUMACH CE 2008
+  O      MG_pulse_CE_key                                              *;EUMACH CE 2008
+  ON     MG_power_delayed_on                                          *;EUMACH
+#endif                                                                *;EUMACH CE 2008
+  =      TS_pneumatic_pressure                                        *;EUMACH
+
+  LN     TS_pneumatic_pressure                                        *;EUMACH
+  AN     TR_pneumatic_pressure                                        *;EUMACH
+  S      PN_error_pneumatic_pressure                                  *;EUMACH
+
+*;EUMACH CE 2008
+#if SFM ! &inactive
+  LN     PN_error_pneumatic_pressure
+  A      MG_control_operational
+  =      O_pneumatic_inlet_valve_on
+#endif
+*;EUMACH CE 2008
+
+;  LN     I_pneumatic_pressure_ok                                     *;EUMACH
+;  A      MG_power_delayed_on                                         *;EUMACH
+;  S      PN_error_pneumatic_pressure                                 *;EUMACH
+
+  L      MG_control_operational
+  AN     MG_power_delayed_on
+  =      MG_test_lamps
+
+  L      I_control_operational
+  =      O_lamp_power_on
+
+  L      NP_M4177_error_message_active
+  ON     MG_control_operational
+  A      MG_clock_1_s
+  O      MG_test_lamps
+  =      O_lamp_TNC_alarm
+
+  L      NP_M4170_END_PGM_M02_M30_executed
+  O      MG_NC_stop_active
+#if Pallet_changer = &Alternat_table
+  O[
+    L      MG_alternating_table_on
+    A      MG_axis_limit_2
+    AN     MG_new_workpiece_table_1
+    O[
+      L      MG_alternating_table_on
+      A      MG_axis_limit_1
+      AN     MG_new_workpiece_table_2
+    ]
+    A[
+      L      NP_M4154_mode_program_run_full_sequence
+      O      NP_M4153_mode_program_run_single_block
+      A      NP_M4176_control_in_operation_on_or_flashes
+    ]
+    A      NP_M4160_pallet_table_selected
+  ]
+#endif
+  A      MG_automatic_mode
+  A      MG_clock_1_s
+  O      MG_test_lamps
+  =      O_lamp_program_end
+
+  L      MG_control_in_operation_on
+  A      MG_automatic_mode
+  O      MG_test_lamps                                                *;EUMACH
+  =      O_program_run
+
+;Machine control voltage on
+;*EUMACH HSCI
+;Previous version
+;  L      NP_M4192_emergency_stop_test_power_on
+;  A      NP_M4190_emergency_stop_test_active
+;  A      ML_init_control_operational
+;  O[
+;    L      I_key_power_on
+;    AN     ML_key_power_on_pressed
+;    O      MG_power_on_AUTOSTART_on
+;;    O      MG_energy_opt_power_on                                    *;Future work
+;    A[
+;      L      NP_M4192_emergency_stop_test_power_on
+;      A      NP_M4190_emergency_stop_test_active
+;      O      NP_M4189_emergency_stop_test_complete
+;    ]
+;  ]
+;  S      O_power_on
+
+;  L      I_key_power_on
+;  =      ML_key_power_on_pressed
+
+;  L      I_control_operational
+;  S      ML_init_control_operational
+
+;  L      I_control_operational
+;  ON     I_emergency_button_unlocked
+;  ON     NP_M4191_control_operational
+;  R      O_power_on
+;Previous version
+
+  L      NP_M4182_auto_start_active
+  O      NP_M4183_time_auto_start_expired
+  IFT
+    L      NP_M4192_emergency_stop_test_power_on
+    A      NP_M4190_emergency_stop_test_active
+    A      ML_init_control_operational
+    O[
+      L      I_key_power_on
+      AN     ML_key_power_on_pressed
+    ]
+    O      MG_power_on_AUTOSTART_on
+    S      O_power_on
+
+    L      I_control_operational
+    ON     I_emergency_button_unlocked
+    ON     NP_M4191_control_operational
+    R      O_power_on
+  ELSE
+    L      NP_M4192_emergency_stop_test_power_on
+    A      NP_M4190_emergency_stop_test_active
+    O      NP_M4189_emergency_stop_test_complete
+    A      I_key_power_on
+    AN     I_control_operational
+    A      I_emergency_button_unlocked
+    A      NP_M4191_control_operational
+    =      O_power_on
+  ENDI
+
+  L      I_key_power_on
+  =      ML_key_power_on_pressed
+
+  L      I_control_operational
+  S      ML_init_control_operational
+
+  L      NP_M4190_emergency_stop_test_active
+  IFT
+    L      KL_emergency_stop_test_168_hours
+    =      WG_time_next_emergency_stop_test
+  ENDI
+;*EUMACH HSCI
+
+;Emergency stop test - brake test
+  PS     KG_axis_Z
+  PS     KL_brake_test_active_inactive
+  CM     9048
+  PLW
+  ==     KL_active
+  =      MG_Z_brake_test_active
+*; Future work
+;Emergency stop test - brake test
+
+;Main switch off
+  L      MG_auto_power_off_after_END_PGM
+  A      NP_auto_power_off_after_END_PGM_active                       *;EUMACH
+  IFT
+    L      MG_pulse_END_PGM_M02_M30
+    S      ML_auto_power_off
+
+    L      ML_auto_power_off
+    A      MG_spindle_stand_still
+    A      MG_axes_in_position
+    AN     MG_TC_automatic
+    AN     MG_T_select_start                                          *;EUMACH standby tool loading/unloading
+    AN     MG_TC_magazine_start
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+    AN     MG_TC2_automatic                                           *;EUMACH Dual TC
+    AN     MG_TC_magazine_2_start                                     *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+    R      ML_auto_power_off
+    R      MG_auto_power_off_after_END_PGM
+    S      PN_error_auto_power_off_after_END_PGM
+
+    L      PN_error_auto_power_off_after_END_PGM
+    IFT
+      RPLY   BL_identifier_1
+      ==     K+0
+      IFT
+        SUBM   Auto_power_off_submit
+        =      BL_identifier_1
+        ==     K+0
+        S      PN_error_submit_spawn_queue_full
+      ENDI
+    ENDI
+  ENDI
+
+  L      I_key_working_light
+  AN     ML_key_pressed
+  O      NP_M4172_1st_PLC_run_after_power_on                          *;EUMACH
+  XO     O_working_light
+  =      O_working_light
+
+  L      I_key_working_light
+  =      ML_key_pressed
+
+*;EUMACH
+  L      O_working_light
+  O      MG_test_lamps
+  =      O_lamp_working_light
+*;EUMACH
+
+  LN     MG_pulse_500_ms
+  EMT
+
+  RPLY   BL_identifier
+  <>     K+0
+  EMT
+
+  SUBM   Drive_diagnosis
+  =      BL_identifier
+  ==     K+0
+  S      PN_error_submit_spawn_queue_full
+
+EM
+
+;----------------------------
+LBL Drive_diagnosis
+
+  L      NP_W1024_axes_release
+  W=     MG_axes_release_bit
+
+  L      NP_W1028_axes_in_motion
+  W=     MG_axes_in_motion_bit
+
+  L      NP_W1032_reference_nesessary
+  AN     WG_MP12_simulated_axes                                       *;EUMACH MP12
+  W=     MG_reference_necessary_bit
+
+  L      WG_drives_digital
+  ==     KL_inactive
+  EMT
+
+  CM     9160
+  PLW
+  W=     MG_inverter_Tmax
+  >      KL_inactive
+#if SPG = &active
+  AN     MG_error_inhibit
+#endif
+  ON     I_temp_drives_power_stage_ok
+  S      PN_error_inverter_temp_max
+
+  PLW
+  W=     MG_I2t_X_pre_warning
+  PSW
+  >      KL_inactive
+  =      PN_error_I2t_pre_warning
+
+  PLW
+  >>     K+16
+  W=     MG_I2t_X_limitation
+  >      KL_inactive
+  S      PN_error_I2t_limitation
+
+  M_display_module_error(KG_error_module_9160)
+
+  LW     MG_inverter_Tmax
+  O[
+    LW     MG_I2t_X_pre_warning
+  ]
+  O[
+    LW     MG_I2t_X_limitation
+  ]
+  O[
+    LW     MG_win_axis_X
+  ]
+  W=     MG_win_axis_X
+
+  L      MG_win_axis_16
+  R      MG_win_axis_16
+  S      MG_win_spindle
+
+  L      K+0
+  =X
+  REPEAT
+    L      WG_drives_digital
+    BTX
+    IFT
+      PSX
+      PSX
+      PSX
+      CM     9164
+      PL     DG_actual_drive_rpm[X]
+      M_display_module_error(KG_error_module_9164)
+
+      CM     9165
+      PL     WG_drives_temperature[X]
+      M_display_module_error(KG_error_module_9165)
+
+      CM     9166
+      PL     WG_drive_utilization[X]
+      M_display_module_error(KG_error_module_9166)
+
+      L      WG_drive_temp_max[X]
+      -      WG_drives_temperature[X]
+      <      K+10
+      A[
+        L      WG_drive_temp_max[X]
+        <>     K+255
+      ]
+      A[
+        L      WG_drive_temp_max[X]
+        <>     K+0
+      ]
+*;EUMACH 5XT
+#if (MT = &MT_2D) or (MT = &MT_31A) or (MT = &MT_31B) or (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+      A[
+        LX
+        ==     KG_axis_4
+        AN[
+          L      WG_MP2220_3_monitoring_functions_axis_4
+          A      K $0FFFF
+          BT     KL_monitoring_temp_too_high
+        ]
+        O[
+          LX
+          ==     KG_axis_5
+          AN[
+            L      WG_MP2220_4_monitoring_functions_axis_5
+            A      K $0FFFF
+            BT     KL_monitoring_temp_too_high
+          ]
+        ]
+        O[
+          LX
+          ==     KG_axis_6
+          AN[
+            L      WG_MP2220_5_monitoring_functions_axis_6
+            A      K $0FFFF
+            BT     KL_monitoring_temp_too_high
+          ]
+        ]
+      ]
+#endif
+*;EUMACH 5XT
+      A      MG_power_delayed_on
+      S      MG_win_axis_X[X]
+      S      PN_error_drive_temp_max
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_number_axes
+  UNTILT
+
+  LN     MG_spindle_digital
+  EMT
+
+  PS     KG_spindle
+  CM     9164
+  PL     DG_actual_drive_rpm_S
+  M_display_module_error(KG_error_module_9164)
+
+  PS     KG_spindle
+  CM     9165
+  PL     WG_drive_temperature_S
+  M_display_module_error(KG_error_module_9165)
+
+  L      WG_drive_temp_max_S
+  -      WG_drive_temperature_S
+  <      K+10
+  A[
+    L      WG_drive_temp_max_S
+    <>     K+255
+  ]
+  A[
+    L      WG_drive_temp_max_S
+    <>     K+0
+  ]
+  A      MG_spindle_active
+  A      MG_power_delayed_on
+  S      MG_win_spindle
+  S      PN_error_drive_temp_max
+
+  PS     KG_spindle
+  CM     9166
+  PL     WG_drive_utilization_S
+  M_display_module_error(KG_error_module_9166)
+
+#if SPG = &active
+
+  L      MG_error_inhibit
+  R      PN_error_inverter_temp_max
+  IFT
+    L      K+0
+    W=     MG_win_axis_X
+  ENDI
+
+#endif
+EM
+
+;----------------------------
+LBL Auto_power_off_submit
+
+  PS     KL_shutdown_mode_defined_in_MP4040
+  CM     9279
+  M_display_module_error(KG_error_module_9279)
+
+  L      MG_marker_one
+  S      O_auto_power_off_after_END_PGM
+
+EM

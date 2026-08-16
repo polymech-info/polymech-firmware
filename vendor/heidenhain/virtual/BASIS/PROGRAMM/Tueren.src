@@ -1,0 +1,200 @@
+*-----------------------------------------------------------------------------
+*  Arbeitsraum Schutz (Türen) mit und ohne Sicherheitszuhaltung
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    auch bei Türen ohne Sicherheitszuhaltung sind die Eingänge
+*      - I_Arbeitsraum_1_zu_verriegelt
+*      - I_Arbeitsraum_1_zu
+*      - I_Arbeitsraum_2_zu_verriegelt
+*      - I_Arbeitsraum_2_zu
+*    zu verdrahten.
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_Arbeitsraum_1_war_offen               M
+#define /s    ML_Arbeitsraum_2_war_offen               M
+#define /s    ML_Tueren_Test_ok                        M
+#define /s    ML_END_PGM_M02_M30                       M
+#define /s    ML_Arbeitsraum_1_zu                      M
+#define /s    ML_Arbeitsraum_2_zu                      M
+
+GLOBAL Tueren
+
+;----------------------------
+LBL Tueren
+;----------------------------
+
+  L      MG_Tueren_inaktiv
+  ON     MG_Maschinenparameter_gelesen
+  EMT
+
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+  LN     MG_Arbeitsraum_1_zu_verriegelt
+  ON     MG_Arbeitsraum_2_zu_verriegelt
+#else
+  LN     I_Arbeitsraum_1_zu_verriegelt
+  ON     I_Arbeitsraum_2_zu_verriegelt
+#endif
+#if CFG_FS = "aktiv"
+  AN     NP_M4282_Start_Abschaltkanaele          * SPLC_0020
+#endif
+  =      PN_Fehler_Arbeitsraum_offen
+  =      MG_Arbeitsraum_offen
+
+  L      O_Arbeitsraum_1_entriegeln
+  O      O_Arbeitsraum_2_entriegeln
+  A      MG_Takt_1_s
+  O[
+    LN     I_Arbeitsraum_1_zu
+    ON     I_Arbeitsraum_2_zu
+  ]
+  =      O_LED_Arbeitsraum_entriegeln
+
+  L      MG_WZW_manuell
+#if &I_Taste_HR_Zustimmbetrieb < KG_Input_Speicherbereich
+  O      I_Taste_HR_Zustimmbetrieb
+#endif
+  R      PN_Fehler_Arbeitsraum_offen
+
+  L      I_Arbeitsraum_1_zu
+  AN     ML_Arbeitsraum_1_zu
+  R      O_Arbeitsraum_1_entriegeln
+  R      O_Arbeitsraum_2_entriegeln
+
+  L      I_Arbeitsraum_1_zu
+  =      ML_Arbeitsraum_1_zu
+
+  L      I_Arbeitsraum_2_zu
+  AN     ML_Arbeitsraum_2_zu
+  R      O_Arbeitsraum_1_entriegeln
+  R      O_Arbeitsraum_2_entriegeln
+
+  L      I_Arbeitsraum_2_zu
+  =      ML_Arbeitsraum_2_zu
+
+  L      O_Arbeitsraum_1_entriegeln
+  O      O_Arbeitsraum_2_entriegeln
+  A      MG_Taste_Arbeitsraum_entriegeln
+  AN     ML_Taste_betaetigt
+  S      ML_Taste_betaetigt
+  R      O_Arbeitsraum_1_entriegeln
+  R      O_Arbeitsraum_2_entriegeln
+  EMT
+
+  L      MG_Impuls_End_PGM_M02_M30
+  A      MG_auto_Tueren_entriegeln_bei_END_PGM
+  S      ML_END_PGM_M02_M30
+
+  L      MG_BA_Automatik
+  AN     MG_Stern_ein
+  O      MG_BA_Manuell
+  O      MG_WZW_manuell
+  A      MG_Taste_Arbeitsraum_entriegeln
+  AN     ML_Taste_betaetigt
+  O      PN_Fehler_Werkzeug_entspannen
+  O      ML_END_PGM_M02_M30
+  AN     MG_Spindel_Referenz_aktiv
+  A[
+    L      MG_Spindel_steht
+    ON     MG_Spindel_aktiv
+  ]
+  AN     MG_Achsen_in_Bewegung
+#if Cfg_FS = "aktiv"                   * SPLC_0025
+  O[
+    L      DG_Zeit_naechster_Selbsttest
+    >      K +0
+    A      MG_v_limitiert
+    O      MG_Abnahmetest_aktiv
+    A      MG_Taste_Arbeitsraum_entriegeln
+  ]
+  AN     NP_M4282_Start_Abschaltkanaele
+#else
+  O[
+    L      O_Freigabe_Sonderbetriebsart
+    A      MG_Taste_Arbeitsraum_entriegeln
+  ]
+#endif
+  AN     MG_Test_aktiv
+  R      ML_END_PGM_M02_M30
+  S      O_Arbeitsraum_1_entriegeln
+  S      O_Arbeitsraum_2_entriegeln
+
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+#if CFG_Simulation = "inaktiv"
+  L      MG_Pendeln_ein
+  A      MG_Axis_Limit_2
+  AN     MG_Rohteil_Seite_1
+#if CFG_FS = "aktiv"
+  AN     NP_M4282_Start_Abschaltkanaele
+#endif
+  S      O_Arbeitsraum_1_entriegeln
+
+  L      MG_Pendeln_ein
+  A      MG_Axis_Limit_1
+  AN     MG_Rohteil_Seite_2
+#if CFG_FS = "aktiv"
+  AN     NP_M4282_Start_Abschaltkanaele
+#endif
+  S      O_Arbeitsraum_2_entriegeln
+#endif
+#endif
+
+  L      MG_Taste_Arbeitsraum_entriegeln
+  =      ML_Taste_betaetigt
+
+  L      MG_SLS_Betriebsart_2_Einrichten
+  O      MG_SLS_Betriebsart_3
+  O      MG_SLS_Betriebsart_4
+#if CFG_FS = "aktiv"
+  O[
+    L      ApiToSafety.PP_GenSOM
+    >      S_MODE_SOM_1
+  ]
+#endif
+  =      O_Freigabe_Sonderbetriebsart
+  =      O_LED_Sonderbetriebsart
+  IFT
+    LN     MG_WZW_automatisch
+    AN     PN_M4041_M07_MK_Status
+    R      PN_Fehler_Arbeitsraum_offen
+
+    L      MG_WZW_automatisch
+    R      O_Freigabe_Sonderbetriebsart
+
+    L      PN_Fehler_Arbeitsraum_offen
+    ON     MG_Arbeitsraum_offen
+    A      MG_Takt_1_s
+    R      O_LED_Sonderbetriebsart
+  ENDI
+
+#if CFG_FS = "inaktiv"                 * SPLC_0019
+  L      ML_Tueren_Test_ok
+  O      MG_TNC_Programmierplatz_mit_PLC
+  EMT
+
+  LN     I_Arbeitsraum_1_zu
+  S      ML_Arbeitsraum_1_war_offen
+
+  LN     ML_Arbeitsraum_1_war_offen
+  S      O_Arbeitsraum_1_entriegeln
+
+#if &I_Arbeitsraum_2_zu < 1000
+  LN     I_Arbeitsraum_2_zu
+  S      ML_Arbeitsraum_2_war_offen
+#else
+  LN     ML_Arbeitsraum_2_war_offen
+  S      ML_Arbeitsraum_2_war_offen
+#endif
+
+  LN     ML_Arbeitsraum_2_war_offen
+  S      O_Arbeitsraum_2_entriegeln
+
+  L      I_Arbeitsraum_1_zu_verriegelt
+  A      I_Arbeitsraum_2_zu_verriegelt
+  A      ML_Arbeitsraum_1_war_offen
+  A      ML_Arbeitsraum_2_war_offen
+  S      ML_Tueren_Test_ok
+#endif
+
+EM

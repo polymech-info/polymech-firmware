@@ -1,0 +1,31 @@
+﻿************************************
+!!! POZOR !!!
+pouze pro zaškolené pracovníky
+Servis pro výmenu nástroju
+(dvouruký výmeník
+s vackovým pohonem)
+! Rucní režim aktivní !
+Aktivace: klávesa "NC start"
+************************************
+#301  S na pozici pro výmenu
+#302  Z na pozici pro výmenu
+#303  Y na pozici pro výmenu
+#304  X na pozici pro výmenu
+#305  Otevrít kryt zásobníku
+#306  Zavrít kryt zásobníku
+#307  Uvolnit nástroj
+#308  Upnout nástroj
+#309  Kleštinu zpevnit
+#310  Kleštinu uvolnit
+#311  Lužko zásobníku vyklopit
+#312  Lužko zásobníku zaklopit
+#313  Výmeník uvolnit
+#314  Výmeník zpevnit
+#315  Výmeník do základní polohy
+#316  Výmeník uvolnit (zpet)
+#317  Výmeník zpevnit (zpet)
+#318  Výmeník do základní polohy (zp)
+#319  Otocit zásobník cw (vpravo)
+#320  Otocit zásobník ccw (vlevo)
+#321  Najet referenci zásobníku
+#322  Vymazat registr vretena (T0)

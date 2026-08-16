@@ -1,0 +1,22 @@
+\n  M00 - programmed stop
+\n  M01 - conditional stop
+\n  M02 - END program
+\n  M03 - spindle right cw on
+\n  M04 - spindle left ccw on
+\n  M05 - spindle off
+\n  M06 - reserved
+\n  M07 - coolant through spindle/tool
+\n  M08 - coolant on
+\n  M09 - coolant off
+\n  M10 - reserved
+\n  M11 - reserved
+\n  M12 - reserved
+\n  M13 - spindle right coolant on
+\n  M14 - spindle left coolant on
+\n  M15 - coolant chip flush on
+\n  M16 - coolant water gun active
+\n  M17 - air through spindle
+\n  M18 - spindle referencing
+\n  M19 - spindle orientation TC pos
+
+

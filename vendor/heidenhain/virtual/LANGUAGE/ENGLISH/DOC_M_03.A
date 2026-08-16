@@ -1,0 +1,9 @@
+\n  M70 - PLC preset off
+\n  M71 - axis limit 1
+\n  M72 - axis limit 2
+\n  M73 - axis limit 3
+\n  M79 - PLC preset on
+\n  M80 - workpiece counter reset
+\n  M81 - workpiece counter plus 1
+\n  M82 - tool torque monitoring off
+\n  M83 - tool torque monitoring on

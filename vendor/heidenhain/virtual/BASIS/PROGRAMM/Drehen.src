@@ -1,0 +1,274 @@
+*-----------------------------------------------------------------------------
+*  Drehen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+* - Softkeys Drehen rechts, Drehen links, Zuordnung S-Override
+* - M23 Freies Drehen rechts
+* - M24 Freies Drehen links
+* - M25 Freies Drehen aus
+* - FN19 - Vorschub Dreh-Achse
+*     Kennung (D280): K+99994
+*     Daten   (D284): Vorschub [°/min]
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Override_0                            K +0
+#define /s    KL_Faktor_Override_Aufloesung            K +10000
+#define /s    KL_Drehen_Override_min                   K +4000
+
+#define /s    KL_Richtung_positiv                      K +1
+#define /s    KL_Richtung_negativ                      K -1
+#define /s    KL_Vorschub_0                            K +0
+#define /s    KL_Stop                                  K +0
+#define /s    KL_aktiv                                 K +1
+#define /s    KL_BA_Freies_Drehen                      K +1
+
+#define /s    KL_FD_n_soll_Differenz                   K +25 ;[100/min]
+#define /s    KL_FD_n_soll_Prozent                     K +80 ;[%]
+
+#define /s    ML_Freies_Drehen_Sonder_Funktionen       M
+#define /s    ML_Freies_Drehen_war_rechts              M
+#define /s    ML_Freies_Drehen_war_links               M
+#define /s    ML_Freies_Drehen_ein                     M
+#define /s    ML_Freies_Drehen_Richtungswechsel        M
+
+#define /s    BL_Stack_synchronisieren                 B
+
+#define /s    WL_Override_Freies_Drehen                W
+
+#define /s    DL_Motor_n_Ist_Rund_Achse                D
+#define /s    DL_Ist_Vorschub_Rund_Achse               D
+#define /s    DL_Soll_Vorschub_Rund_Achse              D
+
+#define /s    DL_Drehen_Rund_Achs_Vorschub             D
+
+#include Mac_Lib.inc
+
+GLOBAL Drehen
+
+;----------------------------
+LBL Drehen
+;----------------------------
+
+  L      DG_Drehen_Rund_Achs_Vorschub
+  ==     K+0
+  A      MG_Maschinenparameter_gelesen
+  IFT
+    L      DG_Vorschub_PLC_Pos[KG_Drehen_Rund_Achs_Index]
+    >      DG_MP1010_Eilgang_Drehen_Rund_Achse
+    S      PN_Fehler_Wert_unzulaessig
+    IFT
+      L      DG_MP1010_Eilgang_Drehen_Rund_Achse
+      =      DG_Drehen_Rund_Achs_Vorschub
+    ELSE
+      L      DG_Vorschub_PLC_Pos[KG_Drehen_Rund_Achs_Index]
+      =      DG_Drehen_Rund_Achs_Vorschub
+    ENDI
+  ENDI
+
+  LN     MG_Stern_ein
+  =      MG_SK_FG_Freies_Drehen
+
+  PS     KG_Drehen_Rund_Achs_Index
+  PS     KL_BA_Freies_Drehen
+  CM     9048                          ;Abfragen von Betriebszuständen der Achsen
+  PLW
+  ==     KL_aktiv
+  =      MG_Freies_Drehen_aktiv
+  =      MG_SK_FG_S_Over_Drehen
+
+  L      MG_M23_Drehen_rechts_ein
+  A      MG_SK_Freies_Drehen_rechts
+  O[
+    L      MG_M24_Drehen_links_ein
+    A      MG_SK_Freies_Drehen_links
+  ]
+  A      MG_Freies_Drehen_aktiv
+  AN     PN_M4133_Strobe_Freies_Drehen_Achsen
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_M25_Drehen_aus
+  AN     MG_Freies_Drehen_aktiv
+  AN     PN_M4133_Strobe_Freies_Drehen_Achsen
+  S      PN_M4092_Quit_M_Funktion
+
+  L      MG_SK_Freies_Drehen_rechts
+  AN     ML_Freies_Drehen_war_rechts
+  O      MG_M23_Drehen_rechts_ein
+  S      MG_SK_Freies_Drehen_rechts
+  R      MG_SK_Freies_Drehen_links
+
+  L      MG_SK_Freies_Drehen_links
+  AN     ML_Freies_Drehen_war_links
+  O      MG_M24_Drehen_links_ein
+  S      MG_SK_Freies_Drehen_links
+  R      MG_SK_Freies_Drehen_rechts
+
+  L      MG_M25_Drehen_aus
+  ON     MG_Steuerung_betriebsbereit
+  R      MG_SK_Freies_Drehen_rechts
+  R      MG_SK_Freies_Drehen_links
+
+;Freies Drehen ein, Änderung Drehzahl
+
+  L      MG_SK_Freies_Drehen_rechts
+  AN     ML_Freies_Drehen_war_rechts
+  S      ML_Freies_Drehen_ein
+
+  L      MG_SK_Freies_Drehen_links
+  AN     ML_Freies_Drehen_war_links
+  S      ML_Freies_Drehen_ein
+
+  L      MG_SK_Freies_Drehen_rechts
+  O      MG_SK_Freies_Drehen_links
+  AN     MG_Freies_Drehen_aktiv
+  S      ML_Freies_Drehen_ein
+
+  L      DG_Drehen_Rund_Achs_Vorschub
+  <>     DL_Drehen_Rund_Achs_Vorschub
+  A      MG_Freies_Drehen_aktiv
+  O      ML_Freies_Drehen_ein
+  AN[
+    L      DG_Tasten_sperren
+    BT     KG_Drehen_Rund_Achs_Index
+  ]
+  IFT
+    R      ML_Freies_Drehen_ein
+    S      MG_SK_S_Over_Drehen_zugeordnet
+
+    PS     KG_Drehen_Rund_Achs_Index
+    PS     DG_Drehen_Rund_Achs_Vorschub
+
+    L      MG_SK_Freies_Drehen_rechts
+    IFT
+      PS     KL_Richtung_positiv
+    ELSE
+      PS     KL_Richtung_negativ
+    ENDI
+
+    CM     9223                        ;Freies Drehen von Drehachsen und Hilfsachsen aktivieren
+    PL     BL_Stack_synchronisieren
+     M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_SK_Freies_Drehen_rechts
+  A      ML_Freies_Drehen_war_links
+  O[
+    L      MG_SK_Freies_Drehen_links
+    A      ML_Freies_Drehen_war_rechts
+  ]
+  S      ML_Freies_Drehen_Richtungswechsel
+
+  L      MG_SK_Freies_Drehen_rechts
+  =      ML_Freies_Drehen_war_rechts
+
+  L      MG_SK_Freies_Drehen_links
+  =      ML_Freies_Drehen_war_links
+
+  L      DG_Drehen_Rund_Achs_Vorschub
+  =      DL_Drehen_Rund_Achs_Vorschub
+
+;Freies Drehen aus
+
+  LN     MG_SK_Freies_Drehen_rechts
+  AN     MG_SK_Freies_Drehen_links
+  O      MG_Impuls_End_PGM_M02_M30
+  O      MG_Impuls_Internal_STOP
+  O      MG_BA_Wechsel_Auto_Manu
+  A      MG_Freies_Drehen_aktiv
+  IFT
+    R      MG_SK_S_Over_Drehen_zugeordnet
+    R      MG_SK_Freies_Drehen_links
+    R      MG_SK_Freies_Drehen_rechts
+
+    PS     KG_Drehen_Rund_Achs_Index
+    PS     KL_Vorschub_0
+    PS     KL_Stop
+    CM     9223                        ;Freies Drehen von Drehachsen und Hilfsachsen aktivieren
+    PL     BL_Stack_synchronisieren
+     M_Modul_Fehler_anzeigen
+  ENDI
+
+;Quittung FN19 falls Freies Drehen aktiv (Strobe Drehzahl-Änderung NC-Achse)
+
+  L      NP_D280_FN19_Zahlenwert_1
+  /      K+10000
+  ==     K+99994
+  AN     PN_M4133_Strobe_Freies_Drehen_Achsen
+  A      NP_M4075_Strobe_FN19
+  S      PN_M4095_Quit_FN19
+
+;Spindel Override für Freies Drehen
+
+  L      MG_SK_S_Over_Drehen_zugeordnet
+  O      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  IFT
+    L      NP_W492_S_Override_NC
+    =      WL_Override_Freies_Drehen
+
+    L      WL_Override_Freies_Drehen
+    <=     KL_Drehen_Override_min
+    IFT
+      L      KL_Drehen_Override_min
+      =      WL_Override_Freies_Drehen
+    ENDI
+  ENDI
+
+  L      DG_Vorschub_Stop_Achsen
+  BT     KG_Drehen_Rund_Achs_Index
+  O      NP_M4175_Stern_blinkt
+  IFT
+    L      KL_Override_0
+    =      PN_W754_Faktor_Override_Freies_D
+  ELSE
+    L      WL_Override_Freies_Drehen
+    =      PN_W754_Faktor_Override_Freies_D
+  ENDI
+
+;Vorschub Rund-Achse
+
+  PS     KG_Drehen_Rund_Achs_Index
+  CM     9164                          ;Drehzahl-Istwert der Antriebsmotoren lesen
+  PL     DL_Motor_n_Ist_Rund_Achse
+
+  M_Modul_Fehler_anzeigen
+
+  L      DL_Motor_n_Ist_Rund_Achse
+  /      K+100
+  X[
+    L      DG_MP1054_Weg_bei_Motor_Drehen_Rund_Achse
+    /      K+100
+  ]
+  /      K+1000
+  =      DL_Ist_Vorschub_Rund_Achse
+
+;Vorschub Zustell-Achse F0 bis Drehzahl (Vorschub) der Rund-Achse erreicht
+
+  L      DG_Drehen_Rund_Achs_Vorschub
+  X      PN_W754_Faktor_Override_Freies_D
+  /      KL_Faktor_Override_Aufloesung
+  =      DL_Soll_Vorschub_Rund_Achse
+
+  L      DL_Soll_Vorschub_Rund_Achse
+  <=     K+2000
+  IFT
+    L      DL_Soll_Vorschub_Rund_Achse
+    -      DL_Ist_Vorschub_Rund_Achse
+    <      KL_FD_n_soll_Differenz
+    =      MG_Freies_Drehen_Drehzahl_N_ok
+  ELSE
+    L      DL_Ist_Vorschub_Rund_Achse
+    X      K+100
+    /      DL_Soll_Vorschub_Rund_Achse
+    >      KL_FD_n_soll_Prozent
+    =      MG_Freies_Drehen_Drehzahl_N_ok
+  ENDI
+
+  LN     MG_Freies_Drehen_Drehzahl_N_ok
+  R      ML_Freies_Drehen_Richtungswechsel
+
+  L      ML_Freies_Drehen_Richtungswechsel
+  R      MG_Freies_Drehen_Drehzahl_N_ok
+
+EM

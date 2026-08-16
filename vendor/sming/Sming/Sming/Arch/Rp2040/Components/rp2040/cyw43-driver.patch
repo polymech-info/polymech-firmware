@@ -1,0 +1,244 @@
+diff --git a/src/cyw43_ctrl.c b/src/cyw43_ctrl.c
+index cc9973e..ab76673 100644
+--- a/src/cyw43_ctrl.c
++++ b/src/cyw43_ctrl.c
+@@ -288,13 +288,17 @@ static const char *const cyw43_async_event_name_table[89] = {
+     [CYW43_EV_SET_SSID] = "SET_SSID",
+     [CYW43_EV_JOIN] = "JOIN",
+     [CYW43_EV_AUTH] = "AUTH",
++    [CYW43_EV_AUTH_IND] = "AUTH_IND",
+     [CYW43_EV_DEAUTH_IND] = "DEAUTH_IND",
+     [CYW43_EV_ASSOC] = "ASSOC",
++    [CYW43_EV_ASSOC_IND] = "ASSOC_IND",
+     [CYW43_EV_DISASSOC] = "DISASSOC",
+     [CYW43_EV_DISASSOC_IND] = "DISASSOC_IND",
+     [CYW43_EV_LINK] = "LINK",
++    [CYW43_EV_PROBREQ_MSG] = "PROBREQ_MSG",
+     [CYW43_EV_PSK_SUP] = "PSK_SUP",
+     [CYW43_EV_ESCAN_RESULT] = "ESCAN_RESULT",
++    [CYW43_EV_P2P_PROBREQ_MSG] = "P2P_PROBREQ_MSG",
+     [CYW43_EV_CSA_COMPLETE_IND] = "CSA_COMPLETE_IND",
+     [CYW43_EV_ASSOC_REQ_IE] = "ASSOC_REQ_IE",
+     [CYW43_EV_ASSOC_RESP_IE] = "ASSOC_RESP_IE",
+diff --git a/src/cyw43_ll.c b/src/cyw43_ll.c
+index 033eec2..11f08d5 100644
+--- a/src/cyw43_ll.c
++++ b/src/cyw43_ll.c
+@@ -65,11 +65,6 @@ extern bool enable_spi_packet_dumping;
+ 
+ #define CYW43_RAM_SIZE (512 * 1024)
+ 
+-// Include the file containing the WiFi+CLM firmware blob as a C array.
+-#include CYW43_CHIPSET_FIRMWARE_INCLUDE_FILE
+-
+-#define CYW43_CLM_ADDR (fw_data + ALIGN_UINT(CYW43_WIFI_FW_LEN, 512))
+-
+ #define ALIGN_UINT(val, align) (((val) + (align) - 1) & ~((align) - 1))
+ 
+ // Configure the padding needed for data sent to cyw43_write_bytes().
+@@ -101,18 +96,6 @@ static inline void cyw43_put_le32(uint8_t *buf, uint32_t x) {
+     buf[3] = x >> 24;
+ }
+ 
+-#if CYW43_RESOURCE_VERIFY_DOWNLOAD
+-static void cyw43_xxd(size_t len, const uint8_t *buf) {
+-    for (size_t i = 0; i < len; ++i) {
+-        CYW43_PRINTF(" %02x", buf[i]);
+-        if (i % 32 == 31) {
+-            CYW43_PRINTF("\n");
+-        }
+-    }
+-    CYW43_PRINTF("\n");
+-}
+-#endif
+-
+ /*******************************************************************************/
+ // CYW43 constants and types
+ 
+@@ -409,10 +392,6 @@ static int cyw43_check_valid_chipset_firmware(cyw43_int_t *self, size_t len, uin
+ }
+ 
+ static int cyw43_download_resource(cyw43_int_t *self, uint32_t addr, size_t len, uintptr_t source) {
+-    // The calls to cyw43_write_bytes() (and cyw43_read_bytes()) require data sizes that
+-    // are aligned to a certain amount.
+-    assert(CYW43_WRITE_BYTES_PAD(len) == len);
+-
+     CYW43_VDEBUG("writing %u bytes to 0x%x\n", (uint32_t)len, (uint32_t)addr);
+ 
+     uint32_t block_size = CYW43_BUS_MAX_BLOCK_SIZE;
+@@ -431,12 +410,18 @@ static int cyw43_download_resource(cyw43_int_t *self, uint32_t addr, size_t len,
+         uint32_t dest_addr = addr + offset;
+         assert(((dest_addr & BACKPLANE_ADDR_MASK) + sz) <= (BACKPLANE_ADDR_MASK + 1));
+         cyw43_set_backplane_window(self, dest_addr);
+-        const uint8_t *src = (const uint8_t *)source + offset;
++        const uint8_t *src;
++        if (source) {
++            src = (const uint8_t *)source + offset;
++        } else {
++            cyw43_storage_read(self->spid_buf, sz);
++            src = self->spid_buf;
++        }
+         dest_addr &= BACKPLANE_ADDR_MASK;
+         #if CYW43_USE_SPI
+         dest_addr |= SBSDIO_SB_ACCESS_2_4B_FLAG;
+         #endif
+-        int ret = cyw43_write_bytes(self, BACKPLANE_FUNCTION, dest_addr, sz, src);
++        int ret = cyw43_write_bytes(self, BACKPLANE_FUNCTION, dest_addr, CYW43_WRITE_BYTES_PAD(sz), src);
+         if (ret != 0) {
+ 
+             return CYW43_FAIL_FAST_CHECK(ret);
+@@ -449,42 +434,6 @@ static int cyw43_download_resource(cyw43_int_t *self, uint32_t addr, size_t len,
+     CYW43_VDEBUG("done dnload; dt = %u us; speed = %u kbytes/sec\n", (unsigned int)dt, (unsigned int)(len * 1000 / dt));
+     #endif
+ 
+-    #if CYW43_RESOURCE_VERIFY_DOWNLOAD
+-
+-    // Verification of 380k takes about 40ms using a 512-byte transfer size
+-    const size_t verify_block_size = CYW43_BUS_MAX_BLOCK_SIZE;
+-    uint8_t buf[verify_block_size];
+-
+-    #if CYW43_VERBOSE_DEBUG
+-    t_start = cyw43_hal_ticks_us();
+-    #endif
+-
+-    for (size_t offset = 0; offset < len; offset += verify_block_size) {
+-        size_t sz = verify_block_size;
+-        if (offset + sz > len) {
+-            sz = len - offset;
+-        }
+-        uint32_t dest_addr = addr + offset;
+-        assert(((dest_addr & BACKPLANE_ADDR_MASK) + sz) <= (BACKPLANE_ADDR_MASK + 1));
+-        cyw43_set_backplane_window(self, dest_addr);
+-        cyw43_read_bytes(self, BACKPLANE_FUNCTION, dest_addr & BACKPLANE_ADDR_MASK, sz, buf);
+-        const uint8_t *src = (const uint8_t *)source + offset;
+-        if (memcmp(buf, src, sz) != 0) {
+-            CYW43_WARN("fail verify at address 0x%08x:\n", (unsigned int)dest_addr);
+-            cyw43_xxd(sz, src);
+-            cyw43_xxd(sz, buf);
+-            return CYW43_FAIL_FAST_CHECK(-CYW43_EIO);
+-        }
+-    }
+-
+-    #if CYW43_VERBOSE_DEBUG
+-    t_end = cyw43_hal_ticks_us();
+-    dt = t_end - t_start;
+-    CYW43_VDEBUG("done verify; dt = %u us; speed = %u kbytes/sec\n", (unsigned int)dt, (unsigned int)(len * 1000 / dt));
+-    #endif
+-
+-    #endif // CYW43_RESOURCE_VERIFY_DOWNLOAD
+-
+     return 0;
+ }
+ 
+@@ -1374,7 +1323,7 @@ void cyw43_ll_bus_sleep(cyw43_ll_t *self_in, bool can_sleep) {
+ #define CLM_CHUNK_LEN 1024 + 512
+ #endif
+ 
+-static void cyw43_clm_load(cyw43_int_t *self, const uint8_t *clm_ptr, size_t clm_len) {
++static void cyw43_clm_load(cyw43_int_t *self, size_t clm_len) {
+     // Reuse spid_buf but be careful to start at the right offset in it
+     uint8_t *buf = &self->spid_buf[SDPCM_HEADER_LEN + 16];
+ 
+@@ -1400,7 +1349,7 @@ static void cyw43_clm_load(cyw43_int_t *self, const uint8_t *clm_ptr, size_t clm
+         *(uint32_t *)(buf + 12) = len;
+         *(uint32_t *)(buf + 16) = 0;
+         #pragma GCC diagnostic pop
+-        memcpy(buf + 20, clm_ptr + off, len);
++        cyw43_storage_read(buf + 20, len);
+ 
+         CYW43_VDEBUG("clm data send %u/%u\n", off + len, clm_len);
+ 
+@@ -1656,14 +1605,11 @@ alp_set:
+     cyw43_write_backplane(self, SOCSRAM_BANKX_INDEX, 4, 0x3);
+     cyw43_write_backplane(self, SOCSRAM_BANKX_PDA, 4, 0);
+ 
+-    // Check that valid chipset firmware exists at the given source address.
+-    int ret = cyw43_check_valid_chipset_firmware(self, CYW43_WIFI_FW_LEN, fw_data);
+-    if (ret != 0) {
+-        return ret;
+-    }
++    // Take firmware from storage block device
++    cyw43_storage_init();
+ 
+     // Download the main WiFi firmware blob to the 43xx device.
+-    ret = cyw43_download_resource(self, 0x00000000, CYW43_WRITE_BYTES_PAD(CYW43_WIFI_FW_LEN), fw_data);
++    int ret = cyw43_download_resource(self, 0x00000000, cyw43_storage_get_chunksize(), 0);
+     if (ret != 0) {
+         return ret;
+     }
+@@ -1784,9 +1730,11 @@ f2_ready:
+ 
+     // Load the CLM data; it sits just after main firmware
+     CYW43_VDEBUG("cyw43_clm_load start\n");
+-    cyw43_clm_load(self, (const uint8_t *)CYW43_CLM_ADDR, CYW43_CLM_LEN);
++    cyw43_clm_load(self, cyw43_storage_get_chunksize());
+     CYW43_VDEBUG("cyw43_clm_load done\n");
+ 
++    cyw43_storage_cleanup();
++
+     cyw43_write_iovar_u32(self, "bus:txglom", 0, WWD_STA_INTERFACE); // tx glomming off
+     cyw43_write_iovar_u32(self, "apsta", 1, WWD_STA_INTERFACE); // apsta on
+ 
+@@ -1890,10 +1838,14 @@ int cyw43_ll_wifi_on(cyw43_ll_t *self_in, uint32_t country) {
+     cyw43_delay_ms(50);
+ 
+     #ifndef NDEBUG
++    // Get and print firmware version
++    memcpy(buf, "ver\x00", 4);
++    cyw43_do_ioctl(self, SDPCM_GET, WLC_GET_VAR, 128, buf, WWD_STA_INTERFACE);
++    CYW43_DEBUG("CYW43 ver %s", buf);
+     // Get and print CLM version
+     memcpy(buf, "clmver\x00", 7);
+     cyw43_do_ioctl(self, SDPCM_GET, WLC_GET_VAR, 128, buf, WWD_STA_INTERFACE);
+-    CYW43_DEBUG("%s\n", buf);
++    CYW43_DEBUG("CYW43 clmver %s\n", buf);
+     #endif
+ 
+     // Set antenna to chip antenna
+@@ -1919,8 +1871,8 @@ int cyw43_ll_wifi_on(cyw43_ll_t *self_in, uint32_t country) {
+     CLR_EV(buf, 19); // roam attempt occurred
+     CLR_EV(buf, 20); // tx fail
+     CLR_EV(buf, 40); // radio
+-    CLR_EV(buf, 44); // probe request
+     CLR_EV(buf, 54); // interface change
++    CLR_EV(buf, 67); // WAI stations event (whatever that is)
+     CLR_EV(buf, 71); // probe response
+     #undef CLR_EV
+     memcpy(buf, "bsscfg:event_msgs", 18);
+diff --git a/src/cyw43_ll.h b/src/cyw43_ll.h
+index b5c1ead..6e4ea30 100644
+--- a/src/cyw43_ll.h
++++ b/src/cyw43_ll.h
+@@ -67,15 +67,19 @@
+ #define CYW43_EV_SET_SSID               (0)
+ #define CYW43_EV_JOIN                   (1)
+ #define CYW43_EV_AUTH                   (3)
++#define CYW43_EV_AUTH_IND               (4)
+ #define CYW43_EV_DEAUTH                 (5)
+ #define CYW43_EV_DEAUTH_IND             (6)
+ #define CYW43_EV_ASSOC                  (7)
++#define CYW43_EV_ASSOC_IND              (8)
+ #define CYW43_EV_DISASSOC               (11)
+ #define CYW43_EV_DISASSOC_IND           (12)
+ #define CYW43_EV_LINK                   (16)
+ #define CYW43_EV_PRUNE                  (23)
++#define CYW43_EV_PROBREQ_MSG            (44)
+ #define CYW43_EV_PSK_SUP                (46)
+ #define CYW43_EV_ESCAN_RESULT           (69)
++#define CYW43_EV_P2P_PROBREQ_MSG        (72)
+ #define CYW43_EV_CSA_COMPLETE_IND       (80)
+ #define CYW43_EV_ASSOC_REQ_IE           (87)
+ #define CYW43_EV_ASSOC_RESP_IE          (88)
+@@ -316,6 +320,12 @@ uint32_t cyw43_ll_read_backplane_reg(cyw43_ll_t *self_in, uint32_t addr);
+ int cyw43_ll_write_backplane_mem(cyw43_ll_t *self_in, uint32_t addr, uint32_t len, const uint8_t *buf);
+ int cyw43_ll_read_backplane_mem(cyw43_ll_t *self_in, uint32_t addr, uint32_t len, uint8_t *buf);
+ 
++// Sming framework methods for accessing partition storage
++int cyw43_storage_init();
++uint32_t cyw43_storage_get_chunksize();
++uint32_t cyw43_storage_read(void *dest, uint32_t length);
++void cyw43_storage_cleanup(void);
++
+ //!\}
+ 
+ #endif // CYW43_INCLUDED_CYW43_LL_H

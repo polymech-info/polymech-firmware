@@ -1,0 +1,112 @@
+*-----------------------------------------------------------------------------
+*  Lineare Achs-Kompensation
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    - über Eingabe-Maske können Werte für die lineare Achs-Kompensation
+*      im Bereich von -50 ... +50 µm/m eingegeben werden
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inaktiv                               K +0
+#define /s    KL_Achs_Kompensation_Wertebereich        K +500          ;;Einheit 1/10 µm
+#define /s    KL_Faktor_mm                             K +10000        ;;Faktor 0,1µm -> 1mm
+#define /s    KL_Faktor_m                              K +1000         ;;Faktor 1mm -> 1m
+#define /s    KL_Word_Wertebereich                     K $7FFF
+
+#define /s    ML_Fehler_Achskompensation_geaendert     M
+#define /s    ML_Achs_Komp_Anzeige_war_aktiv           M
+#define /s    ML_Achs_Komp_Eingabe_war_aktiv           M
+#define /s    ML_Wert_unzulaessig                      M
+
+#define /s    BL_Achs_Index                            B
+
+#define /s /r Achs_Komp_Faktor_alt                     W [3]
+#define /c    WL_Achs_Komp_X_Faktor_alt                W &Achs_Komp_Faktor_alt + 0
+#define /c    WL_Achs_Komp_Y_Faktor_alt                W &Achs_Komp_Faktor_alt + 2
+#define /c    WL_Achs_Komp_Z_Faktor_alt                W &Achs_Komp_Faktor_alt + 4
+
+#define /c    WL_Stack_synchronisieren                 W
+
+#include Mac_Lib.inc
+
+EXTERN Absolut
+GLOBAL Achs_Kompensation
+
+;----------------------------
+LBL Achs_Kompensation
+;----------------------------
+
+  L      MG_Eins_Merker
+  R      MG_Achs_Kompensation_aktiv
+  R      ML_Wert_unzulaessig
+
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      WG_Achs_Komp_X_Faktor[BL_Achs_Index]
+    <>     KL_inaktiv
+    S      MG_Achs_Kompensation_aktiv
+
+    L      WG_Achs_Komp_X_Faktor[BL_Achs_Index]
+    <>     WL_Achs_Komp_X_Faktor_alt[BL_Achs_Index]
+    S      PN_Fehler_Achskompensation_geaendert
+
+    L      WG_Achs_Komp_X_Faktor[BL_Achs_Index]
+    =      WL_Achs_Komp_X_Faktor_alt[BL_Achs_Index]
+
+    PS     WG_Achs_Komp_X_Faktor[BL_Achs_Index]
+    CM     Absolut
+    PLW
+    >      KL_Achs_Kompensation_Wertebereich
+    S      ML_Wert_unzulaessig
+    S      PN_Fehler_Wert_unzulaessig
+
+    L      DG_Ist_Pos_Achse[BL_Achs_Index]
+    /      KL_Faktor_mm
+    X      WG_Achs_Komp_X_Faktor[BL_Achs_Index]
+    /      KL_Faktor_m
+    =      WG_Achs_Kompensation_X[BL_Achs_Index]
+    PSW
+    CM     Absolut
+    PLW
+    >      KL_Word_Wertebereich
+    S      ML_Wert_unzulaessig
+    S      PN_Fehler_Wert_unzulaessig
+
+    L      ML_Wert_unzulaessig
+    O      MG_WZW_automatisch
+    IFT
+      L      KL_inaktiv
+      =      WG_Achs_Kompensation_X[BL_Achs_Index]
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >      KG_Achse_Z
+  UNTILT
+
+  L      PN_Fehler_Achskompensation_geaendert
+  AN     ML_Fehler_Achskompensation_geaendert
+  S      MG_SK_Achs_Komp_Anzeige
+  R      MG_SK_Achs_Komp_Eingabe
+
+  L      PN_Fehler_Achskompensation_geaendert
+  =      ML_Fehler_Achskompensation_geaendert
+
+  L      MG_SK_Achs_Komp_Anzeige
+  AN     ML_Achs_Komp_Anzeige_war_aktiv
+  R      MG_SK_Achs_Komp_Eingabe
+
+  L      MG_SK_Achs_Komp_Anzeige
+  =      ML_Achs_Komp_Anzeige_war_aktiv
+
+  L      MG_SK_Achs_Komp_Eingabe
+  AN     ML_Achs_Komp_Eingabe_war_aktiv
+  R      MG_SK_Achs_Komp_Anzeige
+
+  L      MG_SK_Achs_Komp_Eingabe
+  =      ML_Achs_Komp_Eingabe_war_aktiv
+
+EM

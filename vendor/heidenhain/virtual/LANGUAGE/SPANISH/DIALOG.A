@@ -1,0 +1,2048 @@
+﻿Maquina/puesto programacion  0/2
+Factor escala xyz/z          0/1
+Comportamiento ciclos fresado
+Factor solap. cajeras 0.1-1.414
+Tolerancia punto final circulo
+3D rotacion off/on      ..0/ ..1
+Lubricacion ejes           [min]
+Volante off/HR410            0/6
+Pantalla:Paleta de colores 0..3]
+TT1x0 posicion X           [REF]
+TT1x0 posicion Y           [REF]
+TT1x0 posicion Z           [REF]
+parametro usuario 13
+parametro usuario 14
+parametro usuario 15
+parametro usuario 16
+Tiempo cabezal S1 =
+Tiempo cabezal S2 =
+Tiempo ejes    =
+Tiempo hidraulico =
+PLC contador 5    =
+PLC contador 6    =
+PLC contador 7    =
+PLC contador 8    =
+PLC contador 9    =
+PLC contador 10   =
+PLC contador 11   =
+PLC contador 12   =
+PLC contador 13   =
+* Title message box MP table editor <- line 30
+MP Table Editor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Pulsadores Emergencia
+-> soltar
+H001 Eje en fin de curso X+
+-> pulse boton o SK tecla extracurso
+H002 Eje en fin de curso Y+
+-> pulse boton o SK tecla extracurso
+H003 Eje en fin de curso Z+
+->pulse boton o SK tecla extracurso
+H004 Eje en fin de curso 4+
+-> pulse boton o SK tecla extracurso
+H005 Eje en fin de curso 5+
+-> pulse boton o SK tecla extracurso
+H006 Eje en fin de curso X-
+-> pulse boton o SK tecla extracurso
+H007 Eje en fin de curso Y-
+-> pulse boton o SK tecla extracurso
+H008 Eje en fin de curso Z-
+-> pulse boton o SK tecla extracurso
+H009 Eje en fin de curso 4-
+-> pulse boton o SK tecla extracurso
+H010 Eje en fin de curso 5-
+-> pulse boton o SK tecla extracurso
+H011 Eje X posicion cambio herramienta
+->Modos manual/volante ->MOD ->Help
+H012 Eje Y posicion cambio Hta fuera
+->Modos manual/volante ->MOD ->Help
+H013 Eje Y posicion cambio Hta dentro
+->Modos manual/volante ->MOD ->Help
+H014 Eje Y posicion cambio Hta manual
+->Modos manual/volante ->MOD ->Help
+H015 Eje Z posicion cambio Hta fuera
+->Modos manual/volante ->MOD ->Help
+H016 Eje Z posicion cambio Hta dentro
+->Modos manual/volante ->MOD ->Help
+H017 Eje Z posicion cambio Hta manual
+->Modos manual/volante ->MOD ->Help
+H018 Eje Z pos. seguridad cambio Hta.
+->Modos manual/volante ->MOD ->Help
+H019 Husillo en pos. cambio Hta. (M19)
+->Modos manual/volante ->MOD ->Help
+H020 Soltar herramienta
+->Modos manual/volante ->MOD ->Help
+H021 Atar herramienta
+->Modos manual/volante ->MOD ->Help
+H022 Brazo cambiador fuera
+->Modos manual/volante ->MOD ->Help
+H023 Brazo cambiador dentro
+->Modos manual/volante ->MOD ->Help
+H024 Brazo cambiador girar pos. final
+->Modos manual/volante ->MOD ->Help
+H025 Pinza brazo cambiador cerrada
+->Modos manual/volante ->MOD ->Help
+H026 Pinza brazo cambiador abierta
+->Modos manual/volante ->MOD ->Help
+H027 Pinza cambiador cerrada cabezal
+->Modos manual/volante ->MOD ->Help
+H028 Pinza cambiador abierta cabezal
+->Modos manual/volante ->MOD ->Help
+H029 Pinza cambiador cerrada almacen
+-> Stop interno -> MDI -> TOOL CALL
+H030 Pinza cambiador abierta almacen
+->Modos manual/volante ->MOD ->Help
+H031 Almacen htas. a posicion basica
+->Modos manual/volante ->MOD ->Help
+H032 Puerta almacen Htas cerrada
+->Modos manual/volante ->MOD ->Help
+H033 Almacen de acuerdo a estado
+->Modos manual/volante ->MOD ->Help
+H034 Almacen htas a cabezal
+->Modos manual/volante ->MOD ->Help
+H035 Almacen htas. a posicion basica
+->Modos manual/volante ->MOD ->Help
+H036 Puesto almacen htas fuera
+->Modos manual/volante ->MOD ->Help
+H037 Puesto almacen de htas dentro
+->Modos manual/volante ->MOD ->Help
+H038 Pasador bloqueo almacen htas fuera
+->Modos manual/volante ->MOD ->Help
+H039 Pasador bloqueo almacen htas dentro
+->Modos manual/volante ->MOD ->Help
+H040 Brazo cambiador a pos. basica
+->Modos manual/volante ->MOD ->Help
+H041 Funcion cambio hta inhibida
+->Modos manual/volante ->MOD ->Help
+H042 Brazo cambiador a pos. cabezal
+->Modos manual/volante ->MOD ->Help
+H043 Brazo cambiador a pos. almacen
+->Modos manual/volante ->MOD ->Help
+H044 Brazo cambiador a pos. basica
+->Modos manual/volante ->MOD ->Help
+H045 Brazo cambiador a pos. intermedia
+->Modos manual/volante ->MOD ->Help
+H046 Teclas volante HR410 evaluadas por
+NC, FCT A-C por PLC    -> MP7645: 0
+H047 M/S/T/Q strobe a PLC durante block
+scan                -> MP7681: %110111
+H048 Almacen CH es un eje PLC!
+letra minuscula       -> MP100
+H049 Tipo de volante no soportado
+-> MP7640: 0..6/11..13
+H050 Block Scan PLC activo !
+Bit 11 MP 7680:%xxxx1xxxxxxxxxxx
+H051 Funciones M deben parar el PGM
+Bit 02 MP 7440: %xxxxx0xx
+H052 Error abriendo fichero
+-> modulo 9240
+H053 Error leyendo tabla
+-> modulo 9255
+H054 Error escribiendo tabla
+-> modulo 9256
+H055 Error valor no esta en tabla
+-> modulo 9255
+H056 Sensores de temperatura Pt100
+-> Chequear X48 interface
+H057 Interface Pt100 no definido
+-> tabla compensacion temperatura
+H058 Posicion PC eje X
+->Modos manual/volante ->MOD ->Help
+H059 Posicion PC eje Y
+->Modos manual/volante ->MOD ->Help
+H060 Posicion PC eje Z
+->Modos manual/volante ->MOD ->Help
+H061 Activar PC automatico
+
+H062 Comienzo cambiador palet
+->Modos manual/volante ->MOD ->Help
+H063 Cambiador palet completo
+->Tecla NC-Start
+H064 Bloqueo cambiador palet abierto
+->Modos manual/volante ->MOD ->Help
+H065 Bloqueo cambiador palet cerrado
+->Modos manual/volante ->MOD ->Help
+H066 Numero de palet no permitido
+
+H067 Desbloqueo palet (en maquina)
+->Modos manual/volante ->MOD ->Help
+H068 Bloqueo palet (en maquina)
+->Modos manual/volante ->MOD ->Help
+H069 Ejes controlados MP10 no asignado
+-> Modificar  MP2040.x
+H070 Cambiador palet posicion reposo
+->Modos manual/volante ->MOD ->Help
+H071 PC1 - Posicion eje X
+->Modos manual/volante ->MOD ->Help
+H072 PC2 - Posicion eje X
+->Modos manual/volante ->MOD ->Help
+H073 Cambiador palet posicion basica
+->Modos manual/volante ->MOD ->Help
+H074 PC1 posicion basica
+->Modos manual/volante ->MOD ->Help
+H075 PC2 posicion basica
+->Modos manual/volante ->MOD ->Help
+H076 PC a posicion de carga
+->Modos manual/volante ->MOD ->Help
+H077 PC a maquina
+->Modos manual/volante ->MOD ->Help
+H078 PC error en sensor de puesto
+->Modos manual/volante ->MOD ->Help
+H079 Eje 4 posicion PC
+->Modos manual/volante ->MOD ->Help
+H080 3D cambio gama cabezal
+
+H081 3D orientacion husillo cabezal
+
+H082 3D momento torsinal cabezal
+->Modo manual ->soft key 3D head
+H083 Abrir amarre Hta.
+->Modos manual/volante ->MOD ->Help
+H084 Cerrar amarre Hta.
+->Modos manual/volante ->MOD ->Help
+H085 A posicion cambio CH pickup
+->Modos manual/volante ->MOD ->Help
+H086 A posicion basica CH pickup
+->Modos manual/volante ->MOD ->Help
+H087 Eje X preposicion CH
+->Modos manual/volante ->MOD ->Help
+H088 Alarma cambiador palet
+
+H089 Chequear cambiador palet
+
+H090 Spindle en modo eje C
+-> posicion cabezal (sincroniza)
+H091 Interface ampliado - 20 lazos
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard interface - 16 loops
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> AUTOSTART / prog. calentamiento ON
+H094 Activar potenciometro Fmax  
+            MP7620: fijar Bit05 o Bit09
+H095 Eje almacen hirth-/modulo-eje
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 Mensaje de PLC
+
+H097 Mensaje de PLC
+
+H098      si   -> NC start
+no   -> NC stop
+H099
+-> NC start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* Almacen CH - Eje PLC *
+* Almacen CH - Pulso contador *
+* CH auto - Brazo sencillo *
+* CH auto - Brazo doble *
+* CH auto - Leva brazo guiado *
+* CH auto - Pickup *
+
+
+
+Magazine_start
+Magazine_end
+Tool_def_quit
+Pocket_put_in
+Pocket_pos_in
+Pocket_in_out
+Pocket_posit
+T_magazine_start
+T_mag_in_position
+Decode_P_no
+Standby_T_read
+Magazine_direct
+Lock_pin_out
+Lock_pin_pos_out
+Magazine_nom_pos
+Time_exact_stop
+Lock_pin_pos_in
+Mag_exact_stop
+TC_magazine_cw
+TC_magazine_ccw
+
+TC_auto_start
+TC_auto_end
+Tool_spindle_ok
+T_mag_start
+Magazine_in_pos
+Mag_full_empty
+Spi_full_empty
+Mag_full
+Mag_empty
+Spi_empty_full
+Tool_lock_open
+Tool_lock_opened
+Tool_lock_close
+Tool_lock_closed
+S_start
+S_in_TC_pos
+XY_start
+X_start
+X_in_pos
+X_TC_pre_pos
+X_in_pre_pos
+Y_start
+Y_in_TC_pos
+Y_TC_pre_pos
+Y_in_pre_pos
+Z_start
+Z_in_TC_pos
+Z_start_safety
+Z_in_pos_safety
+Z1_in_out_start
+Z1_posit_in_out
+Z2_in_out_start
+Z2_posit_in_out
+Z3_in_start
+Z3_posit_in
+T_pocket_put_out
+T_pocket_pos_out
+T_pocket_time
+Pickup_values_read
+Pickup_put_out
+Pickup_put_out_ok
+Pickup_put_in
+Pickup_put_in_ok
+T_arm_put_out
+T_arm_pos_out
+T_arm_put_in
+T_arm_pos_in
+T_arm_to_spindle
+T_arm_on_spindle
+T_arm_to_magazine
+T_arm_on_magazine
+T_arm_to_middle
+T_arm_in_middle
+T_arm_to_basic
+T_arm_on_basic
+T_arm_to_cw_ccw
+T_arm_in_cw_ccw
+T_arm_middle_stop
+TC_arm_delay
+Jump_TC_arm
+T_pocket_in_out
+T_pocket_pos_ok
+T_gripper_close
+T_gripper_closed
+T_gripper_open
+T_gripper_opened
+T_gri_mag_open
+T_gri_mag_opened
+T_gri_mag_close
+T_gri_mag_closed
+T_gri_spi_open
+T_gri_spi_opened
+T_gri_spi_close
+T_gri_spi_closed
+T_standby_read
+TC_auto_time
+Mag_to_spindle
+Mag_in_spindle
+Tool_unclamping
+Tool_unclamped
+Tool_clamping
+Tool_clamped
+Time_put_out
+Tnew_store
+T0_in_status
+T0_Tnew_status
+Tnew_in_status
+T_status_ok
+Tool_Call_2nd
+Tool_Call_wait
+T_status_read
+Jump_clamping
+Mag_to_basic
+Mag_on_basic
+TOOL_CALL_quit
+Jump_T0_programed
+Jump_spindle_was_empty
+AC_in_TC_position
+T_gripper_to_cw_right
+T_gripper_to_ccw_left
+Tool_in magazine unlock
+Tool_in_magazine_unlocked
+Tool_in_magazine_lock
+Tool_in_magazine_locked
+TC_manual
+TC_manual_start
+Jump_BA_manual
+X_start_manual
+X_in_pos_manual
+Y_start_manual
+Y_in_pos_manual
+Z_start_manual
+Z_in_pos_manual
+Tool_manu_unclamping
+Tool_manu_clamping
+TC_disable
+TC_quit
+Restore_necessary
+Restore_pos_ok
+Tool_Call_quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+no definido
+Tension barras excesiva
+Temperatura disipador excesiva
+Cortocircuito fase motor con Uz
+Corriente barras excesiva
+Fuente alimentacion no lista 
+Corriente fugas excesiva
+
+
+
+0 No hay mas codigo de error
+1 Valor de parametro fuera de rango
+2 Parametro invalido/inexistente
+3 Numero de direccion fuera de rango
+4 Longitud de bloque fuera de rango
+5 Sin direccion de Word o Doble Word
+6 Valor puede/debe ser cambiado
+7 Error en fichero/podria no ser leido
+8 Modo de operacion incorrecto
+9 Orden de posicionamiento ya ejecutada
+10 Cambio de herramienta no definido
+11 Caracteres no permitidos
+12 Sin final de string, o string incomplero
+13 Sin conexion
+14 RS232 ocupada o no asignada
+15 RS232 buffer de envio no vacio
+16 RS232 buffer de recepcion vacio
+17 RS232 velocidad de baudios no permitida
+18 RS232 error de transmision
+19 No encontrado controlador de corriente
+20 Modulo llamado sin Submit
+21 Modulo llamado sin strobe
+22 Desbordamiento cola teclas
+23 Desbordamiento cola errores de PLC
+24 Modulo llamado via Submit
+25 Demasiados elementos en KFIELD
+26 Elementos no permitidos en KFIELD
+27 Orientacion husillo todavia activa
+28 La funcion del modulo ya esta activada
+29 Apertura de un tipo de fichero falso
+30 No contiene el nombre del campo (Fieldname)
+31 Condicion de busqueda (Query)incorrecta
+32 Ningun data grabado cumple condicion busqueda
+33 El eje aun no ha sido referenciado
+34 Reset; aparato externo defectuoso
+35 El editor no esta activo
+36 Diversos tipos de error al acceder al fichero
+37 Memoria del sistema insuficiente
+38 Error durante la compilacion
+39 Entrada rapida PLC activa accionamiento
+40 No se puede conectar el accionamiento
+41 Comprobar Type en la tabla de herramienta
+42 Powerfail no se puede desconectar
+43 Modulo llamado sin paquete de seguridad
+44 Error en la fuente de soft-keys
+45 Modulo cancelado
+46 Profibus o ASI  error
+47 -
+48 -
+49 -
+50 -
+51 Funcion no posible, solo PL510
+52 No disponible: MC de un procesador
+53 Interface serie no disponible
+54 No disponible:MC de 2 procesadores
+55 Fichero podria no ser bloqueado
+56 Fichero no encontrado
+57 Opcion FCL no disponible
+58 Funcion canal NC no disponible
+59 Proceso (Phyton) no permitido
+60 Salida analogica  X8/9 bloqueada(HW)
+61 Funcion de modulo no soportada
+62 Simbolo/identificador no existe
+63 Error creando estructuras
+64 Manejo desconocido/incorrecto
+65 Direccion datos erronea
+66 - Funcion no soportada con FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

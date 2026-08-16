@@ -1,0 +1,76 @@
+*-----------------------------------------------------------------------------
+*  Error messages
+*-----------------------------------------------------------------------------
+*  Module Description
+*     Errors are diplayed beginning on the number who is defined in
+*     KL_start_address_PET     K+xxx
+*
+*     The assignment can be made via a marker array of error messages in
+*     GLB_TCMB.def.
+*
+*  EUMACH
+*     Error 800 - 989 for normal purpose
+*     Error 990 - 999 for special purpose (not included in this module)
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_start_address_PET                     K+800          *;EUMACH
+#define /s    KL_number_displayed_error_message        K-2
+
+#define /s    ML_error_status                          M[8]
+#define /c    ML_error_displayed                       M &ML_error_status + 0
+#define /c    ML_error_in_queue                        M &ML_error_status + 1
+
+#define /s    WL_error_number                          W
+
+#include Mac_Lib.inc
+
+GLOBAL Error
+
+;----------------------------
+LBL Error
+
+  L      KL_start_address_PET
+  =      WL_error_number
+
+  L      K+0
+  =X
+
+  REPEAT
+    PS     WL_error_number
+    CM     9087                        ;Interrogate the status of a PLC error message
+    PLW
+    B=     ML_error_status
+    M_display_module_error(KG_error_module_9087)
+
+    L      MG_error[X]
+    AN     ML_error_in_queue
+    IFT
+      PS     WL_error_number
+      CM     9085                      ;Display PLC error messages
+      M_display_module_error(KG_error_module_9085)
+    ENDI
+
+    LN     MG_error[X]
+    A      ML_error_in_queue
+    IFT
+      PS     WL_error_number
+      CM     9086                      ;Clear PLC error message
+      M_display_module_error(KG_error_module_9086)
+    ENDI
+
+    L      MG_error_cycle_before[X]
+    AN     ML_error_in_queue
+    R      MG_error[X]
+
+    L      MG_error[X]
+    =      MG_error_cycle_before[X]
+
+    INC    WL_error_number
+    INCX
+
+    LX
+    >      K &MG_error_end - &MG_error
+  UNTILT
+
+EM

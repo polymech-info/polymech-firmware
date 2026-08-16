@@ -1,0 +1,10943 @@
+             ;Maschinenparameter iTNC530 MC 422 D/MC 6xxx
+             ;CC 422/CC 424(B)/CC 61xx
+             ;Id Nr: 606 420-04, 606 422-04, 606 424-04, 606 425-04
+             ;
+             ;Erweiterte Schnittstelle 22 Achsen / 24 Regelkreise
+             ;
+             ;Stand: 04.06.2014
+             ;
+             ;==================================================================
+             ;Schlüsselzahlen:
+             ;==================================================================
+             ; Maschinen-Parameter editieren  ................ 95148
+             ; Maschinen-Parameter Kurz-Form ................. 123
+             ; Offset-Kompensation ........................... 75368
+             ; unprotect PGM ................................. 86357
+             ; Digital-Scope 6 Kanäle (I-Control)............. 688379
+             ; PLC-Zähler rücksetzen ......................... 857282
+             ; Netz Monitor .................................. NETMONI
+             ; Netz Einrichten ............................... NET123
+             ; DSP Monitor ................................... DSP123
+             ; Logbuch (LSV-2 AUS/EIN) ....................... LOGBOOK
+             ; Auswahl Maschinenkinematik .................... KINEMATIC
+             ; NC Software Update durchführen ................ SETUP
+             ; Systeminformationen TNC:\version.a ............ VERSION
+             ; Anzeige der aktiven Optionen .................. SIK
+             ;
+             ;==================================================================
+             ; Sonder-Tasten und -Funktionen
+             ;==================================================================
+             ; Eingabe Sonderzeichen über TNC-Tastatur:
+             ; <Form Feed>   = <Shift> + <Ret>
+             ; <|>           = <Shift> + <!>
+             ; <~>           = <Shift> + <^>
+             ; <Esc>         = <Shift> + <#>
+             ;
+             ; Umschaltung zwischen GROSS und klein Schreibung:
+             ; <Shift> + <Space>
+             ;
+             ;==================================================================
+             ;Inhalt
+             ;==================================================================
+             ;MP     0 ..  999   Messysteme und Maschinenachsen
+             ;MP  1000 .. 1399   Positionierung / Regelung
+             ;MP  1400 .. 1699   Betrieb mit Geschwindigkeits-Vorsteuerung
+             ;MP  1700 .. 1899   Betrieb mit Schleppabstand
+             ;MP  2000 .. 2999   Parameter für die PWM-Schnittstelle (DSP)
+             ;MP  3000 .. 3999   Spindel-Steuerung (1. Spindel)
+             ;MP  4000 .. 4999   integrierte PLC
+             ;MP  5000 .. 5999   serielle Schnittstellen
+             ;MP  6000 .. 6199   Tastsystem
+             ;MP  6500 .. 6599   Tischtaster Werkzeugvermessung
+             ;MP  7100 .. 7199   Gewindebohren
+             ;MP  7200 .. 7399   Anzeige und Programmierung
+             ;MP  7400 .. 7599   Bearbeitung und Programmlauf
+             ;MP  7600 .. 7699   Hardware
+             ;MP 13000 ..13999   Spindel-Steuerung (2. Spindel)
+             ;
+             ;==================================================================
+             ;Eingabeformat
+             ;==================================================================
+             ;Vorzeichen % = Eingabe binär
+             ;    z.B.:  MP 10 : % 000111111
+             ;                 :   987654321 Achse
+             ;Vorzeichen $ = Eingabe hexadezimal
+             ;    z.B.:  MP 4310.0  : $800F
+             ;                         1000 0000 0000 1111
+             ;                        -32753
+             ;==================================================================
+             ;MP 10 .. 999
+             ;Messsysteme und Maschinenachsen
+             ;==================================================================
+             ;MP10 Aktive Achsen
+             ;Eingabe: %..987654321 bitcodiert
+             ;2109876543210987654ZYX
+MP 10      : %0010000000000011111111
+             ;------------------------------------------------------------------
+             ;MP12 Achsen im Demo-Betrieb
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Demo-Betrieb nicht aktiv
+             ;         1 = Demo-Betrieb aktiv
+             ;2109876543210987654ZYX
+MP 12      : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP20 Überprüfung Messsystem-Signale Achsen
+             ;Eingabe: %..987654321 bitcodiert
+             ;2109876543210987654ZYX
+MP 20.0    : %1111111111111111111111;Absolut-Pos abstandscodierter Ref-Marke
+MP 20.1    : %1111111111111111111111;Amplitude
+MP 20.2    : %1111111111111111111111;Flankenabstand
+             ;------------------------------------------------------------------
+             ;MP21 Überprüfung Messsystem-Signale Spindel
+             ;Eingabe: %yx bitcodiert
+             ;         x = 1. Spindel
+             ;         y = 2. Spindel
+MP 21.0    : %11        ;Absolutposition abstandscodierter Referenzmarken
+MP 21.1    : %11        ;Amplitude
+MP 21.2    : %11        ;Flankenabstand
+             ;------------------------------------------------------------------
+             ;MP100 Zuordnung Achsbezeichnung
+             ;Eingabe: WvUcBaZyX
+             ; X = NC-Achsen (Grossbuchstaben)
+             ; x = PLC-Achsen (Kleinbuchstaben)
+             ; - = nicht angezeigte Achsen
+             ;109876543210987654ZYX
+MP 100.0   : --C-----------a--BAZYX;Verfahrbereich 1
+MP 100.1   : --C-----------a--BAZYX;Verfahrbereich 2
+MP 100.2   : --C-----------a--BAZYX;Verfahrbereich 3
+             ;------------------------------------------------------------------
+             ;MP108 Zuordnung der Achsen zu den Regler-Basisplatinen
+             ;      (nur CC 6xxx)
+             ;Eingabe: 0..4 = Nummer der Regler-Basisplatine im HSCI-Strang
+             ;                Nur die Reihenfolge der Regler-Basisplatinen
+             ;                im HSCI-System wirkt sich hier auf 0..4 aus
+             ;                1. Regler-Basisplatine erhält Adr. 0
+             ;                2. Regler-Basisplatine erhält Adr. 1
+MP 108.0   : 0
+MP 108.1   : 0
+MP 108.2   : 0
+MP 108.3   : 0
+MP 108.4   : 0
+MP 108.5   : 0
+MP 108.6   : 0
+MP 108.7   : 0
+MP 108.8   : 0
+MP 108.9   : 0
+MP 108.10  : 0
+MP 108.11  : 0
+MP 108.12  : 0
+MP 108.13  : 0
+MP 108.14  : 0
+MP 108.15  : 0
+MP 108.16  : 0
+MP 108.17  : 0
+MP 108.18  : 0
+MP 108.19  : 0
+MP 108.20  : 0
+MP 108.21  : 0
+             ;------------------------------------------------------------------
+             ;MP109 Zuordnung der Spindeln zu den Regler-Basisplatinen
+             ;        (nur CC 6xxx)
+             ;Eingabe: 0..4 = Nummer der Regler-Basisplatine im HSCI-Strang
+             ;                Nur die Reihenfolge der Regler-Basisplatinen
+             ;                im HSCI-System wirkt sich hier auf 0..4 aus
+             ;                1. Regler-Basisplatine erhält Adr. 0
+MP 109.0   : 0
+MP 109.1   : 0
+             ;------------------------------------------------------------------
+             ;MP110 Zuordnung Lagemesssytem-Eingänge zu Achsen
+             ;Eingabe: 0        = kein Lagemesssystem-Eingang
+             ;         1..6     = Lagemesssystem-Eingang X1..X6
+             ;         35..38   = Lagemesssystem-Eingang X35..X38
+             ;         201..214 = Lagemesssystem-Eingang X201..X214
+MP 110.0   : 1
+MP 110.1   : 2
+MP 110.2   : 3
+MP 110.3   : 4
+MP 110.4   : 5
+MP 110.5   : 35
+MP 110.6   : 36
+MP 110.7   : 37
+MP 110.8   : 0
+MP 110.9   : 0
+MP 110.10  : 0
+MP 110.11  : 0
+MP 110.12  : 0
+MP 110.13  : 0
+MP 110.14  : 0
+MP 110.15  : 0
+MP 110.16  : 0
+MP 110.17  : 0
+MP 110.18  : 0
+MP 110.19  : 0
+MP 110.20  : 0
+MP 110.21  : 0
+             ;------------------------------------------------------------------
+             ;MP111 Zuordnung Lagemesssytem-Eingänge für Spindeln
+             ;Eingabe: 0        = kein Lagemesssystem-Eingang
+             ;         1..6     = Lagemesssystem-Eingang X1..X6
+             ;         35..38   = Lagemesssystem-Eingang X35..X38
+             ;         201..214 = Lagemesssystem-Eingang X201..X214
+MP 111.0   : 6          ;1. Spindel
+MP 111.1   : 38         ;2. Spindel
+             ;------------------------------------------------------------------
+             ;MP112 Zuordnung Drehzahl-Messsytem-Eingänge zu Achsen
+             ;      (nur bei CC 422)
+             ;Eingabe: 0      = kein Drehzahl-Messsystem-Eingang
+             ;         15..20 = Drehzahl-Messsystem-Eingang X15..X20
+             ;         80..85 = Drehzahl-Messsystem-Eingang X80..X85
+MP 112.0   : 0
+MP 112.1   : 0
+MP 112.2   : 0
+MP 112.3   : 0
+MP 112.4   : 0
+MP 112.5   : 0
+MP 112.6   : 0
+MP 112.7   : 0
+MP 112.8   : 0
+MP 112.9   : 0
+MP 112.10  : 0
+MP 112.11  : 0
+MP 112.12  : 0
+MP 112.13  : 0
+MP 112.14  : 0
+MP 112.15  : 0
+MP 112.16  : 0
+MP 112.17  : 0
+MP 112.18  : 0
+MP 112.19  : 0
+MP 112.20  : 0
+MP 112.21  : 0
+             ;------------------------------------------------------------------
+             ;MP113 Zuordnung Drehzahl-Messsytem-Eingänge für Spindeln
+             ;Eingabe: 0      = kein Drehzahl-Messsystem
+             ;         15..20 = Drehzahl-Messsystem-Eingang X15..X20
+             ;         80..85 = Drehzahl-Messsystem-Eingang X80..X85
+MP 113.0   : 0          ;1. Spindel
+MP 113.1   : 0          ;2. Spindel
+             ;------------------------------------------------------------------
+             ;MP115.0 Definition Lage-Messsystem-Eingänge 1 Vss oder 11 uA
+             ;Eingabe: %X38..X35 X6..X1 bitcodiert
+             ;         0 = 1 Vss
+             ;         1 = 11 uA
+             ;-8765654321
+MP 115.0   : %00000000000
+             ;MP115.1 reserviert
+             ;-8765654321
+MP 115.1   : %00000000000
+             ;MP115.2 Niedrige oder hohe Eingangsfrequenz der
+             ;        Lage-Messsystem-Eingänge
+             ;Eingabe: Bei 1 Vss: 0 = 27 kHz
+             ;                    1 = 400 kHz
+             ;         Bei 11 uA: 0 = 27 kHz
+             ;                    1 = 140 kHz
+             ;-8765654321
+MP 115.2   : %00000000000
+             ;------------------------------------------------------------------
+             ;MP116.0 Definition Lage-Messsystem-Eingänge 1 Vss oder 11 uA
+             ;        (ab CC 424, CC 61xx)
+             ;Eingabe: %X214..X201 bitcodiert
+             ;         0 = 1 Vss
+             ;         1 = 11 uA
+             ;6543210987654321
+MP 116.0   : %0000000000000000
+             ;MP116.1 reserviert
+             ;6543210987654321
+MP 116.1   : %0000000000000000
+             ;MP116.2 Niedrige oder hohe Eingangsfrequenz der
+             ;        Lage-Messsystem-Eingänge
+             ;Eingabe: Bei 1 Vss: 0 = 27 kHz
+             ;                    1 = 400 kHz
+             ;         Bei 11 uA: 0 = 27 kHz
+             ;                    1 = 140 kHz
+             ;6543210987654321
+MP 116.2   : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP118 Definition Lage-Messsystem-Eingänge für Achsen
+             ;      (nur CC 6xxx)
+             ;Eingabe: %xxxx
+             ;Bit0     Lage-Messsystem-Eingang 1 Vss
+             ;         0 = 1 Vss
+             ;         1 = reserviert
+             ;Bit1     reserviert
+             ;Bit2     Eingangsfrequenz des Lage-Messsystem-Eingangs
+             ;         Bei 1 Vss: 0 = 27 kHz
+             ;                    1 = 400 kHz
+             ;Bit3     Lage-Messsystem-Eingang analog oder digital
+             ;         0 = analoges Messgerätesignal (1 Vss)
+             ;         1 = digitales Messgerätesignal (EnDat 2.2)
+             ;Bit4     nur für Steuerungen mit Funktionaler Sicherheit FS:
+             ;         Sicherheitsfunktionen des SKERN nur über
+             ;         Lage-Messsystem (EnDat 2.2 FS)
+             ;         0 = SKERN nutzt Drehzahl- und Lagemessystem
+             ;         1 = SKERN nutzt nur sicheres Lage-Messystem
+             ;Bit5     nur für Steuerungen mit Funktionaler Sicherheit FS:
+             ;         Sicherheitsfunktionen des SKERN nur über
+             ;         Drehzahl-Messsystem (EnDat 2.2 FS)
+             ;         0 = SKERN nutzt Drehzahl- und Lagemessystem
+             ;         1 = SKERN nutzt nur sicheres Drehzahl-Messystem
+             ;Bit6     Prüfung der Auflösung des EnDat-Lage-Messsystems LS
+             ;         0 = aktiv
+             ;         1 = keine Überprüfung der Auflösung
+             ;Bit7     Zweikopf-Verrechnung zweier EnDat 2.2-Messsysteme
+             ;         zur Kompensation von Exzentritätsfehlern in Rundachsen
+             ;         mit Torquemotor
+             ;         0 = nicht aktiv
+             ;         1 = aktiv
+             ;Bit8     Auswertung der Phasenlage des Referenzimpulses
+             ;         0 = aktiv
+             ;         1 = keine Auswertung der Phasenlage
+             ;876543210
+MP 118.0   : %000000000
+MP 118.1   : %000000000
+MP 118.2   : %000000000
+MP 118.3   : %000000000
+MP 118.4   : %000000000
+MP 118.5   : %000000000
+MP 118.6   : %000000000
+MP 118.7   : %000000000
+MP 118.8   : %000000000
+MP 118.9   : %000000000
+MP 118.10  : %000000000
+MP 118.11  : %000000000
+MP 118.12  : %000000000
+MP 118.13  : %000000000
+MP 118.14  : %000000000
+MP 118.15  : %000000000
+MP 118.16  : %000000000
+MP 118.17  : %000000000
+MP 118.18  : %000000000
+MP 118.19  : %000000000
+MP 118.20  : %000000000
+MP 118.21  : %000000000
+             ;------------------------------------------------------------------
+             ;MP119 Definition Lage-Messsystem-Eingänge für Spindeln
+             ;        (nur CC 6xxx)
+             ;Eingabe: %xxxxxxx
+             ;Bit0     Lage-Messsystem-Eingang 1 Vss
+             ;         0 = 1 Vss
+             ;         1 = reserviert
+             ;Bit1     reserviert
+             ;Bit2     Eingangsfrequenz des Lage-Messsystem-Eingangs
+             ;         Bei 1 Vss: 0 = 27 kHz
+             ;                    1 = 400 kHz
+             ;Bit3     Lage-Messsystem-Eingang analog oder digital
+             ;         0 = analoges Messgerätesignal (1 Vss)
+             ;         1 = digitales Messgerätesignal (EnDat 2.2)
+             ;Bit4     nur für Steuerungen mit Funktionaler Sicherheit FS:
+             ;         Sicherheitsfunktionen des SKERN nur über
+             ;         Lage-Messsystem (EnDat 2.2 FS)
+             ;         0 = SKERN nutzt Drehzahl- und Lagemessystem
+             ;         1 = SKERN nutzt nur sicheres Lagemessystem
+             ;Bit5     nur für Steuerungen mit Funktionaler Sicherheit FS:
+             ;         Sicherheitsfunktionen des SKERN nur über
+             ;         Drehzahl-Messsystem (EnDat 2.2 FS)
+             ;         0 = SKERN nutzt Drehzahl- und Lagemessystem
+             ;         1 = SKERN nutzt nur sicheres Drehzahl-Messystem
+             ;Bit6     Prüfung der Auflösung des EnDat-Lage-Messsystems LS
+             ;         0 = aktiv
+             ;         1 = keine Überprüfung der Auflösung
+             ;Bit7     Zweikopf-Verrechnung zweier EnDat 2.2-Messsysteme
+             ;         zur Kompensation von Exzentritätsfehlern in Rundachsen
+             ;         mit Torquemotor
+             ;         0 = nicht aktiv
+             ;         1 = aktiv
+             ;Bit8     Auswertung der Phasenlage des Referenzimpulses
+             ;         0 = aktiv
+             ;         1 = keine Auswertung der Phasenlage
+             ;876543210
+MP 119.0   : %000000000
+MP 119.1   : %000000000
+             ;------------------------------------------------------------------
+             ;MP120 Zuordnung Drehzahl-Sollwert-Ausgänge zu Achsen
+             ;Achtung Zuordnung ist fest vorgegeben (.0 -> x1)
+             ;Eingabe: 0      = keine geregelte Achse
+             ;         1..6   = analog-Ausgänge X8 1..6
+             ;         7..13  = analog-Ausgänge X9 7..13
+             ;         1..8   = analog-Ausgänge X66, X67 (CMA)
+             ;         51..64 = digitale-Ausgänge X51..X64
+             ;                  bei CC und HEIDENHAIN-Umrichtern
+             ;         80..85 = digitale-Ausgänge X80..X85 (bei UEC)
+MP 120.0   : 1
+MP 120.1   : 2
+MP 120.2   : 3
+MP 120.3   : 4
+MP 120.4   : 5
+MP 120.5   : 7
+MP 120.6   : 8
+MP 120.7   : 9
+MP 120.8   : 0
+MP 120.9   : 0
+MP 120.10  : 0
+MP 120.11  : 0
+MP 120.12  : 0
+MP 120.13  : 0
+MP 120.14  : 0
+MP 120.15  : 0
+MP 120.16  : 0
+MP 120.17  : 0
+MP 120.18  : 0
+MP 120.19  : 0
+MP 120.20  : 0
+MP 120.21  : 0
+             ;------------------------------------------------------------------
+             ;MP121 Zuordnung Drehzahl-Sollwert-Ausgänge zu Spindeln
+             ;Eingabe: 0      = keine geregelte Spindel
+             ;         1..6   = analog-Ausgänge X8 1..6
+             ;         7..13  = analog-Ausgänge X9 7..13
+             ;         1..8   = analog-Ausgänge X66, X67 (CMA)
+             ;         51..64 = digitale-Ausgänge X51..X64
+             ;                  bei CC und HEIDENHAIN-Umrichtern
+             ;         80..85 = digitale-Ausgänge X80..X85 (bei UEC)
+MP 121.0   : 6          ;1. Spindel
+MP 121.1   : 0          ;2. Spindel
+             ;------------------------------------------------------------------
+             ;MP130 Index y der Maschinen-Parameter MP2xxx.y für die Achsen
+             ;Eingabe: 0 bis 21
+MP 130.0   : 0
+MP 130.1   : 1
+MP 130.2   : 2
+MP 130.3   : 3
+MP 130.4   : 4
+MP 130.5   : 5
+MP 130.6   : 6
+MP 130.7   : 7
+MP 130.8   : 8
+MP 130.9   : 9
+MP 130.10  : 10
+MP 130.11  : 11
+MP 130.12  : 12
+MP 130.13  : 13
+MP 130.14  : 14
+MP 130.15  : 15
+MP 130.16  : 16
+MP 130.17  : 17
+MP 130.18  : 18
+MP 130.19  : 19
+MP 130.20  : 19
+MP 130.21  : 19
+             ;------------------------------------------------------------------
+             ;MP131 Index y der Maschinen-Parameter MP2xxx.y für die Spindel
+             ;      in Betriebsart 0
+             ;Eingabe: 0 bis 17
+MP 131.0   : 20         ;Spindel 1
+MP 131.1   : 22         ;Spindel 2
+             ;------------------------------------------------------------------
+             ;MP132 Index y der Maschinen-Parameter MP2xxx.y für die Spindel
+             ;      in Betriebsart 1
+             ;Eingabe: 0 bis 17
+MP 132.0   : 21         ;Spindel 1
+MP 132.1   : 23         ;Spindel 2
+             ;------------------------------------------------------------------
+             ;MP210 Zählrichtung der Lage-Messsystem-Signale
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = positiv
+             ;         1 = negativ
+             ;2109876543210987654ZYX
+MP 210     : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;Signalperiode wird von der TNC automatisch berechnet:
+             ;Signalperiode = MP331 / MP332
+             ;MP331 = Strecke für Zählimpulse aus MP332
+             ;Eingabe: 0 bis 1,797693135E+308 [mm bzw. Grad]
+MP 331.0   : 10.00000
+MP 331.1   : 10.00000
+MP 331.2   : 10.00000
+MP 331.3   : 10.00000
+MP 331.4   : 10.00000
+MP 331.5   : 10.00000
+MP 331.6   : 10.00000
+MP 331.7   : 10.00000
+MP 331.8   : 10.00000
+MP 331.9   : 10.00000
+MP 331.10  : 10.00000
+MP 331.11  : 10.00000
+MP 331.12  : 10.00000
+MP 331.13  : 10.00000
+MP 331.14  : 10.00000
+MP 331.15  : 10.00000
+MP 331.16  : 10.00000
+MP 331.17  : 10.00000
+MP 331.18  : 10.00000
+MP 331.19  : 10.00000
+MP 331.20  : 10.00000
+MP 331.21  : 10.00000
+             ;------------------------------------------------------------------
+             ;MP332 Anzahl der Zählimpulse auf der Strecke aus MP331
+             ;Eingabe: 1 bis 1,797693135E+308
+MP 332.0   : 2048.00000
+MP 332.1   : 2048.00000
+MP 332.2   : 2048.00000
+MP 332.3   : 2048.00000
+MP 332.4   : 2048.00000
+MP 332.5   : 2048.00000
+MP 332.6   : 2048.00000
+MP 332.7   : 2048.00000
+MP 332.8   : 2048.00000
+MP 332.9   : 2048.00000
+MP 332.10  : 2048.00000
+MP 332.11  : 2048.00000
+MP 332.12  : 2048.00000
+MP 332.13  : 2048.00000
+MP 332.14  : 2048.00000
+MP 332.15  : 2048.00000
+MP 332.16  : 2048.00000
+MP 332.17  : 2048.00000
+MP 332.18  : 2048.00000
+MP 332.19  : 2048.00000
+MP 332.20  : 2048.00000
+MP 332.21  : 2048.00000
+             ;------------------------------------------------------------------
+             ;MP334 Anzahl der Teilungsperioden zwischen den Nullimpulsen
+             ;abstandscodierter Mess-Systeme
+             ;Eingabe: 0 bis 65535
+             ;         0 = 1000
+MP 334.0   : 0
+MP 334.1   : 0
+MP 334.2   : 0
+MP 334.3   : 0
+MP 334.4   : 0
+MP 334.5   : 0
+MP 334.6   : 0
+MP 334.7   : 0
+MP 334.8   : 0
+MP 334.9   : 0
+MP 334.10  : 0
+MP 334.11  : 0
+MP 334.12  : 0
+MP 334.13  : 0
+MP 334.14  : 0
+MP 334.15  : 0
+MP 334.16  : 0
+MP 334.17  : 0
+MP 334.18  : 0
+MP 334.19  : 0
+MP 334.20  : 0
+MP 334.21  : 0
+             ;------------------------------------------------------------------
+             ;MP340 Externe Interpolation für Rechtecksignale
+             ;Eingabe: 2 bis 99
+             ;         0, 1 = keine externe Interpolation
+MP 340.0   : 0
+MP 340.1   : 0
+MP 340.2   : 0
+MP 340.3   : 0
+MP 340.4   : 0
+MP 340.5   : 0
+MP 340.6   : 0
+MP 340.7   : 0
+MP 340.8   : 0
+MP 340.9   : 0
+MP 340.10  : 0
+MP 340.11  : 0
+MP 340.12  : 0
+MP 340.13  : 0
+MP 340.14  : 0
+MP 340.15  : 0
+MP 340.16  : 0
+MP 340.17  : 0
+MP 340.18  : 0
+MP 340.19  : 0
+MP 340.20  : 0
+MP 340.21  : 0
+             ;------------------------------------------------------------------
+             ;MP410 Achskennzeichnung für Achstasten IV, V und VI
+             ;      (VI nur bei HR 5xx)
+             ;Eingabe: A/B/C/U/V/W/T
+             ;T-virtuelle Achse mit SW-Option #44
+MP 410.3   : B          ;IV
+MP 410.4   : C          ;V
+MP 410.5   : T          ;VI
+             ;------------------------------------------------------------------
+             ;MP420 Hirth-Verzahnung
+             ;Eingabe: 0 = keine Hirth-Verzahnung
+             ;         1 = Hirth-Verzahnung aktiv
+MP 420.0   : 0
+MP 420.1   : 0
+MP 420.2   : 0
+MP 420.3   : 0
+MP 420.4   : 0
+MP 420.5   : 0
+MP 420.6   : 0
+MP 420.7   : 1
+MP 420.8   : 0
+MP 420.9   : 0
+MP 420.10  : 0
+MP 420.11  : 0
+MP 420.12  : 0
+MP 420.13  : 0
+MP 420.14  : 0
+MP 420.15  : 0
+MP 420.16  : 0
+MP 420.17  : 0
+MP 420.18  : 0
+MP 420.19  : 0
+MP 420.20  : 0
+MP 420.21  : 0
+             ;------------------------------------------------------------------
+             ;MP430 Schrittvorgabe für Hirth-Verzahnung
+             ;Eingabe: 0,0000 bis 180,0000 [Grad]
+MP 430.0   : 0
+MP 430.1   : 0
+MP 430.2   : 0
+MP 430.3   : 0
+MP 430.4   : 0
+MP 430.5   : 0
+MP 430.6   : 0
+MP 430.7   : 10
+MP 430.8   : 0
+MP 430.9   : 0
+MP 430.10  : 0
+MP 430.11  : 0
+MP 430.12  : 0
+MP 430.13  : 0
+MP 430.14  : 0
+MP 430.15  : 0
+MP 430.16  : 0
+MP 430.17  : 0
+MP 430.18  : 0
+MP 430.19  : 0
+MP 430.20  : 0
+MP 430.21  : 0
+             ;==================================================================
+             ;Funktionale Sicherheit FS an einem HSCI-System
+             ;------------------------------------------------------------------
+             ;SMP511 Zeit bis zum Selbsttest der Sicherheit. Dieser muss nach
+             ;       maximal 1000h erfolgen.
+             ;Eingabe: 1 bis 60000 [min]
+MP 511     : 480
+             ;------------------------------------------------------------------
+             ;SMP513 Eindeutige ID des Datensatzes, die Datensatz-ID
+             ;Eingabe: 0 bis 99, wird automatisch von SKERN gesetzt
+MP 513.0   : 0
+MP 513.1   : 0
+MP 513.2   : 0
+MP 513.3   : 0
+MP 513.4   : 0
+MP 513.5   : 0
+MP 513.6   : 0
+MP 513.7   : 0
+MP 513.8   : 0
+MP 513.9   : 0
+MP 513.10  : 0
+MP 513.11  : 0
+MP 513.12  : 0
+MP 513.13  : 0
+MP 513.14  : 0
+MP 513.15  : 0
+MP 513.16  : 0
+MP 513.17  : 0
+MP 513.18  : 0
+MP 513.19  : 0
+MP 513.20  : 0
+MP 513.21  : 0
+MP 513.22  : 0
+MP 513.23  : 0
+MP 513.24  : 0
+MP 513.25  : 0
+MP 513.26  : 0
+MP 513.27  : 0
+MP 513.28  : 0
+MP 513.29  : 0
+MP 513.30  : 0
+MP 513.31  : 0
+MP 513.32  : 0
+MP 513.33  : 0
+MP 513.34  : 0
+MP 513.35  : 0
+MP 513.36  : 0
+MP 513.37  : 0
+MP 513.38  : 0
+MP 513.39  : 0
+MP 513.40  : 0
+MP 513.41  : 0
+MP 513.42  : 0
+MP 513.43  : 0
+MP 513.44  : 0
+MP 513.45  : 0
+MP 513.46  : 0
+MP 513.47  : 0
+MP 513.48  : 0
+MP 513.49  : 0
+             ;------------------------------------------------------------------
+             ;SMP514 CRC-Prüfsumme des Datensatzes
+             ;Eingabe: wird automatisch von SKERN gesetzt
+MP 514.0   : $00000000
+MP 514.1   : $00000000
+MP 514.2   : $00000000
+MP 514.3   : $00000000
+MP 514.4   : $00000000
+MP 514.5   : $00000000
+MP 514.6   : $00000000
+MP 514.7   : $00000000
+MP 514.8   : $00000000
+MP 514.9   : $00000000
+MP 514.10  : $00000000
+MP 514.11  : $00000000
+MP 514.12  : $00000000
+MP 514.13  : $00000000
+MP 514.14  : $00000000
+MP 514.15  : $00000000
+MP 514.16  : $00000000
+MP 514.17  : $00000000
+MP 514.18  : $00000000
+MP 514.19  : $00000000
+MP 514.20  : $00000000
+MP 514.21  : $00000000
+MP 514.22  : $00000000
+MP 514.23  : $00000000
+MP 514.24  : $00000000
+MP 514.25  : $00000000
+MP 514.26  : $00000000
+MP 514.27  : $00000000
+MP 514.28  : $00000000
+MP 514.29  : $00000000
+MP 514.30  : $00000000
+MP 514.31  : $00000000
+MP 514.32  : $00000000
+MP 514.33  : $00000000
+MP 514.34  : $00000000
+MP 514.35  : $00000000
+MP 514.36  : $00000000
+MP 514.37  : $00000000
+MP 514.38  : $00000000
+MP 514.39  : $00000000
+MP 514.40  : $00000000
+MP 514.41  : $00000000
+MP 514.42  : $00000000
+MP 514.43  : $00000000
+MP 514.44  : $00000000
+MP 514.45  : $00000000
+MP 514.46  : $00000000
+MP 514.47  : $00000000
+MP 514.48  : $00000000
+MP 514.49  : $00000000
+             ;------------------------------------------------------------------
+             ;SMP515 Information, ob Datensatz abgenommen ist oder nicht
+             ;Eingabe: 0 oder 1, wird automatisch von SKERN gesetzt
+MP 515.0   : 0
+MP 515.1   : 0
+MP 515.2   : 0
+MP 515.3   : 0
+MP 515.4   : 0
+MP 515.5   : 0
+MP 515.6   : 0
+MP 515.7   : 0
+MP 515.8   : 0
+MP 515.9   : 0
+MP 515.10  : 0
+MP 515.11  : 0
+MP 515.12  : 0
+MP 515.13  : 0
+MP 515.14  : 0
+MP 515.15  : 0
+MP 515.16  : 0
+MP 515.17  : 0
+MP 515.18  : 0
+MP 515.19  : 0
+MP 515.20  : 0
+MP 515.21  : 0
+MP 515.22  : 0
+MP 515.23  : 0
+MP 515.24  : 0
+MP 515.25  : 0
+MP 515.26  : 0
+MP 515.27  : 0
+MP 515.28  : 0
+MP 515.29  : 0
+MP 515.30  : 0
+MP 515.31  : 0
+MP 515.32  : 0
+MP 515.33  : 0
+MP 515.34  : 0
+MP 515.35  : 0
+MP 515.36  : 0
+MP 515.37  : 0
+MP 515.38  : 0
+MP 515.39  : 0
+MP 515.40  : 0
+MP 515.41  : 0
+MP 515.42  : 0
+MP 515.43  : 0
+MP 515.44  : 0
+MP 515.45  : 0
+MP 515.46  : 0
+MP 515.47  : 0
+MP 515.48  : 0
+MP 515.49  : 0
+             ;------------------------------------------------------------------
+             ;SMP516 Maschinentyp zu dem der Datensatz gehört
+             ;Eingabe: wird automatisch von SKERN gesetzt
+MP 516.0   : 0
+MP 516.1   : 0
+MP 516.2   : 0
+MP 516.3   : 0
+MP 516.4   : 0
+MP 516.5   : 0
+MP 516.6   : 0
+MP 516.7   : 0
+MP 516.8   : 0
+MP 516.9   : 0
+MP 516.10  : 0
+MP 516.11  : 0
+MP 516.12  : 0
+MP 516.13  : 0
+MP 516.14  : 0
+MP 516.15  : 0
+MP 516.16  : 0
+MP 516.17  : 0
+MP 516.18  : 0
+MP 516.19  : 0
+MP 516.20  : 0
+MP 516.21  : 0
+MP 516.22  : 0
+MP 516.23  : 0
+MP 516.24  : 0
+MP 516.25  : 0
+MP 516.26  : 0
+MP 516.27  : 0
+MP 516.28  : 0
+MP 516.29  : 0
+MP 516.30  : 0
+MP 516.31  : 0
+MP 516.32  : 0
+MP 516.33  : 0
+MP 516.34  : 0
+MP 516.35  : 0
+MP 516.36  : 0
+MP 516.37  : 0
+MP 516.38  : 0
+MP 516.39  : 0
+MP 516.40  : 0
+MP 516.41  : 0
+MP 516.42  : 0
+MP 516.43  : 0
+MP 516.44  : 0
+MP 516.45  : 0
+MP 516.46  : 0
+MP 516.47  : 0
+MP 516.48  : 0
+MP 516.49  : 0
+             ;------------------------------------------------------------------
+             ;SMP525 Achsen:
+             ;       Zeitvorgabe zum achsspezifischen Stillsetzen der
+             ;       Achsen an der Notbremsrampe für SS1-Reaktion
+             ;Eingabe: 0,000 bis 10,000 [s]
+MP 525.0   : 1
+MP 525.1   : 1
+MP 525.2   : 1
+MP 525.3   : 1
+MP 525.4   : 1
+MP 525.5   : 1
+MP 525.6   : 1
+MP 525.7   : 1
+MP 525.8   : 1
+MP 525.9   : 1
+MP 525.10  : 1
+MP 525.11  : 1
+MP 525.12  : 1
+MP 525.13  : 1
+MP 525.14  : 1
+MP 525.15  : 1
+MP 525.16  : 1
+MP 525.17  : 1
+MP 525.18  : 1
+MP 525.19  : 1
+MP 525.20  : 1
+MP 525.21  : 1
+             ;------------------------------------------------------------------
+             ;SMP526 Spindeln:
+             ;       Zeitvorgabe zum achsspezifischen Stillsetzen der
+             ;       Spindeln an der Notbremsrampe für SS1-Reaktion
+             ;Eingabe: 0,000 bis 10,000 [s]
+MP 526.0   : 1
+MP 526.1   : 1
+             ;------------------------------------------------------------------
+             ;SMP527 Achsen:
+             ;       Zeitvorgabe zum achsspezifischen gesteuerten Stillsetzen
+             ;       der Achsen für SS2-Reaktion
+             ;Eingabe: 0,000 bis 10,000 [s]
+MP 527.0   : 1
+MP 527.1   : 1
+MP 527.2   : 1
+MP 527.3   : 1
+MP 527.4   : 1
+MP 527.5   : 1
+MP 527.6   : 1
+MP 527.7   : 1
+MP 527.8   : 1
+MP 527.9   : 1
+MP 527.10  : 1
+MP 527.11  : 1
+MP 527.12  : 1
+MP 527.13  : 1
+MP 527.14  : 1
+MP 527.15  : 1
+MP 527.16  : 1
+MP 527.17  : 1
+MP 527.18  : 1
+MP 527.19  : 1
+MP 527.20  : 1
+MP 527.21  : 1
+             ;------------------------------------------------------------------
+             ;SMP528 Spindeln:
+             ;       Zeitvorgabe zum achsspezifischen gesteuerten Stillsetzen
+             ;       der Spindeln für SS2-Reaktion
+             ;Eingabe: 0,000 bis 10,000 [s]
+MP 528.0   : 1
+MP 528.1   : 1
+             ;------------------------------------------------------------------
+             ;SMP530 Verzögerungszeit für dv/dt-Überwachung
+             ;Eingabe: 0,000 bis 10,000 [s]
+MP 530.0   : 0.03
+MP 530.1   : 0.03
+MP 530.2   : 0.03
+MP 530.3   : 0.03
+MP 530.4   : 0.03
+MP 530.5   : 0.03
+MP 530.6   : 0.03
+MP 530.7   : 0.03
+MP 530.8   : 0.03
+MP 530.9   : 0.03
+MP 530.10  : 0.03
+MP 530.11  : 0.03
+MP 530.12  : 0.03
+MP 530.13  : 0.03
+MP 530.14  : 0.03
+MP 530.15  : 0.03
+MP 530.16  : 0.03
+MP 530.17  : 0.03
+MP 530.18  : 0.03
+MP 530.19  : 0.03
+MP 530.20  : 0.03
+MP 530.21  : 0.03
+             ;------------------------------------------------------------------
+             ;SMP535 Laufzeiten der Timer (maximal 16) für SPLC-Programm
+             ;Eingabe: 0,0 bis 1000000,0 [s]
+MP 535.0   : 0          ;SPLC-Timer T00 / T48
+MP 535.1   : 0          ;SPLC-Timer T01 / T49
+MP 535.2   : 0          ;SPLC-Timer T02 / T50
+MP 535.3   : 0          ;SPLC-Timer T03 / T51
+MP 535.4   : 0          ;SPLC-Timer T04 / T52
+MP 535.5   : 0          ;SPLC-Timer T05 / T53
+MP 535.6   : 0          ;SPLC-Timer T06 / T54
+MP 535.7   : 0          ;SPLC-Timer T07 / T55
+MP 535.8   : 0          ;SPLC-Timer T08 / T56
+MP 535.9   : 0          ;SPLC-Timer T09 / T57
+MP 535.10  : 0          ;SPLC-Timer T10 / T58
+MP 535.11  : 0          ;SPLC-Timer T11 / T59
+MP 535.12  : 0          ;SPLC-Timer T12 / T60
+MP 535.13  : 0          ;SPLC-Timer T13 / T61
+MP 535.14  : 0          ;SPLC-Timer T14 / T62
+MP 535.15  : 0          ;SPLC-Timer T15 / T63
+             ;------------------------------------------------------------------
+             ;SMP540 Achsen:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 3 (SOM 3)
+             ;Eingabe: 0 bis 15000 [mm/min] bzw. [°/min]
+MP 540.0   : 2000
+MP 540.1   : 2000
+MP 540.2   : 2000
+MP 540.3   : 2000
+MP 540.4   : 2000
+MP 540.5   : 2000
+MP 540.6   : 2000
+MP 540.7   : 2000
+MP 540.8   : 2000
+MP 540.9   : 2000
+MP 540.10  : 2000
+MP 540.11  : 2000
+MP 540.12  : 2000
+MP 540.13  : 2000
+MP 540.14  : 2000
+MP 540.15  : 2000
+MP 540.16  : 2000
+MP 540.17  : 2000
+MP 540.18  : 2000
+MP 540.19  : 2000
+MP 540.20  : 2000
+MP 540.21  : 2000
+             ;------------------------------------------------------------------
+             ;SMP541 Spindel:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 3 (SOM 3)
+             ;Eingabe: 0 bis 16000 [U/min]
+MP 541.0   : 500
+MP 541.1   : 500
+             ;------------------------------------------------------------------
+             ;SMP545 Achsen:
+             ;       Grenzwert für Stillstandsüberwachung im Zustand SOS
+             ;Eingabe: 0,001 bis 30,000 [mm] .bzw [°]
+MP 545.0   : 0.5
+MP 545.1   : 0.5
+MP 545.2   : 0.5
+MP 545.3   : 0.5
+MP 545.4   : 0.5
+MP 545.5   : 0.5
+MP 545.6   : 0.5
+MP 545.7   : 0.5
+MP 545.8   : 0.5
+MP 545.9   : 0.5
+MP 545.10  : 0.5
+MP 545.11  : 0.5
+MP 545.12  : 0.5
+MP 545.13  : 0.5
+MP 545.14  : 0.5
+MP 545.15  : 0.5
+MP 545.16  : 0.5
+MP 545.17  : 0.5
+MP 545.18  : 0.5
+MP 545.19  : 0.5
+MP 545.20  : 0.5
+MP 545.21  : 0.5
+             ;------------------------------------------------------------------
+             ;SMP547 Achsspezifischer Grenzwert für Sicher begrenztes
+             ;       Schrittmaß
+             ;Eingabe: 0,001 bis 10,000 [mm] bzw. [°]
+MP 547.0   : 2
+MP 547.1   : 2
+MP 547.2   : 2
+MP 547.3   : 2
+MP 547.4   : 2
+MP 547.5   : 2
+MP 547.6   : 2
+MP 547.7   : 2
+MP 547.8   : 2
+MP 547.9   : 2
+MP 547.10  : 2
+MP 547.11  : 2
+MP 547.12  : 2
+MP 547.13  : 2
+MP 547.14  : 2
+MP 547.15  : 2
+MP 547.16  : 2
+MP 547.17  : 2
+MP 547.18  : 2
+MP 547.19  : 2
+MP 547.20  : 2
+MP 547.21  : 2
+             ;------------------------------------------------------------------
+             ;SMP549 Achsgruppenspezifische Konfiguration, ob Achsgruppe
+             ;       bei SS2-Reaktion in SOS oder STO geschaltet wird.
+             ;Eingabe: 0 = Spindel-Achsgruppen nach SS2, SS1D in STO_O
+             ;             Achs-Achsgruppen SS2, SS1D in SOS
+             ;         1 = Achsgruppe nach SS2, SS1D in STO_O
+             ;         2 = Achsgruppe nach SS2, SS1D in SOS
+MP 549.0   : 0
+MP 549.1   : 0
+MP 549.2   : 0
+MP 549.3   : 0
+MP 549.4   : 0
+MP 549.5   : 0
+MP 549.6   : 0
+MP 549.7   : 0
+             ;------------------------------------------------------------------
+             ;SMP550 Achsen (bei HSCI-Systemen):
+             ;       Achsspezifischer Grenzwert für maximal zulässigen
+             ;       Weg bei SS2-Reaktion
+             ;Eingabe: 0,0010 bis 30,0000 [mm] bzw. [°]
+MP 550.0   : 0.5
+MP 550.1   : 0.5
+MP 550.2   : 0.5
+MP 550.3   : 0.5
+MP 550.4   : 0.5
+MP 550.5   : 0.5
+MP 550.6   : 0.5
+MP 550.7   : 0.5
+MP 550.8   : 0.5
+MP 550.9   : 0.5
+MP 550.10  : 0.5
+MP 550.11  : 0.5
+MP 550.12  : 0.5
+MP 550.13  : 0.5
+MP 550.14  : 0.5
+MP 550.15  : 0.5
+MP 550.16  : 0.5
+MP 550.17  : 0.5
+MP 550.18  : 0.5
+MP 550.19  : 0.5
+MP 550.20  : 0.5
+MP 550.21  : 0.5
+             ;------------------------------------------------------------------
+             ;SMP551 Spindel:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 4 (SOM 4); MP560 Bit0=1 und Schlüsselzahl
+             ;Eingabe: 0 bis 16000 [U/min]
+MP 551.0   : 500
+MP 551.1   : 500
+             ;------------------------------------------------------------------
+             ;SMP552 Achsen:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 4 (SOM 4); MP560 Bit0=1 und Schlüsselzahl
+             ;Eingabe: 0 bis 15000 [mm/min] bzw. [°/min]
+MP 552.0   : 0
+MP 552.1   : 0
+MP 552.2   : 0
+MP 552.3   : 0
+MP 552.4   : 0
+MP 552.5   : 0
+MP 552.6   : 0
+MP 552.7   : 0
+MP 552.8   : 0
+MP 552.9   : 0
+MP 552.10  : 0
+MP 552.11  : 0
+MP 552.12  : 0
+MP 552.13  : 0
+MP 552.14  : 0
+MP 552.15  : 0
+MP 552.16  : 0
+MP 552.17  : 0
+MP 552.18  : 0
+MP 552.19  : 0
+MP 552.20  : 0
+MP 552.21  : 0
+             ;------------------------------------------------------------------
+             ;SMP555 Anzeige-Modus für Drehachsen und PLC-Hilfsachsen
+             ;Eingabe: 0,0000...99.999,9999 [°]
+             ;         0 = kein Modulo
+             ;         Software-Endschalter aktiv
+             ;         >0 = Modulo-Wert für Anzeige
+             ;         Software-Endschalter inaktiv
+MP 555.0   : 0
+MP 555.1   : 0
+MP 555.2   : 0
+MP 555.3   : 0
+MP 555.4   : 0
+MP 555.5   : 0
+MP 555.6   : 0
+MP 555.7   : 0
+MP 555.8   : 0
+MP 555.9   : 0
+MP 555.10  : 0
+MP 555.11  : 0
+MP 555.12  : 0
+MP 555.13  : 0
+MP 555.14  : 0
+MP 555.15  : 0
+MP 555.16  : 0
+MP 555.17  : 0
+MP 555.18  : 0
+MP 555.19  : 0
+MP 555.20  : 0
+MP 555.21  : 0
+             ;------------------------------------------------------------------
+             ;SMP556 Spindel:
+             ;       Grenzwert für Spindel-Drehzahlüberwachung bei SS2
+             ;       in Betriebsart SOM_2
+             ;Eingabe: 1 bis 100 [Umdrehungen]
+MP 556.0   : 2
+MP 556.1   : 2
+             ;------------------------------------------------------------------
+             ;SMP557 Spindel:
+             ;       Grenzwert für Spindel-Drehzahlüberwachung bei SS2
+             ;       in Betriebsart SOM_3
+             ;Eingabe: 1 bis 100 [Umdrehungen]
+MP 557.0   : 5
+MP 557.1   : 5
+             ;------------------------------------------------------------------
+             ;SMP558 Spindel:
+             ;       Grenzwert für Spindel-Drehzahlüberwachung bei SS2
+             ;       in Betriebsart SOM_4
+             ;Eingabe: 1 bis 100 [Umdrehungen]
+MP 558.0   : 5
+MP 558.1   : 5
+             ;------------------------------------------------------------------
+             ;SMP560 Zusatzfunktionen
+             ;Eingabe: %xxxxxxxxx
+             ;Bit0     Freigabe von Betriebsart 4 (SOM 4)
+             ;         (Zustimmtaste nur für Spindel- bzw. NC-Start;
+             ;         und eigens einstellbare Spindeldrehzahl und
+             ;         maximale Achsvorschübe)
+             ;         0 = SOM 4 nicht erlaubt
+             ;         1 = SOM 4 erlaubt
+             ;Bit1     Schutztüren während Selbsttest der Sicherheit
+             ;         0 = Schutztüren müssen geschlossen sein
+             ;         1 = Schutztüren müssen nicht geschlossen sein
+             ;Bit2     reserviert (nur MC 422)
+             ;Bit3     Test der Motorbremsansteuerung
+             ;         0 = aktiv
+             ;         1 = inaktiv
+             ;Bit4     reserviert (nur MC 422)
+             ;Bit5     reserviert (nur MC 422)
+             ;Bit6     Test der achsspezifischen Abschaltung über PWM-Ausgang
+             ;         STO.A.x.
+             ;         0 = Test über STO.A.x achsspezifisch durchführen
+             ;         1 = alle Achsen über STO.A.x gemeinsam abschalten und
+             ;             Antriebe testen
+             ;Bit7     Handrad-Zustimmtaste in SOM_4
+             ;         0 = Zustimmtaste muss auch in SOM_4 für die
+             ;             Aufrechterhaltung von Bewegungen gedrückt bleiben
+             ;         1 = Zustimmtaste ist in SOM_4 nur zum Spindel-Start
+             ;             und NC-Start nötig
+             ;Bit8     Verdrahtung von -STO.A.G und -STOS.A.G zu
+             ;         Sicherheitsrelais in Leistungsteilen
+             ;         0 = Verdrahtung vorhanden
+             ;         1 = Verdrahtung nicht vorhanden
+             ;Bit9     Ausgleichsbewegungen für Handrad in SOM_3, SOM_4
+             ;         0 = nicht zugelassen
+             ;         1 = Im Handrad-Betrieb ist das gleichzeitige
+             ;             Verfahren mehrerer Achsen zulässig
+             ;Bit10    reserviert
+             ;Bit11    dv/dt-Überwachung der Spindel bei SS1-Reaktion
+             ;         0 = aktiv
+             ;         1 = inaktiv
+             ;Bit12    Test der Abschaltbarkeit sicherer Ausgänge
+             ;         0 = aktiv
+             ;         1 = inaktiv
+             ;Bit13    Automatischer SS2 beim Wechsel von/in die
+             ;         Betriebsart el. Handrad oder Referenzpunkte
+             ;         überfahren.
+             ;         0 = automatischer SS2 aktiv
+             ;         1 = kein automatischer SS2
+             ;Bit14    Einschalten von Antrieben nach Ablauf der
+             ;         Selbsttestzeit
+             ;         0 = nicht möglich
+             ;         1 = Antriebe können auch nach Ablauf der Zeit für
+             ;             den Selbsttest (SMP511) wieder eingeschaltet
+             ;             werden.
+             ;Bit15    Schutz gegen unerwarteten Anlauf in
+             ;         Betriebsart SOM_4
+             ;         0 = aktiv
+             ;         1 = inaktiv
+             ;5432109876543210
+MP 560     : %0000000000000000
+             ;------------------------------------------------------------------
+             ;SMP584 Zeit bis Kreuzvergleichsfehler durch FS-Eingänge
+             ;Eingabe: 0,5 bis 30,0 [Sekunden]
+MP 584     : 5
+             ;------------------------------------------------------------------
+             ;SMP585 Inverse PLC-Eingänge des A-Kanals. Maximal 8 Stück.
+             ;Eingabe: symbolischer Name des PLC-Eingangs
+             ;         -1 = kein inverser PLC-Eingang
+MP 585.0   : 
+MP 585.1   : 
+MP 585.2   : 
+MP 585.3   : 
+MP 585.4   : 
+MP 585.5   : 
+MP 585.6   : 
+MP 585.7   : 
+             ;------------------------------------------------------------------
+             ;SMP586 Inverse PLC-Eingänge des B-Kanals. Maximal 8 Stück.
+             ;Eingabe: symbolischer Name des PLC-Eingangs
+             ;         -1 = kein inverser PLC-Eingang
+MP 586.0   : 
+MP 586.1   : 
+MP 586.2   : 
+MP 586.3   : 
+MP 586.4   : 
+MP 586.5   : 
+MP 586.6   : 
+MP 586.7   : 
+             ;------------------------------------------------------------------
+             ;SMP587 PLC-Eingänge die im Minutentest getestet werden.
+             ;       Versorgung muss über -TEST.A bzw. -TEST.B erfolgen.
+             ;       Maximal 16 Stück.
+             ;Eingabe: symbolischer Name des PLC-Eingangs oder
+             ;         PLC-Operanden-Adresse
+MP 587.0   : 
+MP 587.1   : 
+MP 587.2   : 
+MP 587.3   : 
+MP 587.4   : 
+MP 587.5   : 
+MP 587.6   : 
+MP 587.7   : 
+MP 587.8   : 
+MP 587.9   : 
+MP 587.10  : 
+MP 587.11  : 
+MP 587.12  : 
+MP 587.13  : 
+MP 587.14  : 
+MP 587.15  : 
+             ;------------------------------------------------------------------
+             ;SMP590 Achsen:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 2 (SOM 2)
+             ;Eingabe: 0 bis 15000 [mm/min] bzw. [°/min]
+MP 590.0   : 200
+MP 590.1   : 200
+MP 590.2   : 200
+MP 590.3   : 200
+MP 590.4   : 200
+MP 590.5   : 200
+MP 590.6   : 200
+MP 590.7   : 200
+MP 590.8   : 200
+MP 590.9   : 200
+MP 590.10  : 200
+MP 590.11  : 200
+MP 590.12  : 200
+MP 590.13  : 200
+MP 590.14  : 200
+MP 590.15  : 200
+MP 590.16  : 200
+MP 590.17  : 200
+MP 590.18  : 200
+MP 590.19  : 200
+MP 590.20  : 200
+MP 590.21  : 200
+             ;------------------------------------------------------------------
+             ;SMP591 Spindel:
+             ;       Grenzwert für "Sicher begrenzte Geschwindigkeit - SLS"
+             ;       in Betriebsart 2 (SOM 2)
+             ;Eingabe: 0 bis 16000 [U/min]
+MP 591.0   : 200
+MP 591.1   : 200
+             ;------------------------------------------------------------------
+             ;SMP600 Achsen:
+             ;       Zuordnung der Achsen zu Achsgruppen
+             ;Eingabe: 0 bis 7
+             ;         -1 = Achse ist nicht sicher
+MP 600.0   : -1
+MP 600.1   : -1
+MP 600.2   : -1
+MP 600.3   : -1
+MP 600.4   : -1
+MP 600.5   : -1
+MP 600.6   : -1
+MP 600.7   : -1
+MP 600.8   : -1
+MP 600.9   : -1
+MP 600.10  : -1
+MP 600.11  : -1
+MP 600.12  : -1
+MP 600.13  : -1
+MP 600.14  : -1
+MP 600.15  : -1
+MP 600.16  : -1
+MP 600.17  : -1
+MP 600.18  : -1
+MP 600.19  : -1
+MP 600.20  : -1
+MP 600.21  : -1
+             ;------------------------------------------------------------------
+             ;MP601 Spindeln:
+             ;       Zuordnung der Spindeln zu Achsgruppen
+             ;Eingabe: 0 bis 7
+             ;         -1 = Spindel ist nicht sicher
+MP 601.0   : -1
+MP 601.1   : -1
+             ;------------------------------------------------------------------
+             ;SMP610 Festlegung der Bremsreihenfolge
+             ;       Vorgabe der Achsgruppen, die im Stillstand sein müssen,
+             ;       bevor die Achsgruppe selbst abgebremst wird
+             ;Eingabe: %xxxxxxxx
+             ;         1 = Achsgruppe muss davor abgebremst werden
+             ;76543210
+MP 610.0   : %00000000
+MP 610.1   : %00000000
+MP 610.2   : %00000000
+MP 610.3   : %00000000
+MP 610.4   : %00000000
+MP 610.5   : %00000000
+MP 610.6   : %00000000
+MP 610.7   : %00000000
+             ;------------------------------------------------------------------
+             ;SMP620 Maximale Zeit bis zum Bremsentest
+             ;Eingabe: 0 bis 60000 [min]
+             ;         0 = keine Zeitüberwchung
+MP 620.0   : 480
+MP 620.1   : 480
+MP 620.2   : 480
+MP 620.3   : 480
+MP 620.4   : 480
+MP 620.5   : 480
+MP 620.6   : 480
+MP 620.7   : 480
+MP 620.8   : 480
+MP 620.9   : 480
+MP 620.10  : 480
+MP 620.11  : 480
+MP 620.12  : 480
+MP 620.13  : 480
+MP 620.14  : 480
+MP 620.15  : 480
+MP 620.16  : 480
+MP 620.17  : 480
+MP 620.18  : 480
+MP 620.19  : 480
+MP 620.20  : 480
+MP 620.21  : 480
+             ;------------------------------------------------------------------
+             ;SMP630 Maximal zulässige Drehzahlabweichung in % für die
+             ;       Soll-Istwert-Überwachung mit Drehzahlwerten für Achsen
+             ;Eingabe: 0 bis 99 [%] von der aktuellen Solldrehzahl
+MP 630.0   : 1
+MP 630.1   : 1
+MP 630.2   : 1
+MP 630.3   : 1
+MP 630.4   : 1
+MP 630.5   : 1
+MP 630.6   : 1
+MP 630.7   : 1
+MP 630.8   : 1
+MP 630.9   : 1
+MP 630.10  : 1
+MP 630.11  : 1
+MP 630.12  : 1
+MP 630.13  : 1
+MP 630.14  : 1
+MP 630.15  : 1
+MP 630.16  : 1
+MP 630.17  : 1
+MP 630.18  : 1
+MP 630.19  : 1
+MP 630.20  : 1
+MP 630.21  : 1
+             ;------------------------------------------------------------------
+             ;SMP631 Maximal zulässige Drehzahlabweichung in % für die
+             ;       Soll-Istwert-Überwachung mit Drehzahlwerten für Spindel
+             ;Eingabe: 0 bis 20 [%] von der aktuellen Solldrehzahl
+MP 631.0   : 1
+MP 631.1   : 1
+             ;------------------------------------------------------------------
+             ;SMP632 Zulässiges Zeitfenster einer Überschreitung der
+             ;       Grenzwerte der Soll-Istwert-Überwachung mit
+             ;       Drehzahlwerten für Achsen
+             ;Eingabe: 0 bis 60 [s]
+MP 632.0   : 10
+MP 632.1   : 10
+MP 632.2   : 10
+MP 632.3   : 10
+MP 632.4   : 10
+MP 632.5   : 10
+MP 632.6   : 10
+MP 632.7   : 10
+MP 632.8   : 10
+MP 632.9   : 10
+MP 632.10  : 10
+MP 632.11  : 10
+MP 632.12  : 10
+MP 632.13  : 10
+MP 632.14  : 10
+MP 632.15  : 10
+MP 632.16  : 10
+MP 632.17  : 10
+MP 632.18  : 10
+MP 632.19  : 10
+MP 632.20  : 10
+MP 632.21  : 10
+             ;------------------------------------------------------------------
+             ;SMP633 Zulässiges Zeitfenster einer Überschreitung der
+             ;       Grenzwerte der Soll-Istwert-Überwachung mit
+             ;       Drehzahlwerten für für Spindel
+             ;Eingabe: 0 bis 60 [s]
+MP 633.0   : 10
+MP 633.1   : 10
+             ;------------------------------------------------------------------
+             ;SMP641 Maximal zulässige Positionsabweichung für die
+             ;       Soll-Istwert-Überwachung mit Positionswerten
+             ;Eingabe: 0,000 bis 30,000 [mm] bzw. [°]
+MP 641.0   : 1
+MP 641.1   : 1
+MP 641.2   : 1
+MP 641.3   : 1
+MP 641.4   : 1
+MP 641.5   : 1
+MP 641.6   : 1
+MP 641.7   : 1
+MP 641.8   : 1
+MP 641.9   : 1
+MP 641.10  : 1
+MP 641.11  : 1
+MP 641.12  : 1
+MP 641.13  : 1
+MP 641.14  : 1
+MP 641.15  : 1
+MP 641.16  : 1
+MP 641.17  : 1
+MP 641.18  : 1
+MP 641.19  : 1
+MP 641.20  : 1
+MP 641.21  : 1
+             ;------------------------------------------------------------------
+             ;SMP642 Achsen: Maximale Positionsabweichung zwischen
+             ;               MC und CC beim Überfahren der
+             ;               Referenzmarke;
+             ;               Maximale Positionsabweichung zur Markierung
+             ;               beim Prüfen der Achsen
+             ;Eingabe: 0,000 bis 30,000 [mm] bzw. [°]
+MP 642.0   : 1
+MP 642.1   : 1
+MP 642.2   : 1
+MP 642.3   : 1
+MP 642.4   : 1
+MP 642.5   : 1
+MP 642.6   : 1
+MP 642.7   : 1
+MP 642.8   : 1
+MP 642.9   : 1
+MP 642.10  : 1
+MP 642.11  : 1
+MP 642.12  : 1
+MP 642.13  : 1
+MP 642.14  : 1
+MP 642.15  : 1
+MP 642.16  : 1
+MP 642.17  : 1
+MP 642.18  : 1
+MP 642.19  : 1
+MP 642.20  : 1
+MP 642.21  : 1
+             ;------------------------------------------------------------------
+             ;SMP646 Achsen: Position, an der der Bediener die
+             ;               Übereinstimmung von tatsächlicher Position und
+             ;               intern verwendeten Lagewerten prüfen kann
+             ;               (Position der Markierung)
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm] bzw. [°]
+MP 646.0   : +0
+MP 646.1   : +0
+MP 646.2   : +0
+MP 646.3   : +0
+MP 646.4   : +0
+MP 646.5   : +0
+MP 646.6   : +0
+MP 646.7   : +0
+MP 646.8   : +0
+MP 646.9   : +0
+MP 646.10  : +0
+MP 646.11  : +0
+MP 646.12  : +0
+MP 646.13  : +0
+MP 646.14  : +0
+MP 646.15  : +0
+MP 646.16  : +0
+MP 646.17  : +0
+MP 646.18  : +0
+MP 646.19  : +0
+MP 646.20  : +0
+MP 646.21  : +0
+             ;------------------------------------------------------------------
+             ;SMP650 Positive absolute Lagegrenzwerte bezogen auf den
+             ;       Maschinen-Nullpunkt
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm] bzw. [°]
+MP 650.0   : +99999
+MP 650.1   : +99999
+MP 650.2   : +99999
+MP 650.3   : +99999
+MP 650.4   : +99999
+MP 650.5   : +99999
+MP 650.6   : +99999
+MP 650.7   : +99999
+MP 650.8   : +99999
+MP 650.9   : +99999
+MP 650.10  : +99999
+MP 650.11  : +99999
+MP 650.12  : +99999
+MP 650.13  : +99999
+MP 650.14  : +99999
+MP 650.15  : +99999
+MP 650.16  : +99999
+MP 650.17  : +99999
+MP 650.18  : +99999
+MP 650.19  : +99999
+MP 650.20  : +99999
+MP 650.21  : +99999
+             ;------------------------------------------------------------------
+             ;SMP670 Neagative absolute Lagegrenzwerte bezogen auf den
+             ;       Maschinen-Nullpunkt
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm] bzw. [°]
+MP 670.0   : -99999
+MP 670.1   : -99999
+MP 670.2   : -99999
+MP 670.3   : -99999
+MP 670.4   : -99999
+MP 670.5   : -99999
+MP 670.6   : -99999
+MP 670.7   : -99999
+MP 670.8   : -99999
+MP 670.9   : -99999
+MP 670.10  : -99999
+MP 670.11  : -99999
+MP 670.12  : -99999
+MP 670.13  : -99999
+MP 670.14  : -99999
+MP 670.15  : -99999
+MP 670.16  : -99999
+MP 670.17  : -99999
+MP 670.18  : -99999
+MP 670.19  : -99999
+MP 670.20  : -99999
+MP 670.21  : -99999
+             ;------------------------------------------------------------------
+             ;SMP691.0 Prüfsumme über Zwischencode des SPLC-Programms
+MP 691.0   : 0
+             ;------------------------------------------------------------------
+             ;SMP691.1 MC-Prüfsumme über Binärcode des SPLC-Programms
+MP 691.1   : 0
+             ;------------------------------------------------------------------
+             ;SMP691.2 CC-Prüfsumme über Binärcode des SPLC-Programms
+MP 691.2   : 0
+             ;------------------------------------------------------------------
+             ;SMP692.x Frei verwendbare Konfigurationsdaten für das
+             ;         SPLC-Programm
+             ;Eingabe: -2147483647 bis 2147483647
+MP 692.0   : 0
+MP 692.1   : 0
+MP 692.2   : 0
+MP 692.3   : 0
+MP 692.4   : 0
+MP 692.5   : 0
+MP 692.6   : 0
+MP 692.7   : 0
+MP 692.8   : 0
+MP 692.9   : 0
+MP 692.10  : 0
+MP 692.11  : 0
+MP 692.12  : 0
+MP 692.13  : 0
+MP 692.14  : 0
+MP 692.15  : 0
+             ;------------------------------------------------------------------
+             ;SMP693 Version der SPLC-API, die zur Erstellung des SPLC-
+             ;       Programms verwendet wurde
+             ;Eingabe: Numerischer Wert der API-Version
+             ;         z.B. 100 für Version 1.00
+MP 693     : 60
+             ;------------------------------------------------------------------
+             ;SMP698 Inbetriebnahme-Funktionen für FS
+             ;       Dies (Bit = 1) darf nur während der Inbetriebnahme
+             ;       der Steuerung erfolgen
+             ;Eingabe: %xx
+             ;Bit 0   Begrenzung der maximalen Geschwindigkeiten auf SLS
+             ;        0 = Begrenzung aktiv
+             ;        1 = Begrenzung nicht aktiv
+             ;Bit 1   Aktivierung der Sicherheitsfunktion SOS
+             ;        0 = SOS aktiv
+             ;        1 = SOS nicht aktiv
+MP 698     : %00
+             ;==================================================================
+             ;MP708 Dynamische Lose-Kompensation (ab CC 424, CC 61xx)
+             ;Eingabe:  0 = nicht aktiv
+             ;          0,0001 bis 1,0000 [mm]
+MP 708.0   : 0
+MP 708.1   : 0
+MP 708.2   : 0
+MP 708.3   : 0
+MP 708.4   : 0
+MP 708.5   : 0
+MP 708.6   : 0
+MP 708.7   : 0
+MP 708.8   : 0
+MP 708.9   : 0
+MP 708.10  : 0
+MP 708.11  : 0
+MP 708.12  : 0
+MP 708.13  : 0
+MP 708.14  : 0
+MP 708.15  : 0
+MP 708.16  : 0
+MP 708.17  : 0
+MP 708.18  : 0
+MP 708.19  : 0
+MP 708.20  : 0
+MP 708.21  : 0
+             ;------------------------------------------------------------------
+             ;MP709 Filter für Lose-Kompensation
+             ;Eingabe:  0 = keine Filterfunktion für MP710
+             ;          +1 bis +1000 [ms] = Zeitkonstante für MP710
+MP 709.0   : 0
+MP 709.1   : 0
+MP 709.2   : 0
+MP 709.3   : 0
+MP 709.4   : 0
+MP 709.5   : 0
+MP 709.6   : 0
+MP 709.7   : 0
+MP 709.8   : 0
+MP 709.9   : 0
+MP 709.10  : 0
+MP 709.11  : 0
+MP 709.12  : 0
+MP 709.13  : 0
+MP 709.14  : 0
+MP 709.15  : 0
+MP 709.16  : 0
+MP 709.17  : 0
+MP 709.18  : 0
+MP 709.19  : 0
+MP 709.20  : 0
+MP 709.21  : 0
+             ;------------------------------------------------------------------
+             ;MP710 Lose-Kompensation (Tisch <-> Lagemessgerät)
+             ;Eingabe: -9,9999 bis +9,9999 [mm] bzw. [°]
+MP 710.0   : +0
+MP 710.1   : +0
+MP 710.2   : +0
+MP 710.3   : +0
+MP 710.4   : +0
+MP 710.5   : +0
+MP 710.6   : +0
+MP 710.7   : +0
+MP 710.8   : +0
+MP 710.9   : +0
+MP 710.10  : +0
+MP 710.11  : +0
+MP 710.12  : +0
+MP 710.13  : +0
+MP 710.14  : +0
+MP 710.15  : +0
+MP 710.16  : +0
+MP 710.17  : +0
+MP 710.18  : +0
+MP 710.19  : +0
+MP 710.20  : +0
+MP 710.21  : +0
+             ;------------------------------------------------------------------
+             ;MP711 Höhe der Umkehrspitzen bei Kreisbewegungen
+             ;für analoge Achsen (MP2610.x - MP2620.x für digitale Achsen)
+             ;Nur für CC 42x, nicht für CMA mit CC 61xx
+             ;Eingabe: -1,0000 bis +1,0000 [mm]
+MP 711.0   : +0
+MP 711.1   : +0
+MP 711.2   : +0
+MP 711.3   : +0
+MP 711.4   : +0
+MP 711.5   : +0
+MP 711.6   : +0
+MP 711.7   : +0
+MP 711.8   : +0
+MP 711.9   : +0
+MP 711.10  : +0
+MP 711.11  : +0
+MP 711.12  : +0
+MP 711.13  : +0
+MP 711.14  : +0
+MP 711.15  : +0
+MP 711.16  : +0
+MP 711.17  : +0
+MP 711.18  : +0
+MP 711.19  : +0
+MP 711.20  : +0
+MP 711.21  : +0
+             ;------------------------------------------------------------------
+             ;MP712 Kompensationswert pro Regelkreis-Zykluszeit
+             ;für analoge Achsen (MP2610.x - MP2620.x für digitale Achsen)
+             ;Nur für CC 42x, nicht für CMA mit CC 61xx
+             ;Eingabe: 0,000000 bis 99,999999 [mm]
+MP 712.0   : 0
+MP 712.1   : 0
+MP 712.2   : 0
+MP 712.3   : 0
+MP 712.4   : 0
+MP 712.5   : 0
+MP 712.6   : 0
+MP 712.7   : 0
+MP 712.8   : 0
+MP 712.9   : 0
+MP 712.10  : 0
+MP 712.11  : 0
+MP 712.12  : 0
+MP 712.13  : 0
+MP 712.14  : 0
+MP 712.15  : 0
+MP 712.16  : 0
+MP 712.17  : 0
+MP 712.18  : 0
+MP 712.19  : 0
+MP 712.20  : 0
+MP 712.21  : 0
+             ;------------------------------------------------------------------
+             ;MP715 Höhe der Umkehrspitzen bei Kreisbewegungen bei M105
+             ;für analoge Achsen (MP2610.x - MP2620.x für digitale Achsen)
+             ;Eingabe: -1,0000 bis +1,0000 [mm]
+MP 715.0   : +0
+MP 715.1   : +0
+MP 715.2   : +0
+MP 715.3   : +0
+MP 715.4   : +0
+MP 715.5   : +0
+MP 715.6   : +0
+MP 715.7   : +0
+MP 715.8   : +0
+MP 715.9   : +0
+MP 715.10  : +0
+MP 715.11  : +0
+MP 715.12  : +0
+MP 715.13  : +0
+MP 715.14  : +0
+MP 715.15  : +0
+MP 715.16  : +0
+MP 715.17  : +0
+MP 715.18  : +0
+MP 715.19  : +0
+MP 715.20  : +0
+MP 715.21  : +0
+             ;------------------------------------------------------------------
+             ;MP716 Kompensationswert pro Regelkreis-Zykluszeit bei M105
+             ;Eingabe: 0,000000 bis 99,999999 [mm]
+MP 716.0   : 0
+MP 716.1   : 0
+MP 716.2   : 0
+MP 716.3   : 0
+MP 716.4   : 0
+MP 716.5   : 0
+MP 716.6   : 0
+MP 716.7   : 0
+MP 716.8   : 0
+MP 716.9   : 0
+MP 716.10  : 0
+MP 716.11  : 0
+MP 716.12  : 0
+MP 716.13  : 0
+MP 716.14  : 0
+MP 716.15  : 0
+MP 716.16  : 0
+MP 716.17  : 0
+MP 716.18  : 0
+MP 716.19  : 0
+MP 716.20  : 0
+MP 716.21  : 0
+             ;------------------------------------------------------------------
+             ;MP720 lineare Achsfehler-Kompensation
+             ;für analoge Achsen
+             ;Eingabe: -1,000 bis +1,000 [mm/m]
+MP 720.0   : +0
+MP 720.1   : +0
+MP 720.2   : +0
+MP 720.3   : +0
+MP 720.4   : +0
+MP 720.5   : +0
+MP 720.6   : +0
+MP 720.7   : +0
+MP 720.8   : +0
+MP 720.9   : +0
+MP 720.10  : +0
+MP 720.11  : +0
+MP 720.12  : +0
+MP 720.13  : +0
+MP 720.14  : +0
+MP 720.15  : +0
+MP 720.16  : +0
+MP 720.17  : +0
+MP 720.18  : +0
+MP 720.19  : +0
+MP 720.20  : +0
+MP 720.21  : +0
+             ;------------------------------------------------------------------
+             ;MP730 Auswahl Achsfehler-Kompensation
+             ;Eingabe: %..987654321 bitcodiert
+             ;        0 =     lineare Achsfehler-Kompensation
+             ;        1 =     nichtlineare Achsfehler-Kompensation
+             ;2109876543210987654ZYX
+MP 730     : %1111111111111111111111
+             ;------------------------------------------------------------------
+             ;MP732 Nichtlineare Achsfehler-Kompensation für Winkelachsen
+             ;      wird auf den Verfahrbereich abgebildet (wenn MP730 = 1)
+             ;      Statt 0..360 Grad z.B. -90..+90 Grad
+             ;Eingabe: %..987654321 bitcodiert
+             ;        0 =     nicht aktiv (herkömmliche Kompensation)
+             ;        1 =     aktiv (Abbildung auf Verfahrbereich)
+             ;2109876543210987654ZYX
+MP 732     : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP736 Maximale Grenzen für Kompensationswerte (ab CC 61xx)
+             ;Eingabe:  0,0000 bis 30,0000 [mm]
+             ;      Wert für KinematicsComp
+MP 736.0   : 20
+             ;      Wert für TEMPCOMP
+MP 736.1   : 20
+             ;------------------------------------------------------------------
+             ;MP737 Geschwindigkeit in der Kompensationswerte ausgeglichen
+             ;      werden. Für TEMPCOMP und  KinematicsComp (ab CC 61xx)
+             ;Eingabe:  0 bis 1000 [mm/min]
+MP 737     : 2
+             ;------------------------------------------------------------------
+             ;MP748 Dynamische Umkehrspiel-Kompensation (ab CC 424, CC 61xx)
+             ;Eingabe:  0 = nicht aktiv
+             ;          0,0001 bis 1,0000 [mm]
+MP 748.0   : 0
+MP 748.1   : 0
+MP 748.2   : 0
+MP 748.3   : 0
+MP 748.4   : 0
+MP 748.5   : 0
+MP 748.6   : 0
+MP 748.7   : 0
+MP 748.8   : 0
+MP 748.9   : 0
+MP 748.10  : 0
+MP 748.11  : 0
+MP 748.12  : 0
+MP 748.13  : 0
+MP 748.14  : 0
+MP 748.15  : 0
+MP 748.16  : 0
+MP 748.17  : 0
+MP 748.18  : 0
+MP 748.19  : 0
+MP 748.20  : 0
+MP 748.21  : 0
+             ;------------------------------------------------------------------
+             ;MP750 Lose-Kompensation (Weg) (Lage- <-> Drehzahlmessgerät)
+             ;Eingabe: -9,9999 bis +9,9999 [mm] bzw. [Grad]
+MP 750.0   : +0
+MP 750.1   : +0
+MP 750.2   : +0
+MP 750.3   : +0
+MP 750.4   : +0
+MP 750.5   : +0
+MP 750.6   : +0
+MP 750.7   : +0
+MP 750.8   : +0
+MP 750.9   : +0
+MP 750.10  : +0
+MP 750.11  : +0
+MP 750.12  : +0
+MP 750.13  : +0
+MP 750.14  : +0
+MP 750.15  : +0
+MP 750.16  : +0
+MP 750.17  : +0
+MP 750.18  : +0
+MP 750.19  : +0
+MP 750.20  : +0
+MP 750.21  : +0
+             ;------------------------------------------------------------------
+             ;MP752 Lose-Kompensation (Zeit)
+             ;Eingabe: 0 bis 1000 [ms]
+MP 752.0   : 0
+MP 752.1   : 0
+MP 752.2   : 0
+MP 752.3   : 0
+MP 752.4   : 0
+MP 752.5   : 0
+MP 752.6   : 0
+MP 752.7   : 0
+MP 752.8   : 0
+MP 752.9   : 0
+MP 752.10  : 0
+MP 752.11  : 0
+MP 752.12  : 0
+MP 752.13  : 0
+MP 752.14  : 0
+MP 752.15  : 0
+MP 752.16  : 0
+MP 752.17  : 0
+MP 752.18  : 0
+MP 752.19  : 0
+MP 752.20  : 0
+MP 752.21  : 0
+             ;------------------------------------------------------------------
+             ;MP810 Anzeige-Modus für Drehachsen und PLC-Hilfsachsen
+             ;Eingabe: 0,0000 bis 99 999,9999 [Grad]
+             ;         0 = Anzeige +-99 999,9999
+             ;             Software-Endschalter aktiv
+             ;       <>0 = Modulo-Wert für Anzeige
+             ;             Software-Endschalter inaktiv
+MP 810.0   : 0
+MP 810.1   : 0
+MP 810.2   : 0
+MP 810.3   : 360
+MP 810.4   : 360
+MP 810.5   : 360
+MP 810.6   : 360
+MP 810.7   : 400
+MP 810.8   : 0
+MP 810.9   : 0
+MP 810.10  : 0
+MP 810.11  : 0
+MP 810.12  : 0
+MP 810.13  : 0
+MP 810.14  : 0
+MP 810.15  : 0
+MP 810.16  : 0
+MP 810.17  : 0
+MP 810.18  : 0
+MP 810.19  : 360
+MP 810.20  : 0
+MP 810.21  : 0
+             ;------------------------------------------------------------------
+             ;MP812 Aktive Software-Endschalter bei Modulo-Anzeige, M94 und
+             ;      Messgeräte mit EnDat-Schnittstelle
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Software-Endschalter nicht aktiv
+             ;         1 = Software-Endschalter aktiv
+             ;2109876543210987654ZYX
+MP 812     : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP830 Art der Bremsansteuerung für erste Haltebremse
+             ;      einer Achse
+             ;      generelle Bremsaktivierung über MP2230 Test der Motorbremse
+             ;      (MP830 nur notwendig, falls 2 Haltebremsen vorhanden
+             ;      Aktivierung: BRAKE2 = YES in OEM.sys )
+             ;Eingabe: -1 oder -2
+             ;        -1 = Die Bremsansteuerung erfolgt über einen
+             ;             PLC-Ausgang. In Systemen mit Funktionaler
+             ;             Sicherheit bedeutet dies, dass die Bremse
+             ;             ausschließlich über einen zweikanaligen FS-Ausgang,
+             ;             ohne Beteiligung des Umrichters, angesteuert wird.
+             ;        -2 = Die Bremsansteuerung erfolgt über X344 des
+             ;             Umrichters. In Systemen mit Funktionaler Sicherheit
+             ;             bedeutet dies, dass die +24V-Seite der Bremse
+             ;             über den Umrichter angesteuert wird, die 0V-Seite
+             ;             wird über den A-Kanal eines FS-Ausgangs angesteuert.
+MP 830.0   : -2
+MP 830.1   : -2
+MP 830.2   : -2
+MP 830.3   : -2
+MP 830.4   : -2
+MP 830.5   : -2
+MP 830.6   : -2
+MP 830.7   : -2
+MP 830.8   : -2
+MP 830.9   : -2
+MP 830.10  : -2
+MP 830.11  : -2
+MP 830.12  : -2
+MP 830.13  : -2
+MP 830.14  : -2
+MP 830.15  : -2
+MP 830.16  : -2
+MP 830.17  : -2
+MP 830.18  : -2
+MP 830.19  : -2
+MP 830.20  : -2
+MP 830.21  : -2
+             ;------------------------------------------------------------------
+             ;MP831 Art der Bremsansteuerung für zweite Haltebremse
+             ;      einer Achse
+             ;      generelle Bremsaktivierung über MP2230 Test der Motorbremse
+             ;      (MP831 nur notwendig, falls 2 Haltebremsen vorhanden
+             ;      Aktivierung: BRAKE2 = YES in OEM.sys )
+             ;Eingabe: -1 oder -2
+             ;        -1 = Die Bremsansteuerung erfolgt über einen
+             ;             PLC-Ausgang. In Systemen mit Funktionaler
+             ;             Sicherheit bedeutet dies, dass die Bremse
+             ;             ausschließlich über einen zweikanaligen FS-Ausgang,
+             ;             ohne Beteiligung des Umrichters, angesteuert wird.
+             ;        -2 = Die Bremsansteuerung erfolgt über X344 des
+             ;             Umrichters. In Systemen mit Funktionaler Sicherheit
+             ;             bedeutet dies, dass die +24V-Seite der Bremse
+             ;             über den Umrichter angesteuert wird, die 0V-Seite
+             ;             wird über den A-Kanal eines FS-Ausgangs angesteuert.
+MP 831.0   : -2
+MP 831.1   : -2
+MP 831.2   : -2
+MP 831.3   : -2
+MP 831.4   : -2
+MP 831.5   : -2
+MP 831.6   : -2
+MP 831.7   : -2
+MP 831.8   : -2
+MP 831.9   : -2
+MP 831.10  : -2
+MP 831.11  : -2
+MP 831.12  : -2
+MP 831.13  : -2
+MP 831.14  : -2
+MP 831.15  : -2
+MP 831.16  : -2
+MP 831.17  : -2
+MP 831.18  : -2
+MP 831.19  : -2
+MP 831.20  : -2
+MP 831.21  : -2
+             ;------------------------------------------------------------------
+             ;MP835 Test der ersten Haltebremse einer Achse:
+             ;      Faktor für Motor-Stillstandsstrom
+             ;Eingabe: 0,1 bis 30,0 [* Motor-Stillstandsstrom]
+             ;         0 = kein Test oder Motor ohne Motorbremse
+MP 835.0   : 0
+MP 835.1   : 0
+MP 835.2   : 0
+MP 835.3   : 0
+MP 835.4   : 0
+MP 835.5   : 0
+MP 835.6   : 0
+MP 835.7   : 0
+MP 835.8   : 0
+MP 835.9   : 0
+MP 835.10  : 0
+MP 835.11  : 0
+MP 835.12  : 0
+MP 835.13  : 0
+MP 835.14  : 0
+MP 835.15  : 0
+MP 835.16  : 0
+MP 835.17  : 0
+MP 835.18  : 0
+MP 835.19  : 0
+MP 835.20  : 0
+MP 835.21  : 0
+             ;------------------------------------------------------------------
+             ;MP836 Test der zweiten Haltebremse einer Achse:
+             ;      Faktor für Motor-Stillstandsstrom
+             ;Eingabe: 0,1 bis 30,0 [* Motor-Stillstandsstrom]
+             ;         0 = kein Test oder Motor ohne Motorbremse
+MP 836.0   : 0
+MP 836.1   : 0
+MP 836.2   : 0
+MP 836.3   : 0
+MP 836.4   : 0
+MP 836.5   : 0
+MP 836.6   : 0
+MP 836.7   : 0
+MP 836.8   : 0
+MP 836.9   : 0
+MP 836.10  : 0
+MP 836.11  : 0
+MP 836.12  : 0
+MP 836.13  : 0
+MP 836.14  : 0
+MP 836.15  : 0
+MP 836.16  : 0
+MP 836.17  : 0
+MP 836.18  : 0
+MP 836.19  : 0
+MP 836.20  : 0
+MP 836.21  : 0
+             ;------------------------------------------------------------------
+             ;MP840 Test der ersten Haltebremse einer Achse:
+             ;      Max. zulässiger Weg
+             ;Eingabe: 0,0000 bis 10,0000 [mm] bzw. [Grad]
+MP 840.0   : 0
+MP 840.1   : 0
+MP 840.2   : 0
+MP 840.3   : 0
+MP 840.4   : 0
+MP 840.5   : 0
+MP 840.6   : 0
+MP 840.7   : 0
+MP 840.8   : 0
+MP 840.9   : 0
+MP 840.10  : 0
+MP 840.11  : 0
+MP 840.12  : 0
+MP 840.13  : 0
+MP 840.14  : 0
+MP 840.15  : 0
+MP 840.16  : 0
+MP 840.17  : 0
+MP 840.18  : 0
+MP 840.19  : 0
+MP 840.20  : 0
+MP 840.21  : 0
+             ;------------------------------------------------------------------
+             ;MP841 Test der zweiten Haltebremse einer Achse:
+             ;      Max. zulässiger Weg
+             ;Eingabe: 0,0000 bis 10,0000 [mm] bzw. [Grad]
+MP 841.0   : 0
+             ;------------------------------------------------------------------
+             ;MP850 Gleichlauf-Achsen
+             ;Eingabe: 0 = Hauptachse
+             ;         1 = nachgeführte Achse zu Achse 1
+             ;         2 = nachgeführte Achse zu Achse 2
+             ;         ...
+             ;         9 = nachgeführte Achse zu Achse 9
+MP 850.0   : 0          ;z.B. 0 = Hauptachse 1
+MP 850.1   : 0          ;     0 = Hauptachse 2
+MP 850.2   : 0          ;     0 = Hauptachse 3
+MP 850.3   : 0          ;     1 = Achse 4 gekoppelt mit 1
+MP 850.4   : 0          ;     2 = Achse 5 gekoppelt mit 2
+MP 850.5   : 0
+MP 850.6   : 0
+MP 850.7   : 0
+MP 850.8   : 0
+MP 850.9   : 0
+MP 850.10  : 0
+MP 850.11  : 0
+MP 850.12  : 0
+MP 850.13  : 0
+MP 850.14  : 0
+MP 850.15  : 0
+MP 850.16  : 0
+MP 850.17  : 0
+MP 850.18  : 0
+MP 850.19  : 0
+MP 850.20  : 0
+MP 850.21  : 0
+             ;------------------------------------------------------------------
+             ;MP855 Gleichlauf-Überwachung
+             ;Eingabe: 0 bis 100,0000 [mm]
+             ;         0 = Überwachung nicht aktiv
+MP 855.0   : 0
+MP 855.1   : 0
+MP 855.2   : 0
+MP 855.3   : 0
+MP 855.4   : 0
+MP 855.5   : 0
+MP 855.6   : 0
+MP 855.7   : 0
+MP 855.8   : 0
+MP 855.9   : 0
+MP 855.10  : 0
+MP 855.11  : 0
+MP 855.12  : 0
+MP 855.13  : 0
+MP 855.14  : 0
+MP 855.15  : 0
+MP 855.16  : 0
+MP 855.17  : 0
+MP 855.18  : 0
+MP 855.19  : 0
+MP 855.20  : 0
+MP 855.21  : 0
+             ;------------------------------------------------------------------
+             ;MP860 Gleichlauf-Steuerung
+             ;Eingabe: %xxx
+             ;Bit 0   Bezug für Gleichlauf-Steuerung
+             ;        0 = Bezug auf Position nach dem Einschalten
+             ;        1 = Bezug auf Referenzmarken (Maschinen-Nullpunkt)
+             ;Bit 1   Momenten-Master-Slave-Regelung
+             ;        0 = keine Momenten-Master-Slave-Regelung
+             ;        1 = Achse ist Momenten-Slave-Achse
+             ;Bit 2   Bremsentest für Verbund- bzw. Gleichlaufachsen
+             ;        0 = Bremsen einer Verbund-Achse zeitgleich testen
+             ;        1 = Bremsen einer Verbund-Achse nacheinander testen
+             ;            (neues Verhalten, ab 340 49x-06 SP02 und
+             ;             606 42x-01 SP02)
+             ;210
+MP 860.0   : 0
+MP 860.1   : 0
+MP 860.2   : 0
+MP 860.3   : 0
+MP 860.4   : 0
+MP 860.5   : 0
+MP 860.6   : 0
+MP 860.7   : 0
+MP 860.8   : 0
+MP 860.9   : 0
+MP 860.10  : 0
+MP 860.11  : 0
+MP 860.12  : 0
+MP 860.13  : 0
+MP 860.14  : 0
+MP 860.15  : 0
+MP 860.16  : 0
+MP 860.17  : 0
+MP 860.18  : 0
+MP 860.19  : 0
+MP 860.20  : 0
+MP 860.21  : 0
+             ;------------------------------------------------------------------
+             ;MP91x + Verfahrbereiche (Aktivierung über PLC)
+             ;Eingabe: -99999,9999 bis +99999,9999 [mm] bzw. [Grad]
+             ;+Endschalter für 1. Verfahrbereich
+MP 910.0   : +1000
+MP 910.1   : +1000
+MP 910.2   : +1000
+MP 910.3   : +99999
+MP 910.4   : +99999
+MP 910.5   : +99999
+MP 910.6   : +99999
+MP 910.7   : +99999
+MP 910.8   : +0
+MP 910.9   : +0
+MP 910.10  : +0
+MP 910.11  : +0
+MP 910.12  : +0
+MP 910.13  : +0
+MP 910.14  : +0
+MP 910.15  : +0
+MP 910.16  : +0
+MP 910.17  : +0
+MP 910.18  : +0
+MP 910.19  : +99999
+MP 910.20  : +0
+MP 910.21  : +0
+             ;------------------------------------------------------------------
+             ;+Endschalter für 2. Verfahrbereich
+MP 911.0   : +1000
+MP 911.1   : +1000
+MP 911.2   : +1000
+MP 911.3   : +99999
+MP 911.4   : +99999
+MP 911.5   : +99999
+MP 911.6   : +99999
+MP 911.7   : +99999
+MP 911.8   : +0
+MP 911.9   : +0
+MP 911.10  : +0
+MP 911.11  : +0
+MP 911.12  : +0
+MP 911.13  : +0
+MP 911.14  : +0
+MP 911.15  : +0
+MP 911.16  : +0
+MP 911.17  : +0
+MP 911.18  : +0
+MP 911.19  : +99999
+MP 911.20  : +0
+MP 911.21  : +0
+             ;------------------------------------------------------------------
+             ;+Endschalter für 3. Verfahrbereich
+MP 912.0   : +1000
+MP 912.1   : +1000
+MP 912.2   : +1000
+MP 912.3   : +99999
+MP 912.4   : +99999
+MP 912.5   : +99999
+MP 912.6   : +99999
+MP 912.7   : +99999
+MP 912.8   : +0
+MP 912.9   : +0
+MP 912.10  : +0
+MP 912.11  : +0
+MP 912.12  : +0
+MP 912.13  : +0
+MP 912.14  : +0
+MP 912.15  : +0
+MP 912.16  : +0
+MP 912.17  : +0
+MP 912.18  : +0
+MP 912.19  : +99999
+MP 912.20  : +0
+MP 912.21  : +0
+             ;------------------------------------------------------------------
+             ;MP92x - Verfahrbereiche (Aktivierung über PLC)
+             ;Eingabe: -99999,9999 bis +99999,9999 [mm] bzw. [Grad]
+             ;-Endschalter für 1. Verfahrbereich
+MP 920.0   : -1000
+MP 920.1   : -1000
+MP 920.2   : -1000
+MP 920.3   : -99999
+MP 920.4   : -99999
+MP 920.5   : -99999
+MP 920.6   : -99999
+MP 920.7   : -99999
+MP 920.8   : +0
+MP 920.9   : +0
+MP 920.10  : +0
+MP 920.11  : +0
+MP 920.12  : +0
+MP 920.13  : +0
+MP 920.14  : +0
+MP 920.15  : +0
+MP 920.16  : +0
+MP 920.17  : +0
+MP 920.18  : +0
+MP 920.19  : -99999
+MP 920.20  : +0
+MP 920.21  : +0
+             ;------------------------------------------------------------------
+             ;-Endschalter für 2. Verfahrbereich
+MP 921.0   : -1000
+MP 921.1   : -1000
+MP 921.2   : -1000
+MP 921.3   : -99999
+MP 921.4   : -99999
+MP 921.5   : -99999
+MP 921.6   : -99999
+MP 921.7   : -99999
+MP 921.8   : +0
+MP 921.9   : +0
+MP 921.10  : +0
+MP 921.11  : +0
+MP 921.12  : +0
+MP 921.13  : +0
+MP 921.14  : +0
+MP 921.15  : +0
+MP 921.16  : +0
+MP 921.17  : +0
+MP 921.18  : +0
+MP 921.19  : -99999
+MP 921.20  : +0
+MP 921.21  : +0
+             ;------------------------------------------------------------------
+             ;-Endschalter für 3. Verfahrbereich
+MP 922.0   : -1000
+MP 922.1   : -1000
+MP 922.2   : -1000
+MP 922.3   : -99999
+MP 922.4   : -99999
+MP 922.5   : -99999
+MP 922.6   : -99999
+MP 922.7   : -99999
+MP 922.8   : +0
+MP 922.9   : +0
+MP 922.10  : +0
+MP 922.11  : +0
+MP 922.12  : +0
+MP 922.13  : +0
+MP 922.14  : +0
+MP 922.15  : +0
+MP 922.16  : +0
+MP 922.17  : +0
+MP 922.18  : +0
+MP 922.19  : -99999
+MP 922.20  : +0
+MP 922.21  : +0
+             ;------------------------------------------------------------------
+             ;MP950 Bezugspunkt für Positioniersätze mit M92
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm] bzw. [Grad]
+             ;         Werte bezogen auf Maschinen-Nullpunkt
+MP 950.0   : +0
+MP 950.1   : +0
+MP 950.2   : +0
+MP 950.3   : +0
+MP 950.4   : +0
+MP 950.5   : +0
+MP 950.6   : +0
+MP 950.7   : +0
+MP 950.8   : +0
+MP 950.9   : +0
+MP 950.10  : +0
+MP 950.11  : +0
+MP 950.12  : +0
+MP 950.13  : +0
+MP 950.14  : +0
+MP 950.15  : +0
+MP 950.16  : +0
+MP 950.17  : +0
+MP 950.18  : +0
+MP 950.19  : +0
+MP 950.20  : +0
+MP 950.21  : +0
+             ;------------------------------------------------------------------
+             ;MP951 simulierte Werkzeugwechsel-Position für
+             ;Tool Call bei Satzvorlauf
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm] bzw. [Grad]
+MP 951.0   : +0
+MP 951.1   : +0
+MP 951.2   : +0
+MP 951.3   : +0
+MP 951.4   : +0
+MP 951.5   : +0
+MP 951.6   : +0
+MP 951.7   : +0
+MP 951.8   : +0
+MP 951.9   : +0
+MP 951.10  : +0
+MP 951.11  : +0
+MP 951.12  : +0
+MP 951.13  : +0
+MP 951.14  : +0
+MP 951.15  : +0
+MP 951.16  : +0
+MP 951.17  : +0
+MP 951.18  : +0
+MP 951.19  : +0
+MP 951.20  : +0
+MP 951.21  : +0
+             ;------------------------------------------------------------------
+             ;MP960 Maschinen-Nullpunkt
+             ;Eingabe: -1,79769313486E+308 bis +1,79769313486E+308
+             ;         [mm] bzw. [Grad]
+             ;         Werte bezogen auf Massstab-Nullpunkt
+MP 960.0   : +0.00000
+MP 960.1   : +0.00000
+MP 960.2   : +0.00000
+MP 960.3   : +0.00000
+MP 960.4   : +0.00000
+MP 960.5   : +0.00000
+MP 960.6   : +0.00000
+MP 960.7   : +0.00000
+MP 960.8   : +0.00000
+MP 960.9   : +0.00000
+MP 960.10  : +0.00000
+MP 960.11  : +0.00000
+MP 960.12  : +0.00000
+MP 960.13  : +0.00000
+MP 960.14  : +0.00000
+MP 960.15  : +0.00000
+MP 960.16  : +0.00000
+MP 960.17  : +0.00000
+MP 960.18  : +0.00000
+MP 960.19  : +0.00000
+MP 960.20  : +0.00000
+MP 960.21  : +0.00000
+             ;==================================================================
+             ;MP 1000 .. 1399
+             ;Positionierung / Regelung
+             ;==================================================================
+             ;MP1010 Eilgang achsspezifisch. Bei Programmende und Programm-
+             ;       neuwahl ist immer Eilgang aus MP1010 aktiv.
+             ;Eingabe: 10 bis 1 000 000 [mm/min] bzw. [Grad/min]
+MP 1010.0  : 10000
+MP 1010.1  : 10000
+MP 1010.2  : 10000
+MP 1010.3  : 2000
+MP 1010.4  : 2000
+MP 1010.5  : 2000
+MP 1010.6  : 2000
+MP 1010.7  : 10000
+MP 1010.8  : 10000
+MP 1010.9  : 10000
+MP 1010.10 : 10000
+MP 1010.11 : 10000
+MP 1010.12 : 10000
+MP 1010.13 : 10000
+MP 1010.14 : 10000
+MP 1010.15 : 10000
+MP 1010.16 : 10000
+MP 1010.17 : 10000
+MP 1010.18 : 10000
+MP 1010.19 : 10000
+MP 1010.20 : 10000
+MP 1010.21 : 10000
+             ;------------------------------------------------------------------
+             ;MP1011 max. Eilgang bei Bahninterpolation
+             ;Eingabe: 10 bis 1 000 000 [mm/min] bzw. [Grad/min]
+MP 1011    : 100000
+             ;------------------------------------------------------------------
+             ;MP1012 Zweiter Eilgang achsspezifisch. Umschaltung zwischen
+             ;       Eilgang aus MP1010 oder MP1012 über Funktion FN17. Bei
+             ;       Verwendung von Eilgang aus MP1012 ist MP1011
+             ;       nicht aktiv.
+             ;Eingabe: 10 bis 1 000 000 [mm/min] bzw. [Grad/min]
+MP 1012.0  : 10000
+MP 1012.1  : 10000
+MP 1012.2  : 10000
+MP 1012.3  : 2000
+MP 1012.4  : 2000
+MP 1012.5  : 2000
+MP 1012.6  : 2000
+MP 1012.7  : 10000
+MP 1012.8  : 10000
+MP 1012.9  : 10000
+MP 1012.10 : 10000
+MP 1012.11 : 10000
+MP 1012.12 : 10000
+MP 1012.13 : 10000
+MP 1012.14 : 10000
+MP 1012.15 : 10000
+MP 1012.16 : 10000
+MP 1012.17 : 10000
+MP 1012.18 : 10000
+MP 1012.19 : 10000
+MP 1012.20 : 10000
+MP 1012.21 : 10000
+             ;------------------------------------------------------------------
+             ;MP1020 Handvorschub achsspezifisch
+             ;Eingabe: 10 bis 1 000 000 [mm/min] bzw. [Grad/min]
+MP 1020.0  : 1000
+MP 1020.1  : 1000
+MP 1020.2  : 1000
+MP 1020.3  : 1000
+MP 1020.4  : 1000
+MP 1020.5  : 1000
+MP 1020.6  : 1000
+MP 1020.7  : 1000
+MP 1020.8  : 1000
+MP 1020.9  : 1000
+MP 1020.10 : 1000
+MP 1020.11 : 1000
+MP 1020.12 : 1000
+MP 1020.13 : 1000
+MP 1020.14 : 1000
+MP 1020.15 : 1000
+MP 1020.16 : 1000
+MP 1020.17 : 1000
+MP 1020.18 : 1000
+MP 1020.19 : 1000
+MP 1020.20 : 1000
+MP 1020.21 : 1000
+             ;------------------------------------------------------------------
+             ;MP1030 Positionierfenster achsspezifisch
+             ;Eingabe: 0,0001 bis 2,0000 [mm] bzw. [Grad]
+MP 1030.0  : 0.01
+MP 1030.1  : 0.01
+MP 1030.2  : 0.01
+MP 1030.3  : 0.01
+MP 1030.4  : 0.01
+MP 1030.5  : 0.01
+MP 1030.6  : 0.01
+MP 1030.7  : 0.01
+MP 1030.8  : 0.01
+MP 1030.9  : 0.01
+MP 1030.10 : 0.01
+MP 1030.11 : 0.01
+MP 1030.12 : 0.01
+MP 1030.13 : 0.01
+MP 1030.14 : 0.01
+MP 1030.15 : 0.01
+MP 1030.16 : 0.01
+MP 1030.17 : 0.01
+MP 1030.18 : 0.01
+MP 1030.19 : 0.01
+MP 1030.20 : 0.01
+MP 1030.21 : 0.01
+             ;------------------------------------------------------------------
+             ;MP1040 Polarität des Drehzahl-Sollwertes bei positiver
+             ;       Verfahrrichtung
+             ;Eingabe: %..987654321 bitcodiert
+             ; 0 = positiv
+             ; 1 = negativ
+             ;2109876543210987654ZYX
+MP 1040    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1050 Analogspannung bei Eilgang
+             ;Eingabe: 1,000 bis 9,000 [V]
+MP 1050.0  : 1
+MP 1050.1  : 1
+MP 1050.2  : 1
+MP 1050.3  : 1
+MP 1050.4  : 1
+MP 1050.5  : 1
+MP 1050.6  : 1
+MP 1050.7  : 1
+MP 1050.8  : 1
+MP 1050.9  : 1
+MP 1050.10 : 1
+MP 1050.11 : 1
+MP 1050.12 : 1
+MP 1050.13 : 1
+MP 1050.14 : 1
+MP 1050.15 : 1
+MP 1050.16 : 1
+MP 1050.17 : 1
+MP 1050.18 : 1
+MP 1050.19 : 1
+MP 1050.20 : 1
+MP 1050.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1054 Weg bei einer Motorumdrehung
+             ;Eingabe: 0 bis maximal 15 Ziffern [mm]
+             ;         Beispiel: 123456798,012345 [mm]
+             ;         Beispiel: 123,456798012345 [mm]
+MP 1054.0  : 10
+MP 1054.1  : 10
+MP 1054.2  : 10
+MP 1054.3  : 10
+MP 1054.4  : 10
+MP 1054.5  : 10
+MP 1054.6  : 10
+MP 1054.7  : 10
+MP 1054.8  : 10
+MP 1054.9  : 10
+MP 1054.10 : 10
+MP 1054.11 : 10
+MP 1054.12 : 10
+MP 1054.13 : 10
+MP 1054.14 : 10
+MP 1054.15 : 10
+MP 1054.16 : 10
+MP 1054.17 : 10
+MP 1054.18 : 10
+MP 1054.19 : 10
+MP 1054.20 : 10
+MP 1054.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1060 Beschleunigung achsspezifisch
+             ;Eingabe: 0,001 bis 500 [m/s^2] oder [1000°/s^2]
+MP 1060.0  : 0.5
+MP 1060.1  : 0.5
+MP 1060.2  : 0.5
+MP 1060.3  : 0.5
+MP 1060.4  : 0.5
+MP 1060.5  : 0.5
+MP 1060.6  : 0.5
+MP 1060.7  : 0.5
+MP 1060.8  : 0.5
+MP 1060.9  : 0.5
+MP 1060.10 : 0.5
+MP 1060.11 : 0.5
+MP 1060.12 : 0.5
+MP 1060.13 : 0.5
+MP 1060.14 : 0.5
+MP 1060.15 : 0.5
+MP 1060.16 : 0.5
+MP 1060.17 : 0.5
+MP 1060.18 : 0.5
+MP 1060.19 : 0.5
+MP 1060.20 : 0.5
+MP 1060.21 : 0.5
+             ;------------------------------------------------------------------
+             ;MP1061 Begrenzung Beschleunigung bei Bahninterpolation
+             ;       MP1061.0 Bahnbeschleunigung für Bearbeitungsvorschub
+             ;       MP1061.1 Bahnbeschleunigung für Eilgang
+             ;Eingabe: 0,001 bis 500 [m/s^2]
+MP 1061.0  : 0.5
+MP 1061.1  : 0.5
+             ;------------------------------------------------------------------
+             ;MP1070 Radialbeschleunigung
+             ;Eingabe: 0,001 bis 500 [m/s^2]
+MP 1070    : 0.5
+             ;------------------------------------------------------------------
+             ;MP1080 Analoge Antriebe: Integralfaktor
+             ;Eingabe: 0 bis 65 535 (digitale Antriebe: 0)
+MP 1080.0  : 0
+MP 1080.1  : 0
+MP 1080.2  : 0
+MP 1080.3  : 0
+MP 1080.4  : 0
+MP 1080.5  : 0
+MP 1080.6  : 0
+MP 1080.7  : 0
+MP 1080.8  : 0
+MP 1080.9  : 0
+MP 1080.10 : 0
+MP 1080.11 : 0
+MP 1080.12 : 0
+MP 1080.13 : 0
+MP 1080.14 : 0
+MP 1080.15 : 0
+MP 1080.16 : 0
+MP 1080.17 : 0
+MP 1080.18 : 0
+MP 1080.19 : 0
+MP 1080.20 : 0
+MP 1080.21 : 0
+             ;------------------------------------------------------------------
+             ;MP1085 Max. zulässiger achsspezifischer Ruck für
+             ;       Bewegungen in den Betriebsarten
+             ;       "Programmlauf Einzelsatz", "Programmlauf Satzfolge"
+             ;       und "Positionieren mit Handeingabe",
+             ;       solange Vorschub nicht FMAX bzw.
+             ;       kleiner dem Wert in MP1092.
+             ;       (bisher achsübergreifend in MP1090.0)
+             ;
+             ;            MP1060.x^2 * 60000
+             ; MP1085.x >= ------------------
+             ;               MP1010.x
+             ;Eingabe: 0,1 bis 9999,9 [m/s^3] oder [1000°/s^3]
+MP 1085.0  : 10
+MP 1085.1  : 10
+MP 1085.2  : 10
+MP 1085.3  : 10
+MP 1085.4  : 10
+MP 1085.5  : 10
+MP 1085.6  : 10
+MP 1085.7  : 10
+MP 1085.8  : 10
+MP 1085.9  : 10
+MP 1085.10 : 10
+MP 1085.11 : 10
+MP 1085.12 : 10
+MP 1085.13 : 10
+MP 1085.14 : 10
+MP 1085.15 : 10
+MP 1085.16 : 10
+MP 1085.17 : 10
+MP 1085.18 : 10
+MP 1085.19 : 10
+MP 1085.20 : 10
+MP 1085.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1086 Max. zulässiger achsspezifischer Ruck für Bewegungen
+             ;       in den Betriebsarten "Programmlauf Satzfolge",
+             ;       "Programmlauf Einzelsatz" und "Positionieren mit
+             ;       Handeingabe", wenn FMAX
+             ;       programmiert bzw. Vorschub grösser dem Wert in MP1092.
+             ;       (bisher achsübergreifend in MP1090.1)
+             ;
+             ;            MP1060.x^2 * 60000
+             ; MP1086.x >= ------------------
+             ;               MP1010.x
+             ;Eingabe: 0,1 bis 9999,9 [m/s^3] oder [1000°/s^3]
+             ;         0 = nicht aktiv (auch bei FMAX Wert aus MP1085.x)
+MP 1086.0  : 20
+MP 1086.1  : 20
+MP 1086.2  : 20
+MP 1086.3  : 20
+MP 1086.4  : 20
+MP 1086.5  : 20
+MP 1086.6  : 20
+MP 1086.7  : 20
+MP 1086.8  : 20
+MP 1086.9  : 20
+MP 1086.10 : 20
+MP 1086.11 : 20
+MP 1086.12 : 20
+MP 1086.13 : 20
+MP 1086.14 : 20
+MP 1086.15 : 20
+MP 1086.16 : 20
+MP 1086.17 : 20
+MP 1086.18 : 20
+MP 1086.19 : 20
+MP 1086.20 : 20
+MP 1086.21 : 20
+             ;------------------------------------------------------------------
+             ;MP1087 Achsspezifische Ruckbegrenzung in der manuellen
+             ;       Betriebsart
+             ;Eingabe: 0,1 bis 1000 [m/s^3] oder [1000°/s^3]
+MP 1087.0  : 10
+MP 1087.1  : 10
+MP 1087.2  : 10
+MP 1087.3  : 10
+MP 1087.4  : 10
+MP 1087.5  : 10
+MP 1087.6  : 10
+MP 1087.7  : 10
+MP 1087.8  : 10
+MP 1087.9  : 10
+MP 1087.10 : 10
+MP 1087.11 : 10
+MP 1087.12 : 10
+MP 1087.13 : 10
+MP 1087.14 : 10
+MP 1087.15 : 10
+MP 1087.16 : 10
+MP 1087.17 : 10
+MP 1087.18 : 10
+MP 1087.19 : 10
+MP 1087.20 : 10
+MP 1087.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1088 Achsspezifische Ruckbegrenzung bei ungefilterten
+             ;       Positionierungen
+             ;       (PLC-Positionierungen, Positionierung bei Mess-Zyklen)
+             ;Eingabe: 0,1 bis 9999,9 [m/s^3] oder [1000°/s^3]
+MP 1088.0  : 5
+MP 1088.1  : 5
+MP 1088.2  : 5
+MP 1088.3  : 5
+MP 1088.4  : 5
+MP 1088.5  : 5
+MP 1088.6  : 5
+MP 1088.7  : 5
+MP 1088.8  : 5
+MP 1088.9  : 5
+MP 1088.10 : 5
+MP 1088.11 : 5
+MP 1088.12 : 5
+MP 1088.13 : 5
+MP 1088.14 : 5
+MP 1088.15 : 5
+MP 1088.16 : 5
+MP 1088.17 : 5
+MP 1088.18 : 5
+MP 1088.19 : 5
+MP 1088.20 : 5
+MP 1088.21 : 5
+             ;------------------------------------------------------------------
+             ;MP1089 Achsspezifische Ruckbegrenzung beim Ref-Fahren
+             ;Eingabe: 0,1 bis 1000  [m/s^3] oder [1000°/s^3]
+MP 1089.0  : 10
+MP 1089.1  : 10
+MP 1089.2  : 10
+MP 1089.3  : 10
+MP 1089.4  : 10
+MP 1089.5  : 10
+MP 1089.6  : 10
+MP 1089.7  : 10
+MP 1089.8  : 10
+MP 1089.9  : 10
+MP 1089.10 : 10
+MP 1089.11 : 10
+MP 1089.12 : 10
+MP 1089.13 : 10
+MP 1089.14 : 10
+MP 1089.15 : 10
+MP 1089.16 : 10
+MP 1089.17 : 10
+MP 1089.18 : 10
+MP 1089.19 : 10
+MP 1089.20 : 10
+MP 1089.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1090 Begrenzung des Bahnrucks der sich aus MP1085.x oder
+             ;       MP1086.x ergibt
+             ;            MP1060^2 * 60000
+             ; MP1090 >= ------------------
+             ;               MP1010
+             ;Eingabe: 0,1 bis 9999,9 [m/s^3] oder [1000°/s^3]
+             ;         0 = nicht aktiv
+MP 1090.0  : 10         ;Ruckbegrenzung wenn Vorschub-Wert programmiert
+MP 1090.1  : 20         ;Ruckbegrenzung wenn FMAX programmiert
+             ;------------------------------------------------------------------
+             ;MP1092 Vorschubschwelle für Ruckparameter aus MP1085.x oder
+             ;       MP1086.x
+             ;       programmierter Vorschub < MP1092 --> MP1085.x aktiv
+             ;       programmierter Vorschub > MP1092 --> MP1086.x aktiv
+             ;       MP1092 = 0 --> MP1085.x bei Bewegungen ohne FMAX aktiv
+             ;       und MP1086.x bei Bewegungen mit FMAX aktiv
+             ;Eingabe: 0 bis 300 000 [mm/min]
+MP 1092    : 0
+             ;------------------------------------------------------------------
+             ;MP1094 Ein HSC-Filter kann durch die Eingabe der Grenz-
+             ;       freqeuenz (20-30% unterhalb Resonanzfrequenz Maschine)
+             ;       aktiviert werden. Es gilt der Ruck aus MP1098.
+             ;       MP1095 und MP1099 sind ohne Wirkung.
+             ;Eingabe: 0 = Filter wie bisher
+             ;         1 bis 166,0 [Hz]
+MP 1094    : 0
+             ;------------------------------------------------------------------
+             ;MP1095 Zyklus 32 3D Fräsen - Filter
+             ;Eingabe: 0 bis 1
+             ; 0 = Einfach-Filter
+             ; 1 = Doppel-Filter
+MP 1095.0  : 0          ;Programmlauf, Positionieren mit Handeingabe
+MP 1095.1  : 0          ;Manuell, Handrad, Schrittmass, Referenzpunkte
+             ;------------------------------------------------------------------
+             ;MP1096 Zyklus 32 3D Fräsen - vordefinierte Toleranz
+             ;Eingabe: 0 bis 3
+MP 1096.0  : 0.02       ;Ecken bei Bewegungen mit Bearbeitungsvorschub
+MP 1096.1  : 0.08       ;Ecken bei Bewegungen mit Eilgang
+             ;------------------------------------------------------------------
+             ;MP1097 Zyklus 32 3D Fräsen - Ruckbegrenzung Einfach-Filter
+             ;Eingabe: 0.1 bis 1000  [m/s^3]
+MP 1097.0  : 10
+MP 1097.1  : 10
+MP 1097.2  : 10
+MP 1097.3  : 10
+MP 1097.4  : 10
+MP 1097.5  : 10
+MP 1097.6  : 10
+MP 1097.7  : 10
+MP 1097.8  : 10
+MP 1097.9  : 10
+MP 1097.10 : 10
+MP 1097.11 : 10
+MP 1097.12 : 10
+MP 1097.13 : 10
+MP 1097.14 : 10
+MP 1097.15 : 10
+MP 1097.16 : 10
+MP 1097.17 : 10
+MP 1097.18 : 10
+MP 1097.19 : 10
+MP 1097.20 : 10
+MP 1097.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1098 Zyklus 32 3D Fräsen - Ruckbegrenzung Doppel-Filter
+             ;Eingabe: 0.1 bis 1000  [m/s^3]
+MP 1098.0  : 10
+MP 1098.1  : 10
+MP 1098.2  : 10
+MP 1098.3  : 10
+MP 1098.4  : 10
+MP 1098.5  : 10
+MP 1098.6  : 10
+MP 1098.7  : 10
+MP 1098.8  : 10
+MP 1098.9  : 10
+MP 1098.10 : 10
+MP 1098.11 : 10
+MP 1098.12 : 10
+MP 1098.13 : 10
+MP 1098.14 : 10
+MP 1098.15 : 10
+MP 1098.16 : 10
+MP 1098.17 : 10
+MP 1098.18 : 10
+MP 1098.19 : 10
+MP 1098.20 : 10
+MP 1098.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1099 Zyklus 32 3D Fräsen - minimale Filter-Ordnung
+             ;Eingabe: 0 bis 20
+MP 1099.0  : 5          ;Einfach-Filter
+MP 1099.1  : 3          ;Doppel-Filter
+             ;------------------------------------------------------------------
+             ;MP1110 Stillstands-Überwachung
+             ;(grober Positionierfehler x D)
+             ;Eingabe: 0,0010 bis 30,0000 [mm]
+MP 1110.0  : 0.2
+MP 1110.1  : 0.2
+MP 1110.2  : 0.2
+MP 1110.3  : 0.2
+MP 1110.4  : 0.2
+MP 1110.5  : 0.2
+MP 1110.6  : 0.2
+MP 1110.7  : 0.2
+MP 1110.8  : 0.2
+MP 1110.9  : 0.2
+MP 1110.10 : 0.2
+MP 1110.11 : 0.2
+MP 1110.12 : 0.2
+MP 1110.13 : 0.2
+MP 1110.14 : 0.2
+MP 1110.15 : 0.2
+MP 1110.16 : 0.2
+MP 1110.17 : 0.2
+MP 1110.18 : 0.2
+MP 1110.19 : 0.2
+MP 1110.20 : 0.2
+MP 1110.21 : 0.2
+             ;------------------------------------------------------------------
+             ;MP1120 Stillstandsüberwachung für Feldwinkelbestimmung
+             ;Eingabe: 0,0000 bis 300,0000 [mm] bzw. [°]
+MP 1120.0  : 0.5
+MP 1120.1  : 0.5
+MP 1120.2  : 0.5
+MP 1120.3  : 0.5
+MP 1120.4  : 0.5
+MP 1120.5  : 0.5
+MP 1120.6  : 0.5
+MP 1120.7  : 0.5
+MP 1120.8  : 0.5
+MP 1120.9  : 0.5
+MP 1120.10 : 0.5
+MP 1120.11 : 0.5
+MP 1120.12 : 0.5
+MP 1120.13 : 0.5
+MP 1120.14 : 0.5
+MP 1120.15 : 0.5
+MP 1120.16 : 0.5
+MP 1120.17 : 0.5
+MP 1120.18 : 0.5
+MP 1120.19 : 0.5
+MP 1120.20 : 0.5
+MP 1120.21 : 0.5
+             ;------------------------------------------------------------------
+             ;MP1140 Bewegungs-Überwachung
+             ;(grober Positionierfehler x C)
+             ;Eingabe: 0,030 bis 10,000 [1000/min]
+             ;         0,030 [1000/min] empfohlen
+MP 1140.0  : 0.03
+MP 1140.1  : 0.03
+MP 1140.2  : 0.03
+MP 1140.3  : 0.03
+MP 1140.4  : 0.03
+MP 1140.5  : 0.03
+MP 1140.6  : 0.03
+MP 1140.7  : 0.03
+MP 1140.8  : 0.03
+MP 1140.9  : 0.03
+MP 1140.10 : 0.03
+MP 1140.11 : 0.03
+MP 1140.12 : 0.03
+MP 1140.13 : 0.03
+MP 1140.14 : 0.03
+MP 1140.15 : 0.03
+MP 1140.16 : 0.03
+MP 1140.17 : 0.03
+MP 1140.18 : 0.03
+MP 1140.19 : 0.03
+MP 1140.20 : 0.03
+MP 1140.21 : 0.03
+             ;------------------------------------------------------------------
+             ;MP1144 Bewegungs-Überwachung für Lage und Drehzahl
+             ;(grober Positionierfehler x C)
+             ;Eingabe: 0 bis 99 999,9999 [mm]
+             ;         0 = keine Überwachung
+MP 1144.0  : 0.5
+MP 1144.1  : 0.5
+MP 1144.2  : 0.5
+MP 1144.3  : 0.5
+MP 1144.4  : 0.5
+MP 1144.5  : 0.5
+MP 1144.6  : 0.5
+MP 1144.7  : 0.5
+MP 1144.8  : 0.5
+MP 1144.9  : 0.5
+MP 1144.10 : 0.5
+MP 1144.11 : 0.5
+MP 1144.12 : 0.5
+MP 1144.13 : 0.5
+MP 1144.14 : 0.5
+MP 1144.15 : 0.5
+MP 1144.16 : 0.5
+MP 1144.17 : 0.5
+MP 1144.18 : 0.5
+MP 1144.19 : 0.5
+MP 1144.20 : 0.5
+MP 1144.21 : 0.5
+             ;------------------------------------------------------------------
+             ;MP1146 Positions-Überwachung für EnDat, max. zulässige Dif-
+             ;       ferenz zwischen gespeicherter Ausschalt-Position und
+             ;       über die EnDat-Schnittstelle eingelesene Position
+             ;Eingabe: 0 bis 300,0000 [mm]
+             ;         0 = keine Differenz zugelassen
+MP 1146.0  : 1
+MP 1146.1  : 1
+MP 1146.2  : 1
+MP 1146.3  : 1
+MP 1146.4  : 1
+MP 1146.5  : 1
+MP 1146.6  : 1
+MP 1146.7  : 1
+MP 1146.8  : 1
+MP 1146.9  : 1
+MP 1146.10 : 1
+MP 1146.11 : 1
+MP 1146.12 : 1
+MP 1146.13 : 1
+MP 1146.14 : 1
+MP 1146.15 : 1
+MP 1146.16 : 1
+MP 1146.17 : 1
+MP 1146.18 : 1
+MP 1146.19 : 1
+MP 1146.20 : 1
+MP 1146.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1147 Sperren der Positionsübernahme für Achsen mit
+             ;       EnDat-Messgerät
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Übernahme der Position möglich
+             ;         1 = Positionsübernahme gesperrt. Fehlermeldung
+             ;             und Not-Halt.
+             ;2109876543210987654ZYX
+MP 1147    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1150 Wartezeit
+             ;Eingabe: 0 bis 65,535 [s]
+             ;Abschalten der Restspannung bei Fehlermeldung Positionier-
+             ;fehler
+             ;empfohlener Wert: 0
+MP 1150.0  : 0
+             ;Zeit, wie lange nach Setzen des in MP4130.0 definierten
+             ;schnellen PLC-Eingangs die Überwachungsfunktionen abgeschaltet
+             ;bleiben sollen. Nach Ablauf dieser Zeit sind die Überwachungs-
+             ;funktionen wieder wirksam.
+             ;  empfohlener Eingabebereich: 0,2 s bis 0,5 s
+MP 1150.1  : 0.5
+             ;Zeit, wie lange die Überwachungsfunktionen nach Ablauf der
+             ;Zeit aus MP1150.1 mindestens wirksam sein sollen (z. B. wenn
+             ;der Eingang schnell wechselt).
+MP 1150.2  : 0
+             ;------------------------------------------------------------------
+             ;MP1160 (ab CC 424, CC 61xx) Weg bei LIFTOFF
+             ;Abstand des Werkzeugs zur Kontur, der über die
+             ;LIFTOFF-Funktion (bei einem Not-Aus durch einen DSP-Fehler)
+             ;eingenommen wird.
+             ;MP erscheint auch bei CC 422, hat jedoch keine Funktion.
+             ;Eingabe: 0 bis 30.0000 [mm]
+             ;Default: 0.1 [mm]
+MP 1160    : 0.1
+             ;------------------------------------------------------------------
+             ;MP1200 Lagesollwert-Filter
+             ;Eingabe: 0 = Einfachfilter
+             ;         1 = Doppelfilter
+             ;         2 = HSC-Filter
+             ;         3 = "Advanced HSC-Filter"
+MP 1200    : 0
+             ;------------------------------------------------------------------
+             ;MP1201 Lagesollwert-Filter in den Betriebsarten Manuell,
+             ;       Handrad, Referenzpunkte
+             ;Eingabe: 0 = Einfachfilter
+             ;         1 = Doppelfilter
+MP 1201    : 0
+             ;------------------------------------------------------------------
+             ;MP1202 Zyklus 32 3D-Fräsen - vordefinierte Toleranz
+             ;Eingabe: 0,0000 bis 3,0000 [mm]
+MP 1202.0  : 0.02       ;Ecken bei Bewegungen mit Bearbeitungsvorschub
+MP 1202.1  : 0.25       ;Ecken bei Bewegungen mit Eilgang
+             ;------------------------------------------------------------------
+             ;MP1205 Reduzierung des Bahnvorschubes am Beginn eines
+             ;       Kontur-Elementes
+             ;Eingabe: 0 = nicht aktiv (schnell, eventuell etwas ungenauer)
+             ;         1 = aktiv (langsam aber gegebenenfalls genauer)
+MP 1205    : 0
+             ;------------------------------------------------------------------
+             ;MP1210 Grenzfrequenz für Einfachfilter
+             ;Eingabe: 0,0 bis 166,0 [Hz]
+MP 1210    : 20
+             ;------------------------------------------------------------------
+             ;MP1211 Grenzfrequenz für Doppelfilter
+             ;Eingabe: 0,0 bis 166,0 [Hz]
+MP 1211    : 20
+             ;------------------------------------------------------------------
+             ;MP1212 Grenzfrequenz für HSC-Filter
+             ;Eingabe: 0,0 bis 166,0 [Hz]
+MP 1212    : 12
+             ;------------------------------------------------------------------
+             ;MP1213 Grenzfrequenz für "Advanced HSC-Filter"
+             ;Eingabe: 0,0 bis 166,0 [Hz]
+MP 1213    : 12
+             ;------------------------------------------------------------------
+             ;MP1218 Grenzfrequenz für Einfachfilter von Drehachsen (A,B,C)
+             ;Eingabe: 0,0 bis 166,0 [Hz]
+             ;         0 = Dreiecksfilter (Standard)
+MP 1218.0  : 0
+MP 1218.1  : 0
+MP 1218.2  : 0
+             ;------------------------------------------------------------------
+             ;MP1222 Toleranz bei Krümmungsänderungen bei HSC-Filter
+             ;Eingabe: 0 = Toleranz nicht berücksichtigen
+             ;         1 = Toleranz berücksichtigen
+MP 1222    : 0
+             ;------------------------------------------------------------------
+             ;MP1223 Toleranz bei Krümmungsänderungen bei
+             ;       "Advanced HSC-Filter"
+             ;Eingabe: 0 = Toleranz nicht berücksichtigen
+             ;         1 = Toleranz berücksichtigen
+MP 1223    : 0
+             ;------------------------------------------------------------------
+             ;MP1230 Ruck an Ecken für Einfachfilter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1230.0  : 10
+MP 1230.1  : 10
+MP 1230.2  : 10
+MP 1230.3  : 10
+MP 1230.4  : 10
+MP 1230.5  : 10
+MP 1230.6  : 10
+MP 1230.7  : 10
+MP 1230.8  : 10
+MP 1230.9  : 10
+MP 1230.10 : 10
+MP 1230.11 : 10
+MP 1230.12 : 10
+MP 1230.13 : 10
+MP 1230.14 : 10
+MP 1230.15 : 10
+MP 1230.16 : 10
+MP 1230.17 : 10
+MP 1230.18 : 10
+MP 1230.19 : 10
+MP 1230.20 : 10
+MP 1230.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1231 Ruck an Ecken für Doppelfilter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1231.0  : 10
+MP 1231.1  : 10
+MP 1231.2  : 10
+MP 1231.3  : 10
+MP 1231.4  : 10
+MP 1231.5  : 10
+MP 1231.6  : 10
+MP 1231.7  : 10
+MP 1231.8  : 10
+MP 1231.9  : 10
+MP 1231.10 : 10
+MP 1231.11 : 10
+MP 1231.12 : 10
+MP 1231.13 : 10
+MP 1231.14 : 10
+MP 1231.15 : 10
+MP 1231.16 : 10
+MP 1231.17 : 10
+MP 1231.18 : 10
+MP 1231.19 : 10
+MP 1231.20 : 10
+MP 1231.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1232 Ruck an Ecken für HSC-Filter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1232.0  : 10
+MP 1232.1  : 10
+MP 1232.2  : 10
+MP 1232.3  : 10
+MP 1232.4  : 10
+MP 1232.5  : 10
+MP 1232.6  : 10
+MP 1232.7  : 10
+MP 1232.8  : 10
+MP 1232.9  : 10
+MP 1232.10 : 10
+MP 1232.11 : 10
+MP 1232.12 : 10
+MP 1232.13 : 10
+MP 1232.14 : 10
+MP 1232.15 : 10
+MP 1232.16 : 10
+MP 1232.17 : 10
+MP 1232.18 : 10
+MP 1232.19 : 10
+MP 1232.20 : 10
+MP 1232.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1233 Ruck an Ecken für "Advanced HSC-Filter"
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1233.0  : 10
+MP 1233.1  : 10
+MP 1233.2  : 10
+MP 1233.3  : 10
+MP 1233.4  : 10
+MP 1233.5  : 10
+MP 1233.6  : 10
+MP 1233.7  : 10
+MP 1233.8  : 10
+MP 1233.9  : 10
+MP 1233.10 : 10
+MP 1233.11 : 10
+MP 1233.12 : 10
+MP 1233.13 : 10
+MP 1233.14 : 10
+MP 1233.15 : 10
+MP 1233.16 : 10
+MP 1233.17 : 10
+MP 1233.18 : 10
+MP 1233.19 : 10
+MP 1233.20 : 10
+MP 1233.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1240 Ruck bei Krümmungsänderungen für Einfachfilter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1240.0  : 10
+MP 1240.1  : 10
+MP 1240.2  : 10
+MP 1240.3  : 10
+MP 1240.4  : 10
+MP 1240.5  : 10
+MP 1240.6  : 10
+MP 1240.7  : 10
+MP 1240.8  : 10
+MP 1240.9  : 10
+MP 1240.10 : 10
+MP 1240.11 : 10
+MP 1240.12 : 10
+MP 1240.13 : 10
+MP 1240.14 : 10
+MP 1240.15 : 10
+MP 1240.16 : 10
+MP 1240.17 : 10
+MP 1240.18 : 10
+MP 1240.19 : 10
+MP 1240.20 : 10
+MP 1240.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1241 Ruck bei Krümmungsänderungen für Doppelfilter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1241.0  : 10
+MP 1241.1  : 10
+MP 1241.2  : 10
+MP 1241.3  : 10
+MP 1241.4  : 10
+MP 1241.5  : 10
+MP 1241.6  : 10
+MP 1241.7  : 10
+MP 1241.8  : 10
+MP 1241.9  : 10
+MP 1241.10 : 10
+MP 1241.11 : 10
+MP 1241.12 : 10
+MP 1241.13 : 10
+MP 1241.14 : 10
+MP 1241.15 : 10
+MP 1241.16 : 10
+MP 1241.17 : 10
+MP 1241.18 : 10
+MP 1241.19 : 10
+MP 1241.20 : 10
+MP 1241.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1242 Ruck bei Krümmungsänderungen für HSC-Filter
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1242.0  : 10
+MP 1242.1  : 10
+MP 1242.2  : 10
+MP 1242.3  : 10
+MP 1242.4  : 10
+MP 1242.5  : 10
+MP 1242.6  : 10
+MP 1242.7  : 10
+MP 1242.8  : 10
+MP 1242.9  : 10
+MP 1242.10 : 10
+MP 1242.11 : 10
+MP 1242.12 : 10
+MP 1242.13 : 10
+MP 1242.14 : 10
+MP 1242.15 : 10
+MP 1242.16 : 10
+MP 1242.17 : 10
+MP 1242.18 : 10
+MP 1242.19 : 10
+MP 1242.20 : 10
+MP 1242.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1243 Ruck bei Krümmungsänderungen für "Advanced HSC-Filter"
+             ;Eingabe: 0,1 bis 1000,0 [m/s^3]
+MP 1243.0  : 10
+MP 1243.1  : 10
+MP 1243.2  : 10
+MP 1243.3  : 10
+MP 1243.4  : 10
+MP 1243.5  : 10
+MP 1243.6  : 10
+MP 1243.7  : 10
+MP 1243.8  : 10
+MP 1243.9  : 10
+MP 1243.10 : 10
+MP 1243.11 : 10
+MP 1243.12 : 10
+MP 1243.13 : 10
+MP 1243.14 : 10
+MP 1243.15 : 10
+MP 1243.16 : 10
+MP 1243.17 : 10
+MP 1243.18 : 10
+MP 1243.19 : 10
+MP 1243.20 : 10
+MP 1243.21 : 10
+             ;------------------------------------------------------------------
+             ;MP1250 Faktor für Ruck an Ecken/Krümmungen bei Übergängen
+             ;zwischen Eilgangbewegungen
+             ;Eingabe: 0,0000 bis +30,0000
+MP 1250.0  : 1
+MP 1250.1  : 1
+MP 1250.2  : 1
+MP 1250.3  : 1
+MP 1250.4  : 1
+MP 1250.5  : 1
+MP 1250.6  : 1
+MP 1250.7  : 1
+MP 1250.8  : 1
+MP 1250.9  : 1
+MP 1250.10 : 1
+MP 1250.11 : 1
+MP 1250.12 : 1
+MP 1250.13 : 1
+MP 1250.14 : 1
+MP 1250.15 : 1
+MP 1250.16 : 1
+MP 1250.17 : 1
+MP 1250.18 : 1
+MP 1250.19 : 1
+MP 1250.20 : 1
+MP 1250.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1262 Minimale Filterordnung für "HSC-Filter"
+             ;Eingabe: 0 bis 31
+MP 1262    : 31
+             ;------------------------------------------------------------------
+             ;MP1263 Minimale Filterordnung für "Advanced HSC-Filter"
+             ;Eingabe: 0 bis 31
+MP 1263    : 31
+             ;------------------------------------------------------------------
+             ;MP1290 Maximal erlaubte Winkeltoleranz für
+             ;"DCM - Dynamic Collison Monitoring"
+             ;Eingabe: 0.0000 bis 3.0000 [°]
+             ;Default: 3 [°]
+MP 1290    : 3
+             ;------------------------------------------------------------------
+             ;MP1292 Aufmaß für Kollisionskörper bei aktivem
+             ;"DCM - Dynamic Collision Monitoring" (mit M128 bzw. TCPM)
+             ;Eingabe: 0 bis 1000 [mm]
+MP 1292    : 0
+             ;------------------------------------------------------------------
+             ;MP1294 In der Betriebsart Manueller Betrieb u. el. Handrad
+             ;nur die Bewegung einer einzelner Achse zulassen, um auch bei
+             ;aktivem DCM höhere Verfahrgeschwindigkeiten zu ermöglichen
+             ;Eingabe: 0 = nicht aktiv
+             ;         1 = aktiv
+MP 1294    : 0
+             ;------------------------------------------------------------------
+             ;MP1295 Fehlermeldung „Zwei kollisionsüberwachte Objekte haben
+             ;       einen bestimmten Mindestabstand unterschritten“ bei
+             ;       aktivem M140, wenn wiederholt zwei Kollisionsobjekte den
+             ;       Mindestabstand unterschritten haben. Dies ist unabhängig
+             ;       davon, ob DCM aktiv oder inaktiv ist.
+             ;Eingabe: 0 = keine Fehlermeldung
+             ;         1 = Fehlermeldung ausgegeben
+MP 1295    : 0
+             ;------------------------------------------------------------------
+             ;MP1310 Reihenfolge beim Anfahren der Prüfpositionen
+             ;Eingabe: 1 bis 18 [Nummer, an welcher Stelle die
+             ;         Achse geprüft werden soll]
+             ;         0 = nicht aktiv
+MP 1310.0  : +0
+MP 1310.1  : +0
+MP 1310.2  : +0
+MP 1310.3  : +0
+MP 1310.4  : +0
+MP 1310.5  : +0
+MP 1310.6  : +0
+MP 1310.7  : +0
+MP 1310.8  : +0
+MP 1310.9  : +0
+MP 1310.10 : +0
+MP 1310.11 : +0
+MP 1310.12 : +0
+MP 1310.13 : +0
+MP 1310.14 : +0
+MP 1310.15 : +0
+MP 1310.16 : +0
+MP 1310.17 : +0
+MP 1310.18 : +0
+MP 1310.19 : +0
+MP 1310.20 : +0
+MP 1310.21 : +0
+             ;------------------------------------------------------------------
+             ;MP1320 Verfahrrichtung beim Überfahren der Referenzmarken
+             ;Eingabe: %..987654321 bitcodiert
+             ; 0 = positiv
+             ; 1 = negativ
+             ;2109876543210987654ZYX
+MP 1320    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1330 Geschwindigkeit beim Überfahren der Referenzmarken
+             ;Eingabe: 80 bis 1 000 000 [mm/min]
+MP 1330.0  : 10000
+MP 1330.1  : 10000
+MP 1330.2  : 10000
+MP 1330.3  : 10000
+MP 1330.4  : 10000
+MP 1330.5  : 10000
+MP 1330.6  : 10000
+MP 1330.7  : 10000
+MP 1330.8  : 10000
+MP 1330.9  : 10000
+MP 1330.10 : 10000
+MP 1330.11 : 10000
+MP 1330.12 : 10000
+MP 1330.13 : 10000
+MP 1330.14 : 10000
+MP 1330.15 : 10000
+MP 1330.16 : 10000
+MP 1330.17 : 10000
+MP 1330.18 : 10000
+MP 1330.19 : 10000
+MP 1330.20 : 10000
+MP 1330.21 : 10000
+             ;------------------------------------------------------------------
+             ;MP1331 Geschwindigkeit beim Verlassen der Referenz-Endlage
+             ;(nur bei Drehgebern MP1350=2)
+             ;Eingabe: 80 bis 1 000 000 [mm/min]
+MP 1331.0  : 500
+MP 1331.1  : 500
+MP 1331.2  : 500
+MP 1331.3  : 500
+MP 1331.4  : 500
+MP 1331.5  : 500
+MP 1331.6  : 500
+MP 1331.7  : 500
+MP 1331.8  : 500
+MP 1331.9  : 500
+MP 1331.10 : 500
+MP 1331.11 : 500
+MP 1331.12 : 500
+MP 1331.13 : 500
+MP 1331.14 : 500
+MP 1331.15 : 500
+MP 1331.16 : 500
+MP 1331.17 : 500
+MP 1331.18 : 500
+MP 1331.19 : 500
+MP 1331.20 : 500
+MP 1331.21 : 500
+             ;------------------------------------------------------------------
+             ;MP1340 Reihenfolge zum Überfahren der Referenzpunkte
+             ;Eingabe: 0     = keine Auswertung der Referenzmarke
+             ;         1..22 = Achse 1..22
+MP 1340.0  : 3
+MP 1340.1  : 2
+MP 1340.2  : 1
+MP 1340.3  : 4
+MP 1340.4  : 5
+MP 1340.5  : 6
+MP 1340.6  : 7
+MP 1340.7  : 8
+MP 1340.8  : 9
+MP 1340.9  : 10
+MP 1340.10 : 11
+MP 1340.11 : 12
+MP 1340.12 : 13
+MP 1340.13 : 14
+MP 1340.14 : 15
+MP 1340.15 : 16
+MP 1340.16 : 17
+MP 1340.17 : 18
+MP 1340.18 : 19
+MP 1340.19 : 20
+MP 1340.20 : 21
+MP 1340.21 : 22
+             ;------------------------------------------------------------------
+             ;MP1350 Funktionsablauf beim Überfahren der Referenzmarke
+             ;Eingabe: 0 = Wegmesssystem abstandscodierte Referenzmarken
+             ;         1 = Wegmesssystem eine Referenzmarke
+             ;         2 = Sonderablauf (Längenmessung über ROD)
+             ;         3 = Wegmesssystem abstandscodierte Referenzmarken
+             ;             (Referenz-Aufnahme ausserhalb Referenznocken)
+             ;         4 = wie 3, jedoch werden 2 weitere Referenzmarken
+             ;             ausgewertet
+             ;         5 = Messgerät mit EnDat-Schnittstelle
+             ;         6 = Referenzaufnahme über schnellen PLC-Eingang
+             ;             aus MP1360.x
+             ;         7 = Drehzahl-Messgerät mit EnDat-Schnittstelle
+             ;             am Lage- und Drehzahl-Messgeräte-Eingang
+             ;         8 = Messgerät mit EnDat2.2-Schnittstelle
+             ;             und Inkrementalspur
+MP 1350.0  : 1
+MP 1350.1  : 1
+MP 1350.2  : 1
+MP 1350.3  : 1
+MP 1350.4  : 1
+MP 1350.5  : 1
+MP 1350.6  : 1
+MP 1350.7  : 1
+MP 1350.8  : 1
+MP 1350.9  : 1
+MP 1350.10 : 1
+MP 1350.11 : 1
+MP 1350.12 : 1
+MP 1350.13 : 1
+MP 1350.14 : 1
+MP 1350.15 : 1
+MP 1350.16 : 1
+MP 1350.17 : 1
+MP 1350.18 : 1
+MP 1350.19 : 1
+MP 1350.20 : 1
+MP 1350.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1352 Achsen für die eine Überwachung der
+             ;       Software-Endschalter vor Überfahren der Referenzmarken
+             ;       aktivierbar ist. (Zuletzt abgespeicherte Ist-Position,
+             ;       Aktivierung über Softkey)
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Überwachung kann nicht aktiviert werden
+             ;         1 = Überwachung kann aktiviert werden
+             ;2109876543210987654ZYX
+MP 1352    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1355 Referenzaufnahme
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Referenzaufnahme wie in MP1350.x definiert
+             ;         1 = Referenzaufnahme über EnDat-Schnittstelle
+             ;             des Drehzahlmessgeräts (Abstand zum Lagemess-
+             ;             gerät in MP1356.x), später erneute Referenz-
+             ;             aufnahme über Lagemessgerät
+             ;2109876543210987654ZYX
+MP 1355    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1356 Abstand zwischen Drehzahl- und Lagemessgerät, falls
+             ;       MP1355 = 1
+             ;Eingabe: -1,79769313486E+308 bis +1,79769313486E+308
+             ;         [mm] bzw. [°]
+MP 1356.0  : +0.00000
+MP 1356.1  : +0.00000
+MP 1356.2  : +0.00000
+MP 1356.3  : +0.00000
+MP 1356.4  : +0.00000
+MP 1356.5  : +0.00000
+MP 1356.6  : +0.00000
+MP 1356.7  : +0.00000
+MP 1356.8  : +0.00000
+MP 1356.9  : +0.00000
+MP 1356.10 : +0.00000
+MP 1356.11 : +0.00000
+MP 1356.12 : +0.00000
+MP 1356.13 : +0.00000
+MP 1356.14 : +0.00000
+MP 1356.15 : +0.00000
+MP 1356.16 : +0.00000
+MP 1356.17 : +0.00000
+MP 1356.18 : +0.00000
+MP 1356.19 : +0.00000
+MP 1356.20 : +0.00000
+MP 1356.21 : +0.00000
+             ;------------------------------------------------------------------
+             ;MP1357 W1032 bei doppelter Referenzaufnahme
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Rücksetzen, wenn die Referenzaufnahme über die
+             ;             EnDat-Schnittstelle des Drehzahlmessgeräts
+             ;             erfolgt ist
+             ;         1 = Rücksetzen, wenn mit dem Lage-Messgerät die
+             ;             Referenzmarke überfahren wurde
+             ;2109876543210987654ZYX
+MP 1357    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1358 Auswerten der Multiturn-Information
+             ;Input: 0 = Multiturn-Information wird nicht ausgewertet
+             ;       1 = Multiturn-Information auswerten
+MP 1358    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1360 Nummer des schnellen PLC-Eingangs für Referenzaufnahme
+             ;Eingabe: 0    = Keine Referenzaufnahme über schnellen
+             ;                Eingang
+             ;         1..5 = Nummer des schnellen PLC-Eingangs
+MP 1360.0  : 0
+MP 1360.1  : 0
+MP 1360.2  : 0
+MP 1360.3  : 0
+MP 1360.4  : 0
+MP 1360.5  : 0
+MP 1360.6  : 0
+MP 1360.7  : 0
+MP 1360.8  : 0
+MP 1360.9  : 0
+MP 1360.10 : 0
+MP 1360.11 : 0
+MP 1360.12 : 0
+MP 1360.13 : 0
+MP 1360.14 : 0
+MP 1360.15 : 0
+MP 1360.16 : 0
+MP 1360.17 : 0
+MP 1360.18 : 0
+MP 1360.19 : 0
+MP 1360.20 : 0
+MP 1360.21 : 0
+             ;------------------------------------------------------------------
+             ;MP1391.0 Geschwindigkeits-Vorsteuerung in den Betriebsarten
+             ;         Manuell und Handrad
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Betrieb mit Schleppabstand
+             ;         1 = Betrieb mit Geschwindigkeits-Vorsteuerung
+             ;2109876543210987654ZYX
+MP 1391.0  : %1111111111111111111111
+             ;------------------------------------------------------------------
+             ;MP1391.1 Beschleunigungs-Vorsteuerung in den Betriebsarten
+             ;         Manuell und Handrad
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Beschleunigungs-Vorsteuerung inaktiv
+             ;         1 = Beschleunigungs-Vorsteuerung aktiv
+             ;2109876543210987654ZYX
+MP 1391.1  : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP1392 Geschwindigkeits-Vorsteuerung in den Betriebsarten
+             ;       Positionieren mit Handeingabe, Programmlauf Einzelsatz
+             ;       und Programmlauf Satzfolge
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Betrieb mit Schleppabstand
+             ;         1 = Betrieb mit Geschwindigkeits-Vorsteuerung
+             ;2109876543210987654ZYX
+MP 1392    : %1111111111111111111111
+             ;------------------------------------------------------------------
+             ;MP1396 Regelung mit Geschwindigkeits-Teil-Vorsteuerung
+             ;Eingabe: 0,001 bis 0,999: Faktor für Geschwindigkeits-Teil-
+             ;                          Vorsteuerung
+             ;         1: Geschwindigkeits-Vorsteuerung
+MP 1396.0  : 1
+MP 1396.1  : 1
+MP 1396.2  : 1
+MP 1396.3  : 1
+MP 1396.4  : 1
+MP 1396.5  : 1
+MP 1396.6  : 1
+MP 1396.7  : 1
+MP 1396.8  : 1
+MP 1396.9  : 1
+MP 1396.10 : 1
+MP 1396.11 : 1
+MP 1396.12 : 1
+MP 1396.13 : 1
+MP 1396.14 : 1
+MP 1396.15 : 1
+MP 1396.16 : 1
+MP 1396.17 : 1
+MP 1396.18 : 1
+MP 1396.19 : 1
+MP 1396.20 : 1
+MP 1396.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1398 Bewegungsverhalten bei bestimmten Positionierungen
+             ;       Zu beachten: Durch die sanftere Bewegung ergibt sich eine 
+             ;       Bremsweg-Verlängerung z.B. nach Drücken von NC-Stop oder 
+             ;       bei Taster-Auslenkung. Diese entspricht einer 
+             ;       Verzögerungszeit von 20 ms, also bei z.B. 
+             ;       F3000 mm/min = 50mm/s ergibt sich ein längerer 
+             ;       Bremsweg von 1 mm.
+             ;Eingabe: %xx
+             ;Bit 0  Sanftere Bewegung bei Vorpositionierung vor
+             ;       Messbewegung (z.B Zyklus 417) 
+             ;       0 = nicht aktiv, Verhalten wie bisher
+             ;           (bis einschl. 60642x-04 SP11)
+             ;       1 = Sanftere Bewegung
+             ;Bit 1  Sanftere Bewegung bei Wiederanpositionierung nach  
+             ;       Satzvorlauf oder in Manual Operation 
+             ;       0 = nicht aktiv, Verhalten wie bisher 
+             ;           (bis einschl. 60642x-04 SP11)
+             ;       1 = Sanftere Bewegung
+             ;10
+MP 1398    : %00
+             ;==================================================================
+             ;MP 1400 .. 1699
+             ;Betrieb mit Geschwindigkeits-Vorsteuerung
+             ;==================================================================
+             ;MP1410 Positions-Überwachung im Betrieb mit Vorsteuerung
+             ;löschbar (Positionierfehler x)
+             ;Eingabe: 0,0010 bis 30,0000 [mm]
+MP 1410.0  : 0.5
+MP 1410.1  : 0.5
+MP 1410.2  : 0.5
+MP 1410.3  : 0.5
+MP 1410.4  : 0.5
+MP 1410.5  : 0.5
+MP 1410.6  : 0.5
+MP 1410.7  : 0.5
+MP 1410.8  : 0.5
+MP 1410.9  : 0.5
+MP 1410.10 : 0.5
+MP 1410.11 : 0.5
+MP 1410.12 : 0.5
+MP 1410.13 : 0.5
+MP 1410.14 : 0.5
+MP 1410.15 : 0.5
+MP 1410.16 : 0.5
+MP 1410.17 : 0.5
+MP 1410.18 : 0.5
+MP 1410.19 : 0.5
+MP 1410.20 : 0.5
+MP 1410.21 : 0.5
+             ;------------------------------------------------------------------
+             ;MP1420 Positions-Überwachung im Betrieb mit Vorsteuerung
+             ;Not Aus (grober Positionierfehler x A)
+             ;Eingabe: 0,0010 bis 30,0000 [mm]
+MP 1420.0  : 2
+MP 1420.1  : 2
+MP 1420.2  : 2
+MP 1420.3  : 2
+MP 1420.4  : 2
+MP 1420.5  : 2
+MP 1420.6  : 2
+MP 1420.7  : 2
+MP 1420.8  : 2
+MP 1420.9  : 2
+MP 1420.10 : 2
+MP 1420.11 : 2
+MP 1420.12 : 2
+MP 1420.13 : 2
+MP 1420.14 : 2
+MP 1420.15 : 2
+MP 1420.16 : 2
+MP 1420.17 : 2
+MP 1420.18 : 2
+MP 1420.19 : 2
+MP 1420.20 : 2
+MP 1420.21 : 2
+             ;------------------------------------------------------------------
+             ;MP1510 kv-Faktor für Geschwindigkeits-Vorsteuerung
+             ;Eingabe: 0,100 bis 1000,000 [m/(min*mm)]
+MP 1510.0  : 1
+MP 1510.1  : 1
+MP 1510.2  : 1
+MP 1510.3  : 1
+MP 1510.4  : 1
+MP 1510.5  : 1
+MP 1510.6  : 1
+MP 1510.7  : 1
+MP 1510.8  : 1
+MP 1510.9  : 1
+MP 1510.10 : 1
+MP 1510.11 : 1
+MP 1510.12 : 1
+MP 1510.13 : 1
+MP 1510.14 : 1
+MP 1510.15 : 1
+MP 1510.16 : 1
+MP 1510.17 : 1
+MP 1510.18 : 1
+MP 1510.19 : 1
+MP 1510.20 : 1
+MP 1510.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1511 Faktor zur Haftreibungs-Kompensation
+             ;Eingabe: 0 bis 16 777 215
+             ;Haftreibungskompensation im Vorgesteuerten Betrieb
+             ;D-Anteil für kleine Vorschübe Zeitbegrenzung
+MP 1511.0  : 0
+MP 1511.1  : 0
+MP 1511.2  : 0
+MP 1511.3  : 0
+MP 1511.4  : 0
+MP 1511.5  : 0
+MP 1511.6  : 0
+MP 1511.7  : 0
+MP 1511.8  : 0
+MP 1511.9  : 0
+MP 1511.10 : 0
+MP 1511.11 : 0
+MP 1511.12 : 0
+MP 1511.13 : 0
+MP 1511.14 : 0
+MP 1511.15 : 0
+MP 1511.16 : 0
+MP 1511.17 : 0
+MP 1511.18 : 0
+MP 1511.19 : 0
+MP 1511.20 : 0
+MP 1511.21 : 0
+             ;------------------------------------------------------------------
+             ;MP1512 Begrenzung des Betrags der Haftreibungs-Kompensation
+             ;(Begrenzung des D-Anteils Zählerschritte)
+             ;Eingabe: 0 bis 16 777 215 [Zählschritte]
+MP 1512.0  : 0
+MP 1512.1  : 0
+MP 1512.2  : 0
+MP 1512.3  : 0
+MP 1512.4  : 0
+MP 1512.5  : 0
+MP 1512.6  : 0
+MP 1512.7  : 0
+MP 1512.8  : 0
+MP 1512.9  : 0
+MP 1512.10 : 0
+MP 1512.11 : 0
+MP 1512.12 : 0
+MP 1512.13 : 0
+MP 1512.14 : 0
+MP 1512.15 : 0
+MP 1512.16 : 0
+MP 1512.17 : 0
+MP 1512.18 : 0
+MP 1512.19 : 0
+MP 1512.20 : 0
+MP 1512.21 : 0
+             ;------------------------------------------------------------------
+             ;MP1513 Vorschub-Begrenzung für Haftreibungs-Kompensation
+             ;Eingabe: 0 bis 300 000 [mm/min]
+MP 1513.0  : 0
+MP 1513.1  : 0
+MP 1513.2  : 0
+MP 1513.3  : 0
+MP 1513.4  : 0
+MP 1513.5  : 0
+MP 1513.6  : 0
+MP 1513.7  : 0
+MP 1513.8  : 0
+MP 1513.9  : 0
+MP 1513.10 : 0
+MP 1513.11 : 0
+MP 1513.12 : 0
+MP 1513.13 : 0
+MP 1513.14 : 0
+MP 1513.15 : 0
+MP 1513.16 : 0
+MP 1513.17 : 0
+MP 1513.18 : 0
+MP 1513.19 : 0
+MP 1513.20 : 0
+MP 1513.21 : 0
+             ;------------------------------------------------------------------
+             ;MP1515 kv-Faktor für Geschwindigkeits-Vorsteuerung (M105)
+             ;Eingabe: 0,100 bis 1000,000 [m/(min*mm)]
+             ;über M105, M106 an-/abwählbar
+MP 1515.0  : 3
+MP 1515.1  : 3
+MP 1515.2  : 3
+MP 1515.3  : 3
+MP 1515.4  : 3
+MP 1515.5  : 3
+MP 1515.6  : 3
+MP 1515.7  : 3
+MP 1515.8  : 3
+MP 1515.9  : 3
+MP 1515.10 : 3
+MP 1515.11 : 3
+MP 1515.12 : 3
+MP 1515.13 : 3
+MP 1515.14 : 3
+MP 1515.15 : 3
+MP 1515.16 : 3
+MP 1515.17 : 3
+MP 1515.18 : 3
+MP 1515.19 : 3
+MP 1515.20 : 3
+MP 1515.21 : 3
+             ;------------------------------------------------------------------
+             ;MP1516 kv-Faktor für Geschwindigkeits-Teil-Vorsteuerung
+             ;Eingabe: 0,100 bis 20,000 [(m/min)/mm]
+MP 1516.0  : 1
+MP 1516.1  : 1
+MP 1516.2  : 1
+MP 1516.3  : 1
+MP 1516.4  : 1
+MP 1516.5  : 1
+MP 1516.6  : 1
+MP 1516.7  : 1
+MP 1516.8  : 1
+MP 1516.9  : 1
+MP 1516.10 : 1
+MP 1516.11 : 1
+MP 1516.12 : 1
+MP 1516.13 : 1
+MP 1516.14 : 1
+MP 1516.15 : 1
+MP 1516.16 : 1
+MP 1516.17 : 1
+MP 1516.18 : 1
+MP 1516.19 : 1
+MP 1516.20 : 1
+MP 1516.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1521 Einschwingverhalten beim Beschleunigen und Bremsen
+             ;Eingabe: 0 bis 255 [ms]
+MP 1521    : 0
+             ;------------------------------------------------------------------
+             ;MP1522 Geschwindigkeitsglättung
+             ;empfohlen nur für Maschinen Eigenfrequenz (Fma) <=25Hz
+             ;Startwert Fma/2, jeweils erhöhen um 5ms solange Schleppfehler
+             ;kleiner wird
+             ;Eingabe: 0 bis 60 [ms]
+MP 1522    : 0
+             ;==================================================================
+             ;MP 1700 .. 1899
+             ;Betrieb mit Schleppabstand
+             ;==================================================================
+             ;MP1710 Positions-Überwachung für Betrieb mit Schleppabstand
+             ;löschbar (Positionierfehler x)
+             ;Eingabe: 0,0000 bis 300,0000 [mm]
+MP 1710.0  : 12
+MP 1710.1  : 12
+MP 1710.2  : 12
+MP 1710.3  : 12
+MP 1710.4  : 12
+MP 1710.5  : 12
+MP 1710.6  : 12
+MP 1710.7  : 12
+MP 1710.8  : 12
+MP 1710.9  : 12
+MP 1710.10 : 12
+MP 1710.11 : 12
+MP 1710.12 : 12
+MP 1710.13 : 12
+MP 1710.14 : 12
+MP 1710.15 : 12
+MP 1710.16 : 12
+MP 1710.17 : 12
+MP 1710.18 : 12
+MP 1710.19 : 12
+MP 1710.20 : 12
+MP 1710.21 : 12
+             ;------------------------------------------------------------------
+             ;MP1720 Positions-Überwachung für Betrieb mit Schleppabstand
+             ;Not Aus (grober Positionierfehler x A)
+             ;Eingabe: 0,0000 bis 300,0000 [mm]
+MP 1720.0  : 14
+MP 1720.1  : 14
+MP 1720.2  : 14
+MP 1720.3  : 14
+MP 1720.4  : 14
+MP 1720.5  : 14
+MP 1720.6  : 14
+MP 1720.7  : 14
+MP 1720.8  : 14
+MP 1720.9  : 14
+MP 1720.10 : 14
+MP 1720.11 : 14
+MP 1720.12 : 14
+MP 1720.13 : 14
+MP 1720.14 : 14
+MP 1720.15 : 14
+MP 1720.16 : 14
+MP 1720.17 : 14
+MP 1720.18 : 14
+MP 1720.19 : 14
+MP 1720.20 : 14
+MP 1720.21 : 14
+             ;------------------------------------------------------------------
+             ;MP1810 kv-Faktor für Betrieb mit Schleppabstand
+             ;Eingabe: 0,100 bis 20,000 [m/(min*mm)]
+MP 1810.0  : 1
+MP 1810.1  : 1
+MP 1810.2  : 1
+MP 1810.3  : 1
+MP 1810.4  : 1
+MP 1810.5  : 1
+MP 1810.6  : 1
+MP 1810.7  : 1
+MP 1810.8  : 1
+MP 1810.9  : 1
+MP 1810.10 : 1
+MP 1810.11 : 1
+MP 1810.12 : 1
+MP 1810.13 : 1
+MP 1810.14 : 1
+MP 1810.15 : 1
+MP 1810.16 : 1
+MP 1810.17 : 1
+MP 1810.18 : 1
+MP 1810.19 : 1
+MP 1810.20 : 1
+MP 1810.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1815 kv-Faktor für Betrieb mit Schleppabstand
+             ;wirksam nach M105
+             ;Eingabe: 0,100 bis 20,000 [m/(min*mm)]
+             ;über M105, M106 an-/abwählbar
+MP 1815.0  : 3
+MP 1815.1  : 3
+MP 1815.2  : 3
+MP 1815.3  : 3
+MP 1815.4  : 3
+MP 1815.5  : 3
+MP 1815.6  : 3
+MP 1815.7  : 3
+MP 1815.8  : 3
+MP 1815.9  : 3
+MP 1815.10 : 3
+MP 1815.11 : 3
+MP 1815.12 : 3
+MP 1815.13 : 3
+MP 1815.14 : 3
+MP 1815.15 : 3
+MP 1815.16 : 3
+MP 1815.17 : 3
+MP 1815.18 : 3
+MP 1815.19 : 3
+MP 1815.20 : 3
+MP 1815.21 : 3
+             ;------------------------------------------------------------------
+             ;MP1820 Multiplikationsfaktor für den kv-Faktor
+             ;Schleppen: Multiplikationsfakor für kv nach Kennlinienknick
+             ;Eingabe: 0,001 bis 1,000
+MP 1820.0  : 1
+MP 1820.1  : 1
+MP 1820.2  : 1
+MP 1820.3  : 1
+MP 1820.4  : 1
+MP 1820.5  : 1
+MP 1820.6  : 1
+MP 1820.7  : 1
+MP 1820.8  : 1
+MP 1820.9  : 1
+MP 1820.10 : 1
+MP 1820.11 : 1
+MP 1820.12 : 1
+MP 1820.13 : 1
+MP 1820.14 : 1
+MP 1820.15 : 1
+MP 1820.16 : 1
+MP 1820.17 : 1
+MP 1820.18 : 1
+MP 1820.19 : 1
+MP 1820.20 : 1
+MP 1820.21 : 1
+             ;------------------------------------------------------------------
+             ;MP1830 Kennlinien-Knickpunkt
+             ;Knickpunkt der Kennlinie (in % vom Eilgang)
+             ;Eingabe: 0,000 bis 100,000 [%]
+MP 1830.0  : 100
+MP 1830.1  : 100
+MP 1830.2  : 100
+MP 1830.3  : 100
+MP 1830.4  : 100
+MP 1830.5  : 100
+MP 1830.6  : 100
+MP 1830.7  : 100
+MP 1830.8  : 100
+MP 1830.9  : 100
+MP 1830.10 : 100
+MP 1830.11 : 100
+MP 1830.12 : 100
+MP 1830.13 : 100
+MP 1830.14 : 100
+MP 1830.15 : 100
+MP 1830.16 : 100
+MP 1830.17 : 100
+MP 1830.18 : 100
+MP 1830.19 : 100
+MP 1830.20 : 100
+MP 1830.21 : 100
+             ;==================================================================
+             ;MP 2000 .. 2999
+             ;Strom-Regelung mit PWM Schnittstelle
+             ;integrierte Drehzahl- und Stromregelung
+             ;
+             ;==================================================================
+             ;MP2000 Achsspezifisches Umschalten von Single-Speed auf
+             ;       Double Speed-Achse (nur CC 6xxx, SW-Option)
+             ;Eingabe: 0 = Single-Speed-Achse
+             ;         1 = Double-Speed-Achse
+MP 2000.0  : 0
+MP 2000.1  : 0
+MP 2000.2  : 0
+MP 2000.3  : 0
+MP 2000.4  : 0
+MP 2000.5  : 0
+MP 2000.6  : 0
+MP 2000.7  : 0
+MP 2000.8  : 0
+MP 2000.9  : 0
+MP 2000.10 : 0
+MP 2000.11 : 0
+MP 2000.12 : 0
+MP 2000.13 : 0
+MP 2000.14 : 0
+MP 2000.15 : 0
+MP 2000.16 : 0
+MP 2000.17 : 0
+MP 2000.18 : 0
+MP 2000.19 : 0
+MP 2000.20 : 0
+MP 2000.21 : 0
+MP 2000.22 : 0
+MP 2000.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2040 Achsgruppen zum Abschalten der Antriebsfreigabe über
+             ;X150 (PWM Ausgänge X51..X56) / X151 (PWM Ausgänge X57..X64)
+             ;W524 Bit0=1 - Abschalten über X150/X151 aktiv (nicht CC 61xx)
+             ;Eingabe: %32...1 bitcodiert (Spindel auf Bit #31)
+             ;              21098765432109876543210987654321
+             ;MP 2040.0  : %10000000000000000000000000011111;Achsgruppe 1
+             ;MP 2040.1  : %00000000000000000000000000100000;Achsgruppe 2
+             ;21098765432109876543210987654321
+MP 2040.0  : %00000000000000000000000000000000;Achsgruppe 1
+MP 2040.1  : %00000000000000000000000000000000;Achsgruppe 2
+MP 2040.2  : %00000000000000000000000000000000;Achsgruppe 3
+MP 2040.3  : %00000000000000000000000000000000;Achsgruppe 4
+MP 2040.4  : %00000000000000000000000000000000;Achsgruppe 5
+MP 2040.5  : %00000000000000000000000000000000;Achsgruppe 6
+MP 2040.6  : %00000000000000000000000000000000;Achsgruppe 7
+MP 2040.7  : %00000000000000000000000000000000;Achsgruppe 8
+             ;------------------------------------------------------------------
+             ;MP2050 Funktion von "Antriebsfreigabe" I32 (X42/33)
+             ;       (nicht CC 61xx)
+             ;Eingabe: 0 = Not-Aus an allen Achsen, Modul 9169 nicht wirksam
+             ;         1 = Not-Aus an allen Achsen, die nicht über Modul
+             ;             9169 davon ausgenommen sind
+             ;         2 = I32 und Modul 9169 sind ohne Funktion
+MP 2050    : 0
+             ;------------------------------------------------------------------
+             ;MP2100 Typ der Achs-Leistungsteile
+             ;Eingabe:   Name aus Datei <Inverter.inv>
+MP 2100.0  : HEIDENHAIN-UM121; X
+MP 2100.1  : HEIDENHAIN-UM121; Y
+MP 2100.2  : HEIDENHAIN-UM121; Z
+MP 2100.3  : HEIDENHAIN-UM121; a
+MP 2100.4  : HEIDENHAIN-UM121; A
+MP 2100.5  : HEIDENHAIN-UM113; B
+MP 2100.6  : HEIDENHAIN-UM113; C
+MP 2100.7  : HEIDENHAIN-UM121
+MP 2100.8  : 
+MP 2100.9  : 
+MP 2100.10 : 
+MP 2100.11 : 
+MP 2100.12 : 
+MP 2100.13 : 
+MP 2100.14 : 
+MP 2100.15 : 
+MP 2100.16 : 
+MP 2100.17 : 
+MP 2100.18 : 
+MP 2100.19 : HEIDENHAIN-UM113; Spindel 1 - C-Achs Betrieb
+MP 2100.20 : HEIDENHAIN-UM113; Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2100.21 : HEIDENHAIN-UM113; Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2100.22 : HEIDENHAIN-UM113; Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2100.23 : HEIDENHAIN-UM113; Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2150 Powerfail in der Steuerung über das AC-Fail oder
+             ;       das DC-Fail (Powerfail)-Signal (nicht CC 61xx)
+             ;Eingabe: 0 = nur AC-Fail-Signal
+             ;         1 = DC-Fail- und AC-Fail-Signal
+             ;         2 = reserviert
+             ;         3 = nur DC-Fail-Signal
+MP 2150    : 3
+             ;------------------------------------------------------------------
+             ;MP2160 Feldschwächung bei Synchron-Motoren
+             ;Eingabe: 0 = kein Feldschwächbetrieb erlaubt
+             ;         1 = Feldschwächbetrieb (mit Spannungsschutzmodul SM)
+             ;         2 = Eingeschränkte Feldschwächung ohne
+             ;             Spannungsschutzmodul für EcoDyn-Motoren
+             ;         9 = Feldschwächbetrieb (mit Spannungsschutzmodul SM)
+             ;             Alternative zu 1
+             ;         10= Eingeschränkte Feldschwächung ohne
+             ;             Spannungsschutzmodul für EcoDyn-Motoren
+             ;             Alternative zu 2
+MP 2160.0  : 0
+MP 2160.1  : 0
+MP 2160.2  : 0
+MP 2160.3  : 0
+MP 2160.4  : 0
+MP 2160.5  : 0
+MP 2160.6  : 0
+MP 2160.7  : 0
+MP 2160.8  : 0
+MP 2160.9  : 0
+MP 2160.10 : 0
+MP 2160.11 : 0
+MP 2160.12 : 0
+MP 2160.13 : 0
+MP 2160.14 : 0
+MP 2160.15 : 0
+MP 2160.16 : 0
+MP 2160.17 : 0
+MP 2160.18 : 0
+MP 2160.19 : 0
+MP 2160.20 : 0
+MP 2160.21 : 0
+MP 2160.22 : 0
+MP 2160.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2170 Wartezeit zwischen Einschalten des Antriebs und
+             ;       Bereitschafts-Signal des Antriebs
+             ;Eingabe: 0 bis 4,999 [s]
+             ;         0 = 2 s
+MP 2170    : 0
+             ;------------------------------------------------------------------
+             ;MP2172 Verzögerung für das Wegnehmen der Umrichter-Freigabe
+             ;bei, von der Steuerung ausgelösten, schweren Fehlern (interner
+             ;Notaus)
+             ;Eingabe: 0 bis 60 [s]
+             ;         0 = 3 s (Default-Wert)
+MP 2172    : 0
+             ;------------------------------------------------------------------
+             ;MP2173 Impulsabschaltung der Leistungsteile
+             ;       Überwachungszeit für den Bremsvorgang. Sind die Achsen
+             ;       nach Ablauf der Zeit noch in Bewegung, werden die
+             ;       Impulse der Leistungsteile abgeschaltet.
+             ;       Zeit muss größer als maximale elektrische Bremszeit
+             ;       der Achse/Spindel sein.
+             ;       - Achtung, Hinweise im THB beachten -
+             ;Eingabe: 0,200 bis 100,000 [s]
+             ;         0 = 3 s (Default-Wert)
+MP 2173.0  : 0
+MP 2173.1  : 0
+MP 2173.2  : 0
+MP 2173.3  : 0
+MP 2173.4  : 0
+MP 2173.5  : 0
+MP 2173.6  : 0
+MP 2173.7  : 0
+MP 2173.8  : 0
+MP 2173.9  : 0
+MP 2173.10 : 0
+MP 2173.11 : 0
+MP 2173.12 : 0
+MP 2173.13 : 0
+MP 2173.14 : 0
+MP 2173.15 : 0
+MP 2173.16 : 0
+MP 2173.17 : 0
+MP 2173.18 : 0
+MP 2173.19 : 0
+MP 2173.20 : 0
+MP 2173.21 : 0
+MP 2173.22 : 0
+MP 2173.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2180 PWM-Frequenz
+             ;       CC 422:
+             ;         Gleiche PWM-Frequenz für Achsgruppen
+             ;       ab CC 424, CC 61xx:
+             ;         Auf Reglerplatine nur einfache oder doppelte
+             ;         PWM-Grundfrequenz (z. B. 5000 Hz oder 10000 Hz)
+             ;Eingabe: 0 = 5000 Hz
+             ;         3200 bis 3999 = 3333 Hz
+             ;         4000 bis 4999 = 4166 Hz (ab CC 424: 4000 Hz)
+             ;         5000 bis 6000 = 5000 Hz
+             ;         6001 bis 7999 = 6666 Hz
+             ;         8000 bis 9999 = 8333 Hz (ab CC 424: 8000 Hz)
+             ;         10000 = 10000 Hz
+MP 2180.0  : 0
+MP 2180.1  : 0
+MP 2180.2  : 0
+MP 2180.3  : 0
+MP 2180.4  : 0
+MP 2180.5  : 0
+MP 2180.6  : 0
+MP 2180.7  : 0
+MP 2180.8  : 0
+MP 2180.9  : 0
+MP 2180.10 : 0
+MP 2180.11 : 0
+MP 2180.12 : 0
+MP 2180.13 : 0
+MP 2180.14 : 0
+MP 2180.15 : 0
+MP 2180.16 : 0
+MP 2180.17 : 0
+MP 2180.18 : 0
+MP 2180.19 : 0
+MP 2180.20 : 0
+MP 2180.21 : 0
+MP 2180.22 : 0
+MP 2180.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2182 PWM-Frequenz-Modus
+             ;       z. B. bei Temperaturproblemen bei Spindeln,
+             ;             Optimale Ausnutzung des Leistungsteilstroms bei
+             ;             geringen Spindeldrehzahlen
+             ;Eingabe: 0 = Standardfall:
+             ;             MP2180 = [3333 .. 5000] mit Single-Speed-Achsen
+             ;             MP2180 = [3333 .. 10000] mit Double-Speed-Achsen
+             ;               (Stromregler-Zykluszeit = 1 / (2 * MP2180))
+             ;         1 = Sonderfall 1, nur CC424:
+             ;             MP2180 = [6666 .. 10000] für
+             ;             hohe PWM-Frequenzen mit Single-Speed-Achsen
+             ;               (Stromregler-Zykluszeit = 1 / MP2180
+             ;         2 = Sonderfall 2, nur CC424, CC61xx:
+             ;             MP2180 = [3333 .. 5000] mit
+             ;             drehzahlabhängiger Verdoppelung (MP2186,MP2188) der
+             ;             PWM-Grundfrequenz aus MP2180 mit Double-Speed-Achsen
+             ;               (Stromregler-Zykluszeit = 1 / (4*MP2180))
+MP 2182.0  : 0
+MP 2182.1  : 0
+MP 2182.2  : 0
+MP 2182.3  : 0
+MP 2182.4  : 0
+MP 2182.5  : 0
+MP 2182.6  : 0
+MP 2182.7  : 0
+MP 2182.8  : 0
+MP 2182.9  : 0
+MP 2182.10 : 0
+MP 2182.11 : 0
+MP 2182.12 : 0
+MP 2182.13 : 0
+MP 2182.14 : 0
+MP 2182.15 : 0
+MP 2182.16 : 0
+MP 2182.17 : 0
+MP 2182.18 : 0
+MP 2182.19 : 0
+MP 2182.20 : 0
+MP 2182.21 : 0
+MP 2182.22 : 0
+MP 2182.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2184 reserviert (nicht CC 61xx)
+             ;Eingabe: 0
+MP 2184.0  : 0
+MP 2184.1  : 0
+MP 2184.2  : 0
+MP 2184.3  : 0
+MP 2184.4  : 0
+MP 2184.5  : 0
+MP 2184.6  : 0
+MP 2184.7  : 0
+MP 2184.8  : 0
+MP 2184.9  : 0
+MP 2184.10 : 0
+MP 2184.11 : 0
+MP 2184.12 : 0
+MP 2184.13 : 0
+MP 2184.14 : 0
+MP 2184.15 : 0
+MP 2184.16 : 0
+MP 2184.17 : 0
+MP 2184.18 : 0
+MP 2184.19 : 0
+MP 2184.20 : 0
+MP 2184.21 : 0
+MP 2184.22 : 0
+MP 2184.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2186 Bestimmt die Drehzahl, bei der von einfacher
+             ;       PWM-Frequenz auf die doppelte PWM-Frequenz umgeschaltet
+             ;       wird. Nur in Verbindung mit HEIDENHAIN-Leistungsteilen
+             ;       einsetzen. (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 100000 [U/min]
+MP 2186.0  : 0
+MP 2186.1  : 0
+MP 2186.2  : 0
+MP 2186.3  : 0
+MP 2186.4  : 0
+MP 2186.5  : 0
+MP 2186.6  : 0
+MP 2186.7  : 0
+MP 2186.8  : 0
+MP 2186.9  : 0
+MP 2186.10 : 0
+MP 2186.11 : 0
+MP 2186.12 : 0
+MP 2186.13 : 0
+MP 2186.14 : 0
+MP 2186.15 : 0
+MP 2186.16 : 0
+MP 2186.17 : 0
+MP 2186.18 : 0
+MP 2186.19 : 0
+MP 2186.20 : 0
+MP 2186.21 : 0
+MP 2186.22 : 0
+MP 2186.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2188 Bestimmt die Drehzahl, bei der von doppelter
+             ;       PWM-Frequenz auf die einfache PWM-Frequenz umgeschaltet
+             ;       wird. Es muss gelten: MP2188.x < MP2186.x
+             ;       Nur in Verbindung mit HEIDENHAIN-Leistungsteilen
+             ;       einsetzen. (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 100000 [U/min]
+MP 2188.0  : 0
+MP 2188.1  : 0
+MP 2188.2  : 0
+MP 2188.3  : 0
+MP 2188.4  : 0
+MP 2188.5  : 0
+MP 2188.6  : 0
+MP 2188.7  : 0
+MP 2188.8  : 0
+MP 2188.9  : 0
+MP 2188.10 : 0
+MP 2188.11 : 0
+MP 2188.12 : 0
+MP 2188.13 : 0
+MP 2188.14 : 0
+MP 2188.15 : 0
+MP 2188.16 : 0
+MP 2188.17 : 0
+MP 2188.18 : 0
+MP 2188.19 : 0
+MP 2188.20 : 0
+MP 2188.21 : 0
+MP 2188.22 : 0
+MP 2188.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2190 Zwischenkreisspannung des Versorgungsmoduls
+             ;       HEIDENHAIN-Umrichter rückspeisend: 650 V
+             ;       HEIDENHAIN-Umrichter nicht-rückspeisend: 565 V
+             ;Eingabe: 0 bis 3000 [V]
+             ;         * = Eintrag aus Versorgungsmodul-Tabelle
+MP 2190.0  : *
+MP 2190.1  : 
+MP 2190.2  : 
+MP 2190.3  : 
+MP 2190.4  : 
+             ;------------------------------------------------------------------
+             ;MP2192 Ansprechschwelle für LIFTOFF. Spannung in [%]
+             ;       von der Zwischenkreisspannung Uz. Wird Ansprechschwelle
+             ;       unterschritten wird NC-Stopp und LIFTOFF ausgeführt.
+             ;       Nur in Verbindung mit rückspeisenden HEIDENHAIN-
+             ;       Umrichtern verwenden. (nur bei CC 424)
+             ;Eingabe: 0 bis 100 [%]
+MP 2192    : 0
+             ;------------------------------------------------------------------
+             ;MP2194 Zwischenkreisspannung Uz, ab der bei Netzausfall die
+             ;       Spindel abgebremst wird.
+             ;       Nur in Verbindung mit rückspeisenden HEIDENHAIN-
+             ;       Umrichtern verwenden. (nur bei CC 424)
+             ;Eingabe: 0 bis 3000 [V]
+MP 2194    : 0
+             ;------------------------------------------------------------------
+             ;MP2195 Fehlermeldungen der HEIDENHAIN-Versorgungseinheiten
+             ;       unterdrücken
+             ;Eingabe: %xxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   "-ERR.UZ.GR"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 2   "-ERR.TEMP"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 3   reserviert
+             ;Bit 4   "-ERR.IZ.GR"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 5   "RDY.PS"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 6   "-ERR.ILEAK"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 7   ab CC 424: "-PF.PS.AC"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;            bzw. LIFTOFF-Funktion aktiv
+             ;        1 = Fehlermeldung unterdrücken
+             ;            bzw. LIFTOFF-Funktion nicht aktiv
+             ;Bit 8   ab CC 61xx: "-PF.PS.DC"-Signal
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 9   ab CC 61xx: Überwachung der Zwischenkreisspannung Uz
+             ;        0 = Uz-Überwachung bzw. LIFTOFF-Funktion aktiv
+             ;        1 = Uz-Überwachung bzw. LIFTOFF-Funktion nicht aktiv
+             ;Bit 10  ab CC 61xx: Leistungs-Überwachung des UV(R)
+             ;        0 = Leistungs-Überwachung aktiv
+             ;        1 = Leistungs-Überwachung nicht aktiv
+             ;09876543210
+MP 2195    : %00000000000
+             ;------------------------------------------------------------------
+             ;MP2196 Bezeichner für Versorgungsmodul in MP2198.x
+             ;Eingabe:   P, Q, R oder T
+MP 2196    : 
+             ;------------------------------------------------------------------
+             ;MP2198 Typ des Versorgungsmoduls
+             ;Eingabe:   Name aus Datei <Supply.spy>
+MP 2198.0  : 
+MP 2198.1  : 
+MP 2198.2  : 
+MP 2198.3  : 
+MP 2198.4  : 
+             ;------------------------------------------------------------------
+             ;MP2199 Zuordnung der Achse zu Versorgungsmodul (MP2198.x)
+             ;Eingabe:   0 (= MP2198.0) oder 1 (= MP2198.1)
+MP 2199.0  : 0
+MP 2199.1  : 0
+MP 2199.2  : 0
+MP 2199.3  : 0
+MP 2199.4  : 0
+MP 2199.5  : 0
+MP 2199.6  : 0
+MP 2199.7  : 0
+MP 2199.8  : 0
+MP 2199.9  : 0
+MP 2199.10 : 0
+MP 2199.11 : 0
+MP 2199.12 : 0
+MP 2199.13 : 0
+MP 2199.14 : 0
+MP 2199.15 : 0
+MP 2199.16 : 0
+MP 2199.17 : 0
+MP 2199.18 : 0
+MP 2199.19 : 0
+MP 2199.20 : 0
+MP 2199.21 : 0
+MP 2199.22 : 0
+MP 2199.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2200 Typ Achsmotoren
+             ;Eingabe:   Name aus Datei <Motor.mot >
+MP 2200.0  : QSY096A
+MP 2200.1  : QSY096A
+MP 2200.2  : QSY096A
+MP 2200.3  : QSY096A
+MP 2200.4  : QSY096A
+MP 2200.5  : QAN-3M-(Y/D-SPG)
+MP 2200.6  : QAN-3M-(Y/D-SPG)
+MP 2200.7  : QSY096A
+MP 2200.8  : 
+MP 2200.9  : 
+MP 2200.10 : 
+MP 2200.11 : 
+MP 2200.12 : 
+MP 2200.13 : 
+MP 2200.14 : 
+MP 2200.15 : 
+MP 2200.16 : 
+MP 2200.17 : 
+MP 2200.18 : 
+MP 2200.19 : QAN-3M-(Y/D-SPG);Spindel 1 - C-Achs Betrieb
+MP 2200.20 : QAN-3M-(Y/D-SPG);Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2200.21 : QAN-3M-(Y/D-SPG);Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2200.22 : QAN-3M-(Y/D-SPG);Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2200.23 : QAN-3M-(Y/D-SPG);Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2202 "Strichzahl" aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         0 = Kein Drehzahl-Messgerät (U-f-Steller-Betrieb)
+MP 2202.0  : *
+MP 2202.1  : *
+MP 2202.2  : *
+MP 2202.3  : *
+MP 2202.4  : *
+MP 2202.5  : *
+MP 2202.6  : *
+MP 2202.7  : *
+MP 2202.8  : *
+MP 2202.9  : *
+MP 2202.10 : *
+MP 2202.11 : *
+MP 2202.12 : *
+MP 2202.13 : *
+MP 2202.14 : *
+MP 2202.15 : *
+MP 2202.16 : *
+MP 2202.17 : *
+MP 2202.18 : *
+MP 2202.19 : *
+MP 2202.20 : *
+MP 2202.21 : *
+MP 2202.22 : *
+MP 2202.23 : *
+             ;------------------------------------------------------------------
+             ;MP2204 "Zählrichtung" aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         + = positiv
+             ;         - = negativ
+MP 2204.0  : *
+MP 2204.1  : *
+MP 2204.2  : *
+MP 2204.3  : *
+MP 2204.4  : *
+MP 2204.5  : *
+MP 2204.6  : *
+MP 2204.7  : *
+MP 2204.8  : *
+MP 2204.9  : *
+MP 2204.10 : *
+MP 2204.11 : *
+MP 2204.12 : *
+MP 2204.13 : *
+MP 2204.14 : *
+MP 2204.15 : *
+MP 2204.16 : *
+MP 2204.17 : *
+MP 2204.18 : *
+MP 2204.19 : *
+MP 2204.20 : *
+MP 2204.21 : *
+MP 2204.22 : *
+MP 2204.23 : *
+             ;------------------------------------------------------------------
+             ;MP2206 "Art des Messsystems " aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         0 = Kein Drehzahl-Messgerät (U-f-Steller-Betrieb)
+             ;         1 = Inkrementaler Drehgeber mit Z1-Spur
+             ;         2 = (Ausgerichteter) Absoluter Drehgeber
+             ;         3 = Absolutes Längenmessgerät
+             ;         4 = reserviert
+             ;         5 = (Nicht ausgerichteter) Absoluter Drehgeber
+             ;         6 = Inkrementaler Drehgeber ohne Z1-Spur
+             ;         7 = (Nicht ausgerichteter) Inkrementaler Drehgeber
+             ;             mit abstandscodierten Referenzmarken
+             ;         8 = (Nicht ausgerichtetes) Längenmessgerät mit
+             ;             abstandscodierten Referenzmarken
+             ;         9 = (Ausgerichteter) Drehgeber mit
+             ;             EnDat 2.2 Schnittstelle
+             ;         10= (Nicht ausgerichteter) Drehgeber mit
+             ;             EnDat 2.2 Schnittstelle
+             ;         11= Längenmessgerät mit EnDat 2.2 Schnittstelle
+             ;         12= EnDat2.2-Inkremental, Lage-Messgerät
+             ;         13 bis 18: reserviert
+             ;         19= EnDat2.2-Inkremental, Drehzahl-Messgerät
+MP 2206.0  : *
+MP 2206.1  : *
+MP 2206.2  : *
+MP 2206.3  : *
+MP 2206.4  : *
+MP 2206.5  : *
+MP 2206.6  : *
+MP 2206.7  : *
+MP 2206.8  : *
+MP 2206.9  : *
+MP 2206.10 : *
+MP 2206.11 : *
+MP 2206.12 : *
+MP 2206.13 : *
+MP 2206.14 : *
+MP 2206.15 : *
+MP 2206.16 : *
+MP 2206.17 : *
+MP 2206.18 : *
+MP 2206.19 : *
+MP 2206.20 : *
+MP 2206.21 : *
+MP 2206.22 : *
+MP 2206.23 : *
+             ;------------------------------------------------------------------
+             ;MP2207 "Typ des Temperatursensors" aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         0 = KTY84-130
+             ;         1 = PT1000
+MP 2207.0  : *
+MP 2207.1  : *
+MP 2207.2  : *
+MP 2207.3  : *
+MP 2207.4  : *
+MP 2207.5  : *
+MP 2207.6  : *
+MP 2207.7  : *
+MP 2207.8  : *
+MP 2207.9  : *
+MP 2207.10 : *
+MP 2207.11 : *
+MP 2207.12 : *
+MP 2207.13 : *
+MP 2207.14 : *
+MP 2207.15 : *
+MP 2207.16 : *
+MP 2207.17 : *
+MP 2207.18 : *
+MP 2207.19 : *
+MP 2207.20 : *
+MP 2207.21 : *
+MP 2207.22 : *
+MP 2207.23 : *
+             ;------------------------------------------------------------------
+             ;MP2208 "Induktivität der Vorschaltdrossel L in [uH]"
+             ;       aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         Wert der Vorschaltdrossel in [uH]
+MP 2208.0  : *
+MP 2208.1  : *
+MP 2208.2  : *
+MP 2208.3  : *
+MP 2208.4  : *
+MP 2208.5  : *
+MP 2208.6  : *
+MP 2208.7  : *
+MP 2208.8  : *
+MP 2208.9  : *
+MP 2208.10 : *
+MP 2208.11 : *
+MP 2208.12 : *
+MP 2208.13 : *
+MP 2208.14 : *
+MP 2208.15 : *
+MP 2208.16 : *
+MP 2208.17 : *
+MP 2208.18 : *
+MP 2208.19 : *
+MP 2208.20 : *
+MP 2208.21 : *
+MP 2208.22 : *
+MP 2208.23 : *
+             ;------------------------------------------------------------------
+             ;MP2209 "Massenträgheitsmoment J eines Motors in [kg*m^2]"
+             ;       aus Motor-Tabelle überschreiben
+             ;Eingabe: * = Eintrag aus Motor-Tabelle aktiv
+             ;         Wert des Massenträgheitsmoments in [kg*m^2]
+MP 2209.0  : *
+MP 2209.1  : *
+MP 2209.2  : *
+MP 2209.3  : *
+MP 2209.4  : *
+MP 2209.5  : *
+MP 2209.6  : *
+MP 2209.7  : *
+MP 2209.8  : *
+MP 2209.9  : *
+MP 2209.10 : *
+MP 2209.11 : *
+MP 2209.12 : *
+MP 2209.13 : *
+MP 2209.14 : *
+MP 2209.15 : *
+MP 2209.16 : *
+MP 2209.17 : *
+MP 2209.18 : *
+MP 2209.19 : *
+MP 2209.20 : *
+MP 2209.21 : *
+MP 2209.22 : *
+MP 2209.23 : *
+             ;------------------------------------------------------------------
+             ;MP2210 Faktor für Reduzierung Magnetisierungsstrom
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 99 [%]
+             ;         0 = Funktion inaktiv
+             ;
+MP 2210.0  : 0
+MP 2210.1  : 0
+MP 2210.2  : 0
+MP 2210.3  : 0
+MP 2210.4  : 0
+MP 2210.5  : 0
+MP 2210.6  : 0
+MP 2210.7  : 0
+MP 2210.8  : 0
+MP 2210.9  : 0
+MP 2210.10 : 0
+MP 2210.11 : 0
+MP 2210.12 : 0
+MP 2210.13 : 0
+MP 2210.14 : 0
+MP 2210.15 : 0
+MP 2210.16 : 0
+MP 2210.17 : 0
+MP 2210.18 : 0
+MP 2210.19 : 0
+MP 2210.20 : 0
+MP 2210.21 : 0
+MP 2210.22 : 0
+MP 2210.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2211 Reserviert (nur ab CC 424, CC 61xx)
+MP 2211.0  : 0
+MP 2211.1  : 0
+MP 2211.2  : 0
+MP 2211.3  : 0
+MP 2211.4  : 0
+MP 2211.5  : 0
+MP 2211.6  : 0
+MP 2211.7  : 0
+MP 2211.8  : 0
+MP 2211.9  : 0
+MP 2211.10 : 0
+MP 2211.11 : 0
+MP 2211.12 : 0
+MP 2211.13 : 0
+MP 2211.14 : 0
+MP 2211.15 : 0
+MP 2211.16 : 0
+MP 2211.17 : 0
+MP 2211.18 : 0
+MP 2211.19 : 0
+MP 2211.20 : 0
+MP 2211.21 : 0
+MP 2211.22 : 0
+MP 2211.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2220 Überwachungsfunktionen
+             ;Eingabe: %xxxxxxxxxxxxxxxx
+             ;Bit 0   Referenzmarkenüberwachung
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 1   Drehrichtungsüberwachung
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 2   Leistungsbegrenzung der Spindel bei -ERR.IZ.GR
+             ;        (nur bei HEIDENHAIN-Umrichtern, außer UE 2xx)
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 3   Unterdrückung von Schwingungen beim Abschalten des
+             ;        Antriebs
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 4   nur ab CC 424, CC 61xx:
+             ;        Überwachung Temperatur zu hoch
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 5   nur ab CC 424, CC 61xx:
+             ;        Überwachung Temperatur zu niedrig
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 6   reserviert
+             ;Bit 7   nur ab CC 424, CC 61xx:
+             ;        Überwachung Eingangsfrequenz Messgerät
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 8   nur ab CC 424, CC 61xx:
+             ;        Mechanischen Versatz durch allmähliche
+             ;        Erhöhung des kV-Faktors ausregeln
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 9   reserviert
+             ;Bit 10  reserviert
+             ;Bit 11  reserviert
+             ;Bit 12  reserviert
+             ;Bit 13  reserviert
+             ;Bit 14  reserviert
+             ;Bit 15  reserviert
+             ;5432109876543210
+MP 2220.0  : %0000000000000000
+MP 2220.1  : %0000000000000000
+MP 2220.2  : %0000000000000000
+MP 2220.3  : %0000000000000000
+MP 2220.4  : %0000000000000000
+MP 2220.5  : %0000000000000000
+MP 2220.6  : %0000000000000000
+MP 2220.7  : %0000000000000000
+MP 2220.8  : %0000000000000000
+MP 2220.9  : %0000000000000000
+MP 2220.10 : %0000000000000000
+MP 2220.11 : %0000000000000000
+MP 2220.12 : %0000000000000000
+MP 2220.13 : %0000000000000000
+MP 2220.14 : %0000000000000000
+MP 2220.15 : %0000000000000000
+MP 2220.16 : %0000000000000000
+MP 2220.17 : %0000000000000000
+MP 2220.18 : %0000000000000000
+MP 2220.19 : %0000000000000000
+MP 2220.20 : %0000000000000000
+MP 2220.21 : %0000000000000000
+MP 2220.22 : %0000000000000000
+MP 2220.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2221 Spezielle Reglerfunktionen
+             ;Eingabe: %xxxxxxxxxxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   reserviert
+             ;Bit 2   reserviert
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   reserviert
+             ;Bit 6   reserviert
+             ;Bit 7   Verkürzung der Einschaltzeit des Antriebs
+             ;        0 = aktiv
+             ;        1 = inaktiv (Verzögerungszeit ca. 50 ms)
+             ;Bit 8   reserviert
+             ;Bit 9   reserviert
+             ;Bit 10  nur ab CC 61xx:
+             ;        Handhabung von Linear- und Synchronmotoren für höhere
+             ;        Fräsleistung mit AFC
+             ;        0 = aktiv
+             ;        1 = inaktiv
+             ;Bit 11  reserviert
+             ;Bit 12  reserviert
+             ;Bit 13  reserviert
+             ;Bit 14  reserviert
+             ;Bit 15  reserviert
+             ;5432109876543210
+MP 2221.0  : %0000000000000000
+MP 2221.1  : %0000000000000000
+MP 2221.2  : %0000000000000000
+MP 2221.3  : %0000000000000000
+MP 2221.4  : %0000000000000000
+MP 2221.5  : %0000000000000000
+MP 2221.6  : %0000000000000000
+MP 2221.7  : %0000000000000000
+MP 2221.8  : %0000000000000000
+MP 2221.9  : %0000000000000000
+MP 2221.10 : %0000000000000000
+MP 2221.11 : %0000000000000000
+MP 2221.12 : %0000000000000000
+MP 2221.13 : %0000000000000000
+MP 2221.14 : %0000000000000000
+MP 2221.15 : %0000000000000000
+MP 2221.16 : %0000000000000000
+MP 2221.17 : %0000000000000000
+MP 2221.18 : %0000000000000000
+MP 2221.19 : %0000000000000000
+MP 2221.20 : %0000000000000000
+MP 2221.21 : %0000000000000000
+MP 2221.22 : %0000000000000000
+MP 2221.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2222 Spezielle Reglerfunktionen
+             ;Eingabe: %xxxxxxxxxxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   reserviert
+             ;Bit 2   CC 61xx, EnDat 2.2:
+             ;        Temperatursignal nicht aus EnDat 2.2-Protokoll sondern
+             ;        von KTY/PT1000-Eingang
+             ;        0 = inaktiv
+             ;        1 = aktiv
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   reserviert
+             ;Bit 6   reserviert
+             ;Bit 7   reserviert
+             ;Bit 8   reserviert
+             ;Bit 9   reserviert
+             ;Bit 10  reserviert
+             ;Bit 11  reserviert
+             ;Bit 12  reserviert
+             ;Bit 13  reserviert
+             ;Bit 14  reserviert
+             ;Bit 15  reserviert
+             ;5432109876543210
+MP 2222.0  : %0000000000000000
+MP 2222.1  : %0000000000000000
+MP 2222.2  : %0000000000000000
+MP 2222.3  : %0000000000000000
+MP 2222.4  : %0000000000000000
+MP 2222.5  : %0000000000000000
+MP 2222.6  : %0000000000000000
+MP 2222.7  : %0000000000000000
+MP 2222.8  : %0000000000000000
+MP 2222.9  : %0000000000000000
+MP 2222.10 : %0000000000000000
+MP 2222.11 : %0000000000000000
+MP 2222.12 : %0000000000000000
+MP 2222.13 : %0000000000000000
+MP 2222.14 : %0000000000000000
+MP 2222.15 : %0000000000000000
+MP 2222.16 : %0000000000000000
+MP 2222.17 : %0000000000000000
+MP 2222.18 : %0000000000000000
+MP 2222.19 : %0000000000000000
+MP 2222.20 : %0000000000000000
+MP 2222.21 : %0000000000000000
+MP 2222.22 : %0000000000000000
+MP 2222.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2223 Spezielle Reglerfunktionen
+             ;Eingabe: %xxxxxxxxxxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   nur ab CC 424, CC 61xx:
+             ;        Bei Verwendung der PLC-Module 9128, 9158 das
+             ;        Haltemoment in MP2630 automatisch berücksichtigen
+             ;        0 = inaktiv
+             ;        1 = aktiv
+             ;Bit 2   reserviert
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   reserviert
+             ;Bit 6   reserviert
+             ;Bit 7   nur ab CC 424, CC 61xx:
+             ;        Beim Wiedereinschalten auf die Bereitschaft des
+             ;        Stromreglers warten
+             ;        0 = Bereitschaft Stromregler abwarten
+             ;        1 = Bereitschaft Stromregler nicht abwarten
+             ;Bit 8   reserviert
+             ;Bit 9   reserviert
+             ;Bit 10  reserviert
+             ;Bit 11  nur ab CC 424, CC 61xx:
+             ;        Einschalten einer Vertikal- oder Rundachse mit Strom
+             ;        der zum Zeitpunkt des Ausschaltens aktiv war
+             ;        0 = Einschaltstrom wie Ausschaltstrom
+             ;        1 = Funktion nicht aktiv
+             ;Bit 12  reserviert
+             ;Bit 13  reserviert
+             ;Bit 14  reserviert
+             ;Bit 15  reserviert
+             ;5432109876543210
+MP 2223.0  : %0000000000000000
+MP 2223.1  : %0000000000000000
+MP 2223.2  : %0000000000000000
+MP 2223.3  : %0000000000000000
+MP 2223.4  : %0000000000000000
+MP 2223.5  : %0000000000000000
+MP 2223.6  : %0000000000000000
+MP 2223.7  : %0000000000000000
+MP 2223.8  : %0000000000000000
+MP 2223.9  : %0000000000000000
+MP 2223.10 : %0000000000000000
+MP 2223.11 : %0000000000000000
+MP 2223.12 : %0000000000000000
+MP 2223.13 : %0000000000000000
+MP 2223.14 : %0000000000000000
+MP 2223.15 : %0000000000000000
+MP 2223.16 : %0000000000000000
+MP 2223.17 : %0000000000000000
+MP 2223.18 : %0000000000000000
+MP 2223.19 : %0000000000000000
+MP 2223.20 : %0000000000000000
+MP 2223.21 : %0000000000000000
+MP 2223.22 : %0000000000000000
+MP 2223.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2230 Test der Motorbremse: Faktor für Motor-Stillstandsstrom
+             ;Eingabe: 0 bis 30
+             ;         0 = kein Test oder Motor ohne Motorbremse
+MP 2230.0  : 0
+MP 2230.1  : 0
+MP 2230.2  : 0
+MP 2230.3  : 0
+MP 2230.4  : 0
+MP 2230.5  : 0
+MP 2230.6  : 0
+MP 2230.7  : 0
+MP 2230.8  : 0
+MP 2230.9  : 0
+MP 2230.10 : 0
+MP 2230.11 : 0
+MP 2230.12 : 0
+MP 2230.13 : 0
+MP 2230.14 : 0
+MP 2230.15 : 0
+MP 2230.16 : 0
+MP 2230.17 : 0
+MP 2230.18 : 0
+MP 2230.19 : 0
+MP 2230.20 : 0
+MP 2230.21 : 0
+MP 2230.22 : 0
+MP 2230.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2232 Test der Motorbremse: Max. zulässiger Weg
+             ;Eingabe: 0,0000 bis 10,0000 [mm] bzw. [Grad]
+MP 2232.0  : 0.1
+MP 2232.1  : 0.1
+MP 2232.2  : 0.1
+MP 2232.3  : 0.1
+MP 2232.4  : 0.1
+MP 2232.5  : 0.1
+MP 2232.6  : 0.1
+MP 2232.7  : 0.1
+MP 2232.8  : 0.1
+MP 2232.9  : 0.1
+MP 2232.10 : 0.1
+MP 2232.11 : 0.1
+MP 2232.12 : 0.1
+MP 2232.13 : 0.1
+MP 2232.14 : 0.1
+MP 2232.15 : 0.1
+MP 2232.16 : 0.1
+MP 2232.17 : 0.1
+MP 2232.18 : 0.1
+MP 2232.19 : 0.1
+MP 2232.20 : 0.1
+MP 2232.21 : 0.1
+MP 2232.22 : 0.1
+MP 2232.23 : 0.1
+             ;------------------------------------------------------------------
+             ;MP2234 Interne Ansteuerung der Motorbremsen über
+             ;       PWM-Schnittstelle (nur bei Indramat, nicht CC 61xx)
+             ;Eingabe: %xx
+             ;Bit 0   0 = Signal wird ausgegeben
+             ;        1 = Signal wird nicht ausgegeben
+             ;Bit 1   reserviert
+             ;10
+MP 2234.0  : %00
+MP 2234.1  : %00
+MP 2234.2  : %00
+MP 2234.3  : %00
+MP 2234.4  : %00
+MP 2234.5  : %00
+MP 2234.6  : %00
+MP 2234.7  : %00
+MP 2234.8  : %00
+MP 2234.9  : %00
+MP 2234.10 : %00
+MP 2234.11 : %00
+MP 2234.12 : %00
+MP 2234.13 : %00
+MP 2234.14 : %00
+MP 2234.15 : %00
+MP 2234.16 : %00
+MP 2234.17 : %00
+MP 2234.18 : %00
+MP 2234.19 : %00
+MP 2234.20 : %00
+MP 2234.21 : %00
+MP 2234.22 : %00
+MP 2234.23 : %00
+             ;------------------------------------------------------------------
+             ;MP2236 Reserviert
+             ;Eingabe: 10
+MP 2236.0  : 10
+MP 2236.1  : 10
+MP 2236.2  : 10
+MP 2236.3  : 10
+MP 2236.4  : 10
+MP 2236.5  : 10
+MP 2236.6  : 10
+MP 2236.7  : 10
+MP 2236.8  : 10
+MP 2236.9  : 10
+MP 2236.10 : 10
+MP 2236.11 : 10
+MP 2236.12 : 10
+MP 2236.13 : 10
+MP 2236.14 : 10
+MP 2236.15 : 10
+MP 2236.16 : 10
+MP 2236.17 : 10
+MP 2236.18 : 10
+MP 2236.19 : 10
+MP 2236.20 : 10
+MP 2236.21 : 10
+MP 2236.22 : 10
+MP 2236.23 : 10
+             ;------------------------------------------------------------------
+             ;MP2250 Ermittlung des Feldwinkels ohne Bewegung des Motors
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = wie Eingabewert 2
+             ;         1 = reserviert
+             ;         2 = Methode 2 (Bremse angezogen)
+             ;         3 = Methode 3 (wie Methode 2, aber Bremse wird
+             ;             geöffnet)
+             ;         4 = Methode 4 (siehe Technisches Handbuch)
+MP 2250.0  : 0
+MP 2250.1  : 0
+MP 2250.2  : 0
+MP 2250.3  : 0
+MP 2250.4  : 0
+MP 2250.5  : 0
+MP 2250.6  : 0
+MP 2250.7  : 0
+MP 2250.8  : 0
+MP 2250.9  : 0
+MP 2250.10 : 0
+MP 2250.11 : 0
+MP 2250.12 : 0
+MP 2250.13 : 0
+MP 2250.14 : 0
+MP 2250.15 : 0
+MP 2250.16 : 0
+MP 2250.17 : 0
+MP 2250.18 : 0
+MP 2250.19 : 0
+MP 2250.20 : 0
+MP 2250.21 : 0
+MP 2250.22 : 0
+MP 2250.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2252 reserviert (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 eingeben
+MP 2252.0  : 0
+MP 2252.1  : 0
+MP 2252.2  : 0
+MP 2252.3  : 0
+MP 2252.4  : 0
+MP 2252.5  : 0
+MP 2252.6  : 0
+MP 2252.7  : 0
+MP 2252.8  : 0
+MP 2252.9  : 0
+MP 2252.10 : 0
+MP 2252.11 : 0
+MP 2252.12 : 0
+MP 2252.13 : 0
+MP 2252.14 : 0
+MP 2252.15 : 0
+MP 2252.16 : 0
+MP 2252.17 : 0
+MP 2252.18 : 0
+MP 2252.19 : 0
+MP 2252.20 : 0
+MP 2252.21 : 0
+MP 2252.22 : 0
+MP 2252.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2254 Feldwinkelermittlung (einmalig, falls MP2256: 0)
+             ;Eingabe: 0 = Feldwinkel wird im Betrieb ermittelt, Softkey
+             ;             ist ohne Funktion (ohne Plausibilitätsprüfung)
+             ;         1 = Nur CC 422: Feldwinkelbestimmung über Softkey,
+             ;             Bewegung des Motors erlaubt
+             ;         2 = Nur ab CC 424, CC 61xx:
+             ;             Feldwinkelbestimmung über Softkey,
+             ;             Bewegung des Motors erlaubt
+             ;             (mit Plausibilitätsprüfung)
+             ;         3 = wie Eingabewert 2, der Antrieb muss jedoch nicht
+             ;             über die PLC freigegeben werden
+             ;             - Achtung, Sicherheitshinweise im THB beachten -
+MP 2254.0  : 0
+MP 2254.1  : 0
+MP 2254.2  : 0
+MP 2254.3  : 0
+MP 2254.4  : 0
+MP 2254.5  : 0
+MP 2254.6  : 0
+MP 2254.7  : 0
+MP 2254.8  : 0
+MP 2254.9  : 0
+MP 2254.10 : 0
+MP 2254.11 : 0
+MP 2254.12 : 0
+MP 2254.13 : 0
+MP 2254.14 : 0
+MP 2254.15 : 0
+MP 2254.16 : 0
+MP 2254.17 : 0
+MP 2254.18 : 0
+MP 2254.19 : 0
+MP 2254.20 : 0
+MP 2254.21 : 0
+MP 2254.22 : 0
+MP 2254.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2256 Ermittelter Feldwinkel (wird nach der Ermittlung von
+             ;       iTNC eingetragen)
+             ;Eingabe: 0 = Feldwinkeln noch nicht ermittelt
+MP 2256.0  : +0
+MP 2256.1  : +0
+MP 2256.2  : +0
+MP 2256.3  : +0
+MP 2256.4  : +0
+MP 2256.5  : +0
+MP 2256.6  : +0
+MP 2256.7  : +0
+MP 2256.8  : +0
+MP 2256.9  : +0
+MP 2256.10 : +0
+MP 2256.11 : +0
+MP 2256.12 : +0
+MP 2256.13 : +0
+MP 2256.14 : +0
+MP 2256.15 : +0
+MP 2256.16 : +0
+MP 2256.17 : +0
+MP 2256.18 : +0
+MP 2256.19 : +0
+MP 2256.20 : +0
+MP 2256.21 : +0
+MP 2256.22 : +0
+MP 2256.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2257 Steuerungs- bzw. Messgerät-Identifikation für
+             ;       Feldwinkel aus MP2256.x
+             ;Eingabe: $00000000 bis $FFFFFFFF
+MP 2257.0  : $00000000
+MP 2257.1  : $00000000
+MP 2257.2  : $00000000
+MP 2257.3  : $00000000
+MP 2257.4  : $00000000
+MP 2257.5  : $00000000
+MP 2257.6  : $00000000
+MP 2257.7  : $00000000
+MP 2257.8  : $00000000
+MP 2257.9  : $00000000
+MP 2257.10 : $00000000
+MP 2257.11 : $00000000
+MP 2257.12 : $00000000
+MP 2257.13 : $00000000
+MP 2257.14 : $00000000
+MP 2257.15 : $00000000
+MP 2257.16 : $00000000
+MP 2257.17 : $00000000
+MP 2257.18 : $00000000
+MP 2257.19 : $00000000
+MP 2257.20 : $00000000
+MP 2257.21 : $00000000
+MP 2257.22 : $00000000
+MP 2257.23 : $00000000
+             ;------------------------------------------------------------------
+             ;MP2260 Dateiname für Torque Ripple Kompensationsdatei
+             ;Eingabe: [xx_<MotornameAusMotortabelle>.TRC]
+             ;         kein Eintrag: nicht aktiv
+MP 2260.0  : 
+MP 2260.1  : 
+MP 2260.2  : 
+MP 2260.3  : 
+MP 2260.4  : 
+MP 2260.5  : 
+MP 2260.6  : 
+MP 2260.7  : 
+MP 2260.8  : 
+MP 2260.9  : 
+MP 2260.10 : 
+MP 2260.11 : 
+MP 2260.12 : 
+MP 2260.13 : 
+MP 2260.14 : 
+MP 2260.15 : 
+MP 2260.16 : 
+MP 2260.17 : 
+MP 2260.18 : 
+MP 2260.19 : 
+MP 2260.20 : 
+MP 2260.21 : 
+MP 2260.22 : 
+MP 2260.23 : 
+             ;------------------------------------------------------------------
+             ;MP2261 Kompensationen deaktivieren
+             ;       Bit 0: Torque Ripple Kompensation
+             ;       Bit 1: Getiebefehler-Kompensation
+             ;Eingabe: %0000000000000000
+             ;         1 = Kompensation nicht aktiv
+             ;5432109876543210
+MP 2261.0  : %0000000000000000
+MP 2261.1  : %0000000000000000
+MP 2261.2  : %0000000000000000
+MP 2261.3  : %0000000000000000
+MP 2261.4  : %0000000000000000
+MP 2261.5  : %0000000000000000
+MP 2261.6  : %0000000000000000
+MP 2261.7  : %0000000000000000
+MP 2261.8  : %0000000000000000
+MP 2261.9  : %0000000000000000
+MP 2261.10 : %0000000000000000
+MP 2261.11 : %0000000000000000
+MP 2261.12 : %0000000000000000
+MP 2261.13 : %0000000000000000
+MP 2261.14 : %0000000000000000
+MP 2261.15 : %0000000000000000
+MP 2261.16 : %0000000000000000
+MP 2261.17 : %0000000000000000
+MP 2261.18 : %0000000000000000
+MP 2261.19 : %0000000000000000
+MP 2261.20 : %0000000000000000
+MP 2261.21 : %0000000000000000
+MP 2261.22 : %0000000000000000
+MP 2261.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2302 Bezugswert für I2t-Überwachung des Motors
+             ;Eingabe: 0 bis 1000,000 [Faktor]
+             ;         0 = keine Überwachung (I2t Leistungsteil aktiv)
+             ;       > 0 = Faktor zu Motor-Nennstrom als Bezugswert
+MP 2302.0  : 1
+MP 2302.1  : 1
+MP 2302.2  : 1
+MP 2302.3  : 1
+MP 2302.4  : 1
+MP 2302.5  : 1
+MP 2302.6  : 1
+MP 2302.7  : 1
+MP 2302.8  : 1
+MP 2302.9  : 1
+MP 2302.10 : 1
+MP 2302.11 : 1
+MP 2302.12 : 1
+MP 2302.13 : 1
+MP 2302.14 : 1
+MP 2302.15 : 1
+MP 2302.16 : 1
+MP 2302.17 : 1
+MP 2302.18 : 1
+MP 2302.19 : 1          ;Spindel 1 - C-Achs Betrieb
+MP 2302.20 : 1          ;Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2302.21 : 1          ;Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2302.22 : 1          ;Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2302.23 : 1          ;Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2304 Bezugswert für I2t-Überwachung des Leistungsteils
+             ;Eingabe: 0 bis 1000,000 [Faktor]
+             ;         0 = keine Überwachung
+             ;       > 0 = Faktor zu Leistungsteil-Nennstrom als Bezugswert
+MP 2304.0  : 1
+MP 2304.1  : 1
+MP 2304.2  : 1
+MP 2304.3  : 1
+MP 2304.4  : 1
+MP 2304.5  : 1
+MP 2304.6  : 1
+MP 2304.7  : 1
+MP 2304.8  : 1
+MP 2304.9  : 1
+MP 2304.10 : 1
+MP 2304.11 : 1
+MP 2304.12 : 1
+MP 2304.13 : 1
+MP 2304.14 : 1
+MP 2304.15 : 1
+MP 2304.16 : 1
+MP 2304.17 : 1
+MP 2304.18 : 1
+MP 2304.19 : 1
+MP 2304.20 : 1
+MP 2304.21 : 1
+MP 2304.22 : 1
+MP 2304.23 : 1
+             ;------------------------------------------------------------------
+             ;MP2308 Zeit zwischen Bremssignal und Abschalten des Reglers
+             ;       (Überlappungszeit)
+             ;Eingabe: 0,001 bis 5,000 [s]
+             ;         0 = 0,200 s
+MP 2308.0  : 0
+MP 2308.1  : 0
+MP 2308.2  : 0
+MP 2308.3  : 0
+MP 2308.4  : 0
+MP 2308.5  : 0
+MP 2308.6  : 0
+MP 2308.7  : 0
+MP 2308.8  : 0
+MP 2308.9  : 0
+MP 2308.10 : 0
+MP 2308.11 : 0
+MP 2308.12 : 0
+MP 2308.13 : 0
+MP 2308.14 : 0
+MP 2308.15 : 0
+MP 2308.16 : 0
+MP 2308.17 : 0
+MP 2308.18 : 0
+MP 2308.19 : 0
+MP 2308.20 : 0
+MP 2308.21 : 0
+MP 2308.22 : 0
+MP 2308.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2309 Zeit nach dem Einschalten in der Reglerparameter
+             ;       auf geschlossene Bremse adaptiert sind. Dies ist
+             ;       die Zeit vom Öffnen der Bremse bis zur Ermittlung
+             ;       des Haltestroms.
+             ;Eingabe: 0,001 bis 5,000 [s]
+             ;         0 = Funktion inaktiv
+MP 2309.0  : 0
+MP 2309.1  : 0
+MP 2309.2  : 0
+MP 2309.3  : 0
+MP 2309.4  : 0
+MP 2309.5  : 0
+MP 2309.6  : 0
+MP 2309.7  : 0
+MP 2309.8  : 0
+MP 2309.9  : 0
+MP 2309.10 : 0
+MP 2309.11 : 0
+MP 2309.12 : 0
+MP 2309.13 : 0
+MP 2309.14 : 0
+MP 2309.15 : 0
+MP 2309.16 : 0
+MP 2309.17 : 0
+MP 2309.18 : 0
+MP 2309.19 : 0
+MP 2309.20 : 0
+MP 2309.21 : 0
+MP 2309.22 : 0
+MP 2309.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2312 Faktor für Auslastung der Motoren
+             ;       (Auswirkung auf Auslastungsanzeige und PLC-Abfrage)
+             ;Eingabe: 0 bis 1000,000
+             ;         0 oder 1 = Motor-Nennstrom als Bezugswert
+MP 2312.0  : 1
+MP 2312.1  : 1
+MP 2312.2  : 1
+MP 2312.3  : 1
+MP 2312.4  : 1
+MP 2312.5  : 1
+MP 2312.6  : 1
+MP 2312.7  : 1
+MP 2312.8  : 1
+MP 2312.9  : 1
+MP 2312.10 : 1
+MP 2312.11 : 1
+MP 2312.12 : 1
+MP 2312.13 : 1
+MP 2312.14 : 1
+MP 2312.15 : 1
+MP 2312.16 : 1
+MP 2312.17 : 1
+MP 2312.18 : 1
+MP 2312.19 : 1
+MP 2312.20 : 1
+MP 2312.21 : 1
+MP 2312.22 : 1
+MP 2312.23 : 1
+             ;------------------------------------------------------------------
+             ;MP2390 Maximale Bremsleistung beim Abbremsen bei Not-Aus
+             ;Eingabe: 0,001 bis 3000,000 [kW]
+             ;         0 = Funktion inaktiv
+MP 2390.0  : 0
+MP 2390.1  : 0
+MP 2390.2  : 0
+MP 2390.3  : 0
+MP 2390.4  : 0
+MP 2390.5  : 0
+MP 2390.6  : 0
+MP 2390.7  : 0
+MP 2390.8  : 0
+MP 2390.9  : 0
+MP 2390.10 : 0
+MP 2390.11 : 0
+MP 2390.12 : 0
+MP 2390.13 : 0
+MP 2390.14 : 0
+MP 2390.15 : 0
+MP 2390.16 : 0
+MP 2390.17 : 0
+MP 2390.18 : 0
+MP 2390.19 : 0
+MP 2390.20 : 0
+MP 2390.21 : 0
+MP 2390.22 : 0
+MP 2390.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2392 Maximale Antriebsleistung
+             ;Eingabe: 0,001 bis 3000,000 [kW]
+             ;         0 = Funktion inaktiv
+MP 2392.0  : 0
+MP 2392.1  : 0
+MP 2392.2  : 0
+MP 2392.3  : 0
+MP 2392.4  : 0
+MP 2392.5  : 0
+MP 2392.6  : 0
+MP 2392.7  : 0
+MP 2392.8  : 0
+MP 2392.9  : 0
+MP 2392.10 : 0
+MP 2392.11 : 0
+MP 2392.12 : 0
+MP 2392.13 : 0
+MP 2392.14 : 0
+MP 2392.15 : 0
+MP 2392.16 : 0
+MP 2392.17 : 0
+MP 2392.18 : 0
+MP 2392.19 : 0
+MP 2392.20 : 0
+MP 2392.21 : 0
+MP 2392.22 : 0
+MP 2392.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2393 Maximale Antriebsleistung nach PLC-Anforderung
+             ;Eingabe: 0,001 bis 3000,000 [kW]
+             ;         0 = Funktion inaktiv
+MP 2393.0  : 0
+MP 2393.1  : 0
+MP 2393.2  : 0
+MP 2393.3  : 0
+MP 2393.4  : 0
+MP 2393.5  : 0
+MP 2393.6  : 0
+MP 2393.7  : 0
+MP 2393.8  : 0
+MP 2393.9  : 0
+MP 2393.10 : 0
+MP 2393.11 : 0
+MP 2393.12 : 0
+MP 2393.13 : 0
+MP 2393.14 : 0
+MP 2393.15 : 0
+MP 2393.16 : 0
+MP 2393.17 : 0
+MP 2393.18 : 0
+MP 2393.19 : 0
+MP 2393.20 : 0
+MP 2393.21 : 0
+MP 2393.22 : 0
+MP 2393.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2394 Maximale Bremsleistung beim Abbremsen bei Netzausfall
+             ;Eingabe: 0,001 bis 3000,000 [kW]
+             ;         0 = Funktion inaktiv
+MP 2394.0  : 0
+MP 2394.1  : 0
+MP 2394.2  : 0
+MP 2394.3  : 0
+MP 2394.4  : 0
+MP 2394.5  : 0
+MP 2394.6  : 0
+MP 2394.7  : 0
+MP 2394.8  : 0
+MP 2394.9  : 0
+MP 2394.10 : 0
+MP 2394.11 : 0
+MP 2394.12 : 0
+MP 2394.13 : 0
+MP 2394.14 : 0
+MP 2394.15 : 0
+MP 2394.16 : 0
+MP 2394.17 : 0
+MP 2394.18 : 0
+MP 2394.19 : 0
+MP 2394.20 : 0
+MP 2394.21 : 0
+MP 2394.22 : 0
+MP 2394.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2396 Maximales Antriebsmoment
+             ;Eingabe: 0,1 bis 999999,9 [Nm]
+             ;         0 = Funktion inaktiv
+MP 2396.0  : 0
+MP 2396.1  : 0
+MP 2396.2  : 0
+MP 2396.3  : 0
+MP 2396.4  : 0
+MP 2396.5  : 0
+MP 2396.6  : 0
+MP 2396.7  : 0
+MP 2396.8  : 0
+MP 2396.9  : 0
+MP 2396.10 : 0
+MP 2396.11 : 0
+MP 2396.12 : 0
+MP 2396.13 : 0
+MP 2396.14 : 0
+MP 2396.15 : 0
+MP 2396.16 : 0
+MP 2396.17 : 0
+MP 2396.18 : 0
+MP 2396.19 : 0
+MP 2396.20 : 0
+MP 2396.21 : 0
+MP 2396.22 : 0
+MP 2396.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2420 Proportionalfaktor für Stromregler
+             ;Eingabe: 0 bis 9 999,99 [V/A]
+             ;         * = automatische Berechnung des P-Faktors
+MP 2420.0  : *
+MP 2420.1  : *
+MP 2420.2  : *
+MP 2420.3  : *
+MP 2420.4  : *
+MP 2420.5  : *
+MP 2420.6  : *
+MP 2420.7  : *
+MP 2420.8  : *
+MP 2420.9  : *
+MP 2420.10 : *
+MP 2420.11 : *
+MP 2420.12 : *
+MP 2420.13 : *
+MP 2420.14 : *
+MP 2420.15 : *
+MP 2420.16 : *
+MP 2420.17 : *
+MP 2420.18 : *
+MP 2420.19 : *          ;Spindel 1 - C-Achs Betrieb
+MP 2420.20 : *          ;Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2420.21 : *          ;Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2420.22 : *          ;Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2420.23 : *          ;Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2430 Integralfaktor für Stromregler
+             ;Eingabe: 0 bis 9 999 999 [Vs/A]
+             ;         * = automatische Berechnung des I-Faktors
+MP 2430.0  : *
+MP 2430.1  : *
+MP 2430.2  : *
+MP 2430.3  : *
+MP 2430.4  : *
+MP 2430.5  : *
+MP 2430.6  : *
+MP 2430.7  : *
+MP 2430.8  : *
+MP 2430.9  : *
+MP 2430.10 : *
+MP 2430.11 : *
+MP 2430.12 : *
+MP 2430.13 : *
+MP 2430.14 : *
+MP 2430.15 : *
+MP 2430.16 : *
+MP 2430.17 : *
+MP 2430.18 : *
+MP 2430.19 : *          ;Spindel 1 - C-Achs Betrieb
+MP 2430.20 : *          ;Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2430.21 : *          ;Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2430.22 : *          ;Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2430.23 : *          ;Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2440 ab CC 61xx: Grenzfrequenz der Stromregler-Vorsteuerung
+             ;Eingabe: 0,1 bis 5000,0 [Hz]
+             ;         0 = Vorsteuerung nicht aktiv
+MP 2440.0  : 0
+MP 2440.1  : 0
+MP 2440.2  : 0
+MP 2440.3  : 0
+MP 2440.4  : 0
+MP 2440.5  : 0
+MP 2440.6  : 0
+MP 2440.7  : 0
+MP 2440.8  : 0
+MP 2440.9  : 0
+MP 2440.10 : 0
+MP 2440.11 : 0
+MP 2440.12 : 0
+MP 2440.13 : 0
+MP 2440.14 : 0
+MP 2440.15 : 0
+MP 2440.16 : 0
+MP 2440.17 : 0
+MP 2440.18 : 0
+MP 2440.19 : 0
+MP 2440.20 : 0
+MP 2440.21 : 0
+MP 2440.22 : 0
+MP 2440.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2450 ab CC 61xx: Totzeit-Kompensation
+             ;Eingabe: 0 oder 1
+             ;         0 = Kompensation nicht aktiv
+             ;         1 = Kompensation aktiv
+MP 2450.0  : 0
+MP 2450.1  : 0
+MP 2450.2  : 0
+MP 2450.3  : 0
+MP 2450.4  : 0
+MP 2450.5  : 0
+MP 2450.6  : 0
+MP 2450.7  : 0
+MP 2450.8  : 0
+MP 2450.9  : 0
+MP 2450.10 : 0
+MP 2450.11 : 0
+MP 2450.12 : 0
+MP 2450.13 : 0
+MP 2450.14 : 0
+MP 2450.15 : 0
+MP 2450.16 : 0
+MP 2450.17 : 0
+MP 2450.18 : 0
+MP 2450.19 : 0
+MP 2450.20 : 0
+MP 2450.21 : 0
+MP 2450.22 : 0
+MP 2450.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2500 Proportionalfaktor des Drehzahlreglers
+             ;Eingabe: 0 bis 1 000 000,000 [As]
+MP 2500.0  : 1
+MP 2500.1  : 1
+MP 2500.2  : 1
+MP 2500.3  : 1
+MP 2500.4  : 1
+MP 2500.5  : 1
+MP 2500.6  : 1
+MP 2500.7  : 1
+MP 2500.8  : 1
+MP 2500.9  : 1
+MP 2500.10 : 1
+MP 2500.11 : 1
+MP 2500.12 : 1
+MP 2500.13 : 1
+MP 2500.14 : 1
+MP 2500.15 : 1
+MP 2500.16 : 1
+MP 2500.17 : 1
+MP 2500.18 : 1
+MP 2500.19 : 7          ;Spindel 1 - C-Achs Betrieb
+MP 2500.20 : 7          ;Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2500.21 : 7          ;Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2500.22 : 7          ;Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2500.23 : 7          ;Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2510 Integralfaktor des Drehzahlreglers
+             ;Eingabe: 0 bis  100 000 000 [A]
+MP 2510.0  : 250
+MP 2510.1  : 250
+MP 2510.2  : 250
+MP 2510.3  : 250
+MP 2510.4  : 250
+MP 2510.5  : 250
+MP 2510.6  : 250
+MP 2510.7  : 250
+MP 2510.8  : 250
+MP 2510.9  : 250
+MP 2510.10 : 250
+MP 2510.11 : 250
+MP 2510.12 : 250
+MP 2510.13 : 250
+MP 2510.14 : 250
+MP 2510.15 : 250
+MP 2510.16 : 250
+MP 2510.17 : 250
+MP 2510.18 : 250
+MP 2510.19 : 500        ;Spindel 1 - C-Achs Betrieb
+MP 2510.20 : 500        ;Spindel 1 - Betriebsart 0 (Y-Mode)
+MP 2510.21 : 500        ;Spindel 1 - Betriebsart 1 (D-Mode)
+MP 2510.22 : 500        ;Spindel 2 - Betriebsart 0 (Y-Mode)
+MP 2510.23 : 500        ;Spindel 2 - Betriebsart 1 (D-Mode)
+             ;------------------------------------------------------------------
+             ;MP2512 Begrenzung Integralfaktor des Drehzahlreglers
+             ;Eingabe: 0 bis 30 [s]
+             ;         0 = inaktiv (empfohlen)
+MP 2512.0  : 0
+MP 2512.1  : 0
+MP 2512.2  : 0
+MP 2512.3  : 0
+MP 2512.4  : 0
+MP 2512.5  : 0
+MP 2512.6  : 0
+MP 2512.7  : 0
+MP 2512.8  : 0
+MP 2512.9  : 0
+MP 2512.10 : 0
+MP 2512.11 : 0
+MP 2512.12 : 0
+MP 2512.13 : 0
+MP 2512.14 : 0
+MP 2512.15 : 0
+MP 2512.16 : 0
+MP 2512.17 : 0
+MP 2512.18 : 0
+MP 2512.19 : 0
+MP 2512.20 : 0
+MP 2512.21 : 0
+MP 2512.22 : 0
+MP 2512.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2520 Differentialfaktor Drehzahlregler der Achsen
+             ;Eingabe: 0 bis 1 [As^2]
+             ;         0 = inaktiv (empfohlen)
+MP 2520.0  : 0
+MP 2520.1  : 0
+MP 2520.2  : 0
+MP 2520.3  : 0
+MP 2520.4  : 0
+MP 2520.5  : 0
+MP 2520.6  : 0
+MP 2520.7  : 0
+MP 2520.8  : 0
+MP 2520.9  : 0
+MP 2520.10 : 0
+MP 2520.11 : 0
+MP 2520.12 : 0
+MP 2520.13 : 0
+MP 2520.14 : 0
+MP 2520.15 : 0
+MP 2520.16 : 0
+MP 2520.17 : 0
+MP 2520.18 : 0
+MP 2520.19 : 0
+MP 2520.20 : 0
+MP 2520.21 : 0
+MP 2520.22 : 0
+MP 2520.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2530 PT2-Glied des Drehzahlregler
+             ;zuerst Kompensation mit Tiefpaß-Filter versuchen (MP2560)
+             ;Eingabe: 0 bis 1 [s]
+MP 2530.0  : 0
+MP 2530.1  : 0
+MP 2530.2  : 0
+MP 2530.3  : 0
+MP 2530.4  : 0
+MP 2530.5  : 0
+MP 2530.6  : 0
+MP 2530.7  : 0
+MP 2530.8  : 0
+MP 2530.9  : 0
+MP 2530.10 : 0
+MP 2530.11 : 0
+MP 2530.12 : 0
+MP 2530.13 : 0
+MP 2530.14 : 0
+MP 2530.15 : 0
+MP 2530.16 : 0
+MP 2530.17 : 0
+MP 2530.18 : 0
+MP 2530.19 : 0
+MP 2530.20 : 0
+MP 2530.21 : 0
+MP 2530.22 : 0
+MP 2530.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2540 Bandsperre Dämpfung
+             ;Eingabe: 0 bis 18,9 [dB]
+MP 2540.0  : 0
+MP 2540.1  : 0
+MP 2540.2  : 0
+MP 2540.3  : 0
+MP 2540.4  : 0
+MP 2540.5  : 0
+MP 2540.6  : 0
+MP 2540.7  : 0
+MP 2540.8  : 0
+MP 2540.9  : 0
+MP 2540.10 : 0
+MP 2540.11 : 0
+MP 2540.12 : 0
+MP 2540.13 : 0
+MP 2540.14 : 0
+MP 2540.15 : 0
+MP 2540.16 : 0
+MP 2540.17 : 0
+MP 2540.18 : 0
+MP 2540.19 : 0
+MP 2540.20 : 0
+MP 2540.21 : 0
+MP 2540.22 : 0
+MP 2540.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2542 Bandsperre Dämpfung Filter 1 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2542.0  : +0
+MP 2542.1  : +0
+MP 2542.2  : +0
+MP 2542.3  : +0
+MP 2542.4  : +0
+MP 2542.5  : +0
+MP 2542.6  : +0
+MP 2542.7  : +0
+MP 2542.8  : +0
+MP 2542.9  : +0
+MP 2542.10 : +0
+MP 2542.11 : +0
+MP 2542.12 : +0
+MP 2542.13 : +0
+MP 2542.14 : +0
+MP 2542.15 : +0
+MP 2542.16 : +0
+MP 2542.17 : +0
+MP 2542.18 : +0
+MP 2542.19 : +0
+MP 2542.20 : +0
+MP 2542.21 : +0
+MP 2542.22 : +0
+MP 2542.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2543 Bandsperre Dämpfung Filter 2 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2543.0  : +0
+MP 2543.1  : +0
+MP 2543.2  : +0
+MP 2543.3  : +0
+MP 2543.4  : +0
+MP 2543.5  : +0
+MP 2543.6  : +0
+MP 2543.7  : +0
+MP 2543.8  : +0
+MP 2543.9  : +0
+MP 2543.10 : +0
+MP 2543.11 : +0
+MP 2543.12 : +0
+MP 2543.13 : +0
+MP 2543.14 : +0
+MP 2543.15 : +0
+MP 2543.16 : +0
+MP 2543.17 : +0
+MP 2543.18 : +0
+MP 2543.19 : +0
+MP 2543.20 : +0
+MP 2543.21 : +0
+MP 2543.22 : +0
+MP 2543.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2544 Bandsperre Dämpfung Filter 3 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2544.0  : +0
+MP 2544.1  : +0
+MP 2544.2  : +0
+MP 2544.3  : +0
+MP 2544.4  : +0
+MP 2544.5  : +0
+MP 2544.6  : +0
+MP 2544.7  : +0
+MP 2544.8  : +0
+MP 2544.9  : +0
+MP 2544.10 : +0
+MP 2544.11 : +0
+MP 2544.12 : +0
+MP 2544.13 : +0
+MP 2544.14 : +0
+MP 2544.15 : +0
+MP 2544.16 : +0
+MP 2544.17 : +0
+MP 2544.18 : +0
+MP 2544.19 : +0
+MP 2544.20 : +0
+MP 2544.21 : +0
+MP 2544.22 : +0
+MP 2544.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2545 Bandsperre Dämpfung Filter 4 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2545.0  : +0
+MP 2545.1  : +0
+MP 2545.2  : +0
+MP 2545.3  : +0
+MP 2545.4  : +0
+MP 2545.5  : +0
+MP 2545.6  : +0
+MP 2545.7  : +0
+MP 2545.8  : +0
+MP 2545.9  : +0
+MP 2545.10 : +0
+MP 2545.11 : +0
+MP 2545.12 : +0
+MP 2545.13 : +0
+MP 2545.14 : +0
+MP 2545.15 : +0
+MP 2545.16 : +0
+MP 2545.17 : +0
+MP 2545.18 : +0
+MP 2545.19 : +0
+MP 2545.20 : +0
+MP 2545.21 : +0
+MP 2545.22 : +0
+MP 2545.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2546 Bandsperre Dämpfung Filter 5 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2546.0  : +0
+MP 2546.1  : +0
+MP 2546.2  : +0
+MP 2546.3  : +0
+MP 2546.4  : +0
+MP 2546.5  : +0
+MP 2546.6  : +0
+MP 2546.7  : +0
+MP 2546.8  : +0
+MP 2546.9  : +0
+MP 2546.10 : +0
+MP 2546.11 : +0
+MP 2546.12 : +0
+MP 2546.13 : +0
+MP 2546.14 : +0
+MP 2546.15 : +0
+MP 2546.16 : +0
+MP 2546.17 : +0
+MP 2546.18 : +0
+MP 2546.19 : +0
+MP 2546.20 : +0
+MP 2546.21 : +0
+MP 2546.22 : +0
+MP 2546.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2547 Bandsperre Dämpfung Filter 6 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis +100 [dB]
+MP 2547.0  : +0
+MP 2547.1  : +0
+MP 2547.2  : +0
+MP 2547.3  : +0
+MP 2547.4  : +0
+MP 2547.5  : +0
+MP 2547.6  : +0
+MP 2547.7  : +0
+MP 2547.8  : +0
+MP 2547.9  : +0
+MP 2547.10 : +0
+MP 2547.11 : +0
+MP 2547.12 : +0
+MP 2547.13 : +0
+MP 2547.14 : +0
+MP 2547.15 : +0
+MP 2547.16 : +0
+MP 2547.17 : +0
+MP 2547.18 : +0
+MP 2547.19 : +0
+MP 2547.20 : +0
+MP 2547.21 : +0
+MP 2547.22 : +0
+MP 2547.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2550 Bandsperre Mittenfrequenz
+             ;Eingabe: 0 bis 999,9 [Hz]
+MP 2550.0  : 0
+MP 2550.1  : 0
+MP 2550.2  : 0
+MP 2550.3  : 0
+MP 2550.4  : 0
+MP 2550.5  : 0
+MP 2550.6  : 0
+MP 2550.7  : 0
+MP 2550.8  : 0
+MP 2550.9  : 0
+MP 2550.10 : 0
+MP 2550.11 : 0
+MP 2550.12 : 0
+MP 2550.13 : 0
+MP 2550.14 : 0
+MP 2550.15 : 0
+MP 2550.16 : 0
+MP 2550.17 : 0
+MP 2550.18 : 0
+MP 2550.19 : 0
+MP 2550.20 : 0
+MP 2550.21 : 0
+MP 2550.22 : 0
+MP 2550.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2552 Bandsperre Mittenfrequenz Filter 1
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2552.0  : 0
+MP 2552.1  : 0
+MP 2552.2  : 0
+MP 2552.3  : 0
+MP 2552.4  : 0
+MP 2552.5  : 0
+MP 2552.6  : 0
+MP 2552.7  : 0
+MP 2552.8  : 0
+MP 2552.9  : 0
+MP 2552.10 : 0
+MP 2552.11 : 0
+MP 2552.12 : 0
+MP 2552.13 : 0
+MP 2552.14 : 0
+MP 2552.15 : 0
+MP 2552.16 : 0
+MP 2552.17 : 0
+MP 2552.18 : 0
+MP 2552.19 : 0
+MP 2552.20 : 0
+MP 2552.21 : 0
+MP 2552.22 : 0
+MP 2552.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2553 Bandsperre Mittenfrequenz Filter 2
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2553.0  : 0
+MP 2553.1  : 0
+MP 2553.2  : 0
+MP 2553.3  : 0
+MP 2553.4  : 0
+MP 2553.5  : 0
+MP 2553.6  : 0
+MP 2553.7  : 0
+MP 2553.8  : 0
+MP 2553.9  : 0
+MP 2553.10 : 0
+MP 2553.11 : 0
+MP 2553.12 : 0
+MP 2553.13 : 0
+MP 2553.14 : 0
+MP 2553.15 : 0
+MP 2553.16 : 0
+MP 2553.17 : 0
+MP 2553.18 : 0
+MP 2553.19 : 0
+MP 2553.20 : 0
+MP 2553.21 : 0
+MP 2553.22 : 0
+MP 2553.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2554 Bandsperre Mittenfrequenz Filter 3
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2554.0  : 0
+MP 2554.1  : 0
+MP 2554.2  : 0
+MP 2554.3  : 0
+MP 2554.4  : 0
+MP 2554.5  : 0
+MP 2554.6  : 0
+MP 2554.7  : 0
+MP 2554.8  : 0
+MP 2554.9  : 0
+MP 2554.10 : 0
+MP 2554.11 : 0
+MP 2554.12 : 0
+MP 2554.13 : 0
+MP 2554.14 : 0
+MP 2554.15 : 0
+MP 2554.16 : 0
+MP 2554.17 : 0
+MP 2554.18 : 0
+MP 2554.19 : 0
+MP 2554.20 : 0
+MP 2554.21 : 0
+MP 2554.22 : 0
+MP 2554.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2555 Bandsperre Mittenfrequenz Filter 4
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2555.0  : 0
+MP 2555.1  : 0
+MP 2555.2  : 0
+MP 2555.3  : 0
+MP 2555.4  : 0
+MP 2555.5  : 0
+MP 2555.6  : 0
+MP 2555.7  : 0
+MP 2555.8  : 0
+MP 2555.9  : 0
+MP 2555.10 : 0
+MP 2555.11 : 0
+MP 2555.12 : 0
+MP 2555.13 : 0
+MP 2555.14 : 0
+MP 2555.15 : 0
+MP 2555.16 : 0
+MP 2555.17 : 0
+MP 2555.18 : 0
+MP 2555.19 : 0
+MP 2555.20 : 0
+MP 2555.21 : 0
+MP 2555.22 : 0
+MP 2555.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2556 Bandsperre Mittenfrequenz Filter 5
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2556.0  : 0
+MP 2556.1  : 0
+MP 2556.2  : 0
+MP 2556.3  : 0
+MP 2556.4  : 0
+MP 2556.5  : 0
+MP 2556.6  : 0
+MP 2556.7  : 0
+MP 2556.8  : 0
+MP 2556.9  : 0
+MP 2556.10 : 0
+MP 2556.11 : 0
+MP 2556.12 : 0
+MP 2556.13 : 0
+MP 2556.14 : 0
+MP 2556.15 : 0
+MP 2556.16 : 0
+MP 2556.17 : 0
+MP 2556.18 : 0
+MP 2556.19 : 0
+MP 2556.20 : 0
+MP 2556.21 : 0
+MP 2556.22 : 0
+MP 2556.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2557 Bandsperre Mittenfrequenz Filter 6
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2557.0  : 0
+MP 2557.1  : 0
+MP 2557.2  : 0
+MP 2557.3  : 0
+MP 2557.4  : 0
+MP 2557.5  : 0
+MP 2557.6  : 0
+MP 2557.7  : 0
+MP 2557.8  : 0
+MP 2557.9  : 0
+MP 2557.10 : 0
+MP 2557.11 : 0
+MP 2557.12 : 0
+MP 2557.13 : 0
+MP 2557.14 : 0
+MP 2557.15 : 0
+MP 2557.16 : 0
+MP 2557.17 : 0
+MP 2557.18 : 0
+MP 2557.19 : 0
+MP 2557.20 : 0
+MP 2557.21 : 0
+MP 2557.22 : 0
+MP 2557.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2560 Tiefpaß-Filter
+             ;CC 422: Kompensation hochfrequenter Störschwingungen (>600 Hz),
+             ;        falls keine befriedigenden Ergebnisse PT2-Glied
+             ;        verwenden (MP2530)
+             ;        Eingabe: 0 = kein Tiefpaß-Filter
+             ;                 1 = Tiefpaß-Filter 1. Ordnung (600..700 Hz)
+             ;                 2 = Tiefpaß-Filter 2. Ordnung (>700 Hz)
+             ;CC 424, CC 61xx: Filterordnung des Tiefpaß-Filters
+             ;        Eingabe: 0 bis 20
+             ;                 empfohlender Eingabewert: 0
+             ;                 empfohlender Eingabewert bei hohem Strom-
+             ;                 rauschen von Hochfrequenz-Spindeln: 10 bis 20
+MP 2560.0  : 0
+MP 2560.1  : 0
+MP 2560.2  : 0
+MP 2560.3  : 0
+MP 2560.4  : 0
+MP 2560.5  : 0
+MP 2560.6  : 0
+MP 2560.7  : 0
+MP 2560.8  : 0
+MP 2560.9  : 0
+MP 2560.10 : 0
+MP 2560.11 : 0
+MP 2560.12 : 0
+MP 2560.13 : 0
+MP 2560.14 : 0
+MP 2560.15 : 0
+MP 2560.16 : 0
+MP 2560.17 : 0
+MP 2560.18 : 0
+MP 2560.19 : 0
+MP 2560.20 : 0
+MP 2560.21 : 0
+MP 2560.22 : 0
+MP 2560.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2561 Maximale Eingangsfrequenz für Motor-Messgeräte
+             ;       (nur ab CC 61xx)
+             ;Eingabe: %xxxxxxxxxxxxxxxx
+             ;Bit 0   0 = 400 kHz
+             ;        1 = 800 kHz
+             ;5432109876543210
+MP 2561.0  : %0000000000000000
+MP 2561.1  : %0000000000000000
+MP 2561.2  : %0000000000000000
+MP 2561.3  : %0000000000000000
+MP 2561.4  : %0000000000000000
+MP 2561.5  : %0000000000000000
+MP 2561.6  : %0000000000000000
+MP 2561.7  : %0000000000000000
+MP 2561.8  : %0000000000000000
+MP 2561.9  : %0000000000000000
+MP 2561.10 : %0000000000000000
+MP 2561.11 : %0000000000000000
+MP 2561.12 : %0000000000000000
+MP 2561.13 : %0000000000000000
+MP 2561.14 : %0000000000000000
+MP 2561.15 : %0000000000000000
+MP 2561.16 : %0000000000000000
+MP 2561.17 : %0000000000000000
+MP 2561.18 : %0000000000000000
+MP 2561.19 : %0000000000000000
+MP 2561.20 : %0000000000000000
+MP 2561.21 : %0000000000000000
+MP 2561.22 : %0000000000000000
+MP 2561.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2562 Filtertyp für Filter 1 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2562.0  : 0
+MP 2562.1  : 0
+MP 2562.2  : 0
+MP 2562.3  : 0
+MP 2562.4  : 0
+MP 2562.5  : 0
+MP 2562.6  : 0
+MP 2562.7  : 0
+MP 2562.8  : 0
+MP 2562.9  : 0
+MP 2562.10 : 0
+MP 2562.11 : 0
+MP 2562.12 : 0
+MP 2562.13 : 0
+MP 2562.14 : 0
+MP 2562.15 : 0
+MP 2562.16 : 0
+MP 2562.17 : 0
+MP 2562.18 : 0
+MP 2562.19 : 0
+MP 2562.20 : 0
+MP 2562.21 : 0
+MP 2562.22 : 0
+MP 2562.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2563 Filtertyp für Filter 2 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2563.0  : 0
+MP 2563.1  : 0
+MP 2563.2  : 0
+MP 2563.3  : 0
+MP 2563.4  : 0
+MP 2563.5  : 0
+MP 2563.6  : 0
+MP 2563.7  : 0
+MP 2563.8  : 0
+MP 2563.9  : 0
+MP 2563.10 : 0
+MP 2563.11 : 0
+MP 2563.12 : 0
+MP 2563.13 : 0
+MP 2563.14 : 0
+MP 2563.15 : 0
+MP 2563.16 : 0
+MP 2563.17 : 0
+MP 2563.18 : 0
+MP 2563.19 : 0
+MP 2563.20 : 0
+MP 2563.21 : 0
+MP 2563.22 : 0
+MP 2563.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2564 Filtertyp für Filter 3 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2564.0  : 0
+MP 2564.1  : 0
+MP 2564.2  : 0
+MP 2564.3  : 0
+MP 2564.4  : 0
+MP 2564.5  : 0
+MP 2564.6  : 0
+MP 2564.7  : 0
+MP 2564.8  : 0
+MP 2564.9  : 0
+MP 2564.10 : 0
+MP 2564.11 : 0
+MP 2564.12 : 0
+MP 2564.13 : 0
+MP 2564.14 : 0
+MP 2564.15 : 0
+MP 2564.16 : 0
+MP 2564.17 : 0
+MP 2564.18 : 0
+MP 2564.19 : 0
+MP 2564.20 : 0
+MP 2564.21 : 0
+MP 2564.22 : 0
+MP 2564.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2565 Filtertyp für Filter 4 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2565.0  : 0
+MP 2565.1  : 0
+MP 2565.2  : 0
+MP 2565.3  : 0
+MP 2565.4  : 0
+MP 2565.5  : 0
+MP 2565.6  : 0
+MP 2565.7  : 0
+MP 2565.8  : 0
+MP 2565.9  : 0
+MP 2565.10 : 0
+MP 2565.11 : 0
+MP 2565.12 : 0
+MP 2565.13 : 0
+MP 2565.14 : 0
+MP 2565.15 : 0
+MP 2565.16 : 0
+MP 2565.17 : 0
+MP 2565.18 : 0
+MP 2565.19 : 0
+MP 2565.20 : 0
+MP 2565.21 : 0
+MP 2565.22 : 0
+MP 2565.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2566 Filtertyp für Filter 5 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2566.0  : 0
+MP 2566.1  : 0
+MP 2566.2  : 0
+MP 2566.3  : 0
+MP 2566.4  : 0
+MP 2566.5  : 0
+MP 2566.6  : 0
+MP 2566.7  : 0
+MP 2566.8  : 0
+MP 2566.9  : 0
+MP 2566.10 : 0
+MP 2566.11 : 0
+MP 2566.12 : 0
+MP 2566.13 : 0
+MP 2566.14 : 0
+MP 2566.15 : 0
+MP 2566.16 : 0
+MP 2566.17 : 0
+MP 2566.18 : 0
+MP 2566.19 : 0
+MP 2566.20 : 0
+MP 2566.21 : 0
+MP 2566.22 : 0
+MP 2566.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2567 Filtertyp für Filter 6 (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 = kein Filter
+             ;         1 = PT2-Tiefpass-Filter (Drehzahlregler)
+             ;         2 = Bandsperre (Drehzahlregler)
+             ;         3 = Phasenanhebendes Filter (Drehzahlregler)
+             ;         11 = PT2-Tiefpass-Filter (Lageregler)
+             ;         12 = Bandsperre (Lageregler)
+             ;         13 = Phasenanhebendes Filter (Lageregler)
+MP 2567.0  : 0
+MP 2567.1  : 0
+MP 2567.2  : 0
+MP 2567.3  : 0
+MP 2567.4  : 0
+MP 2567.5  : 0
+MP 2567.6  : 0
+MP 2567.7  : 0
+MP 2567.8  : 0
+MP 2567.9  : 0
+MP 2567.10 : 0
+MP 2567.11 : 0
+MP 2567.12 : 0
+MP 2567.13 : 0
+MP 2567.14 : 0
+MP 2567.15 : 0
+MP 2567.16 : 0
+MP 2567.17 : 0
+MP 2567.18 : 0
+MP 2567.19 : 0
+MP 2567.20 : 0
+MP 2567.21 : 0
+MP 2567.22 : 0
+MP 2567.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2572 Bandsperre Bandbreite für Filter 1
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2572.0  : 0
+MP 2572.1  : 0
+MP 2572.2  : 0
+MP 2572.3  : 0
+MP 2572.4  : 0
+MP 2572.5  : 0
+MP 2572.6  : 0
+MP 2572.7  : 0
+MP 2572.8  : 0
+MP 2572.9  : 0
+MP 2572.10 : 0
+MP 2572.11 : 0
+MP 2572.12 : 0
+MP 2572.13 : 0
+MP 2572.14 : 0
+MP 2572.15 : 0
+MP 2572.16 : 0
+MP 2572.17 : 0
+MP 2572.18 : 0
+MP 2572.19 : 0
+MP 2572.20 : 0
+MP 2572.21 : 0
+MP 2572.22 : 0
+MP 2572.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2573 Bandsperre Bandbreite für Filter 2
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2573.0  : 0
+MP 2573.1  : 0
+MP 2573.2  : 0
+MP 2573.3  : 0
+MP 2573.4  : 0
+MP 2573.5  : 0
+MP 2573.6  : 0
+MP 2573.7  : 0
+MP 2573.8  : 0
+MP 2573.9  : 0
+MP 2573.10 : 0
+MP 2573.11 : 0
+MP 2573.12 : 0
+MP 2573.13 : 0
+MP 2573.14 : 0
+MP 2573.15 : 0
+MP 2573.16 : 0
+MP 2573.17 : 0
+MP 2573.18 : 0
+MP 2573.19 : 0
+MP 2573.20 : 0
+MP 2573.21 : 0
+MP 2573.22 : 0
+MP 2573.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2574 Bandsperre Bandbreite für Filter 3
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2574.0  : 0
+MP 2574.1  : 0
+MP 2574.2  : 0
+MP 2574.3  : 0
+MP 2574.4  : 0
+MP 2574.5  : 0
+MP 2574.6  : 0
+MP 2574.7  : 0
+MP 2574.8  : 0
+MP 2574.9  : 0
+MP 2574.10 : 0
+MP 2574.11 : 0
+MP 2574.12 : 0
+MP 2574.13 : 0
+MP 2574.14 : 0
+MP 2574.15 : 0
+MP 2574.16 : 0
+MP 2574.17 : 0
+MP 2574.18 : 0
+MP 2574.19 : 0
+MP 2574.20 : 0
+MP 2574.21 : 0
+MP 2574.22 : 0
+MP 2574.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2575 Bandsperre Bandbreite für Filter 4
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2575.0  : 0
+MP 2575.1  : 0
+MP 2575.2  : 0
+MP 2575.3  : 0
+MP 2575.4  : 0
+MP 2575.5  : 0
+MP 2575.6  : 0
+MP 2575.7  : 0
+MP 2575.8  : 0
+MP 2575.9  : 0
+MP 2575.10 : 0
+MP 2575.11 : 0
+MP 2575.12 : 0
+MP 2575.13 : 0
+MP 2575.14 : 0
+MP 2575.15 : 0
+MP 2575.16 : 0
+MP 2575.17 : 0
+MP 2575.18 : 0
+MP 2575.19 : 0
+MP 2575.20 : 0
+MP 2575.21 : 0
+MP 2575.22 : 0
+MP 2575.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2576 Bandsperre Bandbreite für Filter 5
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2576.0  : 0
+MP 2576.1  : 0
+MP 2576.2  : 0
+MP 2576.3  : 0
+MP 2576.4  : 0
+MP 2576.5  : 0
+MP 2576.6  : 0
+MP 2576.7  : 0
+MP 2576.8  : 0
+MP 2576.9  : 0
+MP 2576.10 : 0
+MP 2576.11 : 0
+MP 2576.12 : 0
+MP 2576.13 : 0
+MP 2576.14 : 0
+MP 2576.15 : 0
+MP 2576.16 : 0
+MP 2576.17 : 0
+MP 2576.18 : 0
+MP 2576.19 : 0
+MP 2576.20 : 0
+MP 2576.21 : 0
+MP 2576.22 : 0
+MP 2576.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2577 Bandsperre Bandbreite für Filter 6
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 30000,0 [Hz]
+MP 2577.0  : 0
+MP 2577.1  : 0
+MP 2577.2  : 0
+MP 2577.3  : 0
+MP 2577.4  : 0
+MP 2577.5  : 0
+MP 2577.6  : 0
+MP 2577.7  : 0
+MP 2577.8  : 0
+MP 2577.9  : 0
+MP 2577.10 : 0
+MP 2577.11 : 0
+MP 2577.12 : 0
+MP 2577.13 : 0
+MP 2577.14 : 0
+MP 2577.15 : 0
+MP 2577.16 : 0
+MP 2577.17 : 0
+MP 2577.18 : 0
+MP 2577.19 : 0
+MP 2577.20 : 0
+MP 2577.21 : 0
+MP 2577.22 : 0
+MP 2577.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2590 Rampe für Bremsen bei Not-Halt
+             ;Eingabe: 0,001 bis 999,999 [U/min/ms]
+             ;         (U/min ist Motordrehzahl)
+             ;         0 = Funktion inaktiv
+MP 2590.0  : 0
+MP 2590.1  : 0
+MP 2590.2  : 0
+MP 2590.3  : 0
+MP 2590.4  : 0
+MP 2590.5  : 0
+MP 2590.6  : 0
+MP 2590.7  : 0
+MP 2590.8  : 0
+MP 2590.9  : 0
+MP 2590.10 : 0
+MP 2590.11 : 0
+MP 2590.12 : 0
+MP 2590.13 : 0
+MP 2590.14 : 0
+MP 2590.15 : 0
+MP 2590.16 : 0
+MP 2590.17 : 0
+MP 2590.18 : 0
+MP 2590.19 : 0
+MP 2590.20 : 0
+MP 2590.21 : 0
+MP 2590.22 : 0
+MP 2590.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2600 Beschleunigungs-Vorsteuerung
+             ;Eingabe: 0 bis 1000 [A/(U/s sq 2)]
+MP 2600.0  : 0
+MP 2600.1  : 0
+MP 2600.2  : 0
+MP 2600.3  : 0
+MP 2600.4  : 0
+MP 2600.5  : 0
+MP 2600.6  : 0
+MP 2600.7  : 0
+MP 2600.8  : 0
+MP 2600.9  : 0
+MP 2600.10 : 0
+MP 2600.11 : 0
+MP 2600.12 : 0
+MP 2600.13 : 0
+MP 2600.14 : 0
+MP 2600.15 : 0
+MP 2600.16 : 0
+MP 2600.17 : 0
+MP 2600.18 : 0
+MP 2600.19 : 0
+MP 2600.20 : 0
+MP 2600.21 : 0
+MP 2600.22 : 0
+MP 2600.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2602 IPC-Zeitkonstante T 1
+             ;Eingabe: 0,0000 bis 1,0000 [s]
+             ;         0: kein IPC
+MP 2602.0  : 0
+MP 2602.1  : 0
+MP 2602.2  : 0
+MP 2602.3  : 0
+MP 2602.4  : 0
+MP 2602.5  : 0
+MP 2602.6  : 0
+MP 2602.7  : 0
+MP 2602.8  : 0
+MP 2602.9  : 0
+MP 2602.10 : 0
+MP 2602.11 : 0
+MP 2602.12 : 0
+MP 2602.13 : 0
+MP 2602.14 : 0
+MP 2602.15 : 0
+MP 2602.16 : 0
+MP 2602.17 : 0
+MP 2602.18 : 0
+MP 2602.19 : 0
+MP 2602.20 : 0
+MP 2602.21 : 0
+MP 2602.22 : 0
+MP 2602.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2604 IPC-Zeitkonstante T 2
+             ;Eingabe: 0,0000 bis 1,0000 [s]
+             ;         0: kein IPC
+MP 2604.0  : 0
+MP 2604.1  : 0
+MP 2604.2  : 0
+MP 2604.3  : 0
+MP 2604.4  : 0
+MP 2604.5  : 0
+MP 2604.6  : 0
+MP 2604.7  : 0
+MP 2604.8  : 0
+MP 2604.9  : 0
+MP 2604.10 : 0
+MP 2604.11 : 0
+MP 2604.12 : 0
+MP 2604.13 : 0
+MP 2604.14 : 0
+MP 2604.15 : 0
+MP 2604.16 : 0
+MP 2604.17 : 0
+MP 2604.18 : 0
+MP 2604.19 : 0
+MP 2604.20 : 0
+MP 2604.21 : 0
+MP 2604.22 : 0
+MP 2604.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2606 Dimensionsloser Faktor für Ruckvorsteuerung
+             ;       während der Ruckphase
+             ;Eingabe CC 422: 0,000 bis 10,000
+             ;        CC 424, CC 61xx: 0,000 bis 0,800
+             ;        0 = Funktion inaktiv
+MP 2606.0  : 0
+MP 2606.1  : 0
+MP 2606.2  : 0
+MP 2606.3  : 0
+MP 2606.4  : 0
+MP 2606.5  : 0
+MP 2606.6  : 0
+MP 2606.7  : 0
+MP 2606.8  : 0
+MP 2606.9  : 0
+MP 2606.10 : 0
+MP 2606.11 : 0
+MP 2606.12 : 0
+MP 2606.13 : 0
+MP 2606.14 : 0
+MP 2606.15 : 0
+MP 2606.16 : 0
+MP 2606.17 : 0
+MP 2606.18 : 0
+MP 2606.19 : 0
+MP 2606.20 : 0
+MP 2606.21 : 0
+MP 2606.22 : 0
+MP 2606.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2607 Dämpfungsfaktor für aktive Dämpfung tieffrequenter
+             ;       Schwingungen
+             ;Eingabe: 0 bis 30,000
+             ;         0: Keine Dämpfung
+             ;         1,5: Typischer Dämpfungsfaktor
+MP 2607.0  : 0
+MP 2607.1  : 0
+MP 2607.2  : 0
+MP 2607.3  : 0
+MP 2607.4  : 0
+MP 2607.5  : 0
+MP 2607.6  : 0
+MP 2607.7  : 0
+MP 2607.8  : 0
+MP 2607.9  : 0
+MP 2607.10 : 0
+MP 2607.11 : 0
+MP 2607.12 : 0
+MP 2607.13 : 0
+MP 2607.14 : 0
+MP 2607.15 : 0
+MP 2607.16 : 0
+MP 2607.17 : 0
+MP 2607.18 : 0
+MP 2607.19 : 0
+MP 2607.20 : 0
+MP 2607.21 : 0
+MP 2607.22 : 0
+MP 2607.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2608 Dämpfungszeitkonstante für aktive Dämpfung
+             ;       tieffrequenter Schwingungen
+             ;Eingabe: 0 bis 0,9999 [s]
+             ;         0: Keine Dämpfung
+             ;         0,005 bis 0,02: Typische Dämpfungszeitkonstante
+MP 2608.0  : 0
+MP 2608.1  : 0
+MP 2608.2  : 0
+MP 2608.3  : 0
+MP 2608.4  : 0
+MP 2608.5  : 0
+MP 2608.6  : 0
+MP 2608.7  : 0
+MP 2608.8  : 0
+MP 2608.9  : 0
+MP 2608.10 : 0
+MP 2608.11 : 0
+MP 2608.12 : 0
+MP 2608.13 : 0
+MP 2608.14 : 0
+MP 2608.15 : 0
+MP 2608.16 : 0
+MP 2608.17 : 0
+MP 2608.18 : 0
+MP 2608.19 : 0
+MP 2608.20 : 0
+MP 2608.21 : 0
+MP 2608.22 : 0
+MP 2608.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2609 Trennfrequenz für Crossover Position Filter (CPF) zur
+             ;       passiven Dämpfung von Maschinenresonanzen.
+             ;       Nutzbar für Antriebe mit Drehzahl- und Lagemessystem
+             ;       (Zwei-Geber-Systeme), (nur ab CC 61xx).
+             ;Eingabe: 0 bis 300,0000 [Hz]
+             ;         0: CPF nicht aktiv
+             ;         10,0000 bis 100,0000: Typische Dämpfungszeitkonstant
+MP 2609.0  : 0
+MP 2609.1  : 0
+MP 2609.2  : 0
+MP 2609.3  : 0
+MP 2609.4  : 0
+MP 2609.5  : 0
+MP 2609.6  : 0
+MP 2609.7  : 0
+MP 2609.8  : 0
+MP 2609.9  : 0
+MP 2609.10 : 0
+MP 2609.11 : 0
+MP 2609.12 : 0
+MP 2609.13 : 0
+MP 2609.14 : 0
+MP 2609.15 : 0
+MP 2609.16 : 0
+MP 2609.17 : 0
+MP 2609.18 : 0
+MP 2609.19 : 0
+MP 2609.20 : 0
+MP 2609.21 : 0
+MP 2609.22 : 0
+MP 2609.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2610 Reibungskompensation bei ca. 10 U/min
+             ;Eingabe: 0 bis 100 [A]
+MP 2610.0  : 0
+MP 2610.1  : 0
+MP 2610.2  : 0
+MP 2610.3  : 0
+MP 2610.4  : 0
+MP 2610.5  : 0
+MP 2610.6  : 0
+MP 2610.7  : 0
+MP 2610.8  : 0
+MP 2610.9  : 0
+MP 2610.10 : 0
+MP 2610.11 : 0
+MP 2610.12 : 0
+MP 2610.13 : 0
+MP 2610.14 : 0
+MP 2610.15 : 0
+MP 2610.16 : 0
+MP 2610.17 : 0
+MP 2610.18 : 0
+MP 2610.19 : 0
+MP 2610.20 : 0
+MP 2610.21 : 0
+MP 2610.22 : 0
+MP 2610.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2612 Verzögerung Reibungskompensation
+             ;Eingabe: 0 bis 1 [s], wenn MP2614 = 0
+             ;         0 bis 1 [mm], wenn MP2614 != 0
+MP 2612.0  : 0
+MP 2612.1  : 0
+MP 2612.2  : 0
+MP 2612.3  : 0
+MP 2612.4  : 0
+MP 2612.5  : 0
+MP 2612.6  : 0
+MP 2612.7  : 0
+MP 2612.8  : 0
+MP 2612.9  : 0
+MP 2612.10 : 0
+MP 2612.11 : 0
+MP 2612.12 : 0
+MP 2612.13 : 0
+MP 2612.14 : 0
+MP 2612.15 : 0
+MP 2612.16 : 0
+MP 2612.17 : 0
+MP 2612.18 : 0
+MP 2612.19 : 0
+MP 2612.20 : 0
+MP 2612.21 : 0
+MP 2612.22 : 0
+MP 2612.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2614 Dynamische Reibungskompensation
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 100,000 [mm]
+MP 2614.0  : 0
+MP 2614.1  : 0
+MP 2614.2  : 0
+MP 2614.3  : 0
+MP 2614.4  : 0
+MP 2614.5  : 0
+MP 2614.6  : 0
+MP 2614.7  : 0
+MP 2614.8  : 0
+MP 2614.9  : 0
+MP 2614.10 : 0
+MP 2614.11 : 0
+MP 2614.12 : 0
+MP 2614.13 : 0
+MP 2614.14 : 0
+MP 2614.15 : 0
+MP 2614.16 : 0
+MP 2614.17 : 0
+MP 2614.18 : 0
+MP 2614.19 : 0
+MP 2614.20 : 0
+MP 2614.21 : 0
+MP 2614.22 : 0
+MP 2614.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2620 Reibungskompensation bei Nenndrehzahl
+             ;Eingabe: 0 bis 100,000 [A]
+MP 2620.0  : 0
+MP 2620.1  : 0
+MP 2620.2  : 0
+MP 2620.3  : 0
+MP 2620.4  : 0
+MP 2620.5  : 0
+MP 2620.6  : 0
+MP 2620.7  : 0
+MP 2620.8  : 0
+MP 2620.9  : 0
+MP 2620.10 : 0
+MP 2620.11 : 0
+MP 2620.12 : 0
+MP 2620.13 : 0
+MP 2620.14 : 0
+MP 2620.15 : 0
+MP 2620.16 : 0
+MP 2620.17 : 0
+MP 2620.18 : 0
+MP 2620.19 : 0
+MP 2620.20 : 0
+MP 2620.21 : 0
+MP 2620.22 : 0
+MP 2620.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2630 Haltestrom senkrechte Achse (Gewichtsausgleich)
+             ;Eingabe: -100,000 bis +100,000 [A]
+MP 2630.0  : +0
+MP 2630.1  : +0
+MP 2630.2  : +0
+MP 2630.3  : +0
+MP 2630.4  : +0
+MP 2630.5  : +0
+MP 2630.6  : +0
+MP 2630.7  : +0
+MP 2630.8  : +0
+MP 2630.9  : +0
+MP 2630.10 : +0
+MP 2630.11 : +0
+MP 2630.12 : +0
+MP 2630.13 : +0
+MP 2630.14 : +0
+MP 2630.15 : +0
+MP 2630.16 : +0
+MP 2630.17 : +0
+MP 2630.18 : +0
+MP 2630.19 : +0
+MP 2630.20 : +0
+MP 2630.21 : +0
+MP 2630.22 : +0
+MP 2630.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2640 Torsionskompensation zwischen Lage- und Drehzahlmess-
+             ;       system
+             ;Eingabe: 0,001 bis 100,000 [um/A]
+             ;         0 = nicht aktiv
+MP 2640.0  : 0
+MP 2640.1  : 0
+MP 2640.2  : 0
+MP 2640.3  : 0
+MP 2640.4  : 0
+MP 2640.5  : 0
+MP 2640.6  : 0
+MP 2640.7  : 0
+MP 2640.8  : 0
+MP 2640.9  : 0
+MP 2640.10 : 0
+MP 2640.11 : 0
+MP 2640.12 : 0
+MP 2640.13 : 0
+MP 2640.14 : 0
+MP 2640.15 : 0
+MP 2640.16 : 0
+MP 2640.17 : 0
+MP 2640.18 : 0
+MP 2640.19 : 0
+MP 2640.20 : 0
+MP 2640.21 : 0
+MP 2640.22 : 0
+MP 2640.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2690 Begrenzung der Kompensationswerte für Lose,
+             ;       Haftreibung und Umkehrspiel
+             ;Eingabe: 0 bis 1,0000 [Sekunden]
+             ;         0 = nicht aktiv
+MP 2690.0  : 0
+MP 2690.1  : 0
+MP 2690.2  : 0
+MP 2690.3  : 0
+MP 2690.4  : 0
+MP 2690.5  : 0
+MP 2690.6  : 0
+MP 2690.7  : 0
+MP 2690.8  : 0
+MP 2690.9  : 0
+MP 2690.10 : 0
+MP 2690.11 : 0
+MP 2690.12 : 0
+MP 2690.13 : 0
+MP 2690.14 : 0
+MP 2690.15 : 0
+MP 2690.16 : 0
+MP 2690.17 : 0
+MP 2690.18 : 0
+MP 2690.19 : 0
+MP 2690.20 : 0
+MP 2690.21 : 0
+MP 2690.22 : 0
+MP 2690.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2700 Achsspezifische Aktivierung der erweiterten
+             ;       Kompensationen (Software-Optionen)
+             ;Eingabe: %xxxxxxxxxxxxxxxxxx
+             ;Bit 0   CTC-Kompensation (Option 141)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 1   PAC-Kompensation (Option 142)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 2   LAC-Kompensation (Option 143)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 3   MAC-Kompensation (Option 144)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 4   ACC-Kompensation (Option 145)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 5   AVD-Kompensation (Option 146)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 6..15 reserviert
+             ;5432109876543210
+MP 2700.0  : %0000000000000000
+MP 2700.1  : %0000000000000000
+MP 2700.2  : %0000000000000000
+MP 2700.3  : %0000000000000000
+MP 2700.4  : %0000000000000000
+MP 2700.5  : %0000000000000000
+MP 2700.6  : %0000000000000000
+MP 2700.7  : %0000000000000000
+MP 2700.8  : %0000000000000000
+MP 2700.9  : %0000000000000000
+MP 2700.10 : %0000000000000000
+MP 2700.11 : %0000000000000000
+MP 2700.12 : %0000000000000000
+MP 2700.13 : %0000000000000000
+MP 2700.14 : %0000000000000000
+MP 2700.15 : %0000000000000000
+MP 2700.16 : %0000000000000000
+MP 2700.17 : %0000000000000000
+MP 2700.18 : %0000000000000000
+MP 2700.19 : %0000000000000000
+MP 2700.20 : %0000000000000000
+MP 2700.21 : %0000000000000000
+MP 2700.22 : %0000000000000000
+MP 2700.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2710 ACC: Auswahl der Arbeitsweise des Automatik-Modus
+             ;       (Nur gültig, wenn Bit#4 in MP2700 gesetzt ist)
+             ;Eingabe: 0 = Robuster Standard-Modus mit mittelstarker
+             ;             Aufschaltung eines Dämpfungssignals
+             ;             (empfohlene Einstellung)
+             ;         1 = Für die gewählte Achse wird die Ratterdämpfung
+             ;             erhöht, dies ist in einigen Fällen für eine oder
+             ;             zwei Achsen vorteilhaft (z.B. Vertikalachsen),
+             ;             führt jedoch zu etwas reduzierter
+             ;             Regelgenauigkeit (leicht erhöhter Schleppfehler)
+             ;         2 = Für die gewählte Achse wird die Ratterdämpfung
+             ;             stark erhöht, dies ist in der Regel höchstens
+             ;             für eine Achse vorteilhaft,
+             ;             führt jedoch zu etwas reduzierter
+             ;             Regelgenauigkeit (erhöhter Schleppfehler)
+MP 2710.0  : 0
+MP 2710.1  : 0
+MP 2710.2  : 0
+MP 2710.3  : 0
+MP 2710.4  : 0
+MP 2710.5  : 0
+MP 2710.6  : 0
+MP 2710.7  : 0
+MP 2710.8  : 0
+MP 2710.9  : 0
+MP 2710.10 : 0
+MP 2710.11 : 0
+MP 2710.12 : 0
+MP 2710.13 : 0
+MP 2710.14 : 0
+MP 2710.15 : 0
+MP 2710.16 : 0
+MP 2710.17 : 0
+MP 2710.18 : 0
+MP 2710.19 : 0
+MP 2710.20 : 0
+MP 2710.21 : 0
+MP 2710.22 : 0
+MP 2710.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2720 AVD: Index für unterschiedliche Kompensations-Dateien
+             ;Eingabe: 0 bis 9
+MP 2720.0  : 0
+MP 2720.1  : 0
+MP 2720.2  : 0
+MP 2720.3  : 0
+MP 2720.4  : 0
+MP 2720.5  : 0
+MP 2720.6  : 0
+MP 2720.7  : 0
+MP 2720.8  : 0
+MP 2720.9  : 0
+MP 2720.10 : 0
+MP 2720.11 : 0
+MP 2720.12 : 0
+MP 2720.13 : 0
+MP 2720.14 : 0
+MP 2720.15 : 0
+MP 2720.16 : 0
+MP 2720.17 : 0
+MP 2720.18 : 0
+MP 2720.19 : 0
+MP 2720.20 : 0
+MP 2720.21 : 0
+MP 2720.22 : 0
+MP 2720.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2800 reserviert
+             ;Eingabe: %0000000000000000
+MP 2800.0  : %0000000000000000
+MP 2800.1  : %0000000000000000
+MP 2800.2  : %0000000000000000
+MP 2800.3  : %0000000000000000
+MP 2800.4  : %0000000000000000
+MP 2800.5  : %0000000000000000
+MP 2800.6  : %0000000000000000
+MP 2800.7  : %0000000000000000
+MP 2800.8  : %0000000000000000
+MP 2800.9  : %0000000000000000
+MP 2800.10 : %0000000000000000
+MP 2800.11 : %0000000000000000
+MP 2800.12 : %0000000000000000
+MP 2800.13 : %0000000000000000
+MP 2800.14 : %0000000000000000
+MP 2800.15 : %0000000000000000
+MP 2800.16 : %0000000000000000
+MP 2800.17 : %0000000000000000
+MP 2800.18 : %0000000000000000
+MP 2800.19 : %0000000000000000
+MP 2800.20 : %0000000000000000
+MP 2800.21 : %0000000000000000
+MP 2800.22 : %0000000000000000
+MP 2800.23 : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP2900 Verspannmoment zwischen Master und Slave bei der
+             ;       Momenten-Master-Slave-Regelung
+             ;Eingabe: -100,00 bis 100,00 [Nm]
+             ;         (Eingabe bei der Slave-Achse)
+MP 2900.0  : +0
+MP 2900.1  : +0
+MP 2900.2  : +0
+MP 2900.3  : +0
+MP 2900.4  : +0
+MP 2900.5  : +0
+MP 2900.6  : +0
+MP 2900.7  : +0
+MP 2900.8  : +0
+MP 2900.9  : +0
+MP 2900.10 : +0
+MP 2900.11 : +0
+MP 2900.12 : +0
+MP 2900.13 : +0
+MP 2900.14 : +0
+MP 2900.15 : +0
+MP 2900.16 : +0
+MP 2900.17 : +0
+MP 2900.18 : +0
+MP 2900.19 : +0
+MP 2900.20 : +0
+MP 2900.21 : +0
+MP 2900.22 : +0
+MP 2900.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2910 Verstärkung Momentenregler bei der Momenten-Master-
+             ;       Slave-Regelung
+             ;Eingabe: 0,001 bis 999,999 [1/(Nm*min)]
+             ;         (Eingabe bei der Slave-Achse)
+MP 2910.0  : 0.001
+MP 2910.1  : 0.001
+MP 2910.2  : 0.001
+MP 2910.3  : 0.001
+MP 2910.4  : 0.001
+MP 2910.5  : 0.001
+MP 2910.6  : 0.001
+MP 2910.7  : 0.001
+MP 2910.8  : 0.001
+MP 2910.9  : 0.001
+MP 2910.10 : 0.001
+MP 2910.11 : 0.001
+MP 2910.12 : 0.001
+MP 2910.13 : 0.001
+MP 2910.14 : 0.001
+MP 2910.15 : 0.001
+MP 2910.16 : 0.001
+MP 2910.17 : 0.001
+MP 2910.18 : 0.001
+MP 2910.19 : 0.001
+MP 2910.20 : 0.001
+MP 2910.21 : 0.001
+MP 2910.22 : 0.001
+MP 2910.23 : 0.001
+             ;------------------------------------------------------------------
+             ;MP2912 ab CC 61xx: Konfiguration der Momenten-Master-
+             ;       Slave-Regelung
+             ;Eingabe: %00
+             ;Bit 0   Drehzahlkorrekturwert auf Master/Slave aufteilen
+             ;        0 = Aufteilung Drehzahlkorrekturwert auf Master/Slave
+             ;        1 = Drehzahlkorrekturwert nur Slave zuführen
+             ;Bit 1   Vorsteuerung Momenten-Master-Slave-Regelung
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+MP 2912.0  : %00
+MP 2912.1  : %00
+MP 2912.2  : %00
+MP 2912.3  : %00
+MP 2912.4  : %00
+MP 2912.5  : %00
+MP 2912.6  : %00
+MP 2912.7  : %00
+MP 2912.8  : %00
+MP 2912.9  : %00
+MP 2912.10 : %00
+MP 2912.11 : %00
+MP 2912.12 : %00
+MP 2912.13 : %00
+MP 2912.14 : %00
+MP 2912.15 : %00
+MP 2912.16 : %00
+MP 2912.17 : %00
+MP 2912.18 : %00
+MP 2912.19 : %00
+MP 2912.20 : %00
+MP 2912.21 : %00
+MP 2912.22 : %00
+MP 2912.23 : %00
+             ;------------------------------------------------------------------
+             ;MP2920 Faktor zur variablen Momentenaufteilung bei der
+             ;       Momenten-Master-Slave-Regelung
+             ;Eingabe: 0,000 bis 100,000
+             ;         (Eingabe bei der Slave-Achse)
+MP 2920.0  : 0
+MP 2920.1  : 0
+MP 2920.2  : 0
+MP 2920.3  : 0
+MP 2920.4  : 0
+MP 2920.5  : 0
+MP 2920.6  : 0
+MP 2920.7  : 0
+MP 2920.8  : 0
+MP 2920.9  : 0
+MP 2920.10 : 0
+MP 2920.11 : 0
+MP 2920.12 : 0
+MP 2920.13 : 0
+MP 2920.14 : 0
+MP 2920.15 : 0
+MP 2920.16 : 0
+MP 2920.17 : 0
+MP 2920.18 : 0
+MP 2920.19 : 0
+MP 2920.20 : 0
+MP 2920.21 : 0
+MP 2920.22 : 0
+MP 2920.23 : 0
+             ;------------------------------------------------------------------
+             ;MP2930 Faktor zur variablen Drehzahlkorrektur bei der
+             ;       Momenten-Master-Slave-Regelung (nicht CC 61xx)
+             ;Eingabe: -100,00 bis 100,00 [%]
+             ;         (Eingabe bei der Slave-Achse)
+MP 2930.0  : +0
+MP 2930.1  : +0
+MP 2930.2  : +0
+MP 2930.3  : +0
+MP 2930.4  : +0
+MP 2930.5  : +0
+MP 2930.6  : +0
+MP 2930.7  : +0
+MP 2930.8  : +0
+MP 2930.9  : +0
+MP 2930.10 : +0
+MP 2930.11 : +0
+MP 2930.12 : +0
+MP 2930.13 : +0
+MP 2930.14 : +0
+MP 2930.15 : +0
+MP 2930.16 : +0
+MP 2930.17 : +0
+MP 2930.18 : +0
+MP 2930.19 : +0
+MP 2930.20 : +0
+MP 2930.21 : +0
+MP 2930.22 : +0
+MP 2930.23 : +0
+             ;------------------------------------------------------------------
+             ;MP2990 reserviert
+             ;Eingabe: 0
+MP 2990.0  : 0
+MP 2990.1  : 0
+MP 2990.2  : 0
+MP 2990.3  : 0
+MP 2990.4  : 0
+MP 2990.5  : 0
+             ;==================================================================
+             ;MP 3000 .. 3999
+             ;Spindel-Steuerung (1. Spindel)
+             ;==================================================================
+             ;MP3010 Ausgabe der Spindel-Drehzahl, Spindel-Orientierung
+             ;Eingabe:
+             ; 0 = keine Ausgabe der Spindel-Drehzahl
+             ; 1 = codierte Ausgabe der Spindel-Drehzahl,nur
+             ;     wenn sich die Drehzahl ändert
+             ; 2 = codierte Ausgabe der Spindel-Drehzahl bei jedem Tool Call
+             ; 3 = analoge Ausgabe der Spindel-Drehzahl, aber
+             ;     Getriebeschaltsignal nur, wenn sich Getriebestufe ändert
+             ; 4 = analoge Ausgabe der Spindel-Drehzahl, aber
+             ;     Getriebeschaltsignal bei jedem Tool Call
+             ; 5 = analoge Ausgabe der Spindel-Drehzahl und kein
+             ;     Getriebeschaltsignal
+             ; 6 = wie Eingabewert 3, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+             ; 7 = wie Eingabewert 4, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+             ; 8 = wie Eingabewert 5, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+MP 3010    : 6
+             ;------------------------------------------------------------------
+             ;MP3011 Funktion von Analog-Ausgang s, falls MP3010 < 3
+             ;Eingabe: 0 = keine Sonderfunktion (0 Volt)
+             ;         1 = Spannung proportional zum aktuellen Bahnvorschub
+             ;             (abhängig von MP3012)
+             ;         2 = Spannung wird über PLC-modul 9130 definiert
+             ;         3 = Spannung wird über M-Funktionen
+             ;             definiert (M200 bis M204)
+MP 3011    : 0
+             ;------------------------------------------------------------------
+             ;MP3012 Vorschub bei Ausgabe einer Analogspannung von 10 V
+             ;(MP3011 = 1)
+             ;Eingabe: 0 bis 300 000 [mm/min]
+             ;Laserleistungssteuerung M200-M204
+MP 3012    : 0          ;0-30000 m/min = 10 Volt
+             ;------------------------------------------------------------------
+             ;MP3013.0 bis MP3013.11 Kennlinien-Stützpunkte zur
+             ;Ausgabe der Analog-Spannung mit M202
+             ;Eingabe: 10 bis 300 000 [mm/min]
+MP 3013.0  : 0
+MP 3013.1  : 0
+MP 3013.2  : 0
+MP 3013.3  : 0
+MP 3013.4  : 0
+MP 3013.5  : 0
+MP 3013.6  : 0
+MP 3013.7  : 0
+MP 3013.8  : 0
+MP 3013.9  : 0
+MP 3013.10 : 0
+MP 3013.11 : 0
+             ;------------------------------------------------------------------
+             ;MP3014.0 bis MP3014.11  Kennlinien-Stützpunkte zur
+             ;Ausgabe der Analog-Spannung mit M202
+             ;Eingabe: 0,000 bis 9,999 [V]
+MP 3014.0  : 0
+MP 3014.1  : 0
+MP 3014.2  : 0
+MP 3014.3  : 0
+MP 3014.4  : 0
+MP 3014.5  : 0
+MP 3014.6  : 0
+MP 3014.7  : 0
+MP 3014.8  : 0
+MP 3014.9  : 0
+MP 3014.10 : 0
+MP 3014.11 : 0
+             ;------------------------------------------------------------------
+             ;MP3020 Festlegung des Drehzahlbereiches BCD Spindel
+             ;Eingabe: 0 bis 99 999
+             ;Begrenzung Drehzahl-Codes (keine Begrenzung bei 01991)
+             ;    1* Schrittweite (1..9)
+             ;+  10* max. Code (1..99)
+             ;+1000* min. Code (1..99)
+MP 3020    : 1991
+             ;------------------------------------------------------------------
+             ;MP3030 Achsstillstand bei einem Tool Call, bei dem nur eine
+             ;Spindeldrehzahl ausgegeben wird.
+             ;Eingabe: %xx
+             ;Bit 0   Achsstillstand bei Tool Call
+             ;        0 = aktiv
+             ;        1 = nicht aktiv
+             ;Bit 1   Auf Drehzahl 0 regeln beim Umschalten auf eine andere
+             ;        Getriebestufe
+             ;        0 = aktiv
+             ;        1 = nicht aktiv
+             ;10
+MP 3030    : %01
+             ;------------------------------------------------------------------
+             ;MP3120 Drehzahl 0 erlaubt
+             ;Eingabe: 0: S = 0 erlaubt
+             ;         1: S = 0 nicht erlaubt
+MP 3120    : 1
+             ;------------------------------------------------------------------
+             ;MP3130 Polarität des Drehzahl-Sollwertes der Spindel
+             ;Eingabe: 0 = M03 positiv; M04 negativ
+             ;         1 = M03 negativ; M04 positiv
+             ;         2 = M03 und M04 positiv
+             ;         3 = M03 und M04 negativ
+MP 3130    : 0
+             ;------------------------------------------------------------------
+             ;MP3140 Zählrichtung der Messsystem-Signale für Spindel
+             ;Eingabe: 0 = positive Zählrichtung bei M03
+             ;         1 = negative Zählrichtung bei M03
+MP 3140    : 0
+             ;------------------------------------------------------------------
+             ;MP3142 Strichzahl des Drehgebers an der Hauptspindel
+             ;Eingabe: 100 bis 100000 [Striche]
+MP 3142    : 2048
+             ;------------------------------------------------------------------
+             ;MP3143 Montageart Lagemesssystem Spindel
+             ;Eingabe: 0 = direkt
+             ;         1 = Getriebe (Ref-Impuls vom Eingang X30)
+             ;         2 = Getriebe (Ref-Endlage von Eingang X30 und Ref-
+             ;             Impuls vom Messsytem, nicht möglich wenn Getriebe
+             ;             zwischen Messsytem und Spindel)
+             ;         3 = Getriebe (2. Ref-Impuls vom Eingang X30)
+             ;         4 = Referenzauswertung über EnDat (nicht möglich
+             ;             wenn Getriebe zwischen Messsytem und Spindel)
+             ;         5 = wie Eingabe = 0, jedoch erfolgt eine Auswertung
+             ;             des Übersetzungsverhältnisses
+MP 3143    : 0
+             ;------------------------------------------------------------------
+             ;MP3210 S digital: Motor-Umdrehungen bei Nenn-Drehzahl
+             ;         Eingabe: 0 bis 100 [1000/min]
+             ;
+             ;       S analog : S-Analogspannung bei Nenn-Drehzahl
+             ;         Eingabe: 0 bis 9,999 [V]
+MP 3210.0  : 5          ;1. Stufe
+MP 3210.1  : 10         ;2. Stufe
+MP 3210.2  : 0          ;3. Stufe
+MP 3210.3  : 0          ;4. Stufe
+MP 3210.4  : 0          ;5. Stufe
+MP 3210.5  : 0          ;6. Stufe
+MP 3210.6  : 0          ;7. Stufe
+MP 3210.7  : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3240.1 S digital: minimal ausgebbare Motor-Drehzahl
+             ;           Eingabe: 0 bis 9,999 [1000/min]
+             ;
+             ;         S analog : minimal ausgebbare S-Analogspannung
+             ;           Eingabe: 0 bis 9,999 [V]
+MP 3240.1  : 0.05
+             ;------------------------------------------------------------------
+             ;MP3240.2 S digital: Motor-Drehzahl für Getriebeschalten
+             ;           Eingabe: 0 bis 9,999 [1000/min]
+             ;
+             ;         S analog : Pendelspannung für Getriebeschalten
+             ;           Eingabe: 0 bis 9,999 [V]
+MP 3240.2  : 0.01
+             ;------------------------------------------------------------------
+             ;MP3310 Begrenzung S-Override
+             ;Eingabe: 0 bis 100 [%]
+MP 3310.0  : 130        ;maximal
+MP 3310.1  : 50         ;minimal
+             ;------------------------------------------------------------------
+             ;MP3350 Maximal zulässige Überschreitung der Spindeldrehzahl
+             ;       für die Überwachung der Spindeldrehzahl. Angabe erfolgt
+             ;       relativ in Prozent vom Sollwert der Spindeldrehzahl.
+             ;Eingabe: 0 bis 100 [%]
+MP 3350    : 0
+             ;------------------------------------------------------------------
+             ;MP3351 Angabe eines Absolutwertes für die zulässige
+             ;       Überschreitung der Spindeldrehzahl. Dieser Wert wird
+             ;       nur verwendet, wenn der Absolutwert der sich aus
+             ;       MP3350 ergibt, kleiner als der Wert in MP3351 ist.
+             ;       (bei niedriger Solldrehzahl)
+             ;Eingabe: 0,001 bis 100000,000 [U/min]
+             ;         0 = Überwachung inaktiv
+MP 3351    : 0
+             ;------------------------------------------------------------------
+             ;MP3411 Rampensteilheit der Spindel
+             ;Eingabe: S digital: 0 bis 1,999 [(1000/min)/ms]
+             ;         S analog : 0 bis 1,999 [V/ms]
+MP 3411.0  : 0.001
+MP 3411.1  : 0.001
+MP 3411.2  : 0.001
+MP 3411.3  : 0.001
+MP 3411.4  : 0.001
+MP 3411.5  : 0.001
+MP 3411.6  : 0.001
+MP 3411.7  : 0.001
+             ;------------------------------------------------------------------
+             ;MP3412 Multiplikator für MP3411
+             ;Eingabe: 0,000 bis 1,999
+MP 3412.0  : 1          ;bei M05
+MP 3412.1  : 1          ;bei Spindel-Orientierung
+MP 3412.2  : 1          ;bei Gewindebohren
+MP 3412.3  : 1          ;bei Gewindebohren ohne Ausgleichsfutter
+             ;------------------------------------------------------------------
+             ;MP3415 Einschwingverhalten der Spindel
+             ;Eingabe: 0 bis 1 000 [ms]
+MP 3415.0  : 100        ;bei M03, M04, M05
+MP 3415.1  : 100        ;bei Spindel-Orientierung
+MP 3415.2  : 100        ;bei Gewindebohren
+MP 3415.3  : 100        ;bei Gewindebohren ohne Ausgleichsfutter
+             ;------------------------------------------------------------------
+             ;MP3420 Positionierfenster für Spindel
+             ;Eingabe: 0 bis 360 [Grad]
+MP 3420    : 0.05
+             ;------------------------------------------------------------------
+             ;MP3430 Abweichung der Referenzmarke von der gewünschten
+             ;Position (Spindel-Preset)
+             ;Eingabe: 0 bis 360 [Grad]
+MP 3430    : 0
+             ;------------------------------------------------------------------
+             ;MP3440 kv-Faktor für Spindel-Orientierung
+             ;Eingabe: 0,1 bis 10 [1000 /min]
+MP 3440.0  : 1          ;1. Stufe
+MP 3440.1  : 1          ;2. Stufe
+MP 3440.2  : 1          ;3. Stufe
+MP 3440.3  : 1          ;4. Stufe
+MP 3440.4  : 1          ;5. Stufe
+MP 3440.5  : 1          ;6. Stufe
+MP 3440.6  : 1          ;7. Stufe
+MP 3440.7  : 1          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3450 Umdrehungen Spindel-Motor
+             ;Eingabe: 0 bis 65535 [1/min]
+             ;         0 keine Übersetzung
+MP 3450.0  : 0          ;1. Stufe
+MP 3450.1  : 0          ;2. Stufe
+MP 3450.2  : 0          ;3. Stufe
+MP 3450.3  : 0          ;4. Stufe
+MP 3450.4  : 0          ;5. Stufe
+MP 3450.5  : 0          ;6. Stufe
+MP 3450.6  : 0          ;7. Stufe
+MP 3450.7  : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3451 Umdrehungen Spindel
+             ;Eingabe: 0 bis 65535 [1/min]
+             ;         0 keine Übersetzung
+MP 3451.0  : 0          ;1. Stufe
+MP 3451.1  : 0          ;2. Stufe
+MP 3451.2  : 0          ;3. Stufe
+MP 3451.3  : 0          ;4. Stufe
+MP 3451.4  : 0          ;5. Stufe
+MP 3451.5  : 0          ;6. Stufe
+MP 3451.6  : 0          ;7. Stufe
+MP 3451.7  : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3510 Nenn-Drehzahl für Getriebestufen
+             ;Eingabe: 0 bis 999 999,999 [U/min]
+MP 3510.0  : 5000       ;1. Stufe
+MP 3510.1  : 100000     ;2. Stufe
+MP 3510.2  : 0          ;3. Stufe
+MP 3510.3  : 0          ;4. Stufe
+MP 3510.4  : 0          ;5. Stufe
+MP 3510.5  : 0          ;6. Stufe
+MP 3510.6  : 0          ;7. Stufe
+MP 3510.7  : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3515 Maximale Spindel-Drehzahl
+             ;Eingabe: 0 bis 999 999,999 [U/min]
+MP 3515.0  : 5000       ;1. Stufe
+MP 3515.1  : 100000     ;2. Stufe
+MP 3515.2  : 0          ;3. Stufe
+MP 3515.3  : 0          ;4. Stufe
+MP 3515.4  : 0          ;5. Stufe
+MP 3515.5  : 0          ;6. Stufe
+MP 3515.6  : 0          ;7. Stufe
+MP 3515.7  : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP3520.0 Drehzahl aktiviert durch Merker M4011
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 3520.0  : 10
+             ;------------------------------------------------------------------
+             ;MP3520.1 Spindel-Drehzahl für Spindel-Orientierung
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 3520.1  : 500
+             ;------------------------------------------------------------------
+             ;MP3530 Erhöhte Spindelleistung beim Schruppen
+             ;Eingabe: 0 = nicht aktiv
+             ;         1 = erhöhte Spindelleistung beim Schruppen
+MP 3530    : 0
+             ;------------------------------------------------------------------
+             ;MP3540 Zulässige Drehzahlunterschreitung der
+             ;       Spindel-Istdrehzahl über einen Prozent-Faktor
+             ;       von der Solldrehzahl
+             ;Eingabe: 0 bis 100 [%]
+             ;         0 = Überwachung nicht aktiv
+MP 3540    : 0
+             ;------------------------------------------------------------------
+             ;MP3542 Mindest-Spindeldrehzahl, ab der die Überwachung
+             ;       in MP3540 aktiv wird
+             ;Eingabe: 0,001 bis 99 999,999 [U/min]
+             ;         0 = Überwachung nicht aktiv
+MP 3542    : 0
+             ;------------------------------------------------------------------
+             ;MP3550 Verzögerung der NOT-AUS-Reaktion von Spindeln
+             ;Eingabe: 0,001 bis 0,100 [s]
+             ;         0 = Verzögerung nicht aktiv
+MP 3550    : 0
+             ;==================================================================
+             ;MP 4000 .. 4999
+             ;integrierte PLC
+             ;==================================================================
+             ;MP4000 Optionen für bedingte Compilierung des PLC-Programms
+             ;Eingabe: String
+MP 4000.0  : 
+MP 4000.1  : 
+MP 4000.2  : 
+MP 4000.3  : 
+MP 4000.4  : 
+MP 4000.5  : 
+MP 4000.6  : 
+MP 4000.7  : 
+MP 4000.8  : 
+MP 4000.9  : 
+MP 4000.10 : 
+MP 4000.11 : 
+MP 4000.12 : 
+MP 4000.13 : 
+MP 4000.14 : 
+MP 4000.15 : 
+MP 4000.16 : 
+MP 4000.17 : 
+MP 4000.18 : 
+MP 4000.19 : 
+MP 4000.20 : 
+MP 4000.21 : 
+MP 4000.22 : 
+MP 4000.23 : 
+MP 4000.24 : 
+MP 4000.25 : 
+MP 4000.26 : 
+MP 4000.27 : 
+MP 4000.28 : 
+MP 4000.29 : 
+MP 4000.30 : 
+MP 4000.31 : 
+MP 4000.32 : 
+MP 4000.33 : 
+MP 4000.34 : 
+MP 4000.35 : 
+MP 4000.36 : 
+MP 4000.37 : 
+MP 4000.38 : 
+MP 4000.39 : 
+MP 4000.40 : 
+MP 4000.41 : 
+MP 4000.42 : 
+MP 4000.43 : 
+MP 4000.44 : 
+MP 4000.45 : 
+MP 4000.46 : 
+MP 4000.47 : 
+MP 4000.48 : 
+MP 4000.49 : 
+MP 4000.50 : 
+MP 4000.51 : 
+MP 4000.52 : 
+MP 4000.53 : 
+MP 4000.54 : 
+MP 4000.55 : 
+MP 4000.56 : 
+MP 4000.57 : 
+MP 4000.58 : 
+MP 4000.59 : 
+MP 4000.60 : 
+MP 4000.61 : 
+MP 4000.62 : 
+MP 4000.63 : 
+             ;------------------------------------------------------------------
+             ;MP4020 PLC-Funktionen
+             ;Eingabe: %xxxxxxxxxxxxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   reserviert
+             ;Bit 2   reserviert
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   Zweispindelbetrieb aktiv
+             ;Bit 6   reserviert
+             ;Bit 7   Mittelwertbildung Temperatur-Eingänge
+             ;        (nicht bei HSCI)
+             ;        0 = Werte der Pt100-Eingänge mit einer Änderungs-
+             ;            geschwindigkeit von 1 K/s übernehmen.
+             ;        1 = Werte der Pt100-Eingänge sofort übernehmen
+             ;Bit 8   Verhalten bei externen Not Aus
+             ;        0 = IST/SOLL Wertübernahme wird ausgeführt
+             ;        1 = Wiederanfahren wird aktiviert (analog zu M4580)
+             ;Bit 9   simulierte Tasten
+             ;        0 = werden direkt an die NC weitergeben
+             ;        1 = werden vor der Weitergabe an die NC von einem
+             ;            aktiven PLC-Fenster verarbeitet
+             ;Bit10   gesperrte Tasten
+             ;        0 = werden nur an das aktive PLC-Fenster weitergeben
+             ;        1 = werden weder an NC, noch an das aktive PLC-Fenster
+             ;            weitergeben
+             ;Bit11 - PLC-Zähler in MP4120.x
+             ;        0 = Eingabe in PLC-Zyklen
+             ;        1 = Eingabe in Sekunden
+             ;Bit12 - Schriftgröße im PLC-Fenster
+             ;        0 = Schriftgröße automatisch an Bildschirm anpassen
+             ;        1 = Schriftgröße für BF 120
+             ;Bit13 - reserviert
+             ;Bit14 - Konfiguration der PLC-Modulschnittstelle
+             ;        0 = 14 Achsen / 16 Regelkreise (Spindel)
+             ;            Achsen Bit0 bis Bit14, Spindel Bit15
+             ;        1 = 22 Achsen / 24 Regelkreise (Spindel)(nur HSCI)
+             ;            Achsen Bit0 bis Bit17, Spindel Bit31
+             ;Bit15 - Sichern von Tabellen-Änderungen auf die HDR
+             ;        0 = Zyklisches Sichern von Tabellen
+             ;            (Verhalten wie bis einschl. 34049x-06 SP4 bzw.
+             ;            60642x-01 SP 04)
+             ;        1 = Tabellen bei jedem Schließen sichern
+             ;Bit16 - Verhalten der Strobe-Merker beim Zurücksetzen
+             ;        0 = Strobe-Merker erst zurücksetzen, wenn die durch
+             ;            Quittieren des Strobes ausgelöste Aktion von der
+             ;            NC abgeschlossen ist.
+             ;        1 = Strobe-Merker sofort mit Quittierung zurücksetzen
+             ;            (Verhalten wie bis einschl. 34049x-06 SP4 bzw.
+             ;            60642x-01 SP 04)
+             ;Bit17 - Meldung "Debug-Funktionen der PLC sind aktiv"
+             ;        0 = Meldung wird ausgegeben
+             ;        1 = Meldung unterdrücken, wenn M4753 = 1 der Auslöser
+             ;            für die Meldung ist.
+             ;765432109876543210
+MP 4020    : %000100100000000000
+             ;------------------------------------------------------------------
+             ;MP4030 Zuordnung logische PL / physikalische PL
+             ;       (nicht bei HSCI-Systemen)
+             ;Eingabe: 0 = 1. logische PL
+             ;         1 = 2. logische PL
+             ;         2 = 3. logische PL
+             ;         3 = 4. logische PL
+MP 4030.0  : 0          ; 1. physikalische PL
+MP 4030.1  : 1          ; 2. physikalische PL
+MP 4030.2  : 2          ; 3. physikalische PL
+MP 4030.3  : 3          ; 4. physikalische PL
+             ;------------------------------------------------------------------
+             ;MP4031 Überwachung der tatsächlich angeschlossenen PLs
+             ;       (nicht bei HSCI-Systemen)
+             ;Eingabe: 0 bis 4 [Anzahl der angeschlossen PLs]
+             ;         -1 = Überwachung nicht aktiv
+MP 4031    : -1
+             ;------------------------------------------------------------------
+             ;MP4040 Setzen eines PLC-Ausgangs nach dem Herunterfahren
+             ;       PLC-Ausgang wird in MP 4042 bzw. MP 4044 festgelegt
+             ;Eingabe: 0 = Keinen PLC-Ausgang setzen
+             ;         1 = Nur nach Herunterfahren durch Modul 9279
+             ;         2 = Nach Herunterfahren durch Modul 9279 oder Softkey
+MP 4040    : 0
+             ;------------------------------------------------------------------
+             ;MP4041 Zeit nach dem Herunterfahren der Steuerung bis zum
+             ;       Setzen des PLC-Ausgang.
+             ;       PLC-Ausgang wird in MP 4042 bzw. 4044 festgelegt
+             ;Eingabe: 0 bis 1000 [s]
+MP 4041    : 5
+             ;------------------------------------------------------------------
+             ;MP4042 Zu setzender PLC-Ausgang nach dem Herunterfahren
+             ;       (nicht bei HSCI-Systemen)
+             ;Eingabe: 24 bis 30
+MP 4042    : 0          ;Adresse von O_auto_HS_aus_nach_END_PGM
+             ;------------------------------------------------------------------
+             ;MP4043 Verzögerungszeit beim Herunterfahren für abschließende
+             ;       PLC-Aktionen
+             ;Eingabe: 1 bis 1000 [s]
+             ;         0 = keine Verzögerungszeit
+MP 4043    : 0
+             ;------------------------------------------------------------------
+             ;MP4044 Zu setzender PLC-Ausgang nach dem Herunterfahren
+             ;       (bei HSCI-Systemen)
+             ;Eingabe: symbolischer Name des PLC-Ausgangs
+MP 4044    : 
+             ;------------------------------------------------------------------
+             ;MP4050 Impuls für wegabhängige Schmierung
+             ;Eingabe: 0 bis 99999,999 [m]
+MP 4050.0  : 30
+MP 4050.1  : 30
+MP 4050.2  : 30
+MP 4050.3  : 30
+MP 4050.4  : 30
+MP 4050.5  : 30
+MP 4050.6  : 30
+MP 4050.7  : 30
+MP 4050.8  : 30
+MP 4050.9  : 30
+MP 4050.10 : 30
+MP 4050.11 : 30
+MP 4050.12 : 30
+MP 4050.13 : 30
+MP 4050.14 : 30
+MP 4050.15 : 30
+MP 4050.16 : 30
+MP 4050.17 : 30
+MP 4050.18 : 30
+MP 4050.19 : 30
+MP 4050.20 : 30
+MP 4050.21 : 30
+             ;------------------------------------------------------------------
+             ;MP4060 Ausgang, der beim Abschalten aller Ausgänge, um die
+             ;       Zeit aus MP4061.x verzögert abschaltet werden soll.
+             ;       Bei Steuerungen mit HSCI erfolgt die Konfiguration
+             ;       über IOconfig
+             ;Eingabe: 0 bis 30
+             ;         -1 = Ausgang nicht verzögert abschalten
+MP 4060.0  : -1
+MP 4060.1  : -1
+MP 4060.2  : -1
+MP 4060.3  : -1
+             ;------------------------------------------------------------------
+             ;MP4061 Verzögerungszeit für das Abschalten der Ausgänge aus
+             ;       MP4060.x
+             ;       Bei Steuerungen mit HSCI erfolgt die Konfiguration
+             ;       über IOconfig
+             ;Eingabe: 0 bis 5,000 [s]
+MP 4061.0  : 0
+MP 4061.1  : 0
+MP 4061.2  : 0
+MP 4061.3  : 0
+             ;------------------------------------------------------------------
+             ;MP4070 Kompensations-Betrag pro PLC-Zyklus für geschleppte
+             ;Achsfehler-Kompensation (thermische Kompensation)
+             ;Eingabe: 0,0001 bis 0,005 [mm]
+MP 4070    : 0.0001
+             ;------------------------------------------------------------------
+             ;MP4110 Laufzeit für PLC-Timer T0..T47
+             ;Eingabe [s]
+MP 4110.0  : 0.125      ;Timer 125ms
+MP 4110.1  : 0
+MP 4110.2  : 0.5        ;Tasten Impuls Kennung
+MP 4110.3  : 20         ;Referenz Timeout
+MP 4110.4  : 1          ;Spindel Sollwert in Rampe
+MP 4110.5  : 0.25       ;Spindel Freischneiden nach Achsen Stop
+MP 4110.6  : 2.5        ;Antriebsfreigabe aus -t-> Achsüberwachung aus/ein
+MP 4110.7  : 4          ;Achsen Betriebsbereitschaft
+MP 4110.8  : 10         ;Spindel n-Änderung
+MP 4110.9  : 0.25       ;Reglerfreigabe Richten
+MP 4110.10 : 10         ;Getriebe Timeout
+MP 4110.11 : 0.1        ;Getriebe Pendeln Pause
+MP 4110.12 : 0.3        ;Getriebe Pendeln rechts (cw)
+MP 4110.13 : 0.7        ;Getriebe Pendeln links (ccw)
+MP 4110.14 : 1          ;Getriebe verzögert aus
+MP 4110.15 : 2          ;Spindel Override betätigt kein F-Stop
+MP 4110.16 : 2          ;Test 2-kanaligen Not-Halt
+MP 4110.17 : 0.3        ;Not Halt Kreis aus (SSK kurze Impulse)
+MP 4110.18 : 20         ;WZW Timeout
+MP 4110.19 : 0.25       ;WZW allgemeiner Timer
+MP 4110.20 : 10         ;Schmierung (Nachschmierzeit, Test Druck=0)
+MP 4110.21 : 5          ;Schmierung Druckaufbau (Sensor)
+MP 4110.22 : 10         ;Hydraulik Druckaufbau
+MP 4110.23 : 1          ;Start Teilapparat
+MP 4110.24 : 0.25       ;WZ-Greifer Kurvenscheibe Mittelposition -t-> Stop
+MP 4110.25 : 50         ;Paletten Wechsler Timeout
+MP 4110.26 : 0.15       ;Paletten Wechsler allgemeiner Timer
+MP 4110.27 : 10         ;3D Kopf Timeout
+MP 4110.28 : 0.5        ;3D Kopf Timer allgemein
+MP 4110.29 : 3          ;TSxxx Luft abblasen
+MP 4110.30 : 20         ;WZ-Magazin Timeout
+MP 4110.31 : 0.3        ;WZ-Magazin 1 Genauhalt
+MP 4110.32 : 0.3        ;WZ-Magazin 2 Genauhalt
+MP 4110.33 : 0          ;WZ-Magazin 1 verzögert Stop
+MP 4110.34 : 0          ;WZ-Magazin 2 verzögert Stop
+MP 4110.35 : 5          ;TCP-IP Client Timeout
+MP 4110.36 : 0.5        ;Achsüberwachung aus - I32/X150 (nicht HSCI)
+MP 4110.37 : 0
+MP 4110.38 : 0
+MP 4110.39 : 0
+MP 4110.40 : 0
+MP 4110.41 : 0
+MP 4110.42 : 0
+MP 4110.43 : 0
+MP 4110.44 : 0.2        ;FS: Bewegungsanforderung für Achse trotz SOS
+MP 4110.45 : 0.1        ;FS: Spindel-Antrieb einschalten ohne FS-Freigabe
+MP 4110.46 : 1.5        ;Steuerspannung ein -t-> aus
+MP 4110.47 : 1.5        ;Steuerspannung aus -t-> ein
+             ;------------------------------------------------------------------
+             ;MP4111 Laufzeit für PLC-Timer T96..T999,
+             ;Timer Start mit Modul 9006
+             ;Anzahl der zusätzlichen Timer in OEM.SYS
+             ;  - Schlüsselwort: NUMBERMP4111 = x ; [1..999]
+             ;Eingabe [s]
+MP 4111.96 : 0          ;Lösen 1
+MP 4111.97 : 0          ;Lösen 2
+MP 4111.98 : 0.5        ;Lösen 3
+MP 4111.99 : 0.5        ;Lösen 4
+MP 4111.100: 0.5        ;Lösen 5
+MP 4111.101: 0.5        ;Lösen 6
+MP 4111.102: 0.5        ;Lösen 7
+MP 4111.103: 0.5        ;Lösen 8
+MP 4111.104: 0.5        ;Lösen 9
+MP 4111.105: 0.5        ;Lösen 10
+MP 4111.106: 0.5        ;Lösen 11
+MP 4111.107: 0.5        ;Lösen 12
+MP 4111.108: 0.5        ;Lösen 13
+MP 4111.109: 0.5        ;Lösen 14
+MP 4111.110: 0.5        ;Lösen 15
+MP 4111.111: 0.5        ;Lösen 16
+MP 4111.112: 0.5        ;Lösen 17
+MP 4111.113: 0.5        ;Lösen 18
+MP 4111.114: 0.5        ;Lösen 19
+MP 4111.115: 0.5        ;Lösen 20
+MP 4111.116: 0.5        ;Lösen 21
+MP 4111.117: 0.5        ;Lösen 22
+MP 4111.118: 0          ;Klemmen 1
+MP 4111.119: 0          ;Klemmen 2
+MP 4111.120: 0.5        ;Klemmen 3
+MP 4111.121: 0.5        ;Klemmen 4
+MP 4111.122: 0.5        ;Klemmen 5
+MP 4111.123: 0.5        ;Klemmen 6
+MP 4111.124: 0.5        ;Klemmen 7
+MP 4111.125: 0.5        ;Klemmen 8
+MP 4111.126: 0.5        ;Klemmen 9
+MP 4111.127: 0.5        ;Klemmen 10
+MP 4111.128: 0.5        ;Klemmen 11
+MP 4111.129: 0.5        ;Klemmen 12
+MP 4111.130: 0.5        ;Klemmen 13
+MP 4111.131: 0.5        ;Klemmen 14
+MP 4111.132: 0.5        ;Klemmen 15
+MP 4111.133: 0.5        ;Klemmen 16
+MP 4111.134: 0.5        ;Klemmen 17
+MP 4111.135: 0.5        ;Klemmen 18
+MP 4111.136: 0.5        ;Klemmen 19
+MP 4111.137: 0.5        ;Klemmen 20
+MP 4111.138: 0.5        ;Klemmen 21
+MP 4111.139: 0.5        ;Klemmen 22
+MP 4111.140: 3          ;Timeout Achse 1
+MP 4111.141: 3          ;Timeout Achse 2
+MP 4111.142: 3          ;Timeout Achse 3
+MP 4111.143: 3          ;Timeout Achse 4
+MP 4111.144: 3          ;Timeout Achse 5
+MP 4111.145: 3          ;Timeout Achse 6
+MP 4111.146: 3          ;Timeout Achse 7
+MP 4111.147: 3          ;Timeout Achse 8
+MP 4111.148: 3          ;Timeout Achse 9
+MP 4111.149: 3          ;Timeout Achse 10
+MP 4111.150: 3          ;Timeout Achse 11
+MP 4111.151: 3          ;Timeout Achse 12
+MP 4111.152: 3          ;Timeout Achse 13
+MP 4111.153: 3          ;Timeout Achse 14
+MP 4111.154: 3          ;Timeout Achse 15
+MP 4111.155: 3          ;Timeout Achse 16
+MP 4111.156: 3          ;Timeout Achse 17
+MP 4111.157: 3          ;Timeout Achse 18
+MP 4111.158: 3          ;Timeout Achse 19
+MP 4111.159: 3          ;Timeout Achse 20
+MP 4111.160: 3          ;Timeout Achse 21
+MP 4111.161: 3          ;Timeout Achse 22
+MP 4111.162: 0.1        ;Warten in Position 1
+MP 4111.163: 0.1        ;Warten in Position 2
+MP 4111.164: 0.1        ;Warten in Position 3
+MP 4111.165: 0.1        ;Warten in Position 4
+MP 4111.166: 0.1        ;Warten in Position 5
+MP 4111.167: 0.1        ;Warten in Position 6
+MP 4111.168: 0.1        ;Warten in Position 7
+MP 4111.169: 0.1        ;Warten in Position 8
+MP 4111.170: 0.1        ;Warten in Position 9
+MP 4111.171: 0.1        ;Warten in Position 10
+MP 4111.172: 0.1        ;Warten in Position 11
+MP 4111.173: 0.1        ;Warten in Position 12
+MP 4111.174: 0.1        ;Warten in Position 13
+MP 4111.175: 0.1        ;Warten in Position 14
+MP 4111.176: 0.1        ;Warten in Position 15
+MP 4111.177: 0.1        ;Warten in Position 16
+MP 4111.178: 0.1        ;Warten in Position 17
+MP 4111.179: 0.1        ;Warten in Position 18
+MP 4111.180: 0.1        ;Warten in Position 19
+MP 4111.181: 0.1        ;Warten in Position 20
+MP 4111.182: 0.1        ;Warten in Position 21
+MP 4111.183: 0.1        ;Warten in Position 22
+MP 4111.184: 0.5        ;Achsüberwachung aus - Achsgruppe 01 (HSCI)
+MP 4111.185: 0.5        ;Achsüberwachung aus - Achsgruppe 02 (HSCI)
+MP 4111.186: 0.5        ;Achsüberwachung aus - Achsgruppe 03 (HSCI)
+MP 4111.187: 0.5        ;Achsüberwachung aus - Achsgruppe 04 (HSCI)
+MP 4111.188: 0.5        ;Achsüberwachung aus - Achsgruppe 05 (HSCI)
+MP 4111.189: 0.5        ;Achsüberwachung aus - Achsgruppe 06 (HSCI)
+MP 4111.190: 0.5        ;Achsüberwachung aus - Achsgruppe 07 (HSCI)
+MP 4111.191: 0.5        ;Achsüberwachung aus - Achsgruppe 08 (HSCI)
+MP 4111.192: 0          ;reserviert für Python
+MP 4111.193: 0          ;reserviert für Python
+MP 4111.194: 0          ;reserviert für Python
+MP 4111.195: 0          ;reserviert für Python
+MP 4111.196: 0          ;reserviert für Python
+MP 4111.197: 0          ;reserviert für Python
+MP 4111.198: 0          ;reserviert für Python
+MP 4111.199: 0          ;reserviert für Python
+MP 4111.200: 0          ;reserviert für Python
+MP 4111.201: 0          ;reserviert für Python
+MP 4111.202: 0          ;reserviert für Python
+MP 4111.203: 0          ;reserviert für Python
+MP 4111.204: 0          ;reserviert für Python
+MP 4111.205: 0          ;reserviert für Python
+MP 4111.206: 0          ;frei verfügbar (CFG_Timer_MP4111_zusaetzlich)
+MP 4111.207: 0
+MP 4111.208: 0
+MP 4111.209: 0
+             ;------------------------------------------------------------------
+             ;Vorgabewert für PLC-Zähler Z0..Z47
+             ;Eingabe [s]
+MP 4120.0  : 0
+MP 4120.1  : 0
+MP 4120.2  : 0
+MP 4120.3  : 0
+MP 4120.4  : 0
+MP 4120.5  : 0
+MP 4120.6  : 0
+MP 4120.7  : 0
+MP 4120.8  : 0
+MP 4120.9  : 0
+MP 4120.10 : 0
+MP 4120.11 : 0
+MP 4120.12 : 0
+MP 4120.13 : 0
+MP 4120.14 : 0
+MP 4120.15 : 0
+MP 4120.16 : 0
+MP 4120.17 : 0
+MP 4120.18 : 0
+MP 4120.19 : 0
+MP 4120.20 : 0
+MP 4120.21 : 0
+MP 4120.22 : 0
+MP 4120.23 : 0
+MP 4120.24 : 0
+MP 4120.25 : 0
+MP 4120.26 : 0
+MP 4120.27 : 0
+MP 4120.28 : 0
+MP 4120.29 : 0
+MP 4120.30 : 0
+MP 4120.31 : 0
+MP 4120.32 : 0
+MP 4120.33 : 0
+MP 4120.34 : 0
+MP 4120.35 : 0
+MP 4120.36 : 0
+MP 4120.37 : 0
+MP 4120.38 : 0
+MP 4120.39 : 0
+MP 4120.40 : 0
+MP 4120.41 : 0
+MP 4120.42 : 0
+MP 4120.43 : 0
+MP 4120.44 : 0
+MP 4120.45 : 0
+MP 4120.46 : 0
+MP 4120.47 : 0
+             ;------------------------------------------------------------------
+             ;MP4130 schnelle PLC-Eingänge
+             ;Eingabe: 0 bis 20000 [Nr. des PLC-Eingangs]
+             ;         -1 Funktion inaktiv
+             ;oder
+             ;Eingabe: symbolischer Name des PLC-Eingangs
+             ;         (Eingang I0 wird von PLC Basis Programm nicht
+             ;         unterstützt)
+MP 4130.0  : -1         ;Unterdrücken der Überwachungsfunktionen
+MP 4130.1  : -1         ;reserviert
+MP 4130.2  : -1         ;setzt Merker M4590
+MP 4130.3  : -1         ;setzt Merker M4591
+MP 4130.4  : -1         ;setzt Merker M4592
+MP 4130.5  : -1         ;setzt Merker M4593
+             ;------------------------------------------------------------------
+             ;MP4131 Aktivierungs-Kriterium für schnellen PLC-Eingang
+             ;Eingabe: 0 = Aktivierung bei low-pegel
+             ;         1 = Aktivierung bei high-pegel
+MP 4131.0  : 0          ;Unterdrücken der Überwachungsfunktionen
+MP 4131.1  : 0          ;reserviert
+MP 4131.2  : 0          ;setzt Merker M4590
+MP 4131.3  : 0          ;setzt Merker M4591
+MP 4131.4  : 0          ;setzt Merker M4592
+MP 4131.5  : 0          ;setzt Merker M4593
+             ;------------------------------------------------------------------
+             ;MP4132 Achsspezifischer oder achsgruppenspezifischer
+             ;       PLC-Eingang für die Antriebsfreigabe (nur HSCI)
+             ;Eingabe: 0 bis 20000 [Nr. des PLC-Eingangs]
+             ;         -1 Funktion inaktiv
+             ;oder
+             ;Eingabe: symbolischer Name des PLC-Eingangs
+MP 4132.0  : -1
+MP 4132.1  : -1
+MP 4132.2  : -1
+MP 4132.3  : -1
+MP 4132.4  : -1
+MP 4132.5  : -1
+MP 4132.6  : -1
+MP 4132.7  : -1
+             ;------------------------------------------------------------------
+             ;MP4210 allgemeine Werte für PLC (D768 bis D956)
+             ;Eingabe: -99 999,9999 bis +99 999,9999
+             ;PLC Daten in PLC:\MP\MP_Data.tab abgelegt (ab Basis_53)
+MP 4210.0  : +0         ;D768
+MP 4210.1  : +0         ;D772
+MP 4210.2  : +0         ;D776
+MP 4210.3  : +0         ;D780
+MP 4210.4  : +0         ;D784
+MP 4210.5  : +0         ;D788
+MP 4210.6  : +0         ;D792
+MP 4210.7  : +0         ;D796
+MP 4210.8  : +0         ;D800
+MP 4210.9  : +0         ;D804
+MP 4210.10 : +0         ;D808
+MP 4210.11 : +0         ;D812
+MP 4210.12 : +0         ;D816
+MP 4210.13 : +0         ;D820
+MP 4210.14 : +0         ;D824
+MP 4210.15 : +0         ;D828
+MP 4210.16 : +0         ;D832
+MP 4210.17 : +0         ;D836
+MP 4210.18 : +0         ;D840
+MP 4210.19 : +0         ;D844
+MP 4210.20 : +0         ;D848
+MP 4210.21 : +0         ;D852
+MP 4210.22 : +0         ;D856
+MP 4210.23 : +0         ;D860
+MP 4210.24 : +0         ;D864
+MP 4210.25 : +0         ;D868
+MP 4210.26 : +0         ;D872
+MP 4210.27 : +0         ;D876
+MP 4210.28 : +0         ;D880
+MP 4210.29 : +0         ;D884
+MP 4210.30 : +0         ;D888
+MP 4210.31 : +0         ;D892
+MP 4210.32 : +0         ;D896
+MP 4210.33 : +0         ;D900
+MP 4210.34 : +0         ;D904
+MP 4210.35 : +0         ;D908
+MP 4210.36 : +0         ;D912
+MP 4210.37 : +0         ;D916
+MP 4210.38 : +0         ;D920
+MP 4210.39 : +0         ;D924
+MP 4210.40 : +0         ;D928
+MP 4210.41 : +0         ;D932
+MP 4210.42 : +0         ;D936
+MP 4210.43 : +0         ;D940
+MP 4210.44 : +0         ;D944
+MP 4210.45 : +0         ;D948
+MP 4210.46 : +0         ;D952
+MP 4210.47 : +0         ;D956
+             ;------------------------------------------------------------------
+             ;MP4220 allgemeine Werte für PLC (W960 bis W974)
+             ;Eingabe: 10 bis 30 000
+MP 4220.0  : 2000       ;W960
+MP 4220.1  : 2000       ;W962
+MP 4220.2  : 2000       ;W964
+MP 4220.3  : 2000       ;W966
+MP 4220.4  : 2000       ;W968
+             ;------------------------------------------------------------------
+             ;MP4230 allgemeine Werte für PLC (Modul 9032)
+             ;Eingabe: -99 999,9999 bis +99 999,9999
+             ;PLC Daten in PLC:\MP\MP_Data.tab abgelegt (ab Basis_53)
+MP 4230.0  : +0
+MP 4230.1  : +0
+MP 4230.2  : +0
+MP 4230.3  : +0
+MP 4230.4  : +0
+MP 4230.5  : +0
+MP 4230.6  : +0
+MP 4230.7  : +0
+MP 4230.8  : +0
+MP 4230.9  : +0
+MP 4230.10 : +0
+MP 4230.11 : +0
+MP 4230.12 : +0
+MP 4230.13 : +0
+MP 4230.14 : +0
+MP 4230.15 : +0
+MP 4230.16 : +0
+MP 4230.17 : +0
+MP 4230.18 : +0
+MP 4230.19 : +0
+MP 4230.20 : +0
+MP 4230.21 : +0
+MP 4230.22 : +0
+MP 4230.23 : +0
+MP 4230.24 : +0
+MP 4230.25 : +0
+MP 4230.26 : +0
+MP 4230.27 : +0
+MP 4230.28 : +0
+MP 4230.29 : +0
+MP 4230.30 : +0
+MP 4230.31 : +0
+             ;------------------------------------------------------------------
+             ;MP4231 allgemeine Werte für PLC (Modul 9032)
+             ;Eingabe: -99 999,9999 bis +99 999,9999
+             ;PLC Daten in PLC:\MP\MP_Data.tab abgelegt (ab Basis_53)
+MP 4231.0  : +0
+MP 4231.1  : +0
+MP 4231.2  : +0
+MP 4231.3  : +0
+MP 4231.4  : +0
+MP 4231.5  : +0
+MP 4231.6  : +0
+MP 4231.7  : +0
+MP 4231.8  : +0
+MP 4231.9  : +0
+MP 4231.10 : +0
+MP 4231.11 : +0
+MP 4231.12 : +0
+MP 4231.13 : +0
+MP 4231.14 : +0
+MP 4231.15 : +0
+MP 4231.16 : +0
+MP 4231.17 : +0
+MP 4231.18 : +0
+MP 4231.19 : +0
+MP 4231.20 : +0
+MP 4231.21 : +0
+MP 4231.22 : +0
+MP 4231.23 : +0
+MP 4231.24 : +0
+MP 4231.25 : +0
+MP 4231.26 : +0
+MP 4231.27 : +0
+MP 4231.28 : +0
+MP 4231.29 : +0
+MP 4231.30 : +0
+MP 4231.31 : +0
+             ;------------------------------------------------------------------
+             ;MP4310 allgemeine Parameter für PLC
+             ;Eingabe: $0000 [Hexadezimal] oder
+             ;         %0000000000000000 [Binär]
+             ;PLC Daten in PLC:\MP\MP_Config.tab abgelegt (ab Basis_53)
+MP 4310.0  : $0000      ;M4300-M4315, W976
+MP 4310.1  : $0000      ;M4316-M4331, W978
+MP 4310.2  : $0000      ;M4332-M4347, W980
+MP 4310.3  : $0000      ;M4348-M4363, W982
+MP 4310.4  : $0000      ;M4364-M4379, W984
+             ;Auswahl Farbpalette [0..3]
+MP 4310.5  : 0          ;M4380-M4395, W986
+             ;Achs-Schmierung Pause [min]
+MP 4310.6  : 60         ;M4396-M4411, W988
+MP 4310.7  : 0          ;M4412-M4427, W990
+MP 4310.8  : 0          ;M4428-M4443, W992
+MP 4310.9  : 0          ;M4444-M4459, W994
+             ;------------------------------------------------------------------
+             ;MP4400 Profibus-Konfiguration
+             ;Eingabe: %xx
+             ;Bit 0   Definition der Reihenfolge von Optionen
+             ;        0 = Reihenfolgen wie in *.IOC-Datei
+             ;        1 = Reihenfolge wie in MP4000.x
+             ;Bit 1   reserviert
+             ;10
+MP 4400    : %01
+             ;==================================================================
+             ;MP 5000 .. 5999
+             ;serielle Schnittstellen
+             ;==================================================================
+             ;MP5000 Datenschnittstelle sperren
+             ;Eingabe: 0 = keine Schnittstelle gesperrt
+             ;         1 = Schnittstelle V.24/RS232C gesperrt
+             ;         2 = Schnittstelle V.11/RS422 gesperrt (nicht bei HSCI)
+             ;         3 = beide Schnittstellen gesperrt (nicht bei HSCI)
+MP 5000    : 0
+             ;------------------------------------------------------------------
+             ;MP5020 benutzerdefiniertes Übertragungsprotokoll
+             ;Bit 0   7 oder 8 Datenbits          0 = 7 Datenbits
+             ;                                    1 = 8 Datenbits
+             ;Bit 1   Block-Check-Character       0 = BCC Zeichen beliebig
+             ;                                    1 = BCC kein Steuerzeichen
+             ;Bit 2   Übertragungsstopp durch RTS 0 = nicht aktiv
+             ;                                    1 = aktiv
+             ;Bit 3   Übertragungsstopp durch DC3 0 = nicht aktiv
+             ;                                    1 = aktiv
+             ;Bit 4   Zeichenparität              0 = geradzahlig
+             ;                                    1 = ungeradzahlig
+             ;Bit 5   Zeichenparität              0 = nicht erwünscht
+             ;                                    1 = erwünscht
+             ;Bit 6,7 Stop-Bits
+             ;                                    Bit 6  Bit 7
+             ;                   1 1/2 Stop-Bits    0      0
+             ;                   2 Stop-Bits        1      0
+             ;                   1 Stop-Bit         0      1
+             ;                                      1      1
+             ;Bit 8,9 reserviert
+             ;Bit 10  Prüfung auf fehlende Verbindung 0 = aktiv
+             ;                                        1 = nicht aktiv
+             ;09876543210
+MP 5020.0  : %00010101010;EXT1-Modus
+MP 5020.1  : %00010101010;EXT2-Modus
+MP 5020.2  : %00010101010;PLC-Modus (EXT3)
+MP 5020.3  : %00010101010;PLC-Modus (EXT4)
+             ;------------------------------------------------------------------
+             ;MP5030 Aktivierung Protokoll Datenübertragung
+             ;        0 = "Standard-Datenübertragung"
+             ;        1 = "Blockweises Übertragen ACK/NAK"
+             ;        2 = ohne Protokoll (nur für MP5030.2)
+MP 5030.0  : 0          ;EXT1-Modus
+MP 5030.1  : 0          ;EXT2-Modus
+MP 5030.2  : 1          ;PLC-Modus (EXT3)
+MP 5030.3  : 1          ;PLC-Modus (EXT4)
+             ;------------------------------------------------------------------
+             ;MP5040 Datenübertragungsrate in Betriebsart EXT3
+             ;(Datenübertragung über PLC)
+             ;Eingabe: 0 = 110 bit/s    6 = 4800 bit/s
+             ;         1 = 150 bit/s    7 = 9600 bit/s
+             ;         2 = 300 bit/s    8 = 19200 bit/s
+             ;         3 = 600 bit/s    9 = 38400 bit/s
+             ;         4 = 1200 bit/s   10 = 57600 bit/s
+             ;         5 = 2400 bit/s   11 = 115200 bit/s
+MP 5040.0  : 7          ;EXT3
+MP 5040.1  : 7          ;EXT4
+             ;==================================================================
+             ;MP 6000 .. 6499
+             ;3D-Tastsystem
+             ;==================================================================
+             ;MP6010 Auswahl des Tastsystems
+             ;Eingabe: 0 = Kabeltaster (TS 120/TS 220/TS 230)
+             ;         1 = Infrarottaster (TS 511/TS 630/TS 632)
+             ;         2 = Infrarottaster (TS 440/TS 640)
+             ;         3 = Batterieloser Infrarottaster (TS 444)
+MP 6010    : 0          ;Auswahl des Tastsystems
+             ;------------------------------------------------------------------
+             ;MP6120 Antast-Vorschub (schaltendes Tastsystem)
+             ;Eingabe: 1 bis 10 000 [mm/min]
+MP 6120    : 500        ;Antast Vorschub [mm/min]
+             ;------------------------------------------------------------------
+             ;MP6130 maximaler Messweg
+             ;Eingabe: 0,001 bis 99 999,9999 [mm]
+MP 6130    : 10         ;maximaler Messweg [mm]
+             ;------------------------------------------------------------------
+             ;MP6140 Sicherheits-Abstand über Messpunkt
+             ;Eingabe: 0,001 bis 99 999,9999 [mm]
+MP 6140    : 2          ;Sicherheits-Abstand [mm]
+             ;------------------------------------------------------------------
+             ;MP6150 Eilgang im Antast-Zyklus (schaltendes Tastsystem)
+             ;Eingabe: 10 bis 10 000 [mm/min]
+MP 6150    : 2000       ;Eilgang im Antast-Zyklus [mm/min]
+             ;------------------------------------------------------------------
+             ;MP6151 Vorpositionierung mit Maschineneilgang im Antast-Zyklus
+             ;Eingabe: 0 = inaktiv (mit Vorschub aus MP6150 positionieren)
+             ;         1 = aktiv (mit Eilgang aus MP 101x)
+MP 6151    : 0          ;Vorpositionierung mit Maschineneilgang
+             ;------------------------------------------------------------------
+             ;MP6160 M-Funktion für 180-Drehung der Spindel
+             ;Eingabe: -1 bis 999
+             ;         -1 = Orientierung durch NC
+             ;          0 = Funktion inaktiv
+MP 6160    : +0         ;M-Funktion für 180-Drehung der Spindel
+             ;------------------------------------------------------------------
+             ;MP6161 M-Funktion um Infrarottaster vor jedem Messvorgang
+             ;       zu orientieren.
+             ;Eingabe: -1 bis 999
+             ;         -1 = Orientierung durch NC
+             ;          0 = Funktion inaktiv
+MP 6161    : +0         ;M-Funktion für Orientierung des Infrarottasters
+             ;------------------------------------------------------------------
+             ;MP6162 Orientierungswinkel
+             ;Eingabe: 0 bis 359,9999 [°]
+MP 6162    : 0          ;Orientierungswinkel [°]
+             ;------------------------------------------------------------------
+             ;MP6163 Differenz zwischen MP6162 und aktuellen Spindelwinkel,
+             ;       ab der die Spindelorientierung durchgeführt wird.
+             ;Eingabe: 0 bis 3,0000 [°]
+MP 6163    : 0          ;Differenz zw. MP6162 und akt. Spindelwinkel [°]
+             ;------------------------------------------------------------------
+             ;MP6165 Funktion für Infrarot-Tastsystem bei manuellem und
+             ;       automatischen Messen wird Taster so orientiert, dass
+             ;       Taststift immer in gleicher Richtung ausgelenkt wird.
+             ;       (höhere Antastgenauigkeit)
+             ;Eingabe: 0 oder 1
+             ;         1= Funktion aktiv
+MP 6165    : 1          ;Taststift immer in gleicher Richtung auslenken
+             ;------------------------------------------------------------------
+             ;MP6166 Antastrichtung des Tastsystems unter Berücksichtigung
+             ;       einer aktiven Grunddrehung (nur manuelle Messzyklen)
+             ;Eingabe: 0 = inaktiv
+             ;         1 = aktiv
+MP 6166    : 0          ;Aktive Grunddrehung für Antasten berücksichtigen
+             ;------------------------------------------------------------------
+             ;MP6170 Anzahl der programmierten Messungen (Mittelwertbildung)
+             ;Eingabe: 1 bis 3
+MP 6170    : 1          ;Anzahl der Messungen (Mittelwert)
+             ;------------------------------------------------------------------
+             ;MP6171 max zulässige Toleranz (MP6170 > 1)
+             ;Eingabe: 0,0020 bis 0,9999 [mm]
+MP 6171    : 0.002      ;max zulässige Toleranz [mm]
+             ;------------------------------------------------------------------
+             ;MP6180 Koordinaten Mittelpunkt des Kalibrierring für Zyklus
+             ;       TCH PROBE 2 "TS Kalibrieren" bezogen auf den Maschinen-
+             ;       Nullpunkt (Verfahrbereich 1)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6180.0  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 1
+MP 6180.1  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 2
+MP 6180.2  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6181 Koordinaten Mittelpunkt des Kalibrierring für Zyklus
+             ;       TCH PROBE 2 "TS Kalibrieren" bezogen auf den Maschinen-
+             ;       Nullpunkt (Verfahrbereich 2)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6181.0  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 1
+MP 6181.1  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 2
+MP 6181.2  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6182 Koordinaten Mittelpunkt des Kalibrierring für Zyklus
+             ;       TCH PROBE 2 "TS Kalibrieren" bezogen auf den Maschinen-
+             ;       Nullpunkt (Verfahrbereich 3)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6182.0  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 1
+MP 6182.1  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 2
+MP 6182.2  : +0         ;Koordinaten-Mittelpunkt des Kalibierrings [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6185 Antast-Distanz Ringoberkante für Zyklus TCH PROBE 2
+             ;       "TS Kalibrieren" bezogen auf den Maschinen-Nullpunkt
+             ;Eingabe: 0,001 bis 99 999,9999 [mm]
+MP 6185.0  : 5          ;Antast-Distanz Ringoberkante [mm] Limit 1
+MP 6185.1  : 5          ;Antast-Distanz Ringoberkante [mm] Limit 2
+MP 6185.2  : 5          ;Antast-Distanz Ringoberkante [mm] Limit 3
+             ;==================================================================
+             ;MP 6500 .. 6599
+             ;Tischtaster Werkzeugvermessung
+             ;==================================================================
+             ;MP6500 Werkzeug-Vermessung mit TT 130
+             ;Eingabe: %xxxxxxxxxxxxxxx
+             ;Bit 0   0 = Werkzeug-Vermessung gesperrt
+             ;        1 = Werkzeug-Vermessung aktiv
+             ;Bit 1   0 = Radius-Vermessung aktiv, Länge mit rotierender
+             ;            Spindel
+             ;        1 = Radius-, Einzelschneiden-Vermessung gesperrt
+             ;Bit 2   0 = Längen-Vermessung mit stehender Spindel (Bit1=1)
+             ;        1 = Längen-Vermessung mit rotierender Spindel
+             ;            (TT:R-OFFS muss eingetragen sein)
+             ;Bit 3   0 = Werkzeugvermessung mit Spindel-Orientierung
+             ;        1 = Werkzeugvermessung ohne Spindel-Orientierung
+             ;            keine Einzelschneidenvermessung, Radius fehlerhaft
+             ;Bit 4   0 = Messdrehzahl maximal 1000 1/min
+             ;        1 = Messdrehzahl unbegrenzt
+             ;Bit 5   0 = kein NC-Stop nach Werkzeugbruch (WZ prüfen)
+             ;        1 = NC-Stop nach Werkzeugbruch (WZ prüfen)
+             ;Bit 6   0 = kein NC-Stop nach Werkzeugbruch (WZ messen)
+             ;        1 = NC-Stop nach Werkzeugbruch (WZ messen)
+             ;Bit 7   0 = reserviert
+             ;        1 = reserviert
+             ;Bit 8   0 = Kalibrieren vollständig (Stylus frei)
+             ;        1 = Kalibrieren nur in einer Achse
+             ;Bit 9   Automatische Ermittlung der Grunddrehung des
+             ;        Tastelements (Bit8 = 1)
+             ;        0 = Grunddrehung wird nicht ermittelt
+             ;        1 = Grunddrehung des Tastelements wird automatisch
+             ;            ermittelt (rechteckiger Stylus)
+             ;Bit 10  Antastroutine (Bit8 = 1)
+             ;        0 = Startpunkt wird in allen 3 Hauptachsen
+             ;            vorpositioniert
+             ;        1 = Startpunkt wird in der Werkzeugachse und in der
+             ;            Achse für Antastrichtung (MP6505) vorpositioniert
+             ;            (z.B. TTxxx bewegt sich mit X-Achse)
+             ;Bit 11  Werkzeug prüfen und ändern in der Werkzeug-Tabelle
+             ;        0 = Nach "Werkzeug prüfen" wird die Werkzeug-Tabelle
+             ;            geändert
+             ;        1 = Nach "Werkzeug prüfen" wird die Werkzeug-Tabelle
+             ;            nicht geändert
+             ;Bit 12  0 = Werkzeugvermessung berücksichtigt nicht PLC-
+             ;            Nullpunktverschiebung
+             ;        1 = Werkzeugvermessung berücksichtigt PLC-Nullpunkt-
+             ;            verschiebung
+             ;Bit 13  0 = Werkzeugvermessung im gleichen Schwenksystem,
+             ;            in dem auch der Tischtaster kalibriert wurde
+             ;        1 = Werkzeugvermessung in einem anderen Schwenksystem
+             ;Bit 14  0 = Werkzeugvermessung mit rotierender Spindel bei
+             ;            Schneidenanzahl = 0
+             ;        1 = Werkzeugvermessung mit stehender Spindel bei
+             ;            Schneidenanzahl = 0
+             ;432109876543210
+MP 6500    : %000000001100001
+             ;------------------------------------------------------------------
+             ;MP6502 Übertragungsart des Tisch-Tastsystems TT
+             ;Eingabe:
+             ;0 = TT über Kabel oder Infrarot angeschlossen
+             ;1 = TT mit Funkübertragung
+MP 6502    : 0
+             ;------------------------------------------------------------------
+             ;MP6505 Antast-Richtung für Werkzeug-Vermessung
+             ;Eingabe:
+             ;0 = positive Antast-Richtung in der Winkelbezugsachse (0-Grad)
+             ;1 = positive Antast-Richtung in der 90-Grad-Achse
+             ;2 = negative Antast-Richtung in der Winkelbezugsachse (0-Grad)
+             ;3 = negative Antast-Richtung in der 90-Grad-Achse
+MP 6505.0  : 0          ;Antast-Richtung Werkzeug-Vermessung Limit 1
+MP 6505.1  : 0          ;Antast-Richtung Werkzeug-Vermessung Limit 2
+MP 6505.2  : 0          ;Antast-Richtung Werkzeug-Vermessung Limit 3
+             ;------------------------------------------------------------------
+             ;MP6507 Berechnung des Antast-Vorschubs
+             ;Eingabe:
+             ; 0 = Berechnung des Antast-Vorschubs mit konstanter Toleranz
+             ; 1 = Berechnung des Antast-Vorschubs mit variabler Toleranz
+             ; 2 = konstanter Antast-Vorschub
+MP 6507    : 2          ;Berechnungsart des Antast-Vorschubs
+             ;------------------------------------------------------------------
+             ;MP6508 Sende-Empfangs-Einheit SE 642 (nur HSCI)
+             ;Eingabe:
+             ; 1 = Sende-Empfangs-Einheit SE 642 aktiv
+             ; 0 = nicht aktiv
+MP 6508    : 0          ;SE 642 aktiv
+             ;------------------------------------------------------------------
+             ;MP6509 reserviert
+             ;Eingabe: 0
+MP 6509    : 0
+             ;------------------------------------------------------------------
+             ;MP6510 max. zulässiger Messfehler bei Werkzeug-Vermessung
+             ;mit rotierendem Werkzeug
+             ;Eingabe: 0,002 bis 0,999 [mm]
+MP 6510.0  : 0.005      ;Erster max Messfehler bei Werkzeug-Vermessung [mm]
+MP 6510.1  : 0.01       ;Zweiter max Messfehler bei Werkzeug-Vermessung [mm]
+             ;------------------------------------------------------------------
+             ;MP6520 Antast-Vorschub bei Werkzeug-Vermessung mit
+             ;nicht rotierendem Werkzeug
+             ;Eingabe: 1 bis 10 000 [mm/min]
+MP 6520    : 500        ;Antast-Vorschub bei Werkzeug-Vermessung [mm/min]
+             ;------------------------------------------------------------------
+             ;MP6530 Abstand Werkzeug-Unterkante zu Stylus-Oberkante
+             ;bei Werkzeugradius-Vermessung
+             ;Eingabe: 0,001 bis 99,9999 [mm]
+MP 6530.0  : 5          ;Abstand WKZ-Unterkante Styl-Oberkante [mm] Limit 1
+MP 6530.1  : 5          ;Abstand WKZ-Unterkante Styl-Oberkante [mm] Limit 2
+MP 6530.2  : 5          ;Abstand WKZ-Unterkante Styl-Oberkante [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6531 Durchmesser bzw. Kantenlänge des Stylus
+             ;Eingabe: 0,001 bis 99 999,9999 [mm]
+MP 6531.0  : 40         ;Durchmesser/Kantenlänge des Stylus [mm] Limit 1
+MP 6531.1  : 40         ;Durchmesser/Kantenlänge des Stylus [mm] Limit 2
+MP 6531.2  : 40         ;Durchmesser/Kantenlänge des Stylus [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6540 Sicherheitszone um den Stylus bei Vorpositionierung
+             ;Eingabe: 0,001 bis 99 999,9999 [mm]
+MP 6540.0  : 10         ;Sicherheitszone Vorpos Stylus Werkzeugachsrichtung [mm]
+MP 6540.1  : 10         ;Sicherheitszone Vorpos Stylus Bearbeitungsebene [mm]
+             ;------------------------------------------------------------------
+             ;MP6550 Eilgang im Antast-Zyklus
+             ;Eingabe: 10 bis 1 000 000 [mm/min]
+MP 6550    : 2000       ;Eilgang im Antast-Zyklus [mm/min]
+             ;------------------------------------------------------------------
+             ;MP6560 M-Funktion für Spindel-Orientierung bei
+             ;Einzelschneiden-Vermessung
+             ;Eingabe: -1 bis 999
+             ;         -1 = Orientierung durch NC
+             ;          0 = Funktion inaktiv
+MP 6560    : +0         ;M-Funktion Spindel-Orientierung bei Einzelschneiden
+             ;------------------------------------------------------------------
+             ;MP6562 M-Funktion vor/nach einem Werkzeugvermessungs-Zyklus
+             ;Eingabe: -1 bis 999 [M-Funktionsnummer]
+             ;         -1 = Funktion inaktiv
+MP 6562.0  : -1         ;M-Funktion vor Zyklusbeginn (Werkzeugvermessung)
+MP 6562.1  : -1         ;M-Funktion nach Zyklusende (Werkzeugvermessung)
+             ;------------------------------------------------------------------
+             ;MP6570 max. zulässige Umlaufgeschwindigkeit an der
+             ;Werkzeug-Schneide
+             ;Eingabe: 1,0000 bis 120,0000 [m/min]
+MP 6570    : 100        ;max Umlaufgeschwindigkeit an Werkzeug-Schneide [m/min]
+             ;------------------------------------------------------------------
+             ;MP6572 Maximal zulässige Drehzahl beim Werkzeugvermessen
+             ;Eingabe: 0 bis 1000 [U/min]
+             ;         0 = 1000 [U/min]
+MP 6572    : 0          ;max Drehzahl beim Werkzeugvermessen [U/min]
+             ;------------------------------------------------------------------
+             ;MP6580 Koordinaten des Stylus-Mittelpunkts bezogen auf den
+             ;Maschinen-Nullpunkt (Verfahrbereich 1)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6580.0  : +0         ;X-Position Stylus-Mittelpunkt (Ref) [mm] Limit 1
+MP 6580.1  : +0         ;Y-Position Stylus-Mittelpunkt (Ref) [mm] Limit 1
+MP 6580.2  : +0         ;Z-Position Stylus-Mittelpunkt (Ref) [mm] Limit 1
+             ;------------------------------------------------------------------
+             ;MP6581 Koordinaten des Stylus-Mittelpunkts bezogen auf den
+             ;Maschinen-Nullpunkt (Verfahrbereich 2)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6581.0  : +0         ;X-Position Stylus-Mittelpunkt (Ref) [mm] Limit 2
+MP 6581.1  : +0         ;Y-Position Stylus-Mittelpunkt (Ref) [mm] Limit 2
+MP 6581.2  : +0         ;Z-Position Stylus-Mittelpunkt (Ref) [mm] Limit 2
+             ;------------------------------------------------------------------
+             ;MP6582 Koordinaten des Stylus-Mittelpunkts bezogen auf den
+             ;Maschinen-Nullpunkt (Verfahrbereich 3)
+             ;Eingabe: -99 999,9999 bis 99 999,9999 [mm]
+MP 6582.0  : +0         ;X-Position Stylus-Mittelpunkt (Ref) [mm] Limit 3
+MP 6582.1  : +0         ;Y-Position Stylus-Mittelpunkt (Ref) [mm] Limit 3
+MP 6582.2  : +0         ;Z-Position Stylus-Mittelpunkt (Ref) [mm] Limit 3
+             ;------------------------------------------------------------------
+             ;MP6585 Überwachung von Dreh- und zusätzlichen Linearachsen
+             ;       bei Start Werkzeuvermessung
+             ;Eingabe: %000000 (WVUCBA) bitcodiert
+MP 6585    : %000000    ;Überwachung von Achsen bei Start Werkzeuvermessung
+             ;------------------------------------------------------------------
+             ;MP6586 Ref-Koordinate für die Überwachung aus MP6585
+             ;Eingabe: -99 999,9999 bis +99 999,9999 [mm]
+MP 6586.0  : +0         ;Ref-Koordinate für die Überwachung A-Achse [mm]
+MP 6586.1  : +0         ;Ref-Koordinate für die Überwachung B-Achse [mm]
+MP 6586.2  : +0         ;Ref-Koordinate für die Überwachung C-Achse [mm]
+MP 6586.3  : +0         ;Ref-Koordinate für die Überwachung U-Achse [mm]
+MP 6586.4  : +0         ;Ref-Koordinate für die Überwachung V-Achse [mm]
+MP 6586.5  : +0         ;Ref-Koordinate für die Überwachung W-Achse [mm]
+             ;------------------------------------------------------------------
+             ;MP6600 KinematicsOpt: maximal erlaubter Änderungsbetrag
+             ;Eingabe: 0,010 bis 1,000 [mm]
+MP 6600    : 0.05       ;KinematicsOpt: max erlaubter Änderungsbetrag [mm]
+             ;------------------------------------------------------------------
+             ;MP6601 KinematicsOpt: maximal erlaubte Radius-Abweichung
+             ;                     der Kalibrierkugel
+             ;Eingabe: 0,010 bis 0,100 [mm]
+MP 6601    : 0.02       ;KinematicsOpt: max erlaubte Radius Abweichung [mm]
+             ;------------------------------------------------------------------
+             ;MP6602 KinematicsOpt: M-Funktions-Makro zur Positionierung der
+             ;       Rundachsen
+             ;Eingabe: 0 bis 999
+             ;         -1 = ohne Funktion
+MP 6602    : -1         ;KinematicsOpt: M-Funktion zur Pos Rundachsen
+             ;==================================================================
+             ;MP 7100 .. 7199
+             ;Gewindebohren
+             ;==================================================================
+             ;MP7110 Grenzen für Vorschub-Override bei Gewindebohren
+             ;Eingabe:  0 bis 150 [%]
+MP 7110.0  : 95         ;minimum
+MP 7110.1  : 105        ;maximum
+             ;------------------------------------------------------------------
+             ;MP7120 Wartezeiten im Zyklus Gewindebohren
+             ;Eingabe:  0 bis 65,535 [s]
+MP 7120.0  : 0          ;Verweilzeit für Drehrichtungs-Umkehr
+MP 7120.1  : 0          ;Vorabschaltzeit für Spindel
+             ;(nur bei codierter Ausgabe der Spindel-Drehzahl)
+MP 7120.2  : 0          ;Spindel-Nachlaufzeit nach erreichen der Bohrtiefe
+             ;------------------------------------------------------------------
+             ;MP7130 Einfahrverhalten der Spindel bei Gewindebohren
+             ;ohne Ausgleichsfutter
+             ;Eingabe: 0,1 bis 10 [Grad/min]
+MP 7130    : 1
+             ;------------------------------------------------------------------
+             ;MP7150 Positionierfenster der Werkzeugachse
+             ;Achtung: Wert muss kleiner/gleich Fenster in MP1030 sein !
+             ;Eingabe: 0,0001 bis 2 [mm]
+MP 7150    : 0.01
+             ;------------------------------------------------------------------
+             ;MP7160 Verhalten der Spindel bei Zyklus 17, 207 und 18
+             ;Eingabe: %xxxxx
+             ;Bit 0  0 = vor Ausführung von Zyklus 17 Spindel-Orientierung
+             ;       1 = vor Ausführung von Zyklus 17 keine Spindel-
+             ;           Orientierung
+             ;Bit 1  0 = Keine Begrenzung der Spindeldrehzahl
+             ;       1 = Bei kleinen Gewindetiefen wird die Spindeldrehzahl
+             ;           so begrenzt, dass die Spindel ca. 1/3 der Zeit
+             ;           mit konstanter Drehzahl läuft.
+             ;Bit 2  0 = Spindel wird nicht lagegeregelt betrieben
+             ;       1 = Spindel wird lagegeregelt betrieben
+             ;Bit 3  0 = Beschleunigungs-Vorsteuerung aktiv
+             ;       1 = Beschleunigungs-Vorsteuerung nicht aktiv
+             ;Bit 4  0 = Werkzeugachse der Spindel nachgeführt
+             ;       1 = Werkzeugachse und Spindel interpoliert
+             ;43210
+MP 7160    : %00000
+             ;==================================================================
+             ;MP 7200 .. 7399
+             ;Anzeige und Programmierung
+             ;==================================================================
+             ;MP7210 Programmierplatz
+             ;Eingabe: 0 = Steuern und Programmieren
+             ;         1 = Programmierplatz "PLC aktiv"
+             ;         2 = Programmierplatz "PLC nicht aktiv"
+             ;         3 = Programmierplatz "PLC und Not-Aus aktiv"
+             ;             (X41/34, X42/4)
+MP 7210    : 1
+             ;------------------------------------------------------------------
+             ;MP7212 "Stromunterbrechung"
+             ;Eingabe: 0 = Meldung "Stromunterbrechung" muss mit
+             ;             CE-Taste quittiert werden
+             ;         1 = Meldung "Stromunterbrechung" erscheint nicht
+MP 7212    : 1
+             ;------------------------------------------------------------------
+             ;MP7220 Schrittweite N-Nummern bei DIN-Programmierung
+             ;Eingabe: 0 bis 250
+             ; (0=keine keine Auto-Generierung)
+MP 7220    : 10
+             ;------------------------------------------------------------------
+             ;MP7224 Datei-Typen sperren
+             ;Eingabe: %xxx xxxxx
+             ; 0 = nicht sperren, nicht geschützt
+             ; 1 = sperren, geschützt
+             ;Bit 0   Heidenhain-Programme *.h   - Dateien
+             ;Bit 1   DIN/ISO-Programme    *.i   - Dateien
+             ;Bit 2   Werkzeug-Tabellen    *.t   - Dateien
+             ;Bit 3   Nullpunkt-Tabellen   *.d   - Dateien
+             ;Bit 4   Paletten-Tabellen    *.p   - Dateien
+             ;Bit 5   Text-Dateien         *.a   - Dateien
+             ;Bit 6   Help-Dateien         *.hlp - Dateien
+             ;Bit 7   Punkte-Tabellen      *.pnt - Dateien
+             ;76543210
+MP 7224.0  : %00000000  ;Sperren Dateityp
+MP 7224.1  : %00000000  ;Dateityp read-only setzen
+MP 7224.2  : %00000000  ;Softkey EDITIEREN AUS/EIN sperren
+             ;------------------------------------------------------------------
+             ;MP7225 Windows-Laufwerke in der TNC-Dateiverwaltung sperren
+             ;Eingabe: A bis Z
+             ;         Mehrere Laufwerke werden ohne Leerzeichen eingegeben,
+             ;         z. B. MP7225 = CDE
+MP 7225    : A
+             ;------------------------------------------------------------------
+             ;MP7226 Länge von Tabellen
+             ;Eingabe: 0 bis 255 [Zeilen]
+MP 7226.0  : 0          ;reserviert
+MP 7226.1  : 20         ;Nullpunkt-Tabelle (*.d)
+             ;------------------------------------------------------------------
+             ;MP7229.0 Programmlänge zur Programmüberprüfung
+             ;Eingabe: 100 bis 9 999
+MP 7229.0  : 200
+             ;------------------------------------------------------------------
+             ;MP7229.1 Programmlänge, bis zu der FK-Sätze erlaubt sind
+             ;Eingabe: 100 bis 9 999
+MP 7229.1  : 9999
+             ;------------------------------------------------------------------
+             ;MP7230 Dialogsprache
+             ;Eingabe:
+             ;         0 = englisch
+             ;         1 = deutsch
+             ;         2 = tschechisch
+             ;         3 = französisch
+             ;         4 = italienisch
+             ;         5 = spanisch
+             ;         6 = portugiesisch
+             ;         7 = schwedisch
+             ;         8 = dänisch
+             ;         9 = finnisch
+             ;         10= niederländisch
+             ;         11= polnisch
+             ;         12= ungarisch
+             ;         13= reserviert (nur MP7230.0)
+             ;         14= russisch
+             ;         15= chinesisch (simplified)
+             ;         16= chinesisch (traditional)
+             ;         17= slowenisch
+             ;         18= norwegisch
+             ;         19= slowakisch
+             ;         20= reserviert
+             ;         21= koreanisch
+             ;         22= reserviert
+             ;         23= türkisch
+             ;         24= rumänisch
+             ;         25= reserviert
+MP 7230.0  : 1          ;NC-Dialoge
+MP 7230.1  : 1          ;PLC-Dialoge (User-Cycle, User-Parameter)
+MP 7230.2  : 1          ;PLC-Fehlermeldung
+MP 7230.3  : 1          ;Help-Dateien
+             ;------------------------------------------------------------------
+             ;MP7237 PLC-Betriebsstundenzähler (Schlüsselzahl 857282)
+             ;Eingabe: %7654321 bitcodiert
+             ;2109876543210
+MP 7237.0  : %0000000001111;PLC-Zähler anzeigen
+MP 7237.1  : %1111111111111;PLC-Zähler rücksetzen
+             ;NC-Zähler rücksetzen (Schlüsselzahl 857282)
+             ;Eingabe: %xxxxxxx bitcodiert
+             ;Bit 0   reserviert
+             ;Bit 1   Maschine ein rücksetzbar
+             ;Bit 2   Programmlauf rücksetzbar
+             ;2109876543210
+MP 7237.2  : %0000000000110
+             ;------------------------------------------------------------------
+             ;MP7238 Dialoge für PLC-Zähler
+             ;Eingabe: Zeilennummer Dialog-Datei
+MP 7238.0  : 16         ;Zähler 1
+MP 7238.1  : 17         ;Zähler 2
+MP 7238.2  : 18         ;Zähler 3
+MP 7238.3  : 19         ;Zähler 4
+MP 7238.4  : 20         ;Zähler 5
+MP 7238.5  : 21         ;Zähler 6
+MP 7238.6  : 22         ;Zähler 7
+MP 7238.7  : 23         ;Zähler 8
+MP 7238.8  : 24         ;Zähler 9
+MP 7238.9  : 25         ;Zähler 10
+MP 7238.10 : 26         ;Zähler 11
+MP 7238.11 : 27         ;Zähler 12
+MP 7238.12 : 28         ;Zähler 13
+             ;------------------------------------------------------------------
+             ;MP 7245 Hilfszyklus 18 und Zyklus 32 freigeben
+             ;Eingabe: %xx
+             ;Bit0     0 = Hilfszyklus 18 gesperrt
+             ;         1 = Hilfszyklus 18 freigegeben
+             ;Bit1     0 = Zyklus 32 freigegeben
+             ;         1 = Zyklus 32 gesperrt
+             ;10
+MP 7245    : %01
+             ;------------------------------------------------------------------
+             ;MP7246 Maschinen-Parameter mit Mehrfachfunktion
+             ;Eingabe: %xxxxx
+             ;Bit0    0 = Achsparallele Positioniersätze erlaubt
+             ;        1 = Achsparallele Positioniersätze gesperrt
+             ;Bit1    0 = Löschen mit Taste DEL muss nicht bestätigt werden
+             ;        1 = Löschen mit Taste DEL muss bestätigt werden
+             ;Bit2    0 = Werkzeugeinsatz-Datei nicht erzeugen
+             ;        1 = Werkzeugeinsatz-Datei erzeugen
+             ;Bit3    0 = Tabelle Einstellungen/Auswertung AFC nicht erzeugen
+             ;        1 = Tabelle Einstellungen/Auswertung AFC erzeugen
+             ;Bit4    0 = Datei für Bearbeitungszeit pro NC-Satz
+             ;            nicht erzeugen
+             ;        1 = Datei für Bearbeitungszeit pro NC-Satz erzeugen
+             ;43210
+MP 7246    : %01100
+             ;------------------------------------------------------------------
+             ;MP7251 Anzahl der globalen Q-Parameter, die aus dem
+             ;Hersteller-Zyklus an das aufrufende Programm übergeben werden
+             ;Eingabe: 0 bis 40
+MP 7251    : 10
+             ;------------------------------------------------------------------
+             ;MP7260 Grösse Tool-Tabelle
+             ;Eingabe: 0 bis 30000
+MP 7260    : 999        ;Anzahl Werkzeuge (T-Nummer)
+             ;------------------------------------------------------------------
+             ;MP7261 Grösse Pocket-Tabellen
+             ;Eingabe: 0 bis 9999
+MP 7261.0  : 40         ;Anzahl Plätze Magazin 1 (P-Nummer)
+MP 7261.1  : 0          ;Anzahl Plätze Magazin 2 (P-Nummer)
+MP 7261.2  : 0          ;Anzahl Plätze Magazin 3 (P-Nummer)
+MP 7261.3  : 0          ;Anzahl Plätze Magazin 4 (P-Nummer)
+MP 7261.4  : 0          ;Anzahl Plätze Magazin 5 (P-Nummer)
+MP 7261.5  : 0          ;Anzahl Plätze Magazin 6 (P-Nummer)
+MP 7261.6  : 0          ;Anzahl Plätze Magazin 7 (P-Nummer)
+MP 7261.7  : 0          ;Anzahl Plätze Magazin 8 (P-Nummer)
+MP 7261.8  : 0          ;Anzahl Plätze Magazin 9 (P-Nummer)
+MP 7261.9  : 0          ;Anzahl Plätze Magazin 10 (P-Nummer)
+MP 7261.10 : 0          ;Anzahl Plätze Magazin 11 (P-Nummer)
+MP 7261.11 : 0          ;Anzahl Plätze Magazin 12 (P-Nummer)
+MP 7261.12 : 0          ;Anzahl Plätze Magazin 13 (P-Nummer)
+MP 7261.13 : 0          ;Anzahl Plätze Magazin 14 (P-Nummer)
+MP 7261.14 : 0          ;Anzahl Plätze Magazin 15 (P-Nummer)
+MP 7261.15 : 0          ;Anzahl Plätze Magazin 16 (P-Nummer)
+             ;------------------------------------------------------------------
+             ;MP7262 Maximale Index-Zahl für indizierte Werkzeuge
+             ;Eingabe: 0 bis 9
+MP 7262    : 2
+             ;------------------------------------------------------------------
+             ;MP7263 Platz Tabelle
+             ;Eingabe: %xxxxxxx
+             ;         Bit0 - Softkey "Platz-Tabelle"
+             ;         0 = Anzeigen
+             ;         1 = Nicht anzeigen
+             ;         Bit1 - Ausgabe der Spalten bei Dateifunktionen
+             ;         0 = Nur angezeigte Spalten ausgeben
+             ;         1 = Alle Spalten ausgeben
+             ;         Bit2 - Softkey "Edit ON/OFF"
+             ;         0 = Anzeigen
+             ;         1 = Nicht anzeigen
+             ;         Bit3 - Softkey "Platztabelle Rücks." und
+             ;                "Rücksetzen Spalte T"
+             ;         0 = Anzeigen
+             ;         1 = Nicht anzeigen
+             ;         Bit4 - Löschen eines Werkzeugs möglich, das in der
+             ;                Platztabelle vorhanden ist. Löschen muss
+             ;                bestätigt werden.
+             ;         0 = Löschen nicht möglich (Verhalten wie bisher)
+             ;         1 = Löschen möglich (mit Bestätigung)
+             ;         Bit5 - Löschen eines Werkzeugs auch ohne Bestätigung
+             ;                möglich (wenn Bit4 = 1.
+             ;         0 = Löschen ohne Bestätigung nicht möglich
+             ;         1 = Löschen ohne Bestätigung möglich
+             ;         Bit6 - Löschen von Index-Einträgen eines Werkzeugs
+             ;                verhält sich wie Löschen eines Werkzeugs
+             ;                Einstellung von Bit4, 5 werden berücksichtigt
+             ;         0 = Löschen immer möglich (Verhalten wie bisher)
+             ;         1 = Löschen mit Einstellungen von Bit4, 5 möglich
+             ;6543210
+MP 7263    : %0000010
+             ;------------------------------------------------------------------
+             ;MP7266 Tool-Table: Werkzeug-Daten (0=inaktiv)
+MP 7266.0  : 1          ;Werkzeug-Name (Name)
+MP 7266.1  : 2          ;Werkzeug-Länge (L)
+MP 7266.2  : 3          ;Werkzeug-Radius (R)
+MP 7266.3  : 4          ;Werkzeug-Radius 2 (R2)
+MP 7266.4  : 5          ;Aufmass Werkzeug-Länge (DL)
+MP 7266.5  : 6          ;Aufmass Werkzeug-Radius (DR)
+MP 7266.6  : 7          ;Aufmass Werkzeug-Radius 2 (DR2)
+MP 7266.7  : 8          ;Werkzeug gesperrt? (TL)
+MP 7266.8  : 9          ;Schwester-Werkzeug (RT)
+MP 7266.9  : 10         ;Time 1
+MP 7266.10 : 11         ;Time 2
+MP 7266.11 : 12         ;Current Time
+MP 7266.12 : 13         ;Kommentar zum Werkzeug (DOC)
+MP 7266.13 : 14         ;Anzahl der Werkzeug-Schneiden (CUT)
+MP 7266.14 : 15         ;Toleranz für Werkzeug-Länge (LTOL)
+MP 7266.15 : 16         ;Toleranz für Werkzeug-Radius (RTOL)
+MP 7266.16 : 17         ;Schneid-Richtung des Werkzeugs (DIRECT)
+MP 7266.17 : 18         ;PLC-Status (PLC)
+MP 7266.18 : 19         ;Offset WZ-Länge (TT:L-OFFS)
+MP 7266.19 : 20         ;Offset WZ-Radius (TT:R-OFFS)
+MP 7266.20 : 21         ;Bruch-Toleranz WZ-Länge (LBREAK)
+MP 7266.21 : 22         ;Bruch-Toleranz WZ-Radius (TBREAK)
+MP 7266.22 : 23         ;Schneidenlänge (LCUTS)
+MP 7266.23 : 24         ;Eintauchwinkel (ANGLE)
+MP 7266.24 : 25         ;Werkzeugtyp (TYP)
+MP 7266.25 : 26         ;Werkzeug-Schneidstoff (TMAT)
+MP 7266.26 : 27         ;Schnittdatentabelle (CDT)
+MP 7266.27 : 28         ;PLC-Wert (PLC-VAL)
+MP 7266.28 : 29         ;Taster-Mittenversatz Hauptachse (CAL-OF1)
+MP 7266.29 : 30         ;Taster-Mittenversatz Nebenachse (CAL-OF2)
+MP 7266.30 : 31         ;Spindelwinkel beim Kalibrieren (CAL-ANG)
+MP 7266.31 : 32         ;Werkzeugtyp für Platz-Tabelle (PTYP)
+MP 7266.32 : 33         ;Maximaldrehzahl (NMAX)
+MP 7266.33 : 34         ;Werkzeug abheben (LIFTOFF)
+MP 7266.34 : 35         ;PLC-Wert (P1)
+MP 7266.35 : 36         ;PLC-Wert (P2)
+MP 7266.36 : 37         ;PLC-Wert (P3)
+MP 7266.37 : 38         ;Zusätzl. Kinematikbeschreibung (KINEMATIK)
+MP 7266.38 : 39         ;Spitzenwinkel für DRILL und CSINK (T-ANGLE)
+MP 7266.39 : 40         ;Gewindesteigung für TAP (PITCH)
+MP 7266.40 : 41         ;AFC: Regelstrategie-Name für Adaptive Feed Control
+MP 7266.41 : 42         ;Toleranzwert bzgl. Werkzeug-Radius R2 (R2TOL)
+MP 7266.42 : 0          ;Verweis auf Korrekturwert-Tabelle
+             ;           (DR2TABLE, Option #92)
+MP 7266.43 : 44         ;Zeitstempel der letzten Verwendung (LAST-USE)
+MP 7266.44 : 45         ;Active Chatter Compensation (ACC, Option #145)
+MP 7266.45 : 46         ;Überschreiten der Werkzeugstandzeit (OVRTIME)
+MP 7266.46 : 47         ;Kollisions-Länge, Auswertung im PLC-Programm (CL)
+MP 7266.47 : 48         ;Kollisions-Radius, Auswertung im PLC-Programm (CR)
+MP 7266.48 : 49         ;PLC-Wert (P4)
+             ;------------------------------------------------------------------
+             ;MP7267 Elemente der Platz-Tabelle
+             ;Eingabe: 0 = keine Anzeige
+             ;         1 bis 99 = Position in der Platz-Tabelle
+MP 7267.0  : 1          ;Werkzeug-Nummer (T)
+MP 7267.1  : 3          ;Sonder-Werkzeug (ST)
+MP 7267.2  : 4          ;Festplatz (F)
+MP 7267.3  : 5          ;gesperrter Platz (L)
+MP 7267.4  : 0          ;PLC-Status (PLC)
+MP 7267.5  : 2          ;Werkzeug-Name (TNAME)
+MP 7267.6  : 6          ;Kommentar aus Werkzeug-Tabelle (DOC)
+MP 7267.7  : 0          ;Werkzeugtyp für Platz-Tabelle (PTYP)
+MP 7267.8  : 0          ;Wert 1 (P1)
+MP 7267.9  : 0          ;Wert 2 (P2)
+MP 7267.10 : 0          ;Wert 3 (P3)
+MP 7267.11 : 0          ;Wert 4 (P4)
+MP 7267.12 : 0          ;Wert 5 (P5)
+MP 7267.13 : 0          ;Platz reservieren (RSV)
+MP 7267.14 : 0          ;Platz oben sperren (LOCKED_ABOVE)
+MP 7267.15 : 0          ;Platz unten sperren (LOCKED_BELOW)
+MP 7267.16 : 0          ;Platz links sperren (LOCKED_LEFT)
+MP 7267.17 : 0          ;Platz rechts sperren (LOCKED_RIGHT)
+MP 7267.18 : 0          ;S1 Wert (P6)
+MP 7267.19 : 0          ;S2 Wert (P7)
+             ;------------------------------------------------------------------
+             ;MP7268.x Sortieren/Ausblenden von Spalten der Preset-Tabelle
+             ;Eingabe: 1 bis 99 = Reihenfolge der Spalten
+             ;         0 = Spalte nicht anzeigen
+MP 7268.0  : 1
+MP 7268.1  : 2
+MP 7268.2  : 3
+MP 7268.3  : 4
+MP 7268.4  : 5
+MP 7268.5  : 6
+MP 7268.6  : 7
+MP 7268.7  : 8
+MP 7268.8  : 9
+MP 7268.9  : 10
+MP 7268.10 : 11
+             ;------------------------------------------------------------------
+             ;MP7270 Anzeige des Vorschubs in den manuellen Betriebsarten
+             ;(manueller Betrieb, elektronisches Handrad)
+             ;0 = Anzeige des Achsvorschubs nur bei Betätigen einer
+             ;    Achsrichtungs-Taste (achsspezifischer Vorschub MP1020.x)
+             ;1 = Anzeige des Achsvorschubs auch vor Betätigen einer
+             ;    Achsrichtungs-Taste (kleinster wert aus MP1020.x für
+             ;    alle Achsen)
+MP 7270    : 0
+             ;------------------------------------------------------------------
+             ;MP7280 Definition Dezimalzeichen
+             ;Eingabe: 0 = Komma
+             ;         1 = Punkt
+MP 7280    : 1
+             ;------------------------------------------------------------------
+             ;MP7281 Darstellung NC-Programm
+             ;Eingabe: 0 = NC-Satz immer vollständig anzeigen
+             ;         1 = Nur aktuellen Satz vollständig anzeigen
+             ;         2 = NC-Satz nur bei Neuerzeugung bzw. bei Änderung
+             ;             vollständig anzeigen
+MP 7281.0  : 0          ; Programm Einspeichern
+MP 7281.1  : 0          ; Programm Abarbeiten
+             ;------------------------------------------------------------------
+             ;MP7285 Verrechnung der Werkzeug-Länge bei der
+             ;Positions-Anzeige der Werkzeug-Achse
+             ;Eingabe: 0 = Werkzeug-Länge wird nicht verrechnet
+             ;         1 = Werkzeug-Länge wird verrechnet
+MP 7285    : 1
+             ;------------------------------------------------------------------
+             ;MP7289 Positions-Anzeige-Schritt für Spindel
+             ;Eingabe: 0 = 0,1 [Grad]
+             ;         1 = 0,05 [Grad]
+             ;         2 = 0,01 [Grad]
+             ;         3 = 0,005 [Grad]
+             ;         4 = 0,001 [Grad]
+             ;         5 = 0,0005 [Grad]
+             ;         6 = 0,0001 [Grad]
+MP 7289    : 4
+             ;------------------------------------------------------------------
+             ;MP7290 Positions-Anzeige-Schritt
+             ;Eingabe: 0 = 0,1 [mm] bzw. [Grad]
+             ;         1 = 0,05 [mm] bzw. [Grad]
+             ;         2 = 0,01 [mm] bzw. [Grad]
+             ;         3 = 0,005 [mm] bzw. [Grad]
+             ;         4 = 0,001 [mm] bzw. [Grad]
+             ;         5 = 0,0005 [mm] bzw. [Grad]
+             ;         6 = 0,0001 [mm] bzw. [Grad]
+MP 7290.0  : 4
+MP 7290.1  : 4
+MP 7290.2  : 4
+MP 7290.3  : 4
+MP 7290.4  : 4
+MP 7290.5  : 4
+MP 7290.6  : 4
+MP 7290.7  : 4
+MP 7290.8  : 4
+MP 7290.9  : 4
+MP 7290.10 : 4
+MP 7290.11 : 4
+MP 7290.12 : 4
+MP 7290.13 : 4
+MP 7290.14 : 4
+MP 7290.15 : 4
+MP 7290.16 : 4
+MP 7290.17 : 4
+MP 7290.18 : 4
+MP 7290.19 : 4
+MP 7290.20 : 4
+MP 7290.21 : 4
+             ;------------------------------------------------------------------
+             ;MP7291 Angezeigte Achsen
+             ;Eingabe: SWvUcBaZyX
+             ; X = NC-Achsen (Grossbuchstaben)
+             ; x = PLC-Achsen (Kleinbuchstaben)
+             ; - = nicht angezeigte Achsen
+             ;987654ZYX
+MP 7291.0  : SC-a-BAZYX ;Verfahrbereich 1
+MP 7291.1  : SC-a-BAZYX ;Verfahrbereich 2
+MP 7291.2  : SC-a-BAZYX ;Verfahrbereich 3
+             ;------------------------------------------------------------------
+             ;MP7294 Achsspezifische Bezugspunkt setzen in der
+             ;       Preset-Tabelle sperren
+             ;       (ab 340 422-01, 340 480-01)
+             ;Eingabe: %xxxxxxxxxxxxxxxxxxxxxx
+             ;         Bit0 bis 13 entspricht Achse 1 bis 14
+             ;         0 = Nicht gesperrt
+             ;         1 = Gesperrt
+             ;2109876543210987654ZYX
+MP 7294    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP7295 Bezugspunkt setzen sperren
+             ;Eingabe: %xxxxxxxxxxxxxxxxxxxxxx
+             ;         Bit0 bis 13 entspricht Achse 1 bis 14
+             ;         0 = Nicht gesperrt
+             ;         1 = Gesperrt
+             ;2109876543210987654ZYX
+MP 7295    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP7296 Bezugspunkt setzen über Achstasten
+             ;Eingabe:
+             ;Bit 0 = 0 Bezugspunkt kann über Achtasten und Softkey gesetzt
+             ;           werden
+             ;Bit 0 = 1 Bezugspunkt kann nur über Softkey gesetzt werden
+             ;10
+MP 7296    : %01
+             ;------------------------------------------------------------------
+             ;MP7300 Löschen der Status-Anzeige und der Q-Parameter
+             ;Die Eingabewerte 0 bis 3 sollten aus Sicherheitsgründen nicht
+             ;verwendet werden, da hier die Werkzeug-Daten gelöscht werden.
+             ;Eingabe: 0 = Status-Anzeige und Q-Parameter und Werkzeug-
+             ;             Daten löschen, wenn Programm angewählt wird
+             ;         1 = Status-Anzeige, Q-Parameter und Werkzeug-Daten
+             ;             löschen bei M02, M30, END PGM und Anwahl
+             ;             eines Programms
+             ;         2 = Status-Anzeige und Werkzeug-Daten löschen,
+             ;             wenn Programm angewählt wird
+             ;         3 = Status-Anzeige und Werkzeug-Daten löschen,
+             ;             wenn Programm angewählt wird und bei M02, M30,
+             ;             END PGM
+             ;         4 = Status-Anzeige und Q-Parameter löschen,
+             ;             wenn Programm angewählt wird
+             ;         5 = Status-Anzeige und Q-Parameter löschen, wenn
+             ;             Programm angewählt wird und bei M02, M30, END PGM
+             ;         6 = Status-Anzeige löschen, wenn Programm angewählt
+             ;             wird
+             ;         7 = Status-Anzeige löschen, wenn Programm angewählt
+             ;             wird und bei M02, M30, END PGM
+MP 7300    : 5
+             ;------------------------------------------------------------------
+             ;MP7310 Grafik-Darstellung
+             ;Eingabe: %xxxxxxxx
+             ;Bit 0   Umschalten der Darstellung in drei Ebenen
+             ;        0 = deutsche Norm
+             ;        1 = amerikanische Norm
+             ;Bit 1   reserviert
+             ;Bit 2   BLK-Form nach Nullpunkt-Verschiebung
+             ;        0 = BLK-Form wird nicht verschoben
+             ;        1 = BLK-Form wird verschoben
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   3D-Grafik im Programm-Test
+             ;        0 = 2,5D und 3D (nur mit MC 420 und ab MC 422B)
+             ;        1 = 2,5D
+             ;Bit 6   Modellabtrag mit angestelltem Werkzeug
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 7   Auswertung der Spalte LCUTS aus TOOL.T, um
+             ;        Sonderwerkzeuge darstellen zu können
+             ;        0 = freie Auswertung
+             ;        1 = exakte Auswertung
+             ;76543210
+MP 7310    : %00000000
+             ;------------------------------------------------------------------
+             ;MP7312 Begrenzung der Werkzeug-Schneidenlänge LCUTS, falls in
+             ;der Werkzeug-Tabelle keine Angabe zur Schneidenlänge
+             ;Eingabe:   0 = keine Begrenzung, Schneidenlänge unendlich
+             ;         > 0 Schneidenlänge = 2 * Werkzeug-Radius * MP7312
+MP 7312    : 5.00000
+             ;------------------------------------------------------------------
+             ;MP7315 Werkzeugradius für grafische Darstellung von Laser und
+             ;Wasserstrahl ohne Tool Call
+             ;Eingabe: 0,0000 bis 99 999,9999 [mm]
+MP 7315    : 5
+             ;------------------------------------------------------------------
+             ;MP 7316 Eindringtiefe in Rohling für grafische Darstellung von
+             ;Laser und Wasserstrahl ohne Tool Call
+             ;Eingabe: 0,0000 bis 99 999,9999 [mm]
+MP 7316    : 0
+             ;------------------------------------------------------------------
+             ;MP7317 Aktivierung der grafischen Darstellung
+             ;Eingabe: Nummer M-Befehl
+MP 7317.0  : 0          ;M-Befehl Start Darstellung
+MP 7317.1  : 0          ;M-Befehl Ende Darstellung
+             ;------------------------------------------------------------------
+             ;MP7330 Festlegung der Anwenderparameter für die MODE-Funktion
+             ;Eingabe: MP-Nummer
+             ;Achtung: Index 2-stellig eingeben, also 110.01 nicht 110.1
+MP 7330.0  : 7210       ;0,1,2 Steuern,Programmieren,+PLC-aktiv
+MP 7330.1  : 7410       ;Massfaktor xyz/z
+MP 7330.2  : 7420       ;Verhalten bei Zyklen
+MP 7330.3  : 7430       ;Überlappung Taschen
+MP 7330.4  : 7431       ;Toleranz Kreisbahn
+MP 7330.5  : 0
+MP 7330.6  : 4310.06    ;Schmierung Achsen [min]
+MP 7330.7  : 7640       ;Handrad Aktivierung
+MP 7330.8  : 4310.05    ;Auswahl Farbpalette Monitor
+MP 7330.9  : 6580       ;TT1x0 Position X [REF]
+MP 7330.10 : 6580.01    ;TT1x0 Position Y [REF]
+MP 7330.11 : 6580.02    ;TT1x0 Position Z [REF]
+MP 7330.12 : 0
+MP 7330.13 : 0
+MP 7330.14 : 0
+MP 7330.15 : 0
+             ;------------------------------------------------------------------
+             ;MP7340 Festlegung der Dialoge für Anwenderparameter
+             ;Datei: DIALOGE.A)
+MP 7340.0  : 0
+MP 7340.1  : 1
+MP 7340.2  : 2
+MP 7340.3  : 3
+MP 7340.4  : 4
+MP 7340.5  : 5
+MP 7340.6  : 6
+MP 7340.7  : 7
+MP 7340.8  : 8
+MP 7340.9  : 9
+MP 7340.10 : 10
+MP 7340.11 : 11
+MP 7340.12 : 12
+MP 7340.13 : 13
+MP 7340.14 : 14
+MP 7340.15 : 15
+             ;------------------------------------------------------------------
+             ;MP735x Farbdefinitionen Berechnung Parameter
+             ;   rot    -   grün   -   blau
+             ;0..F-0..F - 0..F-0..F - 0..F-0..F
+             ;grob-fein - grob-fein - grob-fein
+             ;z.B. $0FFFFFF -> Farbe weiss
+             ;------------------------------------------------------------------
+MP 7350    : $0808080   ;Fensterrahmen
+             ;------------------------------------------------------------------
+             ;Fehlermeldungen
+MP 7351.0  : $0FF2020   ;Fehler
+MP 7351.1  : $000FF00   ;Warnung
+MP 7351.2  : $00000FF   ;Information
+             ;------------------------------------------------------------------
+             ;Betriebsart-Anzeige "Maschine"
+MP 7352.0  : $0ECECEC   ;Hintergrund
+MP 7352.1  : $0000000   ;Text für Betriebsart
+MP 7352.2  : $00000FF   ;Dialog
+             ;------------------------------------------------------------------
+             ;Betriebsart-Anzeige "Programmieren"
+MP 7353.0  : $0C0C0C0   ;Hintergrund
+MP 7353.1  : $0000000   ;Text für Betriebsart
+MP 7353.2  : $00000FF   ;Dialog
+             ;------------------------------------------------------------------
+             ;Programmtext-Anzeige "Maschine"
+MP 7354.0  : $0FFFFFF   ;Hintergrund
+MP 7354.1  : $0000000   ;allgemeiner Programm-Text
+MP 7354.2  : $00000FF   ;aktueller Satz
+MP 7354.3  : $0A0A0A0   ;Kommentare und nicht verwendete MP's in MP-Datei
+MP 7354.4  : $0C8C8C8   ;Hintergrund nicht aktuelles Fenster (Gliederung)
+             ;------------------------------------------------------------------
+             ;Programmtext-Anzeige "Programmieren"
+MP 7355.0  : $0FFFFFF   ;Hintergrund
+MP 7355.1  : $0000000   ;allgemeiner Programm-Text
+MP 7355.2  : $00000FF   ;aktueller Satz
+MP 7355.3  : $0A0A0A0   ;Kommentare und nicht verwendete MP's in MP-Datei
+MP 7355.4  : $0C8C8C8   ;Hintergrund nicht aktuelles Fenster (Gliederung)
+             ;------------------------------------------------------------------
+             ;Softkey-Anzeige "Maschine"
+MP 7357.0  : $0C0C0C0   ;Hintergrund
+MP 7357.1  : $0000000   ;Schriftfarbe
+MP 7357.2  : $0000000   ;Inaktive Softkey-Leiste
+MP 7357.3  : $00000FF   ;Aktive Softkey-Leiste
+             ;------------------------------------------------------------------
+             ;Softkey-Anzeige "Programmieren"
+MP 7358.0  : $0C0C0C0   ;Hintergrund
+MP 7358.1  : $0000000   ;Symbole
+MP 7358.2  : $0000000   ;Inaktive Softkey-Leiste
+MP 7358.3  : $00000FF   ;Aktive Softkey-Leiste
+             ;------------------------------------------------------------------
+             ;Grafik  3D-Darstellung und Draufsicht
+MP 7360.0  : $0AABBAA   ;Hintergrund
+MP 7360.1  : $08888F0   ;Oberfläche
+MP 7360.2  : $0FFFFFF   ;3D: vordere Stirnfläche
+MP 7360.3  : $0000000   ;Text-Anzeige im Grafik-Fenster
+MP 7360.4  : $0FFFFA0   ;3D: seitliche Stirnfläche
+MP 7360.5  : $0000000   ;tiefster Punkt im Rohling
+MP 7360.6  : $0FFFFFF   ;höchster Punkt im Rohling (unter Oberfläche)
+MP 7360.7  : $0CC1919   ;3D: Schnittebene
+MP 7360.8  : $08589C6   ;3D: Werkzeug 1
+MP 7360.9  : $0C6901C   ;3D: Werkzeug 2
+MP 7360.10 : $06C7889   ;3D: Werkzeug 3
+MP 7360.11 : $0866D2E   ;3D: Werkzeug 4
+MP 7360.12 : $0B34415   ;3D: Werkzeug 5
+MP 7360.13 : $0BF9A39   ;3D: Werkzeug 6
+MP 7360.14 : $0818181   ;3D: Werkzeug 7
+MP 7360.15 : $086C790   ;3D: Werkzeug 8
+             ;------------------------------------------------------------------
+             ;Grafik  Darstellung in 3 Ebenen
+MP 7361.0  : $0AAAAAA   ;Hintergrund
+MP 7361.1  : $00000E8   ;Grundriss
+MP 7361.2  : $00000E8   ;Seiten-und Aufriss
+MP 7361.3  : $0FF0000   ;Achsenkreuz und Text in der Grafik-Anzeige
+MP 7361.4  : $0FF00FF   ;Cursor
+             ;------------------------------------------------------------------
+             ;Zusätzliche Statusanzeige im Grafik-Fenster
+MP 7362.0  : $0ECECEC   ;Hintergrund Grafik-Fenster
+MP 7362.1  : $0FFFFFF   ;Hintergrund Statusanzeige
+MP 7362.2  : $00000FF   ;Status-Symbole
+MP 7362.3  : $0FF0000   ;Status-Werte
+MP 7362.4  : $0C0C0C0   ;Hintergrund nicht angewählter Reiter
+MP 7362.5  : $0ECECEC   ;Reiter AFC - Hintergrundfarbe Balken, Diagramm
+MP 7362.6  : $000FF80   ;Reiter AFC - Farbe Istfaktor Override
+MP 7362.7  : $000AAFF   ;Reiter AFC - Farbe Istlast Spindel
+             ;------------------------------------------------------------------
+             ;Programmier-Grafik
+MP 7363.0  : $0ECECEC   ;Hintergrund
+MP 7363.1  : $00000FF   ;aufgelöste Kontur
+MP 7363.2  : $0FF00FF   ;Unterprogramme und Rahmen für Zoom
+MP 7363.3  : $000EC00   ;alternative Lösungen
+MP 7363.4  : $0FF0000   ;nicht aufgelöste Kontur
+MP 7363.5  : $00080FF   ;Kontur im Eilgang
+MP 7363.6  : $0000000   ;Satznummer
+             ;------------------------------------------------------------------
+             ;Farbe der Hilfsbilder für Zyklen
+MP 7364.0  : $0D2D2D2   ;Farbe des Randes der Hilfbilder
+MP 7364.1  : $0FF0000   ;ohne Funktion
+MP 7364.2  : $0808080   ;ohne Funktion
+MP 7364.3  : $0000000   ;ohne Funktion
+MP 7364.4  : $0000163   ;ohne Funktion
+MP 7364.5  : $0000000   ;ohne Funktion
+MP 7364.6  : $0000000   ;ohne Funktion
+MP 7364.7  : $0AA0000   ;ohne Funktion
+MP 7364.8  : $000EEEE   ;ohne Funktion
+MP 7364.9  : $0DBD3DB   ;ohne Funktion
+             ;------------------------------------------------------------------
+             ;Oszilloskop
+MP 7365.0  : $0FFFFFF   ;Hintergrund
+MP 7365.1  : $0808080   ;Gitterteilung
+MP 7365.2  : $00000FF   ;Cursor und Text
+MP 7365.3  : $0FF0000   ;angewählter Kanal
+MP 7365.4  : $0C08030   ;Kanal 1
+MP 7365.5  : $000FF00   ;Kanal 2
+MP 7365.6  : $0FF00FF   ;Kanal 3
+MP 7365.7  : $00000FF   ;Kanal 4
+MP 7365.8  : $0FFCF00   ;Kanal 5
+MP 7365.9  : $000CFFF   ;Kanal 6
+             ;------------------------------------------------------------------
+             ;Überblend-Fenster (HELP-Taste, PopUp-Menüs)
+MP 7366.0  : $0ECECEC   ;Hintergrund
+MP 7366.1  : $0000000   ;Text bzw. Vordergrund
+MP 7366.2  : $00000FF   ;aktuelle Zeile
+MP 7366.3  : $0FF0000   ;Titelzeile
+MP 7366.4  : $0FFFFFF   ;Scrollbar-Feld
+MP 7366.5  : $0FF0000   ;Scrollbar
+MP 7366.6  : $0000000   ;reserviert
+MP 7366.7  : $0202020   ;reserviert
+MP 7366.8  : $0404040   ;reserviert
+MP 7366.9  : $0606060   ;reserviert
+MP 7366.10 : $0808080   ;reserviert
+MP 7366.11 : $0A0A0A0   ;reserviert
+MP 7366.12 : $0C0C0C0   ;reserviert
+MP 7366.13 : $0E0E0E0   ;reserviert
+MP 7366.14 : $0FFFFFF   ;reserviert
+             ;------------------------------------------------------------------
+             ;Grosses PLC-Fenster
+MP 7367.0  : $0ECECEC   ;Farbe 0  grau Hintergrund
+MP 7367.1  : $0000000   ;Farbe 1  schwarz
+MP 7367.2  : $0D0D0D0   ;Farbe 2  grau 10%
+MP 7367.3  : $0A0A0A0   ;Farbe 3  grau 20%
+MP 7367.4  : $0808080   ;Farbe 4  grau 40%
+MP 7367.5  : $0404040   ;Farbe 5  grau 60%
+MP 7367.6  : $0202020   ;Farbe 6  grau 80%
+MP 7367.7  : $000FF9C   ;Farbe 7  giftgrün
+MP 7367.8  : $0FFFF7C   ;Farbe 8  gelb
+MP 7367.9  : $0FF0000   ;Farbe 9  rot
+MP 7367.10 : $000FF00   ;Farbe 10 grün
+MP 7367.11 : $0001C5C   ;Farbe 11 dunkelblau
+MP 7367.12 : $000FFFF   ;Farbe 12 türkis
+MP 7367.13 : $00000FF   ;Farbe 13 blau
+MP 7367.14 : $0FF00FF   ;Farbe 14 violett
+             ;MP7350    ;Farbe 15
+             ;------------------------------------------------------------------
+             ;Taschenrechner
+MP 7368.0  : $0ACACAC   ;Hintergrund
+MP 7368.1  : $0FFFFFF   ;Tasten- und Anzeigenhintergrund
+MP 7368.2  : $00000FF   ;Tastentexte ("os" bei "cos")
+MP 7368.3  : $0FF0040   ;Tastensymbole
+             ;------------------------------------------------------------------
+             ;Verzeichnisbaum im PGM MGT
+MP 7369.0  : $0ECECEC   ;Texthintergrund
+MP 7369.1  : $0000000   ;Schrift
+MP 7369.2  : $00000FF   ;Texthintergrund des aktiven Ordners
+MP 7369.3  : $0000000   ;Linienfarbe der Baumstruktur
+MP 7369.4  : $0FF6000   ;Ordner
+MP 7369.5  : $0FF0040   ;Laufwerke
+MP 7369.6  : $0FF0000   ;Texthintergrund Überschrift d. Browserfensters
+             ;------------------------------------------------------------------
+             ;Kleines PLC-Fenster
+MP 7370.0  : $0C0C0C0   ;Farbe 0  grau Hintergrund
+MP 7370.1  : $0000000   ;Farbe 1  schwarz
+MP 7370.2  : $0D0D0D0   ;Farbe 2  grau 10%
+MP 7370.3  : $0A0A0A0   ;Farbe 3  grau 20%
+MP 7370.4  : $0808080   ;Farbe 4  grau 40%
+MP 7370.5  : $0404040   ;Farbe 5  grau 60%
+MP 7370.6  : $0202020   ;Farbe 6  grau 80%
+MP 7370.7  : $000FF9C   ;Farbe 7  giftgrün
+MP 7370.8  : $0FFFF7C   ;Farbe 8  gelb
+MP 7370.9  : $0FF0000   ;Farbe 9  rot
+MP 7370.10 : $000FF00   ;Farbe 10 grün
+MP 7370.11 : $0001C5C   ;Farbe 11 dunkelblau
+MP 7370.12 : $000FFFF   ;Farbe 12 türkis
+MP 7370.13 : $00000FF   ;Farbe 13 blau
+MP 7370.14 : $0FF00FF   ;Farbe 14 violett
+MP 7370.15 : $0FFFFFF   ;Farbe 15 weiß
+             ;------------------------------------------------------------------
+             ;Status- und PLC-Fenster
+MP 7371.0  : $0ECECEC   ;Hintergrund Fenster
+MP 7371.1  : $0FFFFFF   ;Hintergrund Elemente
+MP 7371.2  : $00000FF   ;Werte ausser Positionen
+MP 7371.3  : $00000FF   ;Positionen
+             ;------------------------------------------------------------------
+             ;smarT.NC
+MP 7375.0  : $0E8E8E8   ;Hintergrund: Formulare
+MP 7375.1  : $0C0C0C0   ;Hintergrund: nicht angewählter Reiter
+MP 7375.2  : $0FFFFFF   ;Hintergrund: Treeview und Eingabefelder
+MP 7375.3  : $0D0D0D0   ;Hintergrund: inaktives Eingabefeld
+MP 7375.4  : $0D2D2D2   ;Hintergrund: Hilfsbild
+MP 7375.5  : $00022FF   ;Cursor: Treeview und Hintergrund aktuelles Feld
+MP 7375.6  : $0A0E0FF   ;Cursor: Treeview wenn Focus im Formular
+MP 7375.7  : $0000000   ;Textfarbe: inaktives Eingabefeld
+MP 7375.8  : $0FFFFFF   ;Textfarbe: aktives Eingabefeld
+MP 7375.9  : $00000FF   ;Textfarbe: Radiobuttons
+MP 7375.10 : $0A0A0A0   ;Textfarbe: inaktiver Label
+MP 7375.11 : $0FF0000   ;Hintergrund: Radio-/Checkbuttons bei "Mouseover"
+MP 7375.12 : $000FF00   ;Globale Daten PREDEF: Hintergrund
+MP 7375.13 : $0000000   ;Globale Daten PREDEF: Text
+MP 7375.14 : $0FF0000   ;Globale Daten geändert: Hintergrund
+MP 7375.15 : $0000000   ;Globale Daten geändert: Text
+MP 7375.16 : $0FFFFC0   ;Tooltip: Hintergrund
+MP 7375.17 : $0000000   ;Tooltip: Text
+MP 7375.18 : $0FF0000   ;Dialogtitel: Hintergrund
+MP 7375.19 : $0000000   ;Dialogtitel: Text
+MP 7375.20 : $000FA00   ;Mustergenerator: Punkte auf gleicher Höhe
+MP 7375.21 : $00000C8   ;Mustergenerator: aktuell aktive Punkte
+MP 7375.22 : $0800000   ;Mustergenerator: gelöschte Punkte
+MP 7375.23 : $0FF6432   ;Mustergenerator: ausgeblendete Punkte
+MP 7375.24 : $07B342D   ;Mustergenerator: Rechteck für Zoom
+             ;------------------------------------------------------------------
+             ;MP7392 Einstellungen zum Bildschirmschoner
+             ;       Bei Steuerungen mit HSCI erfolgt die Konfiguration
+             ;       über den Window-Manager XFCE
+             ;MP7392.0 Zeit nach der der Bildschirmschoner aktiv wird
+             ;Eingabe: 0 = kein Bildschirmschoner
+             ;         1 bis 99 [min]
+             ;MP7392.1 Bildschirmschoner-Typ
+             ;Eingabe: 0 = kein Bildschirmschoner
+             ;         1 = Default-Bildschirmschoner des X-Servers
+             ;         2 = 3D-Linienmuster
+MP 7392.0  : 0
+MP 7392.1  : 0
+             ;============================================================
+             ;MP 7400 .. 7599
+             ;Bearbeitung und Programmlauf
+             ;============================================================
+             ;MP7400 Look-Ahead Speicher des Interpolators
+             ;(bei NC-SW 340 49x nur mit Software Option 2,
+             ;bei NC-SW 606 42x ohne Software Option)
+             ;Eingabe: 0 = 256 Blöcke
+             ;         1 = 512 Blöcke
+             ;         2 = 1024 Blöcke
+MP 7400    : 0
+             ;------------------------------------------------------------
+             ;MP7410 Zyklus "Massfaktor" in zwei oder drei Achsen
+             ;Eingabe:
+             ; 0 = Zyklus "Massfaktor" wirkt in allen drei Hauptachsen
+             ; 1 = Zyklus "Massfaktor" wirkt nur in der Bearbeitungsebene
+MP 7410    : 0
+             ;------------------------------------------------------------------
+             ;MP7411 Werkzeug-Daten im Touch-Probe-Satz
+             ;Eingabe: 0 = Die kalibrierten Daten des Tastsystems werden
+             ;             verwendet
+             ;         1 = Die aktuellen Werkzeug-Daten aus dem letzten
+             ;             TOOL CALL werden verwendet.
+             ;             Anzeige von Werkzeug-Name und -Nummer.
+MP 7411    : 1
+             ;------------------------------------------------------------------
+             ;MP7412 Einstellungen für Zyklen
+             ;Eingabe: 0 oder 1
+             ;Bit 0   Verhalten des Merkers M4031 im Zyklus 209
+             ;        0 = M4031 nach Spindelorientierung setzen
+             ;        1 = M4031 vor Spindelorientierung setzen
+MP 7412    : 0
+             ;------------------------------------------------------------------
+             ;MP7420 Zyklen zum Fräsen von Taschen mit beliebiger Kontur
+             ;Eingabe: %xxxxx
+             ;Bit 0   Fräsrichtung beim Kanal-Fräsen
+             ;        0 = Kanal-Fräsen der Kontur bei Taschen im
+             ;            Gegenuhrzeigersinn, bei Inseln im Uhrzeigersinn
+             ;        1 = Kanal-Fräsen der Kontur bei Taschen im Uhrzeiger-
+             ;            sinn, bei Inseln im Gegenuhrzeigersinn
+             ;Bit 1   Reihenfolge für Ausräumen und Kanal-Fräsen (nur SL1)
+             ;        0 = zuerst Kanal-Fräsen, dann Tasche Ausräumen
+             ;        1 = zuerst Tasche Ausräumen, dann Kanal-Fräsen
+             ;Bit 2   Vereinigung Programmierter Konturen
+             ;        0 = Konturen werden nur vereinigt, wenn sich die
+             ;            Fräsermittelpunktsbahn schneiden
+             ;        1 = Konturen werden vereinigt, wenn sich program-
+             ;            mierte Konturen schneiden.
+             ;Bit 3   Ausräumen und Kanal-Fräsen bis zur Taschentiefe bzw.
+             ;        für jede Zustellung
+             ;        0 = Ausräumen und Kanal-Fräsen erfolgen zusammen-
+             ;            hängend über alle Zustellungen
+             ;        1 = für jede Zustellung erfolgt Kanal-Fräsen und dann
+             ;            Ausräumen (abhängig von Bit 1), bevor nächste
+             ;            Zustellung erfolgt.
+             ;Bit 4   Verfahren nach Bearbeitung der Konturtasche
+             ;        0 = Position, die vor Bearbeitung angefahren war
+             ;        1 = Werkzeugachse auf sichere Höhe
+             ;76543210
+MP 7420    : %00000000
+             ;-----------------------------------------------------------------
+             ;MP7430 Überlappungsfaktor beim Taschenfräsen
+             ;Eingabe: 0,1 bis 1,414
+MP 7430    : 1.2
+             ;-----------------------------------------------------------------
+             ;MP7431 Kreisendpunkt-Toleranz
+             ;Eingabe: 0,0001 bis 0,016 [mm]
+MP 7431    : 0.001
+             ;-----------------------------------------------------------------
+             ;MP7432 Endschalter-Toleranz bei M140/M150
+             ;Eingabe: 0,0001 bis 1,0000 [mm]
+             ;         0 = keine Endschalter-Toleranz aktiv
+MP 7432    : 0
+             ;-----------------------------------------------------------------
+             ;MP7440 Ausgabe vom M-Funktionen
+             ;Eingabe: %xxxxxxxx
+             ;Bit 0   Programmlauf-Halt bei M06
+             ;        0 = Programmlauf-Halt bei M06
+             ;        1 = kein Programmlauf-Halt bei M06
+             ;Bit 1   modaler Zyklus-Aufruf M89
+             ;        0 = Normale Code-Übergabe von M89 am Satzanfang
+             ;        1 = modaler Zyklus-Aufruf M89 am Satzende
+             ;Bit 2   Programmlauf-Halt bei M-Funktionen
+             ;        0 = Programmlauf-Halt bis zur Rückmeldung der
+             ;            M-Funktion
+             ;        1 = kein Programmlauf-Halt (auf Rückmeldung wird
+             ;            nicht gewartet)
+             ;Bit 3   Umschaltung kv-Faktoren mit M105/M106
+             ;        0 = Funktion nicht wirksam
+             ;        1 = Funktion wirksam
+             ;Bit 4   reduzierter Vorschub in der Werkzeugachse mit M103
+             ;        0 = Funktion nicht wirksam
+             ;        1 = Funktion wirksam
+             ;Bit 5   reserviert
+             ;Bit 6   M134 automatisch bei Anwahl eines NC-Programms
+             ;        aktivieren
+             ;        0 = Funktion nicht wirksam
+             ;        1 = Funktion wirksam
+             ;Bit 7   Interner Spindel-Status der Geometrie
+             ;        0 = bei M00 wechselt int. Spindel-Status auf M05
+             ;        1 = bei M00 wechselt int. Spindel-Status nicht auf M05
+             ;76543210
+MP 7440    : %01011011
+             ;------------------------------------------------------------------
+             ;MP7441 Fehlermeldung bei Zyklusaufruf
+             ;Eingabe: %xxx bitcodiert
+             ;Bit 0   Fehlermeldung "Spindel ?" bei Aufruf eines
+             ;        Bearbeitungszyklus
+             ;        0 = Fehlermeldung nicht unterdrücken
+             ;        1 = Fehlermeldung unterdrücken
+             ;Bit 1   reserviert
+             ;Bit 2   Fehlermeldung "Tiefe negativ eingeben" bei den
+             ;        Bearbeitungszyklen, wenn Tiefe positiv programmiert
+             ;        0 = Fehlermeldung unterdrücken
+             ;        1 = Fehlermeldung nicht unterdrücken
+             ;210
+MP 7441    : %100
+             ;------------------------------------------------------------------
+             ;MP7442 Nummer der M-Funktion, mit der in den Zyklen die
+             ;       Spindel-Orientierung durchgeführt werden soll
+             ;       (z.B.: Zyklen 202/204/209)
+             ;Eingabe: -1 bis 999
+             ;         -1: Spindel-Orientierung durch die NC
+             ;          0: keine Spindel-Orientierung
+             ;  1 bis 999: Nummer der M-Funktion
+MP 7442    : -1
+             ;------------------------------------------------------------------
+             ;MP7444 Verzögerungszeit für Änderungssignale M/S/T
+             ;Eingabe:  0: Standard-Verhalten; Änderungssignal nach
+             ;             gesamter Filterzeit
+             ;          1: Änderungssignal, wenn der Sollvorschub vor dem
+             ;             Istwert (gebildet durch die Filter) den Wert 0
+             ;             erreicht hat.
+             ;          2: Änderungssignal, wenn der Sollvorschub vor dem
+             ;             Istwert (gebildet durch die Filter) den Wert 0
+             ;             erreicht hat und einer zusätzlichen Verzögerung,
+             ;             bis der Istwert erstmalig im Zielfenster ist.
+MP 7444    : 0
+             ;------------------------------------------------------------------
+             ;MP7450 im Satzvorlauf Werkzeugwechsel-Position aus MP951
+             ;       verrechnen
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = nicht verrechnen
+             ;         1 = verrechnen
+             ;2109876543210987654ZYX
+MP 7450    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP7451 Vorschub beim Wiederanfahren an die Kontur
+             ;Eingabe: 10 bis 1 000 000 [mm/min]
+MP 7451.0  : 2000
+MP 7451.1  : 2000
+MP 7451.2  : 2000
+MP 7451.3  : 2000
+MP 7451.4  : 2000
+MP 7451.5  : 2000
+MP 7451.6  : 2000
+MP 7451.7  : 2000
+MP 7451.8  : 2000
+MP 7451.9  : 2000
+MP 7451.10 : 2000
+MP 7451.11 : 2000
+MP 7451.12 : 2000
+MP 7451.13 : 2000
+MP 7451.14 : 2000
+MP 7451.15 : 2000
+MP 7451.16 : 2000
+MP 7451.17 : 2000
+MP 7451.18 : 2000
+MP 7451.19 : 2000
+MP 7451.20 : 2000
+MP 7451.21 : 2000
+             ;------------------------------------------------------------------
+             ;MP7460 reserviert
+MP 7460.0  : 0
+MP 7460.1  : 0
+             ;------------------------------------------------------------------
+             ;MP7461 reserviert
+MP 7461.0  : 0
+MP 7461.1  : 0
+             ;------------------------------------------------------------------
+             ;MP7470 maximaler Vorschub bei 100% Override
+             ;Eingabe: 0 = keine Begrenzung
+             ;         1 = bis 300 000 [mm/min]
+MP 7470    : 0
+             ;------------------------------------------------------------------
+             ;MP7471 maximaler Vorschub Linearachsen bei M128 (Ausgleichs-
+             ;bewegung durch Positionierung einer Winkelachse)
+             ;Eingabe: 0 = keine Begrenzung
+             ;         1 = bis 300 000 [mm/min]
+MP 7471    : 0
+             ;------------------------------------------------------------------
+             ;MP7475 Bezugspunkt für die Nullpunkte
+             ;Eingabe: 0 = Bezugspunkt ist Werkstück-Nullpunkt
+             ;         1 = Bezugspunkt ist Maschinen-Nullpunkt
+MP 7475    : 0
+             ;------------------------------------------------------------------
+             ;MP7480 Werkzeugwechsel T/P-Code Ausgabe
+             ;Eingabe: 0 = keine Ausgabe
+             ;         1 = Festplatz T-Nummer bei Änderung
+             ;         2 = Festplatz T-Nummer immer
+             ;         3 = variabel T/P-Nummer bei Änderung
+             ;         4 = variabel T/P-Nummer immer
+             ;         5 = Festplatz T/P-Nummer bei Änderung
+             ;         6 = Festplatz T/P-Nummer immer
+MP 7480.0  : 0          ;Tool-Call
+MP 7480.1  : 0          ;Tool-Def
+             ;------------------------------------------------------------------
+             ;MP7481 Entnahme/Rückgabe des Werkzeugs zwischen Magazinen
+             ;Eingabe: %xxxxxxxx
+             ;         0 = Entnahme/Rückgabe durch M4540 steuern
+             ;         1 = Zuerst neues entnehmen, dann altes zurück
+             ;87654321
+MP 7481.0  : %00000000  ;Magazin 1 für Rückgabe des alten Werkzeugs
+MP 7481.1  : %00000000  ;Magazin 2 für Rückgabe des alten Werkzeugs
+MP 7481.2  : %00000000  ;Magazin 3 für Rückgabe des alten Werkzeugs
+MP 7481.3  : %00000000  ;Magazin 4 für Rückgabe des alten Werkzeugs
+MP 7481.4  : %00000000  ;Magazin 5 für Rückgabe des alten Werkzeugs
+MP 7481.5  : %00000000  ;Magazin 6 für Rückgabe des alten Werkzeugs
+MP 7481.6  : %00000000  ;Magazin 7 für Rückgabe des alten Werkzeugs
+MP 7481.7  : %00000000  ;Magazin 8 für Rückgabe des alten Werkzeugs
+MP 7481.8  : %00000000  ;Magazin 9 für Rückgabe des alten Werkzeugs
+MP 7481.9  : %00000000  ;Magazin 10 für Rückgabe des alten Werkzeugs
+MP 7481.10 : %00000000  ;Magazin 11 für Rückgabe des alten Werkzeugs
+MP 7481.11 : %00000000  ;Magazin 12 für Rückgabe des alten Werkzeugs
+MP 7481.12 : %00000000  ;Magazin 13 für Rückgabe des alten Werkzeugs
+MP 7481.13 : %00000000  ;Magazin 14 für Rückgabe des alten Werkzeugs
+MP 7481.14 : %00000000  ;Magazin 15 für Rückgabe des alten Werkzeugs
+MP 7481.15 : %00000000  ;Magazin 16 für Rückgabe des alten Werkzeugs
+             ;------------------------------------------------------------------
+             ;MP7482 Festplatzcodierung für die Magazine 1 bis 8
+             ;Eingabe: %xxxxxxxx
+             ;         0 = Magazin ist nicht festplatzcodiert
+             ;         1 = Magazin ist festplatzcodiert
+             ;Bit 0..15 - Magazin 1..16
+             ;6543210987654321
+MP 7482    : %0000000000000000
+             ;------------------------------------------------------------------
+             ;MP7483 Festlegung ob Werkzeugnamen bzw. Werkzeugnummern bei
+             ;       einem TOOL CALL/TOOL DEF verwendet werden können
+             ;Eingabe: 0 = Namen und Nummern zulässig
+             ;         1 = nur Namen zulässig
+             ;         2 = nur Nummern zulässig
+MP 7483    : 0
+             ;------------------------------------------------------------------
+             ;MP7484 Folge der zu durchsuchenden Werkzeug-Magazine nach
+             ;       dem aufzurufenden Werkzeug (Suche über Werkzeug-Name)
+             ;Eingabe: 0 bis 7 [Index aus MP7261]
+             ;         -1 = Abbruch
+MP 7484.0  : -1
+MP 7484.1  : -1
+MP 7484.2  : -1
+MP 7484.3  : -1
+MP 7484.4  : -1
+MP 7484.5  : -1
+MP 7484.6  : -1
+MP 7484.7  : -1
+MP 7484.8  : -1
+MP 7484.9  : -1
+MP 7484.10 : -1
+MP 7484.11 : -1
+MP 7484.12 : -1
+MP 7484.13 : -1
+MP 7484.14 : -1
+MP 7484.15 : -1
+             ;------------------------------------------------------------------
+             ;MP7485 Einsatzzeit für Werkzeug-Auswahl beaufschlagen
+             ;Eingabe: 0 bis 100 [%]
+MP 7485    : 10
+             ;------------------------------------------------------------------
+             ;MP7490 Anzahl der Verfahrbereiche
+             ;Eingabe: %xxxx
+             ;Bit 0   Anzahl der Verfahrbereiche
+             ;        0 = ein Verfahrbereich
+             ;        1 = drei Verfahrbereiche
+             ;Bit 1   Anzahl der Bezugspunkte
+             ;        0 = ein Bezugspunkt je Verfahrbereich
+             ;        1 = ein Bezugspunkt für alle Verfahrbereiche
+             ;Bit 2   Kalibrierdaten Werkstückvermessung
+             ;        0 = ein Satz Kalibrierdaten für alle Verfahrbereiche
+             ;        1 = für jeden Verfahrbereich eigenen Satz Kalibrier-
+             ;            daten
+             ;Bit 3   Kalibrierdaten Werkzeugvermessung
+             ;        0 = ein Satz Kalibrierdaten für alle Verfahrbereiche
+             ;        1 = für jeden Verfahrbereich eigenen Satz Kalibrier-
+             ;            daten
+             ;3210
+MP 7490    : %0001
+             ;------------------------------------------------------------------
+             ;MP 7492 Nummer der Achse, in der beim Bezugspunkt-Setzen
+             ;        der gleiche Bezugspunkt eingefügt wird
+             ;        (z. B. parallele Achsen)
+             ;        (bei aktiver Preset-Tabelle)
+             ;Eingabe: 0 bis 17 [Nummer der Achse]
+             ;         -1 = keinen Bezugspunkt setzen
+MP 7492.0  : -1         ;Gesetzter Bezugspunkt in der 1. Achse
+MP 7492.1  : -1         ;Gesetzter Bezugspunkt in der 2. Achse
+MP 7492.2  : -1         ;Gesetzter Bezugspunkt in der 3. Achse
+MP 7492.3  : -1         ;Gesetzter Bezugspunkt in der 4. Achse
+MP 7492.4  : -1         ;Gesetzter Bezugspunkt in der 5. Achse
+MP 7492.5  : -1         ;Gesetzter Bezugspunkt in der 6. Achse
+MP 7492.6  : -1         ;Gesetzter Bezugspunkt in der 7. Achse
+MP 7492.7  : -1         ;Gesetzter Bezugspunkt in der 8. Achse
+MP 7492.8  : -1         ;Gesetzter Bezugspunkt in der 9. Achse
+MP 7492.9  : -1         ;Gesetzter Bezugspunkt in der 10. Achse
+MP 7492.10 : -1         ;Gesetzter Bezugspunkt in der 11. Achse
+MP 7492.11 : -1         ;Gesetzter Bezugspunkt in der 12. Achse
+MP 7492.12 : -1         ;Gesetzter Bezugspunkt in der 13. Achse
+MP 7492.13 : -1         ;Gesetzter Bezugspunkt in der 14. Achse
+MP 7492.14 : -1         ;Gesetzter Bezugspunkt in der 15. Achse
+MP 7492.15 : -1         ;Gesetzter Bezugspunkt in der 16. Achse
+MP 7492.16 : -1         ;Gesetzter Bezugspunkt in der 17. Achse
+MP 7492.17 : -1         ;Gesetzter Bezugspunkt in der 18. Achse
+MP 7492.18 : -1         ;Gesetzter Bezugspunkt in der 19. Achse
+MP 7492.19 : -1         ;Gesetzter Bezugspunkt in der 20. Achse
+MP 7492.20 : -1         ;Gesetzter Bezugspunkt in der 21. Achse
+MP 7492.21 : -1         ;Gesetzter Bezugspunkt in der 22. Achse
+             ;------------------------------------------------------------------
+             ;MP7493 Toleranz beim Bezugspunkt-Setzen mit M114;
+             ;       max. Abweichung der aktuellen Werkzeugorientierung
+             ;       gegenüber Werkzeugachse (des geschwenkten
+             ;       Koordinatensystems) beim Bezugspunkt-Setzen
+             ;Eingabe: 0 bis 30,0000 [Grad]
+MP 7493    : 0.005
+             ;------------------------------------------------------------------
+             ;MP7494 Achsen, für die nach Positionierungen generell ein
+             ;       Genauhalt erfolgen soll (bei Drehachsen auch unabhängig
+             ;       von M134)
+             ;Eingabe: %..987654321 bitcodiert
+             ;         0 = Kein Genauhalt
+             ;         1 = Genauhalt
+             ;2109876543210987654ZYX
+MP 7494    : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP7500 3D-ROT Aktivierung Schwenkkopf/Drehtisch
+             ;max 15 Transformationen
+             ;Eingabe: %xxxxxxxxx
+             ;Bit 0   0 = aus
+             ;        1 = ein
+             ;Bit 1   0 = Winkel aus Stellung Achsen
+             ;        1 = Winkel nach Raumwinkel
+             ;Bit 2   0 = CYCLE 19 positioniert keine Schwenkachsen
+             ;        1 = CYCLE 19 positioniert Schwenkachsen
+             ;        Verhalten bei Drehtischen
+             ;Bit 3   reserviert
+             ;Bit 4   reserviert
+             ;Bit 5   Prüfung der Schwenkachsstellung während "Bezugspunkt
+             ;        setzen" in X, Y und Z
+             ;        0 = Aktuelle Schwenkachsstellung muss zu den
+             ;            definierten Schwenkwinkeln passen
+             ;        1 = Keine Prüfung
+             ;Bit 6   Zyklus 19 mit Raumwinkel C<>0
+             ;        0 = Raumwinkel C wird durch Drehung Koordinatensystem
+             ;            realisiert
+             ;        1 = Raumwinkel C wird durch Drehung des Tisches
+             ;            realisiert
+             ;Bit 9   Umrechnung Raumwinkel -> Achswinkel
+             ;        0 = wenn spezielle Lösung vorhanden, dann diese aktiv
+             ;            sonst allgemeine Lösung
+             ;        1 = allgemeine Lösung
+             ;Bit 10  Alternative Schwenkmöglichkeiten (PLANE-Funktion):
+             ;        Software-Endschalter auch bei nicht geregelten
+             ;        Rundachsen beachten
+             ;        0 = nicht geregelte Rundachsen werden nicht beachtet
+             ;        1 = nicht geregelte Rundachsen werden beachtet
+             ;MP 7500    : %0000001;3D-ROT Aktivierung
+             ;
+             ;Entsprechende Optionen können nur noch in der Kinematik-Tabelle
+             ;(z.B. KINELIST.TAB) definiert werden.
+             ;
+             ;Die aktive Kinematik-Tabelle ist in OEM.SYS unter folgendem
+             ;Schlüsselwort zu finden:
+             ;
+             ;        KINEMATIC = PLC:\*.TAB
+             ;
+             ;------------------------------------------------------------------
+             ;MP7502 M144 (M145) Maschinen-Kinematik berücksichtigen
+             ;Eingabe: %xxx
+             ;Bit 0   0 = Funktion von M144/M145 inaktiv
+             ;        1 = Funktion von M144/M145 aktiv
+             ;Bit 1   M144/M145 in den Automatik-Betriebsarten
+             ;        0 = Funktion von M144/M145 aktiv
+             ;        1 = M144 ist automatisch nach Start eines NC-Programms
+             ;            aktiv
+             ;Bit 2   M144/M145 in den manuellen Betriebsarten
+             ;        0 = Funktion von M144/M145 inaktiv
+             ;        1 = Funktion von M144/M145 aktiv
+             ;210
+MP 7502    : %000
+             ;------------------------------------------------------------------
+             ;MP7503 Aktivierung der FCL-Funktion "Virtuelle Werkzeugachse"
+             ;       und unterstützt das Fahren/Wiederanpositionieren
+             ;       in Werkzeugachsrichtung
+             ;Eingabe: 0 = inaktiv
+             ;         1 = aktiv
+MP 7503    : 1
+             ;------------------------------------------------------------------
+             ;MP7506 Anwahl einer Kinematik beim Booten der Steuerung
+             ;Eingabe: -1 = inaktiv
+             ;         0 bis 999
+MP 7506    : -1
+             ;------------------------------------------------------------------
+             ;MP7507 Kinematikauswahl per Softkey im Menü MOD ermöglichen
+             ;Eingabe: %xx
+             ;Bit 0   0 = Kinematikauswahl in Edit-Betriebsarten
+             ;            nicht möglich
+             ;        1 = Kinematikauswahl in Edit-Betriebsarten für
+             ;            Simulation in Programm-Test möglich
+             ;Bit 1   0 = Kinematikauswahl in Abarbeiten-Betriebsarten
+             ;            nicht möglich
+             ;        1 = Kinematikauswahl in Abarbeiten-Betriebsarten für
+             ;            Kinematik der realen Maschine möglich
+             ;Bit 2   0 = Softkey 3D ROT in Programm-Test nicht vorhanden
+             ;        1 = Softkey 3D ROT in Programm-Test vorhanden
+             ;Bit 3   0 = Schlüsselzahl KINEMATIC möglich
+             ;        1 = Schlüsselzahl KINEMATIC gesperrt
+             ;3210
+MP 7507    : %0100
+             ;==================================================================
+             ;MP 7600 .. 7699
+             ;Hardware
+             ;==================================================================
+             ;MP7600.0 Lageregler Zykluszeit (nur bei CC 422)
+             ;Eingabe: 3 bis 20 [MP7600.0 * 0,6ms]
+             ;         >= 1.8 ms
+MP 7600.0  : 5          ;3
+             ;MP7600.1 PLC-Zykluszeit (nur bei CC 422)
+             ;Eingabe: 1 bis 20 [MP7600.0 * MP7600.1 * 0,6ms]
+             ;         >= 10.8 ms
+MP 7600.1  : 7          ;11
+             ;------------------------------------------------------------------
+             ;MP7602 PLC-Zykluszeit
+             ;       (nur ab CC 424, CC 61xx)
+             ;Eingabe: 0 bis 60 [ms]
+             ;         bei CC 424: 0 = 10,8 ms
+             ;         bei CC 61xx: 0 = 12 ms
+MP 7602    : 20
+             ;------------------------------------------------------------------
+             ;MP7610 Regelkreis-Geschwindigkeit
+             ;       (nur CC 424, bei CC 61xx über MP2000)
+             ;Eingabe: 0 = Single-Speed
+             ;         1 = Double-Speed
+             ;Bit 0 - 6,10,12 Regelkreise: X51/X53; 8 Regelkreise: X51/X53
+             ;Bit 1 - 6,10,12 Regelkreise: X52/X54; 8 Regelkreise: X52/X54
+             ;Bit 2 - 6,10,12 Regelkreise: X55; 8 Regelkreise: X55/X57
+             ;Bit 3 - 6,10,12 Regelkreise: X56; 8 Regelkreise: X56/X58
+             ;3210
+MP 7610.0  : %1100
+             ;Bit 0 - 10 Regelkreise: X57; 12 Regelkreise: X59/X61
+             ;Bit 1 - 10 Regelkreise: X58; 12 Regelkreise: X60/X62
+             ;Bit 2 - 10 Regelkreise: X59; 12 Regelkreise: X63
+             ;Bit 3 - 10 Regelkreise: X60; 12 Regelkreise: X64
+             ;3210
+MP 7610.1  : %1111
+             ;------------------------------------------------------------------
+             ;MP7620 Vorschub- und Spindel-Override
+             ;Eingabe: %xxxx
+             ;Bit 0   Vorschub-Override, falls Eilgangstaste in Betriebsart
+             ;        "Programmlauf" gedrückt
+             ;        0 = Override nicht wirksam
+             ;        1 = Override wirksam
+             ;Bit 1   reserviert
+             ;Bit 2   Vorschub-Override falls Eilgangstaste und externe
+             ;        Richtungstasten in Betriebsart "manuell" gedrückt
+             ;        0 = Override nicht wirksam
+             ;        1 = Override wirksam
+             ;Bit 3   Vorschub und Spindel-Override in 1 %-Stufen oder
+             ;        nach nichtlinearer Kennlinie
+             ;        0 = 1 %-Stufen
+             ;        1 = nichtlineare Kennlinie
+             ;Bit 4   reserviert
+             ;Bit 5   TE mit Eilgang- statt Spindel-Override-Potentiometer.
+             ;        Beachten Sie dazu die Hinweise im Technischen Handbuch
+             ;        Ihrer Steuerung
+             ;        0 = TE mit Spindel-Override
+             ;        1 = TE mit Eilgang-Override
+             ;Bit 6   Vorschubglättung
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 7   nur bei Funktionaler Sicherheit:
+             ;        100%-Stellung der Potentiometer an F-LIMIT anpassen
+             ;        0 = nicht aktiv
+             ;        1 = Potentiometer an F-LIMIT anpassen,
+             ;            100% entspricht aktiver SLS-Grenze
+             ;Bit 8   Hinweistext wenn Vorschub oder Eilgang-Override auf 0 %
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 9   HSCI-Tastatur mit drei Potentiometern
+             ;        (Vorschub-, Spindel- und Eilgangoverride)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;9876543210
+MP 7620    : %0000001111
+             ;------------------------------------------------------------------
+             ;MP7621 Schrittweite für Spindel-Override durch "+"- und "-"-
+             ;       Tasten (nur bei entsprechenden Tastatur-Einheiten)
+             ;Eingabe: 1 bis 10 [%]
+             ;         0 = 5 %
+MP 7621    : 0
+             ;------------------------------------------------------------------
+             ;MP7630 Wiederbereitschaftszeit nach NOT-AUS Test
+             ;Eingabe: 1 bis 999 [ms]
+             ;         0 = bisheriges Verhalten (bis einschl. 340 49x-02)
+MP 7630    : 0
+             ;------------------------------------------------------------------
+             ;MP7640.x Handrad-Typ
+             ;         MP7640.0 für X23 des letzten Maschinen-Bedienfeldes
+             ;         im HSCI-Strang
+             ;         MP7640.1 bis .3 reserviert
+             ;         MP7640.4 für X29 des Hauptrechners MC
+             ;Eingabe: 0 = kein Handrad
+             ;         1 = HR330 (Auswertung aller Tasten über NC)
+             ;         2 = HR130 oder HR330
+             ;         3 = HR330 (Auswertung der Tasten +, - und
+             ;             "Eilgang" über PLC)
+             ;         4 = HR332 (Auswertung aller Tasten über PLC)
+             ;         5 = bis zu drei HR150 über HRA110
+             ;         6 = HR410, HR510
+             ;         7 = reserviert
+             ;         8 = reserviert
+             ;         9 = HR410FS, HR510FS
+             ;        10 = reserviert
+             ;        11 = HR420/HR520 ohne Ansteuerung der LEDs
+             ;        12 = HR550FS
+             ;        13 = HR520 mit Ansteuerung der LEDs
+MP 7640.0  : 0
+MP 7640.1  : 0
+MP 7640.2  : 0
+MP 7640.3  : 0
+MP 7640.4  : 0
+             ;------------------------------------------------------------------
+             ;MP7641 Zusätzliche Einstellungen für das Handrad
+             ;Eingabe: %xxxxxxxx
+             ;         Unterteilungsfaktor (nicht HR420, HR5x0)
+             ;Bit 0    0 = über TNC-Bedienfeld
+             ;         1 = über PLC-modul 9036
+             ;Bit 1    Handrad mit Rastung
+             ;         0 = Ohne Rastung
+             ;         1 = Mit Rastung
+             ;         Tasten Achsen +, Achsen -, Eilgang (HR420, HR5x0)
+             ;Bit 2    0 = durch NC
+             ;         1 = durch PLC
+             ;         Tasten NC-Start/NC-Stop (HR420, HR5x0)
+             ;Bit 3    0 = durch NC
+             ;         1 = durch PLC
+             ;         Handrad-Überlagerung in Werkzeugachs-Richtung T
+             ;         aktivierbar
+             ;Bit 4    0 = Handrad-Überlagerung in Werkzeugachs-Richtung T
+             ;             nicht möglich
+             ;         1 = Handrad-Überlagerung in Werkzeugachs-Richtung T
+             ;             über Globale Programmeinstellungen aktivierbar
+             ;         Inaktives Verhalten (HR420, HR5x0)
+             ;Bit 5    0 = Tasten HR nur bei aktivem HR
+             ;             an PLC übertragen
+             ;         1 = Tasten HR auch bei inaktivem HR
+             ;             an PLC übertragen
+             ;Bit 6    Anwählen und Verfahren von Hilfsachsen
+             ;         mit HR 420, HR 5xx
+             ;         0 = nicht möglich
+             ;         1 = möglich
+             ;Bit 7    Taste TeachIn am HR 5x0
+             ;         0 = durch NC
+             ;         1 = durch PLC
+             ;Bit 8    Taste Ctrl am HR 5x0
+             ;         0 = durch NC
+             ;         1 = durch PLC
+             ;Bit 9    PLC-Softkeys mit aktivem HR 420, HR5x0
+             ;         Beachten Sie dazu die Hinweise im Technischen
+             ;         Handbuch Ihrer Steuerung
+             ;         0 = PLC-Softkeys nicht aktiv, wenn HR aktiv
+             ;         1 = PLC-Softkeys aktiv, wenn HR aktiv
+             ;Bit 10   Zusätzliche Ladestation HRA 551FS für HR 550 erlauben
+             ;         0 = nicht erlaubt
+             ;         1 = erlaubt
+             ;09876543210
+MP 7641    : %00000010000
+             ;------------------------------------------------------------------
+             ;MP7642.x Handrad-Name
+             ;         Name des Handrads
+             ;         MP7642.0 für X23 des letzten Maschinen-Bedienfeldes
+             ;         im HSCI-Strang
+             ;         MP7642.1 bis .3 reserviert
+             ;         MP7642.4 für X29 des Hauptrechners MC
+             ;Eingabe: Name, max. 31 Zeichen
+MP 7642.0  : 0
+MP 7642.1  : 0
+MP 7642.2  : 0
+MP 7642.3  : 0
+MP 7642.4  : 0
+             ;------------------------------------------------------------------
+             ;MP7645.x Initialisierung Handrad (HR332/HR410/HRA110)
+             ;         MP7645.x für X23 des letzten Maschinen-Bedienfeldes
+             ;         im HSCI-Strang
+             ;Eingabe:
+             ;HR332: Auswertung Handrad-Tasten und LED
+             ;       0 = Achs-Tasten über NC / restliche Tasten über PLC)
+             ;       1 = Tasten über PLC
+             ;HR410: Auswertung Handrad-Tasten und LED
+             ;       0 = Tasten über nc (Funktionstasten FCT A-C über PLC)
+             ;       1 = Tasten über PLC
+             ;HRA110: Zuordnung der 3.Handradachse über Achswahlschalter
+             ;       0 = Linksanschlag = Z-Achse
+             ;       1 = Linksanschlag = X-Achse
+             ;       2 = Schalterstellung 3 = Z-Achse
+MP 7645.0  : 0
+             ;------------------------------------------------------------------
+             ;MP7645.1 Initialisierung HRA110 Zuordnung der 3.Handrad-Achse
+             ;         über MP
+             ;Eingabe: 0 = Simulation der Schalterstellung 1 (Linksanschlag)
+             ;             des Achswahlschalters. Zuordnung des 3.Handrades
+             ;             erfolgt aus MP 7645.0 (Eingabewert 0 oder 1)
+             ;         1 = X-Achse
+             ;         2 = Y-Achse
+             ;         4 = Z-Achse
+             ;         8 = 4-Achse
+             ;        16 = 5-Achse
+MP 7645.1  : 4
+             ;------------------------------------------------------------------
+             ;MP7645.2 Initialisierung HRA110 Achswahl über Achswahlschalter
+             ;oder MP 7645.1
+             ;Eingabe: 0 = Achswahl Achswahlschalter
+             ;         1 = Achswahl über MP 7645.1
+MP 7645.2  : 0
+             ;------------------------------------------------------------------
+             ;MP7645.3 HR5xx: Auswertung der Zustimmtasten
+             ;Eingabe: 0 = beide Relaiskontakte als Schließer
+             ;         1 = ein Relaiskontakt Schließer,
+             ;             ein Relaiskontakt Öffner
+             ;         HRA5xx: Auswertung der Zustimmtasten
+             ;         0 = beide Relaiskontakte als Schließer
+             ;         1 = ein Relaiskontakt Schließer,
+             ;             ein Relaiskontakt Öffner
+MP 7645.3  : 0
+MP 7645.4  : 0          ;reserviert
+MP 7645.5  : 0          ;reserviert
+MP 7645.6  : 0          ;reserviert
+MP 7645.7  : 0          ;reserviert
+             ;------------------------------------------------------------------
+             ;MP7646.x reserviert
+MP 7646.0  : 0          ;reserviert
+MP 7646.1  : 0          ;reserviert
+MP 7646.2  : 0          ;reserviert
+MP 7646.3  : 0          ;reserviert
+MP 7646.4  : 0          ;reserviert
+MP 7646.5  : 0          ;reserviert
+MP 7646.6  : 0          ;reserviert
+MP 7646.7  : 0          ;reserviert
+             ;------------------------------------------------------------------
+             ;MP7647.x reserviert
+MP 7647.0  : 0          ;reserviert
+MP 7647.1  : 0          ;reserviert
+MP 7647.2  : 0          ;reserviert
+MP 7647.3  : 0          ;reserviert
+MP 7647.4  : 0          ;reserviert
+MP 7647.5  : 0          ;reserviert
+MP 7647.6  : 0          ;reserviert
+MP 7647.7  : 0          ;reserviert
+             ;------------------------------------------------------------------
+             ;MP7648.x reserviert
+MP 7648.0  : 0          ;reserviert
+MP 7648.1  : 0          ;reserviert
+MP 7648.2  : 0          ;reserviert
+MP 7648.3  : 0          ;reserviert
+MP 7648.4  : 0          ;reserviert
+MP 7648.5  : 0          ;reserviert
+MP 7648.6  : 0          ;reserviert
+MP 7648.7  : 0          ;reserviert
+             ;------------------------------------------------------------------
+             ;MP7649.x Initialisierung Handrad (HR332/HR410/HRA110/HR550FS)
+             ;         MP7649.x für X29 des Hauptrechners MC
+             ;Eingabe:
+             ;HR332: Auswertung Handrad-Tasten und LED
+             ;       0 = Achs-Tasten über NC / restliche Tasten über PLC)
+             ;       1 = Tasten über PLC
+             ;HR410: Auswertung Handrad-Tasten und LED
+             ;       0 = Tasten über nc (Funktionstasten FCT A-C über PLC)
+             ;       1 = Tasten über PLC
+             ;HRA110: Zuordnung der 3.Handradachse über Achswahlschalter
+             ;       0 = Linksanschlag = Z-Achse
+             ;       1 = Linksanschlag = X-Achse
+             ;       2 = Schalterstellung 3 = Z-Achse
+MP 7649.0  : 0
+             ;------------------------------------------------------------------
+             ;MP7649.1 Initialisierung HRA110 Zuordnung der 3.Handrad-Achse
+             ;         über MP
+             ;Eingabe: 0 = Simulation der Schalterstellung 1 (Linksanschlag)
+             ;             des Achswahlschalters. Zuordnung des 3.Handrades
+             ;             erfolgt aus MP 7645.0 (Eingabewert 0 oder 1)
+             ;         1 = X-Achse
+             ;         2 = Y-Achse
+             ;         4 = Z-Achse
+             ;         8 = 4-Achse
+             ;        16 = 5-Achse
+MP 7649.1  : 4
+             ;------------------------------------------------------------------
+             ;MP7649.2 Initialisierung HRA110 Achswahl über Achswahlschalter
+             ;oder MP 7645.1
+             ;Eingabe: 0 = Achswahl Achswahlschalter
+             ;         1 = Achswahl über MP 7645.1
+MP 7649.2  : 0
+             ;------------------------------------------------------------------
+             ;MP7649.3 HRA5xx: Auswertung der Zustimmtasten
+             ;Eingabe: 0 = beide Relaiskontakte als Schließer
+             ;         1 = ein Relaiskontakt Schließer,
+             ;             ein Relaiskontakt Öffner
+MP 7649.3  : 0
+MP 7649.4  : 0          ;reserviert
+MP 7649.5  : 0          ;reserviert
+MP 7649.6  : 0          ;reserviert
+MP 7649.7  : 0          ;reserviert
+             ;------------------------------------------------------------------
+             ;MP7650 Zählrichtung für Handrad
+             ;         MP7650.0 für X23 des letzten Maschinen-Bedienfeldes
+             ;         im HSCI-Strang
+             ;         MP7650.1 bis .3 reserviert
+             ;         MP7650.4 für X29 des Hauptrechners MC
+             ;Eingabe: 0 = negative Zählrichtung
+             ;         1 = positive Zählrichtung
+             ;2109876543210987654ZYX
+MP 7650.0  : %0000000000000000000000
+MP 7650.1  : %0000000000000000000000
+MP 7650.2  : %0000000000000000000000
+MP 7650.3  : %0000000000000000000000
+MP 7650.4  : %0000000000000000000000
+             ;------------------------------------------------------------------
+             ;MP7660 Ansprech-Empfindlichkeit für elektronisches Handrad
+             ;Eingabe: 0 bis 65 535 [Inkremente]
+MP 7660    : 10
+             ;------------------------------------------------------------------
+             ;MP7662 Filter zur Glättung der Bewegung bei Handradüberlagerung
+             ;       (M118 oder Globale Programmeinstellungen)
+             ;Eingabe: 0,000 bis 1,000  [Sekunden]
+MP 7662    : 0.1
+             ;------------------------------------------------------------------
+             ;MP7670 minimaler Unterteilungs-Faktor für Handrad
+             ;Eingabe: 0 bis 10
+MP 7670.0  : 10         ;für kleine Geschwindigkeit
+MP 7670.1  : 3          ;für mittlere Geschwindigkeit (nur HR 410)
+MP 7670.2  : 0          ;für grosse Geschwindigkeit (nur HR 410)
+             ;------------------------------------------------------------------
+             ;MP7671 Handvorschub in Betriebsart Handrad mit HR 410
+             ;Eingabe: 0 bis 1000 [% zu MP1020]
+MP 7671.0  : 10         ;langsam
+MP 7671.1  : 50         ;mittel
+MP 7671.2  : 100        ;schnell
+             ;------------------------------------------------------------------
+             ;MP7672 Für HR 410 kann ein Weg je Handrad-Raste angegeben
+             ;       werden, falls MP 7641 Bit1 gesetzt ist
+             ;Eingabe: 0,0000 bis 1,0000 [mm]
+MP 7672.0  : 0.001      ;langsam
+MP 7672.1  : 0.01       ;mittel
+MP 7672.2  : 0.1        ;schnell
+             ;------------------------------------------------------------------
+             ;MP7674 Bei HR 130, HR 330, HR 332 immer und bei HR 410,
+             ;       wenn MP7641 Bit1 nicht gesetzt (ohne rastenden Geber),
+             ;       kann ein minimaler achsspezifischer Unterteilungsfaktor
+             ;       angegeben werden
+             ;Eingabe: 0 = keine Begrenzung
+             ;         1 bis 10
+MP 7674.0  : 0
+MP 7674.1  : 0
+MP 7674.2  : 0
+MP 7674.3  : 0
+MP 7674.4  : 0
+MP 7674.5  : 0
+MP 7674.6  : 0
+MP 7674.7  : 0
+MP 7674.8  : 0
+MP 7674.9  : 0
+MP 7674.10 : 0
+MP 7674.11 : 0
+MP 7674.12 : 0
+MP 7674.13 : 0
+MP 7674.14 : 0
+MP 7674.15 : 0
+MP 7674.16 : 0
+MP 7674.17 : 0
+MP 7674.18 : 0
+MP 7674.19 : 0
+MP 7674.20 : 0
+MP 7674.21 : 0
+             ;------------------------------------------------------------------
+             ;MP7675 Bei HR 130, HR 330, HR 332 ohne Bedeutung
+             ;       Bei HR 4xx, HR 5xx wenn MP7641 Bit1 gestezt
+             ;       (mit rastendem Geber) kann achsspezifisch ein
+             ;       maximaler Weg je Raste in [mm] angegeben werden
+             ;       Bei HR 420, HR 5xx wenn MP7641 Bit1 nicht gesetzt
+             ;       (ohne rastenden Geber) kann achsspezifisch ein
+             ;       maximaler Weg je Handrad-Umdrehung in [mm] angegeben
+             ;       werden
+             ;Eingabe: 0 = keine Begrenzung
+             ;         0,0001 bis 10,0000 [mm]
+MP 7675.0  : 0
+MP 7675.1  : 0
+MP 7675.2  : 0
+MP 7675.3  : 0
+MP 7675.4  : 0
+MP 7675.5  : 0
+MP 7675.6  : 0
+MP 7675.7  : 0
+MP 7675.8  : 0
+MP 7675.9  : 0
+MP 7675.10 : 0
+MP 7675.11 : 0
+MP 7675.12 : 0
+MP 7675.13 : 0
+MP 7675.14 : 0
+MP 7675.15 : 0
+MP 7675.16 : 0
+MP 7675.17 : 0
+MP 7675.18 : 0
+MP 7675.19 : 0
+MP 7675.20 : 0
+MP 7675.21 : 0
+             ;------------------------------------------------------------------
+             ;MP7680 Maschinen-Parameter mit Mehrfach-Funktion
+             ;Eingabe: %xxxxxxxxxxxxxxx
+             ;Bit 0   Speicherfunktion für Achsrichtungs-Tasten
+             ;        0 = nicht gespeichert
+             ;        1 = gespeichert
+             ;Bit 1   Wiederanfahren an die Kontur
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 2   Satzvorlauf
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 3   Unterbrechung im Satzvorlauf bei Stop oder M06
+             ;        0 = Unterbrechung
+             ;        1 = keine Unterbrechung
+             ;Bit 4   Berücksichtigung der programmierten Verweilzeit
+             ;        während des Satzvorlaufs
+             ;        0 = Verweilzeit berücksichtigen
+             ;        1 = Verweilzeit nicht berücksichtigen
+             ;Bit 5   Start der Berechnung bei Satzvorlauf
+             ;        0 = Start ab Cursorstand
+             ;        1 = Start ab Programmbeginn
+             ;Bit 6   Werkzeug-Länge bei Sätzen mit Flächennormalen-Vektor
+             ;        0 = ohne DR2 aus Werkzeug-Tabelle (Unterkannte PSP)
+             ;        1 = mit DR2 aus Werkzeug-Tabelle (Kugelmittelpunkt PT)
+             ;Bit 7   M112: Einfügen einer definierten Rundung oder Spline
+             ;        0 = Definierte Rundungen werden immer eingefügt
+             ;        1 = Definierte Rundungen werden eingefügt, wenn die
+             ;            Beschleunigung aus MP1060.x oder MP1070
+             ;            überschritten wurde
+             ;Bit 8   M112: Einfügen von Rundung oder kubischem Spline
+             ;        0 = Rundung wird eingefügt
+             ;        1 = Anstatt der Rundung wird ein kubischer Spline
+             ;            eingefügt
+             ;Bit 9   M112: Konstanter Ruck auf Spline (Bit8 = 1)
+             ;        0 = Kein konstanter Ruck
+             ;        1 = Konstanter Ruck
+             ;Bit 10  korrigierte Aussenecke mit Spline statt Kreis
+             ;        (bei Sollwertfilterung bleiben Ecken scharf)
+             ;        0 = inaktiv
+             ;        1 = aktiv
+             ;Bit 11  Verhalten von M116
+             ;        0 = Drehachse ist parallel zur Linearachse
+             ;        1 = Beliebige Lage der Drehachse zur Linearachse
+             ;Bit 12  Verhalten von Zyklus 28
+             ;        0 = Verhalten wie bisher
+             ;        1 = Tangentiales An- und Abfahren zur Nutwand, am
+             ;            Anfang und am Ende der Nut Rundung einfügen
+             ;Bit 13  Verhalten bei Programm-Unterbrechung mit Achsbewegung
+             ;        0 = "Position wiederherstellen" automatisch aktivieren
+             ;        1 = "Position wiederherstellen" nicht aktivieren
+             ;Bit 14  NC-Start nach NC-Stopp und intern Stopp
+             ;        0 = NC-Start erlaubt
+             ;        1 = NC-Start nur nach GOTO erlaubt
+             ;Bit 15  NC-Start nach Programmabbruch
+             ;        0 = NC-Start erlaubt
+             ;        1 = NC-Start nicht erlaubt (Hinweisfenster)
+             ;Bit 16  An-/Abfahrbewegung bei Zyklus 39
+             ;        0 = bogenförmige An-/Abfahrbewegung aktiv
+             ;        1 = bogenförmige An-/Abfahrbewegung inaktiv
+             ;Bit 17  Verhalten Merker NP_M4176_Stern_ein_oder_blinkt
+             ;        0 = M4175, M4176 bei internem Stopp gleichzeitig
+             ;            gelöscht
+             ;        1 = M4176 bleibt während RUNCANCEL Makro gesetzt
+             ;Bit 18  Grunddrehung manuell ermitteln mit angestellten
+             ;        Rundachsen
+             ;        0 = Fehlermeldung Achswinkel ungleich
+             ;            Schwenkwinkel aktiv
+             ;        1 = Fehlermeldung nicht aktiv
+             ;Bit 19  Veränderter Algorithmus für M120 (Radiuskorrigierte
+             ;        Kontur vorausberechnen)
+             ;        0 = nicht aktiv
+             ;        1 = aktiv
+             ;Bit 20  Fehlermeldung: Freifahren bei aktiver Limit-Ebene
+             ;        nicht erlaubt
+             ;        0 = Fehlermeldung aktiv
+             ;        1 = Fehlermeldung nicht aktiv
+             ;Bit 21  Fehlermeldung bei den Zyklen 25, 276:
+             ;        An- oder Abfahrsatz kollidiert mit programmierter Kontur
+             ;        0 = Fehlermeldung aktiv
+             ;        1 = Fehlermeldung nicht aktiv
+             ;Bit 22  Auswahlmöglichkeit zum Wiederanfahren:
+             ;        0 = nicht aktiv, Verhalten wie bisher 
+             ;            (bis einschl. 60642x-04 SP11)
+             ;        1 = Auswahldialog zum direkten Wiederanfahren oder
+             ;            über Satzvorlauf wird angezeigt
+             ;21098765432109876543210
+MP 7680    : %00000100000010001111111
+             ;------------------------------------------------------------------
+             ;MP7681 M/S/T/Q-Übergabe an PLC während Satzvorlauf
+             ;Eingabe: %xxxx
+             ;Bit 0   0 = M-Funktionen an PLC ausgeben
+             ;        1 = M-Funktionen aufsammeln Ausgabe nach Satzvorlauf
+             ;Bit 1   0 = T-Code an PLC ausgeben
+             ;        1 = letzten T-Code nach Satzvorlauf ausgeben
+             ;Bit 2   0 = S- bzw. G-Code ausgeben
+             ;        1 = letzen S- bzw. G-Code nach Satzvorlauf ausgeben
+             ;Bit 3   0 = FN19 an PLC ausgeben
+             ;        1 = letzte FN19 nach Satzvorlauf ausgeben
+             ;Bit 4   0 = MP-Teildateien im Satzvorlauf nicht aktivierbar
+             ;        1 = MP-Teildateien im Satzvorlauf aktivierbar
+             ;            (FN17 ID1020). Wird der Satzvorlauf abgebrochen,
+             ;            bleiben die Änderungen aktiv!
+             ;Bit 5   0 = READ FROM PLC KEY und WRITE TO PLC KEY wird
+             ;            im Satzvorlauf nicht ausgeführt
+             ;            (Verhalten wie bisher)
+             ;        1 = READ FROM PLC KEY und WRITE TO PLC KEY auch im
+             ;            Satzvorlauf aktiv
+             ;543210
+MP 7681    : %110111
+             ;------------------------------------------------------------------
+             ;MP7682 Maschinen-Parameter mit Mehrfach-Funktion
+             ;Eingabe: %xxxxxxxxxxxxxx
+             ;Bit 0   Inkremental-Satz nach Tool Call
+             ;        0 = mit Längenkorrektur
+             ;        1 = ohne Längenkorrektur
+             ;Bit 1   Bezugswert für Bezugspunkt setzen
+             ;        (MP7500 Bit 5 verwenden, da evtl. durch IST/SOLL-Wert-
+             ;         Übernahme Bezugspunkt verfälscht)
+             ;        0 = Istwert
+             ;        1 = Sollwert
+             ;Bit 2   Verfahrweg Drehachsen (Modulo)
+             ;        0 = Positionierung entlang Zahlenstrahl
+             ;        1 = Positionierung auf kürzesten Weg
+             ;Bit 3   reserviert
+             ;Bit 4   Toleranz bei Drehachsen mit M114
+             ;        0 = Mit Betrachtung der Kopfabmessungen
+             ;        1 = Ohne Betrachtung der Kopfabmessungen
+             ;Bit 5   Vorschub bei M128
+             ;        0 = Vorschub bezieht sich auf Werkzeugspitze
+             ;        1 = Vorschub aus Interpolation aller beteiligten
+             ;            Achsen
+             ;Bit 6   Verhalten bei TOOL DEF-Strobe
+             ;        0 = TOOL DEF-Strobe muß abhängig vom NC-Programm
+             ;            durch PLC quittiert werden (TOOL DEF innerhalb
+             ;            stetiger Kontur)
+             ;        1 = TOOL DEF-Strobe muß immer durch PLC quittiert
+             ;            werden
+             ;Bit 7   Satzelemente in TOOL CALL und S in DIN/ISO-Sätzen
+             ;        0 = Wie programmiert abarbeiten
+             ;        1 = Am Satzanfang abarbeiten
+             ;            (Satzanzeige bleibt unverändert)
+             ;Bit 8   Verhalten von M8 bei Zyklen 202 und 204
+             ;        0 = Am Ende von Zyklus 202 und 204 wird Zustand von
+             ;            M8 vor Zyklusaufruf wieder hergestellt
+             ;        1 = Zyklen 202 und 204 stellen am Ende M8 nicht
+             ;            selbstständig wieder her
+             ;Bit 9   Übernahme des Zustands "Bearbeitungsebene schwenken"
+             ;        vom NC-Programm in "Manueller Betrieb"
+             ;        0 = Zustand "Bearbeitungsebene schwenken" wird bei
+             ;            Programmunterbrechung nicht in
+             ;            "Manueller Betrieb" übernommen
+             ;        1 = Übernahme des Zustands "Bearbeitungsebene
+             ;            schwenken" bei Programmunterbrechung in
+             ;            "Manueller Betrieb"
+             ;Bit 10  Peripheral Milling
+             ;        0 = Peripheral Milling zugelassen
+             ;        1 = Peripheral Milling inaktiv
+             ;Bit 11  reserviert
+             ;Bit 12  Verhalten bei R2 > R in Werkzeugtabelle
+             ;        0 = R2 > R führt zu Fehlemeldung
+             ;        1 = Fehlermeldung wird unterdrückt
+             ;Bit 13  Kein Programm-Abbruch bei ungültigem TOOL DEF
+             ;        0 = Fehlermeldung und NC-Stopp bei ungültigem TOOL DEF
+             ;        1 = nur Warnung bei ungültigem TOOL DEF
+             ;Bit 14  Kein Einwechseln des Werkzeugs bei abgelaufener TIME2
+             ;        0 = Werkzeug wird auch bei abgelaufener TIME2
+             ;            eingewechselt
+             ;        1 = TOOL CALL auf Werkzeug mit abgelaufener TIME2
+             ;            führt zu Fehlermeldung und NC-Stopp
+             ;Bit 15  reserviert
+             ;Bit 16  reserviert
+             ;Bit 17  Stib-Verhalten am Programmende bei Cancel-Makro
+             ;        0 = Stib wird am Programmende gelöscht und durch
+             ;        Ausführen des Cancel-Makro von der NC-Software wieder
+             ;        gesetzt (Verhalten wie bisher)
+             ;        1 = Stib wird erst nach Abarbeiten das
+             ;        Cancel-Makros durch die NC-Software gelöscht
+             ;Bit 18  Suche nach Schwesterwerkzeug ohne Werkzeug
+             ;        -Einsatzdatei
+             ;        0 = Suche über Werkzeugname
+             ;            (Verhalten wie bisher)
+             ;        1 = Werkzeug komplett aufbrauchen
+             ;        	  Es wird das Werkzeug verwendet, dass als letztes im
+             ;        	  Einsatz war (neuestes Datum/Uhrzeit in der
+             ;        	  Spalte LAST_USE)
+             ;Bit 19  Spiegeln von Drehachsen bei aktivem M128/FUNCTION TCPM
+             ;        0 = Wirkt auch auf Drehachs-Koordinaten die nicht explizit
+             ;            im NC-Programm programmiert wurden, sondern aus
+             ;            programmierten Werkzeug-Richtungsvektoren (TX, TY, TZ)
+             ;            oder aus Raumwinkeln (FUNCTION TCPM AXIS SPAT)
+             ;            errechnet wurden. Gilt für Spiegeln mittels
+             ;            CYCL DEF 8 und mittels Globaler Programmeinstellungen.
+             ;            (Verhalten wie bisher)
+             ;        1 = Wirkt nicht auf Drehachs-Koordinaten, welche aus
+             ;            Werkzeug-Richtungsvektoren und oder Raumwinkel
+             ;            errechnet wurden. Das Spiegeln in den Linearachsen
+             ;            wirkt (wie gehabt) auch auf Werkzeug-Richtungsvektoren
+             ;            und Raumwinkel, das Spiegeln der Drehachsen wirkt
+             ;            dann nur auf im NC-Programm direkt programmierte
+             ;            Drehachs-Koordinaten.
+             ;            (Verhalten wie bei TNC 640 ab SW 34059x-07)
+             ;98765432109876543210
+MP 7682    : %00000000001000000111
+             ;------------------------------------------------------------------
+             ;MP7683 Abarbeiten von Paletten und NC-Programmen
+             ;Eingabe: %xxxxxxxxxx
+             ;Bit 0   reserviert
+             ;Bit 1   Betriebsart Programmlauf Satzfolge (Werkstückorient.)
+             ;        0 = NC-Start führt ein komplettes NC-Programm bis zum
+             ;            nächsten Werkstück aus
+             ;        1 = NC-Start führt alle NC-Programme bis zur nächsten
+             ;            Palette aus
+             ;Bit 2   Betriebsart Programmlauf Satzfolge
+             ;        0 = wie in Bit 1 definiert
+             ;        1 = NC-Start führt alle NC-Programme und Paletten
+             ;            bis zum Tabellenende aus
+             ;Bit 3   Betriebsart Programmlauf Satzfolge
+             ;        0 = wie in Bit 1 definiert
+             ;        1 = bei Erreichen des Tabellenende wird wieder mit der
+             ;            ersten Zeile begonnen
+             ;Bit 4   Betriebsart Programmlauf Satzfolge
+             ;        0 = aktuelle Paletten-Tabelle kann nicht editiert
+             ;            werden. Softkey EDIT PALETTE wird nicht angezeigt.
+             ;        1 = aktuelle Paletten-Tabelle kann editiert werden.
+             ;            Softkey EDIT PALETTE wird angezeigt.
+             ;Bit 5   Softkey "AUTOSTART"
+             ;        0 = nicht anzeigen
+             ;        1 = anzeigen
+             ;Bit 6   0 = Paletten-Tabelle und NC-Programm wird angezeigt
+             ;        1 = Paletten-Tabelle oder NC-Programm wird angezeigt
+             ;Bit 7   "AUTOSTART"-Funktion
+             ;        0 = "AUTOSTART" wird von der NC ausgeführt
+             ;        1 = "AUTOSTART" wird von der PLC ausgeführt
+             ;Bit 8   Betriebsart Programmlauf Satzfolge (Werkszeugorient.)
+             ;        0 = NC-Start führt alle zusammenhängende Werkstücke
+             ;            bis zum nächsten Werkzeugwechsel aus
+             ;        1 = NC-Start führt eine komplette Werkzeugorientierte
+             ;            Bearbeitung bis zur nächsten Palette aus
+             ;Bit 9   Softkey "EDIT PALETTE" bei der Palettenbearbeitung
+             ;        0 = nicht anzeigen
+             ;        1 = anzeigen
+             ;9876543210
+MP 7683    : %0100111110
+             ;------------------------------------------------------------------
+             ;MP7684 Lage-Sollwertfilter und Bewegungsführung bei M128
+             ;Eingabe: %xxxxxxxxxx
+             ;Bit 0   Lage-Sollwertfilter
+             ;        0 = Beschleunigung berücksichtigen
+             ;        1 = Beschleunigung nicht berücksichtigen
+             ;Bit 1   Lage-Sollwertfilter
+             ;        0 = Ruck berücksichtigen
+             ;        1 = Ruck nicht berücksichtigen
+             ;        Lage-Sollwertfilter
+             ;Bit 2   0 = Toleranz berücksichtigen
+             ;        1 = Toleranz nicht berücksichtigen
+             ;Bit 3   Lage-Sollwertfilter
+             ;        0 = Radialbeschleunigung berücksichtigen
+             ;        1 = Radialbeschleunigung nicht berücksichtigen
+             ;Bit 4   Lage-Sollwertfilter (vorrangig zu MP1222 u. MP1223)
+             ;        0 = Ruck- und Toleranzgrenzen bei Krümmungsänderung
+             ;            werden berücksichtigt
+             ;        1 = Ruck- und Toleranzgrenzen bei Krümmungsänderung
+             ;            werden nicht berücksichtigt
+             ;Bit 5   reserviert
+             ;Bit 6   reserviert
+             ;Bit 7   reserviert
+             ;Bit 8   reserviert
+             ;Bit 9   Verfahren für NC-Bearbeitung mit hohen
+             ;        Drehachsanteilen (z.B. Drehfräsen) mit M128
+             ;        (Drehachsbewegungen kleiner 2 Grad und M118 inaktiv)
+             ;        0 = bisheriges Verhalten
+             ;        1 = aktiv
+             ;Bit 10  Modifizierung der Berechung des Bahnvorschubes am
+             ;        Beginn eines Kontur-Elementes
+             ;        0 = aktiv
+             ;        1 = bisheriges Verhalten (bis einschl. 340 490-02)
+             ;09876543210
+MP 7684    : %01000000000
+             ;------------------------------------------------------------------
+             ;MP7690 Auswertung der elektronischen Typenschilder
+             ;Bit 0   HEIDENHAIN-Leistungsteile
+             ;        0 = Aktiv
+             ;        1 = Inaktiv
+             ;Bit 1   HEIDENHAIN-Synchronmotoren
+             ;        0 = Aktiv
+             ;        1 = Inaktiv
+             ;Bit 2   HEIDENHAIN-Versorgungseinheit
+             ;        0 = Aktiv
+             ;        1 = Inaktiv
+             ;210
+MP 7690    : %000
+             ;------------------------------------------------------------------
+             ;MP7691 Speicher für Diagnose
+             ;Eingabe: 1 bis 10 = aktiv (Art der Diagnose siehe Kommentar)
+             ;         0 = Inaktiv
+MP 7691.0  : 0          ;Betriebssystem-Trace Grösse des Ringpuffers
+             ;Eingabe: MByte
+MP 7691.1  : 0          ;TCPdump
+             ;Eingabe: 10 Dateien von je [MP7691.1] MByte
+MP 7691.2  : 0          ;NC-Konsole loggen
+             ;Eingabe: 10 Dateien von je 10*[MP7691.2] kByte
+MP 7691.3  : 0          ;Kernel output loggen
+             ;Eingabe: 10 Dateien von je 10*[MP7691.3] kByte
+             ;==================================================================
+             ;MP 13000 .. 13999
+             ;Spindel-Steuerung (2. Spindel)
+             ;==================================================================
+             ;MP13010 Ausgabe der Spindel-Drehzahl, Spindel-Orientierung
+             ;Eingabe:
+             ; 0 = keine Ausgabe der Spindel-Drehzahl
+             ; 1 = codierte Ausgabe der Spindel-Drehzahl,nur
+             ;     wenn sich die Drehzahl ändert
+             ; 2 = codierte Ausgabe der Spindel-Drehzahl bei jedem Tool Call
+             ; 3 = analoge Ausgabe der Spindel-Drehzahl, aber
+             ;     Getriebeschaltsignal nur, wenn sich Getriebestufe ändert
+             ; 4 = analoge Ausgabe der Spindel-Drehzahl, aber
+             ;     Getriebeschaltsignal bei jedem Tool Call
+             ; 5 = analoge Ausgabe der Spindel-Drehzahl und kein
+             ;     Getriebeschaltsignal
+             ; 6 = wie Eingabewert 3, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+             ; 7 = wie Eingabewert 4, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+             ; 8 = wie Eingabewert 5, jedoch mit geregelter Spindel zur
+             ;     Orientierung
+MP 13010   : 6
+             ;------------------------------------------------------------------
+             ;MP13011 Funktion von Analog-Ausgang s, falls MP13010 < 3
+             ;Eingabe: 0 = keine Sonderfunktion(0 volt)
+             ;         1 = Spannung proportional zum aktuellen Bahnvorschub
+             ;             (abhängig von MP13012)
+             ;         2 = Spannung wird über PLC-modul 9130 definiert
+             ;         3 = Spannung wird über M-Funktionen
+             ;             definiert (M200 bis M204)
+MP 13011   : 0
+             ;------------------------------------------------------------------
+             ;MP13012 Vorschub bei Ausgabe einer Analogspannung von 10 V
+             ;(MP13011 = 1)
+             ;Eingabe: 0 bis 300 000 [mm/min]
+             ;Laserleistungssteuerung M200-M204
+MP 13012   : 0          ;0-30000 m/min = 10 Volt
+             ;------------------------------------------------------------------
+             ;MP13013.0 bis MP13013.11 Kennlinien-Stützpunkte zur
+             ;Ausgabe der Analog-Spannung mit M202
+             ;Eingabe: 10 bis 300 000 [mm/min]
+MP 13013.0 : 0
+MP 13013.1 : 0
+MP 13013.2 : 0
+MP 13013.3 : 0
+MP 13013.4 : 0
+MP 13013.5 : 0
+MP 13013.6 : 0
+MP 13013.7 : 0
+MP 13013.8 : 0
+MP 13013.9 : 0
+MP 13013.10: 0
+MP 13013.11: 0
+             ;------------------------------------------------------------------
+             ;MP13014.0 bis MP13014.11  Kennlinien-Stützpunkte zur
+             ;Ausgabe der Analog-Spannung mit M202
+             ;Eingabe: 0,000 bis 9,999 [V]
+MP 13014.0 : 0
+MP 13014.1 : 0
+MP 13014.2 : 0
+MP 13014.3 : 0
+MP 13014.4 : 0
+MP 13014.5 : 0
+MP 13014.6 : 0
+MP 13014.7 : 0
+MP 13014.8 : 0
+MP 13014.9 : 0
+MP 13014.10: 0
+MP 13014.11: 0
+             ;------------------------------------------------------------------
+             ;MP13020 Festlegung des Drehzahlbereiches BCD Spindel
+             ;Eingabe: 0 bis 99 999
+             ;Begrenzung Drehzahl-Codes (keine Begrenzung bei 01991)
+             ;    1* Schrittweite (1..9)
+             ;+  10* max. Code (1..99)
+             ;+1000* min. Code (1..99)
+MP 13020   : 1991
+             ;------------------------------------------------------------------
+             ;MP13030 Achsstillstand bei einem Tool Call, bei dem nur eine
+             ;Spindeldrehzahl ausgegeben wird.
+             ;Eingabe: %xx
+             ;Bit 0   Achsstillstand bei Tool Call
+             ;        0 = aktiv
+             ;        1 = nicht aktiv
+             ;Bit 1   Auf Drehzahl 0 regeln beim Umschalten auf eine andere
+             ;        Getriebestufe
+             ;        0 = aktiv
+             ;        1 = nicht aktiv
+             ;10
+MP 13030   : %00
+             ;------------------------------------------------------------------
+             ;MP13120 Drehzahl 0 erlaubt
+             ;Eingabe: 0: S = 0 erlaubt
+             ;         1: S = 0 nicht erlaubt
+MP 13120   : 1
+             ;------------------------------------------------------------------
+             ;MP13130 Polarität der S-Analogspannung
+             ;Eingabe: 0 = M03 positive Spannung; M04 negative Spannung
+             ;         1 = M03 negative Spannung; M04 positive Spannung
+             ;         2 = M03 und M04 positive Spannung
+             ;         3 = M03 und M04 negative Spannung
+MP 13130   : 0
+             ;------------------------------------------------------------------
+             ;MP13140 Zählrichtung der Messsystem-Signale für Spindel
+             ;Eingabe: 0 = positive Zählrichtung bei M03
+             ;         1 = negative Zählrichtung bei M03
+MP 13140   : 1
+             ;------------------------------------------------------------------
+             ;MP13142 Strichzahl des Drehgebers an der Hauptspindel
+             ;Eingabe: 100 bis 100000 [Striche]
+MP 13142   : 2048
+             ;------------------------------------------------------------------
+             ;MP13143 Montageart Lagemesssystem Spindel
+             ;Eingabe: 0 = direkt
+             ;         1 = Getriebe (Ref-Impuls vom Eingang X30)
+             ;         2 = Getriebe (Ref-Endlage von Eingang X30 und Ref-
+             ;             Impuls vom Messsytem, nicht möglich wenn Ge-
+             ;             vom Messsytem, nicht möglich wenn Getriebe
+             ;             zwischen ROD und Spindel)
+             ;         3 = Getriebe (2. Ref-Impuls vom Eingang X30)
+             ;         4 = Referenzauswertung über EnDat (nicht möglich
+             ;             wenn Getriebe zwischen Messsytem und Spindel)
+             ;         5 = wie Eingabe = 0, jedoch erfolgt eine Auswertung
+             ;             des Übersetzungsverhältnisses
+MP 13143   : 0
+             ;------------------------------------------------------------------
+             ;MP13210 S digital: Motor-Umdrehungen bei Nenn-Drehzahl
+             ;          Eingabe: 0 bis 100 [1000/min]
+             ;
+             ;        S analog : S-Analogspannung bei Nenn-Drehzahl
+             ;          Eingabe: 0 bis 9,999 [V]
+MP 13210.0 : 9          ;1. Stufe
+MP 13210.1 : 9          ;2. Stufe
+MP 13210.2 : 0          ;3. Stufe
+MP 13210.3 : 0          ;4. Stufe
+MP 13210.4 : 0          ;5. Stufe
+MP 13210.5 : 0          ;6. Stufe
+MP 13210.6 : 0          ;7. Stufe
+MP 13210.7 : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13240.1 S digital: minimal ausgebbare Motor-Drehzahl
+             ;            Eingabe: 0 bis 9,999 [1000/min]
+             ;
+             ;          S analog : minimal ausgebbare S-Analogspannung
+             ;            Eingabe: 0 bis 9,999 [V]
+MP 13240.1 : 0.05
+             ;------------------------------------------------------------------
+             ;MP13240.2 S digital: Motor-Drehzahl für Getriebeschalten
+             ;            Eingabe: 0 bis 9,999 [1000/min]
+             ;
+             ;          S analog : Pendelspannung für Getriebeschalten
+             ;            Eingabe: 0 bis 9,999 [V]
+MP 13240.2 : 0.1
+             ;------------------------------------------------------------------
+             ;MP13310 Begrenzung S-Override
+             ;Eingabe: 0 bis 100 [%]
+MP 13310.0 : 150        ;maximal
+MP 13310.1 : 75         ;minimal
+             ;------------------------------------------------------------------
+             ;MP13350 Maximal zulässige Überschreitung der Spindeldrehzahl
+             ;        für die Überwachung der Spindeldrehzahl.
+             ;        Angabe erfolgt relativ in Prozent vom Sollwert der
+             ;        Spindeldrehzahl.
+             ;Eingabe: 0 bis 100 [%]
+MP 13350   : 0
+             ;------------------------------------------------------------------
+             ;MP13351 Angabe eines Absolutwertes für die zulässige
+             ;        Überschreitung der Spindeldrehzahl. Dieser Wert wird
+             ;        nur verwendet, wenn der Absolutwert der sich aus
+             ;        MP13350 ergibt, kleiner als der Wert in MP13351 ist.
+             ;        (bei niedriger Solldrehzahl)
+             ;Eingabe: 0,001 bis 100000,000 [U/min]
+             ;         0 = Überwachung Aus
+MP 13351   : 0
+             ;------------------------------------------------------------------
+             ;MP13411 Rampensteilheit der Spindel
+             ;Eingabe: S digital: 0 bis 1,999 [(1000/min)/ms]
+             ;         S analog : 0 bis 1,999 [V/ms]
+MP 13411.0 : 0.01
+MP 13411.1 : 0.01
+MP 13411.2 : 0.01
+MP 13411.3 : 0.01
+MP 13411.4 : 0.01
+MP 13411.5 : 0.01
+MP 13411.6 : 0.01
+MP 13411.7 : 0.01
+             ;------------------------------------------------------------------
+             ;MP13412 Multiplikator für MP13411
+             ;Eingabe: 0,000 bis 1,999
+MP 13412.0 : 1          ;bei M03, M04, M05
+MP 13412.1 : 1          ;bei Spindel-Orientierung
+MP 13412.2 : 1          ;bei Gewindebohren
+MP 13412.3 : 1          ;bei Gewindebohren ohne Ausgleichsfutter
+             ;------------------------------------------------------------------
+             ;MP13415 Einschwingverhalten der Spindel
+             ;Eingabe: 0 bis 1 000 [ms]
+MP 13415.0 : 100        ;bei M03, M04, M05
+MP 13415.1 : 100        ;bei Spindel-Orientierung
+MP 13415.2 : 100        ;bei Gewindebohren
+MP 13415.3 : 100        ;bei Gewindebohren ohne Ausgleichsfutter
+             ;------------------------------------------------------------------
+             ;MP13420 Positionierfenster für Spindel
+             ;Eingabe: 0 bis 360 [Grad]
+MP 13420   : 0.5
+             ;------------------------------------------------------------------
+             ;MP13430 Abweichung der Referenzmarke von der gewünschten
+             ;Position (Spindel-Preset)
+             ;Eingabe: 0 bis 360 [Grad]
+MP 13430   : 0
+             ;------------------------------------------------------------------
+             ;MP13440 kv-Faktor für Spindel-Orientierung
+             ;Eingabe: 0,1 bis 10 [1000 /min]
+MP 13440.0 : 1          ;1. Stufe
+MP 13440.1 : 1          ;2. Stufe
+MP 13440.2 : 1          ;3. Stufe
+MP 13440.3 : 1          ;4. Stufe
+MP 13440.4 : 1          ;5. Stufe
+MP 13440.5 : 1          ;6. Stufe
+MP 13440.6 : 1          ;7. Stufe
+MP 13440.7 : 1          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13450 Umdrehungen Spindel-Motor
+             ;Eingabe: 0 bis 65535 [1/min]
+             ;         0 keine Übersetzung
+MP 13450.0 : 0          ;1. Stufe
+MP 13450.1 : 0          ;2. Stufe
+MP 13450.2 : 0          ;3. Stufe
+MP 13450.3 : 0          ;4. Stufe
+MP 13450.4 : 0          ;5. Stufe
+MP 13450.5 : 0          ;6. Stufe
+MP 13450.6 : 0          ;7. Stufe
+MP 13450.7 : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13451 Umdrehungen Spindel
+             ;Eingabe: 0 bis 65535 [1/min]
+             ;         0 keine Übersetzung
+MP 13451.0 : 0          ;1. Stufe
+MP 13451.1 : 0          ;2. Stufe
+MP 13451.2 : 0          ;3. Stufe
+MP 13451.3 : 0          ;4. Stufe
+MP 13451.4 : 0          ;5. Stufe
+MP 13451.5 : 0          ;6. Stufe
+MP 13451.6 : 0          ;7. Stufe
+MP 13451.7 : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13510 Nenn-Drehzahl für Getriebestufen
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 13510.0 : 3000       ;1. Stufe
+MP 13510.1 : 30000      ;2. Stufe
+MP 13510.2 : 0          ;3. Stufe
+MP 13510.3 : 0          ;4. Stufe
+MP 13510.4 : 0          ;5. Stufe
+MP 13510.5 : 0          ;6. Stufe
+MP 13510.6 : 0          ;7. Stufe
+MP 13510.7 : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13515 maximale Spindel-Drehzahl
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 13515.0 : 3000       ;1. Stufe
+MP 13515.1 : 30000      ;2. Stufe
+MP 13515.2 : 0          ;3. Stufe
+MP 13515.3 : 0          ;4. Stufe
+MP 13515.4 : 0          ;5. Stufe
+MP 13515.5 : 0          ;6. Stufe
+MP 13515.6 : 0          ;7. Stufe
+MP 13515.7 : 0          ;8. Stufe
+             ;------------------------------------------------------------------
+             ;MP13520.0 Drehzahl aktiviert durch Merker M4011
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 13520.0 : 10
+             ;------------------------------------------------------------------
+             ;MP13520.1 Spindel-Drehzahl für Spindel-Orientierung
+             ;Eingabe: 0 bis 99 999,999 [U/min]
+MP 13520.1 : 500
+             ;------------------------------------------------------------------
+             ;MP13530 Erhöhte Spindelleistung beim Schruppen
+             ;Eingabe: 0 = nicht aktiv
+             ;         1 = erhöhte Spindelleistung beim Schruppen
+MP 13530   : 0
+             ;------------------------------------------------------------------
+             ;MP13540 Zulässige Drehzahlunterschreitung der
+             ;       Spindel-Istdrehzahl über einen Prozent-Faktor
+             ;       von der Solldrehzahl
+             ;Eingabe: 0 bis 100 [%]
+             ;         0 = Überwachung nicht aktiv
+MP 13540   : 0
+             ;------------------------------------------------------------------
+             ;MP13542 Mindest-Spindeldrehzahl, ab der die Überwachung
+             ;       in MP3540 aktiv wird
+             ;Eingabe: 0,001 bis 99 999,999 [U/min]
+             ;         0 = Überwachung nicht aktiv
+MP 13542   : 0
+             ;------------------------------------------------------------------
+             ;MP13550 Verzögerung der NOT-AUS-Reaktion von Spindeln
+             ;Eingabe: 0,001 bis 0,100 [s]
+             ;         0 = Verzögerung nicht aktiv
+MP 13550   : 0

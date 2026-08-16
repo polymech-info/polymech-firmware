@@ -1,0 +1,303 @@
+*-----------------------------------------------------------------------------
+*  Thermal Compensation
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    BL_step_thermal_comp                     B
+
+#define /s    WL_thermal_comp_value                    W
+
+#define /s    ML_thermal_comp_processing               M
+
+;GLOBAL Temperature_comp                                              *;EUMACH Original PLC
+GLOBAL Temp_comp_PMC                                                  *;EUMACH
+
+;----------------------------
+;LBL Temperature_comp                                                 *;EUMACH Original PLC
+LBL Temp_comp_PMC                                                     *;EUMACH
+;----------------------------
+
+#if (Tcmp = &T_comp_type_01) or (Tcmp = &T_comp_type_02)
+  L      MG_marker_one
+  S      TS_thermal_comp_time_out
+
+  CASE   BL_step_thermal_comp
+    CM     Thermal_comp_start          ;00
+    CM     Thermal_comp_data_process   ;01
+    CM     Thermal_comp_on             ;02
+    CM     Thermal_comp_quit           ;03
+    CM     Thermal_comp_end            ;04
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_thermal_comp
+  ENDI
+
+  L      I_PMC_thermal_comp_ED13_unit_ok
+  O      PN_error_thermal_comp_unit
+  ON     MG_control_operational
+  =      TS_thermal_comp_unit_error
+
+  LN     TS_thermal_comp_unit_error
+  AN     TR_thermal_comp_unit_error
+  A      MG_control_operational
+  S      PN_error_thermal_comp_unit
+
+  L      PN_error_thermal_comp_unit
+  A      I_PMC_thermal_comp_ED15_AL_bit0
+  AN     I_PMC_thermal_comp_ED14_AL_bit1
+  AN     I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL01
+
+  L      PN_error_thermal_comp_unit
+  AN     I_PMC_thermal_comp_ED15_AL_bit0
+  A      I_PMC_thermal_comp_ED14_AL_bit1
+  AN     I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL02
+
+  L      PN_error_thermal_comp_unit
+  A      I_PMC_thermal_comp_ED15_AL_bit0
+  A      I_PMC_thermal_comp_ED14_AL_bit1
+  AN     I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL03
+
+  L      PN_error_thermal_comp_unit
+  AN     I_PMC_thermal_comp_ED15_AL_bit0
+  AN     I_PMC_thermal_comp_ED14_AL_bit1
+  A      I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL04
+
+  L      PN_error_thermal_comp_unit
+  A      I_PMC_thermal_comp_ED15_AL_bit0
+  AN     I_PMC_thermal_comp_ED14_AL_bit1
+  A      I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL05
+
+  L      PN_error_thermal_comp_unit
+  AN     I_PMC_thermal_comp_ED15_AL_bit0
+  A      I_PMC_thermal_comp_ED14_AL_bit1
+  A      I_PMC_thermal_comp_ED12_AL_bit2
+  =      MG_win_PMC_T_comp_AL06
+
+  L      PN_error_thermal_comp_timeout
+  O      PN_error_thermal_comp_unit
+  CMT    Thermal_comp_reset
+#endif
+
+EM
+
+#if (Tcmp = &T_comp_type_01) or (Tcmp = &T_comp_type_02)
+;----------------------------
+LBL Thermal_comp_start                 ;00
+
+  L      I_PMC_thermal_comp_ESTB
+  AN     O_PMC_thermal_comp_EREND
+  S      ML_thermal_comp_processing
+
+  L      ML_thermal_comp_processing
+  PSL
+
+EM
+
+;----------------------------
+LBL Thermal_comp_data_process          ;01
+
+  L      I_PMC_thermal_comp_ED13_unit_ok
+  A      MG_PMC_T_comp_active
+  IFT
+    L      K+0
+    =      WL_thermal_comp_value
+
+    L      I_PMC_thermal_comp_ED0
+    IFT
+      L      WL_thermal_comp_value
+      +      K+1
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED1
+    IFT
+      L      WL_thermal_comp_value
+      +      K+2
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED2
+    IFT
+      L      WL_thermal_comp_value
+      +      K+4
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED3
+    IFT
+      L      WL_thermal_comp_value
+      +      K+8
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED4
+    IFT
+      L      WL_thermal_comp_value
+      +      K+16
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED5
+    IFT
+      L      WL_thermal_comp_value
+      +      K+32
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED6
+    IFT
+      L      WL_thermal_comp_value
+      +      K+64
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED7
+    IFT
+      L      WL_thermal_comp_value
+      +      K+128
+      =      WL_thermal_comp_value
+    ENDI
+
+#if Tcmp = &T_comp_type_02
+    L      I_PMC_thermal_comp_ED8
+    IFT
+      L      WL_thermal_comp_value
+      +      K+256
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED9
+    IFT
+      L      WL_thermal_comp_value
+      +      K+512
+      =      WL_thermal_comp_value
+    ENDI
+
+    L      I_PMC_thermal_comp_ED10
+    IFT
+      L      WL_thermal_comp_value
+      +      K+1024
+      =      WL_thermal_comp_value
+    ENDI
+#endif
+
+    L      WL_thermal_comp_value
+    X      K+10
+    =      WL_thermal_comp_value
+
+*;EUMACH
+*;For PMC thermal compensation card, if ED11=0 -> + sign, ED11=1 -> - sign.
+*;+ sign means axis must move in the positive direction, and - sign means axis
+*;must move in the negative direction.  However, for TNC control W576-W580,
+*;+ sign means the current position is more than the target position, so it
+*;moves in the negative direction, and vice versa.
+    LN     I_PMC_thermal_comp_ED11_sign
+    IFT
+      L      WL_thermal_comp_value
+      X      K-1
+      =      WL_thermal_comp_value
+    ENDI
+  ENDI
+
+  LN     MG_PMC_T_comp_active
+  IFT
+    L      K+0
+    =      WL_thermal_comp_value
+  ENDI
+
+  PS     MG_marker_one
+
+EM
+
+;----------------------------
+LBL Thermal_comp_on                    ;02
+
+  L      I_PMC_thermal_comp_ED13_unit_ok
+  A      MG_PMC_T_comp_active
+  IFT
+    LN     I_PMC_thermal_comp_EA0
+    AN     I_PMC_thermal_comp_EA1
+    IFT
+      L      WL_thermal_comp_value
+      =      WG_PMC_temp_comp_axis_X                                  *;EUMACH Table clamped -> Z comp
+;      =      PN_W576_lag_error_compensation_X                        *;EUMACH Table clamped -> Z comp
+    ENDI
+
+    L      I_PMC_thermal_comp_EA0
+    AN     I_PMC_thermal_comp_EA1
+    IFT
+      L      WL_thermal_comp_value
+      =      WG_PMC_temp_comp_axis_Y                                  *;EUMACH Table clamped -> Z comp
+;      =      PN_W578_lag_error_compensation_Y                        *;EUMACH Table clamped -> Z comp
+    ENDI
+
+    LN     I_PMC_thermal_comp_EA0
+    A      I_PMC_thermal_comp_EA1
+    IFT
+      L      WL_thermal_comp_value
+      =      WG_PMC_temp_comp_axis_Z                                  *;EUMACH Table clamped -> Z comp
+;      =      PN_W580_lag_error_compensation_Z                        *;EUMACH Table clamped -> Z comp
+    ENDI
+  ENDI
+
+  LN     MG_PMC_T_comp_active
+  IFT
+    L      K+0
+*;EUMACH Table clamped -> Z comp
+    =      WG_PMC_temp_comp_axis_X
+    =      WG_PMC_temp_comp_axis_Y
+    =      WG_PMC_temp_comp_axis_Z
+;    =      PN_W576_lag_error_compensation_X
+;    =      PN_W578_lag_error_compensation_Y
+;    =      PN_W580_lag_error_compensation_Z
+*;EUMACH Table clamped -> Z comp
+  ENDI
+
+  L      MG_marker_one
+  S      O_PMC_thermal_comp_EREND
+  PSL
+
+EM
+
+;----------------------------
+LBL Thermal_comp_quit                   ;03
+
+  LN     TR_thermal_comp_time_out
+  AN     TS_thermal_comp_time_out
+  S      PN_error_thermal_comp_timeout
+
+  LN     TR_thermal_comp_time_out
+  =      TS_thermal_comp_time_out
+
+  LN     I_PMC_thermal_comp_ESTB
+  R      O_PMC_thermal_comp_EREND
+  PSL
+
+EM
+
+;----------------------------
+LBL Thermal_comp_end                   ;04
+
+  PS     MG_marker_zero
+
+;----------------------------
+LBL Thermal_comp_reset
+
+  L      MG_marker_one
+  R      ML_thermal_comp_processing
+  R      O_PMC_thermal_comp_EREND
+
+  L      K+0
+  =      BL_step_thermal_comp
+
+EM
+#endif

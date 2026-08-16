@@ -1,0 +1,1026 @@
+*-----------------------------------------------------------------------------
+*  Diagnose - Überwachungen Motorschutzschalter, Sicherungen
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_inaktiv                               K +0
+#define /s    KL_ohne_Funktion                         K +0
+#define /s    KL_Shutdown_PLC_weiterhin_lauffaehig     K +0
+#define /s    KL_Shutdown_Mode_definiert_in_MP4040     K +2
+#define /s    KL_Feldwinkel_lesen                      K +0
+#define /s    KL_Feldwinkel_schreiben                  K +1
+#define /s    KL_Modul_fehlerfrei                      K +0
+#define /s    KL_File_Zugriff_lesen                    K %000
+#define /s    KL_File_Zugriff_schreiben_lock           K %011
+#define /s    KL_Mode_0_Start_Not_Halt_Test            K +0
+#define /s    KL_Wert_aus_MP2230                       K +0
+#define /s    KL_Wert_aus_MP2232                       K +0
+#define /s    KL_Mode_ohne_Vorzeichen_links            K +0
+#define /s    KL_nach_Komma_0                          K +0
+#define /s    KL_vor_Komma_3                           K +3
+#define /s    KL_nicht_benutzt                         K +0
+#define /s    KL_I2t_Vorwarnung                        K +2
+#define /s    KL_I2t_Begrenzung                        K +3
+#define /s    KL_Not_Halt_Test_inaktiv                 K +9999
+#define /s    KL_JH_Umrichter                          K +0
+#define /s    KL_Bit_6                                 K +6
+#define /s    KL_Versorgungsmodul_nicht_bereit         K +5
+#define /s    KL_alle_Achsen                           K -1
+#define /s    KL_Bremsentest_aktiv                     K +0
+#define /s    KL_Time_3s                               K +3
+#define /s    KL_Zeit_naechster_Selbsttest             K +4
+#define /s    KL_Zeit_naechster_Bremsentest            K +8
+
+#define /s    ML_automatisch_Steuer_Spannung_aus       M
+#define /s    ML_Taste_betaetigt                       M
+#define /s    ML_init_Steuerung_betriebsbereit         M
+#define /s    ML_Not_Halt_Test                         M
+#define /s    ML_Not_Halt_Kreis_geschlossen            M
+#define /s    ML_Schritt_Start                         M
+#define /s    ML_Taste_Steuerspannung_betaetigt        M
+#define /s    ML_Selbsttest_abgeschlossen              M
+#define /s    ML_StSpg_aus_Schritt_Start               M
+#define /s    ML_HS_aus_Taste_Steuerspannung           M
+#define /s    ML_FS_Bremsentest_Anforderung            M
+#define /s    ML_FS_Selbstest_Anforderung              M
+#define /s    ML_Test_erlaubt                          M
+#define /s    ML_init_Selbsttest                       M
+#define /s    ML_init_Bremsentest                      M
+
+#define /s    ML_debug_FS                              M
+
+#define /s /r ML_Arbeitsraum_Licht                     M
+
+#define /s    BL_Identifier                            B
+#define /s    BL_Identifier_1                          B
+#define /s    BL_Status_Bremsentest                    B
+#define /s    BL_Status_Not_Halt_Test                  B
+#define /s    BL_Achs_Index                            B
+#define /s    BL_Achs_Index_Submit                     B
+#define /s    BL_Fehler_Code                           B
+#define /s    BL_Schritt_Test                          B
+#define /s    BL_Schritt_StSpg_aus_Shut_down           B
+#define /s    BL_Time_3s                               B
+
+#define /s    BL_Status_Bremse                         B[&KG_max_Achs_Anzahl]
+
+#define /s    WL_Stack_synchronisieren                 W
+#define /s    WL_Fehlercode                            W
+#define /s    WL_Fehlercode_2                          W
+#define /s    WL_Zeile_Dialog_Datei                    W
+
+#define /s    DL_Achs_Feldwinkel_initalisiert          D
+#define /s    DL_Achsfreigaben_vor_Not_Halt_Test       D
+#define /s    DL_File_Handle                           D
+#define /s    DL_Zeit_naechster_Bremsentest            D
+
+#include Mac_Lib.inc
+
+GLOBAL Diagnose
+
+;----------------------------
+LBL Diagnose
+
+  LN     MG_Not_Halt_entriegelt
+  A      I_SM_1xx_Temperatur_ok
+  A      ML_Selbsttest_abgeschlossen
+  =      MG_Win_Not_Halt_Taster
+
+  LN     I_Motor_Schutz_Schalter_ok
+  =      PN_Fehler_Motor_Schutz_Schalter
+
+  LN     I_PW_210_Temperatur_ok
+  S      PN_Fehler_PW_210_Temperatur_max
+
+  LN     I_DA400_Druck_ok
+  S      PN_Fehler_DA400_Druck
+
+  LN     I_Pneumatik_Druck_ok
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_Pneumatik_Druck
+
+  L      MG_Steuerung_betriebsbereit
+  AN     MG_Steuer_Spannung_verzoegert_ein
+  =      MG_LED_Test
+
+  L      MG_Not_Halt_Kreis_geschlossen
+  =      O_LED_Steuerspannung_ein
+
+  L      NP_M4173_1_PLC_Durchlauf_nach_Compile
+  AN     NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  O      NP_M4192_Not_Halt_Test_Steuerspannung_ein
+  O[
+    L      NP_D296_IO_Simulation_Identifier
+    <>     KL_inaktiv
+  ]
+  S      ML_Selbsttest_abgeschlossen
+
+  L      ML_Selbsttest_abgeschlossen
+  A      MG_Not_Halt_entriegelt
+  AN     MG_Achsen_Not_Halt_Endlage
+  A      MG_Takt_1_s
+  S      O_LED_Steuerspannung_ein
+
+  L      MG_Achsen_Not_Halt_Endlage
+  A      O_Achsen_Freifahren
+  A      MG_Takt_1_s
+  S      O_LED_Steuerspannung_ein
+
+#if CFG_FS = "aktiv"                   * SPLC_0022
+  L      PN_Fehler_STO_aktiv
+  IFT
+    L      MG_Takt_500_ms
+    =      O_LED_Steuerspannung_ein
+  ENDI
+#endif
+
+  L      NP_M4177_Fehlermeldung_aktiv
+  ON     MG_Steuerung_betriebsbereit
+  A      MG_Takt_1_s
+  O      MG_LED_Test
+  =      O_LED_TNC_Alarm
+
+  L      NP_M4170_END_PGM_M02_M30_abgearbeitet
+  O      MG_NC_Stop_aktiv
+#if CFG_Paletten_Wechsel = "Pendel_Betrieb"
+  O[
+    L      MG_Pendeln_ein
+    A      MG_Axis_Limit_2
+    AN     MG_Rohteil_Seite_1
+  ]
+  O[
+    L      MG_Pendeln_ein
+    A      MG_Axis_Limit_1
+    AN     MG_Rohteil_Seite_2
+  ]
+#endif
+  A      MG_BA_Automatik
+  A      MG_Takt_1_s
+  O      MG_LED_Test
+  =      O_LED_Programm_Ende
+
+  L      MG_Stern_ein
+  A      MG_BA_Automatik
+  A      MG_Achsen_in_Bewegung
+  O      MG_LED_Test
+  =      O_LED_Programm_laeuft
+
+;Steuerspannung (StSpg) ein
+
+  L      NP_M4192_Not_Halt_Test_Steuerspannung_ein
+  A      NP_M4190_Not_Halt_Test_aktiv
+  A      ML_init_Steuerung_betriebsbereit
+  O[
+    L      MG_Taste_Steuerspannung_ein
+    AN     ML_Taste_Steuerspannung_betaetigt
+  ]
+  O      MG_Steuerspannung_AUTOSTART_ein
+  O      MG_Energy_Opt_Maschine_ein
+  S      O_Steuerspannung_ein
+
+  L      MG_Not_Halt_Kreis_geschlossen
+  S      ML_init_Steuerung_betriebsbereit
+
+  L      MG_Achsen_Not_Halt_Endlage
+  AN     O_Achsen_Freifahren
+  O      MG_Not_Halt_Kreis_geschlossen
+  ON     MG_Not_Halt_entriegelt
+  ON     NP_M4191_Steuerung_betriebsbereit
+  ON     ML_Selbsttest_abgeschlossen
+  R      O_Steuerspannung_ein
+
+;Steuerspannung (StSpg) aus
+
+  LN     NP_M4191_Steuerung_betriebsbereit
+  A      ML_Not_Halt_Kreis_geschlossen
+  =      TS_Not_Halt_Kreis_aus
+
+  L      TS_Not_Halt_Kreis_aus
+  O      TR_Not_Halt_Kreis_aus
+  =      PN_Fehler_Maschine_aus
+
+  L      NP_M4191_Steuerung_betriebsbereit
+  =      ML_Not_Halt_Kreis_geschlossen
+
+  CASE   BL_Schritt_StSpg_aus_Shut_down
+    CM     StSpg_aus
+    CM     Shut_down
+    CM     Ende_StSpg_aus
+  ENDC
+
+  PLL
+  =      ML_StSpg_aus_Schritt_Start
+  IFT
+    INC    BL_Schritt_StSpg_aus_Shut_down
+  ENDI
+
+  L      MG_Taste_Steuerspannung_ein
+  =      ML_Taste_Steuerspannung_betaetigt
+
+#if CFG_FS = "aktiv"                   * SPLC_0025
+
+  L      MG_Eins_Merker
+  R      MG_Start_Sperre_Not_Halt_Test
+
+  PS     KL_Zeit_naechster_Selbsttest
+  PS     KL_ohne_Funktion
+  CM     9037                          ;Lesen des sicherheitsgerichteten Status
+  PL     DG_Zeit_naechster_Selbsttest
+  M_Modul_Fehler_anzeigen
+
+  L      DG_Zeit_naechster_Selbsttest
+  >      K +0
+  S      ML_init_Selbsttest
+
+  L      DG_Zeit_naechster_Selbsttest
+  /      K +60
+  <=     DG_FS_Zeit_Selbsttest_Vorwarnung
+  A      ML_init_Selbsttest
+  S      ML_FS_Selbstest_Anforderung
+  S      MG_Start_Sperre_Not_Halt_Test
+
+  L      K +0
+  =      BL_Achs_Index
+
+  L      K $1FFFFFFF
+  =      DL_Zeit_naechster_Bremsentest
+
+  REPEAT
+    L      DG_geregelte_Achsen
+    A      NP_D1100_Achsfreigaben
+    A      DG_MP2230_Bremsen_Test_aktiv
+    AN     DG_Achsen_mit_C_Achs_Betrieb
+    BT     BL_Achs_Index
+    IFT
+      PS     KL_Zeit_naechster_Bremsentest
+      PS     BL_Achs_Index
+      CM     9037                      ;Lesen des sicherheitsgerichteten Status
+      PLW
+      /      K +60
+      =      DG_Zeit_naechster_Bremsentest[BL_Achs_Index]
+      M_Modul_Fehler_anzeigen
+
+      L      DG_Zeit_naechster_Bremsentest[BL_Achs_Index]
+      >      K +0
+      S      ML_init_Bremsentest
+
+      L      DG_Zeit_naechster_Bremsentest[BL_Achs_Index]
+      <      DL_Zeit_naechster_Bremsentest
+      A      ML_init_Bremsentest
+      IFT
+        L      DG_Zeit_naechster_Bremsentest[BL_Achs_Index]
+        =      DL_Zeit_naechster_Bremsentest
+      ENDI
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  L      DL_Zeit_naechster_Bremsentest
+  <=     DG_FS_Zeit_Bremsentest_Vorwarnung
+  S      ML_FS_Bremsentest_Anforderung
+  S      MG_Start_Sperre_Not_Halt_Test
+
+  LN     NP_M4189_Not_Halt_Test_abgeschlossen
+  O      NP_M4190_Not_Halt_Test_aktiv
+  O      NP_M4282_Start_Abschaltkanaele
+  R      ML_FS_Selbstest_Anforderung
+  R      ML_FS_Bremsentest_Anforderung
+  R      MG_Start_Sperre_Not_Halt_Test
+
+  L      MG_Start_Sperre_Not_Halt_Test
+  A      MG_Impuls_1_h
+  S      PN_Fehler_Not_Halt_Test
+
+#else
+; Selbsttest (Not Halt Test) - Bremstest
+
+  L      NP_M4190_Not_Halt_Test_aktiv
+  IFT
+    L      DG_Zeit_Not_Halt_Test
+    =      DG_Zeit_naechster_Not_Halt_Test
+
+    L      DG_Zeit_Not_Halt_Test
+    <=     K+0
+    IFT
+      L      KL_Not_Halt_Test_inaktiv
+      =      DG_Zeit_naechster_Not_Halt_Test
+    ENDI
+  ENDI
+
+  L      DG_Zeit_Not_Halt_Test
+  >      K+0
+  A      MG_Impuls_1_min
+  IFT
+    DEC    DG_Zeit_naechster_Not_Halt_Test
+  ENDI
+
+  L      DG_Zeit_naechster_Not_Halt_Test
+  <=     K+360
+  A      MG_Impuls_1_h
+  S      PN_Fehler_Not_Halt_Test
+
+  L      DG_Zeit_naechster_Not_Halt_Test
+  <=     K+0
+  =      MG_Start_Sperre_Not_Halt_Test
+#endif
+
+  L      MG_SK_Selbsttest_starten
+  O      MG_SK_Bremsentest_starten
+  S      MG_Start_Sperre_Not_Halt_Test
+
+  L      MG_SK_Selbsttest_sperren
+  R      MG_Start_Sperre_Not_Halt_Test
+
+  L      MG_Impuls_1_min
+  O      MG_Taste_NC_Start
+  A      MG_Start_Sperre_Not_Halt_Test
+  S      PN_Fehler_Not_Halt_Test
+
+  PS     KL_alle_Achsen
+  PS     KL_Bremsentest_aktiv
+  CM     9048                          ;Abfragen von Betriebszuständen der Achsen
+  PL     DG_Bremsen_Test_laeuft
+  M_Modul_Fehler_anzeigen
+
+  L      DG_Bremsen_Test_laeuft
+  <>     KL_inaktiv
+  =      O_Bremsen_Test_laeuft
+
+  L      O_Bremsen_Test_laeuft
+  O      MG_Test_aktiv
+  =      PN_Fehler_Not_Halt_Bremsen_Test
+
+  CASE   BL_Schritt_Test
+    CM     Not_Halt_Aktivierung        ;00
+    CM     Bremsen_Test_Start          ;01
+    CM     Bremsen_Test_ok             ;02
+    CM     Antriebe_aus                ;03
+    CM     Antriebe_aus_ok             ;04
+    CM     Not_Halt_Test_Start         ;05
+    CM     Not_Halt_Test_ok            ;06
+    CM     Antriebe_ein                ;07
+    CM     Antriebe_ein_ok             ;08
+    CM     Not_Halt_Ende               ;09
+  ENDC
+
+  PLL
+  =      ML_Schritt_Start
+  IFT
+    INC    BL_Schritt_Test
+  ENDI
+
+  LN     MG_Not_Halt_entriegelt
+  AN     NP_M4282_Start_Abschaltkanaele
+  CMT    Not_Halt_Reset
+
+  L      PN_Fehler_Not_Halt_Test
+  R      PN_Fehler_Not_Halt_Test
+  IFT
+    PS     NP_M4203_Fehler_Modul_9xxx
+    PS     K &PN_Fehler_Not_Halt_Test - 4800
+    L      DG_Zeit_naechster_Not_Halt_Test
+    +      K +30
+    /      K +60
+    PSW
+    PS     KL_Mode_ohne_Vorzeichen_links
+    PS     KL_nach_Komma_0
+    PS     KL_vor_Komma_3
+    PS     K &SG_Zeit_Not_Halt_Test
+    CM     9051                        ;Binärzahl in Dezimalstring wandeln (Format)
+    M_Modul_Fehler_anzeigen
+
+    PS     K &SG_Zeit_Not_Halt_Test
+    PS     KL_nicht_benutzt
+    PS     KL_nicht_benutzt
+    CM     9084                        ;PLC-Fehlermeldung anzeigen
+    PL     NP_M4203_Fehler_Modul_9xxx
+  ENDI
+
+;Hauptschalter aus
+
+  L      MG_auto_HS_aus_nach_END_PGM
+  O      ML_HS_aus_Taste_Steuerspannung
+  O      STG_Energy_Opt_Steuerung.M_Aktiv
+  IFT
+    L      STG_Energy_Opt_Steuerung.M_Aktiv
+    AN     MG_Stern_ein
+    O      MG_Impuls_End_PGM_M02_M30
+    S      ML_automatisch_Steuer_Spannung_aus
+
+    L      ML_automatisch_Steuer_Spannung_aus
+    A      MG_Spindel_steht
+    A      MG_Achsen_in_Position
+    AN     MG_WZW_automatisch
+    AN     MG_WZM_n_Start_aktiv
+    R      MG_auto_HS_aus_nach_END_PGM
+    S      PN_Fehler_HS_aus_nach_END_PGM
+
+    L      PN_Fehler_HS_aus_nach_END_PGM
+    O      ML_HS_aus_Taste_Steuerspannung
+    IFT
+      RPLY   BL_Identifier_1
+      ==     K +0
+      RN     ML_HS_aus_Taste_Steuerspannung
+      IFT
+        SUBM   HS_aus_nach_END_PGM
+        =      BL_Identifier_1
+        ==     K +0
+        S      PN_Fehler_Submit_Spawn_Queue_voll
+      ENDI
+    ENDI
+  ENDI
+
+  L      MG_Taste_Arbeitsraum_Licht
+  AN     ML_Taste_betaetigt
+  O[
+    L      ML_Arbeitsraum_Licht
+    A      STG_Energy_Opt_Licht.M_Aktiv
+  ]
+  XO     ML_Arbeitsraum_Licht
+  O      MG_Energy_Opt_Licht_ein
+  =      ML_Arbeitsraum_Licht
+
+  L      ML_Arbeitsraum_Licht
+  =      O_Arbeitsraum_Licht
+
+  L      MG_Taste_Arbeitsraum_Licht
+  =      ML_Taste_betaetigt
+
+  L      MG_Spindel_digital
+  IFT
+    PS     KG_Spindel
+    CM     9164                        ;Drehzahl-Istwert der Antriebsmotoren lesen
+    PL     DG_Motor_Ist_Drehzahl_S
+    M_Modul_Fehler_anzeigen
+
+    PS     KG_Spindel
+    CM     9166                        ;Aktuelle Auslastung der Antriebsmotoren lesen
+    PL     WG_Motor_Auslastung_S
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  CM     Antrieb_Diagnose
+
+#if KG_Feldwinkel_in_PLC_speichern > 0
+  RPLY   BL_Identifier
+  <>     K+0
+  EMT
+
+  SUBM   Achsen_Feldwinkel
+  =      BL_Identifier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+#endif
+
+EM
+
+;----------------------------
+LBL Antrieb_Diagnose
+
+  LN     I_Temperatur_Leistungsteil_ok
+  S      PN_Fehler_Leistungteil_Tmax
+
+  L      DG_digitale_Antriebe
+  ==     KL_inaktiv
+  EMT
+
+  PS     KL_I2t_Vorwarnung
+  CM     9066                          ;Status HEIDENHAIN-Hardware
+  PLW
+  D=     MG_I2t_Vorwarnung
+  >      KL_inaktiv
+  =      PN_Fehler_I2t_Vorwarnung
+
+  M_Fehler_I2t_Vorwarnung
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_I2t_Begrenzung
+  CM     9066                          ;Status HEIDENHAIN-Hardware
+  PLW
+  D=     MG_I2t_Begrenzung
+  >      KL_inaktiv
+  S      PN_Fehler_I2t_Begrenzung
+
+  M_Fehler_I2t_Begrenzung
+  M_Modul_Fehler_anzeigen
+
+  PS     KL_JH_Umrichter
+  CM     9066                          ;Status HEIDENHAIN-Hardware
+  PLW
+  B=     MG_JH_Umrichter_Diagnose
+
+  M_Modul_Fehler_anzeigen
+
+  L      K +0
+  =X
+
+  REPEAT
+    LN     MG_JH_Umrichter_Diagnose[KL_Versorgungsmodul_nicht_bereit]
+    O      MG_Steuer_Spannung_verzoegert_ein
+    A      MG_JH_Umrichter_Diagnose[X]
+    IFT
+      L      KF JH_Umrichter_Diagnose[X]
+      =      WL_Zeile_Dialog_Datei
+      =X
+
+      L      S#D0[X]
+      =      SG_JH_Umrichter_Diagnose
+
+      PS     K &PN_Fehler_JH_Hardware - 4800
+      PS     K &SG_JH_Umrichter_Diagnose
+      PS     KL_nicht_benutzt
+      PS     KL_nicht_benutzt
+      CM     9084                      ;PLC-Fehlermeldung anzeigen
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    INCX
+
+    LX
+    >      KL_Bit_6
+  UNTILT
+
+  L      K+0
+  =X
+  REPEAT
+    L      DG_digitale_Antriebe
+    BTX
+    IFT
+      PSX
+      PSX
+      PSX
+      CM     9164                      ;Drehzahl-Istwert der Antriebsmotoren lesen
+      PL     DG_Motor_Ist_Drehzahl[X]
+      M_Modul_Fehler_anzeigen
+
+      CM     9165                      ;Temperatur der Antriebsmotoren lesen
+      PL     WG_Motor_Temperatur[X]
+      M_Modul_Fehler_anzeigen
+
+      CM     9166                      ;Aktuelle Auslastung der Antriebsmotoren lesen
+      PL     WG_Motor_Auslastung[X]
+      M_Modul_Fehler_anzeigen
+
+      L      WG_Motor_Temp_max[X]
+      -      WG_Motor_Temperatur[X]
+      <      K+10
+      A[
+        L      WG_Motor_Temp_max[X]
+        <>     K+255
+      ]
+      A[
+        L      WG_Motor_Temp_max[X]
+        <>     K+0
+      ]
+      A      MG_Steuer_Spannung_verzoegert_ein
+      S      PN_Fehler_Motor_Tmax
+      M_Fehler_Motor_Tmax
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  LN     MG_Spindel_digital
+  EMT
+
+  PS     KG_Spindel
+  CM     9165                          ;Temperatur der Antriebsmotoren lesen
+  PL     WG_Motor_Temperatur_S
+  M_Modul_Fehler_anzeigen
+
+  L      WG_Motor_Temp_max_S
+  -      WG_Motor_Temperatur_S
+  <      K+10
+  A[
+    L      WG_Motor_Temp_max_S
+    <>     K+255
+  ]
+  A[
+    L      WG_Motor_Temp_max_S
+    <>     K+0
+  ]
+  A      MG_Spindel_aktiv
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_Motor_Tmax
+  IFT
+    L      KG_Spindel
+    =X
+    M_Fehler_Motor_Tmax
+  ENDI
+
+EM
+
+#if KG_Feldwinkel_in_PLC_speichern > 0
+;----------------------------
+LBL Achsen_Feldwinkel
+
+  L      K+0
+  =X
+  REPEAT
+    L      KG_Feldwinkel_in_PLC_speichern
+    A      DG_digitale_Antriebe
+    BTX
+    IFT
+      L      DG_Achs_Feldwinkel_speichern
+      A      NP_D1104_Achsen_in_Position
+      BTX
+      IFT
+        PSX
+        PS     KL_ohne_Funktion
+        PS     KL_Feldwinkel_lesen
+        CM     9149                    ;Kommutierungswinkel setzen/lesen
+        PLW
+        =      WL_Fehlercode
+        ==     KL_Modul_fehlerfrei
+        AN     NP_M4203_Fehler_Modul_9xxx
+        IFT
+          L      DG_Achs_Feldwinkel_gueltig
+          BSX
+          =      DG_Achs_Feldwinkel_gueltig
+        ELSE
+          L      DG_Achs_Feldwinkel_gueltig
+          BCX
+          =      DG_Achs_Feldwinkel_gueltig
+        ENDI
+        PL     DG_Feldwinkel[X]
+
+        L      DG_Achs_Feldwinkel_speichern
+        BCX
+        =      DG_Achs_Feldwinkel_speichern
+
+        PS     KL_File_Zugriff_schreiben_lock
+        PS     S"PLC:\MP\Field_Angle.TAB"
+        CM     9240                    ;Öffnen einer Datei durch die PLC
+        PL     DL_File_Handle
+        M_Modul_Fehler_anzeigen
+
+        PS     DL_File_Handle
+        PSX
+        PS     S"Value"
+        PS     DG_Feldwinkel[X]
+        CM     9256                    ;Schreiben eines Integerwertes in ein Feld einer Tabelle
+        M_Modul_Fehler_anzeigen
+        PS     DL_File_Handle
+        CM     9241                    ;Schließen einer Datei durch die PLC
+      ENDI
+
+      LN     DL_Achs_Feldwinkel_initalisiert
+      A      DG_Achs_Feldwinkel_gueltig
+      BTX
+      IFT
+        PS     KL_File_Zugriff_lesen
+        PS     S"PLC:\MP\Field_Angle.TAB"
+        CM     9240                    ;Öffnen einer Datei durch die PLC
+        PL     DL_File_Handle
+        M_Modul_Fehler_anzeigen
+
+        PS     DL_File_Handle
+        PSX
+        PS     S"Value"
+        CM     9255                    ;Lesen eines Feldes als Integer-Wert aus einer Tabelle
+        PL     DG_Feldwinkel[X]
+        M_Modul_Fehler_anzeigen
+
+        PSX
+        PS     DG_Feldwinkel[X]
+        PS     KL_Feldwinkel_schreiben
+        CM     9149                    ;Kommutierungswinkel setzen/lesen
+        PLW
+        =      WL_Fehlercode_2
+        <>     KL_Modul_fehlerfrei
+        O      NP_M4203_Fehler_Modul_9xxx
+        AN[
+          L      WL_Fehlercode_2
+          ==     KL_K_Winkel_bereits_gesetzt
+        ]
+        IFT
+          L      DG_Achs_Feldwinkel_gueltig
+          BCX
+          =      DG_Achs_Feldwinkel_gueltig
+          M_Modul_Fehler_anzeigen
+        ENDI
+        PL     WL_Stack_synchronisieren
+
+        LN     DL_Achs_Feldwinkel_initalisiert
+        BTX
+        IFT
+          L      DL_Achs_Feldwinkel_initalisiert
+          BSX
+          =      DL_Achs_Feldwinkel_initalisiert
+        ENDI
+        PS     DL_File_Handle
+        CM     9241                    ;Schließen einer Datei durch die PLC
+      ENDI
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+EM
+#endif
+
+;----------------------------
+LBL HS_aus_nach_END_PGM
+
+  PS     KL_Shutdown_Mode_definiert_in_MP4040
+  CM     9279                          ;Shutdown durch PLC (konfigurierbar)
+  M_Modul_Fehler_anzeigen
+
+  L      MG_Eins_Merker
+  S      O_auto_HS_aus_nach_END_PGM
+
+EM
+
+;----------------------------
+LBL StSpg_aus
+
+  L      MG_Taste_Steuerspannung_ein
+  AN     ML_Taste_Steuerspannung_betaetigt
+  A      MG_Not_Halt_Kreis_geschlossen
+  A      MG_Spindel_steht
+  A      MG_Achsen_in_Position
+  AN     MG_WZW_automatisch
+  AN     MG_WZM_n_Start_aktiv
+  AN     MG_Stern_ein
+  PSL
+  S      TS_Not_Halt_Kreis_aus
+  S      PN_Fehler_StSpg_aus_Shut_down
+
+EM
+
+;----------------------------
+LBL Shut_down
+
+  L      BL_Time_3s
+  <      K +0
+  O      ML_StSpg_aus_Schritt_Start
+  IFT
+    L      KL_Time_3s
+    =      BL_Time_3s
+  ENDI
+
+  L      MG_Impuls_1_s
+  IFT
+    DEC    BL_Time_3s
+  ENDI
+
+  L      BL_Time_3s
+  ==     K +0
+  S      ML_HS_aus_Taste_Steuerspannung
+  PSL
+
+  LN     MG_Taste_Steuerspannung_ein
+  JPT    Reset_StSpg_aus
+
+EM
+
+;----------------------------
+LBL Ende_StSpg_aus
+
+  PS     MG_Null_Merker
+
+LBL Reset_StSpg_aus
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_StSpg_aus_Shut_down
+
+  L      K +0
+  =      BL_Schritt_StSpg_aus_Shut_down
+
+EM
+
+;----------------------------
+LBL Not_Halt_Aktivierung
+
+  L      MG_Start_Sperre_Not_Halt_Test
+  A      I_Arbeitsraum_1_zu_verriegelt
+  A      I_Arbeitsraum_2_zu_verriegelt
+  A      I_WZM_Tuer_zu_verriegelt
+  A      MG_Achsen_in_Position
+  A      NP_M4189_Not_Halt_Test_abgeschlossen
+  AN     NP_M4190_Not_Halt_Test_aktiv
+  AN     NP_M4282_Start_Abschaltkanaele
+  RN     MG_SK_Bremsentest_starten
+  =      ML_Test_erlaubt
+
+  L      ML_Test_erlaubt
+  A      PN_M4007_S_M05_Sollwert_0_und_Status
+  AN     NP_M4176_Stern_ein_oder_blinkt
+  S      MG_Test_aktiv
+
+  L      ML_Test_erlaubt
+  A      ML_FS_Bremsentest_Anforderung
+  A      MG_Bremsentest_TOOL_CALL
+  S      MG_Test_aktiv
+
+  L      MG_Test_aktiv
+  AN     ML_debug_FS
+  PSL
+
+EM
+
+;----------------------------
+LBL Bremsen_Test_Start
+
+  L      ML_FS_Selbstest_Anforderung
+  IFT
+    PS     MG_Eins_Merker
+  ELSE
+
+    RPLY   BL_Status_Bremsentest
+    ==     K+0
+    IFT
+      SUBM   Bremsen_Test
+      =      BL_Status_Bremsentest
+      <>     K+0
+      S      MG_Bremsen_Test
+      SN     PN_Fehler_Submit_Spawn_Queue_voll
+      PSL
+    ELSE
+      PS     MG_Null_Merker
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Bremsen_Test_ok
+
+  L      ML_FS_Bremsentest_Anforderung
+  O      MG_SK_Bremsentest_starten
+  AN     MG_Bremsen_Test
+  R      MG_SK_Bremsentest_starten
+  JPT    Not_Halt_Ende
+
+  LN     MG_Bremsen_Test
+  O      ML_FS_Selbstest_Anforderung
+  PSL
+
+EM
+
+;----------------------------
+LBL Antriebe_aus
+
+  PS     MG_Eins_Merker
+
+  L      NP_D1100_Achsfreigaben
+  =      DL_Achsfreigaben_vor_Not_Halt_Test
+  =      DG_Klemmbetrieb_Ein_extern
+
+EM
+
+;----------------------------
+LBL Antriebe_aus_ok
+
+  L      DG_Antriebe_bereit_MC
+  O      DG_Antriebe_bereit_CC
+  ==     K+0
+  PSL
+
+EM
+
+;----------------------------
+LBL Not_Halt_Test_Start
+
+  RPLY   BL_Status_Not_Halt_Test
+  ==     K+0
+  IFT
+    SUBM   NOT_Halt_Test
+    =      BL_Status_Not_Halt_Test
+    <>     K+0
+    S      ML_Not_Halt_Test
+    SN     PN_Fehler_Submit_Spawn_Queue_voll
+    PSL
+  ELSE
+    PS     MG_Null_Merker
+  ENDI
+
+EM
+
+;----------------------------
+LBL Not_Halt_Test_ok
+
+  LN     ML_Not_Halt_Test
+  A      NP_M4190_Not_Halt_Test_aktiv
+  PSL
+  EMF
+
+  PS     K &PN_Fehler_Not_Halt_Test - 4800
+  CM     9086                          ;PLC-Fehlermeldung löschen
+
+  M_Modul_Fehler_anzeigen
+
+EM
+
+;----------------------------
+LBL Antriebe_ein
+
+  LN     NP_M4190_Not_Halt_Test_aktiv
+  A      MG_Not_Halt_Kreis_geschlossen
+  PSL
+  EMF
+
+  L      DL_Achsfreigaben_vor_Not_Halt_Test
+  =      DG_Klemmbetrieb_Aus_extern
+
+EM
+
+;----------------------------
+LBL Antriebe_ein_ok
+
+  L      DG_Klemmbetrieb_Aus_extern
+  ==     K+0
+  PSL
+
+EM
+
+;----------------------------
+LBL Not_Halt_Ende
+
+  PS     MG_Null_Merker
+
+LBL Not_Halt_Reset
+
+  L      MG_Eins_Merker
+  R      MG_Test_aktiv
+  R      ML_FS_Bremsentest_Anforderung
+  R      ML_FS_Selbstest_Anforderung
+
+  L      K+0
+  =      BL_Schritt_Test
+
+EM
+
+;----------------------------
+LBL Bremsen_Test
+*$WS neu 9363, mehrere Bremsen
+
+  L      K +0
+  =      BL_Achs_Index_Submit
+
+  REPEAT
+    L      DG_geregelte_Achsen
+    A      NP_D1100_Achsfreigaben
+    A      DG_MP2230_Bremsen_Test_aktiv
+    AN     DG_Achsen_mit_C_Achs_Betrieb
+    BT     BL_Achs_Index_Submit
+    IFT
+      PS     BL_Achs_Index_Submit
+      PS     KL_Wert_aus_MP2230
+      PS     KL_Wert_aus_MP2232
+      CM     9143                      ;Aktivierung des Bremsentests
+      PL     BL_Status_Bremse[BL_Achs_Index_Submit]
+
+      M_Modul_Fehler_anzeigen
+    ENDI
+
+    INC    BL_Achs_Index_Submit
+
+    L      BL_Achs_Index_Submit
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+*$WS evtl. Abfrage ob Bremsentest ok über 9048
+  L      MG_Bremsen_Test
+  R      MG_Bremsen_Test
+
+EM
+
+;----------------------------
+LBL NOT_Halt_Test
+
+  PS     KL_Mode_0_Start_Not_Halt_Test
+  PS     KL_ohne_Funktion
+  PS     KL_ohne_Funktion
+  CM     9144                          ;Konfiguration des NOT-HALT-Tests
+  PL     BL_Fehler_Code
+
+  M_Modul_Fehler_anzeigen
+
+  L      ML_Not_Halt_Test
+  R      ML_Not_Halt_Test
+
+EM
+
+KFIELD JH_Umrichter_Diagnose
+  KG_nicht_definiert                   ;00
+  KG_Zwischenkreis_Spannung_max        ;01
+  KG_Kuehlkoerper_Temperatur_max       ;02
+  KG_Kurzschluss_Motorphase_mit_Uz     ;03
+  KG_Zwischenkreisstrom_max            ;04
+  KG_Versorgungsmodul_nicht_bereit     ;05
+  KG_Leckstrom_zu_hoch                 ;06
+ENDK
+

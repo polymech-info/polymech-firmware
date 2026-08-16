@@ -1,0 +1,16 @@
+﻿************************************
+#401  S à position changement outil
+#402  Z à position chgt outil en haut
+#403  Z à position chgt outil en bas
+#404  Ouvrir verrou outil
+#405  Fermer verrou outil
+#406 Déposer outil pickup
+#407 Extraire outil pickup
+#408  Desserrer l'outil
+#409  Serrer l'outil
+#410  X vers pré-position. chgt outil
+#411  X vers position chgt outil
+#412  Y vers position Pn outil broche
+#413  Y vers position Pn+1
+#414  Y vers position Pn-1
+#415  Effacer etat broche (T0)

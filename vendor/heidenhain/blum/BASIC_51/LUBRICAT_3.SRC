@@ -1,0 +1,283 @@
+*-----------------------------------------------------------------------------
+*  3rd Lubrication Axes
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+;#define /s    KL_axes                                  K%11111       *;EUMACH Original PLC
+#if LUBE3_Z = &active
+#define /s    KL_axes_Z                                K%00100
+#endif
+
+#if LUBE3_V = &active
+#define /s    KL_axes_V                                K%1000000
+#endif
+
+#define /s    ML_pressure                              M
+
+#define /s    BL_step_lubrication_3                    B
+
+#define /s    WL_next_lubrication_3                    W
+#define /s /r WL_next_lubrication_3_grease             W
+
+GLOBAL Lubrication_3
+
+;----------------------------
+LBL Lubrication_3
+;----------------------------
+
+#if LUB3 ! &inactive
+  L      NP_M4172_1st_PLC_run_after_power_on
+  ON     MG_control_operational
+  CMT    Lubrication_3_reset
+
+  L      MG_marker_one
+  S      TS_lubrication_3
+  S      TS_lubricant_3_pressure
+
+  CASE   BL_step_lubrication_3
+    CM     Lubrication_3_start         ;00
+    CM     Test_LUBE3_pressure_0       ;01
+    CM     Lubrication_3_on            ;02
+    CM     Lubrication_3_time          ;03
+    CM     Lubrication_3_off           ;04
+    CM     Lubrication_3_time          ;05
+    CM     Test_LUBE3_pressure_0       ;06
+    CM     Lubrication_3_end           ;07
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_lubrication_3
+  ENDI
+
+  L      MG_error_lubrication_3_axes
+  S      MG_start_blocked_3rd_lubrication                            *;I think the purpose of this marker is to prevent using CE key to clear PN_error_lubrication_axes and continue the program.
+
+  L      MG_key_NC_start
+  A      MG_start_blocked_3rd_lubrication
+  A      MG_automatic_mode
+  AN     PN_error_lubrication_axes
+  AN     MG_error_lubrication_2_axes
+  S      MG_error_lubrication_3_axes
+#if LUBE3_Z = &active
+  S      MG_win_axis_Z
+#endif
+#if LUBE3_V = &active
+  S      MG_win_axis_V
+#endif
+
+#if LUBE3_level ! &inactive
+  LN     I_lubricant_3_level_ok
+  AN     PN_error_lubricant_level_low
+  AN     MG_error_lubricant_2_level_low
+  S      MG_error_lubricant_3_level_low
+#if LUBE3_Z = &active
+  S      MG_win_axis_Z
+#endif
+#if LUBE3_V = &active
+  S      MG_win_axis_V
+#endif
+#endif
+
+  L      O_lubrication_3_on
+  O      MG_test_lamps
+  =      O_lamp_lubrication_3_on
+
+EM
+
+;----------------------------
+LBL Lubrication_3_start                ;00
+
+#if LUBE3_type = &Oil
+  L      WL_next_lubrication_3
+  <=     K+0
+#else
+  L      WL_next_lubrication_3_grease
+  <=     K+0
+#endif
+#if LUBE3_type = &Oil
+  O[
+    L      NP_W1056_lubrication_pulse
+#if LUBE3_Z = &active
+    A      KL_axes_Z
+#endif
+#if LUBE3_V = &active
+    A      KL_axes_V
+#endif
+    >      K+0
+  ]
+#endif
+  O      I_key_lubrication_axes
+  O      MG_soft_key_lubrication
+  R      MG_error_lubrication_3_axes
+  R      MG_win_axis_Z
+  R      MG_win_axis_V
+  S      MG_soft_key_lubrication
+  PSL
+  IFT
+#if LUBE3_Z = &active
+    L      KL_axes_Z
+#endif
+#if LUBE3_V = &active
+    L      KL_axes_V
+#endif
+    =      PN_W1058_lubrication_distance_reset
+  ENDI
+
+  LN     MG_pulse_1_min
+#if LUBE3_Z = &active
+  ON[
+    L      NP_W1028_axes_in_motion
+    BT     KG_axis_Z
+  ]
+#endif
+#if LUBE3_V = &active
+  ON[
+    L      NP_W1028_axes_in_motion
+    BT     KG_axis_7
+  ]
+#endif
+  EMT
+
+#if LUBE3_type = &Oil
+  DEC    WL_next_lubrication_3
+#else
+  DEC    WL_next_lubrication_3_grease
+#endif
+
+EM
+
+;----------------------------
+LBL Test_LUBE3_pressure_0              ;01 ;06
+
+  L      I_lubricant_3_pressure_ok
+  AN     PN_error_lubrication_axes
+  AN     MG_error_lubrication_2_axes
+  S      MG_error_lubrication_3_axes
+#if LUBE3_Z = &active
+  S      MG_win_axis_Z
+#endif
+#if LUBE3_V = &active
+  S      MG_win_axis_V
+#endif
+
+  LN     I_lubricant_3_pressure_ok
+  A      MG_power_delayed_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_3_on                   ;02
+
+  L      MG_key_NC_start
+  O      I_key_lubrication_axes
+  O      MG_pulse_CE_key
+  =      TS_lubricant_3_pressure
+
+  L      TR_lubricant_3_pressure
+  =      O_lubrication_3_on
+
+  L      I_lubricant_3_pressure_ok
+  PSL
+
+  LN     TS_lubricant_3_pressure
+  AN     TR_lubricant_3_pressure
+  AN     I_lubricant_3_pressure_ok
+  AN     PN_error_lubrication_axes
+  AN     MG_error_lubrication_2_axes
+  S      MG_error_lubrication_3_axes
+#if LUBE3_Z = &active
+  S      MG_win_axis_Z
+#endif
+#if LUBE3_V = &active
+  S      MG_win_axis_V
+#endif
+
+EM
+
+;----------------------------
+LBL Lubrication_3_time                 ;03 ;05
+
+  LN     TR_lubrication_3
+  =      TS_lubrication_3
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_3_off                  ;04
+
+  L      MG_marker_one
+  R      O_lubrication_3_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Lubrication_3_end                  ;07
+
+  PS     MG_marker_zero
+
+  L      MG_marker_one
+  R      MG_start_blocked_3rd_lubrication
+  R      MG_error_lubrication_3_axes
+  R      MG_win_axis_Z
+  R      MG_win_axis_V
+  R      MG_soft_key_lubrication
+
+  L      K+0
+  =      PN_W1058_lubrication_distance_reset
+
+  L      NP_D928_lubrication_time_min
+  /      K+10000
+  >[
+    L      NP_MP4230_43_lubrication_3_time
+    /      K+10000
+  ]
+  IFT
+    L      NP_D928_lubrication_time_min
+    /      K+10000
+#if LUBE3_type = &Oil
+    =      WL_next_lubrication_3
+#else
+    =      WL_next_lubrication_3_grease
+#endif
+  ELSE
+    L      NP_D932_lubrication_time_max
+    /      K+10000
+    <[
+      L      NP_MP4230_43_lubrication_3_time
+      /      K+10000
+    ]
+    IFT
+      L      NP_D932_lubrication_time_max
+      /      K+10000
+#if LUBE3_type = &Oil
+      =      WL_next_lubrication_3
+#else
+      =      WL_next_lubrication_3_grease
+#endif
+    ELSE
+      L      NP_MP4230_43_lubrication_3_time
+      /      K+10000
+#if LUBE3_type = &Oil
+      =      WL_next_lubrication_3
+#else
+      =      WL_next_lubrication_3_grease
+#endif
+    ENDI
+  ENDI
+
+LBL Lubrication_3_reset
+
+  L      MG_marker_one
+  R      O_lubrication_3_on
+
+  L      K+0
+  =      BL_step_lubrication_3
+#endif
+
+EM

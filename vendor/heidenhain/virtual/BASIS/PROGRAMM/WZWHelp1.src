@@ -1,0 +1,759 @@
+*-----------------------------------------------------------------------------
+*  WZW Help - Service
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Bei angewählter Help-Datei (SERVICE.HLP) lassen sich in Betriebsart
+*    Manuell mittels NC-Start-Taste einzelne Funktionen des WZW aufrufen.
+*-----------------------------------------------------------------------------
+
+#define /s    ML_T0_Vorwahl_OK                         M
+#define /s    ML_WZW_Pos_Z_ausheben                    M
+#define /s    ML_WZW_Pos_Z_einsetzen                   M
+#define /s    ML_WZW_Pos_Y_vor                         M
+#define /s    ML_WZW_Pos_Y                             M
+#define /s    ML_WZW_Help_aktiv                        M
+#define /s    ML_Stack_synchronisieren                 M
+
+#define /s /r ML_WZ_Greifer_Zangen_zu                  M
+#define /s /r ML_WZ_Schleuse_auf                       M
+#define /s /r ML_WZ_Schleuse_zu                        M
+
+#define /s    BL_Schritt_Help                          B
+
+#include Mac_Lib.inc
+
+EXTERN WZM_rechts_drehen
+EXTERN WZM_links_drehen
+EXTERN Start_Posit
+EXTERN In_Posit
+
+GLOBAL WZW_Help
+GLOBAL WZW_Output_Restore
+GLOBAL WZW_Output_Backup
+
+;----------------------------
+LBL WZW_Help
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  EMT
+
+  CM     Grund_Stellung
+
+  L      PN_Fehler_Funktion_OK
+  R      PN_Fehler_Funktion_OK
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  /      K+100
+  ==     K+1
+  =      ML_WZW_Help_aktiv
+
+  L      ML_WZW_Help_aktiv
+  XO     MG_WZW_Help
+  CMT    Service_Reset
+
+  L      MG_BA_Manuell
+  AN     MG_BA_Editieren
+  O      MG_Inbetriebnahme
+  A      ML_WZW_Help_aktiv
+  =      MG_WZW_Help
+  R      PN_Fehler_WZW_Grund_Stellung
+  EMF
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  <>     BL_Schritt_Help
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Service_Reset
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  =      BL_Schritt_Help
+
+  LN     MG_Steuerung_betriebsbereit
+  EMT
+
+  CASE   BL_Schritt_Help
+    CM     EndOfModul                  ;00
+    CM     S_WZW_Position              ;01
+    CM     Z_WZW_Pos_aus               ;02
+    CM     Z_WZW_Pos_ein               ;03
+    CM     WZ_Schleuse_auf             ;04
+    CM     WZ_Schleuse_zu              ;05
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+    CM     WZ_Mag_zu_Spind             ;06
+    CM     WZ_Mag_zu_Grund             ;07
+#else
+    CM     Y_WZW_Pos_vor               ;06
+    CM     Y_WZW_Pos                   ;07
+#endif
+    CM     WZW_entspannen              ;08
+    CM     WZW_spannen                 ;09
+    CM     Magazin_rechts              ;10
+    CM     Magazin_links               ;11
+    CM     Magazin_Referenz            ;12
+    CM     T0_Vorwahl                  ;13
+  ENDC
+
+LBL EndOfModul
+
+EM
+
+;----------------------------
+LBL S_WZW_Position                     ;01
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      I_WZM_in_Spindel
+  ON     I_WZM_in_Grund_Stellung
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#else
+  CM     Y_in_WZW_Pos
+
+  L      ML_WZW_Pos_Y
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#endif
+
+  LN     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_I_WZ_entspannt
+  =      MG_Win_WZ_spannen
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_WZW_Pos_Z_ausheben
+  AN     MG_Win_WZ_spannen
+  AN     MG_Spindel_in_WZW_Position
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  A      MG_Spindel_mit_Messgeraet
+  S      MG_WZW_Spindel_Richten_ein
+
+  L      MG_Spindel_in_WZW_Position
+  ON     MG_Spindel_mit_Messgeraet
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Z_WZW_Pos_aus                      ;02
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      MG_Sn_I_WZ_gespannt
+  ON     MG_Sn_I_WZ_entspannt
+  AN     I_WZM_in_Grund_Stellung
+  =      MG_Win_WZ_entspannen
+  EMT
+#else
+  CM     Y_in_WZW_Pos_vor
+
+  LN     ML_WZW_Pos_Y_vor
+  IFT
+    LN     MG_Sn_I_WZ_gespannt
+    O      MG_Sn_I_WZ_entspannt
+    =      MG_Win_WZ_spannen
+    EMT
+  ENDI
+#endif
+
+  CM     Z_in_WZW_Pos_aus
+
+  L      ML_WZW_Pos_Z_ausheben
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Z]
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_ausheben
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Z_in_WZW_Pos_aus
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_ausheben
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Z_ausheben
+
+EM
+
+;----------------------------
+LBL Z_WZW_Pos_ein                      ;03
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      MG_Sn_I_WZ_gespannt
+  ON     MG_Sn_I_WZ_entspannt
+  AN     I_WZM_in_Grund_Stellung
+  =      MG_Win_WZ_entspannen
+  EMT
+#else
+  CM     Y_in_WZW_Pos_vor
+
+  LN     ML_WZW_Pos_Y_vor
+  IFT
+    LN     MG_Sn_I_WZ_gespannt
+    O      MG_Sn_I_WZ_entspannt
+    =      MG_Win_WZ_spannen
+    EMT
+  ENDI
+#endif
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  =      MG_Win_WZW_Position_S
+  EMT
+
+  CM     Z_in_WZW_Pos_ein
+
+  L      ML_WZW_Pos_Z_einsetzen
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Z]
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_einsetzen
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Z_in_WZW_Pos_ein
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_einsetzen
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Z_einsetzen
+
+EM
+
+;----------------------------
+LBL WZ_Schleuse_auf                    ;04
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+
+  L      MG_Taste_NC_Start
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  S      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  L      I_WZ_Schleuse_auf
+  AN     I_WZ_Schleuse_zu
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+#else
+
+  L      MG_Taste_NC_Start
+  S      PN_Fehler_Funktion_nicht_aktiv
+
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Schleuse_zu                     ;05
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      I_WZM_in_Spindel
+  ON     I_WZM_in_Grund_Stellung
+  =      MG_Win_WZM_zu_Grund_Stellung
+#else
+  CM     Y_in_WZW_Pos_vor
+
+  LN     ML_WZW_Pos_Y_vor
+  =      MG_Win_WZW_Pos_Y_vor
+#endif
+
+  LN     MG_Win_WZM_zu_Grund_Stellung
+  AN     MG_Win_WZW_Pos_Y_vor
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  S      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  LN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+#else
+
+  L      MG_Taste_NC_Start
+  S      PN_Fehler_Funktion_nicht_aktiv
+
+#endif
+
+EM
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+
+;----------------------------
+LBL WZ_Mag_zu_Spind                    ;06
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  LN     I_WZ_Schleuse_auf
+  O      I_WZ_Schleuse_zu
+  =      MG_Win_WZ_Schleuse_auf
+#endif
+
+  CM     Z_in_WZW_Pos_ein
+
+  LN     ML_WZW_Pos_Z_einsetzen
+  =      MG_Win_WZW_Pos_Z_einsetzen
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  =      MG_Win_WZW_Position_S
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_WZ_Schleuse_auf
+  AN     MG_Win_WZW_Pos_Z_einsetzen
+  AN     MG_Win_WZW_Position_S
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZM_zu_Spindel
+  R      O_WZM_zu_Grund_Stellung
+
+  L      I_WZM_in_Spindel
+  AN     I_WZM_in_Grund_Stellung
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_Mag_zu_Grund                    ;07
+
+  CM     Z_in_WZW_Pos_ein
+
+  L      ML_WZW_Pos_Z_einsetzen
+  IFT
+    LN     MG_Sn_I_WZ_gespannt
+    O      MG_Sn_I_WZ_entspannt
+    =      MG_Win_WZ_spannen
+  ENDI
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_WZ_spannen
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_WZM_zu_Spindel
+  S      O_WZM_zu_Grund_Stellung
+
+  LN     I_WZM_in_Spindel
+  A      I_WZM_in_Grund_Stellung
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+#else
+
+;----------------------------
+LBL Y_WZW_Pos_vor                      ;06
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  LN     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_I_WZ_entspannt
+  =      MG_Win_WZ_spannen
+  EMT
+
+  CM     Y_in_WZW_Pos_vor
+
+  L      ML_WZW_Pos_Y_vor
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Y]
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y_vor
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Y_in_WZW_Pos_vor
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y_vor
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Y_vor
+
+EM
+
+;----------------------------
+LBL Y_WZW_Pos                          ;07
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  =      MG_Win_WZW_Position_S
+  EMT
+
+  CM     Y_in_WZW_Pos
+
+  L      ML_WZW_Pos_Y
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Y]
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Y_in_WZW_Pos
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Y
+
+EM
+
+#endif
+
+;----------------------------
+LBL WZW_entspannen                     ;08
+
+  L      MG_Taste_NC_Start
+  S      MG_Sn_O_WZ_entspannen
+
+  LN     MG_Sn_I_WZ_gespannt
+  A      MG_Sn_I_WZ_entspannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZW_spannen                        ;09
+
+  L      MG_Taste_NC_Start
+  R      MG_Sn_O_WZ_entspannen
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Magazin_rechts                     ;10
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      I_WZM_in_Spindel
+  ON     I_WZM_in_Grund_Stellung
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#else
+  CM     Y_in_WZW_Pos
+  L      ML_WZW_Pos_Y
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#endif
+
+  LN     I_WZM_Tuer_zu
+  =      MG_Win_Magazin_Tuer_schliessen
+
+  LN     MG_Win_Magazin_Tuer_schliessen
+  AN     MG_Win_WZW_Pos_Z_ausheben
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  CMT    WZM_rechts_drehen
+
+EM
+
+;----------------------------
+LBL Magazin_links                      ;11
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      I_WZM_in_Spindel
+  ON     I_WZM_in_Grund_Stellung
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#else
+  CM     Y_in_WZW_Pos
+  L      ML_WZW_Pos_Y
+  IFT
+    CM     Z_in_WZW_Pos_aus
+
+    LN     ML_WZW_Pos_Z_ausheben
+    =      MG_Win_WZW_Pos_Z_ausheben
+  ENDI
+#endif
+
+  LN     I_WZM_Tuer_zu
+  =      MG_Win_Magazin_Tuer_schliessen
+
+  LN     MG_Win_Magazin_Tuer_schliessen
+  AN     MG_Win_WZW_Pos_Z_ausheben
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  CMT    WZM_links_drehen
+
+EM
+
+;----------------------------
+LBL Magazin_Referenz                   ;12
+
+#if WZ_Magazin = &Impuls
+#if WZ_Magazin_Referenz_Sensor = &aktiv
+  LN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+  =      PN_Fehler_Funktion_OK
+
+  L      MG_Taste_NC_Start_P_Impuls
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+
+#else
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+  ==     K+1
+  A[
+    L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_2_Platz_Zaehler
+    ==     K+1
+  ]
+  =      PN_Fehler_Funktion_OK
+  R      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+
+  L      MG_Taste_NC_Start_P_Impuls
+  =      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Referenz
+
+#endif
+#endif
+
+#if WZ_Magazin = &Asynchron
+*$WS Referenzaufnahme asynchrone Achse über Modul
+#endif
+EM
+
+;----------------------------
+LBL T0_Vorwahl                         ;13
+
+  L      ML_T0_Vorwahl_OK
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start_P_Impuls
+  EMT
+
+  L      K+0
+  =      NP_W264_Werkzeug_Nummer
+  =      WG_Werkzeug_in_Spindel
+
+  L      MG_Eins_Merker
+  S      PN_M4538_Vorwahl_Werkzeug
+  S      ML_T0_Vorwahl_OK
+  S      MG_Platz_Tabelle_pruefen
+  S      MG_WZ_Status_lesen
+
+EM
+
+;----------------------------
+LBL Grund_Stellung
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  AN     I_WZM_in_Spindel
+  A      I_WZM_in_Grund_Stellung
+#endif
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  AN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+#endif
+  =      MG_WZW_Grund_Stellung
+
+  L      MG_WZW_automatisch
+  O      MG_WZW_manuell
+  O      MG_WZW_Help
+  O      MG_WZM_Beladen_aktiv
+  EMT
+
+  LN     MG_WZW_Grund_Stellung
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_WZW_Grund_Stellung
+
+  LN     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_I_WZ_entspannt
+  =      MG_Win_WZ_spannen
+
+#if WZ_Magazin_bewegt_sich_zu_Spindel = &aktiv
+  L      I_WZM_in_Spindel
+  ON     I_WZM_in_Grund_Stellung
+  =      MG_Win_WZM_zu_Grund_Stellung
+#endif
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      I_WZ_Schleuse_auf
+  ON     I_WZ_Schleuse_zu
+  =      MG_Win_WZ_Schleuse_zu
+#endif
+
+EM
+
+;----------------------------
+LBL Service_Reset
+
+  L      MG_Eins_Merker
+  R      MG_PLC_Posit_aktiv[KG_Achse_X]
+  R      MG_PLC_Posit_aktiv[KG_Achse_Y]
+  R      MG_PLC_Posit_aktiv[KG_Achse_Z]
+  R      ML_T0_Vorwahl_OK
+  R      PN_Fehler_Funktion_OK
+  R      MG_Win_WZW_Pos_Y_vor
+  R      MG_Win_WZW_Pos_Y
+  R      MG_Win_WZW_Pos_Z_ausheben
+  R      MG_Win_WZW_Pos_Z_einsetzen
+  R      MG_Win_WZW_Position_S
+  R      MG_Win_WZ_spannen
+  R      MG_Win_WZ_entspannen
+  R      MG_Win_Magazin_Tuer_schliessen
+  R      MG_Win_WZM_zu_Grund_Stellung
+  R      MG_Win_WZ_Schleuse_auf
+  R      MG_Win_WZ_Schleuse_zu
+
+EM
+
+;----------------------------
+LBL WZW_Output_Restore
+
+#ifdef $iTNC530Prog$
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  S      ML_WZ_Greifer_Zangen_zu
+  R      ML_WZ_Schleuse_auf
+  S      ML_WZ_Schleuse_zu
+#endif
+
+  L      ML_WZ_Greifer_Zangen_zu
+  =      O_WZ_Greifer_Zangen_zu
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      ML_WZ_Schleuse_auf
+  =      O_WZ_Schleuse_auf
+
+  L      ML_WZ_Schleuse_zu
+  =      O_WZ_Schleuse_zu
+#endif
+
+EM
+
+;----------------------------
+LBL WZW_Output_Backup
+
+  LN     MG_Steuerung_betriebsbereit
+  R      O_WZ_Greifer_Zangen_zu
+  R      O_WZ_Schleuse_zu
+  EMT
+
+  L      O_WZ_Greifer_Zangen_zu
+  =      ML_WZ_Greifer_Zangen_zu
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      O_WZ_Schleuse_auf
+  =      ML_WZ_Schleuse_auf
+
+  L      O_WZ_Schleuse_zu
+  =      ML_WZ_Schleuse_zu
+#endif
+
+EM

@@ -1,0 +1,20 @@
+\n  M00 - programmierter Halt
+\n  M01 - bedingter Halt
+\n  M02 - Programm ENDE
+\n  M03 - Spindel rechts ein
+\n  M04 - Spindel links ein
+\n  M05 - Spindel aus
+\n  M07 - Kühlmittel innen ein
+\n  M08 - Kühlmittel aussen ein
+\n  M09 - Kühlmittel aus
+\n  M10 - Klemmen Achsen
+\n  M11 - Lösen Achsen
+\n  M13 - Spindel rechts Kühlmittel ein
+\n  M14 - Spindel links Kühlmittel ein
+\n  M17 - Kühlmittel zusätzlich
+\n  M19 - Spindel Richten 0 Grad
+\n  M20 - Spindel Richten CYCL 13
+\n  M21 - Start Teilapparat
+\n  M30 - Programm Ende
+\n  M31 - Bearbeitung ohne M3/M4
+\n  M32 - Arbeitsraum Überwachung aus

@@ -1,0 +1,1769 @@
+*-----------------------------------------------------------------------------
+*  WZW Automatik Doppelarmgreifer
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_WZ_ohne_Platz                         K -1
+#define /s    KL_WZ_mit_Platz                          K +1
+#define /s    KL_WZ_Magazin_1_Index                    K +0
+#define /s    KL_String_Anzahl                         K +3
+#define /s    KL_Spindel_leer                          K +0
+#define /s    KL_Variable_inaktiv                      K +0
+
+#define /s    ML_2nd_TOOL_CALL_folgt                   M
+#define /s    ML_WZ_Greifer_cw_rechts_stop             M
+#define /s    ML_WZ_Greifer_ccw_links_stop             M
+#define /s    ML_TOOL_CALL_alt                         M
+#define /s    ML_Stack_synchronisieren                 M
+#define /s    ML_Schritt_Start                         M
+#define /s    ML_WZW_Diagnose                          M
+#define /s    ML_Spindel_war_leer                      M
+
+#define /s    BL_WZM_Achs_Index                        B
+#define /s    BL_WZM_Index                             B
+#define /s    BL_Schritt_WZW                           B
+#define /s    BL_String_Index                          B
+
+#define /s    WL_Zeile_Dialog_Datei                    W
+
+#include Mac_Lib.inc
+
+EXTERN In_Posit
+EXTERN Start_Posit
+#if WZ_Magazin = &Asynchron
+EXTERN Absolut
+#endif
+
+GLOBAL WZW_auto
+
+;----------------------------
+LBL WZW_auto
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  EMT
+
+#if CFG_FS = "aktiv"
+  L      MG_Eins_Merker
+  R      MG_Bremsentest_TOOL_CALL
+#endif
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+  LN     PN_M4540_T_neu_zuerst_Festplatzwechsel
+  S      PN_M4540_T_neu_zuerst_Festplatzwechsel
+#else
+  L      PN_M4540_T_neu_zuerst_Festplatzwechsel
+  R      PN_M4540_T_neu_zuerst_Festplatzwechsel
+#endif
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  A      NP_M4520_TOOL_CALL_2_Strobe
+  A      NP_M4073_Strobe_TOOL_CALL
+  A      MG_WZW_T0_auto_manu_notwendig
+  S      PN_Fehler_TOOL_CALL_T0
+  EMT
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  IFT
+    L      NP_W262_Werkzeug_Platz_Nummer
+    >=     KL_WZ_mit_Platz
+    AN     NP_M4175_Stern_blinkt
+    AN     MG_WZW_automatisch
+    S      MG_WZW_automatisch
+    IFT
+      L      NP_W262_Werkzeug_Platz_Nummer
+      =      WG_WZW_Platz_Nummer
+
+      L      NP_W264_Werkzeug_Nummer
+      =      WG_WZW_auto_Werkzeug_Nummer
+    ENDI
+  ENDI
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+  >=     KL_WZ_mit_Platz
+  A      MG_WZW_manuell
+  A      NP_M4073_Strobe_TOOL_CALL
+  O      MG_WZW_automatisch
+  A[
+    L      MG_Impuls_Internal_STOP
+    ON     MG_Steuerung_betriebsbereit
+  ]
+  S      MG_Platz_Tabelle_pruefen
+
+  L      MG_Platz_Tabelle_angewaehlt
+  A      MG_WZW_Grund_Stellung
+  AN     MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  R      MG_Platz_Tabelle_pruefen
+
+  L      MG_Platz_Tabelle_pruefen
+  AN     MG_WZW_manuell
+  AN     MG_WZW_automatisch
+  AN     MG_WZW_Help
+  A      MG_WZW_Grund_Stellung
+  =      PN_Fehler_Platz_Tabelle_pruefen
+
+  L      MG_WZW_automatisch
+  R      TS_WZW_Timeout
+  S      TS_WZW_Timer_allgemein
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+
+  CASE   BG_Schritt_WZW
+    CM     WZW_auto_Start              ;00
+    CM     WZ_in_Spindel_OK            ;01
+    CM     Spi_voll_leer               ;02
+    CM     WZW_Magazin_Start           ;03
+    CM     S_Start                     ;04
+    CM     Z_Start                     ;05
+    CM     T_Schleuse_auf              ;06
+    CM     Z_in_WZW_Pos                ;07
+    CM     XY_Start                    ;08
+    CM     WZ_Status_lesen             ;09
+    CM     T_Schleuse_ist_auf          ;10
+    CM     Magazin_in_Pos              ;11
+    CM     WZ_Platz_aus                ;12
+    CM     WZ_Platz_Time               ;13
+    CM     S_in_WZW_Pos                ;14
+    CM     X_in_WZW_Pos                ;15
+    CM     Y_in_WZW_Pos                ;16
+    CM     Mag_voll_leer               ;17
+    CM     WZ_Platz_Pos_aus            ;18
+    CM     Greifer_zu_Spindel          ;19
+    CM     Greifer_an_Spindel          ;20
+    CM     Zange_zu                    ;21
+    CM     Zange_ist_zu                ;22
+    CM     WZ_entspannen               ;23
+    CM     WZ_entspannt                ;24
+    CM     WZW_auto_Time               ;25
+    CM     Greifer_ausheben            ;26
+    CM     Tneu_merken                 ;27
+    CM     T0_in_Status                ;28
+    CM     T_Status_ok                 ;29
+    CM     Greifer_ausgehoben          ;30
+#if Mittel_Position_WZ_Wechsel = &aktiv
+    CM     Tool_Call_2nd               ;31
+    CM     Tool_Call_Wait              ;32
+    CM     Sprung_Greifer              ;33      ---> (1)
+    CM     Greifer_zu_Mittelstellung   ;34
+    CM     Greifer_in_Mittelstellung   ;35
+    CM     WZW_Magazin_Start           ;36
+    CM     Magazin_in_Pos              ;37
+    CM     WZ_Platz_aus                ;38
+    CM     WZ_Platz_Pos_aus            ;39
+    CM     Mag_leer                    ;40
+#endif                                 ;
+    CM     Greifer_zu_cw_ccw           ;41 ;31  <--- (1)
+    CM     Greifer_in_cw_ccw           ;42 ;32
+    CM     Greifer_einsetzen           ;43 ;33
+    CM     Greifer_eingesetzt          ;44 ;34
+    CM     WZ_spannen                  ;45 ;35
+    CM     WZ_gespannt                 ;46 ;36
+    CM     Tneu_in_Status              ;47 ;37
+    CM     T_Status_ok                 ;48 ;38
+    CM     Greifer_zu_Grundstellung    ;49 ;39
+    CM     WZ_in_Mag_lesen             ;50 ;40
+    CM     Greifer_in_Grundstellung    ;51 ;41
+    CM     Zange_auf                   ;52 ;42
+    CM     Zange_ist_auf               ;53 ;43
+    CM     WZ_Platz_ein_aus            ;54 ;44
+    CM     WZ_Platz_Pos_ok             ;55 ;45
+    CM     T_Schleuse_zu               ;56 ;46
+    CM     T_Schleuse_ist_zu           ;57 ;47
+    CM     Spi_leer_voll               ;58 ;48
+    CM     Tool_Call_quitt             ;59 ;49
+    CM     WZW_auto_Ende               ;60 ;50
+    CM     WZW_auto_Time               ;reserviert
+  ENDC
+
+#else
+
+  CASE   BG_Schritt_WZW
+    CM     WZW_auto_Start              ;00
+    CM     WZ_in_Spindel_OK            ;01
+    CM     Spi_voll_leer               ;02
+    CM     WZW_Magazin_Start           ;03
+    CM     S_Start                     ;04
+    CM     Z_Start                     ;05
+    CM     T_Schleuse_auf              ;06
+    CM     Z_in_WZW_Pos                ;07
+    CM     XY_Start                    ;08
+    CM     WZ_Status_lesen             ;09
+    CM     T_Schleuse_ist_auf          ;10
+    CM     Magazin_in_Pos              ;11
+    CM     WZ_Platz_aus                ;12
+    CM     WZ_Platz_Time               ;13
+    CM     Mag_voll_leer               ;14
+    CM     WZ_Platz_Pos_aus            ;15
+    CM     Sprung_T0_programmiert      ;16  ---> (1)
+    CM     Zange_Mag_auf               ;17
+    CM     Zange_Mag_ist_auf           ;18
+    CM     Greifer_zu_Magazin          ;19
+    CM     Greifer_an_Magazin          ;20
+    CM     Zange_Mag_zu                ;21
+    CM     Zange_Mag_ist_zu            ;22
+    CM     WZM_entriegeln              ;23
+    CM     WZM_entriegelt              ;24
+    CM     Greifer_ausheben            ;25
+    CM     Greifer_ausgehoben          ;26
+    CM     Greifer_zu_Grundstellung    ;27
+    CM     WZM_verriegeln              ;28
+    CM     WZM_verriegelt              ;29
+    CM     Greifer_in_Grundstellung    ;30
+    CM     Greifer_einsetzen           ;31
+    CM     Greifer_eingesetzt          ;32
+    CM     Zange_Spi_auf               ;33   <--- (1)
+    CM     Zange_Spi_ist_auf           ;34
+    CM     S_in_WZW_Pos                ;35
+    CM     X_in_WZW_Pos                ;36
+    CM     Y_in_WZW_Pos                ;37
+    CM     Tneu_merken                 ;38
+    CM     T0_in_Status                ;39
+    CM     T_Status_ok                 ;40
+#if Mittel_Position_WZ_Wechsel = &aktiv
+    CM     Tool_Call_2nd               ;41
+    CM     Tool_Call_Wait              ;42
+    CM     Sprung_Greifer              ;43    ---> (2)
+    CM     WZW_Magazin_Start           ;44
+#endif
+    CM     Greifer_zu_Spindel          ;45   <---  (2)
+    CM     Greifer_an_Spindel          ;46
+    CM     Zange_Spi_zu                ;47
+    CM     Zange_Spi_ist_zu            ;48
+    CM     WZ_entspannen               ;49
+    CM     WZ_entspannt                ;50
+    CM     WZW_auto_Time               ;51
+    CM     Greifer_ausheben            ;52
+    CM     Greifer_ausgehoben          ;53
+    CM     Greifer_zu_cw_ccw           ;54
+    CM     Greifer_in_cw_ccw           ;55
+    CM     Greifer_einsetzen           ;56
+    CM     Greifer_eingesetzt          ;57
+    CM     WZ_spannen                  ;58
+    CM     WZ_gespannt                 ;59
+    CM     Tneu_in_Status              ;60
+    CM     T_Status_ok                 ;61
+    CM     Zange_Spi_auf               ;62
+    CM     Zange_Spi_ist_auf           ;63
+    CM     Greifer_zu_Grundstellung    ;64
+    CM     WZ_in_Mag_lesen             ;65
+    CM     Greifer_in_Grundstellung    ;66
+    CM     Sprung_Spindel_war_leer     ;67  ---> (3)
+    CM     Greifer_ausheben            ;68
+    CM     Greifer_ausgehoben          ;69
+    CM     Magazin_in_Pos              ;70
+    CM     WZ_Platz_aus                ;71
+    CM     WZ_Platz_Pos_aus            ;72
+    CM     Mag_leer                    ;73
+    CM     Greifer_zu_Magazin          ;74
+    CM     WZM_entriegeln              ;75
+    CM     WZM_entriegelt              ;76
+    CM     Greifer_an_Magazin          ;77
+    CM     Greifer_einsetzen           ;78
+    CM     Greifer_eingesetzt          ;79
+    CM     WZM_verriegeln              ;80
+    CM     WZM_verriegelt              ;81
+    CM     Zange_Mag_auf               ;82
+    CM     Zange_Mag_ist_auf           ;83
+    CM     Greifer_zu_Grundstellung    ;84
+    CM     Greifer_in_Grundstellung    ;85
+    CM     WZ_Platz_ein_aus            ;86
+    CM     WZ_Platz_Pos_ok             ;87
+    CM     Zange_Spi_zu                ;88  <--- (3)
+    CM     Zange_Mag_zu                ;89
+    CM     Zange_Spi_ist_zu            ;90
+    CM     Zange_Mag_ist_zu            ;91
+    CM     T_Schleuse_zu               ;92
+    CM     T_Schleuse_ist_zu           ;93
+    CM     Spi_leer_voll               ;94
+    CM     Tool_Call_quitt             ;95
+    CM     WZW_auto_Ende               ;96
+    CM     WZW_auto_Time               ;reserviert
+    CM     X_Start                     ;reserviert
+    CM     X_in_WZW_Pos                ;reserviert
+  ENDC
+#endif
+
+  PLL
+  S      TS_WZW_Timeout
+  =      ML_Schritt_Start
+  IFT
+    INC    BG_Schritt_WZW
+  ENDI
+
+  L      MG_WZW_Diagnose
+  CMT    Diagnose_String
+
+  LN     MG_WZW_automatisch
+  EMT
+
+  L      MG_Impuls_NC_Start
+  R      MG_WZW_Unterbrechung
+
+  L      MG_Taste_NC_Start_P_Impuls
+  S      TS_WZW_Timeout
+
+  L      MG_Taste_NC_Stop
+  O      MG_Impuls_External_STOP
+  R      TS_WZW_Timeout
+  R      TR_WZW_Timeout
+
+  LN     TS_WZW_Timeout
+  AN     TR_WZW_Timeout
+  =      PN_Fehler_WZW_Timeout
+  S      MG_WZW_Unterbrechung
+
+  L      MG_Impuls_Internal_STOP
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Arbeitsraum_offen
+  ON     MG_Steuerung_betriebsbereit
+  CMT    WZW_auto_Reset
+
+  L      PN_Fehler_WZW_Timeout
+  IFT
+    CM     Diagnose_String
+
+    PS     K &PN_Fehler_WZW_Timeout - 4800
+    PS     K &SG_WZW_Diagnose_Zeile_2
+    PS     BG_Schritt_WZW
+    PS     BG_Schritt_WZW
+    CM     9084                        ;PLC-Fehlermeldung anzeigen
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+EM
+
+;----------------------------
+LBL Diagnose_String
+
+  L      K +0
+  =      BL_String_Index
+
+  L      BG_Schritt_WZW
+  =      BL_Schritt_WZW
+  REPEAT
+    L      BL_Schritt_WZW
+    =X
+
+    L      KF Diagnose[X]
+    =      WL_Zeile_Dialog_Datei
+    =X
+
+    L      S#D0[X]
+    =      SG_WZW_Diagnose_Zeile_1[BL_String_Index]
+
+    INC    BL_Schritt_WZW
+    INC    BL_String_Index
+    INCX
+
+    L      BL_String_Index
+    >=     KL_String_Anzahl
+  UNTILT
+
+  L      BG_Schritt_WZW
+  =      BL_Schritt_WZW
+
+EM
+
+#if CFG_WZ_Transport_Wagen = "aktiv"
+
+;----------------------------
+LBL Sprung_T0_programmiert             ;33
+
+  PS     MG_Eins_Merker
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  IFT
+    L      BG_Schritt_WZW
+    +      K+16
+    =      BG_Schritt_WZW
+  ENDI
+
+EM
+
+;----------------------------
+LBL Sprung_Spindel_war_leer            ;33
+
+  PS     MG_Eins_Merker
+
+  L      ML_Spindel_war_leer
+  IFT
+    L      BG_Schritt_WZW
+    +      K+20
+    =      BG_Schritt_WZW
+  ENDI
+
+EM
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+;----------------------------
+LBL Sprung_Greifer                     ;33
+
+  PS     MG_Eins_Merker
+
+  LN     ML_2nd_TOOL_CALL_folgt
+  O      NP_M4523_TOOL_CALL_ohne_Platznummer
+  IFT
+    L      BG_Schritt_WZW
+    +      K+1
+    =      BG_Schritt_WZW
+  ENDI
+
+EM
+#endif
+
+#else
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+;----------------------------
+LBL Sprung_Greifer                     ;33
+
+  PS     MG_Eins_Merker
+
+  LN     ML_2nd_TOOL_CALL_folgt
+  O      NP_M4523_TOOL_CALL_ohne_Platznummer
+  IFT
+    L      BG_Schritt_WZW
+    +      K+7
+    =      BG_Schritt_WZW
+  ENDI
+
+EM
+#endif
+#endif
+
+;----------------------------
+LBL WZW_auto_Start                     ;00
+
+  LN     MG_WZW_Grund_Stellung
+  A      MG_WZW_automatisch
+  S      PN_Fehler_WZW_Grund_Stellung
+  S      MG_WZW_Unterbrechung
+
+  L      MG_WZM_n_Start_aktiv
+  S      TS_WZW_Timeout
+
+  L      MG_WZW_automatisch
+  AN     MG_WZW_manuell
+  AN     MG_WZM_n_Start_aktiv
+  A      MG_WZW_Grund_Stellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_in_Spindel_OK                   ;01
+
+  L      MG_Taste_NC_Start_P_Impuls
+  A      MG_BA_Automatik
+  R      MG_WZW_ohne_Tool_Call
+
+  L      MG_WZW_ohne_Tool_Call
+  =      PN_Fehler_WZ_Spindel_ok
+  =      MG_Win_Window_JA_Nein
+  S      TS_WZW_Timeout
+
+  LN     MG_Referenz_Achsen_aufgenommen
+  S      PN_Fehler_Referenz_notwendig
+
+  LN     MG_WZW_ohne_Tool_Call
+  AN     PN_Fehler_Referenz_notwendig
+  AN     MG_WZW_Unterbrechung
+  PSL
+  IFT
+    L      WG_Werkzeug_in_Spindel
+    ==     KL_Spindel_leer
+    =      ML_Spindel_war_leer
+  ENDI
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Spi_voll_leer                      ;02
+
+  L      MG_WZ_Status_lesen
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    L      WG_Werkzeug_in_Spindel
+    >      K+0
+    CMT    Spi_voll
+    CMF    Spi_leer
+  ENDI
+
+EM
+
+;----------------------------
+LBL Spi_leer_voll                      ;37 ;47
+
+  L      WG_WZW_auto_neue_Werkzeug_Nummer
+  >      K+0
+  CMT    Spi_voll
+  CMF    Spi_leer
+
+EM
+
+;----------------------------
+LBL Spi_voll
+
+  LN     MG_Sn_I_WZ_ist_in_Spindel
+  AN     MG_Inbetriebnahme
+  AN     STG_Spindel[BG_Index_Sn].MG_WZ_Ueberwachung_inaktiv
+  S      PN_Fehler_Spindel_leer
+
+  LN     PN_Fehler_Spindel_leer
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Spi_leer
+
+  L      MG_Sn_I_WZ_ist_in_Spindel
+  AN     MG_Inbetriebnahme
+  AN     STG_Spindel[BG_Index_Sn].MG_WZ_Ueberwachung_inaktiv
+  S      PN_Fehler_Spindel_nicht_leer
+
+  LN     PN_Fehler_Spindel_nicht_leer
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Mag_voll_leer                      ;17
+
+  L      NP_M4521_TOOL_CALL_T_0_programmiert
+  CMT    Mag_leer
+  CMF    Mag_voll
+
+EM
+
+;----------------------------
+LBL Mag_leer                           ;40
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_belegt
+  AN     MG_Inbetriebnahme
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Ueberwachung_inaktiv
+  S      PN_Fehler_WZM_Platz_belegt
+
+  LN     PN_Fehler_WZM_Platz_belegt
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL Mag_voll                           ;30
+
+  LN     STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_belegt
+  AN     MG_Inbetriebnahme
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Ueberwachung_inaktiv
+  S      PN_Fehler_WZM_Werkzeug_fehlt
+
+  LN     PN_Fehler_WZM_Werkzeug_fehlt
+  PSL
+
+  L      NP_M4175_Stern_blinkt
+  JPT    WZW_auto_Reset
+
+EM
+
+;----------------------------
+LBL WZW_Magazin_Start                  ;03 ;36
+
+  CM     Magazin_Position
+  PLL
+  =N     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Tool_Call
+
+  LN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Magazin_in_Pos                     ;11 ;37
+
+  CM     Magazin_Position
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+  AN     MG_WZW_Unterbrechung
+  S      TS_WZW_Timeout
+
+  PLL
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+#if WZ_Magazin = &Asynchron
+;----------------------------
+LBL Magazin_Position
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].BG_WZM_Achs_Index
+  =      BL_WZM_Achs_Index
+
+  L      WG_WZW_Platz_Nummer
+  X      STG_WZM[BG_WZM_Index_Tool_Call].DG_WZM_Platz_Pos_Differenz
+  -      DG_Ref_Pos_Achse[BL_WZM_Achs_Index]
+  PSW
+  CM     Absolut
+  PLW
+  <      DG_MP1030_Pos_Fenster[BL_WZM_Achs_Index]
+  O[
+    L      DG_Ref_Pos_Achse[BL_WZM_Achs_Index]
+    <      DG_MP1030_Pos_Fenster[BL_WZM_Achs_Index]
+    A[
+      L      WG_WZW_Platz_Nummer
+      ==     STG_WZM[BG_WZM_Index_Tool_Call].WG_MP7261_WZM_max_Platz
+    ]
+  ]
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_Status[KG_Posit_aktiv]
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Tool_Call
+  PSL
+
+EM
+#endif
+
+#if WZ_Magazin = &Impuls
+;----------------------------
+LBL Magazin_Position
+
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+  ==     WG_WZW_Platz_Nummer
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Tool_Call
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+  PSL
+
+EM
+#endif
+
+;----------------------------
+LBL S_Start                            ;04
+
+  LN     MG_WZW_Unterbrechung
+  PSL
+  EMF
+
+  L      MG_Spindel_mit_Messgeraet
+  S      MG_WZW_Spindel_Richten_ein
+
+EM
+
+;----------------------------
+LBL S_in_WZW_Pos                       ;14
+
+  LN     MG_Spindel_mit_Messgeraet
+  A      MG_Spindel_aus
+  O      MG_Spindel_in_WZW_Position
+  AN     MG_WZW_Spindel_Richten_ein
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL XY_Start                           ;08
+
+  CM     X_Start
+  CM     Y_Start
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Z_Start                            ;05
+
+  L      MG_WZW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Z
+    PS     DG_WZW_Pos_Z_einsetzen
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Z_in_WZW_Pos                       ;07
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_einsetzen
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Y_Start
+
+  L      MG_WZW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_Y
+    PS     DG_WZW_Pos_Y
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Y_in_WZW_Pos                       ;16
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_Unterbrechung
+#if CFG_FS = "aktiv"
+  S      MG_Bremsentest_TOOL_CALL
+#endif
+  PSL
+
+EM
+
+;----------------------------
+LBL X_Start
+
+  L      MG_WZW_Unterbrechung
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    PS     KG_Achse_X
+    PS     DG_WZW_Pos_X
+    CM     Start_Posit
+    PLL
+    SN     MG_WZW_Unterbrechung
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL X_in_WZW_Pos
+
+  PS     KG_Achse_X
+  PS     DG_WZW_Pos_X
+  CM     In_Posit
+  PLL
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_Status_lesen                    ;09
+
+  L      MG_Eins_Merker
+  S      MG_WZ_Status_lesen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_in_Mag_lesen                    ;40 ;50
+
+  L      MG_Eins_Merker
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  S      MG_WZ_Vorwahl_Status_lesen
+#endif
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_Platz_aus                       ;12 ;38
+
+  L      MG_Eins_Merker
+  R      STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Platz_einklappen
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Platz_ausklappen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_Platz_ein_aus                   ;44 ;54
+
+  LN     MG_WZ_Vorwahl_Status_lesen
+  PSL
+  EMF
+
+  L      BG_WZ_Vorwahl_Status
+  BT     K+1
+  =      MG_WZ_Ueberlaenge
+
+  L      MG_WZ_Ueberlaenge
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Platz_einklappen
+  R      STG_WZM[BG_WZM_Index_Tool_Call].MG_O_WZM_Platz_ausklappen
+
+EM
+
+;----------------------------
+LBL WZ_Platz_Pos_ok                    ;45 ;55
+
+  L      MG_WZ_Ueberlaenge
+  CMT    WZ_Platz_Pos_ein
+  CMF    WZ_Platz_Pos_aus
+
+EM
+
+;----------------------------
+LBL WZ_Platz_Pos_aus                   ;18 ;39
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  L      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_ausgeklappt
+  AN     STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_eingeklappt
+  AN     MG_WZW_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Platz_Pos_ein
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  LN     STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_ausgeklappt
+  A      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Platz_eingeklappt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Greifer_ausheben                   ;26
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_einsetzen
+  S      O_WZ_Greifer_ausheben
+  S      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_einsetzen                  ;33 ;43
+
+  L      MG_Eins_Merker
+  S      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+  S      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_ausgehoben                 ;30
+
+  L      I_WZ_Greifer_ausgehoben
+  AN     I_WZ_Greifer_eingesetzt
+  AN     MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+
+EM
+
+;----------------------------
+LBL Greifer_eingesetzt                 ;34 ;44
+
+  LN     I_WZ_Greifer_ausgehoben
+  A      I_WZ_Greifer_eingesetzt
+  AN     MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+  PSL
+
+  L      MG_WZW_Unterbrechung
+  R      MG_Sn_O_Spindel_ausblasen
+
+EM
+
+#if CFG_WZ_Transport_Wagen = "aktiv"
+;----------------------------
+LBL WZM_entriegeln                     ;23
+
+  L      MG_Eins_Merker
+  S      O_WZM_entriegeln
+  PSL
+
+EM
+
+;----------------------------
+LBL WZM_verriegeln                     ;35 ;45
+
+  L      MG_Eins_Merker
+  R      O_WZM_entriegeln
+  PSL
+
+EM
+
+;----------------------------
+LBL WZM_entriegelt                     ;24
+
+  LN     I_WZM_verriegelt
+  A      I_WZM_entriegelt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL WZM_verriegelt                     ;36 ;46
+
+  L      I_WZM_verriegelt
+  AN     I_WZM_entriegelt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+#endif
+
+;----------------------------
+LBL WZ_entspannen                      ;23
+
+  L      MG_Eins_Merker
+  S      MG_Sn_O_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_spannen                         ;35 ;45
+
+  L      MG_Eins_Merker
+  R      MG_Sn_O_WZ_entspannen
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_entspannt                       ;24
+
+  LN     MG_Sn_I_WZ_gespannt
+  A      MG_Sn_I_WZ_entspannt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL WZ_gespannt                        ;36 ;46
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Schleuse_auf                     ;06
+
+  L      MG_Eins_Merker
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Schleuse_zu                      ;47 ;57
+
+  L      MG_Eins_Merker
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL T_Schleuse_ist_auf                 ;10
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      I_WZ_Schleuse_auf
+  AN     I_WZ_Schleuse_zu
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL T_Schleuse_ist_zu                  ;48 ;58
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  LN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+
+;----------------------------
+LBL Zange_zu                           ;21
+
+  L      MG_Eins_Merker
+  S      O_WZ_Greifer_Zangen_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL Zange_auf                          ;42  ;52
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_Zangen_zu
+  PSL
+
+EM
+
+;----------------------------
+LBL Zange_ist_zu                       ;22
+
+#if WZ_Zange = &aktiv
+  LN     I_WZ_Greifer_Zangen_auf
+  AN     MG_WZW_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Zange_ist_auf                      ;43  ;53
+
+#if WZ_Zange = &aktiv
+  L      I_WZ_Greifer_Zangen_auf
+  AN     MG_WZW_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+;----------------------------
+LBL Greifer_zu_Mittelstellung          ;34
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_ccw_links
+  S      ML_WZ_Greifer_ccw_links_stop
+  S      O_WZ_Greifer_zu_Mittelstellung
+  R      O_WZ_Greifer_drehen_cw_rechts
+  S      O_WZ_Greifer_drehen_ccw_links
+
+  LN     I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_ccw_links
+  S      ML_WZ_Greifer_cw_rechts_stop
+  S      O_WZ_Greifer_zu_Mittelstellung
+  S      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  O      O_WZ_Greifer_drehen_ccw_links
+  AN     MG_WZW_Unterbrechung
+  PSL
+  EMT
+
+  L      MG_WZW_Unterbrechung
+  R      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+EM
+#endif
+
+;----------------------------
+LBL Greifer_zu_Spindel                 ;19
+
+  L      MG_Eins_Merker
+  S      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Grundstellung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_zu_Grundstellung           ;39 ;49
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_zu_Spindel
+  S      O_WZ_Greifer_zu_Grundstellung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_an_Spindel                 ;20
+
+#if Mittel_Position_Grundstellung = &aktiv
+  LN     I_WZ_Greifer_Grundstellung
+  A      I_WZ_Greifer_Spindel_Position
+  AN     MG_WZW_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+;----------------------------
+LBL Greifer_in_Grundstellung           ;41 ;51
+
+#if Mittel_Position_Grundstellung = &aktiv
+  L      I_WZ_Greifer_Grundstellung
+  AN     I_WZ_Greifer_Spindel_Position
+  AN     MG_WZW_Unterbrechung
+  PSL
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+;----------------------------
+LBL Greifer_in_Mittelstellung          ;35
+
+  L      I_WZ_Greifer_Mittelstellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+#endif
+
+#else
+
+;----------------------------
+LBL Zange_Spi_zu                       ;24
+
+  L      I_WZ_Greifer_cw_rechts
+  R      O_WZ_Greifer_Zange_1_auf
+
+  L      I_WZ_Greifer_ccw_links
+  R      O_WZ_Greifer_Zange_2_auf
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL Zange_Spi_ist_zu                   ;25
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Zange_Spi_auf                      ;46
+
+  L      I_WZ_Greifer_cw_rechts
+  S      O_WZ_Greifer_Zange_1_auf
+
+  L      I_WZ_Greifer_ccw_links
+  S      O_WZ_Greifer_Zange_2_auf
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL Zange_Spi_ist_auf                  ;47
+
+  L      I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Zange_Mag_zu                       ;28
+
+  L      I_WZ_Greifer_ccw_links
+  R      O_WZ_Greifer_Zange_1_auf
+
+  L      I_WZ_Greifer_cw_rechts
+  R      O_WZ_Greifer_Zange_2_auf
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL Zange_Mag_ist_zu                   ;29
+
+  L      I_WZ_Greifer_ccw_links
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Zange_Mag_auf                      ;13
+
+  L      I_WZ_Greifer_ccw_links
+  S      O_WZ_Greifer_Zange_1_auf
+
+  L      I_WZ_Greifer_cw_rechts
+  S      O_WZ_Greifer_Zange_2_auf
+
+  PS     MG_Eins_Merker
+
+EM
+
+;----------------------------
+LBL Zange_Mag_ist_auf                  ;14
+
+  L      I_WZ_Greifer_ccw_links
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_zu_Spindel                 ;17
+
+  L      MG_Eins_Merker
+  S      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+  R      O_WZ_Greifer_zu_Grundstellung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_zu_Magazin                 ;17
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_zu_Spindel
+  S      O_WZ_Greifer_zu_Magazin
+  R      O_WZ_Greifer_zu_Grundstellung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_zu_Grundstellung           ;38 ;48
+
+  L      MG_Eins_Merker
+  S      O_WZ_Greifer_zu_Grundstellung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_an_Spindel                 ;18
+
+  L      I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Magazin_Position
+  AN     I_WZ_Greifer_Grundstellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_an_Magazin                 ;18
+
+  LN     I_WZ_Greifer_Spindel_Position
+  A      I_WZ_Greifer_Magazin_Position
+  AN     I_WZ_Greifer_Grundstellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Greifer_in_Grundstellung           ;40 ;50
+
+  LN     I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Magazin_Position
+  A      I_WZ_Greifer_Grundstellung
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+#endif
+
+;----------------------------
+LBL Greifer_zu_cw_ccw                  ;31 ;41
+
+  L      MG_Eins_Merker
+  R      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_ccw_links
+  O      ML_WZ_Greifer_ccw_links_stop
+  R      O_WZ_Greifer_zu_Mittelstellung
+  R      O_WZ_Greifer_drehen_cw_rechts
+  S      O_WZ_Greifer_drehen_ccw_links
+
+  LN     I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_ccw_links
+  O      ML_WZ_Greifer_cw_rechts_stop
+  R      O_WZ_Greifer_zu_Mittelstellung
+  S      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  O      O_WZ_Greifer_drehen_ccw_links
+  AN     MG_WZW_Unterbrechung
+  R      ML_WZ_Greifer_cw_rechts_stop
+  R      ML_WZ_Greifer_ccw_links_stop
+  PSL
+  EMT
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  O      MG_WZW_Unterbrechung
+  R      O_WZ_Greifer_drehen_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+
+EM
+
+;----------------------------
+LBL Greifer_in_cw_ccw                  ;32 ;42
+
+  LN     I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_ccw_links
+  A      O_WZ_Greifer_drehen_ccw_links
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    AN     I_WZ_Greifer_ccw_links
+    A      O_WZ_Greifer_drehen_cw_rechts
+  ]
+  AN     MG_WZW_Unterbrechung
+  PSL
+
+EM
+
+;----------------------------
+LBL Tneu_merken                        ;27
+
+
+  PS     MG_Eins_Merker
+
+  L      WG_WZW_auto_Werkzeug_Nummer
+  =      WG_WZW_auto_neue_Werkzeug_Nummer
+
+EM
+
+;----------------------------
+LBL T0_in_Status                       ;28
+
+  LN     MG_WZ_Status_lesen
+  AN     MG_WZW_Unterbrechung
+  S      PN_M4538_Vorwahl_Werkzeug
+  S      PN_M4542_Platz_Tabelle_fest
+  PSL
+  EMF
+
+  L      K+0
+  =      NP_W264_Werkzeug_Nummer
+  =      WG_Werkzeug_in_Spindel
+
+EM
+
+;----------------------------
+LBL Tneu_in_Status                     ;37 ;47
+
+  LN     MG_WZ_Status_lesen
+  AN     MG_WZW_Unterbrechung
+  PSL
+  EMF
+
+  L      MG_Eins_Merker
+  R      PN_M4542_Platz_Tabelle_fest
+  S      PN_M4538_Vorwahl_Werkzeug
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  ==     KL_WZ_ohne_Platz
+  IFT
+    L      NP_W264_Werkzeug_Nummer
+    =      WG_WZW_auto_Werkzeug_Nummer
+  ENDI
+
+  L      WG_WZW_auto_neue_Werkzeug_Nummer
+  =      NP_W264_Werkzeug_Nummer
+  =      WG_Werkzeug_in_Spindel
+
+EM
+
+;----------------------------
+LBL T_Status_ok                        ;29 ;38 ;48
+
+  LN     PN_M4538_Vorwahl_Werkzeug
+  PSL
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  >=     KL_WZ_mit_Platz
+  O      NP_M4520_TOOL_CALL_2_Strobe
+  EMT
+
+  L      WG_WZW_auto_Werkzeug_Nummer
+  =      NP_W264_Werkzeug_Nummer
+
+EM
+
+#if Mittel_Position_WZ_Wechsel = &aktiv
+;----------------------------
+LBL Tool_Call_2nd                      ;31
+
+  LN     NP_M4520_TOOL_CALL_2_Strobe
+  ON     NP_M4073_Strobe_TOOL_CALL
+  PSL
+  EMT
+
+  L      NP_M4520_TOOL_CALL_2_Strobe
+  AN     MG_WZW_Unterbrechung
+  S      ML_2nd_TOOL_CALL_folgt
+  S      PN_M4093_Quit_TOOL_CALL
+
+EM
+
+;----------------------------
+LBL Tool_Call_Wait                     ;32
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  PSL
+  EMF
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  >=     KL_WZ_mit_Platz
+  IFT
+    L      NP_W262_Werkzeug_Platz_Nummer
+    =      WG_WZW_Platz_Nummer
+
+    L      NP_W264_Werkzeug_Nummer
+    =      WG_WZW_auto_Werkzeug_Nummer
+  ENDI
+
+#endif
+
+EM
+
+;----------------------------
+LBL Tool_Call_quitt                    ;49 ;59
+
+  L      NP_W262_Werkzeug_Platz_Nummer
+  ==     KL_WZ_ohne_Platz
+  ON     NP_M4073_Strobe_TOOL_CALL
+  S      MG_WZ_Vorwahl_Status_lesen
+  PSL
+  EMT
+
+  L      NP_M4073_Strobe_TOOL_CALL
+  AN     MG_WZW_Unterbrechung
+  S      PN_M4093_Quit_TOOL_CALL
+
+EM
+
+;----------------------------
+LBL WZW_auto_Ende                      ;50 ;60
+
+  PS     MG_Null_Merker
+
+;----------------------------
+LBL WZW_auto_Reset
+
+  L      MG_Eins_Merker
+  R      ML_2nd_TOOL_CALL_folgt
+  R      MG_WZW_automatisch
+  R      MG_WZW_Unterbrechung
+  R      MG_WZW_Spindel_Richten_ein
+  R      MG_Win_Window_JA_Nein
+  R      ML_WZ_Greifer_cw_rechts_stop
+  R      ML_WZ_Greifer_ccw_links_stop
+  R      PN_Fehler_WZ_Spindel_ok
+  R      PN_M4542_Platz_Tabelle_fest
+  R      O_WZ_Greifer_zu_Mittelstellung
+  R      MG_Sn_O_Spindel_ausblasen
+
+  L      K+0
+  =      BG_Schritt_WZW
+  =      BL_WZM_Index
+
+  REPEAT
+    L      MG_Eins_Merker
+    R      STG_WZM[BL_WZM_Index].MG_WZM_Tool_Call
+
+    INC    BL_WZM_Index
+
+    L      BL_WZM_Index
+    >=     KG_WZM_max_Anzahl
+  UNTILT
+
+  L      K+0
+  =      BL_WZM_Index
+
+EM
+
+;----------------------------
+LBL WZ_Platz_Time                      ;13
+
+#if WZ_Platz_ausklappen_90_Grad = &aktiv
+  CM     WZW_auto_Time
+#else
+  PS     MG_Eins_Merker
+#endif
+
+EM
+;----------------------------
+LBL WZW_auto_Time                      ;25
+
+  LN     TR_WZW_Timer_allgemein
+  =      TS_WZW_Timer_allgemein
+  PSL
+
+EM
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+
+KFIELD Diagnose
+  KG_Dia_WZW_Auto_Doppelarm            ;-1
+  KG_Dia_WZW_auto_Start                ;00
+  KG_Dia_WZ_in_Spindel_OK              ;01
+  KG_Dia_Spi_voll_leer                 ;02
+  KG_Dia_WZW_Magazin_Start             ;03
+  KG_Dia_S_Start                       ;04
+  KG_Dia_Z_Start                       ;05
+  KG_Dia_T_Schleuse_auf                ;06
+  KG_Dia_Z_in_WZW_Pos                  ;07
+  KG_Dia_XY_Start                      ;08
+  KG_Dia_WZ_Status_lesen               ;09
+  KG_Dia_T_Schleuse_ist_auf            ;10
+  KG_Dia_Magazin_in_Pos                ;11
+  KG_Dia_WZ_Platz_aus                  ;12
+  KG_Dia_WZ_Platz_Time                 ;13
+  KG_Dia_S_in_WZW_Pos                  ;14
+  KG_Dia_X_in_WZW_Pos                  ;15
+  KG_Dia_Y_in_WZW_Pos                  ;16
+  KG_Dia_Mag_voll_leer                 ;17
+  KG_Dia_WZ_Platz_Pos_aus              ;18
+  KG_Dia_Greifer_zu_Spindel            ;19
+  KG_Dia_Greifer_an_Spindel            ;20
+  KG_Dia_Zange_zu                      ;21
+  KG_Dia_Zange_ist_zu                  ;22
+  KG_Dia_WZ_entspannen                 ;23
+  KG_Dia_WZ_entspannt                  ;24
+  KG_Dia_WZW_auto_Time                 ;25
+  KG_Dia_Greifer_ausheben              ;26
+  KG_Dia_Tneu_merken                   ;27
+  KG_Dia_T0_in_Status                  ;28
+  KG_Dia_T_Status_ok                   ;29
+  KG_Dia_Greifer_ausgehoben            ;30
+#if Mittel_Position_WZ_Wechsel = &aktiv
+  KG_Dia_Tool_Call_2nd                 ;31
+  KG_Dia_Tool_Call_Wait                ;32
+  KG_Dia_Sprung_Greifer                ;33      ---> (1)
+  KG_Dia_Greifer_zu_Mittelstellung     ;34
+  KG_Dia_Greifer_in_Mittelstellung     ;35
+  KG_Dia_WZW_Magazin_Start             ;36
+  KG_Dia_Magazin_in_Pos                ;37
+  KG_Dia_WZ_Platz_aus                  ;38
+  KG_Dia_WZ_Platz_Pos_aus              ;39
+  KG_Dia_Mag_leer                      ;40
+#endif                                 ;
+  KG_Dia_Greifer_zu_cw_ccw             ;41 ;31  <--- (1)
+  KG_Dia_Greifer_in_cw_ccw             ;42 ;32
+  KG_Dia_Greifer_einsetzen             ;43 ;33
+  KG_Dia_Greifer_eingesetzt            ;44 ;34
+  KG_Dia_WZ_spannen                    ;45 ;35
+  KG_Dia_WZ_gespannt                   ;46 ;36
+  KG_Dia_Tneu_in_Status                ;47 ;37
+  KG_Dia_T_Status_ok                   ;48 ;38
+  KG_Dia_Greifer_zu_Grundstellung      ;49 ;39
+  KG_Dia_WZ_in_Mag_lesen               ;50 ;40
+  KG_Dia_Greifer_in_Grundstellung      ;51 ;41
+  KG_Dia_Zange_auf                     ;52 ;42
+  KG_Dia_Zange_ist_auf                 ;53 ;43
+  KG_Dia_WZ_Platz_ein_aus              ;54 ;44
+  KG_Dia_WZ_Platz_Pos_ok               ;55 ;45
+  KG_Dia_T_Schleuse_zu                 ;56 ;46
+  KG_Dia_T_Schleuse_ist_zu             ;57 ;47
+  KG_Dia_Spi_leer_voll                 ;58 ;48
+  KG_Dia_Tool_Call_quitt               ;59 ;49
+  KG_Dia_WZW_auto_Ende                 ;60 ;50
+  KG_Dia_leer                          ;61
+  KG_Dia_WZW_auto_Time                 ;reserviert
+ENDK
+
+#else
+
+KFIELD Diagnose
+  KG_Dia_WZW_Auto_Doppelarm            ;-1
+  KG_Dia_WZW_auto_Start                ;00
+  KG_Dia_WZ_in_Spindel_OK              ;01
+  KG_Dia_Spi_voll_leer                 ;02
+  KG_Dia_WZW_Magazin_Start             ;03
+  KG_Dia_S_Start                       ;04
+  KG_Dia_Z_Start                       ;05
+  KG_Dia_T_Schleuse_auf                ;06
+  KG_Dia_Z_in_WZW_Pos                  ;07
+  KG_Dia_XY_Start                      ;08
+  KG_Dia_WZ_Status_lesen               ;09
+  KG_Dia_T_Schleuse_ist_auf            ;10
+  KG_Dia_Magazin_in_Pos                ;11
+  KG_Dia_WZ_Platz_aus                  ;12
+  KG_Dia_WZ_Platz_Time                 ;13
+  KG_Dia_Mag_voll_leer                 ;14
+  KG_Dia_WZ_Platz_Pos_aus              ;15
+  KG_Dia_Sprung_T0_programmiert        ;16  ---> (1)
+  KG_Dia_Zange_Mag_auf                 ;17
+  KG_Dia_Zange_Mag_ist_auf             ;18
+  KG_Dia_Greifer_zu_Magazin            ;19
+  KG_Dia_Greifer_an_Magazin            ;20
+  KG_Dia_Zange_Mag_zu                  ;21
+  KG_Dia_Zange_Mag_ist_zu              ;22
+  KG_Dia_WZM_entriegeln                ;23
+  KG_Dia_WZM_entriegelt                ;24
+  KG_Dia_Greifer_ausheben              ;25
+  KG_Dia_Greifer_ausgehoben            ;26
+  KG_Dia_Greifer_zu_Grundstellung      ;27
+  KG_Dia_WZM_verriegeln                ;28
+  KG_Dia_WZM_verriegelt                ;29
+  KG_Dia_Greifer_in_Grundstellung      ;30
+  KG_Dia_Greifer_einsetzen             ;31
+  KG_Dia_Greifer_eingesetzt            ;32
+  KG_Dia_Zange_Spi_auf                 ;33   <--- (1)
+  KG_Dia_Zange_Spi_ist_auf             ;34
+  KG_Dia_S_in_WZW_Pos                  ;35
+  KG_Dia_X_in_WZW_Pos                  ;36
+  KG_Dia_Y_in_WZW_Pos                  ;37
+  KG_Dia_Tneu_merken                   ;38
+  KG_Dia_T0_in_Status                  ;39
+  KG_Dia_T_Status_ok                   ;40
+  KG_Dia_Tool_Call_2nd                 ;41
+  KG_Dia_Tool_Call_Wait                ;42
+  KG_Dia_Sprung_Greifer                ;43    ---> (2)
+  KG_Dia_WZW_Magazin_Start             ;44
+  KG_Dia_Greifer_zu_Spindel            ;45   <---  (2)
+  KG_Dia_Greifer_an_Spindel            ;46
+  KG_Dia_Zange_Spi_zu                  ;47
+  KG_Dia_Zange_Spi_ist_zu              ;48
+  KG_Dia_WZ_entspannen                 ;49
+  KG_Dia_WZ_entspannt                  ;50
+  KG_Dia_WZW_auto_Time                 ;51
+  KG_Dia_Greifer_ausheben              ;52
+  KG_Dia_Greifer_ausgehoben            ;53
+  KG_Dia_Greifer_zu_cw_ccw             ;54
+  KG_Dia_Greifer_in_cw_ccw             ;55
+  KG_Dia_Greifer_einsetzen             ;56
+  KG_Dia_Greifer_eingesetzt            ;57
+  KG_Dia_WZ_spannen                    ;58
+  KG_Dia_WZ_gespannt                   ;59
+  KG_Dia_Tneu_in_Status                ;60
+  KG_Dia_T_Status_ok                   ;61
+  KG_Dia_Zange_Spi_auf                 ;62
+  KG_Dia_Zange_Spi_ist_auf             ;63
+  KG_Dia_Greifer_zu_Grundstellung      ;64
+  KG_Dia_WZ_in_Mag_lesen               ;65
+  KG_Dia_Greifer_in_Grundstellung      ;66
+  KG_Dia_Sprung_Spindel_war_leer       ;67  ---> (3)
+  KG_Dia_Greifer_ausheben              ;68
+  KG_Dia_Greifer_ausgehoben            ;69
+  KG_Dia_Magazin_in_Pos                ;70
+  KG_Dia_WZ_Platz_aus                  ;71
+  KG_Dia_WZ_Platz_Pos_aus              ;72
+  KG_Dia_Mag_leer                      ;73
+  KG_Dia_Greifer_zu_Magazin            ;74
+  KG_Dia_WZM_entriegeln                ;75
+  KG_Dia_WZM_entriegelt                ;76
+  KG_Dia_Greifer_an_Magazin            ;77
+  KG_Dia_Greifer_einsetzen             ;78
+  KG_Dia_Greifer_eingesetzt            ;79
+  KG_Dia_WZM_verriegeln                ;80
+  KG_Dia_WZM_verriegelt                ;81
+  KG_Dia_Zange_Mag_auf                 ;82
+  KG_Dia_Zange_Mag_ist_auf             ;83
+  KG_Dia_Greifer_zu_Grundstellung      ;84
+  KG_Dia_Greifer_in_Grundstellung      ;85
+  KG_Dia_WZ_Platz_ein_aus              ;86
+  KG_Dia_WZ_Platz_Pos_ok               ;87
+  KG_Dia_Zange_Spi_zu                  ;88  <--- (3)
+  KG_Dia_Zange_Mag_zu                  ;89
+  KG_Dia_Zange_Spi_ist_zu              ;90
+  KG_Dia_Zange_Mag_ist_zu              ;91
+  KG_Dia_T_Schleuse_zu                 ;92
+  KG_Dia_T_Schleuse_ist_zu             ;93
+  KG_Dia_Spi_leer_voll                 ;94
+  KG_Dia_Tool_Call_quitt               ;95
+  KG_Dia_WZW_auto_Ende                 ;96
+  KG_Dia_leer                          ;97
+  KG_Dia_WZW_auto_Time                 ;reserviert
+  KG_Dia_X_Start                       ;reserviert
+  KG_Dia_X_in_WZW_Pos                  ;reserviert
+ENDK
+#endif

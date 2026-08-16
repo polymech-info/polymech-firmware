@@ -1,0 +1,205 @@
+*-----------------------------------------------------------------------------
+*  IPC 6110 / IPC 6120
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*    - Four soft keys have been added to integrate the IPC.
+*         - Soft_key_IPC_active
+*         - Soft_key_override_S_IPC
+*         - Soft_key_override_FMAX_IPC
+*         - Soft_key_override_F_IPC
+*      In addition to <Soft_key_IPC_active> the IPC features a key which
+*      also serves to switch the IPC on and off.
+*    - On TNC side the IPC can be deactivated by key <Home>.
+*    - The overrides are connected to the analog inputs 1/2 X48 the MC 42x
+*      via a separate cable. An additional averaging function with
+*      hysteresis evaluation ensures a continuous characteristic curve.
+*    - When the IPC is active, the switchover to IPC overrides takes
+*      place by pressing the corresponding soft key or by changing the
+*      IPC overrides by more than 10 % (without HSCI).
+*    - On HSCI facilities with MB6xxx exists only one soft key to shift
+*      all IPC overrides. This has to be pressed for activation or
+*      deactivation in general.
+*    - The operation on the TNC side is accordingly after the IP was
+*      deactivated.
+*    - Settings IPC TNCterminal
+*        User: administrator (case sensitive)
+*        password: 807667
+*        IP address: IP Address of the TNC
+*        TNCterminal - ControlPanel\Settings\Edit\PLC Interaction [address]
+*          Connect Marker             -> 'IPC_61x0.src'\ML_IPC_61x0_connect
+*          Disconnect Marker          -> 'IPC_61x0.src'\ML_IPC_61x0_disconnect
+*          Disable Connect Key Marker -> 'IPC_61x0.src'\ML_IPC_61x0_disable
+*          Connect Status Marker      -> 'IPC_61x0.src'\ML_IPC_61x0_connected
+*          Heart Beat Marker          -> 'IPC_61x0.src'\ML_IPC_61x0_clock_monitoring
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_factor_voltage_range                  K +30
+#define /s    KL_hysteresis                            K +1
+#define /s    KL_treshold_0_percent                    K +10
+#define /s    KL_treshold_150_percent                  K +490
+#define /s    KL_voltage_value_0_percent               K +0
+#define /s    KL_voltage_value_150_percent             K +500
+#define /s    KL_10_percent_override                   K +1000
+#define /s    KL_analog_input_1_MC42x                  K +64
+#define /s    KL_analog_input_2_MC42x                  K +65
+#define /s    KL_time_clock_monitoring_s               K +3
+#define /s    KL_MB6xxx_iTNC530                        K +0
+#define /s    KL_MB6xxx_IPC61x0                        K +1
+#define /s    KL_reserved                              K +0
+
+#define /s    ML_IPC_61x0_connect                      M
+#define /s    ML_IPC_61x0_disconnect                   M
+#define /s    ML_IPC_61x0_disable                      M
+#define /s    ML_IPC_61x0_connected                    M
+#define /s    ML_IPC_61x0_clock_monitoring             M
+
+#define /s    ML_SK_S_has_been_active                  M
+#define /s    ML_SK_FMAX_has_been_active               M
+#define /s    ML_SK_F_has_been_active                  M
+#define /s    ML_SK_override_S_F_IPC_was_active        M
+#define /s    ML_IPC_61x0_has_been_connected           M
+#define /s    ML_IPC_61x0_clock_was_active             M
+#define /s    ML_IPC_61x0_was_active                   M              *;EUMACH
+
+#define /s    BL_number_summation                      B
+#define /s    BL_clock_monitoring                      B
+
+#define /s    WL_factor_spindle_override_IPC           W
+#define /s    WL_factor_feed_override_IPC              W
+#define /s    WL_factor_rapid_traverse_override_IPC    W
+#define /s    WL_factor_spindle_has_been_active        W
+#define /s    WL_factor_feed_has_been_active           W
+#define /s    WL_factor_rapid_trav_was_active          W
+#define /s    WL_DC_analog_input_1_MC42x               W
+#define /s    WL_DC_analog_input_2_MC42x               W
+#define /s    WL_DC_analog_input_1_before              W
+#define /s    WL_DC_analog_input_2_before              W
+
+#define /s    DL_DC_analog_input_1_MC42x               D
+#define /s    DL_DC_analog_input_2_MC42x               D
+
+#include Mac_Lib.inc
+
+GLOBAL IPC_61x0
+
+;----------------------------
+LBL IPC_61x0
+;----------------------------
+
+#if IPC_61x0 = &active
+;Initialization when the IPC is activated
+  L      ML_IPC_61x0_connected
+  AN     ML_IPC_61x0_has_been_connected
+  S      MG_IPC_61x0_active
+;  S      MG_SK_IPC_active
+
+;Initialization when the IPC is deactivated
+  LN     ML_IPC_61x0_connected
+  A      ML_IPC_61x0_has_been_connected
+  R      MG_IPC_61x0_active
+;  R      MG_SK_IPC_active
+
+  L      ML_IPC_61x0_connected
+  =      ML_IPC_61x0_has_been_connected
+
+;PLC interface, marker to (de)activate the IPC
+  L      ML_IPC_61x0_clock_monitoring
+  AN     ML_IPC_61x0_clock_was_active
+  ON     ML_IPC_61x0_connected
+  IFT
+    L      KL_time_clock_monitoring_s
+    =      BL_clock_monitoring
+  ENDI
+
+  L      ML_IPC_61x0_clock_monitoring
+  =      ML_IPC_61x0_clock_was_active
+
+  L      MG_pulse_1_s
+  IFT
+    DEC    BL_clock_monitoring
+  ENDI
+
+  L      BL_clock_monitoring
+  <      K+0
+  A      ML_IPC_61x0_connected
+  S      PN_errorIPC_61x0_clock_monitoring
+  S      ML_IPC_61x0_disconnect
+
+  L      NP_W274_code_pushed_key
+  ==     KG_key_home
+  A      ML_IPC_61x0_connected
+  S      ML_IPC_61x0_disconnect
+
+;  LN     MG_SK_IPC_active
+  LN     MG_IPC_61x0_active
+  A      ML_IPC_61x0_connected
+  S      ML_IPC_61x0_disconnect
+
+  LN     ML_IPC_61x0_connected
+  R      ML_IPC_61x0_disconnect
+
+;  L      MG_SK_IPC_active
+  L      MG_IPC_61x0_active
+  AN     ML_IPC_61x0_connected
+  S      ML_IPC_61x0_connect
+
+  L      ML_IPC_61x0_connected
+  R      ML_IPC_61x0_connect
+
+#if Additional_machine_panel = &MB620_01
+  LN     MG_IPC_61x0_active
+  A      ML_IPC_61x0_was_active
+  IFT
+    PS     KL_MB6xxx_iTNC530
+    PS     KL_reserved
+    PS     KL_reserved
+    CM     9132
+    M_display_module_error(KG_error_module_9132)
+  ENDI
+
+  L      MG_IPC_61x0_active
+  AN     ML_IPC_61x0_was_active
+  IFT
+    PS     KL_MB6xxx_IPC61x0
+    PS     KL_reserved
+    PS     KL_reserved
+    CM     9132
+    M_display_module_error(KG_error_module_9132)
+  ENDI
+
+  L      MG_IPC_61x0_active
+  =      ML_IPC_61x0_was_active
+#else
+;  LN     MG_SK_override_S_F_IPC
+;  A      ML_SK_override_S_F_IPC_was_active
+;  IFT
+;    PS     KL_MB6xxx_iTNC530
+;    PS     KL_reserved
+;    PS     KL_reserved
+;    CM     9132
+;    M_display_module_error
+;  ENDI
+
+;  L      MG_SK_override_S_F_IPC
+;  AN     ML_SK_override_S_F_IPC_was_active
+;  IFT
+;    PS     KL_MB6xxx_IPC61x0
+;    PS     KL_reserved
+;    PS     KL_reserved
+;    CM     9132
+;    M_display_module_error(KG_error_module_9132)
+;  ENDI
+
+;  L      MG_SK_override_S_F_IPC
+;  =      ML_SK_override_S_F_IPC_was_active
+#endif
+
+#if Additional_machine_panel = &MB620_01
+  L      MG_IPC_61x0_active
+  =      O_2nd_panel_active
+#endif
+#endif
+
+EM

@@ -1,0 +1,545 @@
+*-----------------------------------------------------------------------------
+*  Referenz
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    - mit NC Start werden die Achsen in der in MP1340 definierten Reihen-
+*      folge referenziert
+*    - im Anschluß an jede einzelne Referenzaufnahme erfolgt eine PLC Posit-
+*      ionierung auf sichere Position, falls diese in *.cfg aktiviert wurde
+*    - falls DCM aktiv, wird diese PLC Positionierung nur nach nochmaliger
+*      Bestätigung einer Sicherheitsabfrage (Fehlermeldung) mit Taste
+*      NC Start ausgeführt
+*    - optional (*.cfg) wird mit der Referenzaufnahme der nächsten Achse
+*      automatisch fortgefahren
+*
+*     zusätzliche Funktionen
+*       - eine in CFG_Pos_sicher_nach_Referenz aktivierte PLC Positionierung
+*         wird überwacht, falls diese nicht ausgeführt wurde, ist Referenz nur
+*         noch mit manuellen Achsrichtungstasten möglich
+*       - Test remanenter Speicher, falls dieser noch nicht initialisiert ist,
+*         kann nur die Referenz mit manuellen Achsrichtungstasten aufgenommen
+*         werden
+*       - Fehlermeldungen zeigen jeweilige Achse an, die verfahren werden soll
+*       - Hirth-Achsen können auf nächstes Raster bewegt werden, falls Referenz
+*         Autostart abgebrochen wurde
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_absolut_mit_Soft_End_ohne_DCM         K %1010
+#define /s    KL_absolut_mit_Software_Endschalter      K %010
+#define /s    KL_inaktiv                               K +0
+#define /s    KL_Speicher_remanent_Testwert            K %01010101
+#define /s    KL_nicht_benutzt                         K +0
+#define /s    KL_PLC_Pos_gestartet                     K +2
+#define /s    KL_Zielposition_erreicht                 K +1
+#define /s    KL_Mode_Prozent_Nennstrom                K +0
+#define /s    KL_Posit_Window_positiv                  K +3
+#define /s    KL_Posit_Window_negativ                  K -3
+
+#define /s    ML_PLC_Posit_aktiv                       M
+#define /s    ML_Regelkreise_geoeffnet                 M
+#define /s    ML_Achsen_Moment_reduziert               M
+#define /s    ML_Start_Posit_sicher                    M
+#define /s    ML_PLC_Pos_gestartet                     M
+#define /s    ML_Zielposition_erreicht                 M
+#define /s    ML_Stack_synchronisieren                 M
+#define /s    ML_Achsen_Not_Halt_Endlage               M
+
+#define /s /r BL_Speicher_remanent_init                B
+#define /s    BL_Schritt_Referenz                      B
+#define /s    BL_Achs_Index                            B
+
+#define /s    WL_Adr_I_keine_Ref_Endlage               W
+
+#define /s    DL_Referenz_war_notwendig                D
+
+#define /s    DL_Ref_Pos_Achse_alt                     D [&KG_max_Achs_Anzahl]
+
+#define /c    I_0                                      I 0
+#define /c    M_0                                      M 0
+
+#include Mac_Lib.inc
+
+GLOBAL Referenz_Achsen
+EXTERN Stop_Posit
+EXTERN Start_Posit_Parameter
+
+;----------------------------
+LBL Referenz_Achsen
+;----------------------------
+
+  L      K+0
+  =X
+  REPEAT
+
+    L      KG_Referenz_Endlagen_Software
+    AN     NP_D1116_Referenz_notwendig
+    BTX
+    IFT
+      L      DG_Achs_Messgeraet_eine_Refmarke
+      BTX
+      IFT
+        L      K +0
+        =      DG_Pos_SW_Referenz_Nocken[X]
+
+        L      DG_Ref_Pos_Achse[X]
+        -      DG_MP960_Ref_Preset[X]
+        PSW
+      ELSE
+        PS     DG_Ref_Pos_Achse[X]
+      ENDI
+
+      L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+      BTX
+      IFT
+        PLW
+        <      DG_Pos_SW_Referenz_Nocken[X]
+        =      MG_Ref_Endlage[X]
+      ELSE
+        PLW
+        >      DG_Pos_SW_Referenz_Nocken[X]
+        =      MG_Ref_Endlage[X]
+      ENDI
+    ELSE
+      L      MG_Achsen_Not_Halt_Endlage
+      AN     ML_Achsen_Not_Halt_Endlage
+      IFT
+        L      DG_MP1320_Richtung_Referenzaufnahme_negativ
+        BTX
+        IFT
+          L      DG_Ref_Pos_Achse[X]
+          -      DL_Ref_Pos_Achse_alt[X]
+          <      KL_Posit_Window_negativ
+          S      MG_Ref_Endlage[X]
+
+          L      DG_Ref_Pos_Achse[X]
+          -      DL_Ref_Pos_Achse_alt[X]
+          >      KL_Posit_Window_positiv
+          R      MG_Ref_Endlage[X]
+        ELSE
+          L      DG_Ref_Pos_Achse[X]
+          -      DL_Ref_Pos_Achse_alt[X]
+          >      KL_Posit_Window_positiv
+          S      MG_Ref_Endlage[X]
+
+          L      DG_Ref_Pos_Achse[X]
+          -      DL_Ref_Pos_Achse_alt[X]
+          <      KL_Posit_Window_negativ
+          R      MG_Ref_Endlage[X]
+        ENDI
+
+      ENDI
+
+      L      MG_Achsen_Not_Halt_Endlage
+      =      ML_Achsen_Not_Halt_Endlage
+
+      L      DG_Ref_Pos_Achse[X]
+      =      DL_Ref_Pos_Achse_alt[X]
+    ENDI
+
+    LN     KG_Referenz_Endlagen_Software
+    BTX
+    IFT
+      L      KF Adr_I_keine_Ref_Endlage[X]
+      =      WL_Adr_I_keine_Ref_Endlage
+
+      L      WL_Adr_I_keine_Ref_Endlage
+      >=     KG_Input_Speicherbereich
+      IFT
+        LN     M_0[WL_Adr_I_keine_Ref_Endlage]
+        =      MG_Ref_Endlage[X]
+      ELSE
+        LN     I_0[WL_Adr_I_keine_Ref_Endlage]
+        =      MG_Ref_Endlage[X]
+      ENDI
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  L      MG_Referenz_Achsen_aufgenommen
+  AN     MG_Referenz_aktiv
+  AN     MG_Referenz_auto_NC_Start_gesperrt
+  R      MG_manuelles_Verfahren_BA_Referenz
+  EMT
+
+  L      NP_D1116_Referenz_notwendig
+  O      DG_Achsen_Referenz_Pos_sicher
+  AN     DG_PLC_Hilfs_Achsen
+  AN     DG_MP12_simulierte_Achsen
+  ==     K+0
+  R      MG_Referenz_auto_NC_Start_gesperrt
+
+  LD     MG_Ref_Endlage
+  =      PN_D1160_Referenz_Endlage
+
+;Sonderfunktionen
+
+  L      PN_D1144_Manuelles_Verfahren_plus
+  O      PN_D1148_Manuelles_Verfahren_minus
+  >      K+0
+  =      MG_manuelles_Verfahren_BA_Referenz
+  R      PN_Fehler_Referenz_Timeout
+  R      PN_Fehler_Referenz_NC_Start_gesperrt
+
+  L      NP_D1116_Referenz_notwendig
+  A      DG_geregelte_Achsen
+  AN     DG_MP12_simulierte_Achsen
+  ==     K+0
+  A      MG_Maschinenparameter_gelesen
+  IFT
+    R      MG_Referenz_auto_NC_Start_gesperrt
+
+    L      KL_Speicher_remanent_Testwert
+    =      BL_Speicher_remanent_init
+
+    L      MG_manuelles_Verfahren_BA_Referenz
+    JPT    Ref_Reset
+  ENDI
+
+  L      BL_Speicher_remanent_init
+  <>     KL_Speicher_remanent_Testwert
+  A[
+    L      KG_Referenz_Endlagen_Software
+    <>     KL_inaktiv
+  ]
+  A      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  S      MG_Referenz_auto_NC_Start_gesperrt
+
+  L      MG_Referenz_auto_NC_Start_gesperrt
+  A      MG_Taste_NC_Start
+  S      PN_Fehler_Referenz_NC_Start_gesperrt
+
+  L      MG_Referenz_auto_NC_Start_gesperrt
+  EMT
+
+  CASE   BL_Schritt_Referenz
+    CM     Referenz_aufgenommen        ;00
+    CM     NC_Start_DCM                ;01
+    CM     Start_Pos_sicher            ;02
+    CM     In_Pos_sicher               ;03
+    CM     Ref_Autostart               ;04
+    CM     Ref_Ende                    ;05
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_Referenz
+  ENDI
+
+  LN     MG_Steuerung_betriebsbereit
+  CMT    Ref_Reset
+
+EM
+
+;----------------------------
+LBL Referenz_aufgenommen               ;00
+
+  L      NP_D1116_Referenz_notwendig
+  AN     DG_MP12_simulierte_Achsen
+  AN     DG_Slave_Achsen
+  ==     K+0
+  A      MG_Achsen_in_Position
+  O      MG_Referenz_auto_NC_Start_gesperrt
+  R      MG_Referenz_aktiv
+
+  L      MG_Taste_NC_Start_P_Impuls
+  S      MG_Referenz_aktiv
+
+  LN     MG_manuelles_Verfahren_BA_Referenz
+  A      MG_Steuer_Spannung_verzoegert_ein
+  A      MG_Achsen_in_Bewegung
+  IFT
+    LN     NP_D1116_Referenz_notwendig
+    A      DL_Referenz_war_notwendig
+    A      DG_geregelte_Achsen
+    AN     DG_Slave_Achsen
+    AN     DG_MP12_simulierte_Achsen
+    =      DG_Achsen_Referenz_Pos_sicher
+  ENDI
+
+  L      DG_Achsen_Referenz_Pos_sicher
+  <>     K+0
+  AN     MG_Referenz_auto_NC_Start_gesperrt
+  A      MG_Referenz_aktiv
+  S      MG_Start_Sperre_Referenz
+  PSL
+  IFT
+    L      K-1
+    =      BL_Achs_Index
+
+    REPEAT
+      INC    BL_Achs_Index
+      L      DG_Achsen_Referenz_Pos_sicher
+      BT     BL_Achs_Index
+    UNTILT
+  ENDI
+
+  L      NP_D1116_Referenz_notwendig
+  =      DL_Referenz_war_notwendig
+
+EM
+
+;----------------------------
+LBL NC_Start_DCM                       ;01
+
+  L      DG_Achsen_Referenz_Pos_sicher
+  A      KG_Pos_sicher_nach_Referenz
+  AN     DG_PLC_Hilfs_Achsen
+  <>     K+0
+  =      ML_Start_Posit_sicher
+  IFF
+    L      K+0
+    =      DG_Achsen_Referenz_Pos_sicher
+  ENDI
+
+  L      MG_Taste_NC_Start_P_Impuls
+  A      PN_Fehler_DCM_noch_inaktiv
+  O[
+    L      NP_D1116_Referenz_notwendig
+    AN     DG_MP12_simulierte_Achsen
+    ==     KL_inaktiv
+  ]
+  O[
+    L      DG_Achsen_Referenz_Pos_sicher
+    ==     DG_S_Achs_Aktivierung
+  ]
+  ON     MG_DCM_aktiv
+  ON     ML_Start_Posit_sicher
+  A      MG_Achsen_in_Position
+  R      PN_Fehler_DCM_noch_inaktiv
+  PSL
+  EMT
+
+  L      NP_D1116_Referenz_notwendig
+  AN     DG_MP12_simulierte_Achsen
+  <>     KL_inaktiv
+  A[
+    L      DG_Achsen_Referenz_Pos_sicher
+    <>     DG_S_Achs_Aktivierung
+  ]
+  A      MG_DCM_aktiv
+  A      ML_Start_Posit_sicher
+  S      PN_Fehler_DCM_noch_inaktiv
+  IFT
+    PS     K &PN_Fehler_DCM_noch_inaktiv - 4800
+    L      BL_Achs_Index
+    +      K &SG_Kennung_Achse
+    PSW
+    L      BL_Achs_Index
+    +      K+1
+    PSW
+    PS     KL_nicht_benutzt
+    CM     9084                        ;PLC-Fehlermeldung anzeigen
+  ENDI
+
+*$WS Funktion erlaubt fortführen Referenz Auto (Taste NC_Start) wenn zuvor mit NC Stop unterbrochen wurde
+  L      MG_Taste_NC_Stop_P_Impuls
+;  O      MG_manuelles_Verfahren_BA_Referenz
+  A      PN_Fehler_DCM_noch_inaktiv
+;  S      MG_Referenz_auto_NC_Start_gesperrt
+  R      PN_Fehler_DCM_noch_inaktiv
+  JPT    Ref_Reset
+
+EM
+
+;----------------------------
+LBL Start_Pos_sicher                   ;02
+
+  L      MG_Eins_Merker
+  =      TS_Referenz_Timeout
+  PSL
+
+  LN     ML_Start_Posit_sicher
+  EMT
+
+  PS     BL_Achs_Index
+  PS     DG_Pos_nach_Referenz[BL_Achs_Index]
+  PS     WG_MP1330_Vorschub_Referenz[BL_Achs_Index]
+
+  L      MG_DCM_aktiv
+  IFT
+    PS     KL_absolut_mit_Soft_End_ohne_DCM
+  ELSE
+    PS     KL_absolut_mit_Software_Endschalter
+  ENDI
+
+  CM     Start_Posit_Parameter
+  PLX
+
+EM
+
+;----------------------------
+LBL In_Pos_sicher                      ;03
+
+  LN     ML_Start_Posit_sicher
+  IFT
+    PS     MG_Eins_Merker
+  ELSE
+    L      K+0
+    =      DG_Achsen_Referenz_Pos_sicher
+
+    PS     BL_Achs_Index
+    CM     9222                        ;Abfrage des Status einer PLC-Positionierung
+    PLW
+    PSW
+    ==     KL_PLC_Pos_gestartet
+    =      ML_PLC_Pos_gestartet
+
+    PLW
+    ==     KL_Zielposition_erreicht
+    =      ML_Zielposition_erreicht
+    PSL
+
+    M_Modul_Fehler_anzeigen
+
+    L      MG_Taste_NC_Start_P_Impuls
+    AN     ML_PLC_Pos_gestartet
+    R      PN_Fehler_Referenz_Timeout
+    =      TS_Referenz_Timeout
+    IFT
+      DEC    BL_Schritt_Referenz
+    ENDI
+
+    L      MG_Taste_NC_Stop_P_Impuls
+    IFT
+      PS     BL_Achs_Index
+      CM     Stop_Posit
+      PL     ML_Stack_synchronisieren
+
+      JP     Ref_Reset
+
+    ENDI
+
+    LN     TR_Referenz_Timeout
+    S      PN_Fehler_Referenz_Timeout
+    IFT
+      PS     K &PN_Fehler_Referenz_Timeout - 4800
+      L      BL_Achs_Index
+      +      K &SG_Kennung_Achse
+      PSW
+      L      BL_Achs_Index
+      +      K+1
+      PSW
+      PS     KL_nicht_benutzt
+      CM     9084                      ;PLC-Fehlermeldung anzeigen
+    ENDI
+  ENDI
+
+EM
+
+;----------------------------
+LBL Ref_Autostart                      ;04
+
+  PS     MG_Eins_Merker
+
+  L      NP_D1116_Referenz_notwendig
+  AN     DG_MP12_simulierte_Achsen
+  AN     DG_Slave_Achsen
+  >      K+0
+  A      NP_M4155_BA_Referenzaufnahme
+  AN     MG_Ref_Autostart_inaktiv
+  AN     MG_Referenz_auto_NC_Start_gesperrt
+  R      MG_Start_Sperre_Referenz
+  =      MG_NC_Start_von_Referenz
+
+EM
+
+;----------------------------
+LBL Ref_Ende
+
+  PS     MG_Null_Merker
+
+;----------------------------
+LBL Ref_Reset
+
+*$WS
+;  L      NP_D1116_Referenz_notwendig
+;  AN     DG_MP12_simulierte_Achsen
+;  AN     DG_Slave_Achsen
+;  ==     K+0
+;  O      MG_Referenz_auto_NC_Start_gesperrt
+;  R      MG_Referenz_aktiv
+;
+  L      MG_Eins_Merker
+  R      MG_Start_Sperre_Referenz
+  R      MG_NC_Start_von_Referenz
+  R      ML_Start_Posit_sicher
+  R      MG_manuelles_Verfahren_BA_Referenz
+
+  L      K+0
+  =      BL_Schritt_Referenz
+  =      DG_Achsen_Referenz_Pos_sicher
+
+EM
+
+*$WS
+;  L      NP_D1116_Referenz_notwendig
+;  >      DG_PLC_Referenz_notwendig
+;  AN     ML_Achsen_Moment_reduziert
+;  IFT
+;    S     ML_Achsen_Moment_reduziert
+;    L      K+0
+;    =X
+;    REPEAT
+;      PS     KL_Mode_Prozent_Nennstrom
+;      PSX
+;      PS     DG_Moment_reduziert_X[X]
+;      CM     9128
+;       M_Modul_Fehler_anzeigen
+;
+;      INCX
+;      LX
+;      >=     KG_max_Achs_Anzahl
+;    UNTILT
+;  ENDI
+
+
+*$WS
+;  L      NP_D1116_Referenz_notwendig
+;  O      DG_PLC_Referenz_notwendig
+;  ==     K+0
+;  IFT
+;    R     ML_Achsen_Moment_reduziert
+;
+;    L      K+0
+;    =X
+;    REPEAT
+;      PS     KL_Mode_Prozent_Nennstrom
+;      PSX
+;      PS     KL_Begrenzung_aus
+;      CM     9128
+;       M_Modul_Fehler_anzeigen
+;      INCX
+;      LX
+;      >=     KG_max_Achs_Anzahl
+;    UNTILT
+;  ENDI
+
+KFIELD Adr_I_keine_Ref_Endlage
+  K &I_keine_Ref_Endlage_X
+  K &I_keine_Ref_Endlage_Y
+  K &I_keine_Ref_Endlage_Z
+  K &I_keine_Ref_Endlage_4
+  K &I_keine_Ref_Endlage_5
+  K &I_keine_Ref_Endlage_6
+  K &I_keine_Ref_Endlage_7
+  K &I_keine_Ref_Endlage_8
+  K &I_keine_Ref_Endlage_9
+  K &I_keine_Ref_Endlage_10
+  K &I_keine_Ref_Endlage_11
+  K &I_keine_Ref_Endlage_12
+  K &I_keine_Ref_Endlage_13
+  K &I_keine_Ref_Endlage_14
+  K &I_keine_Ref_Endlage_15
+  K &I_keine_Ref_Endlage_16
+  K &I_keine_Ref_Endlage_17
+  K &I_keine_Ref_Endlage_18
+  K &I_keine_Ref_Endlage_19
+  K &I_keine_Ref_Endlage_20
+  K &I_keine_Ref_Endlage_21
+  K &I_keine_Ref_Endlage_22
+ENDK

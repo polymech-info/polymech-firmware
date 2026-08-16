@@ -1,0 +1,1289 @@
+N38 SLÄPFEL FÖR STORT %.2s
+N39 HASTIGHETSBÖRVÄRDE FÖR HÖGT %.2s
+N41 STILLESTÅNDSÖVERVAKNING %.2s
+N42 OFFSET FÖR STOR %.2s
+N50 KAN EJ KÖRA TILL BERÖRINGSP.
+N51 POSITIONERINGS FEL
+N52 MÄTFINGER UTBÖJT
+N53 BYT MÄTPROBENS BATTERI
+N54 MÄTPROBE EJ KLAR
+N17738 ÄNDLÄGESBRYTARE %.2s+
+N56 ÄNDLÄGESBRYTARE %.2s+
+N17739 ÄNDLÄGESBRYTARE %.2s-
+N58 ÄNDLÄGESBRYTARE %.2s-
+N59 FN 14: FELNUMMER %-3u
+N60 TVÅ TOOL DEF %-3u MED PGM CALL
+N61 VERKTYGSTABELL LÅST
+N62 REFERENSMÄRKEN %.2s: FEL AVSTÅND
+N63 HANDRATT ?
+N109 PLC: FÖR STOR SAMMANFOGNING
+N110 PLC: STACK UNDERFLOW
+N111 PLC: STACK OVERFLOW
+N112 PLC: TIME OUT
+N113 PLC: CASE UTANFÖR OMRÅDE
+N115 PLC: INDEXOMRÅDE FEL
+N133 PLC: M4005, M4006, M4007 FEL
+N134 PLC: STROBES AKTIVA SAMTIDIGT
+N151 MP: RAD UTAN NUMMER
+N152 MP: FEL NUMMER
+N153 MP: INGET SKILJETECKEN
+N154 MP: INMATAT VÄRDE FEL
+N155 MP: DUBBELT DEFINIERAD
+N156 MP: EJ DEFINIERAD
+N157 MP: LAGRING EJ MÖJLIG
+N159 PLATS 0 EJ DEFINIERAD
+N160 FEL PLATS NUMMER
+N937 FEL PLATS NUMMER
+N161 MATNING EJ PROGRAMMERAD
+N162 INGEN NY AXEL FÖR VRIDNING
+N163 VERKTYGS-LIVSLÄNGD UPPNÅDD
+N164 BYT BUFFERT BATTERI
+N165 SPINDELORIENTERING INAKTIV
+N166 VERKTYGSTABELL ?
+N167 NOLLPUNKTSTABELL ?
+N168 FEL
+N938 KNAPP UTAN FUNKTION
+N939 PROGRAM MINNE FULLT
+N940 INGET SÖKKRITERIUM
+N941 VERKTYGSNUMMER 0 EJ DEFINIERBART
+N169 VERKTYGS NR. UPPTAGET
+N170 HOPP TILL LABEL 0 FÖRBJUDET
+N942 INMATAT VÄRDE FEL
+N943 INMATAT VÄRDE FEL
+N171 INMATAT VÄRDE FEL
+N172 INMATAT VÄRDE FEL
+N173 INMATAT VÄRDE FEL
+N174 INMATAT VÄRDE FEL
+N175 INMATAT VÄRDE FEL
+N176 INMATAT VÄRDE FEL
+N177 CYKEL 27 (G127): DJUP > RADIE
+N178 INMATAT VÄRDE FEL
+N179 INMATAT VÄRDE FEL
+N180 DEFINITION BLK FORM FELAKTIG
+N183 AKTUELLT BLOCK EJ VALT
+N184 PROGRAM NR. FINNS EJ
+N185 Inmatning av fler filer omöjligt
+N944 FILNAMN UPPTAGET
+N187 LABEL NR. UPPTAGET
+N188 LABEL NR  %-3u FINNS REDAN
+N189 ÖVERFÖRT VÄRDE FEL
+N194 PROGRAM EJ FULLSTÄNDIGT
+N196 GRÄNSSNITT UPPTAGET
+N197 BAUDRATE EJ MÖJLIG
+N945 FELAKTIGT PROGRAMDATA
+N946 FELAKTIGT PROGRAMDATA
+N200 EXT. UT/IN EJ KLAR
+N201 NC: PROGRAM MINNE RADERAT
+N947 DRIFTSPARAMETER ÅTERSTÄLLD
+N948 Skyddad fil!
+N202 ÄNDRINGAR I ANROPAT PROGRAM
+N203 NÖD STOPP DEFEKT
+N205 NÖDSTOPP PLC
+N207 PGM SAKNAS
+N212 FK-REF TILL AKTUELLT BLOCK
+N214 RÄKNEFEL
+N215 RÄKNEFEL
+N216 BERÄKNAD Q-PARAMETER FÖR STOR
+N217 BERÄKNAD KOORDINAT FÖR STOR
+N218 BERÄKNAT VARVTAL FÖR STORT
+N219 BERÄKNAD MATNING FÖR STOR
+N220 BERÄKNAT VERKTYGS-NR. FÖR STORT
+N221 BERÄKNAT LABEL-NUMMER FÖR STORT
+N222 BERÄKNAT FELNUMMER FÖR STORT
+N223 BERÄKNAD SKALFAKTOR FÖR STOR
+N224 INKR. POLÄRVINKEL FÖR STOR
+N225 STIGNING 0 EJ TILLÅTEN
+N226 RÄKNEFEL
+N227 ARITMETIKFEL VID APPR/DEP
+N228 ARITMETIKFEL VID APPR/DEP
+N229 ARITMETIKFEL VID APPR/DEP
+N230 ARITMETIKFEL VID APPR/DEP
+N231 ARITMETIKFEL VID URFRÄSNING
+N232 ARITMETIKFEL VID CR
+N233 ARITMETIKFEL VID CT
+N234 ARITMETIKFEL VID RND/CHF
+N235 FEL SKÄRNINGSPUNKT CIRKEL/CIRKEL
+N236 FEL SKÄRNINGSPUNKT CIRKEL/LINJE
+N237 FEL SKÄRNINGSPUNKT LINJE/LINJE
+N238 ARITMETIKFEL VID APPR/DEP
+N239 FEL VID RADIEKOMPENSERING
+N240 FEL I KONTURFICKA
+N241 FEL I KONTURFICKA/KONTURLINJE
+N242 FEL I KONTURFICKA
+N243 FEL I KONTURFICKA
+N244 FEL VID RADIEKOMPENSERING
+N245 FEL VID RADIEKOMPENSERING
+N246 FEL I KONTURFICKA
+N247 FEL I KONTURFICKA
+N250 ARITMETIKFEL VID M112
+N251 FEL VID PARAMETERBERÄKNING
+N252 FEL VID ÄNDLÄGES-KONTROLL
+N253 BAN-KORR. FEL I SLUTET
+N254 BAN-KORR. FEL I BÖRJAN
+N255 BAN-KORR. FEL I BÖRJAN
+N256 BAN-KORR. FEL I BÖRJAN
+N257 BAN-KORR. FEL I BÖRJAN
+N258 BAN-KORR. FEL I BÖRJAN
+N259 BAN-KORR. FEL I BÖRJAN
+N260 CYKEL OFULLSTÄNDIG
+N261 CYKEL DEF EJ DEFINIERAD
+N263 SKÄRDJUP 0 EJ TILLÅTET
+N264 ANVÄNDARCYKEL EJ TILLGÄNGLIG
+N265 UNDERPROGRAM EJ TILLGÄNGLIGT
+N266 UNDERPROGRAM EJ TILLGÄNGLIGT
+N272 FELAKTIG BLOCK-UPPBYGGNAD
+N274 VERKTYGSDEFINITION EJ TILLÅTEN
+N275 VERKTYGSDEF UTAN LÄNGD OCH RADIE
+N276 CT EFTER APPR EJ TILLÅTET
+N277 CHF EFTER APPR EJ TILLÅTET
+N278 RND EFTER APPR EJ TILLÅTET
+N279 RUNDNING = 0 EJ TILLÅTET
+N280 FAS = 0 EJ TILLÅTET
+N281  EN ANDRA RUNDNING EJ TILLÅTEN
+N282 RUNDNING EFTER FAS EJ TILLÅTET
+N283 FAS EFTER RUNDNING EJ TILLÅTET
+N284 EN ANDRA FAS EJ TILLÅTEN
+N285 DEP LCT EFTER HELIX EJ TILLÅTET
+N286 APPR LCT FÖRE HELIX EJ TILLÅTET
+N287 EJ TILLÅTET NC-BLOCK
+N288 RUNDNING EJ TILLÅTEN
+N289 RUNDNING EJ TILLÅTEN
+N290 FAS EJ TILLÅTEN
+N291 DEP EJ SISTA BLOCK
+N292 INGEN RUNDNING SOM SISTA BLOCK
+N293 INGEN FAS SOM SISTA BLOCK
+N294 FLERA DEP-BLOCK EJ TILLÅTET
+N295 DEP EJ TILLÅTET
+N296 APPR EJ TILLÅTET
+N297 APPR EJ FÖRSTA BLOCK
+N299 CYKEL 14 (G37) EJ TILLÅTEN
+N300 VERKTYGSANROP EJ TILLÅTET
+N302 M91/M92 VID 3DROT EJ TILLÅTET
+N303 M114 VID 3DROT EJ TILLÅTET
+N305 M114 MED KORREKTUR EJ TILLÅTET
+N307 DUBBEL PROGR. FÖR EN AXEL
+N308 DUBBEL PROGR. FÖR EN AXEL
+N309 DUBBEL PROGR. FÖR EN AXEL
+N310 DUBBEL PROGR. FÖR EN AXEL
+N311 DUBBEL PROGR. FÖR EN AXEL
+N313 YTA FEL DEFINIERAD
+N314 3D-KORR.: YTA FEL DEFINIERAD
+N315 YTA FEL DEFINIERAD
+N317 YTA FEL DEFINIERAD
+N318 YTA FEL DEFINIERAD
+N319 YTA FEL DEFINIERAD
+N320 YTA FEL DEFINIERAD
+N321 YTA FEL DEFINIERAD
+N322 YTA FEL DEFINIERAD
+N323 YTA FEL DEFINIERAD
+N324 YTA FEL DEFINIERAD
+N325 YTA FEL DEFINIERAD
+N326 YTA FEL DEFINIERAD
+N327 YTA FEL DEFINIERAD
+N328 YTA FEL DEFINIERAD
+N329 ROTATIONSAXEL EJ TILLÅTEN HÄR
+N950 FEL AXEL PROGRAMMERAD
+N951 FEL AXEL PROGRAMMERAD
+N330 SPÄRRAD AXEL PROGRAMMERAD
+N331 FEL AXEL PROGRAMMERAD
+N332 FEL AXEL PROGRAMMERAD
+N333 FEL AXEL PROGRAMMERAD
+N335 ROTATIONSAXEL EJ PROGRAMMERAD
+N337 INGEN ROTATIONSAXEL PROGRAMMERAD
+N338 INGEN HUVUDAXEL PROGRAMMERAD
+N339 GANTRY/SLAVE-AXEL PROGRAMMERAD
+N952 FEL VARVTAL
+N340 FEL VARVTAL
+N341 FEL VARVTAL
+N342 FEL VARVTAL
+N343 FEL VARVTAL
+N344 VARVTAL FÖR HÖGT FÖR CYKELN
+N345 VARVTAL 0 EJ TILLÅTET
+N346 FEL VARVTAL
+N347 FASNING EJ TILLÅTEN
+N348 FASNING EJ TILLÅTEN
+N349 FASNING EJ TILLÅTEN
+N350 FASNING EJ TILLÅTEN
+N351 FASNING EJ TILLÅTEN
+N352 FASNING EJ TILLÅTEN
+N353 FASNING EJ TILLÅTEN
+N354 FAS FÖR STOR
+N355 FAS FÖR STOR
+N356 FAS FÖR STOR
+N357 CIRCEL MITTPUNKT FEL
+N358 C-BLOCK: CIRKELSLUTPUNKT FEL
+N359 CIRCEL MITTPUNKT FEL
+N360 CIRCEL MITTPUNKT FEL
+N361 CIRCEL MITTPUNKT FEL
+N362 LABEL NR. SAKNAS
+N363 LABEL 0 SAKNAS
+N364 LABEL NR. SAKNAS
+N365 CYKEL 14: LBL EJ TILLGÄNGLIG
+N366 POL SAKNAS
+N367 CIRKEL CENTRUM ODEFINIERAD
+N368 VERKTYGSRADIE FÖR LITEN
+N369 VERKTYGSRADIE 0 EJ TILLÅTEN
+N370 RADIE KORREKTUR ODEFINIERAT
+N371 RADIE KORREKTUR ODEFINIERAT
+N372 RADIE KORREKTUR ODEFINIERAT
+N373 RADIE KORREKTUR ODEFINIERAT
+N374 RADIE KORREKTUR ODEFINIERAT
+N375 PASSERA OVER REFERENSPUNKT
+N376 RUNDNING EJ DEFINIERAD
+N377 RUNDNING EJ DEFINIERAD
+N378 RUNDNING EJ TILLÅTEN
+N379 RUNDNINGS RADIE FÖR STOR
+N380 RUNDNINGS RADIE FÖR STOR
+N381 RUNDNINGS RADIE FÖR STOR
+N382 RUNDNINGS RADIE FÖR STOR
+N383 RUNDNINGS RADIE FÖR STOR
+N384 RUNDNINGS RADIE FÖR STOR
+N385 RUNDNINGS RADIE FÖR STOR
+N386 RUNDNINGS RADIE FÖR STOR
+N387 RUNDNINGS RADIE FÖR STOR
+N388 SPINDEL ?
+N389 VERKTYGSAXEL SPEGLAD
+N390 VERKTYGSAXEL SPEGLAD
+N391 VERKTYGSAXEL SAKNAS
+N392 VERKTYGSAXEL SAKNAS
+N393 VERKTYGSAXEL SAKNAS
+N394 VERKTYGSAXEL SAKNAS
+N395 VERKTYGSAXEL SAKNAS
+N396 VERKTYGSAXEL SAKNAS
+N397 VERKTYGSAXEL SAKNAS
+N398 VERKTYGSDEFINITION SAKNAS
+N400 VERKTYGSDEFINITION SAKNAS
+N401 VERKTYGSNUMMER SAKNAS
+N402 VERKTYGS RADIE FÖR STOR
+N403 VERKTYGS RADIE FÖR STOR
+N404 VERKTYGS RADIE FÖR STOR
+N405 VERKTYGS RADIE FÖR STOR
+N406 VERKTYGS RADIE FÖR STOR
+N407 VERKTYGS RADIE FÖR STOR
+N408 VERKTYGS RADIE FÖR STOR
+N409 VERKTYGS RADIE FÖR STOR
+N410 VERKTYGS RADIE FÖR STOR
+N411 VERKTYGS RADIE FÖR STOR
+N412 VERKTYGS RADIE FÖR STOR
+N413 PROGRAM-START ODEFINIERAD
+N414 PROGRAM-START ODEFINIERAD
+N415 PROGRAM-START ODEFINIERAD
+N416 PROGRAM-START ODEFINIERAD
+N417 PROGRAM-START ODEFINIERAD
+N418 PROGRAM-START ODEFINIERAD
+N419 PROGRAM-START ODEFINIERAD
+N420 PROGRAM-START ODEFINIERAD
+N421 PROGRAM-START ODEFINIERAD
+N422 PROGRAM-START ODEFINIERAD
+N423 PROGRAM-START ODEFINIERAD
+N424 PROGRAM-START ODEFINIERAD
+N425 UPPHÄV RADIEKOMP. FÖRE PLC-POS
+N426 PROGRAM-START ODEFINIERAD
+N953 BLOCKFORMAT FELAKTIGT
+N427 BLOCKFORMAT FELAKTIGT
+N429 FÖR STOR SAMMANFOGNING
+N430 FÖR STOR SAMMANFOGNING
+N432 FÖR STOR SAMMANFOGNING
+N433 CYKEL-FÖRTECKEN MOTSÄGELSEFULLA
+N434 FÖRTECKEN FEL
+N435 VINKEL REFERENS SAKNAS
+N436 VINKEL REFERENS SAKNAS
+N437 CIRKELRADIE FÖR LITEN
+N438 VINKEL REFERENS SAKNAS
+N439 VINKEL REFERENS SAKNAS
+N440 DEP-AVBROTT EJ TILLÅTET
+N441 DEP-AVBROTT EJ TILLÅTET
+N442 INGA KOORDINATER EFTER APPR.
+N443 OMRÅDE ÖVERSKRIDET
+N444 FELAKTIGT DATA FÖR OMRÅDE
+N445 START POSITION EJ KORREKT
+N446 TIDSBEGRÄNSNING ÖVERSKRIDEN
+N447 CYCL PARAMETER EJ KORREKT
+N448 TILLÄGGSMÅTT STÖRRE ÄN DJUP
+N451 SKALFAKTORER EJ LIKA
+N454 MÄTSPETS UTBÖJNING FÖR STOR
+N455 FÖR MÅNGA KONTURELEMENT
+N456 FÖR MÅNGA KONTURELEMENT
+N457 FÖR MÅNGA KONTURELEMENT
+N458 FÖR MÅNGA KONTURELEMENT
+N459 FÖR MÅNGA KONTURELEMENT
+N460 FÖR MÅNGA KONTURELEMENT
+N461 FÖR MÅNGA KONTURELEMENT
+N462 FÖR MÅNGA KONTURELEMENT
+N463 FÖR MÅNGA KONTURELEMENT
+N464 FÖR MÅNGA KONTURELEMENT
+N465 FÖR MÅNGA KONTURELEMENT
+N466 FÖR MÅNGA KONTURELEMENT
+N467 FÖR MÅNGA KONTURELEMENT
+N468 FÖR MÅNGA KONTURELEMENT
+N469 FÖR MÅNGA KONTURELEMENT
+N470 FÖR MÅNGA KONTURELEMENT
+N471 FÖR MÅNGA KONTURELEMENT
+N472 FÖR MÅNGA KONTURELEMENT
+N473 FÖR MÅNGA KONTURELEMENT
+N474 FÖR MÅNGA KONTURELEMENT
+N475 KONTUR-PROGRAMMERINGSFEL
+N477 KONTUR-PROGRAMMERINGSFEL
+N478 KONTUR-PROGRAMMERINGSFEL
+N479 KONTUR-PROGRAMMERINGSFEL
+N480 KONTUR-PROGRAMMERINGSFEL
+N481 KONTUR-PROGRAMMERINGSFEL
+N482 KONTUR-PROGRAMMERINGSFEL
+N483 KONTUR-PROGRAMMERINGSFEL
+N484 KONTUREN FÖR KOMPLEX
+N485 KONTUREN FÖR KOMPLEX
+N486 KONTUREN FÖR KOMPLEX
+N487 KONTUREN FÖR KOMPLEX
+N488 KONTUREN FÖR KOMPLEX
+N489 KONTUREN FÖR KOMPLEX
+N490 KONTUREN FÖR KOMPLEX
+N491 KONTUREN FÖR KOMPLEX
+N492 KONTUREN FÖR KOMPLEX
+N493 KONTUREN FÖR KOMPLEX
+N954 ADRESSBOKSTAV UPPTAGEN
+N494 BLOCK FÖR LÅNGT
+N955 G-CODE GRUPP UPPTAGEN
+N495 OKÄND G-FUNKTION
+N496 BLOCK N SAKNAS
+N497 CMA-FILE: INGEN AKTIV RAD
+N500 FÖR MÅNGA KORRIGERINGSPUNKTER
+N501 FÖR MÅNGA KORRIGERINGSFUNKTIONER
+N957 STRÖMAVBROTT STRÖMAVBROTT
+N958 STYRSPÄNNING TILL RELÄET SAKNAS STYRSP. TILL RELÄET SAKNAS
+N859 FEL
+N860 AXEL EJ FRAMSTÄLLBAR
+N861 INGEN YTTERLIGARE FÖRMINSKNING
+N862 INGEN YTTERLIGARE FÖRSTORING
+N863 BLK FORM EJ FRAMSTÄLLBART
+N864 FEL VERKTYGSAXEL I BLK-FORM
+N865 VERKTYGS RADIE EJ FRAMSTÄLLBAR
+N888 FINNER EJ TEXTEN
+N1086 FÖR MÅNGA PUNKTER
+N1097 TOLERANSVÄRDE FÖR STORT
+N1106 RADERA HELA CYKELN: DEL!
+N1107 BLOCK EJ TILLÅTET I CYKEL !
+N1125 HÄNVISN. I BLOCK %.6s: EJ DEL
+N1126 INAKTIVERA M112
+N1141 VID M120 LA=0 UPPHÄV ÄVEN RL/RR
+N1142 UPPGIFT OM RADIEKORR. SAKNAS
+N1143 RADIEKOMPENSERING EJ TILLÅTEN
+N1144 R+/R- VID M120 EJ TILLÅTET
+N1145 RND VID M120 EJ TILLÅTET
+N1146 FAS VID M120 EJ TILLÅTET
+N1147 ANALOGSPÄNNING EJ DEFINIERAD
+N1148 ANALOGSPÄNNING EJ ENTYDIG
+N1149 INMATNINGSFEL I MP%.4u
+N1150 MÄTPROBE EJ KLAR %.3s
+N1151 ÅTERGÅNG MED M120 FELAKTIG
+N1154 EJ TILLÅTEN FILBETECKNING
+N1170 MÄTANDE AVKÄNNARSYSTEM VALT.
+N1171 BRYTANDE AVKÄNNARSYSTEM VALT
+N1172 KALIBRERING AVKÄNNARSYSTEM
+N1178 3DROT AKTIV: ANVÄND AXELKNAPPAR
+N1182 INMATNINGSFEL I MP%.4u.%u
+N1186 FILFORMAT HAR ÄNDRATS
+N1187 M89 EJ TILLÅTET
+N1192 ANGIVEN VINKEL EJ TILLÅTEN
+N1193 TOOL.T: ANGE ANTAL SKÄR
+N1266 BLOCKFORMAT FELAKTIGT
+N1521 PLC FELTABELL EJ ÖVERSATT
+N1523 PLC: INGEN FELTABELL SELEKTERAD
+N1524 PLC: INGEN FELTABELL TILLGÄNGLIG
+N1525 PLC: FELTABELL ÄR EJ .PET
+N1527 PLC: FELTABELL EJ FUNNEN
+N1528 PLC: FELTABELL FELAKTIGT FORMAT
+N1568 FEL AXEL I .PNT-FIL
+N1590 AVST-VÄRDE FÖR LITET
+N1682 TOOL.T: LCUTS EL. ANGLE SAKNAS!
+N1745 ÅTKOMST NEKAD
+N1749 FELAKTIGT NUMMER FÖR FN17/FN18
+N1749 FELAKTIGT NUMMER FÖR FN17/FN18
+N1750 PLC: FEL VID MODULANROP
+N1789 VERKTYG SPÄRRAT
+N1790 FEL OMRÅDESCYKEL
+N1791 PUNKTAVSTÅND FÖR STORT
+N1792 FEL RADAXEL
+N1793 FEL SPALTAXEL
+N1794 FEL VINKELAXEL
+N1795 FEL AXEL I CYKEL OMRÅDE
+N1796 RADAVSTÅND FELAKTIGT
+N1797 INGEN CYKEL OMRÅDE DEFINIERAD
+N1798 ÄNDLÄGESBRYTARE DIGIT.OMRÅDE
+N1799 SÄKERHETSHÖJD ÄR FÖR LITEN
+N1807 OTILLÅTET FILNAMN
+N1809 M114 MED M116 EJ TILLÅTET
+N1810 SYSTEMMINNE FULLT
+N1845 AKTUALISERA SYSTEMDATA!
+N1848 KATALOGEN ÄR INTE TOM
+N1850 CYKEL 4(G75/G76): FEL AXEL
+N1851 M130 EJ TILLÅTEN
+N1852 M130 MED M114 EJ TILLÅTET
+N1853 M130 EJ TILLÅTEN
+N1854 M130 MED KOMP. EJ TILLÅTEN
+N1855 INGEN BEARB.-CYKEL DEFINIERAD
+N1856 MATNING PENDLING SAKNAS
+N1857 VERKTYGS RADIE FÖR STOR
+N1892 FN20/D20: FELAKTIG ANVÄNDNING
+N1900 ENHET UPPTAGEN
+N1901 ENHET EJ TILLGÄNGLIG
+N1914 VERKTYGSBROTT
+N2039 FELAKTIGT NOLLPUNKTSNUMMER
+N2040 SPÅRBREDD FÖR LITEN
+N2041 FICKA FÖR LITEN
+N2042 Q202 EJ DEFINIERAD
+N2043 Q205 EJ DEFINIERAD
+N2044 Q218 MÅSTE VARA STÖRRE ÄN Q219
+N2045 CYCL 210 EJ TILLÅTEN
+N2046 CYCL 211 EJ TILLÅTEN
+N2047 Q220 FÖR STOR
+N2048 Q222 MÅSTE VARA STÖRRE ÄN Q223
+N2049 Q244 MÅSTE VARA STÖRRE ÄN 0
+N2050 Q245 FÅR EJ VARA LIKA MED Q246
+N2051 VINKEL MÅSTE VARA MINDRE ÄN 360°
+N2100 PALETT EJ INVÄXLAD
+N2101 PLC:\NCMACRO.SYS SAKNAS!
+N2102 'PALETT' SAKNAS I NCMACRO.SYS
+N2103 PALETTUPPGIFT SAKNAS
+N2186 TIPPNING: VERKTYGSAXEL SAKNAS
+N2211 TOOL CALL VID M128 EJ TILLÅTET
+N2212 M91/M92 VID M128 EJ TILLÅTET
+N2213 MP75XX EJ DEFINIERAD
+N312 SPALTAXEL EJ TILLÅTEN HÄR
+N2222 FIL EJ FUNNEN I OEM.SYS
+N2223 FELAKTIG FILTYP
+N2224 FÄLTNAMN EJ FUNNET
+N2225 FIL TOM
+N2226 MATERIAL-TABELL EJ FUNNEN
+N2227 SKÄRMATERIAL-TABELL EJ FUNNEN
+N2228 INGET MATERIAL VALT
+N2229 WMAT-TMAT-KOMBINATION SAKNAS
+N2230 INGEN SKÄRDATA-TABELL VALD
+N2231 BLOCK EJ TILLÅTET MED M112
+N2232 KORRIGERA ERROR-BLOCK
+N2233 FK-BLOCK EJ VALBART MED GOTO
+N2238 Q223 MÅSTE VARA STÖRRE ÄN Q222
+N2243 ANGLE I TOOL.T FÖR LITEN
+N2253 Stäng av styrspänningen!
+N2254 Relä: normalt öppen?
+N2255 SLÅ PÅ STYRSPÄNNINGEN
+N2273 TS: REPETEROMRÅDE ÖVERSKRIDET
+N2284 PARALLELL-DRIFT EJ MÖJLIGT
+N2285 AXEL SPÄRRAD
+N2288 VERKTYGSINSPÄNNING DEFEKT!
+N2300 KONTROLLERA SKÄRDATA !
+N2315 Q214: 0 ej tillåtet
+N2316 PLC: Sekvens-fil saknas
+N2317 PLC: För många händelser
+N2319 Verktygstyp-tabell ej funnen
+N2320 CDT-sökväg ej funnen
+N2321 För många *.CDT-filer
+N2336 Andra S säker ingång ej lika %d
+N2339 Ingen kontakt med nätverk
+N2342 FN17: Tilldelat värde otillåtet
+N2344 Ange element!
+N2345 Verktyg ej definierat
+N2375 M112 med M128 ej tillåtet
+N2377 S: Gränsläge %.2s+
+N2378 S: Stort positioneringsfel L %.2s
+N2377 S: Gränsläge %.1s-
+N2384 Inga element tillgängliga!
+N2385 Obligatoriskt fält raderat!
+N2386 Max. radlängd överskriden!
+N2387 Fel vid konvertering!
+N2500 Använd ÅTERSTÄLL POS. VID N
+N2504 Rörelseriktning ej definierad
+N2505 Ingen nollpunktstabell aktiv
+N2506 Lägesfel: Centrum i axel 1
+N2507 Lägesfel: Centrum i axel 2
+N2508 Håldiameter för liten
+N2509 Håldiameter för stor
+N2510 Öns diameter för liten
+N2511 Öns diameter för stor
+N2512 Ficka för liten: Efterarb. ax 1
+N2513 Ficka för liten: Efterarb. ax 2
+N2514 Ficka för stor: Defekt i axel 1
+N2515 Ficka för stor: Defekt i axel 2
+N2516 Ö för liten: Defekt i axel 1
+N2517 Ö för liten: Defekt i axel 2
+N2518 Ö för stor: Efterarbeta axel 1
+N2519 Ö för stor: Efterarbeta axel 2
+N2520 Mätcykel: Längd över max
+N2521 Mätcykel: Längd under min
+N2522 TCHPROBE 426: Längd över max
+N2523 TCHPROBE 426: Längd under min
+N2524 TCHPROBE 430: Diameter för stor
+N2525 TCHPROBE 430: Diameter för liten
+N2609 M128 ej tillåten vid 3DROT
+N2610 M114 ej tillåten vid M128
+N2611 M128 ej tillåten vid RR/RL
+N2617 Ingen mätaxel definierad
+N2618 Datum eller tid har fel format
+N2621 M128: Ändra UTG.PKT ej tillåtet
+N2635 Tol. verktygsbrott överskriden
+N2636 Upphäv radiekomp. före M128
+N2642 Servoförstärkare ej driftklar
+N2644 M120: LOOK AHEAD ej möjlig
+N2645 Säkerhetshöjd Q260< Mäthöjd Q261
+N2646 MC maskinkontakt intryckt
+N2647 Relä: n.c. kontakt sluten?
+N2655 Spindelmotorström ej lika med 0
+N2657 Axel %.2s motorström ej lika med 0
+N2662 Markering ej möjlig
+N2663 Infoga ej möjligt
+N2664 Buffertminne tomt
+N2665 Ingen blockbörjan har markerats
+N2668 Korrigera felaktigt blockformat
+N2691 LN-block: Spindelläget omöjligt
+N2692 M128 med LN-block är ej tillåtet
+N2700 Test av avstängn.kanaler inaktiv
+N2711 S-kontrollsumma felaktig
+N2733 För många kolumner
+N2734 Ingen axelkolumn vald
+N2735 M128 ej tillåten
+N2736 Ingen .TAB fil öppnad?
+N2737 TAB: För långt fältnamn
+N2738 TAB: Ej numeriskt fält
+N2739 TAB: För många fältnamn
+N2745 Felaktig referensposition %.2s
+N2746 INMATNINGSFEL I MP%u
+N2747 Raden är skrivskyddad
+N2748 Mätcykel: M114 ej tillåten
+N2749 Mätcykel: M128 ej tillåten
+N2750 M114, M128, 3DROT ej tillåtet
+N2752 MP: INMATNING MOTSÄGELSEFULL
+N2757 Kommandobuffert overflow
+N2758 Kommando överensstämmer ej
+N2760 FS-funktion ej utförd
+N2768 MC HR säkerhetsbrytare påverkad
+N2769 Ofullständig cykel har raderats
+N2770 Buffertminne tomt
+N2771 Ingen skrivrättighet
+N2772 Radera komplett funktion: NO ENT
+N2773 Ej tillåten ändring av funktion
+N2774 Polära koordinater ej möjligt
+N2775 Ändra funktion: tryck ENT
+N2776 Inmatning som kontext otillåten
+N2777 Kontrollera parentes-kombination
+N2820 MC pos.-avvikelse för stor %.2s
+N2824 Kalibrering TT i tippat plan
+N2825 Kalibrering TT icke tippat plan
+N2826 TT ej parallell med verktygsaxel
+N2827 Felaktigt bromsförlopp %.2s
+N2828 Lägesregleringstid för kort
+N2829 Q247 får ej vara 0
+N2830 Q247 måste vara större än 5
+N2834 EnDat defekt %X %.2s
+N2837 FK-block ej översatt
+N2849 Starta spindel
+N2853 Synkron-övervakning %.2s
+N2858 Inga kontrollrättigheter
+N2868 TT: Förpositionera axlarna
+N2945 M91/M92 ej tillåtet
+N2969 Obligatoriskt värde saknas
+N2993 Internetadress felaktig
+N2995 PLC-nollp.förskjutn. ej tillåten
+N2996 Områdesväxling ej tillåten
+N3002 Specialdrift ej tillåten
+N3006 Utför verktygsväxling!
+N3012 M120 LA ej tillåten
+N3013 Cirkelinterpolering ej tillåten
+N3025 Palettrad spärrad!
+N3026 Radiekompensering ej möjlig!
+N3055 Ange ej fräsmetod Q351 = 0
+N1149 INMATNINGSFEL I MP%.4u
+N958 STYRSPÄNNING TILL RELÄET SAKNAS
+N1182 INMATNINGSFEL I MP%.4u.%u
+N3063 3DROT: Ingen beskrivning funnen
+N3065 Återställ M114,M128 eller CYCL19
+N3081 Minska gängans djup
+N3187 Ingen PNT-fil selekterad
+N3188 PNT: Säkerhetshöjd för liten
+N3189 CYCL CALL PAT ej tillåtet
+N3192 Utför kalibrering
+N3193 Tolerans överskriden
+N3199 Spindelväxling ej tillåten
+N3205 Autostart ej frigiven
+N3206 Inget makro %.20s
+N2720 MC amplitud för hög %.2s
+N44 MC amplitud för låg %.2s
+N45 MC frekvens för hög %.2s
+N2687 MC NC-temperatur utanför tol.
+N2612 MC S-ingång %d ej lika med 0
+N14018 MC stilleståndsövervakning %.2s
+N57 CC ändlägesbrytare %.2s-
+N55 CC ändlägesbrytare %.2s+
+N3214 Tabellvärde har ändrats
+N3218 PLC-funktion ej tillåten
+N3220 Tolerans i MP6510 för liten
+N3221 Kalibreringsradie för stor
+N3231 Fält PAL/PGM saknas
+N3232 Language load error %d
+N3234 Verktygsförval utförs
+N3235 Negativ matningshastighet
+N3236 Avstängningspos %.2s ej lika ENDAT
+N3239 Vald software ej laddad
+N3243 Ingen verktygsaxel programmerad
+N3245 M-funktion ej tillåten
+N3354 Funktion ej tillåten
+N3356 Kinematik-tabell felaktig
+N3357 MP-delfil felaktig
+N3441 M144 ej tillåten
+N4957 INDATA MOTSÄGELSEFULLT
+N3532 Felaktig uppgift i MFUNCT.TAB
+N3927 Avkänning ej tillåten
+N3928 M112 ej tillåten vid M144
+N4175 Palettrad med färdig detalj
+N4176 Fixturväxlingsmakro saknas
+N4177 Felaktig geometri-kontext
+N4197 Blockläsning aktiv
+N4276 ORIENTERING ej tillåten
+N4491 Blockframläsning är inte möjlig
+N4492 MC säkerhetsbrytare VERKTYGSMAG påverkad
+N4571 Kontrollera djupets förtecken!
+N4572 Inmmatat tecken ej tillåtet
+N4573 Små bokstäver ej tillåtna
+N4574 Bokstav ej tillåten
+N4575 Siffra ej tillåten
+N4880 För lite system-minne
+N4881 PLC-program ej funnet
+N4882 M140 ej tillåten
+N4903 Radie-tilläggsmått ej tillåtet
+N4905 Processor 1 för hög temperatur
+N4906 Processor 2 för hög temperatur
+N4935 Är-position sparad %.2s
+N5073 LSV2: Linjen avbruten
+N5074 LSV2: Överföringsfel
+N5075 LSV2: Överföringsfel
+N5076 LSV2: Överföringsfel
+N5077 LSV2: Timeout-fel
+N5078 LSV2: Överföringsfel
+N5079 LSV2: Timeout-fel
+N5080 LSV2: Timeout-fel
+N5081 LSV2: Sändningsfel
+N5099 MC inget tillgängligt minne
+N5225 Felaktig software-version
+N5228 Matning = 0 ej tillåtet
+N5236 TNC-temperatur för hög %d°C
+N5242 PLC-PROGRAM EJ ÖVERSATT
+N204 TNC-temperatur för hög %d°C
+N5286 Fel: Profibus-konfiguration
+N5287 Profibus: Hårdvarufel
+N5288 Profibus: Initialiseringsfel
+N5312 Remanenta PLC-data raderade
+N5338 Softkeyprojekt ej översatt
+N5366 Infoga rad inte tillåtet
+N5367 T %u i rad %u redan belagd
+N5368 LBL %u i rad %u redan belagd
+N5369 Ingen axel selekterad
+N2612 CC%d S-ingång %d ej lika med 0
+N2687 CC%d NC-temperatur utanför tol.
+N2688 CC%d +5V utanför tolerans
+N5434 Funktion ej tillgänglig
+N5479 Magasin-regler ej översatta
+N5484 Axelvinkel och tiltvinkel olika
+N5566 Ingen växling av referenssystem!
+N5567 MC fel antal FS-CC
+N5568 Max. antal tecken överskridet
+N5569 Värde utanför inmatningsområdet
+N5570 För många decimaler
+N5571 Förtecken ej tillåtet
+N5572 Endast heltal tillåtet
+N5573 Q ej tillåtet: Ange siffror!
+N5574 Inkrementalinmatning ej tillåten
+N5575 För många M-funktioner
+N5576 För många axlar programmerade
+N5577 DUBBEL PROGR. FÖR EN AXEL
+N5578 Dubbelt element / ej tillåtet
+N5579 Ofullständig datainmatning
+N5580 ISO: Blocknummer N saknas
+N5581 Erforderligt element saknas
+N5582 Fel syntax
+N5583 Inget mätvärde lagrat %.2s
+N5617 Nyckelord okänt
+N5618 Syntaxelement ej editerbart
+N5619 PGM-huvud ej editerbart
+N5627 Sätt MP1356.%d till %.4f
+N5628 För många axlar programmerade
+N2652 CC%d spindelservo RDY=0
+N2653 CC%d servoförstärkare axel RDY=0
+N2654 CC%d spindelservo RDY=1
+N2656 CC%d servoförstärkare axel RDY=1
+N2743 CC%d FS-kontrollsummafel
+N2759 CC%d kommando ej kvitterat
+N2819 Felaktiga data från CC%d
+N2821 Inget positionsvärde från CC%d
+N2822 CC%d inget positionsvärde från MC
+N2823 MC/CC%d kontr. av axlar olika
+N2831 CC%d felaktig includefile-vers.
+N5097 CC%d SH1=0
+N5096 CC%d SH1=1
+N2743 MC S-kontrollsummafel
+N5631 MC kommando %3d ej kvitterat
+N5632 MC och CC passar inte ihop
+N5635 Kanal %d kan inte visas
+N5641 MC säkerhetsdörrar är öppna
+N5651 VERKTYGSAXEL SAKNAS
+N5655 Axel %.2s startad utan test av MC
+N5671 Kontrollera positionsgivare %.2s
+N5672 Använd preset-tabell!
+N5673 Q303 i mätcykel odefinierad!
+N5693 Verktygsaxel ej tillåten
+N5699 Beräknat värde felaktigt
+N5700 Motsägelsefulla mätpunkter
+N5709 Cirkeldata felaktiga
+N5712 Lösenord ej funnet
+N5713 Inget lösenord angivet
+N5714 För långt lösenord
+N5715 Lösenord redan krypterat
+N5757 Presetinställning: Axel spärrad!
+N5759 Säkerhetshöjd felaktigt angiven!
+N5969 Verkligen radera NC-block? DEL!
+N5970 Axelbokstav ej tillåten
+N5971 Upphäva blockskip ej möjligt
+N5972 Sträng ej avslutad
+N6018 Dubbel referenssökning är aktiv
+N6027 FEL AXEL PROGRAMMERAD
+N6049 PET-tabell: För många rader
+N6052 Motsägelsefullt skärdjup!
+N6055 Bearbetningscykeln ej tillåten
+N6066 Vridaxeltolerans ej tillåten
+N6069 MC PWM-utgång ej tillgänglig
+N6072 Bildskärmens kant överskriden
+N6079 M128 ej tillåten
+N6080 M144 ej tillåten
+N6081 MC SOM 4 ej möjlig
+N6082 MC driftart ej möjlig
+N6086 Fel vid lagring övervakn.-lista
+N6087 Fel vid öppning övervakn.-lista
+N6088 Fel vid öppning TEMP.WLT
+N6089 Senaste övervakn.-listan saknas
+N6090 Urvalslista saknas
+N6091 Urvalslista är tom
+N6094 Felaktigt kodnummer
+N6093 Ingen säker axel/spindel
+N6099 Ogiltigt värde
+N6100 Ogiltig operand
+N6101 MC SOM 4 ej frigiven
+N6102 Kolumnen får inte ändras
+N6103 Preset-nummer existerar inte
+N6105 MC SOM 2 endast en axel tillåten
+N498 FIL %.28s SAKNAS
+N206 PGM %.28s SAKNAS
+N6118 Tryck på MC SOM 4 säkerhetsbrytare
+N6182 Profibus: Konfigurationsfel
+N6183 Profibus: PCI-hårdvarufel
+N6184 Profibus: Fil-/minnesfel
+N6187 FÖR STOR SAMMANFOGNING
+N6188 FÖR STOR SAMMANFOGNING
+N6189 5V-försörjningsspänning för hög
+N6190 5V-försörjningsspänning för låg
+N6193 Spline-startpunkt felaktig
+N6212 Överföring av ärvärde ej möjligt
+N6236 PLC-programmet har stoppats
+N6264 Parallellgrafik ej möjlig!
+N6291 Referenssök spindeln!
+N6294 SG-MP ändrade av PLC
+N6307 T%s: Restlivslängd för kort
+N6308 Verktyg %s ej definierat
+N6309 Dataöverföring: Otillåtet tecken
+N6312 MP-delfil saknas
+N6408 MP-delfil felaktig
+N6409 PLC-strobe ej tillåten (%s)
+N6410 PLC-strobe otillåten cykel %d
+N6411 Växla rörelseområde ej tillåtet
+N6412 Preset lagring ej möjlig
+N6413 Kinematik ändring ej möjlig
+N6414 Block scan inkonsekvent %s
+N7222 Raden är skrivskyddad
+N7784 Fel vid skrivande till tabell
+N7799 MC bromstest ej genomfört
+N7800 MC +24V slutning på bromskanal 1
+N7801 MC 0V slutning på bromskanal 1 %.2s
+N7803 Ställ in utgångspunkt via softkey!
+N7815 Maskin ej initialiserad
+N7922 Försörjningsspänning saknas på X44
+N7923 MC Vkt-mag AutoStart ej möjlig
+N7935 Binärfil på extern enhet
+N7936 Målkatalog samma som källkatalog
+N7937 Målfil samma som källfil
+N7938 MP2257.%d felaktig (ID=$%08X)!
+N7964 TCPM: Inkonsekvent riktn.vektor!
+N7969 Applikation %s ej möjlig
+N7971 Process kan inte utföras
+N7972 Målenhet ej tillgänglig
+N7973 Omdöpning ej möjlig
+N7974 Ändring av filtyp ej möjlig
+N7975 Inget utrymme på diskenhet
+N7977 Filsystem I/O fel
+N7978 Filåtkomst avbruten
+N7979 För många öppna filer
+N7980 Rad/block för lång
+N7981 Fil ej tillgänglig
+N8001 Ingen realtidsapplikation aktiv
+N8002 Fel i realtidsapplikation
+N8005 Kontextväxling endast vid init.!
+N8032 LSV-2: För många anslutningar
+N8043 Kompilering ej tillåten
+N8044 PLC-källfiler ej tillgängliga
+N8049 Beroende filer skrivskyddade
+N8071 Fönsterväxling ej möjlig!
+N8072 Skrivskyddad struktureringsfil!
+N8090 Pendlande nedmatning ej möjlig!
+N8110 NC-program avbrutet
+N7798 SYSTEM ERROR %d
+N8114 0x01 Funktion okänd
+N8115 0x02 Funktion redan startad
+N8116 0x03 Regleringen är inte aktiv
+N8117 0x04 Regleringen är aktiv
+N8118 0x05 Puls för stor
+N8119 0x06 Okänd parameter
+N8120 0x07 Fel vid läsning DAC-värden
+N8121 0x08 Seriell EEPROM: Ingen kvittering
+N8122 0x09 Seriell EEPROM: SDA hänger på 0 eller 1
+N8123 0x0A Data saknas
+N8124 0x0C Funktion spärrad
+N8125 0x0D Fel driftart i TNC:n
+N8126 0x10 Odefinierad fel (se felbuffert)
+N8128 DSP-kommandosträng för lång
+N8129 Inga data mottagna
+N8130 Felaktiga data mottagna
+N8131 Inga mätdata tillgängliga
+N8132 Obestämd felorsak
+N8133 Maskinparameter servoreglering ej tillgänglig
+N8134 Motortypen stöds inte
+N8135 Ingen HEIDENHAIN-effektdel
+N8136 Felaktig regleringsenhet
+N8140 Meddelande ej definierat
+N8141 Meddelande ej väntat
+N8142 Felmeddelande från servoregler.
+N8213 INMATAT VÄRDE FEL
+N499 FIL %.28s SAKNAS
+N8231 FUNCTION TCPM ej möjlig
+N8284 Inmatning el. typskylt saknas: %s
+N8290 Arbetsutrymme överskridet
+N8292 PL 510 matningsspänning saknas
+N8293 Kortslutning PL 510-utgång
+N8401 PLC-modul %d okänd
+N8494 CC%d timeout versionsjämförelse
+N8495 CC%d timeout SMP kontrollsumma
+N8591 PLANE-fkt.: TURN ej tillåten!
+N8643 CYCL CALL POS-block ofullständig
+N8644 Inkremental-progr. ej tillåten
+N8658 Sätt utgångspunkt i alla axlar
+N8757 MC 422B fläkt defekt
+N8758 Denna EnDat-OEM-version stöds inte.
+N8892 Kopplingsfunktion ej utförbar
+N502 ROTATIONSRIKTNIG SAKNAS
+N503 RUNDNINGSRADIE FÖR STOR
+N504 INDATA MOTSÄGELSEFULLT
+N505 KONTUR-DEFINITION ICKE TILLRÄCKLIG
+N506 FPOL SAKNAS
+N507 TNC PROGRAMBLOCK EJ TILLÅTET, SÅ LÄNGE KONTUR EJ BERÄKNAD
+N508 KONTUREN ÄR LÖST: FSELEKT-BLOCK EJ TILLÅTET
+N509 SLUTPUNKT PÅ SLUTEN KONTUR. INGA INKR. KOORDINATER TILLÅTNA
+N510 RUNDNING ELLER FAS EJ TILLÅTEN PÅ DENNA PLATS
+N511 RUNDNING/FAS MED TANGENTIELL ÖVERGÅNG EJ MÖJLIGT
+N512 LINJEN FÖRE ELLER EFTER RUNDNING/FAS HAR LÄNGDEN NOLL
+N513 FAS ÄR ENDAST MÖJLIGT MELLAN TVÅ RÄTA LINJER
+N514 FAS FÖR STOR
+N515 BANKORR. FELAKTIGT PÅBÖRJAD: NC-BLOCK SKALL VARA EN LINJE
+N516 BANKORR. FELAKTIGT AVSLUTAD: NC-BLOCK SKALL VARA EN LINJE
+N517 KONTUR ALLTFÖR KOMPLEX. MER INDATA ERFORDRAS
+N518 FK: ARITMETISKT FEL
+N519 FK BLOCK EJ TILLÅTET PÅ DENNA PLATS
+N522 REFERENS TILL ANGIVET BLOCK EJ TILLÅTET
+N523 REFERENS TILL CC BLOCK EJ TILLÅTET
+N525 FÖR HJÄLPPUNKT ANGE BÄGGE KOORDINATERNA
+N526 FK-GRAFIK I PARALLELL-DRIFT EJ MÖJLIGT
+N527 ÄMNET FÖR STORT
+N528 FÖNSTER-SNITT FÖR STORT
+N529 FÖNSTER-SNITT FÖR LITET
+N530 FÖNSTER-SNITT EJ MER FÖRSKJUTBART
+N9785 Ingen rörelse kunde detekteras. Därför är riktningsavläsning ej möjlig.
+N10248 NC-funktion ej tillåten
+N10521 Start-tidpunkt har passerats
+N10664 Verktygsanvändningsfil spärrad
+N10665 Programmeringsgrafik ej möjlig
+N10672 SPAWN/SUBMIT blockerar kontextväxlingen
+N10710 PROFIBUS-ingångar ej uppdaterade
+N10711 PROFIBUS-ingångar ej uppdaterade
+N10942 Ofullständig presentation
+N10949 Ansättning i sida för liten
+N10950 Överlappningsfaktor för stor
+N11044 Cylinderradie 0 ej tillåten!
+N11045 Queue overflow: %s
+N11114 Systemfel
+N11115 Systemfel
+N11116 Systemfel
+N11117 Systemfel
+N11232 Driftartsväxling ej möjlig
+N11275 Filtyp saknas eller felaktig
+N11391 Spärrad knapp
+N11410 Global Q-param. ej definierad
+N11411 Global Q-par. dubbelt definierad
+N11412 Globala parametrar saknas
+N11413 smarT.NC ej möjligt
+N11442 Två vridningslägen ej tillåtet
+N11453 Filnamn existerar redan
+N11454 Programhuvud existerar redan
+N11559 M120: LOOK AHEAD ej möjlig
+N11574 M114 UTAN MASKINGEOMETRI
+N11575 AXELGEOMETRI EJ DEFINIERAD
+N11576 RUNDBORDS-KOORDINATER SAKNAS
+N11577 Ingen kinematik definierad
+N11578 Vinkelberäkning ej möjlig
+N11579 Kinematik-tabell saknas
+N11580 Aktivera 3DROT
+N11581 PLANE-funktion ej möjlig!
+N11582 CC%d : Program %s startar inte
+N11585 PLC-strobe ej tillåten (M%d)
+N11586 Testgrafik ej möjlig
+N11588 PGM editeras i smarT.NC
+N11589 PGM editeras parallellt
+N11593 Option saknas för reglerenhet
+N11595 Radering av filen ej möjlig
+N11597 Störning på PL-interface
+N11598 PLC-partition: För lite minne
+N11601 CC%d: TIMEOUT CMD=0x%02X
+N11750 Fil ej tillgänglig
+N11751 Välj fil på nytt!
+N11752 Label-namn upptaget
+N11753 Label-namn tilldelat flera ggr
+N11754 Label-namn ej funnet
+N11755 Label-namn i rad %u upptaget
+N12214 USB-enhet kan inte tas bort
+N12215 USB-enhet borttagen utan att stänga
+N12283 Ingen spetsvinkel definierad
+N12284 Motsägelsefulla data
+N12358 AVBROTT i block %u (%u %%)
+N12759 Treeview-uppbyggnad avbruten
+N12760 MC fläkt defekt
+N12767 Reentrance impossible
+N12768 För många units programmerade
+N12770 3,3V-försörjningsspänning för hög
+N12771 3,3V-försörjningsspänning för låg
+N181 DEFINITION BLK FORM FELAKTIG
+N520 FCT ELLER FLT BLOCK EJ TILLÅTET PÅ DENNA PLATS
+N521 INKREMENTAL VINKELREFERENS EJ TILLÅTET HÄR
+N524 FÖR FPOL ANGE BÄGGE KOORDINATERNA
+N12822 Funktion kunde inte avslutas (Timeout)
+N12823 Ange verktygsradie större än 0
+N12824 Fler än 5 axlar vid PLC-pos.
+N12830 Spårläge 0 ej tillåtet!
+N12837 Kontur-UP: Endast 1 axel prog.
+N12857 Tillåten PGM-längd överskriden
+N6091 Ingen symbolisk programmering
+N13066 Preset lagring ej möjlig
+N13072 Inställn. utgångspkt ej tillåten
+N13147 PLC-programmet exekveras inte
+N4 FELAKTIG DATA INFORMATION 3
+N9 FELAKTIG DATA INFORMATION 8
+N11 FELAKTIG DATA INFORMATION A
+N12 FELAKTIG DATA INFORMATION A
+N14 FELAKTIG DATA INFORMATION A
+N16 FELAKTIG DATA INFORMATION B
+N19 FELAKTIG DATA INFORMATION E
+N29 FELAKTIG DATA INFORMATION O
+N33 KONTROLLERA SUMMA FEL A
+N34 KONTROLLERA SUMMA FEL B
+N40 RÖRELSEÖVERVAKNING %.2s A
+N43 Positionsdifferens position <> varvtal för stor %.2s
+N13741 Rad %d: tecken ; saknas
+N13742 Rad %d: Ant. nyckelord
+N13743 Rad %d: Felaktigt nyckelord
+N13744 Rad %d: Okänt kommando
+N13745 Rad %d: Felaktig formatanvisn.
+N13746 Rad %d: Ofullständ. formatanv.
+N13747 Rad %d: För långt nyckelord
+N13748 Rad %d: Index saknas
+N13749 Rad %d: ] saknas vid index
+N13750 Maskfil ej funnen
+N13751 Utmatningsfil kan inte skapas
+N13154
+N13155 Kollisionsvarning kvitterad
+N13156 Profibus-Firmware ej aktuell
+N13302 MPFRAGMENTFILE ej tillgänglig
+N13340 INMATAT VÄRDE FEL
+N13348 DHCP: Inmatning ej tillåten
+N13381 Återställa kolumn ej tillåtet
+N13387 Ange ansättning som inte är 0
+N13475 Funktion ej tillåten!
+N13476 Buffertminne tomt!
+N13477 MC bromsstyrning defekt
+N13478 MC bromsstyrning defekt %.2s
+N13486 Varvtal utanför områdesgränserna %d%%
+N13487 USB: TNC:n stödjer inte enheten
+N13752 Editering ej tillåten
+N13753 TOOL.T: Antal skär definierat=0
+N13758 M118 ej tillåten
+N13761 Editering ej tillåten
+N13769 Icke reglerad axel %.2s: Stillestånd
+N13816 Funktion ej tillåten
+N13825 Funktion ej frigiven
+N13827 DXF-fil felaktig
+N13838 Autom. knappspärr upphävd
+N13945 Funktion ej tillåten
+N13957 Editering ej tillåten
+N13958 M136 ej tillåten med FU/FZ
+N13960 smarT.NC ej tillåten
+N13961 Inkremental-inmatn. ej tillåten
+N14017 Växling Q399 ej tillåten
+N14019 CC%d timeout vid strömmätning
+N14020 MC felaktig S-driftart
+N14022 CC maskinknapp intryckt
+N14023 MC säkerhetsbrytare MB påverkad
+N14024 CC säkerhetsbrytare MB påverkad
+N14025 CC säkerhetsbrytare handratt påverkad
+N14026 CC säkerhetsbrytare Vktmag påverkad
+N14027 CC skyddsdörrar öppna
+N14032 BERÄKNAD KOORDINAT FÖR STOR
+N14156 Ingen verktygsaxel programmerad
+N14253 Varning: Förpos-höjd definierad!
+N14254 MC säkerhetsbrytare påverkad
+N14255 CC säkerhetsbrytare påverkad
+N14299 Programkonvertering ej möjlig
+N14434 Områdesdefinition felaktig!
+N14479 Ingen nollpunktstab. selekterad
+N14486 M140 MB MAX ej tillåten
+N14487 Max. teckenlängd överskridet
+N14518 Verktygsnummer ej tillåtet
+N14519 Verktygsnamn ej tillåtet
+N14520 Division med 0 ej tillåtet
+N14521 Roten ur ej tillåtet
+N14522 Logaritm ej tillåtet
+N14523 Tangens ej tillåtet
+N14525 Funktion spärrad via FCL
+N14550 Arcus cosinus: Värde större än 1
+N14551 Arcus sinus: Värde större än 1
+N15439 M128: Preset-ändring ej tillåten
+N15465 Inga data tillgängliga!
+N15466 Fil saknas eller felaktig
+N15491 LSV2: Stopp-punkt ej tillåten!
+N15614 Ingen avkänningvinkel definierad
+N15658 Varvtal S > än NMAX från TOOL.T
+N15672 Enhet kan inte döpas om!
+N15673 Enhet kan inte kopieras!
+N15674 Enhet kan inte raderas
+N15675 TNC kan inte öppna filtypen!
+N15687 MC rörelseövervakning %.2s
+N15688 MC bromsförlopp felaktigt %.2s
+N15691 GOTO-funktion ej tillåten!
+N15766 Verktygsaxel ej tillåten
+N15767 Tillåtet rörelseområde överskridet %.2s
+N15923 PLC-minneslayout har ändrats
+N15967 Hjälpsystemet kan inte anropas
+N15973 M141 ej tillåten
+N16007 PARALLELL-DRIFT EJ MÖJLIGT
+N16010 Personskyddsmodul stöds inte
+N16198 PLC-minneslayout kunde inte initialiseras
+N16362 MC servo RDY=0 %.2s
+N16363 MC servo RDY=1 %.2s
+N16407 Ingen dataöverföring möjlig
+N16408 Axelväxling ej möjlig
+N16409 Axelväxling ej möjlig
+N16410 Axelväxling ej möjlig
+N16411 Inmatningsgräns överskriden
+N16412 Ingen ändring tillåten
+N16413 Odefinierbart fel
+N16561 AFC: Spindel-överbelastning
+N16563 Positionsmätsystem %.2s: För hög amplitud
+N16564 Positionsmätsystem %.2s: För låg amplitud
+N16565 Positionsmätsystem %.2s: Frekvens för hög
+N46 Positionsmätsystem %.2s defekt
+N16586 PLANE AXIAL är inte tillåten
+N16593 MC bromstest ej aktiverat
+N16623 Tabelldefintion felaktig
+N16718 Spindelvarvtal utanför toleransområdet %.2s
+N16798 Globala PGM-inst. deaktiverade
+N16800 smarT.NC: Filtyp ej tillåten
+N16830 Ingen ändring av pågående PGM
+N17063 TNC:n kan inte exekvera makrot
+N17161 ENDAT interpolation ej möjlig %.2s
+N17162 Begäran el. typskylt ej möjlig
+N17163 Fel i TRC-kompensering %.2s
+N17167 'AFC' saknas i NCMACRO.SYS
+N17207 MC felaktig S-driftstatus
+N17384 Ej tillräckligt huvudminne
+N17386 Palettbearbetning ej tillåten
+N17387 M128 ej tillåten
+N17390 PLANE-funktion: MOVE ej möjlig
+N17662 Aktivt rörelseområde felaktigt
+N17663 DCM: Statusinst. felaktig
+N17735 MC bör-ärvärdesavvikelse för stor %.2s
+N17938 EnDat anslutning ej möjlig
+N18060 3DROT ej tillåten
+N18075 MC 1:a överskridning gränsläge %.2s+
+N18076 MC 1:a överskridning gränsläge %.2s-
+N18145 Anropat PGM har ändrats
+N18146 Flerfaldig markering ej tillåten
+N18147 Funktion ej möjlig för katalog
+N18148 PGM-skydd kan ej sättas/upphävas
+N18149 Filtyp skyddad via MP
+N18150 ÖPPNA MED ej tillåtet
+N18156 USB-enhet kan ej tas bort
+N18157 Ingen USB-enhet markerad
+N18220 PL-konfiguration felaktig
+N18280 %s
+N59 FN 14: Felnummer %s
+N18303 CC%d servoförstärkare axel RDY=0 (säkerhetsrelä)
+N18304 CC%d servoförstärkare axel RDY=1 (säkerhetsrelä)
+N18325 MC S-programvarufel %d
+N18371 MC start test av avstängningskanaler ej möjlig
+N18401 Internt fel vid kopiering!
+N18629 Software-option ej aktiv
+N18630 Restore Kinematik ej möjlig
+N18631 Funktion ej tillåten
+N18632 Motsägelsefulla råämnesmått
+N18861 HSCI: Hårdvarufel
+N18862 HSCI: Initialiseringsfel
+N18891 M91 eller M92 ej möjlig
+N18903 Delförstyrning ej tillåtet
+N18904 Katalog ej tillgänglig
+N18912 CC%d servoförstärkare spindel RDY=1 (säkerhetsrelä)
+N18913 CC%d servoförstärkare spindel RDY=0 (säkerhetsrelä)
+N18914 Cykelgenerering felaktig
+N18915 HSCI: IOC-fil saknas
+N18928 M128 ej tillåten!
+N19236 LSV2-överföring avbruten!
+N19292 AFC: Ingen referensbelast. registrerad
+N19293 TOOL.T: För många skär
+N19398 Mätposition ej tillåten
+N19411 PLC-program kunde inte startas
+N19440 M-funktionsmakro ej tillåtet
+N19448 DCM: Verktygsstatus okänd
+N13827 Applikation 'DXF_CONVERTER' ej möjlig
+N19501 Fel vid utförande av självtest
+N19502 Tidsöverskridande vid självtestet
+N19503 Kommunikationsfel vid självtestet
+N19504 Okänt fel vid självtestet
+N19754 Nödstopp SPLC
+N19755 Fatalt fel SPLC
+N19764 Radering av vkt. ej tillåtet
+N20418 Självtest är deaktiverad
+N20457 MC: Systemfel i SPLC-LZS
+N20458 Identifikation av PL/MB-hårdvara felaktig
+N20459 HSCI-PL/MB meddelar fel
+N20460 HSCI-PL/MB meddelar fel
+N20461 MC: Systemfel i SPLC-LZS
+N20462 MC: Systemfel i SPLC-LZS
+N20463 Löptidsfel i SPLC-program
+N20464 SPLC kan inte ladda program
+N20465 SPLC-program förändrat
+N20466 SPLC-program ej körbart
+N20467 Maskin ej i säker drift
+N20469 Konfiguration SPLC-Ingångar
+N20471 Konfiguration SPLC-Ingångar
+N20473 Konfiguration SPLC cykeltid
+N20477 Python-Skript redan startat
+N20481 Kinematik-åtkomst ej möjlig
+N20482 Mätposition ej i rörelseområdet
+N20483 Presetkompensering ej möjlig
+N20639 Platstabellen är skrivskyddad
+N20650 Återgivn. av knappföljd avslutad
+N20661 ROTATION EJ TILLÅTET
+N20662 SKALFAKTOR EJ TILLÅTEN
+N20663 SPEGLING EJ TILLÅTET
+N20664 NOLLPUNKT-FÖRFLYTTN EJ TILLÅTEN
+N21084 Placera handratt i laddaren
+N21096 Preset med förskjutning aktiv
+N21097 VKT-radie=0: Ingen DCM möjlig
+N21144 Handratt: M91/M92 ej tillåtet
+N21219 ACCESSLEVEL: Funktion spärrad
+N21232 Override-potentiometer?
+N21233 Verktygshållar-kinematik saknas
+N21254 Testprogram kan inte öppnas
+N21255 Testprogram kan inte genereras
+N21256 Testprogram kan inte köras
+N21257 DCM: Spänndon inaktiv
+N21258 Fil ej tillgänglig
+N21260 SPLC-program ej konfigurerat
+N21261 SPLC körtid överskriden MC
+N21426 DCM: Kollisionskropp ej entydig
+N21675 Osäker styrningsmjukvara
+N21701 Radera rad inte tillåtet
+N21712 Avstängningsförlopp ej möjligt
+N21948 MC felaktigt kommando från MC:n
+N21949 Snabbtransport-override felaktigt konfigurerad
+N21932 MC Tid överskriden vid bromsning %.2s
+N22055 PARALLELL-DRIFT EJ MÖJLIGT
+N22060 MC överskriden sträcka vid SS2 %.2s
+N22077 MC växling av SOM_2/SOM_3 efter SOM_4 ej möjlig
+N22077 MC växling av SOM_4 efter SOM_2/SOM_3 ej möjlig
+N22079 Arbetsminne för litet
+N22124 MC SPLC begär ogiltig stopp-reaktion
+N22125 MC SPLC begär ogiltig säkerhetsfunktion
+N22266 SPLC-program ej översatt
+N22330 M94 ej möjlig
+N23611 Platstabell spärrad
+N2187 Alarm axel %.2s
+N23636 MC broms kan inte deaktiveras %.2s
+N23720 Specialtecken ej tillåtet!
+N23756 Fkt. bara tillåten för rot.axlar
+N23767 Editering ej tillåten
+N23768 QR-parametrar ej återställ.bara
+N23784 MC ogiltig driftart från SPLC
+N23830 HSCI/Profibus: Konfigurationsfel
+N23832 MC axelgrupp felaktigt konfigurerad %d
+N23835 Fel vid självtestet
+N7798 CC%d CC-fel %d %d %d
+N7798 CC-fel %d %d %d
+N23945 MC systemklocka MC ej lika med SKERN MC
+N23946 MC systemklocka MC ej lika med SPLC MC
+N23947 MC systemklocka MC ej lika med SPLC CC
+N23949 Verktygsradie för stor
+N23950 Nedmatningstyp ej möjlig
+N23951 Nedmatningsvinkel fel definierad
+N23952 Öppningsvinkel ej definierad
+N23953 Spårbredd för stor
+N23960 MC fel vid korsjämförelse:  %s
+N23961 MC säker utgång olika:  %s
+N23967 Beteckning ej funnen
+N23993 Parametreringsfel Python-skript
+N24013 MC +3,3V utanför tolerans
+N24014 MC +3,3VPIC utanför tolerans
+N24015 MC +12V utanför tolerans
+N24016 MC varvtal fläkt 1 får lågt
+N24017 MC +5V utanför tolerans
+N24024 Verktygsdata inkonsekventa
+N24074 MC fläkt ej identifierad
+N24075 MC varvtal fläkt 2 får lågt
+N24128 MC fel ärvärdes-registrering %d %.2s
+N24130 MC axel %.2s i reglering
+N24131 MC spindel %.2s i reglering
+N24188 Ändrad NC-programvaruversion
+N24189 SPLC-konfigurationsdata felaktiga
+N24191 MC bör-ärvärde-avvikelse för varvtal för stor %.2s
+N8127 Okänt LSV2-fel: %x
+N24360 Felaktig status för säker utgång %s
+N24394 Plan kan inte bestämmas
+N24438 Fil-innehåll felaktigt
+N24484 Felaktig tilldelning VKT/skärnr.
+N24515 Start vid Nödstopp ej möjligt
+N24585 MOVE ej möjlig
+N24586 Blockformat felaktigt
+N24592 SPLC-program förändrat
+N24594 SPLC-program binärkod MC förändrad
+N24596 SPLC-program binärkod CC förändrad
+N24860 MC: Erroneous data from SPLC %s
+N24959 Presetting not allowed!
+N24967 MC ändlägesbrytare %.2s+
+N24968 MC ändlägesbrytare %.2s-
+N24972 Safe Torque Off (-STO.B.x) is active
+N24973 Externt nödstopp
+N24974 MC S-ingång %d ej lika
+N24975 MC matning högre än SLS %.2s
+N24976 CC matning högre än SLS %.2s
+N24977 Drifttillstånd MC ej lika CC
+N24979 MC varvtal högre än SLS %.2s
+N24980 CC varvtal högre än SLS %.2s
+N5097 MC -SMC.A.WD=0
+N24981 MC felaktig S-axelgrupp
+N24983 Axel ej vid testposition
+N25030 MC S status reaction is active: %s
+N25031 Wiring of SPLC input %d
+N25033 Wiring of emergency stop
+N25160 MC SMC Autotest software loaded
+N25237 Wrong input %s for dynamic test
+N25243 Gliederung widersprüchlich
+N25250 Konfiguration SPLC-Eingänge geändert
+N25267 Radius negativ: Kein DCM möglich

@@ -1,0 +1,119 @@
+BEGIN MP_Config.TAB 
+#STRUCTBEGIN
+   NAME = Symbol
+     TYPE = C
+     WIDTH = 52
+     DEC = 0
+     DIA-ENGLISH = Symbol name ?
+     DIA-GERMAN = Symbolname ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 46
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+   NAME = on/off
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = on/off - 1/0 ?
+     DIA-GERMAN = ein/aus - 1/0 ?
+     DIA-CZECH = on/off - 1/0 ?
+     DIA-FRENCH = on/off - 1/0 ?
+     DIA-ITALIAN = on/off - 1/0 ?
+     DIA-SPANISH = on/off - 1/0 ?
+     DIA-PORTUGUE = on/off - 1/0 ?
+     DIA-SWEDISH = on/off - 1/0 ?
+     DIA-DANISH = on/off - 1/0 ?
+     DIA-FINNISH = on/off - 1/0 ?
+     DIA-DUTCH = on/off - 1/0 ?
+     DIA-POLISH = on/off - 1/0 ?
+     DIA-HUNGARIA = on/off - 1/0 ?
+   NAME = Default
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Parameter default ?
+     DIA-GERMAN = Standardwert ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+#STRUCTEND
+NR      Symbol                                               Comment                                        on/off       Default
+0                                                                                                           +0           +0           
+1                                                            --- Spindel/Achsen                             +0           +0           
+2                                                                                                           +0           +0           
+3       MG_Ref_Autostart_inaktiv                             kein Autostart Achsen in BA Referenz           +0           +0           
+4       MG_kein_Spindel_Stop_mit_Taste_NC_Stop               kein Spindel Stop mit NC-Stop-Taste            +0           +0           
+5       MG_Kuehlmittel_ohne_Spindel_M3_M4                    Kühlmittel auch ohne Spindel M3/M4             +0           +0           
+6       MG_S_Override_kein_F_Stop                            Spindel Override betätigt kein F-Stop          +0           +0           
+7                                                                                                           +0           +0           
+8                                                            --- Werkzeugwechsel                            +0           +0           
+9                                                                                                           +0           +0           
+10      MG_TOOL_CALL_Quittung_ohne_WZ_entspannen             Tool Call Tmanu quittieren ohne WZ entspannen  +0           +0           
+11      MG_WZW_T0_auto_manu_notwendig                        T0 notwendig bevor WZW Tauto -> Tmanu          +0           +0           
+12      MG_WZ_Mag_vor_beladen_T0_notwendig                   T0 notwendig bevor WZ-Magazin beladen          +0           +0           
+13      MG_WZW_Position_Manuell_inaktiv                      WZW Tmanu Achsen PLC Positionierung inaktiv    +0           +0           
+14      MG_WZ_in_Spindel_BA_auto_inaktiv                     Richtiges WZ in Spindel? in BA Auto inaktiv    +0           +0           
+15      MG_S1_Freigabe_M07_mit_WZ_Status_Bit2                Freigabe M07 S1 mit WZ Status Bit2 aktiv       +0           +0           
+16      MG_S2_Freigabe_M07_mit_WZ_Status_Bit2                Freigabe M07 S2 mit WZ Status Bit2 aktiv       +0           +0           
+17      MG_S1_WZ_Ueberwachung_inaktiv                        WZ Überwachung in S1 Spindel inaktiv           +1           +0           
+18      MG_S2_WZ_Ueberwachung_inaktiv                        WZ Überwachung in S2 Spindel inaktiv           +1           +0           
+19      MG_S1_WZM_Ueberwachung_inaktiv                       WZ Überwachung in Magazin 1 inaktiv            +1           +0           
+20      MG_S2_WZM_Ueberwachung_inaktiv                       WZ Überwachung in Magazin 2 inaktiv            +1           +0           
+21                                                                                                          +0           +0           
+22                                                           --- Sonderfunktionen                           +0           +0           
+23                                                                                                          +0           +0           
+24      MG_auto_Tueren_entriegeln_bei_END_PGM                Arbeitsraum entriegeln bei END PGM             +0           +0           
+25      MG_PLC_Preset_Tabelle_aktiv                          PLC Preset Tabelle aktiv                       +0           +0           
+26                                                                                                          +0           +0           
+27                                                           --- Paletten Wechsler                          +0           +0           
+28                                                                                                          +0           +0           
+29      MG_Paletten_Wechsel_Pendeln_inaktiv                  Palettenwechsel/Pendeln inaktiv                +0           +0           
+30      MG_Taste_Anwahl_Rohteil_inaktiv                      Taste Anwahl Rohteil inaktiv                   +0           +0           
+31                                                                                                          +0           +0           
+32                                                           --- Diagnose                                   +0           +0           
+33                                                                                                          +0           +0           
+34      MG_zusaetzliche_Logbuch_Eintraege_aktiv              Logbuch Einträge zusätzlich aktivieren         +0           +0           
+35                                                                                                          +0           +0           
+36                                                           --- Inbetriebnahme                             +0           +0           
+37                                                                                                          +0           +0           
+38      MG_Inbetriebnahme                                    Inbetriebnahme aktiv                           +0           +0           
+39      MG_Tueren_inaktiv                                    Arbeitsraum Türen inaktiv                      +1           +0           
+40      MG_Vorschub_UBW_M3_M4_inaktiv                        Überwachung M3/M4 bei Fräsvorschub inaktiv     +0           +0           
+41      MG_Power_Fail_inaktiv                                Power Fail Überwachung inaktiv                 +0           +0           
+42                                                                                                          +0           +0           
+43                                                                                                          +0           +0           
+44                                                                                                          +0           +0           
+45      DG_MP_Config_Tab_Ende                                Kennung Tabellen Ende, nicht verändern !       +80766.7123  +80766.7123  
+[END]

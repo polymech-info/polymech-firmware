@@ -1,0 +1,138 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "vřeteno"
+
+msgid "AXIS"
+msgstr "osy"
+
+msgid "SCREEN"
+msgstr "obrazovka"
+
+msgid "MACHINE"
+msgstr "stroj"
+
+msgid "CONTROL"
+msgstr "řídící systém"
+
+msgid "LIGHT"
+msgstr "osvětlení"
+
+msgid "LIGHT_1"
+msgstr "osvětlení 1"
+
+msgid "LIGHT_2"
+msgstr "osvětlení 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "kompresor"
+
+msgid "OEL_AGGREGATE"
+msgstr "olejové čerpadlo"
+
+msgid "DRIVES"
+msgstr "pohony"
+
+msgid "MONDAY_SHORT"
+msgstr "po"
+
+msgid "TUESDAY_SHORT"
+msgstr "út"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "st"
+
+msgid "THURSDAY_SHORT"
+msgstr "čt"
+
+msgid "FRIDAY_SHORT"
+msgstr "pá"
+
+msgid "SUTURDAY_SHORT"
+msgstr "so"
+
+msgid "SUNDAY_SHORT"
+msgstr "ne"
+
+msgid "SETUP"
+msgstr "nastavení"
+
+msgid "ADVANCED"
+msgstr "rozšířený"
+
+msgid "INFO"
+msgstr "info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "zahřívací cyklus"
+
+msgid "STANDBY"
+msgstr "připravenost"
+
+msgid "SWITCH_OFF"
+msgstr "vypnout"
+
+msgid "TIME"
+msgstr "čas"
+
+msgid "AXIS_FILTER"
+msgstr "osový filtr"
+
+msgid "SPINDLE_FILTER"
+msgstr "vřetenový filtr"
+
+msgid "SWITCH_ON"
+msgstr "zapnout"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Tento program umožňuje zvýšení\n"
+"energetické efektivity stroje.\n"
+"Nepotřebné spotřebiče lze uvést\n"
+"do stavu pohotovosti či vypnout.\n"
+"- stiskněte softklávesu EDIT\n"
+"- aktivujte po řádcích jednu\n"
+"z nabízených funkcí a nastavte\n"
+"zvolený čas\n"
+"- ukončete zadávání softklávesou\n"
+"EDIT\n"
+"- pomocí softky PowerManagement\n"
+"ON/OFF budou Vámi definovaná\n"
+"nastavení aktivována"
+
+msgid "MILLISECOND"
+msgstr "milisekunda"
+
+msgid "MILLISECONDS"
+msgstr "milisekund(y)"
+
+msgid "SECOND"
+msgstr "sekunda"
+
+msgid "SECONDS"
+msgstr "sekund(y)"
+
+msgid "MINUTE"
+msgstr "minuta"
+
+msgid "MINUTES"
+msgstr "minut(y)"
+
+msgid "HOUR"
+msgstr "hodina"
+
+msgid "HOURS"
+msgstr "hodin(y)"
+
+msgid "DAY"
+msgstr "den"
+
+msgid "DAYS"
+msgstr "dny/dnů"
+
+msgid "WEEK"
+msgstr "týden"
+
+msgid "WEEKS"
+msgstr "týdny/týdnů"
+

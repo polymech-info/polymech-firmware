@@ -1,0 +1,82 @@
+[
+  {
+    "slot": 0,
+    "name": "Cas-Master-Lower-Cell-HDPE",
+    "description": "",
+    "duration": 5400000,
+    "max": 165,
+    "controlPoints": [
+      {
+        "x": 0,
+        "y": 895
+      },
+      {
+        "x": 400,
+        "y": 1000
+      },
+      {
+        "x": 816,
+        "y": 1000
+      },
+      {
+        "x": 1000,
+        "y": 750
+      }
+    ],
+    "targetRegisters": [
+      1227,
+      1245,
+      1209,
+      1191
+    ],
+    "signalPlot": 0,
+    "children": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": 1,
+    "pressureProfile": 0,
+    "pressureTargetRegisters": [
+      703
+    ]
+  },
+  {
+    "slot": 1,
+    "name": "Post-Die-Pressing",
+    "description": "",
+    "duration": 3600000,
+    "max": 150,
+    "controlPoints": [
+      {
+        "x": 0,
+        "y": 950
+      },
+      {
+        "x": 663,
+        "y": 1000
+      },
+      {
+        "x": 1000,
+        "y": 0
+      }
+    ],
+    "targetRegisters": [
+      1227,
+      1245,
+      1299,
+      1317
+    ],
+    "signalPlot": -1,
+    "children": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "enabled": 0,
+    "pressureProfile": -1,
+    "pressureTargetRegisters": []
+  }
+]

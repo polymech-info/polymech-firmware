@@ -1,0 +1,560 @@
+*-----------------------------------------------------------------------------
+*  Working area monitoring
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_distance_to_go                        K+4
+#define /s    KL_0_degree                              K+0            *;EUMACH
+#define /s    KL_90_degree                             K+900000       *;EUMACH
+#define /s    KL_180_degree                            K+1800000      *;EUMACH
+#define /s    KL_270_degree                            K+2700000      *;EUMACH
+#define /s    KL_360_degree                            K+3600000      *;EUMACH
+
+#define /s    ML_working_area_monitoring_off           M
+#define /s    ML_axes_motion_from_end_pos_active       M              *;EUMACH
+#define /s    ML_0_pos_ref_4_plus_360                  M              *;EUMACH
+#define /s    ML_0_pos_ref_4_minus_360                 M              *;EUMACH
+#define /s    ML_0_pos_ref_4                           M              *;EUMACH
+#define /s    ML_90_pos_ref_4                          M              *;EUMACH
+#define /s    ML_180_pos_ref_4                         M              *;EUMACH
+#define /s    ML_270_pos_ref_4                         M              *;EUMACH
+
+#include Mac_Lib.inc
+
+EXTERN Absolute                                                       *;EUMACH
+
+GLOBAL Work_area_monitor
+
+;----------------------------
+LBL Work_area_monitor
+;----------------------------
+
+#if Working_area_monitoring = &active                                 *;EUMACH
+*;EUMACH
+  LN     NP_WAM_before_axes_referenced
+  IFT
+    L      MG_M32_working_area_monitoring_off
+    S      PN_M4092_quit_M_function
+    S      MG_soft_key_working_area_monitoring_off
+
+    LN     MG_control_operational
+    O      MG_manu_auto_mode_change
+    O      MG_auto_manu_mode_change
+    O      MG_pulse_END_PGM_M02_M30
+    R      MG_soft_key_working_area_monitoring_off
+
+    L      MG_soft_key_working_area_monitoring_off
+    AN     ML_working_area_monitoring_off
+    S      PN_error_monitoring_working_area_off
+
+    LN     MG_soft_key_working_area_monitoring_off
+    A      ML_working_area_monitoring_off
+    R      PN_error_monitoring_working_area_off
+
+    L      MG_soft_key_working_area_monitoring_off
+    =      ML_working_area_monitoring_off
+
+    L      MG_soft_key_working_area_monitoring_off
+;    ON     MG_reference_axes_traversed                               *;EUMACH
+    R      PN_error_protection_working_area
+    R      MG_working_area_Z_minus_motion_lock
+    R      MG_working_area_IV_motion_lock
+    EMT
+  ELSE
+    L      MG_marker_one
+    R      MG_soft_key_working_area_monitoring_off
+    R      PN_error_monitoring_working_area_off
+  ENDI
+
+  L      DG_pos_axis_4_ref_working_area
+  +      KL_360_degree
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_pos_axis_4_ref_working_area
+  =      ML_0_pos_ref_4_plus_360
+
+  L      DG_pos_axis_4_ref_working_area
+  -      KL_360_degree
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  =      ML_0_pos_ref_4_minus_360
+
+  L      DG_pos_axis_4_ref_working_area
+  -      KL_0_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  O      ML_0_pos_ref_4_plus_360
+  O      ML_0_pos_ref_4_minus_360
+  =      ML_0_pos_ref_4
+
+  L      DG_pos_axis_4_ref_working_area
+  -      KL_90_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  =      ML_90_pos_ref_4
+
+  L      DG_pos_axis_4_ref_working_area
+  -      KL_180_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  =      ML_180_pos_ref_4
+
+  L      DG_pos_axis_4_ref_working_area
+  -      KL_270_degree
+  PSW
+  CM     Absolute
+  PLW
+  <      DG_MP1030_pos_window_4
+  =      ML_270_pos_ref_4
+
+*;=========== HMC axis designation ===========
+  L      KG_clamping_mode_active
+  BT     KG_axis_Y
+  IFT
+    LN     NP_WAM_before_axes_referenced
+    IFT
+      L      MG_manual_mode
+      IFT
+        LN     NP_W1032_reference_nesessary
+        BT     KG_axis_Z
+        A      NP_M4155_mode_pass_over_reference
+        A[
+          L      DG_pos_axis_Z_ref_working_area
+          >=     NP_MP4230_1_working_area_manu_Z
+        ]
+        R      PN_error_protection_working_area
+
+#if Rotary_table_protection = &Square
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+#endif
+#if Rotary_table_protection = &Rectangular
+        LN     ML_0_pos_ref_4
+        AN     ML_180_pos_ref_4
+#endif
+        O      NP_M4155_mode_pass_over_reference
+        A[
+          L      DG_pos_axis_Z_ref_working_area
+          <      NP_MP4230_1_working_area_manu_Z
+        ]
+        A      MG_control_operational
+        S      PN_error_protection_working_area
+        IFT
+          L      MG_marker_one
+          S      MG_working_area_Z_minus_motion_lock
+        ELSE
+          L      MG_marker_one
+          R      MG_working_area_Z_minus_motion_lock
+        ENDI
+
+        L      DG_pos_axis_Z_ref_working_area
+        <      NP_MP4230_1_working_area_manu_Z
+        IFT
+          L      MG_marker_one
+          S      MG_working_area_IV_motion_lock
+
+          L      I_key_axis_4_minus
+          O      I_key_axis_4_plus
+          O[
+            L      WG_selected_handwheel_axis
+            BT     KG_axis_4
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ELSE
+          L      MG_marker_one
+          R      MG_working_area_IV_motion_lock
+        ENDI
+      ELSE
+        PS     K&DG_distance_to_go_X_axis
+        PS     KL_distance_to_go
+        CM     9041
+        M_display_module_error(KG_error_module_9041)
+
+#if Rotary_table_protection = &Square
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Z_axis
+          +      DG_pos_axis_Z_ref_working_area
+          <      NP_MP4230_3_working_area_auto_Z
+          AN[
+            L      DG_distance_to_go_Z_axis
+            +      DG_pos_axis_Z_ref_working_area
+            >=     DG_pos_axis_Z_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        L      DG_pos_axis_Z_ref_working_area
+        <      NP_MP4230_3_working_area_auto_Z
+        IFT
+          L      DG_distance_to_go_4_axis
+          PSW
+          CM     Absolute
+          PLW
+          >=     DG_MP1030_pos_window_4
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+#endif
+
+#if Rotary_table_protection = &Rectangular
+        LN     ML_0_pos_ref_4
+        AN     ML_180_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Z_axis
+          +      DG_pos_axis_Z_ref_working_area
+          <      NP_MP4230_3_working_area_auto_Z
+          AN[
+            L      DG_distance_to_go_Z_axis
+            +      DG_pos_axis_Z_ref_working_area
+            >=     DG_pos_axis_Z_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Z_axis
+          +      DG_pos_axis_Z_ref_working_area
+          <      NP_MP4230_5_working_area_auto_Y2_Z2
+          AN[
+            L      DG_distance_to_go_Z_axis
+            +      DG_pos_axis_Z_ref_working_area
+            >=     DG_pos_axis_Z_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        L      DG_pos_axis_Z_ref_working_area
+        <      NP_MP4230_3_working_area_auto_Z
+        O[
+          L      DG_pos_axis_Z_ref_working_area
+          <      NP_MP4230_5_working_area_auto_Y2_Z2
+        ]
+        IFT
+          L      DG_distance_to_go_4_axis
+          PSW
+          CM     Absolute
+          PLW
+          >=     DG_MP1030_pos_window_4
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+#endif
+      ENDI
+    ELSE
+      LN     NP_M4155_mode_pass_over_reference
+      O[
+        L      DG_pos_axis_Z_ref_working_area
+        >=     NP_MP4230_1_working_area_manu_Z
+        A[
+          L      DG_pos_axis_Z_ref_working_area
+          <=     NP_MP4230_41_working_area_manu_Z2
+        ]
+      ]
+      R      PN_error_protection_working_area
+
+      L      NP_M4155_mode_pass_over_reference
+      A[
+        L      DG_pos_axis_Z_ref_working_area
+        <      NP_MP4230_1_working_area_manu_Z
+        O[
+          L      DG_pos_axis_Z_ref_working_area
+          >      NP_MP4230_41_working_area_manu_Z2
+        ]
+      ]
+      A      MG_control_operational
+      S      PN_error_protection_working_area
+      IFT
+        L      DG_pos_axis_Z_ref_working_area
+        <      NP_MP4230_1_working_area_manu_Z
+        S      MG_working_area_Z_minus_motion_lock
+        S      MG_working_area_IV_motion_lock
+
+        L      DG_pos_axis_Z_ref_working_area
+        >      NP_MP4230_41_working_area_manu_Z2
+        S      MG_working_area_Z_plus_motion_lock
+        S      MG_working_area_IV_motion_lock
+      ELSE
+        L      MG_marker_one
+        R      MG_working_area_Z_minus_motion_lock
+        R      MG_working_area_Z_plus_motion_lock
+        R      MG_working_area_IV_motion_lock
+      ENDI
+    ENDI
+  ENDI
+
+*;=========== VMC axis designation ===========
+  L      KG_clamping_mode_active
+  BT     KG_axis_Z
+  IFT
+    LN     NP_WAM_before_axes_referenced
+    IFT
+      L      MG_manual_mode
+      IFT
+        LN     NP_W1032_reference_nesessary
+        BT     KG_axis_Y
+        A      NP_M4155_mode_pass_over_reference
+        A[
+          L      DG_pos_axis_Y_ref_working_area
+          >=     NP_MP4230_0_working_area_manu_Y
+        ]
+        R      PN_error_protection_working_area
+
+#if Rotary_table_protection = &Square
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+#endif
+#if Rotary_table_protection = &Rectangular
+        LN     ML_0_pos_ref_4
+        AN     ML_180_pos_ref_4
+#endif
+        O      NP_M4155_mode_pass_over_reference
+        A[
+          L      DG_pos_axis_Y_ref_working_area
+          <      NP_MP4230_0_working_area_manu_Y
+        ]
+        A      MG_control_operational
+        S      PN_error_protection_working_area
+        IFT
+          L      MG_marker_one
+          S      MG_working_area_Y_minus_motion_lock
+        ELSE
+          L      MG_marker_one
+          R      MG_working_area_Y_minus_motion_lock
+        ENDI
+
+        L      DG_pos_axis_Y_ref_working_area
+        <      NP_MP4230_0_working_area_manu_Y
+        IFT
+          L      MG_marker_one
+          S      MG_working_area_IV_motion_lock
+
+          L      I_key_axis_4_minus
+          O      I_key_axis_4_plus
+          O[
+            L      WG_selected_handwheel_axis
+            BT     KG_axis_4
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ELSE
+          L      MG_marker_one
+          R      MG_working_area_IV_motion_lock
+        ENDI
+      ELSE
+        PS     K&DG_distance_to_go_X_axis
+        PS     KL_distance_to_go
+        CM     9041
+        M_display_module_error(KG_error_module_9041)
+
+#if Rotary_table_protection = &Square
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Y_axis
+          +      DG_pos_axis_Y_ref_working_area
+          <      NP_MP4230_2_working_area_auto_Y
+          AN[
+            L      DG_distance_to_go_Y_axis
+            +      DG_pos_axis_Y_ref_working_area
+            >=     DG_pos_axis_Y_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        L      DG_pos_axis_Y_ref_working_area
+        <      NP_MP4230_2_working_area_auto_Y
+        IFT
+          L      DG_distance_to_go_4_axis
+          PSW
+          CM     Absolute
+          PLW
+          >=     DG_MP1030_pos_window_4
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+#endif
+
+#if Rotary_table_protection = &Rectangular
+        LN     ML_0_pos_ref_4
+        AN     ML_180_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Y_axis
+          +      DG_pos_axis_Y_ref_working_area
+          <      NP_MP4230_2_working_area_auto_Y
+          AN[
+            L      DG_distance_to_go_Y_axis
+            +      DG_pos_axis_Y_ref_working_area
+            >=     DG_pos_axis_Y_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        LN     ML_0_pos_ref_4
+        AN     ML_90_pos_ref_4
+        AN     ML_180_pos_ref_4
+        AN     ML_270_pos_ref_4
+        IFT
+          L      DG_distance_to_go_Y_axis
+          +      DG_pos_axis_Y_ref_working_area
+          <      NP_MP4230_5_working_area_auto_Y2_Z2
+          AN[
+            L      DG_distance_to_go_Y_axis
+            +      DG_pos_axis_Y_ref_working_area
+            >=     DG_pos_axis_Y_ref_working_area
+          ]
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+
+        L      DG_pos_axis_Y_ref_working_area
+        <      NP_MP4230_2_working_area_auto_Y
+        O[
+          L      DG_pos_axis_Y_ref_working_area
+          <      NP_MP4230_5_working_area_auto_Y2_Z2
+        ]
+        IFT
+          L      DG_distance_to_go_4_axis
+          PSW
+          CM     Absolute
+          PLW
+          >=     DG_MP1030_pos_window_4
+          A      MG_control_operational
+          S      PN_error_protection_working_area
+        ENDI
+#endif
+      ENDI
+    ELSE
+      LN     NP_M4155_mode_pass_over_reference
+      O[
+        L      DG_pos_axis_Y_ref_working_area
+        >=     NP_MP4230_0_working_area_manu_Y
+        A[
+          L      DG_pos_axis_Y_ref_working_area
+          <=     NP_MP4230_40_working_area_manu_Y2
+        ]
+      ]
+      R      PN_error_protection_working_area
+
+      L      NP_M4155_mode_pass_over_reference
+      A[
+        L      DG_pos_axis_Y_ref_working_area
+        <      NP_MP4230_0_working_area_manu_Y
+        O[
+          L      DG_pos_axis_Y_ref_working_area
+          >      NP_MP4230_40_working_area_manu_Y2
+        ]
+      ]
+      A      MG_control_operational
+      S      PN_error_protection_working_area
+      IFT
+        L      DG_pos_axis_Y_ref_working_area
+        <      NP_MP4230_0_working_area_manu_Y
+        S      MG_working_area_Y_minus_motion_lock
+        R      MG_working_area_Y_plus_motion_lock
+        S      MG_working_area_IV_motion_lock
+
+        L      DG_pos_axis_Y_ref_working_area
+        >      NP_MP4230_40_working_area_manu_Y2
+        R      MG_working_area_Y_minus_motion_lock
+        S      MG_working_area_Y_plus_motion_lock
+        S      MG_working_area_IV_motion_lock
+      ELSE
+        L      MG_marker_one
+        R      MG_working_area_Y_minus_motion_lock
+        R      MG_working_area_Y_plus_motion_lock
+        R      MG_working_area_IV_motion_lock
+      ENDI
+    ENDI
+  ENDI
+*;EUMACH
+
+*;EUMACH Original PLC
+;  L      MG_M32_working_area_monitoring_off
+;  S      PN_M4092_quit_M_function
+;  S      MG_soft_key_working_area_monitoring_off
+
+;  LN     MG_control_operational
+;  O      MG_manu_auto_mode_change
+;  O      MG_auto_manu_mode_change
+;  O      MG_pulse_END_PGM_M02_M30
+;  R      MG_soft_key_working_area_monitoring_off
+
+;  L      MG_soft_key_working_area_monitoring_off
+;  AN     ML_working_area_monitoring_off
+;  S      PN_error_monitoring_working_area_off
+
+;  LN     MG_soft_key_working_area_monitoring_off
+;  A      ML_working_area_monitoring_off
+;  R      PN_error_monitoring_working_area_off
+
+;  L      MG_soft_key_working_area_monitoring_off
+;  =      ML_working_area_monitoring_off
+
+;  L      MG_soft_key_working_area_monitoring_off
+;  ON     MG_reference_axes_traversed
+;  R      PN_error_protection_working_area
+;  EMT
+
+;  L      MG_manual_mode
+;  IFT
+;    L      DG_position_axis_Y_ref
+;    <      NP_MP4230_0_working_area_manu_Y
+;    IFT
+;      L      DG_position_axis_Z_ref
+;      <      NP_MP4230_1_working_area_manu_Z
+;      A      MG_axes_in_motion
+;      S      PN_error_protection_working_area
+;    ENDI
+;  ELSE
+;    PS     K&DG_distance_to_go_X_axis
+;    PS     KL_distance_to_go
+;    CM     9041
+;    M_display_module_error(KG_error_module_9041)
+
+;    L      DG_distance_to_go_Y_axis
+;    +      DG_position_axis_Y_ref
+;    <      NP_MP4230_2_working_area_auto_Y
+;    IFT
+;      L      DG_distance_to_go_Z_axis
+;      +      DG_position_axis_Z_ref
+;      <      NP_MP4230_3_working_area_auto_Z
+;      S      PN_error_protection_working_area
+;    ENDI
+;  ENDI
+*;EUMACH Original PLC
+#endif
+
+EM

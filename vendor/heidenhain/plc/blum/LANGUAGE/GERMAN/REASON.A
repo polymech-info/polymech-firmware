@@ -1,0 +1,2367 @@
+ - Overload of protective motor switch
+ - Motor defective
+1                                                         |
+ - Overload of drives
+ - Filter of fan contaminated
+ - Fan in switch cabinet defective
+2                                                         |
+ - No pressure build-up in hydraulic
+ - Pressure tubings leaky
+ - Pressure switch defective
+3                                                         |
+ - Pressure tubings leaky
+ - Pressure switch defective
+4                                                         |
+ - Brake overload drives
+5                                                         |
+ - Pressure tubings leaky
+ - Pressure switch defective
+6                                                         |
+ - Supply and recover unit not operational
+7                                                         |
+ - Monitoring working area has been switched off
+8                                                         |
+ -
+9                                                         |
+ - Guards not opened
+ - Sensors defective
+10                                                        |
+ - Guards not closed
+ - Sensors defective
+11                                                        |
+ - Coolant level too low
+12                                                        |
+ - Lubrication cycle of axes not carried out correctly
+ - Pressure tubings leaky
+ - Pressure switch defective
+13                                                        |
+ - Oil level of central lubrication system too low
+ - Level switch defective
+14                                                        |
+ - Emergency stop input 2 signal is missing.
+15                                                        |
+ - One of the servo drive release signals (group 1 - 8) is
+   missing.
+16                                                        |
+
+17                                                        |
+ - Several axes with central drive were started at the
+   same time
+18                                                        |
+ - Tool magazine blocked
+ - Tool magazine loaded differently
+ - Axes optimization faulty
+19                                                        |
+ - Axis has released the emergency stop limit-switch of
+      hardware
+20                                                        |
+ - Sensors for clamping/releasing defective
+ - Pressure drop of pneumatic/hydraulic system
+ - [->] Additional note in PLC window: Wrong axis
+21                                                        |
+ - Axis not in Hirth position
+ - Axis movement was interrupted
+22                                                        |
+ - Programmed target position not in Hirth grid
+23                                                        |
+ - Axis drive not ready
+ - [->] Additional note in PLC window: Wrong axis
+24                                                        |
+ - Overload of servo drive controller
+ - Filter cloth contaminated
+25                                                        |
+ - Overload of servo drives
+26                                                        |
+ - Overload of servo drives
+27                                                        |
+ - Overload of servo drives
+28                                                        |
+ - Overload of spindle
+ - Controller expansion of spindle defective
+ - Spindle motor defective
+29                                                        |
+ - Nominal speed not reached or too low
+30                                                        |
+ - Offset too high, spindle drifts
+ - Encoder or cable defective
+31                                                        |
+ - Overload of spindle motor
+ - Fan of spindle motor contaminated
+32                                                        |
+ - Excessive temperature in spindle bearing
+ - Pt 100 temperature sensor defective
+33                                                        |
+ - Maximum permissible torque exceeded
+34                                                        |
+ - M03, M04, M05, M13, M14 only permissible if there is
+   no touch probe in the spindle.
+   (no Probe in the PLC window)
+35                                                        |
+ - Probe function selected but no touch probe in the spindle
+   (Probing must take place in the PLC window)
+36                                                        |
+
+37                                                        |
+ - The S command and the physical gearshift are not matched.
+ - The selected gear range cannot be coupled
+38                                                        |
+ - Tool change interrupted
+ - Tool unclamped
+ - Sensors or cables defective
+39                                                        |
+ - Call of Manual tool change
+ - Tool clamped
+40                                                        |
+ - Call of Manual tool change
+ - Tool unclamped
+41                                                        |
+ - Call of Manual tool change
+ - Tool change carried out
+42                                                        |
+ - Call of Manual tool change
+ - Tool change carried out
+43                                                        |
+ - Call of Manual tool change
+ - Tool change carried out
+44                                                        |
+ - Interruption during tool change
+ - It is possible that the pocket table does not correspond
+   to the loading of the magazine
+45                                                        |
+ - The tool was unclamped without TOOL CALL
+46                                                        |
+ - No tool available in the spindle
+ - Sensor defective
+47                                                        |
+ - There is a tool in the spindle although P0 in the pocket
+   table is empty
+ - Sensor defective
+48                                                        |
+ - A TOOL CALL XX command block is executed and either one
+   of the following conditions occurs.
+ - Case 1
+   XX is a automatic tool and the spindle tool is a manual
+   tool.
+ - Case 2
+   XX is a manual tool and the spindle tool is a automatic
+   tool.
+49                                                        |
+ - Tolerance in tool table exceeded!
+50                                                        |
+ - Tool life in tool table exceeded!
+51                                                        |
+ - Tool change interrupted
+ - Error during tool change
+52                                                        |
+ - Timeout during tool change
+ - Interruption of tool change
+53                                                        |
+ - Magazine guard open
+54                                                        |
+ - Tool magazine without reference
+55                                                        |
+ - Timeout during magazine tool selection
+56                                                        |
+ - Loading of the tool magazine selected via soft key
+ - Tool magazine can be traversed and loaded
+57                                                        |
+ - Tool magazine/tool change standby tool loaded wrongly
+ - Erroneous entries in the pocket table
+ - Sensor defective
+58                                                        |
+ - Tool magazine/tool change standby tool loaded wrongly
+ - Erroneous entries in the pocket table
+ - Sensor defective
+59                                                        |
+ - Block scan was stopped
+ - Different tools in status line and spindle
+60                                                        |
+ - The alternating table cycle started with M61/M62 was
+   interrupted
+61                                                        |
+ - M61 starts the NC processing on page 1 (left) but the
+   release key (probe) has not been pressed
+62                                                        |
+ - M62 starts the NC processing on page 2 (right) but the
+   release key (probe) has not been pressed
+63                                                        |
+ - M61 or M62 call the alternating table cycle although it
+   has not been activated (soft key or sensor dividing wall)
+64                                                        |
+ - When the partition is installing, the X-axis is within
+   the partition zone.
+65                                                        |
+ - Timeout during 3D head positioning
+ - Interruption of 3D head positioning
+66                                                        |
+ - 3D head reference setting has never been made.
+67                                                        |
+ - 3D head positioning only in gear range 1 possible
+68                                                        |
+ - 3D head NC position is not the same as PLC position.
+69                                                        |
+
+70                                                        |
+ - The alternating table partition sensor is not matching
+   with the status of "TABLE 1/2" soft key.
+71                                                        |
+
+72                                                        |
+
+73                                                        |
+
+74                                                        |
+
+75                                                        |
+ - Magazine 2 control mode switch on magazine operation
+   panel is in automatic control position.
+76                                                        |
+ - Loading of the tool magazine 2 selected via soft key
+ - Tool magazine 2 can be traversed and loaded
+77                                                        |
+ - Magazine 2 guard open
+78                                                        |
+ - Light beam has been blocked.
+79                                                        |
+ - Safety check after power-on
+80                                                        |
+ - Electrical cabinet air conditioner unit defective
+ - Electrical cabinet air conditioner sensor defective
+ - (Only for 3-phase power air conditioner) Electrical
+   cabinet air conditioner circuit breaker tripped
+81                                                        |
+ - Monitoring of the working area switched off by soft key
+   or M32. Caution collision axes are possible.
+82                                                        |
+ - In manual operation, axis is witnin a collision range.
+ - In automatic operation, the program target position is
+   located in a collision range.
+83                                                        |
+ - The switching off of the machine after the next END PGM
+   block was activated via user parameters
+84                                                        |
+ - The reference operating mode is necessary to carry out
+   Function
+85                                                        |
+ - Output of M functions after block scan to activate the
+   current machine status
+86                                                        |
+ - Error occurred with temperature compensation by means of
+   Pt100 sensors
+87                                                        |
+ - Debug note for PLC programmers
+ - Files were pushed into the stack and were not pulled
+88                                                        |
+ - With the first PLC scan or after changes the machine
+   parameters are read in order to adapt the PLC functions
+ - Only after termination of this process can the machine be
+   started
+89                                                        |
+ - Program interruption caused by M00
+ - Press NC start to continue
+90                                                        |
+ - Program interruption caused by M01
+ - Press NC start to continue
+91                                                        |
+ - To move axes at machining feed rate, one of the mentioned
+   M commands must be active
+ - M31 switches off the function temporarily until the next
+   END PGM
+ - Function can be deselected permanently via MP
+92                                                        |
+ - Programmed M command is not supported by the PLC program
+93                                                        |
+ - Program start with turned off feed/rapid traverse   
+   override potentiometer.
+94                                                        |
+ - The active step of a HELP file was carried out properly
+ - Initiator sensors correct
+95                                                        |
+ - The machine parameter setting is not supported by the 
+   PLC program
+96                                                        |
+ - Debug function activated by means of control test unit,
+   although due to the I/O assignment a real machine can be
+   presumed
+97                                                        |
+ - It was tried to enter more than 8 jobs in the submit or
+   spawn queue
+98                                                        |
+ - TNC programming station selected (MP7210).
+ - Axes and spindle are not controlled.
+ - Caution ! If PLC as active selected (MP7210=1), 
+   machine functions on simulated axes and spindle
+   positions can be started.
+99                                                        |
+ - Further notes are displayed in the PLC window
+100                                                       |
+ - Data cannot be written to logbook
+101                                                       |
+ - Function can not be activated because the values are not 
+   in the permissible data range.
+102                                                       |
+ - Timeout during magazine tool selection
+103                                                       |
+ - The spindle speed exceeding the speed limitation of air
+   through spinlde function (M17)
+104                                                       |
+ - Before tilting axis reference point traversed, tilting
+   axis may not be in the correct position.
+105                                                       |
+ - Paper filter unit is running out of paper.
+106                                                       |
+ - C-axis feed is disabled by M400 command.
+107                                                       |
+ - The hydraulic pressure of the tool clamping line exists
+   some residual pressure.
+108                                                       |
+ - IPC61x0 interface is faultily (Watchdog)
+ - Operation via IPC has been deactivated
+109                                                       |
+ - SM1xx voltage protection module temperature too high
+110                                                       |
+ - Y-axis is out of traverse range.
+111                                                       |
+ - Tool clamped signal not received during tool clamping
+112                                                       |
+ - Safety mode switch is located at special mode position.
+   Limitations:
+     F maximum = 2000 mm/min
+     S maximum = 800 rpm
+     Rapid traverse key invalid
+     No TOOL CALL command block
+     No chip conveyor/auger
+     No coolant through spindle
+     No tool changer troubleshooting (TC HELP)
+113                                                       |
+ - The oil level of pneumatic to hydraulic unit is too low.
+114                                                       |
+ - Safety mode switch is located at special mode position.
+   Limitations:
+     F maximum = 5000 mm/min
+     S maximum = 5000 rpm
+     Rapid traverse key invalid
+     No TOOL CALL command block
+     No chip conveyor/auger
+     No coolant through spindle
+     No tool changer troubleshooting (TC HELP)
+115                                                       |
+ - Safety mode switch is located at special mode position.
+   Limitations:
+     F maximum = 5000 mm/min
+     S maximum = 5000 rpm
+     Rapid traverse key invalid
+     No TOOL CALL command block
+     No chip conveyor/auger
+     No coolant through spindle
+     No tool changer troubleshooting (TC HELP)
+116                                                       |
+ - More than two safety modes are selected.
+117                                                       |
+ - CTS tank coolant level over the overflow level switch.
+118                                                       |
+ - After power-on, the coolant will be filled to the CTS
+   tank automatically until reaching the CTS tank high level
+   position.  At this moment, please refill the coolant
+   to the main coolant tank until reaching the initial level
+   mark.
+119                                                       |
+ - During part program running the safety mode switch is not
+   at the production mode position.
+120                                                       |
+ - When the safety mode is switched on, TOOL CALL command
+   block is prohibited.
+121                                                       |
+ - Hydraulic oil filter dirty
+ - Pressure switch defective
+122                                                       |
+ - The additional axis on/off button status has been  
+   changed from on -> off or from off -> on.
+123                                                       |
+- When automatic door 1 is opening, the door 1 open signal
+  is not detected. 
+- When automatic door 1 is closing, the door 1 closed signal
+  is not detected.
+124                                                       |
+- When automatic door 2 is opening, the door 2 open signal
+  is not detected. 
+- When automatic door 2 is closing, the door 2 closed signal
+  is not detected.
+125                                                       |
+ - No coolant through CTS tank coolant inlet
+ - Check the CTS tank inlet filter.
+ - Pressure switch defective
+126                                                       |
+ - CTS tank coolant level too low
+127                                                       |
+ - Tool clamping pressure tubings leaky
+ - Tool clamping pressure switch defective
+128                                                       |
+ - Spindle cooling liquid pressure too low
+129                                                       |
+ - The spindle front/rear bearing temperature sensor is not
+   working correctly.
+ - If the spindle bearing temperture relative to the machine
+   base temperature is used (MP4310.0 bit A = 1), the
+   machine base temperature sensor is not working correctly.
+130                                                       |
+ - When the "TABLE 1/2" soft key is used to turn on the
+   alternating table, any one of the following setting
+   conditions occurs.
+   1. Manual operation mode or Handwheel mode is not
+      selected.
+   2. Any one of the axes is still in motion.
+   3. Machine has never been started since power-on.
+131                                                       |
+ - When a workpiece measuring probe is activated and a
+   measuring cycle is executed, but the spindle has never
+   been referenced before.
+132                                                       |
+
+133                                                       |
+ - The fluid flow signal of spindle rotary joint cooling
+   circulation is not detected.
+134                                                       |
+Machining area with dual tool changer + partition installed
+ - Machine in area 1 but TOOL CALL a tool in magazine of 
+   area 2
+ - Machine in area 2 but TOOL CALL a tool in magazine of 
+   area 1
+135                                                       |
+ - Timeout during tool unloading from magazine unit to
+   standby tool change position
+ - Interruption of tool unloading from magazine unit to
+   standby tool change position
+136                                                       |
+ - Timeout during tool loading from standby tool change
+   position to magazine unit
+ - Interruption of tool loading from standby tool change
+   position to magazine unit
+137                                                       |
+ - MP4310.0 bit D = 1
+138                                                       |
+ - Pneumatic filter dirty
+ - Pressure switch defective
+139                                                       |
+ - No coolant through CTS motor
+ - If CTS tank is existing, check the filter in front of CTS
+   motor.
+ - Pressure switch defective
+140                                                       |
+ PMC thermal compensation unit
+ - Thermal compensation ESTB signal remains high even when
+   EREND signal has been sent out.
+141                                                       |
+ PMC thermal compensation unit
+ - Thermal compensation ED13 signal remains low.
+142                                                       |
+ - Tool clamping pressure tubings leaky
+ - Tool clamping pressure switch defective
+143                                                       |
+ - Oil level of spindle oil-air lubrication tank is too low.
+ - Level switch defective
+144                                                       |
+ - No oil in the spindle oil-air lubrication tank
+ - Level switch defective
+145                                                       |
+ - Guards not closing tight enough
+ - Sensors defective
+146                                                       |
+ - Alternating table 2 guard not closed during tool change
+ - Sensors defective
+147                                                       |
+ - Neither the high level sensor nor the low level sensor
+   is detected.
+148                                                       |
+ - Pressure tubings leaky
+ - Pressure switch defective
+149                                                       |
+ - CTS filter dirty
+ - Pressure switch defective
+150                                                       |
+ - Secondary guard(s) was open
+ - Secondary guard sensor was broken
+151                                                       |
+ Rotary Axis
+ - Temperature error for torque motor
+
+ High-speed motor spindle
+ - Temperature error for spindle motor
+152                                                       |
+ - Nut lubrication cycle of axis not carried out correctly
+ - Pressure tubings leaky
+ - Pressure switch defective
+153                                                       |
+ - Oil level of nut lubrication system too low
+ - Level switch defective
+154                                                       |
+ - No pressure build-up in hydraulic
+ - Pressure tubings leaking
+ - Valve high/low pressure switch defective
+155                                                       |
+
+156                                                       |
+ - Oil level of oil mist tank too low
+ - Level switch defective
+157                                                       |
+ - B axis has reached + direction end position
+158                                                       |
+ - B axis has reached - direction end position
+159                                                       |
+ - Ball screw cooling unit defective
+ - Ball screw cooling motor overloaded 
+ - Sensors defective
+160                                                       |
+ - Spindle cooling unit defective
+ - Spindle cooling motor overloaded 
+ - Sensors defective
+161                                                       |
+ - CYCON K11 time-out signal = 1
+162                                                       |
+
+163                                                       |
+
+164                                                       |
+ - Spindle gear cooling unit defective
+ - Spindle gear cooling motor overloaded 
+ - Sensors defective
+165                                                       |
+
+166                                                       |
+
+167                                                       |
+ - Spindle oil-air lubrication unit defective
+ - Sensor defective
+168                                                       |
+ - Spindle oil-air lubrication MIXER pressure too low
+ - Sensor defective
+169                                                       |
+ - Spindle oil-air lubrication pressure too low
+ - Sensor defective
+170                                                       |
+ - ATC door not closed
+ - Sensors defective
+171                                                       |
+ - When the tool change has been interrupted, the tool on
+   the arm unit may not have been removed.
+172                                                       |
+ - For TVMC series
+   1. Z-axis is in cover interference area.
+173                                                       |
+ - Axis is inside the tool change area.
+174                                                       |
+ EMENA head
+ - Time for lubricating the spindle head bearing sets
+175                                                       |
+
+176                                                       |
+
+177                                                       |
+
+178                                                       |
+
+179                                                       |
+ - Magazine control mode switch on magazine operation panel in
+   automatic control position
+180                                                       |
+
+181                                                       |
+
+182                                                       |
+
+183                                                       |
+
+184                                                       |
+
+185                                                       |
+
+186                                                       |
+
+187                                                       |
+
+188                                                       |
+ - For ITRI automatic vertical/horizontal universal head
+   equipped with a displaying encoder, this position
+   confirmation warning message displays after power-on.
+ - For ITRI universal head with front axis 0¢X/180¢X, this
+   front axis position confirmation warning message displays
+   after power-on.
+ - For EMENA universal head with rear axis/front axis 2.5¢X,
+   this rear axis/front axis position confirmation warning
+   message displays after power-on.
+189                                                       |
+ SEMPUCO/ITRI head
+ - Time for lubricating the spindle head transmission unit
+   (bearing & gear sets)
+
+ EMENA head
+ - Time for lubricating the spindle head gear sets
+190                                                       |
+ - The spindle front/rear bearing temperature is too
+   high.
+191                                                       |
+ - Universal head front axis (C-axis or A-axis) motion
+   command is incorrect.
+192                                                       |
+ - For ITRI universal head with rear axis 5¢X and front axis
+   0¢X/180¢X, when the front axis (C-Axis or A-axis) is not in
+   0¢X position, the rear axis (B-axis) motion block is
+   executed.
+ - For ITRI universal head with rear axis 5¢X and front axis
+   0¢X/180¢X, when the rear axis (B-axis) is not in 0¢X
+   position, the front axis (C-Axis or A-axis) motion block
+   is executed.
+ - Y-axis REF position > Y+ position limitation (MP4231.10)
+   during universal head rear axis (B-axis) motion
+ - Y-axis REF position > Y+ position limitation (MP4231.6)
+   during universal head front axis (C-axis or A-axis)
+   motion
+193                                                       |
+ - The gap of tool unclamping rod is too small when the 
+   spindle tool is clamped.
+194                                                       |
+ - Door not closed
+ - Sensors defective
+195                                                       |
+ - The current position is not within the desired traverse
+   range (M71/M72/M73).
+ 
+ - During universal head axis motion, the X/Y/Z position is
+   not within traverse range 1 (LIMIT 1).
+196                                                       |
+ - Overtravel key + axis key for torque motor axis brake
+   releasing is active (MP4310.0 bit F = 1) during torque
+   motor field angle commissioning.
+197                                                       |
+ - Anti-backlash traverse of IV/V axis has never been 
+   performed.
+198                                                       |
+ - During tool measurement cycle, the position of any rotary
+   axis is incorrect.
+199                                                       |
+ - Function not available
+200                                                       |
+
+201                                                       |
+
+202                                                       |
+
+203                                                       |
+
+204                                                       |
+
+205                                                       |
+
+206                                                       |
+
+207                                                       |
+
+208                                                       |
+
+209                                                       |
+
+210                                                       |
+
+211                                                       |
+
+212                                                       |
+
+213                                                       |
+
+214                                                       |
+
+215                                                       |
+
+216                                                       |
+
+217                                                       |
+
+218                                                       |
+
+219                                                       |
+
+220                                                       |
+
+221                                                       |
+
+222                                                       |
+
+223                                                       |
+
+224                                                       |
+
+225                                                       |
+
+226                                                       |
+
+227                                                       |
+
+228                                                       |
+
+229                                                       |
+
+230                                                       |
+
+231                                                       |
+
+232                                                       |
+
+233                                                       |
+
+234                                                       |
+
+235                                                       |
+
+236                                                       |
+
+237                                                       |
+
+238                                                       |
+
+239                                                       |
+
+240                                                       |
+
+241                                                       |
+
+242                                                       |
+
+243                                                       |
+
+244                                                       |
+
+245                                                       |
+
+246                                                       |
+
+247                                                       |
+
+248                                                       |
+
+249                                                       |
+
+250                                                       |
+
+251                                                       |
+
+252                                                       |
+
+253                                                       |
+
+254                                                       |
+
+255                                                       |
+
+256                                                       |
+
+257                                                       |
+
+258                                                       |
+
+259                                                       |
+
+260                                                       |
+
+261                                                       |
+
+262                                                       |
+
+263                                                       |
+
+264                                                       |
+
+265                                                       |
+
+266                                                       |
+
+267                                                       |
+
+268                                                       |
+
+269                                                       |
+
+270                                                       |
+
+271                                                       |
+
+272                                                       |
+
+273                                                       |
+
+274                                                       |
+
+275                                                       |
+
+276                                                       |
+
+277                                                       |
+
+278                                                       |
+
+279                                                       |
+
+280                                                       |
+
+281                                                       |
+
+282                                                       |
+
+283                                                       |
+
+284                                                       |
+
+285                                                       |
+
+286                                                       |
+
+287                                                       |
+
+288                                                       |
+
+289                                                       |
+
+290                                                       |
+
+291                                                       |
+
+292                                                       |
+
+293                                                       |
+
+294                                                       |
+
+295                                                       |
+
+296                                                       |
+
+297                                                       |
+
+298                                                       |
+
+299                                                       |
+
+300                                                       |
+
+301                                                       |
+
+302                                                       |
+
+303                                                       |
+
+304                                                       |
+
+305                                                       |
+
+306                                                       |
+
+307                                                       |
+
+308                                                       |
+
+309                                                       |
+
+310                                                       |
+
+311                                                       |
+
+312                                                       |
+
+313                                                       |
+
+314                                                       |
+
+315                                                       |
+
+316                                                       |
+
+317                                                       |
+
+318                                                       |
+
+319                                                       |
+
+320                                                       |
+
+321                                                       |
+
+322                                                       |
+
+323                                                       |
+
+324                                                       |
+
+325                                                       |
+
+326                                                       |
+
+327                                                       |
+
+328                                                       |
+
+329                                                       |
+
+330                                                       |
+
+331                                                       |
+
+332                                                       |
+
+333                                                       |
+
+334                                                       |
+
+335                                                       |
+
+336                                                       |
+
+337                                                       |
+
+338                                                       |
+
+339                                                       |
+
+340                                                       |
+
+341                                                       |
+
+342                                                       |
+
+343                                                       |
+
+344                                                       |
+
+345                                                       |
+
+346                                                       |
+
+347                                                       |
+
+348                                                       |
+
+349                                                       |
+
+350                                                       |
+
+351                                                       |
+
+352                                                       |
+
+353                                                       |
+
+354                                                       |
+
+355                                                       |
+
+356                                                       |
+
+357                                                       |
+
+358                                                       |
+
+359                                                       |
+
+360                                                       |
+
+361                                                       |
+
+362                                                       |
+
+363                                                       |
+
+364                                                       |
+
+365                                                       |
+
+366                                                       |
+
+367                                                       |
+
+368                                                       |
+
+369                                                       |
+
+370                                                       |
+
+371                                                       |
+
+372                                                       |
+
+373                                                       |
+
+374                                                       |
+
+375                                                       |
+
+376                                                       |
+
+377                                                       |
+
+378                                                       |
+
+379                                                       |
+
+380                                                       |
+
+381                                                       |
+
+382                                                       |
+
+383                                                       |
+
+384                                                       |
+
+385                                                       |
+
+386                                                       |
+
+387                                                       |
+
+388                                                       |
+
+389                                                       |
+
+390                                                       |
+
+391                                                       |
+
+392                                                       |
+
+393                                                       |
+
+394                                                       |
+
+395                                                       |
+
+396                                                       |
+
+397                                                       |
+
+398                                                       |
+
+399                                                       |
+
+400                                                       |
+
+401                                                       |
+
+402                                                       |
+
+403                                                       |
+
+404                                                       |
+
+405                                                       |
+
+406                                                       |
+
+407                                                       |
+
+408                                                       |
+
+409                                                       |
+
+410                                                       |
+
+411                                                       |
+
+412                                                       |
+
+413                                                       |
+
+414                                                       |
+
+415                                                       |
+
+416                                                       |
+
+417                                                       |
+
+418                                                       |
+
+419                                                       |
+
+420                                                       |
+
+421                                                       |
+
+422                                                       |
+
+423                                                       |
+
+424                                                       |
+
+425                                                       |
+
+426                                                       |
+
+427                                                       |
+
+428                                                       |
+
+429                                                       |
+
+430                                                       |
+
+431                                                       |
+
+432                                                       |
+
+433                                                       |
+
+434                                                       |
+
+435                                                       |
+
+436                                                       |
+
+437                                                       |
+
+438                                                       |
+
+439                                                       |
+
+440                                                       |
+
+441                                                       |
+
+442                                                       |
+
+443                                                       |
+
+444                                                       |
+
+445                                                       |
+
+446                                                       |
+
+447                                                       |
+
+448                                                       |
+
+449                                                       |
+
+450                                                       |
+
+451                                                       |
+
+452                                                       |
+
+453                                                       |
+
+454                                                       |
+
+455                                                       |
+
+456                                                       |
+
+457                                                       |
+
+458                                                       |
+
+459                                                       |
+
+460                                                       |
+
+461                                                       |
+
+462                                                       |
+
+463                                                       |
+
+464                                                       |
+
+465                                                       |
+
+466                                                       |
+
+467                                                       |
+
+468                                                       |
+
+469                                                       |
+
+470                                                       |
+
+471                                                       |
+
+472                                                       |
+
+473                                                       |
+
+474                                                       |
+
+475                                                       |
+
+476                                                       |
+
+477                                                       |
+
+478                                                       |
+
+479                                                       |
+
+480                                                       |
+
+481                                                       |
+
+482                                                       |
+
+483                                                       |
+
+484                                                       |
+
+485                                                       |
+
+486                                                       |
+
+487                                                       |
+
+488                                                       |
+
+489                                                       |
+
+490                                                       |
+
+491                                                       |
+
+492                                                       |
+
+493                                                       |
+
+494                                                       |
+
+495                                                       |
+
+496                                                       |
+
+497                                                       |
+
+498                                                       |
+
+499                                                       |
+
+500                                                       |
+
+501                                                       |
+
+502                                                       |
+
+503                                                       |
+
+504                                                       |
+
+505                                                       |
+
+506                                                       |
+
+507                                                       |
+
+508                                                       |
+
+509                                                       |
+
+510                                                       |
+
+511                                                       |
+
+512                                                       |
+
+513                                                       |
+
+514                                                       |
+
+515                                                       |
+
+516                                                       |
+
+517                                                       |
+
+518                                                       |
+
+519                                                       |
+
+520                                                       |
+
+521                                                       |
+
+522                                                       |
+
+523                                                       |
+
+524                                                       |
+
+525                                                       |
+
+526                                                       |
+
+527                                                       |
+
+528                                                       |
+
+529                                                       |
+
+530                                                       |
+
+531                                                       |
+
+532                                                       |
+
+533                                                       |
+
+534                                                       |
+
+535                                                       |
+
+536                                                       |
+
+537                                                       |
+
+538                                                       |
+
+539                                                       |
+
+540                                                       |
+
+541                                                       |
+
+542                                                       |
+
+543                                                       |
+
+544                                                       |
+
+545                                                       |
+
+546                                                       |
+
+547                                                       |
+
+548                                                       |
+
+549                                                       |
+
+550                                                       |
+
+551                                                       |
+
+552                                                       |
+
+553                                                       |
+
+554                                                       |
+
+555                                                       |
+
+556                                                       |
+
+557                                                       |
+
+558                                                       |
+
+559                                                       |
+
+560                                                       |
+
+561                                                       |
+
+562                                                       |
+
+563                                                       |
+
+564                                                       |
+
+565                                                       |
+
+566                                                       |
+
+567                                                       |
+
+568                                                       |
+
+569                                                       |
+
+570                                                       |
+
+571                                                       |
+
+572                                                       |
+
+573                                                       |
+
+574                                                       |
+
+575                                                       |
+
+576                                                       |
+
+577                                                       |
+
+578                                                       |
+
+579                                                       |
+
+580                                                       |
+
+581                                                       |
+
+582                                                       |
+
+583                                                       |
+
+584                                                       |
+
+585                                                       |
+
+586                                                       |
+
+587                                                       |
+
+588                                                       |
+
+589                                                       |
+
+590                                                       |
+
+591                                                       |
+
+592                                                       |
+
+593                                                       |
+
+594                                                       |
+
+595                                                       |
+
+596                                                       |
+
+597                                                       |
+
+598                                                       |
+
+599                                                       |
+
+600                                                       |
+
+601                                                       |
+
+602                                                       |
+
+603                                                       |
+
+604                                                       |
+
+605                                                       |
+
+606                                                       |
+
+607                                                       |
+
+608                                                       |
+
+609                                                       |
+
+610                                                       |
+The value of input Q361 Laser beam axis is incorrect. The
+value of Q361 can only be 1 (X axis) or 0 (Y axis).
+611                                                       |
+The value of input Q374 Measurement side for profiling is
+incorrect.
+612                                                       |
+The value of input Q365/ROFFS Radial step over exceeds the
+maximum tool radius set in the Renishaw set-up table.
+613                                                       |
+The value of input Q362 Measuring direction is incorrect.
+The value of Q362 can only be +1 (positive direction), -1
+(negative direction), or 0 (both).
+614                                                       |
+
+615                                                       |
+At least one measurement in the sample is outside the
+scatter tolerance limit, defined by scatter tolerance in the
+Renishaw set-up table. The alarm will arise once the number
+of retries (double the number of final touches) has been
+exceeded.
+616                                                       |
+The tool setting system is not active and/or responding
+(Renishaw alarm).
+617                                                       |
+The active tool length exceeds the maximum tool length
+specified in the Renishaw set-up table.
+618                                                       |
+The active tool length is less than the minimum tool length
+specified in the Renishaw set-up table.
+619                                                       |
+The active tool radius exceeds the maximum tool radius
+specified in the Renishaw set-up table.
+620                                                       |
+The active tool is out of tolerance. This alarm arises in
+the broken tool detection cycle (506) if the measured
+dimension of the tool is outside the input LBREAK tolerance
+for that cycle. In this circumstance, the Tool Lock (TL) is
+applied to the active tool in the tool table.
+621                                                       |
+The receiver has not registered a beam cut condition during
+the measure move, possibly because:
+* the tool is missing,
+* in the alignment cycle (500 or 501), the tool is 
+  pre-positioned excessively far from the beam,
+* its approximate length (where required) in the tool table 
+  is incorrectly short.
+* the NC system has been significantly moved since
+  calibration.
+622                                                       |
+The active tool is out of tolerance. This alarm arises in
+the tool profile checking cycle (508) and cutting edge
+checking cycle (510) if the measured dimension of the tool
+cutting edge is outside the input RBREAK cutting edge
+tolerance for that cycle. This can be due, in part or
+exclusively, to eccentricity / runout of the tool. In these 
+circumstances the Tool Lock (TL) is applied to the active
+tool in the tool table.
+623                                                       |
+The receiver is registering a beam-cut signal at the start
+of a measuring move. This may be due to the tool, swarf or
+coolant interfering with the beam.
+624                                                       |
+
+625                                                       |
+The selected cycle is not supported by the hardware
+installation. This alarm usually arises if an extended cycle
+(cutter profile checking [508] and cutting edge checking
+[510]) is selected, without the necessary machine inputs or
+M-code having been assigned or connected.
+626                                                       |
+
+627                                                       |
+The value of input Q365/ROFFS radial step over exceeds the
+active tool radius defined in the tool table.
+628                                                       |
+The value of input Q371 (cutter height) exceeds the maximum
+value allowed (item 42 in the Renishaw set-up table).
+629                                                       |
+The active tool is out of tolerance. This alarm arises in
+the setting/checking cycles (503, 504 and 505) if the
+measured dimension of the tool is outside the relevant tool
+table LTOL / RTOL tolerance values. In this circumstance,
+the Tool Lock (TL) is applied to the active tool in the tool
+table.
+NOTE: If the input Q380 (1) is used, then the relevant DL
+/ DR tool wear registers will have been adjusted, showing
+the error amounts from nominal.
+630                                                       |
+This is a diagnostic message that is displayed at the end of
+the SysTest.h system test program. It indicates that the
+Renishaw system test is successful.
+631                                                       |
+
+632                                                       |
+
+633                                                       |
+
+634                                                       |
+
+635                                                       |
+
+636                                                       |
+
+637                                                       |
+
+638                                                       |
+
+639                                                       |
+
+640                                                       |
+
+641                                                       |
+
+642                                                       |
+
+643                                                       |
+
+644                                                       |
+
+645                                                       |
+
+646                                                       |
+
+647                                                       |
+
+648                                                       |
+
+649                                                       |
+
+650                                                       |
+The laser system is not in operating mode, even though it
+has been activated, it means that the light beam is not
+free or that the laser system is not ready to measure.
+651                                                       |
+The beam shutter of the laser system is not closed and
+protected from pollution, even though it has been 
+de-activated.
+652                                                       |
+The measuring block cannot be executed because the position
+of the tool and the laser beam is not correct, or because
+the measuring signal is already high active at the start
+moment.
+653                                                       |
+The scattering of single measuring values of a measuring
+series exceeds the allowed tolerance Q362.
+654                                                       |
+The parameter approach side radial axis (line 20) or
+the approach side length axis (line 21) in the file 
+BLUM_000.TAB is not correctly defined.
+655                                                       |
+The search algorithm to determine the laser beam middle
+for cycle 582 was interrupted without trigger point.
+The change of the trigger point position since the last
+calibration/temp. compensation is larger than 1mm.
+656                                                       |
+No trigger signal has been detected during the last meas.
+block. The cycle has been aborted due to this error.
+657                                                       |
+There is no tool loaded in the spindle or the tool number
+is invalid.
+658                                                       |
+The length or radius values preset in the file TOOL.T or
+measured in the cycle are out of the allowed tool dimension
+limits defined in the file BLUM_000.TAB (line 60,61,62,63).
+659                                                       |
+The chosen parameter values for measuring mode Q350 demand
+a Blum laser system with NT functions. The actual system
+has no NT possibilities, the function cannot be executed.
+660                                                       |
+The measured values L and/or R in the length axis or in the
+radial axis exceeds the max. allowed tolerance LTOL or RTOL.
+661                                                       |
+The parameter starting angle Q363, final angle Q364, edge
+radius R2, scanning stroke Q353 or axial offset LOFFS exceed
+together the allowed max. depth.There is a risk of
+collision, because the tool tip moves too deep into the
+laser beam. (Limitation for MICRO/NANO system is necessary)
+662                                                       |
+In the last TOOL CALL command the tool axis was not defined
+or the given tool axis doesn't agree with the parameter
+length axis in the file BLUM_000.TAB (line 7).
+663                                                       |
+The number of cutting edges for the actual tool is preset
+in the tool memory with CUT=0. The spindle rotation speed
+for the single cutting edge control can't be calculated
+correctly.
+664                                                       |
+One of the measuring parameter (LTOL,RTOL,LOFFS,ROFFS,
+CUT, LBREAK,RBREAK) in the table TOOL.T is preset to a not
+valid value.
+665                                                       |
+One or several call parameters (Q350 - Q368) is/are
+assigned with a critical or faulty value.
+666                                                       |
+The parameter table PLC:\BLUM\BLUM_0**.TAB or
+PLC:\BLUM\PICO_0**.TAB could not be found or
+parameter values in the file are faulty.
+667                                                       |
+During evaluation of the measuring data an irreparable
+error was realized, e.g. division by zero.
+668                                                       |
+The operating speed or check speed for the single cutting
+edge control was not achieved in a preset period or is
+greater than the at the last TOOL CALL command defined
+max. admissible spindle speed. The cutting edge control
+cannot be effected correctly.
+669                                                       |
+The trigger position returned from the control deviates
+more than 20mm from the actual axis position
+!! Risk of collision!!
+670                                                       |
+
+671                                                       |
+
+672                                                       |
+
+673                                                       |
+
+674                                                       |
+
+675                                                       |
+
+676                                                       |
+
+677                                                       |
+
+678                                                       |
+
+679                                                       |
+
+680                                                       |
+
+681                                                       |
+
+682                                                       |
+
+683                                                       |
+
+684                                                       |
+
+685                                                       |
+
+686                                                       |
+
+687                                                       |
+
+688                                                       |
+
+689                                                       |
+
+690                                                       |
+
+691                                                       |
+
+692                                                       |
+
+693                                                       |
+
+694                                                       |
+
+695                                                       |
+
+696                                                       |
+
+697                                                       |
+
+698                                                       |
+
+699                                                       |
+
+700                                                       |
+
+701                                                       |
+
+702                                                       |
+
+703                                                       |
+
+704                                                       |
+
+705                                                       |
+
+706                                                       |
+
+707                                                       |
+
+708                                                       |
+
+709                                                       |
+
+710                                                       |
+
+711                                                       |
+
+712                                                       |
+
+713                                                       |
+
+714                                                       |
+
+715                                                       |
+
+716                                                       |
+
+717                                                       |
+
+718                                                       |
+
+719                                                       |
+
+720                                                       |
+
+721                                                       |
+
+722                                                       |
+
+723                                                       |
+
+724                                                       |
+
+725                                                       |
+
+726                                                       |
+
+727                                                       |
+
+728                                                       |
+
+729                                                       |
+
+730                                                       |
+
+731                                                       |
+
+732                                                       |
+
+733                                                       |
+
+734                                                       |
+
+735                                                       |
+
+736                                                       |
+
+737                                                       |
+
+738                                                       |
+
+739                                                       |
+
+740                                                       |
+
+741                                                       |
+
+742                                                       |
+
+743                                                       |
+
+744                                                       |
+
+745                                                       |
+
+746                                                       |
+
+747                                                       |
+
+748                                                       |
+
+749                                                       |
+
+750                                                       |
+
+751                                                       |
+
+752                                                       |
+
+753                                                       |
+
+754                                                       |
+
+755                                                       |
+
+756                                                       |
+
+757                                                       |
+
+758                                                       |
+
+759                                                       |
+
+760                                                       |
+
+761                                                       |
+
+762                                                       |
+
+763                                                       |
+
+764                                                       |
+
+765                                                       |
+
+766                                                       |
+
+767                                                       |
+
+768                                                       |
+
+769                                                       |
+
+770                                                       |
+
+771                                                       |
+
+772                                                       |
+
+773                                                       |
+
+774                                                       |
+
+775                                                       |
+
+776                                                       |
+
+777                                                       |
+
+778                                                       |
+
+779                                                       |
+
+780                                                       |
+
+781                                                       |
+
+782                                                       |
+
+783                                                       |
+
+784                                                       |
+
+785                                                       |
+
+786                                                       |
+
+787                                                       |
+
+788                                                       |
+
+789                                                       |
+
+790                                                       |
+
+791                                                       |
+
+792                                                       |
+
+793                                                       |
+
+794                                                       |
+
+795                                                       |
+
+796                                                       |
+
+797                                                       |
+
+798                                                       |
+
+799                                                       |
+
+800                                                       |
+
+801                                                       |
+ - The pressure of pneumatic counter-weight balancing is out
+   of range.
+802                                                       |
+ - Overload of protective motor switch
+ - Motor defective
+803                                                       |
+
+804                                                       |
+
+805                                                       |
+ - 2nd lubrication cycle of axes not carried out correctly
+ - Pressure tubings leaky
+ - Pressure switch defective
+806                                                       |
+ - Oil level of 2nd central lubrication system too low
+ - Level switch defective
+807                                                       |
+ - 3rd lubrication cycle of axes not carried out correctly
+ - Pressure tubings leaky
+ - Pressure switch defective
+808                                                       |
+ - Oil level of 3rd central lubrication system too low
+ - Level switch defective
+809                                                       |
+
+810                                                       |
+ - Time for lubricating feed axis manually
+811                                                       |
+
+812                                                       |
+
+813                                                       |
+
+814                                                       |
+
+815                                                       |
+
+816                                                       |
+
+817                                                       |
+
+818                                                       |
+
+819                                                       |
+ - Gravity axis balancing pressure too high (pressure
+   relief valve opening automatically to release pressure)
+820                                                       |
+
+821                                                       |
+
+822                                                       |
+
+823                                                       |
+
+824                                                       |
+
+825                                                       |
+
+826                                                       |
+
+827                                                       |
+
+828                                                       |
+
+829                                                       |
+
+830                                                       |
+
+831                                                       |
+
+832                                                       |
+
+833                                                       |
+
+834                                                       |
+
+835                                                       |
+
+836                                                       |
+
+837                                                       |
+
+838                                                       |
+
+839                                                       |
+ - No coolant through coolant motor
+ - If CTS tank is existing, check the filter in front of M08
+   motor.
+ - Pressure switch defective
+840                                                       |
+
+841                                                       |
+
+842                                                       |
+
+843                                                       |
+
+844                                                       |
+ - Interruption during tool change
+ - It is possible that the standby tool number (STDT) does
+   not correspond to the display of STDT.
+845                                                       |
+
+846                                                       |
+ - Magazine panel tool selection I/O link cannot be
+   completed.
+847                                                       |
+ - Magazine panel data display timeout
+848                                                       |
+ - Magazine panel data I/O link communication error
+849                                                       |
+
+850                                                       |
+
+851                                                       |
+ - Tool change 2 interrupted
+ - Error during tool change 2
+852                                                       |
+ - Timeout during tool change
+ - Interruption of tool change
+853                                                       |
+ - Magazine 2 guard open
+854                                                       |
+ - Tool magazine 2 without reference
+855                                                       |
+ - Timeout during magazine 2 tool selection
+856                                                       |
+ - Loading of the tool magazine 2 selected via soft key
+ - Tool magazine can be traversed and loaded
+857                                                       |
+ - Tool magazine 2 loaded wrongly
+ - Erroneous entries in the pocket table
+ - Sensor defective
+858                                                       |
+ - Tool magazine 2 loaded wrongly
+ - Erroneous entries in the pocket table
+ - Sensor defective
+859                                                       |
+
+860                                                       |
+
+861                                                       |
+
+862                                                       |
+
+863                                                       |
+
+864                                                       |
+
+865                                                       |
+
+866                                                       |
+
+867                                                       |
+
+868                                                       |
+
+869                                                       |
+
+870                                                       |
+
+871                                                       |
+
+872                                                       |
+
+873                                                       |
+
+874                                                       |
+
+875                                                       |
+
+876                                                       |
+
+877                                                       |
+
+878                                                       |
+
+879                                                       |
+
+880                                                       |
+
+881                                                       |
+
+882                                                       |
+
+883                                                       |
+
+884                                                       |
+
+885                                                       |
+
+886                                                       |
+
+887                                                       |
+ - Tool measurement unit cover is opening, but the cover
+   open sensor signal is not detected.
+ - Tool measurement unit cover is closing, but the cover
+   closed sensor signal is not detected.
+888                                                       |
+
+889                                                       |
+
+890                                                       |
+
+891                                                       |
+
+892                                                       |
+
+893                                                       |
+
+894                                                       |
+
+895                                                       |
+
+896                                                       |
+
+897                                                       |
+
+898                                                       |
+
+899                                                       |
+
+900                                                       |
+ - Error during reading PLC:\CORRECT\Ext_sag_comp.tab
+901                                                       |
+
+902                                                       |
+
+903                                                       |
+
+904                                                       |
+
+905                                                       |
+
+906                                                       |
+
+907                                                       |
+
+908                                                       |
+
+909                                                       |
+
+910                                                       |
+
+911                                                       |
+
+912                                                       |
+
+913                                                       |
+
+914                                                       |
+
+915                                                       |
+
+916                                                       |
+
+917                                                       |
+
+918                                                       |
+
+919                                                       |
+
+920                                                       |
+
+921                                                       |
+
+922                                                       |
+
+923                                                       |
+
+924                                                       |
+
+925                                                       |
+
+926                                                       |
+
+927                                                       |
+
+928                                                       |
+
+929                                                       |
+
+930                                                       |
+
+931                                                       |
+
+932                                                       |
+
+933                                                       |
+
+934                                                       |
+
+935                                                       |
+ - Timeout during tool loading to arm 2 unit
+ - Interruption of tool loading to arm 2 unit
+936                                                       |
+ - Timeout during tool returning to magazine 2 unit
+ - Interruption of tool returning to magazine 2 unit
+937                                                       |
+
+938                                                       |
+
+939                                                       |
+
+940                                                       |
+
+941                                                       |
+
+942                                                       |
+
+943                                                       |
+
+944                                                       |
+
+945                                                       |
+
+946                                                       |
+
+947                                                       |
+
+948                                                       |
+
+949                                                       |
+
+950                                                       |
+
+951                                                       |
+
+952                                                       |
+
+953                                                       |
+
+954                                                       |
+
+955                                                       |
+
+956                                                       |
+
+957                                                       |
+
+958                                                       |
+
+959                                                       |
+
+960                                                       |
+
+961                                                       |
+
+962                                                       |
+
+963                                                       |
+
+964                                                       |
+
+965                                                       |
+
+966                                                       |
+
+967                                                       |
+
+968                                                       |
+
+969                                                       |
+
+970                                                       |
+
+971                                                       |
+ - When the tool change has been interrupted, the tool on
+   the arm 2 unit may not have been removed.
+972                                                       |
+
+973                                                       |
+
+974                                                       |
+
+975                                                       |
+
+976                                                       |
+
+977                                                       |
+
+978                                                       |
+
+979                                                       |
+ - Magazine 2 control mode switch on magazine 2 operation
+   panel in automatic control position
+980                                                       |
+
+981                                                       |
+ - Magazine gripper is not in the standby position.
+982                                                       |
+ - Magazine gripper is not in the put-in position.
+983                                                       |
+ - Timeout during shifting pocket to magazine position
+984                                                       |
+ - Timeout during shifting pocket to TC position
+985                                                       |
+ - There is a pocket on the magazine standby position during
+   shifting pocket is moving to the magazine position.
+986                                                       |
+ - Magazine pocket is not in correct position.
+987                                                       |
+ - TC standby tool number > 0 or TC standby tool pocket not
+   empty during unloading tool from magazine standby pocket
+   to TC standby tool position.
+988                                                       |
+ - Cannot find the magazine pocket of TC standby tool during
+   loading TC standby tool to the magazine unit.
+989                                                       |
+
+990                                                       |
+
+991                                                       |
+
+992                                                       |
+
+993                                                       |
+
+994                                                       |
+
+995                                                       |
+
+996                                                       |
+
+997                                                       |
+
+998                                                       |
+
+999                                                       |
+
+1000                                                      |

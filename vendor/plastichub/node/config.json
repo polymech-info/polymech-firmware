@@ -1,0 +1,14 @@
+{
+    "products_path": "../../products/products",
+    "fragments_path": "../../products/bazar/fragments",
+    "vendor_name": "Plastic Hub",
+    "vendor_website": "www.precious-plastic.org",
+    "vendor_products_external": "https://gitlab.com/plastichub/products/tree/master/products/",
+    "vendor_instagram": "https://www.instagram.com/plastichubcat",
+    "vendor_youtube": "https://www.youtube.com/channel/UCuWDxJtV2pf5BefHEy09Cew/featured?view_as=subscriber",
+    "vendor_github": "https://gitlab.com/plastichub",
+    "vendor_contact_email": "mailto://cgoflyn@gmail.com",
+    "vendor_whatsapp": "tel://0034666894789",
+    "vendor_facebook" : "https://precious-plastic.org/library/machines/",
+    "vendor_blog" : "https://precious-plastic.org/"
+}

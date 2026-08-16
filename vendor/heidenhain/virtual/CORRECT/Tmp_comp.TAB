@@ -1,0 +1,299 @@
+BEGIN Tmp_comp.TAB 
+#STRUCTBEGIN
+   NAME = Temp
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Temperature compensation value ?
+     DIA-GERMAN = Temperatur Messpunkt ?
+     DIA-CZECH = Temperature compensation value ?
+     DIA-FRENCH = Temperature compensation value ?
+     DIA-ITALIAN = Temperature compensation value ?
+     DIA-SPANISH = Temperature compensation value ?
+     DIA-PORTUGUE = Temperature compensation value ?
+     DIA-SWEDISH = Temperature compensation value ?
+     DIA-DANISH = Temperature compensation value ?
+     DIA-FINNISH = Temperature compensation value ?
+     DIA-DUTCH = Temperature compensation value ?
+     DIA-POLISH = Temperature compensation value ?
+     DIA-HUNGARIA = Temperature compensation value ?
+     DIA-RUSSIAN = Temperature compensation value ?
+   NAME = Xp
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = X correktion T rising ?
+     DIA-GERMAN = X Korrektur T ansteigend ?
+     DIA-CZECH = X correktion T rising ?
+     DIA-FRENCH = X correktion T rising ?
+     DIA-ITALIAN = X correktion T rising ?
+     DIA-SPANISH = X correktion T rising ?
+     DIA-PORTUGUE = X correktion T rising ?
+     DIA-SWEDISH = X correktion T rising ?
+     DIA-DANISH = X correktion T rising ?
+     DIA-FINNISH = X correktion T rising ?
+     DIA-DUTCH = X correktion T rising ?
+     DIA-POLISH = X correktion T rising ?
+     DIA-HUNGARIA = X correktion T rising ?
+     DIA-RUSSIAN = X correktion T rising ?
+   NAME = Yp
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = Y correktion T rising ?
+     DIA-GERMAN = Y Korrektur T ansteigend ?
+     DIA-CZECH = Y correktion T rising ?
+     DIA-FRENCH = Y correktion T rising ?
+     DIA-ITALIAN = Y correktion T rising ?
+     DIA-SPANISH = Y correktion T rising ?
+     DIA-PORTUGUE = Y correktion T rising ?
+     DIA-SWEDISH = Y correktion T rising ?
+     DIA-DANISH = Y correktion T rising ?
+     DIA-FINNISH = Y correktion T rising ?
+     DIA-DUTCH = Y correktion T rising ?
+     DIA-POLISH = Y correktion T rising ?
+     DIA-HUNGARIA = Y correktion T rising ?
+     DIA-RUSSIAN = Y correktion T rising ?
+   NAME = Zp
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = Z correktion T rising ?
+     DIA-GERMAN = Z Korrektur T ansteigend ?
+     DIA-CZECH = Z correktion T rising ?
+     DIA-FRENCH = Z correktion T rising ?
+     DIA-ITALIAN = Z correktion T rising ?
+     DIA-SPANISH = Z correktion T rising ?
+     DIA-PORTUGUE = Z correktion T rising ?
+     DIA-SWEDISH = Z correktion T rising ?
+     DIA-DANISH = Z correktion T rising ?
+     DIA-FINNISH = Z correktion T rising ?
+     DIA-DUTCH = Z correktion T rising ?
+     DIA-POLISH = Z correktion T rising ?
+     DIA-HUNGARIA = Z correktion T rising ?
+     DIA-RUSSIAN = Z correktion T rising ?
+   NAME = Xn
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = X correktion T dropping ?
+     DIA-GERMAN = X Korrektur T abfallend ?
+     DIA-CZECH = X correktion T dropping ?
+     DIA-FRENCH = X correktion T dropping ?
+     DIA-ITALIAN = X correktion T dropping ?
+     DIA-SPANISH = X correktion T dropping ?
+     DIA-PORTUGUE = X correktion T dropping ?
+     DIA-SWEDISH = X correktion T dropping ?
+     DIA-DANISH = X correktion T dropping ?
+     DIA-FINNISH = X correktion T dropping ?
+     DIA-DUTCH = X correktion T dropping ?
+     DIA-POLISH = X correktion T dropping ?
+     DIA-HUNGARIA = X correktion T dropping ?
+     DIA-RUSSIAN = X correktion T dropping ?
+   NAME = Yn
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = Y correktion T dropping ?
+     DIA-GERMAN = Y Korrektur T abfallend ?
+     DIA-CZECH = Y correktion T dropping ?
+     DIA-FRENCH = Y correktion T dropping ?
+     DIA-ITALIAN = Y correktion T dropping ?
+     DIA-SPANISH = Y correktion T dropping ?
+     DIA-PORTUGUE = Y correktion T dropping ?
+     DIA-SWEDISH = Y correktion T dropping ?
+     DIA-DANISH = Y correktion T dropping ?
+     DIA-FINNISH = Y correktion T dropping ?
+     DIA-DUTCH = Y correktion T dropping ?
+     DIA-POLISH = Y correktion T dropping ?
+     DIA-HUNGARIA = Y correktion T dropping ?
+     DIA-RUSSIAN = Y correktion T dropping ?
+   NAME = Zn
+     TYPE = N
+     WIDTH = 8
+     DEC = 4
+     DIA-ENGLISH = Z correktion T dropping ?
+     DIA-GERMAN = Z Korrektur T abfallend ?
+     DIA-CZECH = Z correktion T dropping ?
+     DIA-FRENCH = Z correktion T dropping ?
+     DIA-ITALIAN = Z correktion T dropping ?
+     DIA-SPANISH = Z correktion T dropping ?
+     DIA-PORTUGUE = Z correktion T dropping ?
+     DIA-SWEDISH = Z correktion T dropping ?
+     DIA-DANISH = Z correktion T dropping ?
+     DIA-FINNISH = Z correktion T dropping ?
+     DIA-DUTCH = Z correktion T dropping ?
+     DIA-POLISH = Z correktion T dropping ?
+     DIA-HUNGARIA = Z correktion T dropping ?
+     DIA-RUSSIAN = Z correktion T dropping ?
+   NAME = Data
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Messuring data ?
+     DIA-GERMAN = Mess-Daten ?
+     DIA-CZECH = Messuring data ?
+     DIA-FRENCH = Messuring data ?
+     DIA-ITALIAN = Messuring data ?
+     DIA-SPANISH = Messuring data ?
+     DIA-PORTUGUE = Messuring data ?
+     DIA-SWEDISH = Messuring data ?
+     DIA-DANISH = Messuring data ?
+     DIA-FINNISH = Messuring data ?
+     DIA-DUTCH = Messuring data ?
+     DIA-POLISH = Messuring data ?
+     DIA-HUNGARIA = Messuring data ?
+     DIA-RUSSIAN = Messuring data ?
+   NAME = Setup
+     TYPE = N
+     WIDTH = 7
+     DEC = 0
+     DIA-ENGLISH = Setup data ?
+     DIA-GERMAN = Setup Daten ?
+     DIA-CZECH = Setup data ?
+     DIA-FRENCH = Setup data ?
+     DIA-ITALIAN = Setup data ?
+     DIA-SPANISH = Setup data ?
+     DIA-PORTUGUE = Setup data ?
+     DIA-SWEDISH = Setup data ?
+     DIA-DANISH = Setup data ?
+     DIA-FINNISH = Setup data ?
+     DIA-DUTCH = Setup data ?
+     DIA-POLISH = Setup data ?
+     DIA-HUNGARIA = Setup data ?
+     DIA-RUSSIAN = Setup data ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 45
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = Komentar ?
+     DIA-FRENCH = Commentaire ?
+     DIA-ITALIAN = Commento ?
+     DIA-SPANISH = Comentario ?
+     DIA-PORTUGUE = Comentario ?
+     DIA-SWEDISH = Kommentar ?
+     DIA-DANISH = Kommentar ?
+     DIA-FINNISH = Tulkki ?
+     DIA-DUTCH = Commentaar ?
+     DIA-POLISH = Komentarz ?
+     DIA-HUNGARIA = Megjegyzes ?
+     DIA-RUSSIAN = Comment ?
+   NAME = Temp_Mp
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Temperature machine ?
+     DIA-GERMAN = Temperatur Sensor Maschine ?
+     DIA-CZECH = Temperature machine ?
+     DIA-FRENCH = Temperature machine ?
+     DIA-ITALIAN = Temperature machine ?
+     DIA-SPANISH = Temperature machine ?
+     DIA-PORTUGUE = Temperature machine ?
+     DIA-SWEDISH = Temperature machine ?
+     DIA-DANISH = Temperature machine ?
+     DIA-FINNISH = Temperature machine ?
+     DIA-DUTCH = Temperature machine ?
+     DIA-POLISH = Temperature machine ?
+     DIA-HUNGARIA = Temperature machine ?
+     DIA-RUSSIAN = Temperature machine ?
+   NAME = Temp_Sp
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Temperature spindle ?
+     DIA-GERMAN = Temperatur Sensor Spindel ?
+     DIA-CZECH = Temperature spindle ?
+     DIA-FRENCH = Temperature spindle ?
+     DIA-ITALIAN = Temperature spindle ?
+     DIA-SPANISH = Temperature spindle ?
+     DIA-PORTUGUE = Temperature spindle ?
+     DIA-SWEDISH = Temperature spindle ?
+     DIA-DANISH = Temperature spindle ?
+     DIA-FINNISH = Temperature spindle ?
+     DIA-DUTCH = Temperature spindle ?
+     DIA-POLISH = Temperature spindle ?
+     DIA-HUNGARIA = Temperature spindle ?
+     DIA-RUSSIAN = Temperature spindle ?
+   NAME = Temp_Mn
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Temperature machine ?
+     DIA-GERMAN = Temperatur Sensor Maschine ?
+     DIA-CZECH = Temperature machine ?
+     DIA-FRENCH = Temperature machine ?
+     DIA-ITALIAN = Temperature machine ?
+     DIA-SPANISH = Temperature machine ?
+     DIA-PORTUGUE = Temperature machine ?
+     DIA-SWEDISH = Temperature machine ?
+     DIA-DANISH = Temperature machine ?
+     DIA-FINNISH = Temperature machine ?
+     DIA-DUTCH = Temperature machine ?
+     DIA-POLISH = Temperature machine ?
+     DIA-HUNGARIA = Temperature machine ?
+     DIA-RUSSIAN = Temperature machine ?
+   NAME = Temp_Sn
+     TYPE = N
+     WIDTH = 7
+     DEC = 1
+     DIA-ENGLISH = Temperature spindle ?
+     DIA-GERMAN = Temperatur Sensor Spindel ?
+     DIA-CZECH = Temperature spindle ?
+     DIA-FRENCH = Temperature spindle ?
+     DIA-ITALIAN = Temperature spindle ?
+     DIA-SPANISH = Temperature spindle ?
+     DIA-PORTUGUE = Temperature spindle ?
+     DIA-SWEDISH = Temperature spindle ?
+     DIA-DANISH = Temperature spindle ?
+     DIA-FINNISH = Temperature spindle ?
+     DIA-DUTCH = Temperature spindle ?
+     DIA-POLISH = Temperature spindle ?
+     DIA-HUNGARIA = Temperature spindle ?
+     DIA-RUSSIAN = Temperature spindle ?
+#STRUCTEND
+NR      Temp    Xp       Yp       Zp       Xn       Yn       Zn       Data    Setup   Comment                                       Temp_Mp Temp_Sp Temp_Mn Temp_Sn
+0       0       0        0        0        0        0        0                1       Temperature compensation off/on [0/1]                                         
+1       1       0        0        0        0        0        0        0               Current temperature machine [0.1°]                                            
+2       2       0        0        0        0        0        0        0               Current temperature spindle [0.1°]                                            
+3       3       0        0        0        0        0        0        0               Current temperature [0.1°]                                                    
+4       4       0        0        0        0        0        0                0       Temperature difference/average [0/1]                                          
+5       5       0        0        0        0        0        0                67      Number machine temperature interface (Pt100)                                  
+6       6       0        0        0        0        0        0                68      Number spindle temperature interface (Pt100)                                  
+7       7       0        0        0        0        0        0                200     Number of measures [PLC cycles]                                               
+8       8       0        0        0        0        0        0                0       Curve Xp/Xn average (no hyst.) off/on [0/1]                                   
+9       9       0        0        0        0        0        0                0       Curve Yp/Yn average (no hyst.) off/on [0/1]                                   
+10      10      0        0        0        0        0        0                0       Curve Zp/Zn average (no hyst.) off/on [0/1]                                   
+11      11      0        0        0        0        0        0                                                                                                      
+12      12      0        0        0        0        0        0                                                                                                      
+13      13      0        0        0        0        0        0                                                                                                      
+14      14      0        0        0        0        0        0                                                                                                      
+15      15      0        0        0        0        0        0                                                                                                      
+16      16      0        0        0        0        0        0                                                                                                      
+17      17      0        0        0        0        0        0                                                                                                      
+18      18      0        0        0        0        0        0                                                                                                      
+19      19      0        0        0        0        0        0                                                                                                      
+20      20      0        0        0        0        0        0                                                                                                      
+21      21      0        0        0        0        0        0                                                                                                      
+22      22      0        0        0        0        0        0                                                                                                      
+23      23      0        0        0        0        0        0                                                                                                      
+24      24      0        0        0        0        0        0                                                                                                      
+25      25      0        0        0        0        0        0                                                                                                      
+26      26      0        0        0        0        0        0                                                                                                      
+27      27      0        0        0        0        0        0                                                                                                      
+28      28      0        0        0        0        0        0                                                                                                      
+29      29      0        0        0        0        0        0                                                                                                      
+30      30      0        0        0        0        0        0                                                                                                      
+31      31      0        0        0        0        0        0                                                                                                      
+32      32      0        0        0        0        0        0                                                                                                      
+33      33      0        0        0        0        0        0                                                                                                      
+34      34      0        0        0        0        0        0                                                                                                      
+35      35      0        0        0        0        0        0                                                                                                      
+36      36      0        0        0        0        0        0                                                                                                      
+37      37      0        0        0        0        0        0                                                                                                      
+38      38      0        0        0        0        0        0                                                                                                      
+39      39      0        0        0        0        0        0                                                                                                      
+40      40      0        0        0        0        0        0                                                                                                      
+41      60      0        0        0        0        0        0                                                                                                      
+[END]

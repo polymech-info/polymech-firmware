@@ -1,0 +1,28 @@
+/* PLC-POSITIONING
+   ---------------
+*/
+CHARSIZE=AUTO; ;
+"\n";
+CHARSIZE=MEDIUM;
+"PLCPOS PLC->NC";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\nAXIS    ACTIVE   TARGET   FEEDRATE    \n";
+CURSOR=OFF;
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[0],
+  M4120?"ACT":"   "/c,
+  D528/n=4/c,
+  M4120?W560:0/c;
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[1],
+M4121?"ACT":"   "/c,D532/n=4/c,M4121?W562:0/c;
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[2],
+M4122?"ACT":"   "/c,D536/n=4/c,M4122?W564:0/c;
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[3],
+M4123?"ACT":"   "/c,D540/n=4/c,M4123?W566:0/c;
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[4],
+M4124?"ACT":"   "/c,D544/n=4/c,M4124?W568:0/c;
+/*
+"%C-AXIS  %S %+10.3F  %5D\n",AXISCHAR[4],
+M4124?"ACT":"   "/c,M4124?D544:0./n=4/c,M4124?W568:0/c;
+*/

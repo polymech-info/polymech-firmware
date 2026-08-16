@@ -1,0 +1,73 @@
+************************************
+        !!! ATTENTION !!!
+
+     X, Y, Z can be moved by
+    X+, X-, Y+, Y-, Z+, Z- key
+         or handwheel
+  when the cursor is in line #3xx
+
+       service tool changer
+     (cam driven  double arm)
+
+         normal operation
+          (arm  forward)
+
+      ! manual mode active !
+   start function: key "NC start"
+************************************
+
+#301  S to TC position
+#302  Z to TC position
+#309  Pocket to vertical position
+#311  Arm to unclamping position
+#305  Tool unclamping
+#312  Arm to clamping position
+#306  Tool clamping
+#313  Arm to standby position
+#310  Pocket to horizontal position
+#317  Magazine turning forward
+#318  Magazine turning reverse
+#319  Magazine reference (non-servo magazine)
+#320  Delete spindle status (T0)
+
+************************************
+        !!! ATTENTION !!!
+         normal operation
+          (arm backward)
+************************************
+
+#301  S to TC position
+#302  Z to TC position
+#309  Pocket to vertical position
+#314  Arm back to clamping position
+#305  Tool unclamping
+#315  Arm back to unclamping position
+#306  Tool clamping
+#316  Arm back to standby position
+#310  Pocket to horizontal position
+#317  Magazine turning forward
+#318  Magazine turning reverse
+#319  Magazine reference (non-servo magazine)
+#320  Delete spindle status (T0)
+
+************************************
+        !!! ATTENTION !!!
+       only for supervisor
+************************************
+
+#301  S to TC position
+#302  Z to TC position
+#305  Tool unclamping
+#306  Tool clamping
+#309  Pocket to vertical position
+#310  Pocket to horizontal position
+#311  Arm to unclamping position
+#312  Arm to clamping position
+#313  Arm to standby position
+#314  Arm back to clamping position
+#315  Arm back to unclamping position
+#316  Arm back to standby position
+#317  Magazine turning forward
+#318  Magazine turning reverse
+#319  Magazine reference (non-servo magazine)
+#320  Delete spindle status (T0)

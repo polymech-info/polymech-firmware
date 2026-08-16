@@ -1,0 +1,190 @@
+*-----------------------------------------------------------------------------
+*  TC Magazine 2 loading
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_magazine_2                            K+1            *;EUMACH Dual TC
+
+EXTERN TC_mag_2_cw_turn
+EXTERN TC_mag_2_ccw_turn
+GLOBAL TC_mag_2_loading
+
+;----------------------------
+LBL TC_mag_2_loading
+;----------------------------
+
+  LN     MG_TC_auto_active
+  EMT
+
+  L      MG_soft_key_TC_mag_2_load_active
+  O      MG_HW_SK_TC2_load                                            *;EUMACH
+  AN     NP_TC_mag2_guard_and_panel                                   *;EUMACH
+  IFT
+    L      WG_TC2_pocket_number
+    <>     K-1
+    A[
+      L      WG_tool_in_spindle
+      <>     K+0
+    ]
+    A      NP_TC_mag2_T0_necessary_before_loading
+    A      MG_manual_mode
+    S      PN_error_spindle_not_empty
+;    R      MG_soft_key_TC_mag_2_load_active                          *;EUMACH Original PLC
+    EMT                                                               *;EUMACH
+
+    L      MG_manual_mode                                             *;EUMACH
+    IFT                                                               *;EUMACH
+      LN     MG_TM2_loading_active
+      =      MG_TM2_loading_active                                    *;EUMACH
+    ELSE                                                              *;EUMACH
+      L      MG_TM2_loading_active                                    *;EUMACH
+      R      MG_TM2_loading_active                                    *;EUMACH
+    ENDI                                                              *;EUMACH
+  ENDI
+
+  LN     I_key_TC_mag_2_automatic_control_mode                        *;EUMACH
+;  AN     MG_TC_help                                                  *;EUMACH TC HELP lower priority
+  AN     MG_TC_magazine_2_start                                       *;EUMACH
+  A      NP_TC_mag2_guard_and_panel                                   *;EUMACH
+  S      MG_TM2_loading_active                                        *;EUMACH
+
+  LN     I_TC_mag_2_guard_locked_closed
+;  AN     MG_soft_key_TC_mag_2_load_active                            *;EUMACH Original PLC
+  AN     MG_TM2_loading_active                                        *;EUMACH
+  A      MG_power_delayed_on
+  =      MG_error_TC_magazine_2_guard_open
+
+*;EUMACH Original PLC
+;  LN     MG_edit_pocket_table
+;  AN     MG_manual_mode
+;  AN     MG_TC_magazine_2_start
+;  R      MG_soft_key_TC_mag_2_load_active
+
+;  L      MG_soft_key_TC_mag_2_load_active
+;  =      MG_error_TC_magazine_2_loading
+;  =      O_lamp_TC2_pocket_loading
+;  RN     O_TC_mag_2_load_position_unlock
+;  EMF
+
+;  L      NP_M4074_strobe_TOOL_DEF
+;  S      PN_M4094_quit_TOOL_DEF
+
+;  LN     I_TC_mag_2_guard_closed
+;  R      O_TC_mag_2_guard_unlock
+*;EUMACH Original PLC
+
+*;EUMACH
+  LN     MG_manual_mode
+  AN     NP_TC_mag2_guard_and_panel
+  O[
+    L      I_key_TC_mag_2_automatic_control_mode
+;    O      MG_TC_help                                                *;EUMACH TC HELP lower priority
+    A      NP_TC_mag2_guard_and_panel
+  ]
+  AN     MG_TC_magazine_2_start
+  R      MG_TM2_loading_active
+
+  L      I_key_TC_magazine_2_cw
+  O      I_key_TC_magazine_2_ccw
+  O      I_key_TC_mag_2_load_unclamp_foot_switch
+  A      I_key_TC_mag_2_automatic_control_mode
+  A      NP_TC_mag2_guard_and_panel
+  =      MG_error_TC_mag_2_manual_control_mode
+
+  LN     I_TC_mag_2_guard_closed
+  R      O_TC_mag_2_guard_unlock
+
+  L      MG_TM2_loading_active
+  A      MG_clock_1_s
+  O      O_TC_mag_2_guard_unlock
+  ON     I_TC_mag_2_guard_locked_closed
+  =      O_lamp_TC_mag_2_guard_key
+
+  L      MG_TM2_loading_active
+  =      MG_error_TC_magazine_2_loading
+  =      O_lamp_TC2_pocket_loading
+  RN     O_TC_mag_2_load_position_unlock
+  RN     O_TC_mag_2_guard_unlock
+  EMF
+
+*; If TC magazine 2 loading is active, TOOL DEF command will be finished
+*; immediately.  No tool pre-selection will be performed.
+  L      NP_M4074_strobe_TOOL_DEF
+  S      PN_M4094_quit_TOOL_DEF
+*;EUMACH
+
+  L      I_key_TC_mag_2_guard_unlock
+  AN     MG_TC_magazine_2_start
+  AN     MG_TC2_automatic                                              *;EUMACH
+  S      O_TC_mag_2_guard_unlock
+
+  LN     I_TC_mag_2_guard_locked_closed
+  O      MG_TC_magazine_2_start
+  IFT
+    L      MG_clock_1_s
+    =      O_lamp_TC2_pocket_loading
+  ENDI
+
+  L      I_key_TC_mag_2_load_unclamp_foot_switch
+  A      I_TC_magazine_2_counter                                      *;EUMACH
+  A      I_TC_magazine_2_exact_position                               *;EUMACH
+  AN     MG_TC_magazine_2_start                                       *;EUMACH
+  AN     I_key_TC_mag_2_automatic_control_mode                        *;EUMACH
+  AN     I_TC_mag_2_guard_closed                                   *;EUMACH
+  =      O_TC_mag_2_load_position_unlock
+  EMT
+
+  LN     I_TC_mag_2_guard_locked_closed
+  ON     MG_servo_drive_release_2nd_axes_group                        *;EUMACH BASIC 53
+#if TC_mag_2_in_motion_guard_unlock = &No                             *;EUMACH
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+#endif                                                                *;EUMACH
+#if TC_mag_2_in_motion_guard_unlock = &Special                        *;EUMACH
+#if MT = &MT_31A                                                      *;EUMACH
+  O[                                                                  *;EUMACH
+    LN     I_servo_drive_release                                      *;EUMACH
+    ON     MG_servo_drive_release_1st_axes_group                      *;EUMACH
+    A[                                                                *;EUMACH
+      L      I_TC_mag_2_in_spindle_position                           *;EUMACH
+      ON     I_TC_mag_2_in_basic_position                             *;EUMACH
+    ]                                                                 *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+#if MT = &MT_31B                                                      *;EUMACH
+  ON     I_servo_drive_release                                        *;EUMACH
+  ON     MG_servo_drive_release_1st_axes_group                        *;EUMACH
+#endif                                                                *;EUMACH
+#endif                                                                *;EUMACH
+  EMT
+
+  L      I_key_TC_magazine_2_cw
+;  O      MG_soft_key_TC_mag_2_right_cw                               *;EUMACH Original PLC
+  O[                                                                  *;EUMACH
+    LN     NP_TC_mag2_guard_and_panel                                 *;EUMACH
+    A      MG_soft_key_TC_mag_2_right_cw                              *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_TC2_standby_position
+  AN     O_TC_magazine_2_ccw
+  CMT    TC_mag_2_cw_turn
+
+  L      I_key_TC_magazine_2_ccw
+;  O      MG_soft_key_TC_mag_2_left_ccw                               *;EUMACH Original PLC
+  O[                                                                  *;EUMACH
+    LN     NP_TC_mag2_guard_and_panel                                 *;EUMACH
+    A      MG_soft_key_TC_mag_2_left_ccw                              *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_TC2_standby_position
+  AN     O_TC_magazine_2_cw
+  CMT    TC_mag_2_ccw_turn
+
+;  L      MG_soft_key_TC_mag_2_right_cw
+;  O      MG_soft_key_TC_mag_2_left_ccw
+;  IFT
+;    L      KL_magazine_2
+;    =      WG_W268_tool_magazine_number
+;  ENDI
+
+EM

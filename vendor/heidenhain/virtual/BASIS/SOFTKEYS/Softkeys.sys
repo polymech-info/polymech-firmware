@@ -1,0 +1,232 @@
+; Softkey Tree Definition File V2.1
+; Creation date:   Sun Jun 13 15:49:59 2021
+; Softkey project: /mnt/plc/BASIS/SOFTKEYS/Softkeys.spj
+P /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/
+V 0 B - 
+n 0x17D
+N 0 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Machine_function.bmx - - 1 -1 - -1 0 -1 - - - -1 - -1 - -
+N 22 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_function.bmx - - 2 -1 - -1 0 -1 - - - -1 - -1 - -
+N 40 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_function.bmx - - 3 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+C 59 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Override_S_100.bmx - MG_SK_Override_S_100 0 -1 - -1 -1 - - - -1 - -1 - -
+C 60 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Override_F_100.bmx - MG_SK_Override_F_100 0 -1 - -1 -1 - - - -1 - -1 - -
+N 64 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis_function.bmx - - 4 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+C 109 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Axes_compensation.bmx - MG_SK_Achs_Komp_Anzeige 0 0 M_linear_axes_comp.a -1 -1 - - - -1 - -1 - -
+C 110 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Axes_compensation_set.bmx - MG_SK_Achs_Komp_Eingabe 0 0 M_linear_axes_comp_set.a -1 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+U 111 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Mode_line_0_PLC_window.bmx - MG_SK_Mode_Zeile_0 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 112 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Mode_line_1_PLC_window.bmx - MG_SK_Mode_Zeile_1 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+C 113 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Auto_power_off.bmx - MG_auto_HS_aus_nach_END_PGM 0 -1 - -1 -1 - - - -1 - -1 - -
+M 1 B - 
+C 1 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/NC_start.bmx - MG_SK_Status_NC_Start 0 -1 - -1 -1 - - - -1 - -1 - -
+C 2 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/NC_stop.bmx - MG_SK_Status_NC_Stop 0 -1 - -1 -1 - - - -1 - -1 - -
+S 3 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Axes_plus.bmx - MG_SK_Achsen_plus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 4 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Axes_minus.bmx - MG_SK_Achsen_minus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+C 5 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Rapid_traverse.bmx - MG_SK_Taste_Eilgang 0 -1 - -1 -1 - - - -1 - -1 - -
+B 7 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+C 8 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Chip_conveyor.bmx - MG_SK_Spaenefoerderer 0 -1 - -1 -1 - - - -1 - -1 - -
+S 9 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Chip_conveyor_reverse.bmx - MG_SK_Spaene_zurueck 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+C 10 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Chip_conveyor_interval.bmx - MG_SK_Intervall_Spaenefoerderer 0 -1 - -1 -1 - - - -1 - -1 - -
+C 11 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Chip_conveyor_setup.bmx - MG_SK_Setup_Spaenefoerderer 0 0 M_chip_con_interval_set.a -1 -1 - - - -1 - -1 - -
+# -1 -
+B 14 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+C 15 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Lubrication.bmx - MG_SK_Schmierung 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 21 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+M 2 B - 
+U 23 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_on.bmx - MG_SK_S_M3 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 24 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_off.bmx - MG_SK_S_M5 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 25 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_tip_cw.bmx - MG_SK_S_M3_tippen 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 26 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_tip_ccw.bmx - MG_SK_S_M4_tippen 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 27 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Spindle_M19.bmx - MG_SK_S_M19 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 28 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+C 29 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Coolant_M08.bmx - PN_M4042_M08_MK_Status 0 -1 - -1 -1 - - - -1 - -1 - -
+C 30 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Coolant_M07.bmx - PN_M4041_M07_MK_Status 0 -1 - -1 -1 - - - -1 - -1 - -
+C 32 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Coolant_M17_additional.bmx - MG_SK_M17_MK_zusaetzlich 0 -1 - -1 -1 - - - -1 - -1 - -
+C 33 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TSxxx_M16_air_blow.bmx MG_3D_Tastsystem_aktiv MG_SK_TSxxx_abblasen 0 -1 - -1 -1 - - - -1 - -1 - -
+C 34 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Coolant_dry_run.bmx - MG_SK_Trocken_Bearbeitung 0 -1 - -1 -1 - - - -1 - -1 - -
+B 35 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+M 3 B - 
+C 41 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_enable_quit.bmx MG_SK_FG_WZW_Anwahl MG_SK_WZW_Anwahl 0 -1 - -1 -1 - - - -1 - -1 - -
+C 42 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/T_unclamp_clamp.bmx MG_SK_FG_WZ_entspannen MG_SK_WZ_entspannen 0 -1 - -1 -1 - - - -1 - -1 - -
+C 43 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/T_torque_monitoring.bmx - MG_SK_T_Moment_Ueberwachung 0 -1 - -1 -1 - - - -1 - -1 - -
+N 44 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_magazine_load.bmx MG_SK_FG_WZM_Beladen_aktiv MG_SK_WZM_Beladen_aktiv 5 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+B 50 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+M 4 B - 
+N 65 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis.bmx - - 6 -1 - -1 0 -1 - - - -1 - -1 - -
+N 76 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status.bmx - - 7 -1 - -1 0 -1 - - - -1 - -1 - -
+N 83 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Documentation.bmx - - 8 -1 - -1 0 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+B 88 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_back 0 -1 - - -1 0 0
+U 89 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Error_queue.bmx - - 0 0 M_ERROR.A -1 -1 - -1 -1 - - -1 - -1 - -
+C 90 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Log_PLC_Debug.bmx - PN_M4753_Fehler_PLC_Modul_in_PLC_Logbuch 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+# -1 -
+B 91 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 5 B - 
+S 45 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_magazine_cw.bmx MG_SK_FG_WZM_plus MG_SK_WZM_plus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 46 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_magazine_ccw.bmx MG_SK_FG_WZM_minus MG_SK_WZM_minus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+C 47 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_magazine_T_in.bmx MG_SK_FG_WZ_Beladen MG_SK_WZ_Beladen 0 -1 - -1 -1 - - - -1 - -1 - -
+C 48 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/TC_magazine_T_out.bmx MG_SK_FG_WZ_Entladen MG_SK_WZ_Entladen 0 -1 - -1 -1 - - - -1 - -1 - -
+B 49 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - MG_SK_WZM_Beladen_zurueck 0 -1 - - -1 0 0
+M 6 B - 
+R 66 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis_drive.bmx - - 1 0 M_DIA_A1.a -1 -1 - - - -1 - -1 - -
+R 67 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis_drive_step.bmx - - 0 0 M_DIA_A3.a -1 -1 - - - -1 - -1 - -
+R 68 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis_TC.bmx - MG_WZW_Diagnose 0 0 M_DIA_WZ.a -1 -1 - - - -1 - -1 - -
+R 70 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Diagnosis_TC_magazine.bmx - MG_WZM_Diagnose 0 0 M_DIA_M2.a -1 -1 - - - -1 - -1 - -
+# -1 -
+B 71 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - - 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 75 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 7 B - 
+R 77 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status_general.bmx - - 1 0 M_ST_ALL.A -1 -1 - - - -1 - -1 - -
+R 78 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status_strobe.bmx - - 0 0 M_STROBE.A -1 -1 - - - -1 - -1 - -
+R 79 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status_axes.bmx - - 0 0 M_ST_AX.A -1 -1 - - - -1 - -1 - -
+R 80 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status_spindle.bmx - - 0 0 M_ST_SPI.a -1 -1 - - - -1 - -1 - -
+R 81 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Status_PLC_position.bmx - - 0 0 M_ST_PLC.a -1 -1 - - - -1 - -1 - -
+B 82 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 8 B - 
+U 84 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Documentation_M_function.bmx - - 0 0 M_DOC_M.A -1 -1 - -1 -1 - - -1 - -1 - -
+U 85 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Documentation_IO_interface.bmx - - 0 0 M_DOC_IO.a -1 -1 - -1 -1 - - -1 - -1 - -
+U 86 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Documentation_graphic.bmx - - 0 0 M_GRAPHIC.A -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+# -1 -
+B 87 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Back.bmx - - 0 -1 - - -1 0 0
+M 9 B - 
+N 114 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_config.bmx - WG_Softkey_MP_Daten 10 -1 - -1 0 -1 - - - -1 - -1 - -
+N 117 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data.bmx - WG_Softkey_MP_Daten 11 -1 - -1 0 -1 - - - -1 - -1 - -
+N 120 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_spindle.bmx - WG_Softkey_MP_Daten 12 -1 - -1 0 -1 - - - -1 - -1 - -
+N 123 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_PLC_feed.bmx - WG_Softkey_MP_Daten 13 -1 - -1 0 -1 - - - -1 - -1 - -
+N 126 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_TC.bmx - WG_Softkey_MP_Daten 14 -1 - -1 0 -1 - - - -1 - -1 - -
+N 129 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_pos_ref.bmx - WG_Softkey_MP_Daten 15 -1 - -1 0 -1 - - - -1 - -1 - -
+N 132 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_T_comp.bmx - WG_Softkey_MP_Daten 16 -1 - -1 0 -1 - - - -1 - -1 - -
+N 135 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_pallet.bmx - WG_Softkey_MP_Daten 17 -1 - -1 0 -1 - - - -1 - -1 - -
+N 138 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_3D_head.bmx - WG_Softkey_MP_Daten 18 -1 - -1 0 -1 - - - -1 - -1 - -
+N 141 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/MP_data_other.bmx - WG_Softkey_MP_Daten 19 -1 - -1 0 -1 - - - -1 - -1 - -
+M 10 B - 
+B 115 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 116 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 11 B - 
+B 118 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 119 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 12 B - 
+B 121 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 122 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 13 B - 
+B 124 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 125 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 14 B - 
+B 127 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 128 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 15 B - 
+B 130 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 131 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 16 B - 
+B 133 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 134 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 17 B - 
+B 136 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 137 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 18 B - 
+B 139 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 140 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+M 19 B - 
+B 142 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/Save.bmx - MG_SK_MP_Daten_speichern 0 -1 - - -1 0 0
+# -1 -
+# -1 -
+# -1 -
+# -1 -
+B 143 /mnt/plc/BASIS/SOFTKEYS/BPJ/BMX/BACK.bmx - MG_SK_MP_Daten_verwerfen 0 -1 - - -1 0 0
+W 20 B "Machine Function" 
+N 144 #IMa - - 21 -1 - -1 0 -1 - - - -1 - -1 - -
+N 153 #IS - - 22 -1 - -1 0 -1 - - - -1 - -1 - -
+N 164 #IT - - 23 -1 - -1 0 -1 - - - -1 - -1 - -
+N 168 #ITmag - - 24 -1 - -1 0 -1 - - - -1 - -1 - -
+B 173 #A133 - - 0 -1 - - -1 0 0
+L 21 B Machine 
+U 145 #ILub - MG_SK_Schmierung 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+C 146 #IChp+ - MG_SK_Spaenefoerderer 0 -1 - -1 -1 - - - -1 - -1 - -
+S 147 #IChp- - MG_SK_Spaene_zurueck 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+N 148 #IMa2 - - 25 -1 - -1 0 -1 - - - -1 - -1 - -
+B 152 #A133 - - 0 -1 - - -1 0 0
+L 22 B Spindle 
+N 154 #ICool - - 26 -1 - -1 0 -1 - - - -1 - -1 - -
+S 160 #IScw - MG_SK_S_M3_tippen 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 161 #ISccw - MG_SK_S_M4_tippen 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+U 162 #IM19 - MG_SK_S_M19 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 163 #A133 - - 0 -1 - - -1 0 0
+L 23 B Tool 
+C 165 #IQuit - MG_SK_WZW_Anwahl 0 -1 - -1 -1 - - - -1 - -1 - -
+C 166 #ITclp - MG_SK_WZ_entspannen 0 -1 - -1 -1 - - - -1 - -1 - -
+# -1 -
+# -1 -
+B 167 #A133 - - 0 -1 - - -1 0 0
+L 24 B "Tool Magazine" 
+C 169 #ILoad - MG_SK_WZM_Beladen_aktiv 0 -1 - -1 -1 - - - -1 - -1 - -
+S 170 #IMag#A128 - MG_SK_WZM_plus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+S 171 #IMag#A129 - MG_SK_WZM_minus 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+B 172 #A133 - - 0 -1 - - -1 0 0
+L 25 B  
+S 149 #IPon - MG_SK_Steuerspannung_ein 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+# -1 -
+# -1 -
+S 150 #IDoor - MG_SK_Arbeitsraum_entriegeln 0 -1 - -1 -1 - -1 -1 - - -1 - -1 - -
+B 151 #A133 - - 0 -1 - - -1 0 0
+L 26 B Coolant 
+C 155 #IM08 - PN_M4042_M08_MK_Status 0 -1 - -1 -1 - - - -1 - -1 - -
+C 156 #IM07 - PN_M4041_M07_MK_Status 0 -1 - -1 -1 - - - -1 - -1 - -
+C 157 #IM17 - MG_SK_M17_MK_zusaetzlich 0 -1 - -1 -1 - - - -1 - -1 - -
+C 158 #IDry - MG_SK_Trocken_Bearbeitung 0 -1 - -1 -1 - - - -1 - -1 - -
+B 159 #A133 - - 0 -1 - - -1 0 0

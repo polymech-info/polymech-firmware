@@ -1,0 +1,21 @@
+﻿************************************
+!!! POZOR !!!
+pouze pro zaškolené pracovníky
+Servis pro výmenu nástroju
+(jednoruký výmeník)
+! Rucní režim aktivní !
+Aktivace: klávesa "NC start"
+************************************
+#101  S na pozici pro výmenu
+#102  Z na pozici pro výmenu nahoru
+#103  Z na pozici pro výmenu dolu
+#104  Otevrít kryt zásobníku
+#105  Zavrít kryt zásobníku
+#106  Zásobník k vretenu
+#107  Zásobník do základní polohy
+#108  Uvolnit nástroj
+#109  Upnout nástroj
+#110  Otácení zásobníku vpravo
+#111  Otácení zásobníku vlevo
+#112  Najetí reference zásobníku
+#113  Vymazat registr vretena (T0)

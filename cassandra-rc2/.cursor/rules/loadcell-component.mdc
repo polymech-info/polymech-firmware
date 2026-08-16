@@ -1,0 +1,38 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Loadcell Component Integration
+
+This document outlines the structure and integration of the `Loadcell` component, which is designed to interface with an RS485 load cell.
+
+## Key Files
+
+- **Header File**: Defines the class structure, Modbus registers, and public methods.
+  - `lib/polymech-base/src/components/Loadcell.h`
+- **Implementation File**: Contains the logic for setup, main loop, and Modbus communication.
+  - `lib/polymech-base/src/components/Loadcell.cpp`
+
+## Enabling the Component
+
+To enable or disable the `Loadcell` component, you must define or comment out the `ENABLE_LOADCELL` macro in the main configuration file:
+
+- `src/config.h`
+
+## Feature Inclusion
+
+The component's header is conditionally included in the project through the `features.h` file. This ensures that the `Loadcell` is only compiled when its feature flag is enabled.
+
+- `src/features.h`
+
+## Device Registration
+
+The `Loadcell` is registered as a slave device on the RS485 bus. The instantiation and registration logic can be found in the `registerApplicationDevices` function:
+
+- `src/RS485Devices.cpp`
+
+## Data Handling
+
+The Process Value (PV) from the load cell is managed by a `ValueWrapper`. This allows for efficient, event-driven updates throughout the system. The `ValueWrapper` is initialized in the constructor of `Loadcell.cpp`.
+

@@ -1,0 +1,28 @@
+/* STATUS ACHSEN
+   -------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS ACHSEN";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"Achsfreigaben     :  %04X\n",D1100/c;
+"in Position       :  %04X\n",D1104/c;
+"in Bewegung       :  %04X\n",D1108/c;
+"nicht über REF    :  %04X\n",D1116/c;
+"Endlage +         :  %04X\n",D1120/c;
+"Endlage -         :  %04X\n",D1124/c;
+"Aktivierung RK auf:  %04X\n",D1128/c;
+"RK auf            :  %04X\n",D1132/c;
+"keine Überwachung :  %04X\n",D1136/c;
+"IST/SOLL Übernahme:  %04X\n",D1140/c;
+"Referenzendlage   :  %04X\n",D1160/c;
+"Vorschubfreigabe  :  %04X\n",D1172/c;
+"manuell Verfahren+:  %04X\n",D1144/c;
+"manuell Verfahren-:  %04X\n",D1148/c;
+
+

@@ -1,0 +1,2048 @@
+﻿vezérlés/programozó állomás  0/2
+nagyítási tényezö xyz/z      0/1
+maró ciklusok viselkedése
+zsebmarás átfedése     0.1-1.414
+körvégpont türése
+3D forgatás ki/be       ..0/ ..1
+szánkenési gyakoriság     [prec]
+kézikerék ki/HR410/HR420  0/6/11
+színpaletta               [0..3]
+TT1x0 X pozíciója          [REF]
+TT1x0 Y pozíciója          [REF]
+TT1x0 Z pozíciója          [REF]
+felhasználói paraméter 13
+felhasználói paraméter 14
+felhasználói paraméter 15
+felhasználói paraméter 16
+S1 orsó futásidö  =
+S2 orsó futásidö  =
+Mozgás futásidö   =
+Hidraulika f.idö  =
+Futásidö 5        =
+Futásidö 6        =
+Futásidö 7        =
+Futásidö 8        =
+Futásidö 9        =
+Futásidö 10       =
+Futásidö 11       =
+Futásidö 12       =
+Futásidö 13       =
+* Title message box MP table editor <- line 30
+MP táblázat szerkesztö
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 VÉSZ ÁLLJ gomb benyomva!
+     -> kioldani
+H001 X tengely pozitív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H002 Y tengely pozitív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H003 Z tengely pozitív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H004 4. tengely pozitív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H005 5. tengely pozitív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H006 X tengely negatív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H007 Y tengely negatív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H008 Z tengely negatív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H009 4. tengely negatív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H010 5. tengely negatív végálláson
+-> áthidal -> véghelyzetröl lemozog
+H011 X tengely szerszámcsere pozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H012 Y tengely szerszámcsere pozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H013 Y tengely TC elöpozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H014 Y tengely kézi cserehelyen
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H015 Z tengely kivételi cserehely
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H016 Z tengely berakási cserehely
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H017 Z tengely kézi cserehelyen
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H018 Z tengely biztonsági cserehely
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H019 Föorsó cserepozícióba (M19)
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H020 Szerszám oldás
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H021 Szerszám rögzítés
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H022 Cserélökar kint
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H023 Cserélökar bent
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H024 Cserélökar véghelyzetbe fordul
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H025 Cserélö megfogó zár
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H026 Cserélö megfogó nyit
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H027 Cserélö megfogó orsót zár
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H028 Cserélö megfogó orsót nyit
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H029 Cserélö megfogó szerszámtárat zár
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H030 Cserélö megfogó szerszámtárat nyit
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H031 Magazin cserepozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H032 Magazin ajtó zárva
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H033 Szerszámcsere státusz szerinti
+-> BELSÖ STOP -> MDI -> TOOL CALL
+H034 TC magazin föorsóhoz
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H035 TC magazin alaphelyzetbe
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H036 TC magazin zseb kint
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H037 TC magazin zseb bent
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H038 TC magazin csap kint
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H039 TC magazin csap bent
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H040 Cserélökar alaphelyzet
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H041 Szerszámcsere funkció tiltva
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H042 Cserélökar föorsóhoz
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H043 Cserélökar szerszámtár pozícióhoz
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H044 Cserélökar alaphelyzetbe
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H045 Cserélökar középhelyzetbe
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H046 HR410 gombokat az NC értelmezi,
+FCT A-C-t a PLC       -> MP7645: 0
+H047 M/S/T/Q sztrób PLC-nek mondatra
+kereséskor         -> MP7681: %110111
+H048 TC magazin egy PLC tengely!
+kisbetüvel             -> MP100
+H049 Ilyen kézikerék nem használható
+-> MP7640: 0..6/11..13
+H050 PLC mondatra keresése aktív!
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 PGM stop-hoz M funkció szükséges
+Bit 02  MP 7440: %xxxxx0xx
+H052 Fájl megnyitási hiba
+-> 9240-es modul
+H053 Táblázat olvasási hiba
+-> 9255-ös modul
+H054 Táblázat írási hiba
+-> 9256-os modul
+H055 Hiba, nincs érték a táblázatban
+-> 9255-ös modul
+H056 Hömérséklet érzékelök Pt100
+-> ellenörizze az X48 bemenetet
+H057 Pt100 interfész nincs definiálva
+-> hömérséklet kompenzációs táblázat
+H058 X tengely PC pozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H059 Y tengely PC pozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H060 Z tengely PC pozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H061 Automatikus PC aktív
+
+H062 Pallettacsere start
+     ->NC START nyomógomb
+H063 Pallettacsere teljes
+     ->NC START nyomógomb
+H064 Pallettacsere zár nyitva
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H065 Pallettacsere zár zárva
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H066 Nem engedélyezett pallettaszám
+
+H067 Palletta oldás (gépben)
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H068 Palletta rögzítés (gépben)
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H069 MP10 tengely hozzárendelési hiba
+-> Cserélni: MP2040.x
+H070 Pallettacsere végálláson
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H071 PC1 - X tengely pozíció
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H072 PC2 - X tengely pozíció
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H073 Palettaváltó alaphelyzete!
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H074 PC1 alaphelyzet
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H075 PC2 alaphelyzet
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H076 PC feltöltési pozícióra
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H077 PC a gépbe
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H078 PC zseb érzékelö hibás
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H079 4. tengely PC pozíció
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H080 3D fej tartományváltás
+
+H081 3D fej orsó orientálás
+
+H082 3D fej torziós nyomaték
+->KÉZI üzemmód ->3D fej funkciógomb
+H083 Szerszámrögzítö nyitás
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H084 Szerszámrögzítö zárás
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H085 TC felszedö cserepozícióra
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H086 TC felszedö alaphelyzetbe
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H087 X tengely TC elöpozíción
+-> KÉZI/KÉZIKERÉK mód -> MOD -> Help
+H088 Pallettaváltó vészjel
+
+H089 Pallettaváltó ellenörzés
+
+H090 Föorsó C tengely módban
+-> föorsó pozíció (szinkronizált)
+H091 Bövített interfész - 20 tengely
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard interfész - 16 tengely
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> AUTOSTART / járató program aktív
+H094 Fmax Override aktív
+-> MP7620 #Bit5 vagy #Bit9 bekapcsolva
+H095 Szerszámtár hirth/modulo tengely
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 PLC üzenet
+
+H097 PLC üzenet
+
+H098      igen -> NC start
+           nem -> NC stop
+H099
+               -> NC start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC tár - PLC tengely *
+* TC tár - pulzus számláló *
+* TC csere - egykaros *
+* TC csere - kétkaros *
+* TC csere - vezérpályás *
+* TC csere - felszedö *
+
+
+
+Tár_indul
+Tár_vége
+TOOL_DEF_nyugtáz
+Zseb_ki
+Zseb_kint
+Zseb_be
+Zseb_bent
+T_tár_indul
+T_tár_pozícióban
+P_szám_dekódolás
+Várakozó_T_olvas
+Tár_közvetlen
+Tárajtó_ki
+Tárajtó_kint
+Tár_névleges_poz
+Pontos_megállásra_vár
+Rögzítöcsap_pozícióban
+Tár_pontos_pozíción
+Tár_jobbra (cw)
+Tár_balra (ccw)
+
+TC_csere_indul
+TC_csere_vége
+Försóban_helyes_T
+T_tár_indul
+Tár_pozícióban
+Tár_tele-üres
+Föorsó_tele-üres
+Tár_tele
+Tár_üres
+Föorsó_üres-tele
+Megfogót_nyit
+Megfogó_nyitva
+Megfogót_zár
+Megfogó_zárva
+S_indul
+S_cserepozícióban
+XY_indul
+X_indul
+X_pozícióban
+X_TC_elöpozíción
+X_elöpozíción
+Y_indul
+Y_cserepozíción
+Y_elöpozícióra
+Y_elöpozíción
+Z_indul
+Z_cserepozíción
+Z_biztonsági_pozícióra
+Z_biztonsági_pozíción
+Z1_kiemelési_pozícióra
+Z1_kiemelési_pozíción
+Z2_kiemelési_pozícióra
+Z2_kiemelési_pozíción
+Z3_pozícióra
+Z3_pozíción
+T_zseb_ki
+T_zseb_kint
+T_zsebre_vár
+Felszedési_értéket_olvas
+Felszedö_ki
+Felszedö_kint
+Felszedö_be
+Felszedö_bent
+T_cserélökar_ki
+T_cserélökar_kint
+T_cserélökar_be
+T_cserélökar_bent
+T_cserélökar_föorsóhoz
+T_cserélökar_föorsónál
+T_cserélökar_tárhoz
+T_cserélökar_tárnál
+T_cserélökar_középre
+T_cserélökar_középen
+T_cserélökar_alaphelyzetbe
+T_cserélökar_alaphelyzetben
+T_cserélökar_fordul
+T_cserélökar_befordulva
+T_cserélökart_középre
+TC_cserélökar_várakozik
+Ugrás_TC_cserélökar
+T_zseb_ki-be
+T_zseb_pozícióban
+T_megfogót_zár
+T_megfogó_zárva
+T_megfogót_nyit
+T_megfogó_nyitva
+T_tárnál_fogót_nyit
+T_tárnál_fogó_nyitva
+T_tárnál_fogót_zár
+T_tárnál_fogó_zárva
+T_orsónál_fogót_nyit
+T_orsónál_fogó_nyitva
+T_orsónál_fogót_zár
+T_orsónál_fogó_zárva
+T_várakozót_olvas
+TC_csere_idözít
+Szerszámtár_orsóhoz
+Szerszámtár_orsónál
+Szerszámot_old
+Szerszám_oldva
+Szerszámot_zár
+Szerszám_zárva
+Kivételt_idözít
+Túj_tárolás
+T0_státusz
+T0_Túj_státusz
+Túj_státuszban
+T_státusz_ok
+Második_TOOL_CALL
+TOOL_CALL_várás
+T_státusz_olvasás
+Ugrás_rögzítésre
+Tárat_alaphelyzetbe
+Tár_alaphelyzetben
+TOOL_CALL_nyugtázás
+Ugrás_T0_programozva
+Ugrás_föorsó_üres_volt
+Cserélö_cserehelyen
+Megfogó_jobbra_(cw)
+Megfogó_balra_(ccw)
+Szerszámot_tárban_old
+Szerszám_tárban_oldva
+Szerszámot_tárban_rögzít
+Szerszám_tárban_rögzítve
+Kézi_szerszámcsere
+Kézi_szerszámcsere_start
+Ugrás_kézi_BA
+X_kézi_cserehelyre
+X_kézi_cserehelyen
+Y_kézi_cserehelyre
+Y_kézi_cserehelyen
+Z_kézi_cserehelyre
+Z_kézi_cserehelyen
+Szerszám_kézi_oldás
+Szerszám_kézi_rögzítés
+Szerszámcsere_tiltás
+Szerszámcsere_nyugtázás
+Visszaállítás_szükséges
+Visszaállítás_ok
+Szerszámhívás_nyugtázás
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nincs definiálva
+DC sínfeszültség magas
+Hütöborda hömérséklete magas
+Rövidzár: egy motor fázis--Uz
+DC áram túl magas
+Tápegység nem üzemkész
+Szivárgó áram túl magas
+
+
+
+0 Nincs hiba
+1 Paraméter tartományon kívül
+2 Helytelen/nem létezö paraméter
+3 Cím tartományon kívül
+4 Blokk hossza tartományon kívül
+5 Nem szó vagy duplaszó cím
+6 Értéket kell/nem lehet változtatni
+7 Fájl hibás / nem olvasható
+8 Inkorrekt üzemmód
+9 Pozíció parancs végrehajtva
+10 Nincs szerszámcsere definíció
+11 Megengedhetetlen karakter
+12 Nincs string-vég, vagy nem teljes
+13 Nincs kapcsolat
+14 RS-232 foglalt/nincs hozzárendelve
+15 RS-232 küldö buffer nem üres
+16 RS-232 fogadó buffer üres
+17 RS-232 nem teljesíthetö baudrate
+18 RS-232 átviteli hiba
+19 Nincs áramszabályozó
+20 A modul nem hívható SUBMIT-ból
+21 Sztrób nélküli modul hívás
+22 Billentyüzet puffer túlcsordult
+23 PLC hibaüzenet puffer túlcsordult
+24 A modult SUBMIT-böl kell hívni
+25 Konstans-mezö túl sok elemböl áll
+26 Megengedhetetlen konstans elem
+27 Orientált föorsó állj már aktív
+28 Modul funkciója már aktív
+29 A megnyitott fájl nem várt típusú
+30 A táblázatban nincs ilyen mezönév
+31 Inkorrekt keresési feltételek
+32 Keresés nem talált adatrekordot
+33 Tengely nem fut referenciára
+34 Reset; külsö egység hibás
+35 Az editor nem aktív
+36 Vegyes fájl-hozzáférési hiba
+37 Nincs elég rendszermemória
+38 Hiba a programfordítás folyamán
+39 Gyors PLC input bekapcsolva
+40 Tápfesz bekapcsolása lehetetlen
+41 Szerszámtábla ellenörzö típusszáma
+42 Powerfail nem kapcsolt le
+43 Biztonságiopció nélküli modulhívás
+44 Softkey eröforrás hiba
+45 Modul törölve
+46 Profibus vagy ASI hiba
+47 -
+48 -
+49 -
+50 -
+51 Lehetetlen funkció, csak PL510-en
+52 Nem egyprocesszoros funkció
+53 Soros interfész nem elérhetö
+54 Nem duálprocesszoros funkció
+55 Fájl nem zárolható
+56 Fájl nem található
+57 FCL funkció nem elérhetö
+58 NC channel funkció nem elérhetö
+59 Müvelet (Phyton) nem megengedett
+60 Nincs X8/9 analóg kimenet!
+61 Nem támogatott modul funkció
+62 Nem létezö szimbólum/azonosító
+63 Struktúra létrehozási hiba
+64 Ismeretlen/helytelen handle
+65 Téves adatirány
+66 A funkciót nem támogatja az FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

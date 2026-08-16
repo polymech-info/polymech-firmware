@@ -1,0 +1,96 @@
+[
+  {
+    "slot": 0,
+    "name": "Single Stage Default",
+    "duration": 1200000,
+    "status": 0,
+    "enabled": false,
+    "elapsed": 0,
+    "remaining": 0,
+    "controlPoints": [
+      {
+        "id": 1,
+        "time": 80,
+        "state": 2,
+        "type": 7,
+        "arg_0": 0,
+        "arg_1": 0,
+        "name": "Kiss",
+        "description": "kiss kiss"
+      },
+      {
+        "id": 2,
+        "time": 222,
+        "state": 2,
+        "type": 7,
+        "arg_0": 0,
+        "arg_1": 0,
+        "name": "Bang",
+        "description": "bang bang"
+      },
+      {
+        "id": 3,
+        "time": 432,
+        "state": 2,
+        "type": 9,
+        "arg_0": 0,
+        "arg_1": 0,
+        "name": "Pause",
+        "description": "New control point"
+      }
+    ]
+  },
+  {
+    "slot": 1,
+    "name": "ShortPlot_70s",
+    "duration": 70000,
+    "status": 0,
+    "enabled": false,
+    "elapsed": 0,
+    "remaining": 0,
+    "controlPoints": [
+      {
+        "id": 1,
+        "time": 250,
+        "name": "Valve Open",
+        "description": "Open valve at address 1",
+        "state": 2,
+        "type": 1,
+        "arg_0": 1,
+        "arg_1": 1,
+        "arg_2": 0
+      },
+      {
+        "id": 2,
+        "time": 750,
+        "name": "Valve Close",
+        "description": "Close valve at address 1",
+        "state": 2,
+        "type": 1,
+        "arg_0": 1,
+        "arg_1": 0,
+        "arg_2": 0
+      }
+    ]
+  },
+  {
+    "slot": 2,
+    "name": "SignalPlot_922_Slot_2",
+    "duration": 0,
+    "status": 0,
+    "enabled": false,
+    "elapsed": 0,
+    "remaining": 0,
+    "controlPoints": []
+  },
+  {
+    "slot": 3,
+    "name": "SignalPlot_923_Slot_3",
+    "duration": 0,
+    "status": 0,
+    "enabled": false,
+    "elapsed": 0,
+    "remaining": 0,
+    "controlPoints": []
+  }
+]

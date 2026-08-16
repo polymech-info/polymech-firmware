@@ -1,0 +1,33 @@
+﻿************************************
+          !!! Achtung !!!
+   nur für eingewiesene Bediener
+
+      Service Werkzeugwechsler
+   (Doppelarm-Greifer mit Kurven-
+    scheiben-Antrieb)
+
+   ! manuelle Betriebsart aktiv !
+   Aktivierung: Taste "NC-Start"
+************************************
+#301  S auf WZW Position
+#302  Z auf WZW Position
+#303  Y auf WZW Position
+#304  X auf WZW Position
+#305  WZ Schleuse auf
+#306  WZ Schleuse zu
+#307  Werkzeug entspannen
+#308  Werkzeug spannen
+#309  Zangen zu
+#310  Zangen auf
+#311  WZ-Magazin Platz ausklappen
+#312  WZ-Magazin Platz einklappen
+#313  WZ-Wechsler Entspannen
+#314  WZ-Wechsler Spannen
+#315  WZ-Wechsler Grundstellung
+#316  WZ-Wechsler Entspannen (rev)
+#317  WZ-Wechsler Spannen (rev)
+#318  WZ-Wechsler Grundstellung (rev)
+#319  Magazin drehen cw (rechts)
+#320  Magazin drehen ccw (links)
+#321  Magazin Referenz
+#322  Spindel-Werkzeug löschen (T0)

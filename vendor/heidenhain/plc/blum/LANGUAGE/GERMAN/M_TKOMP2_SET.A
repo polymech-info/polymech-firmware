@@ -1,0 +1,100 @@
+/* Temperatur Kompensation
+   -----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"SET T-COMPENSATION";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"Compensation        :  %s\n",
+$MG_T_compensation_active$?"active         ":"inactive       "/c;
+CURSOR=OFF;
+
+COLOR= 9;
+"                                   set\n";
+"Compensation active  0/1:          %d\n",$MG_T_compensation_active$/e;
+COLOR=11;
+
+"Temperature spindle : %+5.1F Deg ",
+$WG_temperature_spindle$/n=1/c;
+COLOR= 9;
+" %+5.1F\n",
+$WG_temperature_spindle_Pt100$/n=1/e;
+
+COLOR=11;
+
+"Temperature machine : %+5.1F Deg ",
+$WG_temperature_machine$/n=1/c;
+COLOR= 9;
+" %+5.1F\n",
+$WG_temperature_machine_Pt100$/n=1/e;
+
+COLOR= 11;
+
+"Offset machine      : %+5.1F Deg ",
+$WG_temperature_machine_offset$/n=1/c;
+COLOR= 9;
+" %+5.1F\n",
+$WG_temperature_machine_offset$/n=1/e;
+
+COLOR=11;
+
+"Temperature table   : %+5.1F Deg \n\n",
+$WG_temperature_table$/n=1/c;
+
+"X-compensation      : %+5.4F mm\n",
+$WG_W3000_lag_err_comp_X$/n=4/c ;
+"Y-compensation      : %+5.4F mm\n",
+$WG_W3002_lag_err_comp_Y$/n=4/c ;
+"Z-compensation      : %+5.4F mm\n\n",
+$WG_W3004_lag_err_comp_Z$/n=4/c ;
+
+CURSOR=ON                              ;
+"Compensation table  : %s  X   Y   Z  \n",
+$MG_T_compensation_on$?"on ":"off"/c     ;
+CURSOR=OFF                             ;
+
+COLOR= 9;
+"inactive/active -0/1:      %d   %d   %d\n",
+$MG_T_compensation_X_active$/e,
+$MG_T_compensation_Y_active$/e,
+$MG_T_compensation_Z_active$/e;
+COLOR=11;
+
+"Warming up          :      %d   %d   %d\n",
+$MG_warm_up$/c,$MG_warm_up$/c,$MG_warm_up$/c ;
+
+"Cooling down        :      %d   %d   %d\n",
+$MG_cool_down$/c,$MG_cool_down$/c,$MG_cool_down$/c ;
+
+"Hysteresis warm up      :  %d   %d   %d\n",
+$MG_hyst_X_after_warm_up$/c,
+$MG_hyst_Y_after_warm_up$/c,
+$MG_hyst_Z_after_warm_up$/c           ;
+
+"Hysteresis cool down    :  %d   %d   %d\n",
+$MG_hyst_X_after_cool_down$/c,
+$MG_hyst_Y_after_cool_down$/c,
+$MG_hyst_Z_after_cool_down$/c           ;
+
+"Curve without hysteresis:  %d   %d   %d\n",
+$MG_curve_without_hyst_X$/c,
+$MG_curve_without_hyst_Y$/c,
+$MG_curve_without_hyst_Z$/c           ;
+
+COLOR= 9;
+"Compensation test         [0/1]:   %d\n",$MG_T_compensation_test$/e;
+"Compensation test auto    [0/1]:   %d\n",$MG_T_compensation_test_auto$/e;
+"PLC Cycles simulation  [1..100]: %3.0F \n",$BG_PLC_cycles_T_simulation$/n=0/e;
+
+COLOR=11;
+/*
+"Z-Differenz (Probe) : %+5.4F mm\n",
+$NP_D280_FN19_1st_value$/n=4/c      ;
+*/
+
+
+

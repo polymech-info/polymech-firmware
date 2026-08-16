@@ -1,0 +1,21 @@
+﻿************************************
+!!! ATTENZIONE !!!
+solo per personale esperto
+Disimpegno cambio utensile
+(singolo braccio)
+! modo manuale attivo !
+Premere "NC start" per attivare
+************************************
+#101  Mandrino in pos. di CU
+#102  Z in pos. superiore di CU
+#103  Z in pos. inferiore di CU
+#104  Apre Blocco Utensile
+#105  Chiude blocco utensile
+#106  Magazzino al mandrino
+#107  Magazzino in pos. Base
+#108  Sgancio Utensile
+#109  Bloccaggio Utensile
+#110  Rotazione oraria magazzino
+#111  Rotazione antioraria magazzino
+#112  Cercare ref. magazzino
+#113  Reset stato mandrino (T0)

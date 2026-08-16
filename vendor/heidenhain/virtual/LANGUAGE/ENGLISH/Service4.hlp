@@ -1,0 +1,24 @@
+﻿************************************
+        !!! attention !!!
+       only for supervisor
+      X, Y, Z can be moved by
+      X+, X-, Y+, Y-, Z+, Z- key
+          or handwheel
+       service tool changer
+          (pickup system)
+************************************
+#401  S to TC position
+#402  Z to TC position put out
+#403  Z to TC position put in
+#404  Tool lock open
+#405  Tool lock close
+#406  Tool pickup put in
+#407  Tool pickup put out
+#408  Tool unclamping
+#409  Tool clamping
+#410  X to tool change pre position
+#411  X to tool change position
+#412  Y to Pn position spindle tool
+#413  Y to Pn+1 position
+#414  Y to Pn-1 position
+#415  Delete spindle status (T0)

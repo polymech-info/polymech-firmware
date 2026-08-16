@@ -1,0 +1,214 @@
+*-----------------------------------------------------------------------------
+*  Ballscrew Nut Lubrication Axes
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*  EUMACH
+*  Ballscrew nut lubrication
+*-----------------------------------------------------------------------------
+
+#define /s    KL_axes                                  K%11111
+
+#define /s    ML_pressure                              M
+
+#define /s    BL_step_nut_lubrication                  B
+
+;#define /s    WL_next_lubrication                      W
+
+#define /s    WL_nut_lubrication_pulse                 W
+
+#define /s    DL_position_axis_X_ref_previous          D
+#define /s    DL_position_axis_X_ref_difference        D
+#define /s    DL_nut_lubrication_X_travel              D
+
+EXTERN Absolute
+
+GLOBAL Nut_lubrication
+
+;----------------------------
+LBL Nut_lubrication
+;----------------------------
+
+  LN     NP_X_ball_screw_nut_lubrication
+  R      O_nut_lubrication_on
+  EMT
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  ON     MG_control_operational
+  CMT    Nut_lubricat_reset
+
+  L      DL_nut_lubrication_X_travel
+  /      K+1000
+  >      NP_MP4231_0_X_screw_nut_lubrication_travel
+  O      NP_M4172_1st_PLC_run_after_power_on
+  IFT
+    L      K%00001
+    =      WL_nut_lubrication_pulse
+  ENDI
+
+  L      DG_position_axis_X_ref
+  -      DL_position_axis_X_ref_previous
+  PSW
+  CM     Absolute
+  PLW
+  =      DL_position_axis_X_ref_difference
+
+  L      DG_position_axis_X_ref
+  =      DL_position_axis_X_ref_previous
+
+  L      DL_nut_lubrication_X_travel
+  +      DL_position_axis_X_ref_difference
+  =      DL_nut_lubrication_X_travel
+
+  L      MG_marker_one
+  S      TS_nut_lubrication
+  S      TS_nut_lubricant_pressure
+
+  CASE   BL_step_nut_lubrication
+    CM     Nut_lubricat_start          ;00
+    CM     Check_pressure_0            ;01
+    CM     Nut_lubricat_on             ;02
+    CM     Nut_lubricat_time           ;03
+    CM     Nut_lubricat_off            ;04
+    CM     Nut_lubricat_time           ;05
+    CM     Check_pressure_0            ;06
+    CM     Nut_lubricat_end            ;07
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_step_nut_lubrication
+  ENDI
+
+  L      PN_error_nut_lubrication_axes
+  S      MG_start_blocked_nut_lubrication
+
+  L      MG_key_NC_start
+  A      MG_start_blocked_nut_lubrication
+  A      MG_automatic_mode
+  S      PN_error_nut_lubrication_axes
+
+  LN     I_nut_lubricant_level_ok
+  S      PN_error_nut_lubricant_level_low
+
+EM
+
+;----------------------------
+LBL Nut_lubricat_start                 ;00
+
+;  L      WL_next_lubrication
+;  <=     K+0
+;  O[
+    L      WL_nut_lubrication_pulse
+    A      KL_axes
+    >      K+0
+;  ]
+;  O      I_key_lubrication_axes
+;  O      MG_soft_key_lubrication
+  R      PN_error_nut_lubrication_axes
+;  S      MG_soft_key_lubrication
+  PSL
+
+;  LN     MG_pulse_1_min
+;  ON     MG_axes_in_motion
+;  EMT
+
+;  DEC    WL_next_lubrication
+
+EM
+
+;----------------------------
+LBL Check_pressure_0                   ;01 ;06
+
+  L      I_nut_lubricant_pressure_ok
+  S      PN_error_nut_lubrication_axes
+
+  LN     I_nut_lubricant_pressure_ok
+  A      MG_power_delayed_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Nut_lubricat_on                     ;02
+
+  L      MG_key_NC_start
+;  O      I_key_lubrication_axes
+  O      MG_pulse_CE_key
+  =      TS_nut_lubricant_pressure
+
+  L      TR_nut_lubricant_pressure
+  =      O_nut_lubrication_on
+
+  L      I_nut_lubricant_pressure_ok
+  PSL
+
+  LN     TS_nut_lubricant_pressure
+  AN     TR_nut_lubricant_pressure
+  AN     I_nut_lubricant_pressure_ok
+  S      PN_error_nut_lubrication_axes
+
+EM
+
+;----------------------------
+LBL Nut_lubricat_time                  ;03 ;05
+
+  LN     TR_nut_lubrication
+  =      TS_nut_lubrication
+  PSL
+
+EM
+
+;----------------------------
+LBL Nut_Lubricat_off                   ;04
+
+  L      MG_marker_one
+  R      O_nut_lubrication_on
+  PSL
+
+EM
+
+;----------------------------
+LBL Nut_lubricat_end                   ;07
+
+  PS     MG_marker_zero
+
+  L      MG_marker_one
+  R      MG_start_blocked_nut_lubrication
+  R      PN_error_nut_lubrication_axes
+;  R      MG_soft_key_lubrication
+
+  L      K+0
+  =      WL_nut_lubrication_pulse
+  =      DL_nut_lubrication_X_travel
+
+;  L      NP_D928_lubrication_time_min
+;  /      K+10000
+;  >      NP_W988_lubrication_time
+;  IFT
+;    L      NP_D928_lubrication_time_min
+;    /      K+10000
+;    =      WL_next_lubrication
+;  ELSE
+;    L      NP_D932_lubrication_time_max
+;    /      K+10000
+;    <      NP_W988_lubrication_time
+;    IFT
+;      L      NP_D932_lubrication_time_max
+;      /      K+10000
+;      =      WL_next_lubrication
+;    ELSE
+;      L      NP_W988_lubrication_time
+;      =      WL_next_lubrication
+;    ENDI
+;  ENDI
+
+LBL Nut_lubricat_reset
+
+  L      MG_marker_one
+  R      O_nut_lubrication_on
+
+  L      K+0
+  =      BL_step_nut_lubrication
+
+EM

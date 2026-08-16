@@ -1,0 +1,424 @@
+PLC SOFTKEY Project File - Version 1.0
+
+SKPATH PLC:\SOFTKEYS\BMX
+SOFTKEY Back.bmx SK_back
+SOFTKEY Machine_function.bmx SK_machine
+SOFTKEY Spindle_function.bmx SK_spindle
+SOFTKEY TC_function.bmx SK_tool
+SOFTKEY Diagnosis_function.bmx SK_diagnosis
+SOFTKEY NC_start.bmx SK_NC_start
+SOFTKEY NC_stop.bmx SK_NC_stop
+SOFTKEY Axes_minus.bmx SK_axes_minus
+SOFTKEY Axes_plus.bmx SK_axes_plus
+SOFTKEY Working_area.bmx SK_working_area
+SOFTKEY Emergency_end_position.bmx SK_emergency_end
+SOFTKEY Auto_power_off.bmx SK_auto_power_off
+SOFTKEY Coolant_M08.bmx SK_coolant_M08
+SOFTKEY Coolant_M07.bmx SK_coolant_M07
+SOFTKEY Lubrication.bmx SK_lubrication
+SOFTKEY Chip_conveyor.bmx SK_chip_conveyor
+SOFTKEY Chip_conveyor_back.bmx SK_chip_conveyor_back
+SOFTKEY Alternating_table.bmx SK_alternating_table
+SOFTKEY 3D_head.bmx SK_3D_head
+SOFTKEY 3D_head_enter.bmx SK_3D_head_enter
+SOFTKEY Coolant_chip_flush.bmx SK_coolant_chip_flush
+SOFTKEY Coolant_water_gun.bmx SK_coolant_water_gun
+SOFTKEY Air_blast.bmx SK_air_blast
+SOFTKEY S_warming_up.bmx SK_S_warming_up
+SOFTKEY S_head_pos_confirm.bmx SK_S_head_pos_confirm
+SOFTKEY S_head_pos_display.bmx SK_S_head_pos_display
+SOFTKEY S_head_pos_reset.bmx SK_S_head_pos_reset
+SOFTKEY S_manual_head.bmx SK_S_manual_head
+SOFTKEY S_manual_head_unclamp.bmx SK_S_manual_head_unclamp
+SOFTKEY OP_cabinet_folding.bmx SK_OP_cabinet_folding
+SOFTKEY OP_cabinet_stretching.bmx SK_OP_cabinet_stretching
+SOFTKEY Oil_mist.bmx SK_oil_mist
+SOFTKEY PMC_thermal_comp.bmx SK_PMC_thermal_comp
+SOFTKEY S_oil_air_lube_rst.bmx SK_S_oil_air_lube_reset
+SOFTKEY Air_through_S.bmx SK_air_through_S
+SOFTKEY F100.bmx SK_F100_percent
+SOFTKEY S100.bmx SK_S100_percent
+SOFTKEY Fluid_flow_valve.bmx SK_fluid_flow_valve
+SOFTKEY Chip_conveyor_interval.bmx SK_chip_conveyor_int
+SOFTKEY Chip_conveyor_setup.bmx SK_chip_conveyor_setup
+SOFTKEY Spindle_on.bmx SK_spindle_on
+SOFTKEY Spindle_off.bmx SK_spindle_off
+SOFTKEY Spindle_tip_cw.bmx SK_spindle_tip_cw
+SOFTKEY Spindle_tip_ccw.bmx SK_spindle_tip_ccw
+SOFTKEY Spindle_M19.bmx SK_spindle_M19
+SOFTKEY TC_enable_quit.bmx SK_TC_enable_quit
+SOFTKEY T_unclamp_clamp.bmx SK_T_unclamp_clamp
+SOFTKEY TC_magazine_load.bmx SK_TC_magazine_load
+SOFTKEY TC_magazine_cw.bmx SK_TC_magazine_cw
+SOFTKEY TC_magazine_ccw.bmx SK_TC_magazine_ccw
+SOFTKEY T_torque_monitoring.bmx SK_T_torque_monitoring
+SOFTKEY Error_queue.bmx SK_error_queue
+SOFTKEY Diagnosis.bmx SK_machine_diagnosis
+SOFTKEY Status.bmx SK_status
+SOFTKEY Documentation.bmx SK_documentation
+SOFTKEY Diagnosis_1_drive.bmx SK_diagnosis_1_drive
+SOFTKEY Diagnosis_2_drive.bmx SK_diagnosis_2_drive
+SOFTKEY Diagnosis_3_drive.bmx SK_diagnosis_3_drive
+SOFTKEY Diagnosis_TC.bmx SK_diagnosis_TC
+SOFTKEY Diagnosis_TC2.bmx SK_diagnosis_TC2
+SOFTKEY Diagnosis_TC_magazine.bmx SK_diagnosis_TC_magazine
+SOFTKEY Diagnosis_TC_mag2.bmx SK_diagnosis_TC_mag2
+SOFTKEY Temperature_compensation.bmx SK_temp_compensation
+SOFTKEY Temp_compensation_set.bmx SK_temp_comp_tab_set
+SOFTKEY Documentation_M_function.bmx SK_docu_M_function
+SOFTKEY Documentation_IO_interface.bmx SK_docu_IO_interface
+SOFTKEY Mode_line_0_PLC_window.bmx SK_mode_line0_PLC_window
+SOFTKEY Mode_line_1_PLC_window.bmx SK_mode_line1_PLC_window
+SOFTKEY Documentation_grafic.bmx SK_docu_grafic
+SOFTKEY Status_general.bmx SK_status_general
+SOFTKEY Status_axes.bmx SK_status_axes
+SOFTKEY Status_spindle.bmx SK_status_spindle
+SOFTKEY Status_strobe.bmx SK_status_strobe
+SOFTKEY Status_PLC_position.bmx SK_status_PLC_posit
+TX #IMa SK_HR_Machine
+TX #IM07 SK_HR_Coolant_M07
+TX #IM08 SK_HR_Coolant_M08
+TX #IChip SK_HR_Chip_conv
+TX #A133 SK_HR_Back
+TX #ISpl SK_HR_Spindle
+TX #IScw SK_HR_Spindle_tip_cw
+TX #ISccw SK_HR_Spindle_tip_ccw
+TX #IM19 SK_HR_Spindle_M19
+TX #A133 SK_HR_Back_01
+TX #ITl SK_HR_Tool
+TX #IQuit SK_HR_TC_enable_quit
+TX #ITclp SK_HR_TC_unclamp_clamp
+TX #A133 SK_HR_Back_1
+TX #ITmag SK_HR_Tool_magazine
+TX #ILoad SK_HR_TC_magazine_load
+TX #IMag#A128 SK_HR_TC_magazine_cw
+TX #IMag#A129 SK_HR_TC_magazine_ccw
+TX #A133 SK_HR_Back_3
+TX #A133 SK_HR_Back_2
+
+SKMENU RootMenu VROOT
+NODE SK_machine row_machine          
+NODE SK_spindle row_spindle          
+NODE SK_tool row_tool          
+BLANK
+BLANK
+NODE SK_DIAGNOSIS row_diagnosis          
+ENDSKMENU
+
+
+SKMENU row_machine
+CHECK SK_coolant_chip_flush  STATUS:MG_soft_key_coolant_chip_flush         
+CHECK SK_coolant_water_gun  STATUS:MG_soft_key_coolant_water_gun         
+CHECK SK_air_blast  STATUS:MG_soft_key_air_blast         
+CHECK SK_oil_mist  STATUS:MG_soft_key_oil_mist         
+CHECK SK_air_through_S  STATUS:MG_M17_status         
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back  STATUS:MG_soft_key_one_level_back       
+
+#if (SK = 2) or (SK = 8)
+CHECK SK_alternating_table  STATUS:MG_alternating_table_on         
+#else
+BLANK
+#endif
+
+
+#if (SK = 1) or (SK = 7)
+CHECK SK_3D_head  STATUS:MG_3D_head_display  SMALLWINDOW:3D_HEAD.A       
+CHECK SK_3D_head_enter  STATUS:MG_3D_head_enter  SMALLWINDOW:3D_HEAD_ENTER.A       
+#else
+BLANK
+BLANK
+#endif
+
+CHECK SK_lubrication  STATUS:MG_soft_key_lubrication         
+
+#if (SK = 4) or (SK = 10)
+CHECK SK_working_area  STATUS:MG_soft_key_working_area_monitoring_off         
+#else
+BLANK
+#endif
+
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back  STATUS:MG_soft_key_one_level_back       
+CHECK SK_auto_power_off  STATUS:MG_auto_power_off_after_END_PGM         
+BLANK
+CHECK SK_F100_percent  STATUS:MG_soft_key_F100_percent         
+
+#if (PNL = 11) or (PNL = 14) ;EUMACH S% knob -> FMAX% knob
+BLANK
+#else
+CHECK SK_S100_percent  STATUS:MG_soft_key_S100_percent         
+#endif
+
+CHECK SK_fluid_flow_valve  STATUS:MG_soft_key_fluid_flow_valve         
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back  STATUS:MG_soft_key_one_level_back       
+ACTION SK_chip_conveyor_back  STATUS:MG_soft_key_chip_con_back          
+BLANK
+CHECK SK_chip_conveyor_int  STATUS:MG_soft_key_interval_chip_conveyor         
+BLANK
+CHECK SK_chip_conveyor_setup  STATUS:MG_soft_key_setup_chip_conveyor  SMALLWINDOW:M_CHIP_CON_INT_SETUP.A       
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back  STATUS:MG_soft_key_one_level_back       
+ENDSKMENU
+
+
+SKMENU row_spindle
+
+#if HSS ! 0
+PULSE SK_S_warming_up  STATUS:MG_soft_key_S_warming_up          
+#else
+BLANK
+#endif
+
+BLANK
+ACTION SK_spindle_tip_cw  STATUS:MG_soft_key_S_jog_right_cw          
+ACTION SK_spindle_tip_ccw  STATUS:MG_soft_key_S_jog_left_ccw          
+BLANK
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+
+#if (HSS = 42) or (HSS = 298) or (HSS = 299) or (SK = 296)
+
+#if (HSS = 42) or (HSS = 298) or (HSS = 299)
+PULSE SK_S_oil_air_lube_reset  STATUS:MG_soft_key_S_oil_air_lube_unit_reset          
+#else
+BLANK
+#endif
+
+BLANK
+
+#if SK = 296
+CHECK SK_S_manual_head  STATUS:MG_soft_key_S_man_head         
+PULSE SK_S_manual_head_unclamp  STATUS:MG_soft_key_S_man_head_unclamp          
+#else
+BLANK
+BLANK
+#endif
+
+BLANK
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+#endif
+
+ENDSKMENU
+
+
+SKMENU row_tool
+
+#if (SK = 0) or (SK = 1) or (SK = 2) or (SK = 3) or (SK = 4) or (SK = 5)
+PULSE SK_TC_magazine_load  STATUS:MG_soft_key_TC_mag_load_active          
+ACTION SK_TC_magazine_cw  STATUS:MG_soft_key_TC_mag_right_cw          
+ACTION SK_TC_magazine_ccw  STATUS:MG_soft_key_TC_mag_left_ccw          
+#else
+BLANK
+BLANK
+BLANK
+#endif
+
+BLANK
+PULSE SK_T_torque_monitoring  STATUS:MG_soft_key_T_torque_monitoring          
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+ENDSKMENU
+
+
+SKMENU row_diagnosis
+PULSE SK_error_queue    SMALLWINDOW:M_Error.A        
+NODE SK_machine_diagnosis row_machine_diagnosis          
+NODE SK_status row_status          
+NODE SK_documentation row_documentation          
+BLANK
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+ENDSKMENU
+
+
+SKMENU row_machine_diagnosis
+RADIO SK_diagnosis_1_drive   FirstInGroup SMALLWINDOW:M_Dia_A1.A       
+RADIO SK_diagnosis_2_drive    SMALLWINDOW:M_Dia_A2.A       
+RADIO SK_diagnosis_3_drive    SMALLWINDOW:M_Dia_A3.A       
+RADIO SK_diagnosis_TC  STATUS:MG_TC_diagnosis  SMALLWINDOW:M_Dia_WZ.A       
+RADIO SK_diagnosis_TC_magazine  STATUS:MG_TC_magazine_diagnosis  SMALLWINDOW:M_Dia_M1.A       
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+
+#if (Tcmp = 1) or (Tcmp = 2) or (Tcmp = 5)
+
+#if (Tcmp = 1) or (Tcmp = 2)
+RADIO SK_PMC_thermal_comp    SMALLWINDOW:M_PMC_T_comp.A       
+BLANK
+#endif
+
+
+#if Tcmp = 5
+RADIO SK_temp_compensation    SMALLWINDOW:M_TKomp2.A       
+RADIO SK_temp_comp_tab_set    SMALLWINDOW:M_TKomp2_set.A       
+#endif
+
+#else
+BLANK
+BLANK
+#endif
+
+BLANK
+
+#if SK = 11
+RADIO SK_diagnosis_TC2  STATUS:MG_TC2_diagnosis  SMALLWINDOW:M_Dia_WZ2.A       
+RADIO SK_diagnosis_TC_mag2  STATUS:MG_TC_mag2_diagnosis  SMALLWINDOW:M_Dia_M2.A       
+#else
+BLANK
+BLANK
+#endif
+
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+ENDSKMENU
+
+
+SKMENU row_documentation
+PULSE SK_docu_M_function    SMALLWINDOW:M_Doc_M.A        
+PULSE SK_docu_IO_interface    SMALLWINDOW:M_Doc_IO.A        
+BLANK
+PULSE SK_mode_line0_PLC_window  STATUS:MG_soft_key_mode_line_0          
+PULSE SK_mode_line1_PLC_window  STATUS:MG_soft_key_mode_line_1          
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+ENDSKMENU
+
+
+SKMENU row_status
+RADIO SK_status_general   FirstInGroup SMALLWINDOW:M_St_all.A       
+RADIO SK_status_strobe    SMALLWINDOW:M_Strobe.A       
+RADIO SK_status_axes    SMALLWINDOW:M_St_Ax.A       
+RADIO SK_status_spindle    SMALLWINDOW:M_St_Spi.A       
+RADIO SK_status_PLC_posit    SMALLWINDOW:M_St_Plc.A       
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_back         
+ENDSKMENU
+
+
+SKMENU row_service
+BLANK
+BLANK
+BLANK
+BLANK
+BLANK
+
+#if (PNL = 5) or (PNL = 6)
+BLANK
+BLANK
+BLANK
+#endif
+
+BACK SK_BACK         
+ENDSKMENU
+
+
+SKMENU HRxx0 HRROOT TITLE:
+NODE SK_HR_Machine HR_Machine          
+NODE SK_HR_Spindle HR_Spindle          
+BLANK
+NODE SK_HR_Tool_magazine HR_Tool_magazine          
+BACK SK_HR_Back_2         
+ENDSKMENU
+
+
+SKMENU HR_Machine HRMENU TITLE:Machine
+PULSE SK_HR_Coolant_M07  STATUS:MG_HW_SK_coolant_M07          
+PULSE SK_HR_Coolant_M08  STATUS:MG_HW_SK_coolant_M08          
+BLANK
+PULSE SK_HR_Chip_conv  STATUS:MG_HW_SK_chip_conveyor          
+BACK SK_HR_Back         
+ENDSKMENU
+
+
+SKMENU HR_Spindle HRMENU TITLE:Spindle
+ACTION SK_HR_Spindle_tip_cw  STATUS:MG_soft_key_S_jog_right_cw          
+ACTION SK_HR_Spindle_tip_ccw  STATUS:MG_soft_key_S_jog_left_ccw          
+BLANK
+BLANK
+BACK SK_HR_Back_01         
+ENDSKMENU
+
+
+SKMENU HR_Tool_magazine HRMENU "TITLE:Tool Magazine"
+PULSE SK_HR_TC_magazine_load  STATUS:MG_HW_SK_TC_load          
+BLANK
+ACTION SK_HR_TC_magazine_cw  STATUS:MG_soft_key_TC_mag_right_cw          
+ACTION SK_HR_TC_magazine_ccw  STATUS:MG_soft_key_TC_mag_left_ccw          
+BACK SK_HR_Back_3         
+ENDSKMENU
+

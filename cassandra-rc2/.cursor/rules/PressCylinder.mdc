@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# PressCylinder Component
+
+The `PressCylinder` is a component that orchestrates a `[Solenoid.h](mdc:cassandra-rc2/lib/polymech-base/src/components/Solenoid.h)` and a `[Loadcell.h](mdc:cassandra-rc2/lib/polymech-base/src/components/Loadcell.h)` to achieve a target pressure.
+
+## Files
+- Header: `[PressCylinder.h](mdc:cassandra-rc2/lib/polymech-base/src/components/PressCylinder.h)`
+- Implementation: `[PressCylinder.cpp](mdc:cassandra-rc2/lib/polymech-base/src/components/PressCylinder.cpp)`
+
+## Dependencies
+- It controls a `[Solenoid.h](mdc:cassandra-rc2/lib/polymech-base/src/components/Solenoid.h)`.
+- It reads pressure values from a `[Loadcell.h](mdc:cassandra-rc2/lib/polymech-base/src/components/Loadcell.h)`.
+- It can optionally be controlled by a `[Joystick.h](mdc:cassandra-rc2/lib/polymech-base/src/components/Joystick.h)` for manual operation.
+
+## Functionality
+The component has two primary modes:
+1.  **Auto Mode**: Automatically opens/closes the solenoid to reach a Modbus-defined pressure setpoint (`targetSP`), based on the current value from the loadcell.
+2.  **Manual Mode**: Allows for direct control of the solenoid using the joystick (`UP` opens the solenoid).
+
+## Configuration
+- The component is enabled by the `ENABLE_PRESS_CYLINDER` flag in `[config.h](mdc:cassandra-rc2/src/config.h)`.
+- It is instantiated and its dependencies are injected within `[PHApp.cpp](mdc:cassandra-rc2/src/PHApp.cpp)`.
+

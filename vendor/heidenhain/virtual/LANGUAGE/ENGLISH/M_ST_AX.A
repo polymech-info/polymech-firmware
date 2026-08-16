@@ -1,0 +1,28 @@
+/* STATUS AXES
+   -----------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS AXES";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"Axes released     :  %04X\n",D1100/c;
+"in position       :  %04X\n",D1104/c;
+"in motion         :  %04X\n",D1108/c;
+"not pass over ref :  %04X\n",D1116/c;
+"End position +    :  %04X\n",D1120/c;
+"End position -    :  %04X\n",D1124/c;
+"activate open loop:  %04X\n",D1128/c;
+"open loop         :  %04X\n",D1132/c;
+"no axes monitoring:  %04X\n",D1136/c;
+"Actl/noml transfer:  %04X\n",D1140/c;
+"Ref end position  :  %04X\n",D1160/c;
+"Feed released     :  %04X\n",D1172/c;
+"Manual motion +   :  %04X\n",D1144/c;
+"Manual motion -   :  %04X\n",D1148/c;
+
+

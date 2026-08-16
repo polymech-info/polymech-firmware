@@ -1,0 +1,44 @@
+/* Diagnosis TC
+   ------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAG TOOL CHANGE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %s\n",S1/c;
+CURSOR=ON;
+"CASE(%2d): %s\n",$BG_step_toolchange_2$/c,S2/c;
+CURSOR=OFF;
+"(+1)    : %s\n\n",S3/c;
+"Standby Pocket    : %4D\n",
+$WG_TC_magazine_2_actual_pocket$/c;
+"TOOL Pocket  W262 : %4D\n",
+$NP_W262_tool_pocket_number$/c;
+"TOOL Number  W264 : %4D\n\n",
+$NP_W264_tool_number$/c;
+
+"T Strobe     M4073: %d   T2 M4520: %d\n",
+$NP_M4073_strobe_TOOL_CALL$/c,$NP_M4520_TOOL_CALL_2nd_strobe$/c;
+"T0           M4521: %d\n",
+$NP_M4521_TOOL_CALL_T_0_programmed$/c;
+"T w Pocket   M4522: %d\n",
+$NP_M4522_TOOL_CALL_with_pocket_number$/c;
+"T w/o Pocket M4523: %d\n\n",
+$NP_M4523_TOOL_CALL_without_pocket_number$/c;
+
+CURSOR=ON;
+"                    X Y Z 4 5 6 7 8 9  \n";
+CURSOR=OFF;
+"PLC-Positioning   : %d %d %d %d %d %d %d %d %d\n",
+$PN_M4120_strobe_PLC_posit_axis_X$/c,
+$PN_M4121_strobe_PLC_posit_axis_Y$/c,
+$PN_M4122_strobe_PLC_posit_axis_Z$/c,
+$PN_M4123_strobe_PLC_posit_axis_4$/c,
+$PN_M4124_strobe_PLC_posit_axis_5$/c,
+$PN_M4125_strobe_PLC_posit_axis_6$/c,
+$PN_M4126_strobe_PLC_posit_axis_7$/c,
+$PN_M4127_strobe_PLC_posit_axis_8$/c,
+$PN_M4128_strobe_PLC_posit_axis_9$/c;

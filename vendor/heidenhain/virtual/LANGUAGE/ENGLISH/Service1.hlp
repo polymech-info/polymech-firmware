@@ -1,0 +1,23 @@
+﻿************************************
+        !!! ATTENTION !!!
+       only for supervisor
+     X, Y, Z can be moved by
+     X+, X-, Y+, Y-, Z+, Z- key
+     or handwheel
+     service tool changer
+           (single arm)
+************************************
+ 
+#101  S to TC position
+#102  Z to TC position put out
+#103  Z to TC position put in
+#104  Tool lock open
+#105  Tool lock close
+#106  Magazine to spindle
+#107  Magazine to basic position
+#108  Tool unclamping
+#109  Tool clamping
+#110  Magazine turn clockwise
+#111  Magazine turn counterclockwise
+#112  Magazine reference
+#113  Delete spindle status (T0)

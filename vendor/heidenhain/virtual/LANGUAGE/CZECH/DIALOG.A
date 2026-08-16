@@ -1,0 +1,2048 @@
+﻿Stroj / Prog. stanice  - 0/2
+Merítko XYZ/Z              - 0/1
+Chování v cyklech
+Faktor prekrytí kapes  0.1-1.414
+Tolerance konc. bodu   max 0.016
+3D rotace vyp/zap    -  ..0/ ..1
+Mazání os                  [min]
+Rucní kolecko není/HR410     0/6
+Paleta barev monitoru     [0..3]
+TT1x0 poloha X             [REF]
+TT1x0 poloha Y             [REF]
+TT1x0 poloha Z             [REF]
+Parametr uzivatele 13
+Parametr uzivatele 14
+Parametr uzivatele 15
+Parametr uzivatele 16
+Vreteno S1        =
+Vreteno S2        =
+Osy               =
+Hydraulika        =
+Provozní cítac 5  =
+Provozní cítac 6  =
+Provozní cítac 7  =
+Provozní cítac 8  =
+Provozní cítac 9  =
+Provozní cítac 10 =
+Provozní cítac 11 =
+Provozní cítac 12 =
+Provozní cítac 13 =
+* Titulek okna <- rádka 30
+Editor tabulek MP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Tlačítko Central-Stop
+-> uvolnit
+H001 Havarijní koncová poloha osy X+
+-> tlačítko uvolnit
+H002 Havarijní koncová poloha osy Y+
+-> tlačítko uvolnit
+H003 Havarijní koncová poloha osy Z+
+-> tlačítko uvolnit
+H004 Havarijní koncová poloha osy 4+
+-> tlačítko uvolnit
+H005 Havarijní koncová poloha osy 5+
+-> tlačítko uvolnit
+H006 Havarijní koncová poloha osy X-
+-> tlačítko uvolnit
+H007 Havarijní koncová poloha osy Y-
+-> tlačítko uvolnit
+H008 Havarijní koncová poloha osy Z-
+-> tlačítko uvolnit
+H009 Havarijní koncová poloha osy 4-
+-> tlačítko uvolnit
+H010 Havarijní koncová poloha osy 5-
+-> tlačítko uvolnit
+H011 Osa X pozice pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H012 Osa Y pozice pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H013 Osa Y předpolohování pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H014 Osa Y pozice pro ruční výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H015 Osa Z vyjet na pozici pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H016 Osa Z nastavit pozici pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H017 Osa Z pozice pro výměnu ručně
+-> Režim ruční/kolečko -> MOD -> HELP
+H018 Osa Z najet na bezpečnou výšku
+-> Režim ruční/kolečko -> MOD -> HELP
+H019 Vřeteno poloha pro výměnu (M19)
+-> Režim ruční/kolečko -> MOD -> HELP
+H020 Nástroj uvolnit
+-> Režim ruční/kolečko -> MOD -> HELP
+H021 Nástroj upnout
+-> Režim ruční/kolečko -> MOD -> HELP
+H022 Ruku výměníku vyklopit
+-> Režim ruční/kolečko -> MOD -> HELP
+H023 Ruku výměníku zasunout
+-> Režim ruční/kolečko -> MOD -> HELP
+H024 Ruka výměníku doleva/doprava
+-> Režim ruční/kolečko -> MOD -> HELP
+H025 Kleštinu uzavřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H026 Kleštinu otevřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H027 Klštinu vřetena zavřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H028 Kleštinu vřetena otevřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H029 Kleštinu zásobníku zavřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H030 Kleštinu zásobníku otevřít
+-> Režim ruční/kolečko -> MOD -> HELP
+H031 Zásobník na pozici pro výměnu
+-> Režim ruční/kolečko -> MOD -> HELP
+H032 Kryt zásobníku otevřený
+-> zavřít
+H033 Výměna nástroje - viz status
+-> Interní stop -> MDI -> TOOL CALL
+H034 Zásobník k vřetenu
+-> Režim ruční/kolečko -> MOD -> HELP
+H035 Zásobník do základní polohy
+-> Režim ruční/kolečko -> MOD -> HELP
+H036 Místo v zásobníku vyklopit
+-> Režim ruční/kolečko -> MOD -> HELP
+H037 Místo v zásobníku zaklopit
+-> Režim ruční/kolečko -> MOD -> HELP
+H038 Index zásobníku vysunout
+-> Režim ruční/kolečko -> MOD -> HELP
+H039 Index zásobníku zasunout
+-> Režim ruční/kolečko -> MOD -> HELP
+H040 Výměník do základní polohy
+-> Režim ruční/kolečko -> MOD -> HELP
+H041 Funkce výměny není dovolena
+-> Režim ruční/kolečko -> MOD -> HELP
+H042 Ruku výměníku na pozici vřetena
+-> Režim ruční/kolečko -> MOD -> HELP
+H043 Ruku výměníku na pozici zásobníku
+-> Režim ruční/kolečko -> MOD -> HELP
+H044 Ruku výměníku do základní polohy
+-> Režim ruční/kolečko -> MOD -> HELP
+H045 Ruku výměníku do střední polohy
+-> Režim ruční/kolečko -> MOD -> HELP
+H046 HR410 vyhodnocení tlačítek NC
+FCT A-C přes PLC      -> MP7645: 0
+H047 M/S/T/Q-předání do PLC v průběhu
+předvýpočtu       -> MP7681: %110111
+H048 Zásobník nástrojů je PLC-osa !
+malé písmeno     -> MP100/MP7291
+H049 Ruční kolečko není podporováno
+-> MP7640: 0..6/11..13
+H050 Předvýpočet PLC aktivní !
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 Mutný PGM stop pomocí M-funkce
+Bit 02  MP 7440: %xxxxx0xx
+H052 Chyba při otvírání souboru
+-> Modul 9240
+H053 Chyba při čtení z tabulky
+-> Modul 9255
+H054 Chyba při zápisu do tabulky
+-> Modul 9256
+H055 Chyba - hodnota není v tabulce
+-> Modul 9255
+H056 Vadný teplotní sensor Pt100
+-> zkontrolovat konektor X48
+H057 Pt100 připojení není definováno
+-> tabulka teplotních kompenzací
+H058 Osa X pozice pro výměnu palet
+-> Režim ruční/kolečko -> MOD -> HELP
+H059 Osa Y pozice pro výměnu palet
+-> Režim ruční/kolečko -> MOD -> HELP
+H060 Osa Z pozice pro výměnu palet
+-> Režim ruční/kolečko -> MOD -> HELP
+H061 Aktivovat automat. výměnu palet
+
+H062 Start výměny palet
+-> tlačítko NC-start
+H063 Ukončení výměny palet
+-> tlačítko NC-start
+H064 Výměna palet - otevřít průchod
+-> Režim ruční/kolečko -> MOD -> HELP
+H065 Výměna palet - uzavřít průchod
+-> Režim ruční/kolečko -> MOD -> HELP
+H066 Nepřípustné číslo palety
+
+H067 Uvolnit paletu ve stroji
+-> Režim ruční/kolečko -> MOD -> HELP
+H068 Upnout paletu ve stroji
+-> Režim ruční/kolečko -> MOD -> HELP
+H069 Osy z MP10 nejsou přiřazeny
+-> změnit MP2040.x
+H070 Výměník palet do pozice ustavení
+-> Režim ruční/kolečko -> MOD -> HELP
+H071 Výměník palet 1 - osa X na pozici
+-> Režim ruční/kolečko -> MOD -> HELP
+H072 Výměník palet 2 - osa X na pozici
+-> Režim ruční/kolečko -> MOD -> HELP
+H073 Není výchozí poloha výměníku pal.
+-> Režim ruční/kolečko -> MOD -> HELP
+H074 Výměník palet 1 - základní poloha
+-> Režim ruční/kolečko -> MOD -> HELP
+H075 Výměník palet 2 - základní poloha
+-> Režim ruční/kolečko -> MOD -> HELP
+H076 Výměník palet k osazení
+-> Režim ruční/kolečko -> MOD -> HELP
+H077 Výměník palet ke stroji
+-> Režim ruční/kolečko -> MOD -> HELP
+H078 Výměník palet - chyba sensoru
+-> Režim ruční/kolečko -> MOD -> HELP
+H079 Osa 4 pozice výměny palet
+-> Režim ruční/kolečko -> MOD -> HELP
+H080 3D-hlava změna převodu
+
+H081 3D-hlava orientace vřetena
+
+H082 3D-hlava torzní moment
+-> Ruční -> softka 3D-hlava
+H083 Otevřít dveře zásobníku
+-> Režim ruční/kolečko -> MOD -> HELP
+H084 Uzavřít dveře zásobníku
+-> Režim ruční/kolečko -> MOD -> HELP
+H085 Vysunutí Pickup-zásobníku
+-> Režim ruční/kolečko -> MOD -> HELP
+H086 Zasunutí Pickup-zásobníku
+-> Režim ruční/kolečko -> MOD -> HELP
+H087 Osa X předpolohování výměny
+-> Režim ruční/kolečko -> MOD -> HELP
+H088 Alarm výměníku palet
+
+H089 Zkontrolovat výměník palet
+
+H090 Vřeteno v režimu s C-osou
+-> poloha vřetena (synchronizace)
+H091 rozšířené rozhraní -20 reg.obvodů
+MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 standard rozhraní - 16 reg.obvodů
+MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+-> AUTOSTART / aktivní zahřívací cykl
+H094 Fmax Override aktivieren
+       MP7620: Bit05 oder Bit09 setzen
+H048 Zásobník nástrojů je PLC-osa !
+malé písmeno     -> MP100/MP7291
+H096 PLC hlášení
+
+H097 PLC hlášení
+
+H098     ano  -> NC-start
+ne  -> NC-stop
+H099
+-> NC-start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* Zásobník - PLC osa *
+* Zásobník - čítač *
+* Výměna auto - jednoruký *
+* Výměna auto - dvojruký *
+* Výměna auto - vačka *
+* Výměna auto - Pickup *
+
+
+
+Zasobnik_start
+Zasobnik_konec
+Tool_Def_konec
+Zasob_luzko_zasun
+Zasob_luzko_poloha_zasun
+Zasob_luzko_zasun_vysun
+Zasob_luzko_napolohovat
+Zasob_start
+Zasob_v_poloze
+Dekodovani_cisla_luzka
+T_predvolba_status
+Zasobnik_smer
+Zasob_index_vysun
+Zasob_index_poloha_vysun
+Zasob_zadana_poloha
+Cas_presne_zastaveni
+Zasob_index_poloha_zasun
+Zasob_presne_zastaveni
+Zasobnik_cw (vpravo)
+Zasobnik_ccw (vlevo)
+
+Vymena_auto_start
+Vymena_auto_konec
+Nastroj_vreteno_OK
+Vymena_zasobnik_start
+Zasobnik_v_poloze
+Zasob_obsazeno_prazdne
+Vreteno_obsazeno_prazdne
+Zasob_obsazeno
+Zasob_prazdne
+Vreteno_prazdne_obsazeno
+T_dvere_otevrit
+T_dvere_otevreno
+T_dvere_zavrit
+T_dvere_zavreno
+S_start
+S_v_pozici_vymeny
+XY_start
+X_start
+X_v_pozici_vymeny
+X_start_predpolohovani
+X_v_pozici_predpolohovani
+Y_start
+Y_v_pozici_vymeny
+Y_start_predpolohovani
+Y_v_pozici_predpolohovani
+Z_start
+Z_v_pozici_vymeny
+Z_start_bezpecna_vyska
+Z_v_pozici_bezpecne_vysky
+Z1_zas_vys_start
+Z1_v_pozici_zas_vys
+Z2_zas_vys_start
+Z2_v_pozici_zas_vys
+Z3_zas_start
+Z3_v_pozici_zas
+Zasob_luzko_vys
+Zasob_luzko_pozice_vys
+Zasob_luzko_cas
+Pickup_hodnoty_nacist
+Pickup_vysun
+Pickup_vysunut
+Pickup_zasun
+Pickup_zasunut
+Ruka_vysun
+Ruka_vysunuta
+Ruka_zasun
+Ruka_zasunuta
+Ruka_k_vretenu
+Ruka_u_vretena
+Ruka_k_zasobniku
+Ruka_u_zasobniku
+Ruka_do_stredni_pozice
+Ruka_ve_stredni_pozici
+Ruka_do_zakladni_pozice
+Ruka_v_zakladni_pozici
+Ruka_do_cw_ccw
+Ruka_v_cw_ccw
+Ruka_ve_stredni_pozici_stop
+Ruka_zpozdeni
+Skok_ruka
+Zasob_luzko_zas_vys
+Zasob_luzko_pozice_OK
+Klestina_zavrit
+Klestina_zavrena
+Klestina_otevrit
+Klestina_otevrena
+Klestina_zasob_otevrit
+Klestina_zasob_otevrena
+Klestina_zasob_zavrit
+Klestina_zasob_zavrena
+Klestina_vreteno_otevrit
+Klestina_vreteno_otevrena
+Klestina_vreteno_zavrit
+Klestina_vreteno_zavrena
+Nastroj_v_zasob_nacist
+Vymena_auto_cas
+Zasob_k_vretenu
+Zasob_u_vretena
+Nastroj_uvolnit
+Nastroj_uvolnen
+Nastroj_upnout
+Nastroj_upnut
+Cas_vysunuti
+T_novy_ulozit
+T0_status_ve_vretenu
+T0_status_T_novy
+T_novy_status_ve_vretenu
+T_status_OK
+Tool_Call_druha_cast
+Tool_Call_cekani
+Nastroj_status_nacist
+Skok_upnuti
+Zasob_do_zakladni_pozice
+Zasob_v_zakladni_pozici
+Tool_Call_konec
+Programovan_skok_T0
+Skok_vreteno_bylo_prazdne
+3D-hlava_v_poloze_pro_vymenu_T
+Ruka_vymeniku_cw (vpravo)
+Ruka_vymeniku_ccw (vlevo)
+Nastroj_v_zasobniku_uvolnit
+Nastroj_v_zasobniku_uvolnen
+Nastroj_v_zasobniku_upnout
+Nastroj_v_zasobniku_upnut
+Rucni_vymena_nastroje
+Start_rucni_vymeny
+Skok_rucni_rezim
+X_start_rucne
+X_na_pozici_vymeny
+Y_start_rucne
+Y_na_pozici_vymeny
+Z_start_rucne
+Z_na_pozici_vymeny
+Rucni_nastroj_uvolnit
+Rucni_nastroj_upnout
+Prerusit_vymeny_nastroje
+Potvrdit_vymenu_nastroje
+Znovunajeti_nutne
+Znovunajeti_OK
+Ukoncit_vymenu_nastroje
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Není definováno
+Meziobvodové napětí vysoké
+Teplota tělesa modulu vysoká
+Zkrat fáze motoru s Uz
+Meziobvodový proud vysoký
+Napájecí zdroj není připraven
+Svodový proud příliš vysoký
+
+
+
+0 Bez chybového kódu
+1 Parametr mimo rozsah zadání
+2 Parametr neplatný/neexistuje
+3 Adresa mimo rozsah zadání
+4 Délka bloku mimo rozsah zadání
+5 Nejedná se o adresu Word/Doubleword
+6 Hodnotu nelze změnit
+7 Chybná data
+8 Chybný provozní režim
+9 Příkaz polohování již proveden
+10 Není definován zásobník
+11 Nedovolený znak
+12 String neúplný, chybí ukončení
+13 Není spojení
+14 V24 obsazeno nebo není přiřazeno
+15 V24 vysílací buffer není prázdný
+16 V24 přijímací buffer prázdný
+17 V24 přenosová rychlost není možná
+18 V24 chyba přenosu
+19 Proudový regulátor není připraven
+20 Volání Modulu mimo Submit
+21 Volání Modulu bez Strobe-signálu
+22 Přetečení fronty kláves
+23 Přetečení fronty chyb. hlášení PLC
+24 Modul byl volán ze Submit
+25 Příliš mnoho položek pole konstant
+26 Nedovolené položky v poli konstant
+27 Orientace vřetena již aktivní
+28 Funkce Modulu již aktivní
+29 Chybný typ otevřeného souboru
+30 Název pole není v souboru obsažen
+31 Chybná syntaxe podmínky dotazu
+32 Žádná data s podmínkou dotazu
+33 Osa nemá najetu referenci
+34 Reset, externí přístroj vadný
+35 Editor není aktivní
+36 Všeobecná chyba přístupu k souboru
+37 Příliš málo systémové paměti
+38 Chyba při překladu
+39 Rychlý PLC-vstup pro start pohonů
+40 Pohony není možno zapnout
+41 Kontrola typu čísel tab. nástrojů
+42 Chyba napájení, neodpojitelné CS
+43 Modul volán bez SG-paketu
+44 Chyba zdrojového kódu softkláves
+45 Modul přerušen
+46 Chyba Profibus nebo ASI
+47 -
+48 -
+49 -
+50 -
+51 Funkce není možná, žádná PL510
+52 Funkce není k dispozici pro 1CPU
+53 Seriové rozhraní neexistuje
+54 Funkce není k dispozici pro 2CPU
+55 Nelze zapnout ochranu souboru
+56 Soubor neexistuje
+57 Opce/FCL není uvolněno
+58 Funkce NC kanálu není k dispozici
+59 Proces (Python) nepřípustný
+60 Analogový výstup X8/X9 HW blokován
+61 Funkce Modulu není podporována
+62 Symbol/identifikátor neexistuje
+63 Chyba při tvorbě struktury
+64 Handle neznámý/chybný
+65 Chybný směr dat
+66 Funkce není podporována systémy FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+99 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+\n  M380 - external sagging comp off
+\n  M381 - external sagging comp on
+\n  M390 - ATC door closing
+\n  M391 - ATC door opening
+\n  M400 - feed disable axis 4
+\n  M401 - feed enable axis 4
+\n  M500 - feed disable axis 5
+\n  M501 - feed enable axis 5

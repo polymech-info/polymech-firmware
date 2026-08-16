@@ -1,0 +1,1 @@
+pm-config patch-config --patch ./config/elena-config.json --dst ./src/config-user.h

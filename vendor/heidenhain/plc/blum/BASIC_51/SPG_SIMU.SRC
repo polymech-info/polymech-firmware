@@ -1,0 +1,552 @@
+*-----------------------------------------------------------------------------
+*  SPG Simulation
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*    The module simulates machine signals. Thats why the use is only
+*    permitted together with the JH test device (SPG) !
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_S_jog_time                            K+12
+#define /s    KL_TC_mag_reference_seconds              K+5
+
+#define /s    ML_cam_clock                             M
+#define /s    ML_MB420_not_connected                   M
+
+#define /s /c I_inputs_X42                             I42
+#define /s /c I_input_X46                              I128
+
+#if SPG = &active
+#define /s    O_BCD_display                            O7
+#define /s    O_LED_G_S_strobe                         O20
+#define /s    O_LED_M_strobe                           O21
+#define /s    O_LED_TOOL_CALL_strobe                   O22
+#define /s    O_LED_TOOL_DEF_strobe                    O23
+#endif
+
+#define /s    BL_cam_position                          B
+#define /s    BL_TC_magazine_reference                 B
+#define /s    BL_gear_swinging                         B
+
+#define /s    WL_TC_magazine_simulation_counter        W
+
+GLOBAL SPG_simulation_begin
+GLOBAL SPG_simulation_end
+
+;----------------------------
+LBL SPG_simulation_begin
+;----------------------------
+
+  L      MG_TNC_programming_station_with_PLC
+  IFT
+    LN     PN_W1040_control_loop_open
+    A      WG_controlled_axes
+    =      NP_W1024_axes_release
+
+    LD     I_input_X46
+    A      K$01FFFFFF
+    ==     K+0
+    =      ML_MB420_not_connected
+
+    L      MG_iTNC530_PC_programming_station
+    O      ML_MB420_not_connected
+    IFT
+      L      K+10000
+      =      NP_W494_factor_feed_override_NC
+      =      PN_W766_factor_feed_override_PLC
+      =      NP_W492_S_override_NC
+      =      PN_W764_S_override_PLC
+
+      L      MG_marker_one
+      R      I_key_NC_start
+      S      I_key_NC_stop
+      R      I_key_axes_plus
+      R      I_key_axes_minus
+      R      I_servo_drive_release
+      R      I_control_operational
+    ENDI
+
+    L      NP_W274_code_pushed_key
+    ==     KG_key_Ctrl_S_NC_Start
+    S      I_key_NC_start
+
+    L      NP_W274_code_pushed_key
+    ==     KG_key_Ctrl_X_NC_Stop
+    R      I_key_NC_stop
+
+    L      NP_W274_code_pushed_key
+    ==     KG_key_Ctrl_cursor_up_axes_plus
+    S      I_key_axes_plus
+
+    L      NP_W274_code_pushed_key
+    ==     KG_key_Ctrl_cursor_down_axes_minus
+    S      I_key_axes_minus
+
+    L      NP_W274_code_pushed_key
+    <>     KG_key_Alt_X_TNC_emergency_stop
+    S      I_servo_drive_release
+    S      I_control_operational
+
+    L      MG_marker_one
+    S      I_emergency_button_unlocked
+
+    L      NP_W256_G_code_spindle
+    ==     K+0
+    =      I_gear_range_1
+    =N     I_gear_range_2
+
+  ENDI
+
+#ifdef Simulation
+#if No_PL > 0
+  L      MG_marker_one
+  S      PN_error_SPG_simulation
+#endif
+
+  LD     I_inputs_X42
+  A      K$FFFFFF00
+  >      K+0
+  S      PN_error_SPG_simulation
+
+  LD     I_inputs_X42
+  A      K$FF700000
+  >      K+0
+  S      PN_error_SPG_simulation
+
+  L      O_lubrication_on
+  =      I_lubricant_pressure_ok
+
+  LN     I_lubricant_level_ok
+  S      I_lubricant_level_ok
+
+  L      MG_marker_one
+  =      I_PW_210_temperature_ok
+
+  L      MG_marker_one
+  =      I_DA300_pressure_ok
+
+  LN     MG_servo_drive_release_axis_groups_X150_active
+  IFT
+    L      MG_marker_one
+    =      I_TC_magazine_guard_closed
+    =      I_TC_magazine_guard_locked_closed
+  ENDI
+
+#if Motor_unit = &inactive
+  L      I_control_operational
+  =      I_emergency_button_unlocked
+#endif
+
+  L      NP_M4001_S_nominal_not_in_ramp
+  =      I_S_actual_equal_nominal_rpm
+  =      MG_S_actual_equal_nominal_rpm
+
+  L      NP_M4002_S_nominal_0
+  =      I_S_actual_lower_nominal_rpm
+
+  L      O_tool_unclamping
+  =      I_tool_unclamped
+  =N     I_tool_clamped
+
+  L      MG_pulse_M_function
+  A      MG_M61_alternating_table_1
+  =      I_key_enable_table_1
+
+  L      MG_pulse_M_function
+  A      MG_M62_alternating_table_2
+  =      I_key_enable_table_2
+
+  L      MG_alternating_table_on
+  =      MG_new_workpiece_table_1
+  =      MG_new_workpiece_table_2
+
+  L      O_TC_magazine_cw
+  O      O_TC_magazine_ccw
+  IFT
+    INC    WL_TC_magazine_simulation_counter
+
+    L      WL_TC_magazine_simulation_counter
+    MOD    K+25
+    <      K+12
+    =      I_TC_magazine_counter
+
+    L      WL_TC_magazine_simulation_counter
+    MOD    K+25
+    >=     K+6
+    A[
+      L      WL_TC_magazine_simulation_counter
+      MOD    K+25
+      <=     K+8
+    ]
+    =      I_TC_magazine_exact_position
+  ELSE
+    L      K+6
+    =      WL_TC_magazine_simulation_counter
+  ENDI
+
+  LN     O_TC_magazine_cw
+  AN     O_TC_magazine_ccw
+  S      I_TC_magazine_counter
+  S      I_TC_magazine_exact_position
+
+  L      MG_key_NC_start_p_pulse
+  A      MG_TC_magazine_reference_necessary
+  IFT
+    L      KL_TC_mag_reference_seconds
+    =      BL_TC_magazine_reference
+  ENDI
+
+  L      O_TC_magazine_cw
+  O      O_TC_magazine_ccw
+  A      MG_pulse_1_s
+  A      MG_TC_magazine_reference_necessary
+  IFT
+    DEC    BL_TC_magazine_reference
+  ENDI
+
+  L      BL_TC_magazine_reference
+  ==     K+0
+  A      MG_pulse_1_s
+  A      MG_TC_magazine_reference_necessary
+  =      I_TC_magazine_reference
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4173_1st_PLC_run_after_compile
+  S      I_TC_arm_cw
+  R      I_TC_arm_ccw
+
+  L      O_TC_arm_turn_cw
+  AN     I_TC_arm_ccw
+  A      MG_pulse_1_s
+  S      I_TC_arm_cw
+
+  L      O_TC_arm_turn_cw
+  A      MG_pulse_1_s
+  R      I_TC_arm_ccw
+
+  L      O_TC_arm_turn_ccw
+  AN     I_TC_arm_cw
+  A      MG_pulse_1_s
+  S      I_TC_arm_ccw
+
+  L      O_TC_arm_turn_ccw
+  A      MG_pulse_1_s
+  R      I_TC_arm_cw
+
+  L      O_TC_arm_to_middle_position
+  A      MG_pulse_1_s
+  S      I_TC_arm_middle_pos
+
+  LN     O_TC_arm_put_out
+  A      MG_pulse_1_s
+  R      I_TC_arm_put_out
+  S      I_TC_arm_put_in
+
+  L      O_TC_arm_put_out
+  A      MG_pulse_1_s
+  S      I_TC_arm_put_out
+  R      I_TC_arm_put_in
+
+  LN     O_TC_arm_gripper_close
+  A      MG_pulse_1_s
+  S      I_TC_arm_gripper_opened
+
+  L      O_TC_arm_gripper_close
+  A      MG_pulse_1_s
+  R      I_TC_arm_gripper_opened
+
+  L      O_TC_pocket_put_in
+  A      MG_pulse_1_s
+  R      I_TC_pocket_out
+  S      I_TC_pocket_in
+
+  L      O_TC_pocket_put_out
+  A      MG_pulse_1_s
+  S      I_TC_pocket_out
+  R      I_TC_pocket_in
+
+  L      O_TC_magazine_to_spindle_position
+  A      MG_pulse_1_s
+  S      I_TC_magazine_in_spindle_position
+  R      I_TC_magazine_in_basic_position
+
+  LN     O_TC_magazine_to_spindle_position
+  A      MG_pulse_1_s
+  R      I_TC_magazine_in_spindle_position
+  S      I_TC_magazine_in_basic_position
+
+  L      O_TC_magazine_lock_pin_out
+  =N     I_TC_magazine_lock_pin_in
+  =      I_TC_magazine_lock_pin_out
+
+  L      O_TC_arm_to_spindle_position
+  =      I_TC_arm_spindle_pos
+
+  L      O_TC_arm_to_basic_position
+  =      I_TC_arm_basic_pos
+
+#if Tool_changing_arm = &Cam_driven_arm
+
+*  L   I_TC_arm_braking
+*  O   I_TC_arm_middle_pos
+*  =   MG_TC_braking
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4173_1st_PLC_run_after_compile
+  S      I_TC_arm_brake_pos
+  IFT
+    L      K+0
+    =      BL_cam_position
+  ENDI
+
+  L      MG_pulse_1_s
+  XO     ML_cam_clock
+  =      ML_cam_clock
+
+  L      MG_pulse_1_s
+  A      ML_cam_clock
+  A      O_TC_arm_turn_cw
+  IFT
+    INC    BL_cam_position
+  ENDI
+
+  L      MG_pulse_1_s
+  A      ML_cam_clock
+  A      O_TC_arm_turn_ccw
+  IFT
+    DEC    BL_cam_position
+  ENDI
+
+  L      BL_cam_position
+  >      K+3
+  IFT
+    L      K+0
+    =      BL_cam_position
+  ENDI
+
+  L      BL_cam_position
+  <      K+0
+  IFT
+    L      K+3
+    =      BL_cam_position
+  ENDI
+
+  L      O_TC_arm_turn_cw
+  O      O_TC_arm_turn_ccw
+  A      MG_pulse_1_s
+  A      ML_cam_clock
+  S      I_TC_arm_brake_pos
+
+  L      O_TC_arm_turn_cw
+  O      O_TC_arm_turn_ccw
+  A      MG_pulse_1_s
+  AN     ML_cam_clock
+  R      I_TC_arm_brake_pos
+
+  L      BL_cam_position
+  ==     K+0
+  =      I_TC_arm_basic_pos
+
+  L      BL_cam_position
+  ==     K+1
+  O[
+    L      BL_cam_position
+    ==     K+3
+  ]
+  =      I_TC_arm_spindle_pos
+
+  L      BL_cam_position
+  ==     K+2
+  =      I_TC_arm_middle_pos
+
+  L      O_TC_arm_turn_cw
+  O      O_TC_arm_turn_ccw
+  A      ML_cam_clock
+  R      I_TC_arm_basic_pos
+  R      I_TC_arm_spindle_pos
+  R      I_TC_arm_middle_pos
+
+#endif
+
+  L      BG_step_toolchange
+#if Tool_changing_arm = &Single_arm
+  <      K+22
+#else
+  <      K+25
+#endif
+  IFT
+    L      NP_M4521_TOOL_CALL_T_0_programmed
+    =N     I_tool_pocket_not_empty
+#if Tool_changing_arm > &Single_arm
+    L      WG_tool_in_spindle
+    >      K+0
+#endif
+    =      I_tool_located_in_spindle
+  ELSE
+    L      BG_step_toolchange
+#if Tool_changing_arm = &Single_arm
+    <      K+29
+#else
+    <      K+32
+#endif
+    IFT
+      L      MG_marker_one
+      =      I_tool_pocket_not_empty
+    ELSE
+
+#if Middle_position_exchange = &active
+      LN     NP_M4521_TOOL_CALL_T_0_programmed
+      =      I_tool_pocket_not_empty
+#else
+      L      NP_M4521_TOOL_CALL_T_0_programmed
+      =      I_tool_pocket_not_empty
+#endif
+
+#if Tool_changing_arm > &Single_arm
+      L      WG_TC_auto_new_tool_number
+      >      K+0
+      =      I_tool_located_in_spindle
+#else
+      L      WG_TC_auto_tool_number
+      >      K+0
+      =      I_tool_located_in_spindle
+#endif
+    ENDI
+  ENDI
+
+  L      NP_W256_G_code_spindle
+  >      K+1
+  A      PN_M4134_strobe_G_range_S_speed
+  IFT
+    L      K+1
+    =      NP_W256_G_code_spindle
+  ENDI
+
+#if Spindle_wye_delta_connection = &inactive
+  LN     MG_gear_change_active
+  IFT
+    L      KL_S_jog_time
+    =      BL_gear_swinging
+
+    L      NP_W256_G_code_spindle
+    ==     K+0
+    =      I_gear_range_1
+    =N     I_gear_range_2
+
+  ELSE
+    L      MG_marker_one
+    R      I_gear_range_1
+    R      I_gear_range_2
+
+    L      BL_gear_swinging
+    <      K+0
+    IFT
+      L      NP_W256_G_code_spindle
+      ==     K+0
+      S      I_gear_range_1
+      SN     I_gear_range_2
+    ENDI
+
+    L      MG_pulse_250_ms
+    IFT
+      DEC    BL_gear_swinging
+    ENDI
+  ENDI
+#endif
+
+  LN     MG_3D_head_setup_ok
+  S      MG_3D_head_setup_ok
+
+#endif
+
+EM
+
+;----------------------------
+LBL SPG_simulation_end
+;----------------------------
+
+#ifdef Simulation
+
+#if Spindle_wye_delta_connection = &inactive
+  L      MG_marker_one
+  R      O_gear_range_1
+  R      O_gear_range_2
+#endif
+
+
+  LN     MG_power_delayed_on
+  R      PN_error_tool_not_clamped
+
+  L      MG_key_NC_start
+  A      MG_key_NC_stop
+  S      MG_error_inhibit
+
+  L      MG_error_inhibit
+  R      PN_error_S_actual_equal_nominal_rpm
+
+#if Motor_unit = &inactive
+  L      NP_M4070_strobe_G_code
+  =      O_LED_G_S_strobe
+  IFT
+    PS     NP_W256_G_code_spindle
+    CM     Dec_Hex_conversion
+    PLW
+    B=     O_BCD_display
+  ENDI
+
+  L      NP_M4071_strobe_S_code
+  =      O_LED_G_S_strobe
+  IFT
+    PS     NP_W258_S_code
+    CM     Dec_Hex_conversion
+    PLW
+    B=     O_BCD_display
+  ENDI
+
+  L      NP_M4072_strobe_M_function
+  =      O_LED_M_strobe
+  IFT
+    PS     NP_W260_M_code
+    CM     Dec_Hex_conversion
+    PLW
+    B=     O_BCD_display
+  ENDI
+
+  L      NP_M4073_strobe_TOOL_CALL
+  =      O_LED_TOOL_CALL_strobe
+  IFT
+    PS     NP_W264_tool_number
+    CM     Dec_Hex_conversion
+    PLW
+    B=     O_BCD_display
+  ENDI
+
+  L      MG_T_select_start                                            *;EUMACH standby tool loading/unloading
+  O      MG_TC_magazine_start
+  =      O_LED_TOOL_DEF_strobe
+  IFT
+*    PS     NP_W262_tool_pocket_number
+    PS     WG_TC_magazine_actual_pocket
+    CM     Dec_Hex_conversion
+    PLW
+    B=     O_BCD_display
+  ENDI
+
+EM
+
+LBL Dec_Hex_conversion
+  PLW
+  PSW
+  /      K+10
+  X      K+16
+  +[
+    PLW
+    MOD    K+10
+  ]
+  PSW
+
+#endif
+#endif
+
+EM

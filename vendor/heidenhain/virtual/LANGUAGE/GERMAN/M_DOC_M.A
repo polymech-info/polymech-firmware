@@ -1,0 +1,28 @@
+/* Dokumentation M-Funktionen
+   --------------------------
+*/
+KBD;
+
+CHARSIZE=AUTO;"\n";CHARSIZE=MEDIUM;"M-Funktionen";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"maschinenspezifisch                  \n";CURSOR=OFF;
+TEXTFILE=DOC_M_01.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  ab    ";COLOUR=11;"       (Seite 1 von 3)";
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M-Funktionen";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"maschinenspezifisch                  \n";CURSOR=OFF;
+TEXTFILE=DOC_M_02.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"       (Seite 2 von 3)";
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"M-Funktionen";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"maschinenspezifisch                  \n";CURSOR=OFF;
+TEXTFILE=DOC_M_03.A;
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf   ";COLOUR=11;"       (Seite 3 von 3)";

@@ -1,0 +1,27 @@
+/* PMC Thermal Compensation
+   -----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"PMC THERMAL-COMPENSATION";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+"Compensation        :  %s\n",
+$MG_PMC_T_comp_active$?"active         ":"inactive       "/c;
+CURSOR=OFF;
+
+COLOR= 9;
+"                                   set\n";
+"Compensation active  0/1:          %d\n",$MG_PMC_T_comp_active$/e;
+COLOR=11;
+"\n";
+
+"X-compensation      :   %+7.4F mm\n",
+$PN_W576_lag_error_compensation_X$/n=4/c;
+"Y-compensation      :   %+7.4F mm\n",
+$PN_W578_lag_error_compensation_Y$/n=4/c;
+"Z-compensation      :   %+7.4F mm\n\n",
+$PN_W580_lag_error_compensation_Z$/n=4/c;

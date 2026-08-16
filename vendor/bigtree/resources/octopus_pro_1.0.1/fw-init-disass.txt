@@ -1,0 +1,480 @@
+L_00000000:   call 0x4a
+L_00000003:   and cl, cl
+L_00000005:   add [bx+si], ax
+L_00000007:   or cl, dl
+L_00000009:   add [bx+si], ax
+L_0000000B:   or bl, dl
+L_0000000D:   add [bx+si], ax
+L_0000000F:   or ch, dl
+L_00000011:   add [bx+si], ax
+L_00000013:   or bh, dl
+L_00000015:   add [bx+si], ax
+L_00000017:   or cl, bl
+L_00000019:   add [bx+si], ax
+L_0000001B:   or [bx+si], al
+L_0000001D:   add [bx+si], al
+L_0000001F:   add [bx+si], al
+L_00000021:   add [bx+si], al
+L_00000023:   add [bx+si], al
+L_00000025:   add [bx+si], al
+L_00000027:   add [bx+si], al
+L_00000029:   add [bx+si], al
+L_0000002B:   add bl, bl
+L_0000002D:   add [bx+si], ax
+L_0000002F:   or ch, bl
+L_00000031:   add [bx+si], ax
+L_00000033:   or [bx+si], al
+L_00000035:   add [bx+si], al
+L_00000037:   add bh, bl
+L_00000039:   add [bx+si], ax
+L_0000003B:   or cl, ah
+L_0000003D:   add [bx+si], ax
+L_0000003F:   or bl, ah
+L_00000041:   add [bx+si], ax
+L_00000043:   or bl, ah
+L_00000045:   add [bx+si], ax
+L_00000047:   or bl, ah
+L_00000049:   add [bx+si], ax
+L_0000004B:   or bl, ah
+L_0000004D:   add [bx+si], ax
+L_0000004F:   or bl, ah
+L_00000051:   add [bx+si], ax
+L_00000053:   or bl, ah
+L_00000055:   add [bx+si], ax
+L_00000057:   or bl, ah
+L_00000059:   add [bx+si], ax
+L_0000005B:   or bl, ah
+L_0000005D:   add [bx+si], ax
+L_0000005F:   or bl, ah
+L_00000061:   add [bx+si], ax
+L_00000063:   or bl, ah
+L_00000065:   add [bx+si], ax
+L_00000067:   or bl, ah
+L_00000069:   add [bx+si], ax
+L_0000006B:   or bl, ah
+L_0000006D:   add [bx+si], ax
+L_0000006F:   or bl, ah
+L_00000071:   add [bx+si], ax
+L_00000073:   or bl, ah
+L_00000075:   add [bx+si], ax
+L_00000077:   or bl, ah
+L_00000079:   add [bx+si], ax
+L_0000007B:   or bl, ah
+L_0000007D:   add [bx+si], ax
+L_0000007F:   or bl, ah
+L_00000081:   add [bx+si], ax
+L_00000083:   or bl, ah
+L_00000085:   add [bx+si], ax
+L_00000087:   or bl, ah
+L_00000089:   add [bx+si], ax
+L_0000008B:   or bl, ah
+L_0000008D:   add [bx+si], ax
+L_0000008F:   or bl, ah
+L_00000091:   add [bx+si], ax
+L_00000093:   or bl, ah
+L_00000095:   add [bx+si], ax
+L_00000097:   or bl, ah
+L_00000099:   add [bx+si], ax
+L_0000009B:   or bl, ah
+L_0000009D:   add [bx+si], ax
+L_0000009F:   or bl, ah
+L_000000A1:   add [bx+si], ax
+L_000000A3:   or bl, ah
+L_000000A5:   add [bx+si], ax
+L_000000A7:   or bl, ah
+L_000000A9:   add [bx+si], ax
+L_000000AB:   or bl, ah
+L_000000AD:   add [bx+si], ax
+L_000000AF:   or bl, ah
+L_000000B1:   add [bx+si], ax
+L_000000B3:   or bl, ah
+L_000000B5:   add [bx+si], ax
+L_000000B7:   or bl, ah
+L_000000B9:   add [bx+si], ax
+L_000000BB:   or bl, ah
+L_000000BD:   add [bx+si], ax
+L_000000BF:   or bl, ah
+L_000000C1:   add [bx+si], ax
+L_000000C3:   or bl, ah
+L_000000C5:   add [bx+si], ax
+L_000000C7:   or bl, ah
+L_000000C9:   add [bx+si], ax
+L_000000CB:   or bl, ah
+L_000000CD:   add [bx+si], ax
+L_000000CF:   or bl, ah
+L_000000D1:   add [bx+si], ax
+L_000000D3:   or bl, ah
+L_000000D5:   add [bx+si], ax
+L_000000D7:   or bl, ah
+L_000000D9:   add [bx+si], ax
+L_000000DB:   or [di], bl
+L_000000DD:   sub al, 0x0
+L_000000DF:   or bl, ah
+L_000000E1:   add [bx+si], ax
+L_000000E3:   or bl, ah
+L_000000E5:   add [bx+si], ax
+L_000000E7:   or bl, ah
+L_000000E9:   add [bx+si], ax
+L_000000EB:   or bl, ah
+L_000000ED:   add [bx+si], ax
+L_000000EF:   or bl, ah
+L_000000F1:   add [bx+si], ax
+L_000000F3:   or bl, ah
+L_000000F5:   add [bx+si], ax
+L_000000F7:   or bl, ah
+L_000000F9:   add [bx+si], ax
+L_000000FB:   or bl, ah
+L_000000FD:   add [bx+si], ax
+L_000000FF:   or bl, ah
+L_00000101:   add [bx+si], ax
+L_00000103:   or [bx+di], al
+L_00000105:   sbb [bx+si], ax
+L_00000107:   or bl, ah
+L_00000109:   add [bx+si], ax
+L_0000010B:   or bl, ah
+L_0000010D:   add [bx+si], ax
+L_0000010F:   or bl, ah
+L_00000111:   add [bx+si], ax
+L_00000113:   or bl, ah
+L_00000115:   add [bx+si], ax
+L_00000117:   or bl, ah
+L_00000119:   add [bx+si], ax
+L_0000011B:   or bl, ah
+L_0000011D:   add [bx+si], ax
+L_0000011F:   or bl, ah
+L_00000121:   add [bx+si], ax
+L_00000123:   or bl, ah
+L_00000125:   add [bx+si], ax
+L_00000127:   or bl, ah
+L_00000129:   add [bx+si], ax
+L_0000012B:   or [bx+di+0x2], bl
+L_0000012E:   add [bx+si], cl
+L_00000130:   jcxz 0x133
+L_00000132:   add [bx+si], cl
+L_00000134:   jcxz 0x137
+L_00000136:   add [bx+si], cl
+L_00000138:   jcxz 0x13b
+L_0000013A:   add [bx+si], cl
+L_0000013C:   jcxz 0x13f
+L_0000013E:   add [bx+si], cl
+L_00000140:   jcxz 0x143
+L_00000142:   add [bx+si], cl
+L_00000144:   jcxz 0x147
+L_00000146:   add [bx+si], cl
+L_00000148:   jcxz 0x14b
+L_0000014A:   add [bx+si], cl
+L_0000014C:   jcxz 0x14f
+L_0000014E:   add [bx+si], cl
+L_00000150:   jcxz 0x153
+L_00000152:   add [bx+si], cl
+L_00000154:   imul ax, [bp+si], 0x800
+L_00000158:   jcxz 0x15b
+L_0000015A:   add [bx+si], cl
+L_0000015C:   jcxz 0x15f
+L_0000015E:   add [bx+si], cl
+L_00000160:   jcxz 0x163
+L_00000162:   add [bx+si], cl
+L_00000164:   jcxz 0x167
+L_00000166:   add [bx+si], cl
+L_00000168:   jcxz 0x16b
+L_0000016A:   add [bx+si], cl
+L_0000016C:   jcxz 0x16f
+L_0000016E:   add [bx+si], cl
+L_00000170:   jcxz 0x173
+L_00000172:   add [bx+si], cl
+L_00000174:   jcxz 0x177
+L_00000176:   add [bx+si], cl
+L_00000178:   jcxz 0x17b
+L_0000017A:   add [bx+si], cl
+L_0000017C:   add [bx+si], al
+L_0000017E:   add [bx+si], al
+L_00000180:   jcxz 0x183
+L_00000182:   add [bx+si], cl
+L_00000184:   jcxz 0x187
+L_00000186:   add [bx+si], cl
+L_00000188:   jcxz 0x18b
+L_0000018A:   add [bx+si], cl
+L_0000018C:   jcxz 0x18f
+L_0000018E:   add [bx+si], cl
+L_00000190:   jcxz 0x193
+L_00000192:   add [bx+si], cl
+L_00000194:   jcxz 0x197
+L_00000196:   add [bx+si], cl
+L_00000198:   jcxz 0x19b
+L_0000019A:   add [bx+si], cl
+L_0000019C:   jcxz 0x19f
+L_0000019E:   add [bx+si], cl
+L_000001A0:   jcxz 0x1a3
+L_000001A2:   add [bx+si], cl
+L_000001A4:   jcxz 0x1a7
+L_000001A6:   add [bx+si], cl
+L_000001A8:   jcxz 0x1ab
+L_000001AA:   add [bx+si], cl
+L_000001AC:   db 0xdf 
+L_000001AD:   clc 
+L_000001AE:   or al, 0xd0
+L_000001B0:   add al, dh
+L_000001B2:   inc ax
+L_000001B3:   clc 
+L_000001B4:   add [bx+si+0x0], cl
+L_000001B7:   inc di
+L_000001B8:   mov cx, 0x42
+L_000001BB:   or al, ch
+L_000001BD:   inc di
+L_000001BE:   add [bx+si], ah
+L_000001C0:   xor bl, 0x8
+L_000001C3:   mov [bx+si+0x47], dh
+L_000001C6:   add [bx+si], al
+L_000001C8:   push es
+L_000001C9:   dec ax
+L_000001CA:   add byte [bx+0x6], 0x48
+L_000001CE:   add [bx-0x2], al
+L_000001D1:   out 0xfe, ax
+L_000001D3:   out 0xfe, ax
+L_000001D5:   out 0xfe, ax
+L_000001D7:   out 0xfe, ax
+L_000001D9:   out 0xfe, ax
+L_000001DB:   out 0xfe, ax
+L_000001DD:   out 0xfe, ax
+L_000001DF:   out 0xfe, ax
+L_000001E1:   out 0xfe, ax
+L_000001E3:   out 0x89, ax
+L_000001E5:   sub al, [bx+si]
+L_000001E7:   or [di+0x1], ch
+L_000001EB:   or [bx+si-0x16], al
+L_000001EE:   add [bp+di], ax
+L_000001F0:   wait 
+L_000001F1:   pop es
+L_000001F2:   add dx, ax
+L_000001F4:   or ax, sp
+L_000001F6:   or cl, cl
+L_000001F8:   adc bl, [bx]
+L_000001FA:   or al, al
+L_000001FC:   add al, 0x2a
+L_000001FE:   cli 
+L_000001FF:   rol byte [bp+di], cl
+L_00000201:   loopnz 0x214
+L_00000203:   clc 
+L_00000204:   add [bp+di], di
+L_00000206:   add al, bh
+L_00000208:   add [bp+di], di
+L_0000020A:   push dx
+L_0000020B:   push ds
+L_0000020C:   stc 
+L_0000020D:   sal byte [bx+si+0x47], cl
+L_00000210:   sal byte [bp+si-0x1fff], cl
+L_00000214:   add al, bh
+L_00000216:   add [bp+di], bp
+L_00000218:   dec cx
+L_00000219:   push ds
+L_0000021A:   sti 
+L_0000021B:   sal byte [bx+si+0x47], cl
+L_0000021E:   add [bp+si], ah
+L_00000220:   mul bh
+L_00000222:   adc [di+0x4613], dh
+L_00000226:   or al, [bp+0x4]
+L_00000229:   inc si
+L_0000022A:   sbb [bp-0x1], ax
+L_0000022D:   div ax
+L_0000022F:   jmp [bx+si]
+L_00000231:   inc si
+L_00000232:   adc [di+0x4c06], bh
+L_00000236:   pop es
+L_00000237:   dec bp
+L_00000238:   push es
+L_00000239:   loopnz 0x21b
+L_0000023B:   push 0xf040
+L_0000023E:   add [bp+di], ax
+L_00000240:   xchg sp, ax
+L_00000241:   call 0x24b
+L_00000244:   cbw 
+L_00000245:   inc di
+L_00000246:   adc [si], dh
+L_00000248:   lodsb 
+L_00000249:   inc dx
+L_0000024A:   not bl
+L_0000024C:   push di
+L_0000024E:   mov dl, 0xff
+L_00000250:   sal byte [bx+si+0x0], 0x8
+L_00000254:   loopnz 0x2c6
+L_00000256:   add [bx+si], cl
+L_00000258:   adc [di+0x4802], dh
+L_0000025C:   add al, dh
+L_0000025E:   in al, 0xfa
+L_00000260:   adc [di+0x0], bh
+L_00000264:   aam 0x0
+L_00000266:   add [bx+si], ah
+L_00000268:   adc [di+0x4802], dh
+L_0000026C:   add al, dh
+L_0000026E:   fdiv st(2), st
+L_00000270:   adc [di+0x0], bh
+L_00000274:   xor al, 0x1
+L_00000276:   add [bx+si], ah
+L_00000278:   add [bp+0x8], ax
+L_0000027B:   js 0x28d
+L_0000027D:   cmp [bx+si], bl
+L_0000027F:   and si, [bx+si-0xc05]
+L_00000283:   db 0xf2 
+L_00000284:   or [bx+si-0x80], cl
+L_00000287:   pop sp
+L_00000288:   enter 0x365, 0x2a
+L_0000028C:   add ax, 0x8d9
+L_0000028F:   push 0xf36f
+L_00000292:   or [bx+si], ax
+L_00000294:   add [di], bl
+L_00000296:   mov [di+0x3], ah
+L_00000299:   loopnz 0x2a3
+L_0000029B:   push 0xf36f
+L_0000029E:   or [bx+si], ax
+L_000002A0:   mov [di-0x78], ah
+L_000002A3:   insw 
+L_000002A4:   jo 0x2ed
+L_000002A6:   add [bx+si], al
+L_000002A8:   inc sp
+L_000002A9:   dec bp
+L_000002AA:   add [bx+si], cl
+L_000002AC:   add [bp+0x0], ax
+L_000002AF:   and [bp+si-0x7496], cl
+L_000002B3:   imul cx, bx, 0x32b9
+L_000002B7:   mov cl, 0x1
+L_000002B9:   sub cl, [di]
+L_000002BB:   rol byte [bp+si], 0x1
+L_000002BD:   sub al, [bp+di]
+L_000002BF:   rol byte [bp+di], 0x1
+L_000002C1:   sub dl, [bx+si]
+L_000002C3:   ror word [0xe0], 0x1
+L_000002C7:   mov di, 0x6acb
+L_000002CA:   add si, ax
+L_000002CC:   xor byte [bp+di-0x4d], 0xf1
+L_000002D0:   cmp byte [bx+0x0], 0xd1
+L_000002D4:   add [bx+si], sp
+L_000002D6:   pop es
+L_000002D7:   loopnz 0x2a4
+L_000002D9:   push -0x4d
+L_000002DB:   int1 
+L_000002DC:   sar byte [bx+0x0], 0xd1
+L_000002E0:   add [bx+si], sp
+L_000002E2:   add ax, sp
+L_000002E4:   add al, ah
+L_000002E6:   add [bx-0x1fcc], bh
+L_000002EA:   mov bp, [bx+di-0x4d]
+L_000002ED:   cmc 
+L_000002EE:   add [bx+0x1a], bl
+L_000002F1:   sal word [bp+si], 0x1
+L_000002F3:   mov cl, 0x1
+L_000002F5:   sub al, [bx]
+L_000002F7:   rol byte [bp+si], 0x1
+L_000002F9:   sub al, [bp+di]
+L_000002FB:   rol byte [bp+di], 0x1
+L_000002FD:   sub dl, [bx+di]
+L_000002FF:   ror word [bp+si], 0x1
+L_00000301:   loopnz 0x303
+L_00000303:   mov di, 0x2001
+L_00000306:   push cs
+L_00000307:   loopnz 0x2d4
+L_00000309:   push 0x3
+L_0000030B:   lock xor byte [bp+di-0x4d], 0xf1
+L_00000310:   cmp byte [bx+0x0], 0xd1
+L_00000314:   add [bx+si], sp
+L_00000316:   push es
+L_00000317:   loopnz 0x2e4
+L_00000319:   push -0x4d
+L_0000031B:   int1 
+L_0000031C:   sar byte [bx+0x0], 0xd1
+L_00000320:   add [bx+si], sp
+L_00000322:   add al, ah
+L_00000324:   add [bx-0x1feb], bh
+L_00000328:   xor dh, [bx+di+0x2a01]
+L_0000032C:   add ax, 0x2d0
+L_0000032F:   sub al, [si]
+L_00000331:   rol byte [bp+di], 0x1
+L_00000333:   sub cl, [si]
+L_00000335:   rol word [bp+di], 0x1
+L_00000337:   loopnz 0x339
+L_00000339:   mov di, 0xbf00
+L_0000033C:   add [bx+si], sp
+L_0000033E:   or al, ah
+L_00000340:   retf 
+L_00000341:   push 0x3
+L_00000343:   lock xor byte [bp+di-0x4d], 0xf1
+L_00000348:   cmp byte [bx+0x0], 0xd1
+L_0000034C:   add [bx+si], sp
+L_0000034E:   add al, ah
+L_00000350:   add [bx-0x4100], bh
+L_00000354:   jo 0x39d
+L_00000356:   xor [di+0x6804], dh
+L_0000035A:   and al, 0x68
+L_0000035C:   and al, 0xf4
+L_0000035E:   and byte [si], 0x5
+L_00000361:   push 0x602c
+L_00000364:   add al, 0x68
+L_00000366:   arpl [bx+si-0x7c], sp
+L_00000369:   push 0x2c40
+L_0000036C:   add al, 0xd1
+L_0000036E:   add al, 0x68
+L_00000370:   mov [0x460], al
+L_00000373:   push 0x60e1
+L_00000376:   add sp, ax
+L_00000378:   add al, 0x68
+L_0000037A:   mov ax, [0x460]
+L_0000037D:   push 0x60e2
+L_00000380:   xor [di+0x0], bh
+L_00000384:   dec di
+L_00000385:   db 0xf0 
+L_00000386:   loopnz 0x3a9
+L_00000388:   or [bx+di+0x21], bp
+L_0000038B:   db 0xf0 
+L_0000038C:   add al, 0x1
+L_0000038E:   dec di
+L_0000038F:   db 0xf0 
+L_00000390:   loopnz 0x3b4
+L_00000392:   adc [bx+di+0x1], sp
+L_00000395:   inc si
+L_00000396:   ret 0x17
+L_00000399:   jmp 0x3ed
+L_0000039B:   jb 0x35f
+L_0000039D:   db 0xf3 
+L_0000039E:   mov word [bp+si], 0x4b01
+L_000003A2:   sbb dh, [bx+si+0x70]
+L_000003A5:   inc di
+L_000003A6:   add [bx+si], al
+L_000003A8:   sbb [bx+si], al
+L_000003AA:   add [bx+si], ah
+L_000003AC:   xor [di+0x4604], dh
+L_000003B0:   add [di], ah
+L_000003B2:   add ax, 0x4fe0
+L_000003B5:   hlt 
+L_000003B6:   jp 0x428
+L_000003B8:   add al, dh
+L_000003BA:   push es
+L_000003BB:   clc 
+L_000003BC:   push 0x851c
+L_000003BF:   mov dl, 0xa5
+L_000003C1:   inc dx
+L_000003C2:   neg bx
+L_000003C4:   xor [di+0x0], bh
+L_000003C8:   add [bp+0xd], ax
+L_000003CB:   dec dx
+L_000003CC:   adc bh, [bx+si+0x4a]
+L_000003CF:   inc bx
+L_000003D0:   dec di
+L_000003D1:   db 0xf0 
+L_000003D2:   loopnz 0x3f7
+L_000003D4:   pop dx
+L_000003D5:   popa 
+L_000003D6:   add [bp+si], ah
+L_000003D8:   call far 0x1a22:0x161
+L_000003DD:   popa 
+L_000003DE:   add [bx-0xfb1], bh
+L_000003E2:   loopnz 0x406
+L_000003E4:   adc [bx+di+0x0], ch
+L_000003E7:   lock add [bp+si], ax
+L_000003EA:   sbb dh, [bx+di-0xc00]
+L_000003EE:   xor byte [bp+si], 0x0
+L_000003F1:   sub dh, ch
+L_000003F3:   rol byte [bx+si], 0x1
+L_000003F5:   and cl, [bx-0x10]
+L_000003F8:   loopnz 0x41d
+L_000003FA:   sbb ah, [bx+di-0x66]
+L_000003FD:   popa 
+L_000003FE:   jo 0x447

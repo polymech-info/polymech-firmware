@@ -1,0 +1,86 @@
+BEGIN S_PROBE_x.TAB 
+#STRUCTBEGIN
+   NAME = S_V3C
+     TYPE = C
+     WIDTH = 34
+     DEC = 0
+     DIA-ENGLISH = Parameter ?
+     DIA-GERMAN = Parameter ?
+     DIA-CZECH = Parameter ?
+     DIA-FRENCH = Parameter ?
+     DIA-ITALIAN = Parameter ?
+     DIA-SPANISH = Parameter ?
+     DIA-PORTUGUE = Parameter ?
+     DIA-SWEDISH = Parameter ?
+     DIA-DANISH = Parameter ?
+     DIA-FINNISH = Parameter ?
+     DIA-DUTCH = Parameter ?
+     DIA-POLISH = Parameter ?
+     DIA-HUNGARIA = Parameter ?
+   NAME = Value
+     TYPE = N
+     WIDTH = 14
+     DEC = 6
+     DIA-ENGLISH = Parameter Value ?
+     DIA-GERMAN = Parameter Wert ?
+     DIA-CZECH = Parameter Value ?
+     DIA-FRENCH = Parameter Value ?
+     DIA-ITALIAN = Parameter Value ?
+     DIA-SPANISH = Parameter Value ??
+     DIA-PORTUGUE = Parameter Value ?
+     DIA-SWEDISH = Parameter Value ?
+     DIA-DANISH = Parameter Value ?
+     DIA-FINNISH = Parameter Value ?
+     DIA-DUTCH = Parameter Value ?
+     DIA-POLISH = Parameter Value ?
+     DIA-HUNGARIA = Parameter Value ?
+   NAME = Comment
+     TYPE = C
+     WIDTH = 60
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = COMMENTAIRE ?
+     DIA-ITALIAN = COMMENTO ?
+     DIA-SPANISH = COMENTARIO ?
+     DIA-PORTUGUE = COMENTARIO ?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = COMMENTAAR ?
+     DIA-POLISH = KOMENTARZ ?
+     DIA-HUNGARIA = MEGJEGYZES ?
+#STRUCTEND
+NR      S_V3C                              Value          Comment
+0       Blum Software Version              +3.03          Example: V3A=3.01, V3B=3.02, V3C=3.03                      . 
+1       Marker address table selection     +0             0=S_PROBE_0.TAB />1000=Mxx for S_PROBE_x.TAB selection     . 
+2       Error number offset                +30            1st ErrorTextLine+offs: +300 in ERROR.A/ +0 in FN14_ERROR.A. 
+3       Non-operating state IF59           +0             -1=inactive/ 0=Standby/ 1=S-PROBE (TC)/ 2=Z-PROBE (DUO)    . 
+4       reserved                           +0             reserved                                                   . 
+5       reserved                           +0             reserved                                                   . 
+6       reserved                           +0             reserved                                                   . 
+7       reserved                           +0             reserved                                                   . 
+8       reserved                           +0             reserved                                                   . 
+9       reserved                           +0             reserved                                                   . 
+10      Connection and Activation S-PROBE  -1             -1=inactive/ 0=auto/cable/ 1=IR-X12/ 2=IR-X13(or X112/X113). 
+11      Mode to enable  S-PROBE (TC)       +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+12      Mode to disable S-PROBE (TC)       +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+13      Mode to switch on  S-PROBE (TC)    +0             -1000=RS232.H/-nn=MCODE.H/0=auto/1=X12.4/+nn=Mnn/>1000=Mxx . 
+14      Mode to switch off S-PROBE (TC)    +0             -1000=RS232.H/-nn=MCODE.H/0=auto/1=X12.4/+nn=Mnn/>1000=Mxx . 
+15      Spindle orientation angle [°]      +0             Tool orientation: -1=inactive/ 0-360=spindle angle in [°]  . 
+16      Function spindle orientation       -1             Spindle orientation via: -1=NC/ 0=inactive/ +nn=Mnn M-Code . 
+17      reserved                           +0             reserved                                                   . 
+18      reserved                           +0             reserved                                                   . 
+19      reserved                           +0             reserved                                                   . 
+20      Connection and Activation Z-PROBE  +0             -1=inactive/ 0=auto/cable/ 1=IR-X12/ 2=IR-X13(or X112/X113). 
+21      Mode to enable  Z-PROBE (DUO)      +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+22      Mode to disable Z-PROBE (DUO)      +0             -1000=RS232.H/-nn=MCODE.H/0=auto/+nn=Mnn in CYC/>1000=Mxx  . 
+23      Mode to switch on  Z-PROBE (DUO)   +0             -1000=RS232.H/-nn=MCODE.H/0=auto/1=X12.4/+nn=Mnn/>1000=Mxx . 
+24      Mode to switch off Z-PROBE (DUO)   +0             -1000=RS232.H/-nn=MCODE.H/0=auto/1=X12.4/+nn=Mnn/>1000=Mxx . 
+25      Mode tool cleaning function on     +0             -nn=Mnn in MCODE.H/0=off/+nn=Mnn in CYC/>1000=Mxx marker   . 
+26      Dwell time [s] tool cleaning on    +0             Waiting time tool cleaning on  (>=0s)                      . 
+27      Mode tool cleaning function off    +0             -nn=Mnn in MCODE.H/0=off/+nn=Mnn in CYC/>1000=Mxx marker   . 
+28      Dwell time [s] tool cleaning off   +0             Waiting time tool cleaning off (>=0s)                      . 
+29      reserved                           +0             reserved                                                   . 
+[END]

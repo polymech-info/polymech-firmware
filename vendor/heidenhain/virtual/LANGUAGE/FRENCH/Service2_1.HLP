@@ -1,0 +1,31 @@
+﻿************************************
+!!! Attention !!!
+réservé aux utilisateurs habilités
+Changeur d'outil Service
+(bras double)
+! Mode Manuel actif !
+Activation: Touche "Start CN"
+************************************
+#201  S à position changement outil
+#202  Z à position changement outil
+#203  Y à position changement outil
+#204  X à position changement outil
+#205 Ouvrir verrou outil
+#206 Fermer verrou outil
+#207  Ouvrir pinces outil broche
+#208  Fermer pinces outil broche
+#209  Ouvrir pinces outil magasin
+#210  Fermer pinces outil magasin
+#211  Desserrer l'outil
+#212  Serrer l'outil
+#213  Bras outil vers broche
+#214  Bras outil vers magasin
+#215  Bras outil vers position de base
+#216  Relever le bras
+#217  Installer le bras
+#218  Tourner bras cw (à droite)
+#219  Tourner bras ccw (à gauche)
+#220  Tourner magasin cw (à droite)
+#221  Tourner magasin ccw (à gauche)
+#222  Référence magasin
+#223  Effacer outil broche (T0)

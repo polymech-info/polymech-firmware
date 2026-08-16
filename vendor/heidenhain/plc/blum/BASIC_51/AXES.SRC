@@ -1,0 +1,2943 @@
+*-----------------------------------------------------------------------------
+*  Axes Control
+*-----------------------------------------------------------------------------
+*  Module Description
+*  - Clamping mode
+*     The clamping mode can be (de)activated with M11/M10 or FN19. In FN19
+*     you can define on which axes the M-functions have an effect. The first
+*     numerical value is the identifier; its value has to be +99991 if the
+*     clamping mode is inactive, and +99990 for an active clamping mode.
+*     The second numerical value serves to transfer the axes in bit-encoded
+*     form. This value is non-volatile and is maintained until FN19 is output
+*     again.
+*     e.g.:
+*     FN 19: PLC =+99991 / +24 -> Clamping mode in axes 4 and 5 inactive
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_distance_to_go                        K+4
+#define /s    KL_handwheel_axis                        K+10
+#define /s    KL_handwheel_axis_M118                   K+23
+#define /s    KL_actual_value_fixed                    K+0
+#define /s    KL_actual_value_released                 K+1
+#define /s    KL_inactive                              K-1
+#define /s    KL_runtime_from_MP                       K-1
+#define /s    KL_servo_drive_release_axis_coded        K+2			  *;EUMACH BASIC 53
+#define /s    KL_servo_drive_release_input_level       K+3			  *;EUMACH BASIC 53
+#define /s    KL_mode_nominal_value_as_actual          K+0			  *;EUMACH BASIC 53
+#define /s    KL_nominal_position                      K+1            *;EUMACH
+#define /s    KL_torque_limitation                     K-1            *;EUMACH
+
+#define /s    ML_servo_drives_releases                 M[16]
+#define /c    ML_X_servo_drive_release                 M &ML_servo_drives_releases + 0
+#define /c    ML_Y_servo_drive_release                 M &ML_servo_drives_releases + 1
+#define /c    ML_Z_servo_drive_release                 M &ML_servo_drives_releases + 2
+#define /c    ML_4_servo_drive_release                 M &ML_servo_drives_releases + 3
+#define /c    ML_5_servo_drive_release                 M &ML_servo_drives_releases + 4
+#define /c    ML_6_servo_drive_release                 M &ML_servo_drives_releases + 5
+#define /c    ML_7_servo_drive_release                 M &ML_servo_drives_releases + 6
+#define /c    ML_8_servo_drive_release                 M &ML_servo_drives_releases + 7
+#define /c    ML_9_servo_drive_release                 M &ML_servo_drives_releases + 8
+#define /c    ML_10_servo_drive_release                M &ML_servo_drives_releases + 9
+#define /c    ML_11_servo_drive_release                M &ML_servo_drives_releases + 10
+#define /c    ML_12_servo_drive_release                M &ML_servo_drives_releases + 11
+#define /c    ML_13_servo_drive_release                M &ML_servo_drives_releases + 12
+#define /c    ML_14_servo_drive_release                M &ML_servo_drives_releases + 13
+#define /c    ML_15_servo_drive_release                M &ML_servo_drives_releases + 14
+#define /c    ML_16_servo_drive_release                M &ML_servo_drives_releases + 15
+
+#define /s    ML_unclamping                            M[16]
+#define /c    ML_unclamping_X                          M &ML_unclamping + 0
+#define /c    ML_unclamping_Y                          M &ML_unclamping + 1
+#define /c    ML_unclamping_Z                          M &ML_unclamping + 2
+#define /c    ML_unclamping_4                          M &ML_unclamping + 3
+#define /c    ML_unclamping_5                          M &ML_unclamping + 4
+#define /c    ML_unclamping_6                          M &ML_unclamping + 5
+#define /c    ML_unclamping_7                          M &ML_unclamping + 6
+#define /c    ML_unclamping_8                          M &ML_unclamping + 7
+#define /c    ML_unclamping_9                          M &ML_unclamping + 8
+#define /c    ML_unclamping_10                         M &ML_unclamping + 9
+#define /c    ML_unclamping_11                         M &ML_unclamping + 10
+#define /c    ML_unclamping_12                         M &ML_unclamping + 11
+#define /c    ML_unclamping_13                         M &ML_unclamping + 12
+#define /c    ML_unclamping_14                         M &ML_unclamping + 13
+#define /c    ML_unclamping_15                         M &ML_unclamping + 14
+#define /c    ML_unclamping_16                         M &ML_unclamping + 15
+
+#define /s    ML_clamped_axes                          M[16]
+#define /c    ML_clamped_axis_X                        M &ML_clamped_axes + 0
+#define /c    ML_clamped_axis_Y                        M &ML_clamped_axes + 1
+#define /c    ML_clamped_axis_Z                        M &ML_clamped_axes + 2
+#define /c    ML_clamped_axis_4                        M &ML_clamped_axes + 3
+#define /c    ML_clamped_axis_5                        M &ML_clamped_axes + 4
+#define /c    ML_clamped_axis_6                        M &ML_clamped_axes + 5
+#define /c    ML_clamped_axis_7                        M &ML_clamped_axes + 6
+#define /c    ML_clamped_axis_8                        M &ML_clamped_axes + 7
+#define /c    ML_clamped_axis_9                        M &ML_clamped_axes + 8
+#define /c    ML_clamped_axis_10                       M &ML_clamped_axes + 9
+#define /c    ML_clamped_axis_11                       M &ML_clamped_axes + 10
+#define /c    ML_clamped_axis_12                       M &ML_clamped_axes + 11
+#define /c    ML_clamped_axis_13                       M &ML_clamped_axes + 12
+#define /c    ML_clamped_axis_14                       M &ML_clamped_axes + 13
+#define /c    ML_clamped_axis_15                       M &ML_clamped_axes + 14
+#define /c    ML_clamped_axis_16                       M &ML_clamped_axes + 15
+
+#define /s    ML_unclamped_axes                        M[16]
+#define /c    ML_unclamped_axis_X                      M &ML_unclamped_axes + 0
+#define /c    ML_unclamped_axis_Y                      M &ML_unclamped_axes + 1
+#define /c    ML_unclamped_axis_Z                      M &ML_unclamped_axes + 2
+#define /c    ML_unclamped_axis_4                      M &ML_unclamped_axes + 3
+#define /c    ML_unclamped_axis_5                      M &ML_unclamped_axes + 4
+#define /c    ML_unclamped_axis_6                      M &ML_unclamped_axes + 5
+#define /c    ML_unclamped_axis_7                      M &ML_unclamped_axes + 6
+#define /c    ML_unclamped_axis_8                      M &ML_unclamped_axes + 7
+#define /c    ML_unclamped_axis_9                      M &ML_unclamped_axes + 8
+#define /c    ML_unclamped_axis_10                     M &ML_unclamped_axes + 9
+#define /c    ML_unclamped_axis_11                     M &ML_unclamped_axes + 10
+#define /c    ML_unclamped_axis_12                     M &ML_unclamped_axes + 11
+#define /c    ML_unclamped_axis_13                     M &ML_unclamped_axes + 12
+#define /c    ML_unclamped_axis_14                     M &ML_unclamped_axes + 13
+#define /c    ML_unclamped_axis_15                     M &ML_unclamped_axes + 14
+#define /c    ML_unclamped_axis_16                     M &ML_unclamped_axes + 15
+
+#define /s    ML_clamping_mode_on                      M[16]
+#define /c    ML_clamping_mode_on_X                    M &ML_clamping_mode_on + 0
+#define /c    ML_clamping_mode_on_Y                    M &ML_clamping_mode_on + 1
+#define /c    ML_clamping_mode_on_Z                    M &ML_clamping_mode_on + 2
+#define /c    ML_clamping_mode_on_4                    M &ML_clamping_mode_on + 3
+#define /c    ML_clamping_mode_on_5                    M &ML_clamping_mode_on + 4
+#define /c    ML_clamping_mode_on_6                    M &ML_clamping_mode_on + 5
+#define /c    ML_clamping_mode_on_7                    M &ML_clamping_mode_on + 6
+#define /c    ML_clamping_mode_on_8                    M &ML_clamping_mode_on + 7
+#define /c    ML_clamping_mode_on_9                    M &ML_clamping_mode_on + 8
+#define /c    ML_clamping_mode_on_10                   M &ML_clamping_mode_on + 9
+#define /c    ML_clamping_mode_on_11                   M &ML_clamping_mode_on + 10
+#define /c    ML_clamping_mode_on_12                   M &ML_clamping_mode_on + 11
+#define /c    ML_clamping_mode_on_13                   M &ML_clamping_mode_on + 12
+#define /c    ML_clamping_mode_on_14                   M &ML_clamping_mode_on + 13
+#define /c    ML_clamping_mode_on_15                   M &ML_clamping_mode_on + 14
+#define /c    ML_clamping_mode_on_16                   M &ML_clamping_mode_on + 15
+
+#define /s    ML_clamping_mode_off                     M[16]
+#define /c    ML_clamping_mode_off_X                   M &ML_clamping_mode_off + 0
+#define /c    ML_clamping_mode_off_Y                   M &ML_clamping_mode_off + 1
+#define /c    ML_clamping_mode_off_Z                   M &ML_clamping_mode_off + 2
+#define /c    ML_clamping_mode_off_4                   M &ML_clamping_mode_off + 3
+#define /c    ML_clamping_mode_off_5                   M &ML_clamping_mode_off + 4
+#define /c    ML_clamping_mode_off_6                   M &ML_clamping_mode_off + 5
+#define /c    ML_clamping_mode_off_7                   M &ML_clamping_mode_off + 6
+#define /c    ML_clamping_mode_off_8                   M &ML_clamping_mode_off + 7
+#define /c    ML_clamping_mode_off_9                   M &ML_clamping_mode_off + 8
+#define /c    ML_clamping_mode_off_10                  M &ML_clamping_mode_off + 9
+#define /c    ML_clamping_mode_off_11                  M &ML_clamping_mode_off + 10
+#define /c    ML_clamping_mode_off_12                  M &ML_clamping_mode_off + 11
+#define /c    ML_clamping_mode_off_13                  M &ML_clamping_mode_off + 12
+#define /c    ML_clamping_mode_off_14                  M &ML_clamping_mode_off + 13
+#define /c    ML_clamping_mode_off_15                  M &ML_clamping_mode_off + 14
+#define /c    ML_clamping_mode_off_16                  M &ML_clamping_mode_off + 15
+
+#define /s    ML_standstill_from_CCU                   M[16]
+#define /c    ML_X_standstill_from_CCU                 M &ML_standstill_from_CCU + 0
+#define /c    ML_Y_standstill_from_CCU                 M &ML_standstill_from_CCU + 1
+#define /c    ML_Z_standstill_from_CCU                 M &ML_standstill_from_CCU + 2
+#define /c    ML_4_standstill_from_CCU                 M &ML_standstill_from_CCU + 3
+#define /c    ML_5_standstill_from_CCU                 M &ML_standstill_from_CCU + 4
+#define /c    ML_6_standstill_from_CCU                 M &ML_standstill_from_CCU + 5
+#define /c    ML_7_standstill_from_CCU                 M &ML_standstill_from_CCU + 6
+#define /c    ML_8_standstill_from_CCU                 M &ML_standstill_from_CCU + 7
+#define /c    ML_9_standstill_from_CCU                 M &ML_standstill_from_CCU + 8
+#define /c    ML_10_standstill_from_CCU                M &ML_standstill_from_CCU + 9
+#define /c    ML_11_standstill_from_CCU                M &ML_standstill_from_CCU + 10
+#define /c    ML_12_standstill_from_CCU                M &ML_standstill_from_CCU + 11
+#define /c    ML_13_standstill_from_CCU                M &ML_standstill_from_CCU + 12
+#define /c    ML_14_standstill_from_CCU                M &ML_standstill_from_CCU + 13
+#define /c    ML_15_standstill_from_CCU                M &ML_standstill_from_CCU + 14
+#define /c    ML_16_standstill_from_CCU                M &ML_standstill_from_CCU + 15
+
+#define /s    ML_last_4_standstill_from_CCU            M              *;EUMACH
+#define /s    ML_last_5_standstill_from_CCU            M              *;EUMACH
+#define /s    ML_last_6_standstill_from_CCU            M              *;EUMACH
+
+#define /s    ML_axes_motion_from_end_position         M
+#define /s    ML_auxiliary_marker_clamping_mode        M
+#define /s    ML_S_nominal_off_status_inverse          M
+#define /s    ML_central_drive_mode_active             M
+#define /s    ML_central_drive_operational             M
+#define /s    ML_commissioning_current_control         M
+#define /s    ML_FN19_clamping_axes                    M
+#define /s    ML_FN19_unclamping_axes                  M
+#define /s    ML_I_servo_drive_release_1_scan_delay    M              *;EUMACH
+
+#define /s    ML_servo_drive_1_test                    M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_1_has_been_off            M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_2_test                    M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_2_has_been_off            M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_3_test                    M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_3_has_been_off            M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_4_test                    M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_4_has_been_off            M			  *;EUMACH BASIC 53
+#define /s    ML_actual_nominal_transfer               M			  *;EUMACH BASIC 53
+#define /s    ML_actual_nominal_trans_has_been_active  M			  *;EUMACH BASIC 53
+#define /s    ML_servo_drive_release_1_has_been_off    M              *;EUMACH
+#define /s    ML_servo_drive_release_2_has_been_off    M              *;EUMACH
+#define /s    ML_servo_drive_release_3_has_been_off    M              *;EUMACH
+#define /s    ML_servo_drive_release_4_has_been_off    M              *;EUMACH
+#define /s    ML_without_torque_limitation             M              *;EUMACH
+
+#define /s    BL_servo_drive_release_input_level       B              *;EUMACH BASIC 53
+
+#define /s    WL_current_speed_loop                    W
+#define /s    WL_clamping_mode_on                      W
+#define /s    WL_axes_in_C_axis_mode                   W
+#define /s    WL_initialization                        W
+#define /s    WL_standstill_CCU                        W
+#define /s    WL_axes_actual_value_released            W
+
+#define /s    WL_axes_actual_value_fixed               W
+
+#define /s /r WL_axes_selection_clamping_mode          W
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL NC_Axes
+
+;----------------------------
+LBL NC_Axes
+;----------------------------
+
+  CM     Motion_from_end_position
+
+  L      NP_M4072_strobe_M_function
+  O      NP_M4075_strobe_transfer_FN19
+  O      ML_auxiliary_marker_clamping_mode
+  CMT    Clamping_mode
+
+  L      K+0
+  =X
+
+  REPEAT
+    L      WG_controlled_axes
+    BTX
+    IFT
+      CASE   BG_step_axes[X]
+        CM     Initial                 ;00
+        CM     In_position             ;01
+        CM     Current_speed_on        ;02
+        CM     Unclamping              ;03
+        CM     Close_pos_loop          ;04
+        CM     Positioning             ;05
+        CM     Clamping                ;06
+        CM     Open_pos_loop           ;07
+        CM     Current_speed_off       ;08
+        CM     Step_end                ;09
+      ENDC
+
+      PLL
+      IFT
+        INC    BG_step_axes[X]
+      ENDI
+
+      CM     Timer_unclamping
+      CM     Timer_clamping
+      CM     Timer_timeout_function
+      CM     Timer_wait
+
+      LN     WG_release_axes_X150_X151
+      A      WG_drives_digital                                        *;EUMACH BASIC 53
+      BTX
+      A      MG_servo_drive_release_axis_groups_X150_active
+*;EUMACH Thermal relay
+      O[
+        LX
+        BT     KG_axis_4
+        AN     I_IV_thermal_sensor_temperature_ok
+        A      PN_error_thermal_sensor_temperature
+      ]
+      O[
+        LX
+        BT     KG_axis_5
+        AN     I_V_thermal_sensor_temperature_ok
+        A      PN_error_thermal_sensor_temperature
+      ]
+      O[
+        LX
+        BT     KG_axis_6
+        AN     I_VI_thermal_sensor_temperature_ok
+        A      PN_error_thermal_sensor_temperature
+      ]
+*;EUMACH Thermal relay
+      IFT
+        L      K+0
+        =      BG_step_axes[X]
+      ENDI
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_number_axes
+  UNTILT
+
+  LN     MG_power_delayed_on
+  ON     I_drives_operational
+  ON     I_servo_drive_release
+  ON     I_Siemens_supply_recover_unit_operational
+  ON     I_Indramat_power_supply_ok
+  CMT    Axes_Reset
+
+*$WS check error
+  L      MG_power_delayed_on
+  IFT
+    LN     I_Siemens_supply_recover_unit_operational
+    ON     I_Indramat_power_supply_ok
+    A      I_servo_drive_release
+    A      MG_servo_drive_release_1st_axes_group                      *;EUMACH I/R
+    AN     TS_servo_drive_releases                                    *;EUMACH I/R MP4110.8  -> guard open monitoring delay
+    AN     TR_servo_drive_releases                                    *;EUMACH I/R MP4110.47 -> control-on monitoring delay
+    S      PN_error_supply_servo_drives
+  ENDI
+
+#ifdef KG_Tool_magazine_axis
+  L      WG_controlled_axes                                           *;EUMACH
+  BT     KG_Tool_magazine_axis                                        *;EUMACH
+  IFT                                                                 *;EUMACH
+    LN     I_TC_magazine_guard_locked_closed
+    AN     NP_guard_inactive
+    IFT
+      L      KG_Tool_magazine_axis
+      =X
+
+      L      K+0
+      =      BG_step_axes[X]
+
+      L      KG_axes_use_nominal_value_as_actual					  *;EUMACH BASIC 53
+      BCX															  *;EUMACH BASIC 53
+      PSW															  *;EUMACH BASIC 53
+      PS     KL_mode_nominal_value_as_actual						  *;EUMACH BASIC 53
+      CM     9148            ;Display nominal instead of actual value *;EUMACH BASIC 53
+      M_display_module_error(KG_error_module_9148)                    *;EUMACH BASIC 53
+
+      L      K+0
+      BSX
+      PSW
+      CM     9145
+      M_display_module_error(KG_error_module_9145)
+    ENDI
+																	  *;EUMACH BASIC 53
+    LN     ML_actual_nominal_transfer								  *;EUMACH BASIC 53
+    A      ML_actual_nominal_trans_has_been_active					  *;EUMACH BASIC 53
+    IFT																  *;EUMACH BASIC 53
+      PS     KG_axes_use_nominal_value_as_actual					  *;EUMACH BASIC 53
+      PS     KL_mode_nominal_value_as_actual						  *;EUMACH BASIC 53
+      CM     9148            ;Display nominal instead of actual value *;EUMACH BASIC 53
+      M_display_module_error(KG_error_module_9148)                    *;EUMACH BASIC 53
+    ENDI															  *;EUMACH BASIC 53
+
+    L      ML_actual_nominal_transfer								  *;EUMACH BASIC 53
+    =      ML_actual_nominal_trans_has_been_active					  *;EUMACH BASIC 53
+  ENDI                                                                *;EUMACH
+#endif
+
+  CM     Servo_release
+  CM     Clampings
+  CM     Servo_drive_releases
+
+  L      WG_servo_drives_ready
+  A      WG_drives_digital
+  <>     WL_current_speed_loop
+  AN     TS_servo_drives_ready
+  AN     TR_servo_drives_ready
+  ON     I_drives_operational
+;  ON     I_Siemens_supply_recover_unit_operational                   *;EUMACH Original PLC (I/R)
+  A      MG_power_delayed_on
+  S      PN_error_drives_operational
+  EMF
+
+  L      K+0
+  =X
+
+  REPEAT
+    L      WG_servo_drives_ready
+    A      WG_drives_digital
+    XO     WL_current_speed_loop
+    BTX
+    S      MG_win_axis_X[X]
+
+    INCX
+
+    LX
+    >      KG_spindle
+  UNTILT
+
+EM
+
+;----------------------------
+LBL Initial                            ;00
+
+  LN     WL_initialization
+  BTX
+  IFT
+    L      KG_axes_with_c_axis_mode
+    BTX
+    R      MG_spindle_C_axis_mode_active
+
+    L      MG_marker_one
+    R      ML_servo_drives_releases[X]
+    R      ML_unclamping[X]
+    R      ML_clamping_mode_off[X]
+    R      ML_clamping_mode_on[X]
+
+    L      WL_clamping_mode_on
+    BCX
+    =      WL_clamping_mode_on
+
+    L      WG_clamping_mode_off
+    BCX
+    =      WG_clamping_mode_off
+
+    L      WL_current_speed_loop
+    BCX
+    =      WL_current_speed_loop
+
+    L      WG_keys_inhibit
+    BCX
+    =      WG_keys_inhibit
+
+    L      WL_axes_in_C_axis_mode
+    BCX
+    =      WL_axes_in_C_axis_mode
+
+    L      WG_3D_head_activate
+    BCX
+    =      WG_3D_head_activate
+
+    L      WG_3D_head_release
+    BCX
+    =      WG_3D_head_release
+
+    L      WL_initialization
+    BSX
+    =      WL_initialization
+
+*;EUMACH M4x/M6x
+*;       When a clamping axis is active, if emergency stop button is pressed or the guard is open,
+*;       the clamping/unclamping status will return to the power-on status.
+*;       Example:
+*;          Power-on C-axis unclamping -> M64 -> C-axis clamped -> EMG/guard open -> EMG released/guard
+*;          closed -> C-axis unclamping (would prefer C-axis to remain clamped)
+*;       When a clamping axis is controlled by using X150/X151 (such as TVMC area II C rotary axis),
+*;       if this axis is disabled by X150/X151, BG_step_axes[X] will always stay in case 0 due to
+*;       WG_release_axes_X150_X151 = 0.  For the original PLC, WG_activate_control_loop_open will be
+*;       overwritten to power-on status which will cause the following problem.
+*;       1. Power-on rotary axis clamping mode = off -> M64/M65/M66 -> rotary axis clamps for a while
+*;          and then it unclamps again.
+*;       2. Power-on rotary axis clamping mode = on -> M44/M45/M46 -> rotary axis unclamps for a while
+*;          and then it clamps again.
+*;       When PLC modifications marked with "*;EUMACH M4x/M6x" are added (also in INITIAL.SRC), all the
+*;       above problems will be solved.
+    LN     MG_power_on_clamping_mode_assigned[X]                      *;EUMACH M4x/M6x
+    IFT                                                               *;EUMACH M4x/M6x
+      L      WG_activate_control_loop_open
+      BSX
+      A      KG_clamping_mode_active
+      AN     KG_power_on_clamping_mode_off
+      =      WG_activate_control_loop_open
+
+      L      MG_marker_one                                            *;EUMACH M4x/M6x
+      S      MG_power_on_clamping_mode_assigned[X]                    *;EUMACH M4x/M6x
+    ENDI                                                              *;EUMACH M4x/M6x
+
+    L      PN_W1038_activate_control_loop_open
+    BSX
+    =      PN_W1038_activate_control_loop_open
+
+    L      PN_W1040_control_loop_open
+    BSX
+    =      PN_W1040_control_loop_open
+
+    L      KG_axes_with_common_used_position_ROD
+    BTX
+    IFT
+      PS     KG_axes_with_common_used_position_ROD
+      PS     KL_actual_value_fixed
+      CM     9146
+      M_display_module_error(KG_error_module_9146)
+    ENDI
+
+#ifdef KG_Tool_magazine_axis
+    LX
+    ==     KG_Tool_magazine_axis
+    AN     MG_servo_drive_release_axis_groups_X150_active
+    IFT
+      L      K+0
+      BS     KG_Tool_magazine_axis
+      PSW
+      CM     9169
+      M_display_module_error(KG_error_module_9169)
+    ENDI
+#endif
+
+  ENDI
+
+  CM     9168
+  PLW
+  >      KL_inactive
+  =      ML_commissioning_current_control
+  M_display_module_error(KG_error_module_9168)
+
+  L      WG_controlled_axes
+  BTX
+  A      MG_machine_parameter_are_read
+  AN     ML_commissioning_current_control
+  PSL
+  EMF
+
+  L      WL_initialization
+  BCX
+  =      WL_initialization
+
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+#if (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+    L      MG_marker_one
+    R      ML_without_torque_limitation
+#endif
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+
+EM
+
+;----------------------------
+LBL In_position                        ;01
+
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+#if (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+  LN     ML_without_torque_limitation
+  IFT
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+    LX
+#if (MT = &MT_36B) or (MT = &MT_37B)
+    ==       KG_axis_6
+#else
+    ==       KG_axis_5
+#endif
+    IFT
+#if (MT = &MT_36B) or (MT = &MT_37B)
+      PS     KG_axis_6
+#else
+      PS     KG_axis_5
+#endif
+      PS     KL_torque_limitation
+      CM     9158
+      M_display_module_error(KG_error_module_9158)
+    ENDI
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+#if MT = &MT_36B
+    LX
+    ==       KG_axis_5
+    IFT
+      PS     KG_axis_5
+      PS     KL_torque_limitation
+      CM     9158
+      M_display_module_error(KG_error_module_9158)
+    ENDI
+#endif
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+
+    L      MG_marker_one
+    S      ML_without_torque_limitation
+  ENDI
+#endif
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+
+  L      WG_hirth_axes                                                *;EUMACH
+  BTX                                                                 *;EUMACH
+  A      NP_M4151_mode_electronic_handwheel                           *;EUMACH
+  IFT                                                                 *;EUMACH
+    L      KG_axes_with_signal_clamped                                *;EUMACH
+    O      KG_axes_with_signal_unclamped                              *;EUMACH
+    AN     NP_W1028_axes_in_motion                                    *;EUMACH
+    AN     NP_W1032_reference_nesessary                               *;EUMACH
+    AN     WG_3D_head_activate                                        *;EUMACH
+    BTX                                                               *;EUMACH
+    AN     ML_clamped_axes[X]                                         *;EUMACH
+    AN     NP_commissioning                                           *;EUMACH
+    AN     MG_control_operational                                     *;EUMACH
+    S      MG_win_axis_X[X]                                           *;EUMACH
+    S      PN_error_clamping                                          *;EUMACH
+  ELSE                                                                *;EUMACH
+    L      KG_axes_with_signal_clamped
+    O      KG_axes_with_signal_unclamped
+    A      NP_W1026_axes_in_position
+    AN     NP_W1032_reference_nesessary
+    AN     WG_3D_head_activate
+    BTX
+    AN     ML_clamped_axes[X]
+    AN     NP_commissioning
+    AN     MG_control_operational                                     *;EUMACH
+    S      MG_win_axis_X[X]
+    S      PN_error_clamping
+  ENDI                                                                *;EUMACH
+
+*;EUMACH Original PLC
+;  LW     ML_clamping_mode_off
+;  ON     WG_activate_control_loop_open
+;  ON     NP_W1026_axes_in_position
+;  ON     KG_clamping_mode_active
+;  BTX
+;  PSL
+;  EMF
+*;EUMACH Original PLC
+
+*;EUMACH
+  LN     WG_activate_control_loop_open
+  ON     NP_W1026_axes_in_position
+  A      WG_Mx01_feed_enable                                          *;EUMACH
+  BTX
+  AN     PN_error_hirth_position
+  AN     PN_error_clamping
+  O[
+    LW     ML_clamping_mode_off
+    ON     KG_clamping_mode_active
+    BTX
+  ]
+  PSL
+  EMF
+
+*;EUMACH open loop on
+;#if (MT = &MT_25A) or (MT = &MT_35A)
+;  L      MG_marker_one
+;  R      MG_3D_head_axis_2_feed_not_release
+;#endif
+*;EUMACH open loop on
+*;EUMACH
+
+  L      KG_axes_with_central_drive_mode
+  O      KG_axes_with_c_axis_mode
+  BTX
+  IFT
+    LW     ML_clamping_mode_off
+    O      NP_W1024_axes_release
+    ON     NP_W1026_axes_in_position
+    A[
+      L      KG_axes_with_central_drive_mode
+      O      KG_axes_with_c_axis_mode
+    ]
+    BCX
+    <>     K+0
+    =      ML_central_drive_mode_active
+
+    L      ML_central_drive_mode_active
+    S      PN_error_central_drive
+    R      MG_spindle_C_axis_mode_active
+    IFT
+      L      K+0
+      =      WL_axes_in_C_axis_mode
+    ENDI
+
+    L      KG_axes_with_central_drive_mode
+    O      KG_axes_with_c_axis_mode
+    A      WG_servo_drives_ready
+    A      WG_drives_digital
+    <>     K+0
+    =      ML_central_drive_operational
+
+    PLL
+    AN     ML_central_drive_operational
+    AN     ML_central_drive_mode_active
+    PSL
+  ENDI
+
+*;EUMACH
+  L      WG_hirth_axes
+  BTX
+  IFT
+    L      DG_axes_use_nominal_value_as_actual
+    BTX
+    IFT
+      PS     K&DG_position_axis_X_nominal
+      PS     KL_nominal_position
+      CM     9041
+      M_display_module_error(KG_error_module_9041)
+    ENDI
+  ENDI
+*;EUMACH
+
+  L      WG_hirth_axes
+  BTX
+#if 3D_head = &active
+  A[                                                                  *;EUMACH
+    L      MG_automatic_mode                                          *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_4) or (KG_3D_head_axis_2 = &axis_4)    *;EUMACH
+    O      PN_M4123_strobe_PLC_posit_axis_4                           *;EUMACH
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)    *;EUMACH
+    O      PN_M4124_strobe_PLC_posit_axis_5                           *;EUMACH
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_6) or (KG_3D_head_axis_2 = &axis_6)    *;EUMACH
+    O      PN_M4125_strobe_PLC_posit_axis_6                           *;EUMACH
+#endif                                                                *;EUMACH
+  ]                                                                   *;EUMACH
+#else                                                                 *;EUMACH
+  A      MG_automatic_mode
+#endif                                                                *;EUMACH
+  IFT
+*;EUMACH
+    L      DG_axes_use_nominal_value_as_actual
+    BTX
+#if Tool_magazine = &PLC_axis
+    A[
+      LX
+      <>     KG_Tool_magazine_axis
+    ]
+#endif
+    IFT
+      PS     K&DG_distance_to_go_X_axis
+      PS     KL_distance_to_go
+      CM     9041
+      M_display_module_error(KG_error_module_9041)
+
+      L      DG_position_axis_X_nominal[X]
+      +      DG_distance_to_go_X_axis[X]
+      MOD    DG_MP430_hirth_increm_X[X]
+      <>     K+0
+#if (3D_head = &active)
+#if (KG_3D_head_axis_1 = &axis_4) or (KG_3D_head_axis_2 = &axis_4)    *;EUMACH
+      AN     PN_M4123_strobe_PLC_posit_axis_4
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)    *;EUMACH
+      AN     PN_M4124_strobe_PLC_posit_axis_5
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_6) or (KG_3D_head_axis_2 = &axis_6)    *;EUMACH
+      AN     PN_M4125_strobe_PLC_posit_axis_6                         *;EUMACH
+#endif                                                                *;EUMACH
+#endif
+      S      PN_error_hirth_nominal_position
+      S      MG_win_axis_X[X]
+
+#if (MT = &MT_25A) or (MT = &MT_35A)
+      ;The rear axis (B) motion command can only have the following cases:
+      ;(1) Before the rear axis (B) positioning, the front axis (C/A) must
+      ;    be in 0 position due to gravity effect.
+      ;(2) Y REF position < setting of MP4231.10 during the rear axis (B) motion
+      LX
+      ==       KG_3D_head_axis_1
+      IFT
+        L      DG_position_axis_X_nominal[KG_3D_head_axis_2]
+        PSW
+        CM     Absolute
+        PLW
+        >[
+          L      DG_MP430_hirth_increm_X[KG_3D_head_axis_2]
+          /      K+2
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_3D_head_axis_2]
+
+        L      DG_distance_to_go_X_axis[X]
+        <>     K+0
+        A[
+          L      NP_W1032_reference_nesessary
+          BT     KG_axis_Y
+          AN[                                                         *;EUMACH MP1352
+            L      WG_MP1352_power_off_pos_saved                      *;EUMACH MP1352
+            BT     KG_axis_Y                                          *;EUMACH MP1352
+          ]                                                           *;EUMACH MP1352
+          A[
+            L      NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+            <      DG_position_axis_Y_ref_accumulator
+          ]
+          O[
+            LN     NP_W1032_reference_nesessary
+            BT     KG_axis_Y
+            O[                                                        *;EUMACH MP1352
+              L      WG_MP1352_power_off_pos_saved                    *;EUMACH MP1352
+              BT     KG_axis_Y                                        *;EUMACH MP1352
+            ]                                                         *;EUMACH MP1352
+            A[
+              L      NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+              <      DG_position_axis_Y_ref
+            ]
+          ]
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_axis_Y]
+
+        L      PN_error_3D_head_position_error
+        IFT
+          L      WL_axes_in_C_axis_mode
+          BCX
+          =      WL_axes_in_C_axis_mode
+        ENDI
+      ENDI
+
+      ;The front axis (C/A) motion command can only have the following cases:
+      ;(1) 0 or 180 degree position
+      ;(2) If "L C180/A180 Fxxx" command block is executed, the rear axis (B)
+      ;    must be in 0 or 180 degree position.
+      ;(3) Y REF position < setting of MP4231.6 during the front axis (C/A) motion
+      LX
+      ==       KG_3D_head_axis_2
+      IFT
+        L      DG_position_axis_X_nominal[X]
+        +      DG_distance_to_go_X_axis[X]
+        <>     K+1800000
+        A[
+          L      DG_position_axis_X_nominal[X]
+          +      DG_distance_to_go_X_axis[X]
+          <>     K+0
+        ]
+#if (KG_3D_head_axis_1 = &axis_4) or (KG_3D_head_axis_2 = &axis_4)    *;EUMACH
+        AN     PN_M4123_strobe_PLC_posit_axis_4
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)    *;EUMACH
+        AN     PN_M4124_strobe_PLC_posit_axis_5
+#endif                                                                *;EUMACH
+#if (KG_3D_head_axis_1 = &axis_6) or (KG_3D_head_axis_2 = &axis_6)    *;EUMACH
+        AN     PN_M4125_strobe_PLC_posit_axis_6                       *;EUMACH
+#endif                                                                *;EUMACH
+        S      PN_error_3D_head_motion_command_error
+        S      MG_win_axis_X[X]
+
+        L      DG_position_axis_X_nominal[KG_3D_head_axis_1]
+        PSW
+        CM     Absolute
+        PLW
+        >[
+          L      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+          /      K+2
+        ]
+        A[
+          L      DG_position_axis_X_nominal[KG_3D_head_axis_1]
+          <[
+            L      K+1800000
+            -[
+              L      DG_MP430_hirth_increm_X[KG_3D_head_axis_1]
+              /      K+2
+            ]
+          ]
+        ]
+        A[
+          L      DG_position_axis_X_nominal[X]
+          +      DG_distance_to_go_X_axis[X]
+          ==     K+1800000
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_3D_head_axis_1]
+
+        L      DG_distance_to_go_X_axis[X]
+        <>     K+0
+        A[
+          L      NP_W1032_reference_nesessary
+          BT     KG_axis_Y
+          AN[                                                         *;EUMACH MP1352
+            L      WG_MP1352_power_off_pos_saved                      *;EUMACH MP1352
+            BT     KG_axis_Y                                          *;EUMACH MP1352
+          ]                                                           *;EUMACH MP1352
+          A[
+            L      NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+            <      DG_position_axis_Y_ref_accumulator
+          ]
+          O[
+            LN     NP_W1032_reference_nesessary
+            BT     KG_axis_Y
+            O[                                                        *;EUMACH MP1352
+              L      WG_MP1352_power_off_pos_saved                    *;EUMACH MP1352
+              BT     KG_axis_Y                                        *;EUMACH MP1352
+            ]                                                         *;EUMACH MP1352
+            A[
+              L      NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+              <      DG_position_axis_Y_ref
+            ]
+          ]
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_axis_Y]
+
+        L      PN_error_3D_head_motion_command_error
+        O      PN_error_3D_head_position_error
+        IFT
+          L      WL_axes_in_C_axis_mode
+          BCX
+          =      WL_axes_in_C_axis_mode
+        ENDI
+      ENDI
+#endif
+
+#if (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_35B)
+      ;The rear axis (B) motion command must fulfill the following conditions:
+      ;(1) Y REF position < setting of MP4231.10 during the rear axis (B) motion
+      LX
+      ==       KG_3D_head_axis_1
+      IFT
+        L      DG_distance_to_go_X_axis[X]
+        <>     K+0
+        A[
+          L      NP_W1032_reference_nesessary
+          BT     KG_axis_Y
+          AN[                                                         *;EUMACH MP1352
+            L      WG_MP1352_power_off_pos_saved                      *;EUMACH MP1352
+            BT     KG_axis_Y                                          *;EUMACH MP1352
+          ]                                                           *;EUMACH MP1352
+          A[
+            L      NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+            <      DG_position_axis_Y_ref_accumulator
+          ]
+          O[
+            LN     NP_W1032_reference_nesessary
+            BT     KG_axis_Y
+            O[                                                        *;EUMACH MP1352
+              L      WG_MP1352_power_off_pos_saved                    *;EUMACH MP1352
+              BT     KG_axis_Y                                        *;EUMACH MP1352
+            ]                                                         *;EUMACH MP1352
+            A[
+              L      NP_MP4231_10_3D_head_axis_1_motion_Yp_limit
+              <      DG_position_axis_Y_ref
+            ]
+          ]
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_axis_Y]
+
+        L      PN_error_3D_head_position_error
+        IFT
+          L      WL_axes_in_C_axis_mode
+          BCX
+          =      WL_axes_in_C_axis_mode
+        ENDI
+      ENDI
+
+      ;The front axis (C) motion command must fulfill the following conditions:
+      ;(1) Y REF position < setting of MP4231.6 during the front axis (C) motion
+      LX
+      ==       KG_3D_head_axis_2
+      IFT
+        L      DG_distance_to_go_X_axis[X]
+        <>     K+0
+        A[
+          L      NP_W1032_reference_nesessary
+          BT     KG_axis_Y
+          AN[                                                         *;EUMACH MP1352
+            L      WG_MP1352_power_off_pos_saved                      *;EUMACH MP1352
+            BT     KG_axis_Y                                          *;EUMACH MP1352
+          ]                                                           *;EUMACH MP1352
+          A[
+            L      NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+            <      DG_position_axis_Y_ref_accumulator
+          ]
+          O[
+            LN     NP_W1032_reference_nesessary
+            BT     KG_axis_Y
+            O[                                                        *;EUMACH MP1352
+              L      WG_MP1352_power_off_pos_saved                    *;EUMACH MP1352
+              BT     KG_axis_Y                                        *;EUMACH MP1352
+            ]                                                         *;EUMACH MP1352
+            A[
+              L      NP_MP4231_6_3D_head_axis_2_motion_Yp_limit
+              <      DG_position_axis_Y_ref
+            ]
+          ]
+        ]
+        S      PN_error_3D_head_position_error
+        S      MG_win_axis_X[KG_axis_Y]
+
+        L      PN_error_3D_head_motion_command_error
+        O      PN_error_3D_head_position_error
+        IFT
+          L      WL_axes_in_C_axis_mode
+          BCX
+          =      WL_axes_in_C_axis_mode
+        ENDI
+      ENDI
+#endif
+    ELSE
+*;EUMACH
+      PS     K&DG_distance_to_go_X_axis
+      PS     KL_distance_to_go
+      CM     9041
+      M_display_module_error(KG_error_module_9041)
+
+      L      DG_distance_to_go_X_axis[X]
+      MOD    DG_MP430_hirth_increm_X[X]
+      PSW
+      CM     Absolute
+      PLW
+
+      PSW
+      >[
+        L      DG_MP430_hirth_increm_X[X]
+        /      K+2
+      ]
+      IFT
+        PLW
+        -      DG_MP430_hirth_increm_X[X]
+        X      K-1
+        PSW
+      ENDI
+
+      PLW
+      >      DG_MP1030_pos_window_X[X]
+      S      PN_error_hirth_nominal_position
+      S      MG_win_axis_X[X]
+    ENDI                                                              *;EUMACH
+
+    PLL
+    AN     PN_error_hirth_nominal_position
+#if (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B) *;EUMACH
+    AN     PN_error_3D_head_position_error                            *;EUMACH
+    AN     PN_error_3D_head_motion_command_error                      *;EUMACH
+#endif                                                                *;EUMACH
+    PSL
+
+    L      PN_error_hirth_nominal_position                            *;EUMACH
+    IFT                                                               *;EUMACH
+        L      WL_axes_in_C_axis_mode                                 *;EUMACH
+        BCX                                                           *;EUMACH
+        =      WL_axes_in_C_axis_mode                                 *;EUMACH
+    ENDI                                                              *;EUMACH
+  ENDI
+
+  L      KG_axes_with_c_axis_mode
+  BTX
+  IFT
+    LN     MG_spindle_C_axis_mode_active
+    S      MG_spindle_off_orientation
+    IFT
+      L      PN_M4008_S_nominal_off_status_inverse
+      =      ML_S_nominal_off_status_inverse
+    ENDI
+
+    L      MG_marker_one
+#if (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B) *;EUMACH
+    AN     MG_manual_mode                                             *;EUMACH
+    O      NP_3D_head_manual_operation_valid                          *;EUMACH
+    AN     PN_error_3D_head_G_range                                   *;EUMACH
+    AN     PN_error_hirth_nominal_position                            *;EUMACH
+    AN     PN_error_central_drive                                     *;EUMACH
+    AN     PN_error_3D_head_position_error                            *;EUMACH
+    AN     PN_error_3D_head_motion_command_error                      *;EUMACH
+#endif                                                                *;EUMACH
+    S      MG_spindle_C_axis_mode_active                              ; signal = 1 -> turn on S drive on by CM9161
+
+    LN     PN_error_hirth_nominal_position                            *;EUMACH
+    AN     PN_error_3D_head_position_error                            *;EUMACH
+    AN     PN_error_3D_head_motion_command_error                      *;EUMACH
+    IFT                                                               *;EUMACH
+      L      WL_axes_in_C_axis_mode
+      BSX
+      =      WL_axes_in_C_axis_mode
+    ENDI                                                              *;EUMACH
+
+    PLL
+    A[
+      L      WL_axes_in_C_axis_mode
+      BCX
+      ==     K+0
+    ]
+    A[
+      L      PN_M4007_S_M05_nominal_0_and_status
+      O      PN_M4008_S_nominal_off_status_inverse
+    ]
+    A      MG_spindle_stand_still
+    PSL
+  ENDI
+
+#if 3D_head = &active
+
+*;EUMACH
+  ;If MP4310.3 bit8 = 0, 3D head axis motion in Reference/Manual/Handwheel mode
+  ;is invalid.
+  ;If MP4310.3 bit8 = 1, 3D head axis motion in Reference/Manual/Handwheel mode
+  ;is valid.
+#if (MT = &MT_22) or (MT = &MT_25A) or (MT = &MT_25B) or (MT = &MT_2MV) or (MT = &MT_32B) or (MT = &MT_35A) or (MT = &MT_35B)
+  PLL
+  AN[
+    LX
+    ==     KG_3D_head_axis_1
+    O[
+      LX
+      ==     KG_3D_head_axis_2
+    ]
+    A      MG_manual_mode
+#if (KG_3D_head_axis_1 = &axis_4) or (KG_3D_head_axis_2 = &axis_4)
+    AN     PN_M4123_strobe_PLC_posit_axis_4
+#endif
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)
+    AN     PN_M4124_strobe_PLC_posit_axis_5
+#endif
+#if (KG_3D_head_axis_1 = &axis_6) or (KG_3D_head_axis_2 = &axis_6)
+    AN     PN_M4125_strobe_PLC_posit_axis_6
+#endif
+    AN     NP_3D_head_manual_operation_valid
+  ]
+  PSL
+#endif
+*;EUMACH
+
+  PLL
+  PSL
+  IFT
+    L      KG_axes_with_c_axis_mode
+;  A      KG_axes_with_common_used_position_ROD                       *;EUMACH
+    BTX
+    IFT
+      L      WG_3D_head_activate
+      ==     K+0
+      IFT
+        L      WG_3D_head_activate
+        BSX
+        =      WG_3D_head_activate
+      ENDI
+
+      PLL
+      A[
+        L      WG_3D_head_release
+        BTX
+      ]
+      AN     MG_3D_head_interruption
+      PSL
+    ENDI
+  ENDI
+#endif
+
+EM
+
+;----------------------------
+LBL Current_speed_on                   ;02
+
+    L      KG_axes_with_common_used_position_ROD
+    BTX
+    IFT
+      L      WL_axes_actual_value_released
+      BSX
+      =      WL_axes_actual_value_released
+    ENDI
+
+    L      WL_current_speed_loop
+    BSX
+    A      WG_drives_digital
+    =      WL_current_speed_loop
+
+    L      WG_servo_drives_ready
+    AN     WL_standstill_CCU
+    O      WG_MP12_simulated_axes                                     *;EUMACH MP12
+    ON     WG_drives_digital
+    BTX
+    PSL
+    S      TS_unclamping_X[X]
+    S      TS_clamping_timeout_X[X]
+
+    LN     ML_servo_drives_releases[X]
+    S      ML_servo_drives_releases[X]
+
+EM
+
+;----------------------------
+LBL Unclamping                         ;03
+
+    L      MG_marker_one
+    S      ML_unclamping[X]
+
+    LN     KG_clamping_mode_active
+    BTX
+    IFT
+      PSL
+EM
+    ENDI
+
+    L      KG_axes_with_signal_clamped
+    O      KG_axes_with_signal_unclamped
+    BTX
+    IFF
+      LN     TR_unclamping_X[X]
+      PSL
+    ELSE
+      L      MG_key_NC_start_p_pulse
+      O      MG_pulse_CE_key
+      A      MG_win_axis_X[X]
+      S      TS_clamping_timeout_X[X]
+
+      LN     ML_unclamped_axes[X]
+      S      TS_unclamping_X[X]
+
+      LN     PN_error_clamping
+      ON     MG_win_axis_X[X]
+      A      ML_unclamped_axes[X]
+      AN     TR_unclamping_X[X]
+      PSL
+      EMT
+
+      L      TR_clamping_timeout_X[X]
+      =      ML_servo_drives_releases[X]
+      SN     MG_win_axis_X[X]
+      SN     PN_error_clamping
+
+      LW     MG_win_axis_X
+      ==     K+0
+      R      PN_error_clamping
+    ENDI
+
+EM
+
+;----------------------------
+LBL Close_pos_loop                     ;04
+
+    L      WG_clamping_mode_off
+    ON     WG_activate_control_loop_open
+    BTX
+    IFT
+      L      WG_activate_control_loop_open
+      BCX
+      =      WG_activate_control_loop_open
+
+      L      PN_W1038_activate_control_loop_open
+      BCX
+      =      PN_W1038_activate_control_loop_open
+    ENDI
+
+    L      PN_W1040_control_loop_open
+    BCX
+    =      PN_W1040_control_loop_open
+
+    L      NP_W1024_axes_release
+    O      WG_MP12_simulated_axes                                     *;EUMACH MP12
+    BTX
+    PSL
+
+EM
+
+;----------------------------
+LBL Positioning                        ;05
+
+    L      ML_clamping_mode_on[X]
+    IFT
+      L      WG_activate_control_loop_open
+      BSX
+      A      KG_clamping_mode_active
+      =      WG_activate_control_loop_open
+    ENDI
+
+    L      KG_axes_with_signal_clamped
+    O      KG_axes_with_signal_unclamped
+    BTX
+    IFT
+      LN     ML_unclamped_axes[X]
+      A      MG_O_unclamping[X]                                       *;EUMACH Note1
+      AN     MG_TC_automatic                                          *;EUMACH Due to spindle tool unclamping may have influences on rotary axis clamping/unclamping signal
+      S      MG_win_axis_X[X]
+      S      PN_error_clamping
+    ENDI
+*;EUMACH Note1
+*;When axis clamping mode is off (M4x) and front guard is opening/unlocking, BG_step_axes[X] is
+*;still in case 5 but O_unclamping_xx = 0.  For clamping axis with hydraulic accumulator, the
+*;hydraulic system reacts very fast, so unclamped sensor = 0 but clamped sensor = 0 while
+*;BG_step_axes[X] still in case 5.  MG_O_unclamping[X] is introduced to check the clamped/unclamped
+*;sensor when axis is unclamping.
+*;EUMACH Note1
+
+*;EUMACH
+    ;If standard PLC cannot solve C-axis positioning problem, try to use PLC
+    ;(PLC label with "EUMACH open loop on") to open the position loop earlier
+    ;but still having current loop activating.  Since W1040 = 1, the next NC
+    ;block will be executed.  It is necessary to hold the feed by using
+    ;MG_3D_head_axis_2_feed_not_release and it also needs another marker to hold
+    ;spindle motion until the C-axis is absolutely clamped (this marker not yet
+    ;implemented).
+*;EUMACH open loop on
+;    LX
+;    ==     KG_3D_head_axis_2
+;    IFT
+;      LW     MG_X_in_hirth_position
+;      ON     WG_hirth_axes
+;      A      WG_activate_control_loop_open
+;      A      NP_W1026_axes_in_position
+;      AN     WG_3D_head_release
+;      BTX
+;      PSL
+;      SN     TS_waiting_in_posit_X[X]
+
+;      PLL
+;      AN     TR_waiting_in_posit_X[X]
+;      PSL
+
+;      PLL
+;      IFT
+;        L      PN_W1038_activate_control_loop_open
+;        BSX
+;        =      PN_W1038_activate_control_loop_open
+
+;        L      PN_W1040_control_loop_open
+;        BSX
+;        =      PN_W1040_control_loop_open
+
+;        LN     NP_W1024_axes_release
+;        BTX
+;        PSL
+;        S      TS_clamping_X[X]
+;        S      TS_clamping_timeout_X[X]
+;#if (MT = &MT_25A) or (MT = &MT_35A)
+;        S      MG_3D_head_axis_2_feed_not_release
+;#endif
+;        IFT
+;          L      KG_axes_with_common_used_position_ROD
+;          BTX
+;          IFT
+;            L      WL_axes_actual_value_fixed
+;            BSX
+;            =      WL_axes_actual_value_fixed
+;          ENDI
+;        ENDI
+;      ELSE
+;        PS     MG_marker_zero
+;      ENDI
+;    ELSE
+*;EUMACH open loop on
+      LW     MG_X_in_hirth_position
+      ON     WG_hirth_axes
+      A      WG_activate_control_loop_open
+      A      NP_W1026_axes_in_position
+      AN     WG_3D_head_release
+      BTX
+      PSL
+      SN     TS_waiting_in_posit_X[X]
+
+      PLL
+      AN     TR_waiting_in_posit_X[X]
+      PSL
+      S      TS_clamping_X[X]
+      S      TS_clamping_timeout_X[X]
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+*;       When B-axis/A-axis is clamping, because MP1510.x is large, the current will go
+*;       beyond the I2t limitation and NC error red window occurs.
+#if (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+      IFT
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+        LX
+#if (MT = &MT_36B) or (MT = &MT_37B)
+        ==       KG_axis_6
+#else
+        ==       KG_axis_5
+#endif
+        IFT
+          L      NP_MP4230_31_min_torque_axis_2
+          >      K+0
+          IFT
+#if (MT = &MT_36B) or (MT = &MT_37B)
+            PS     KG_axis_6
+#else
+            PS     KG_axis_5
+#endif
+            L      NP_MP4230_31_min_torque_axis_2
+            /      K+10
+            PSW
+            CM     9158
+            M_display_module_error(KG_error_module_9158)
+          ENDI
+        ENDI
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+#if MT = &MT_36B
+        LX
+        ==       KG_axis_5
+        IFT
+          L      NP_MP4230_30_min_torque_axis_1
+          >      K+0
+          IFT
+            PS     KG_axis_5
+            L      NP_MP4230_30_min_torque_axis_1
+            /      K+10
+            PSW
+            CM     9158
+            M_display_module_error(KG_error_module_9158)
+          ENDI
+        ENDI
+#endif
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+      ENDI
+#endif
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+;    ENDI                                                             *;EUMACH open loop on
+
+EM
+
+;----------------------------
+LBL Clamping                           ;06
+
+    L      MG_marker_one
+    R      ML_unclamping[X]
+
+    L      WG_keys_inhibit
+    BSX
+    =      WG_keys_inhibit
+
+    LN     KG_clamping_mode_active
+    BTX
+    IFT
+      PSL
+EM
+    ENDI
+
+    L      KG_axes_with_signal_clamped
+    O      KG_axes_with_signal_unclamped
+    BTX
+    IFF
+      LN     TR_clamping_X[X]
+      PSL
+    ELSE
+      L      MG_key_NC_start_p_pulse
+      O      MG_pulse_CE_key
+      A      MG_win_axis_X[X]
+      S      TS_clamping_timeout_X[X]
+
+      LN     ML_clamped_axes[X]
+      S      TS_clamping_X[X]
+
+      LN     PN_error_clamping
+      ON     MG_win_axis_X[X]
+      A      ML_clamped_axes[X]
+      AN     TR_clamping_X[X]
+      PSL
+      EMT
+
+      L      TR_clamping_timeout_X[X]
+      =      ML_servo_drives_releases[X]
+      SN     MG_win_axis_X[X]
+      SN     PN_error_clamping
+
+      LW     MG_win_axis_X
+      ==     K+0
+      R      PN_error_clamping
+    ENDI
+
+EM
+
+;----------------------------
+LBL Open_pos_loop                      ;07
+
+*;EUMACH open loop on
+;    LX
+;    ==     KG_3D_head_axis_2
+;    IFT
+;      L      MG_marker_one
+;#if (MT = &MT_25A) or (MT = &MT_35A)
+;      R      MG_3D_head_axis_2_feed_not_release
+;#endif
+;    ELSE
+*;EUMACH open loop on
+      L      PN_W1038_activate_control_loop_open
+      BSX
+      =      PN_W1038_activate_control_loop_open
+
+      L      PN_W1040_control_loop_open
+      BSX
+      =      PN_W1040_control_loop_open
+
+      LN     NP_W1024_axes_release
+      BTX
+      PSL
+      EMF
+
+      L      KG_axes_with_common_used_position_ROD
+      BTX
+      IFT
+        L      WL_axes_actual_value_fixed
+        BSX
+        =      WL_axes_actual_value_fixed
+      ENDI
+;    ENDI                                                              *;EUMACH open loop on
+
+EM
+
+;----------------------------
+LBL Current_speed_off                  ;08
+
+
+    LN     KG_axes_with_active_current_control
+    BTX
+    IFT
+      L      WL_current_speed_loop
+      BCX
+      A      WG_drives_digital
+      =      WL_current_speed_loop
+    ENDI
+
+    LN     WG_servo_drives_ready
+    ON     WG_drives_digital
+    O      KG_axes_with_active_current_control
+    BTX
+    PSL
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+;#if (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+;    IFT
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+;      LX
+;#if (MT = &MT_36B) or (MT = &MT_37B)
+;      ==       KG_axis_6
+;#else
+;      ==       KG_axis_5
+;#endif
+;      IFT
+;#if (MT = &MT_36B) or (MT = &MT_37B)
+;        PS     KG_axis_6
+;#else
+;        PS     KG_axis_5
+;#endif
+;        PS     KL_torque_limitation
+;        CM     9158
+;      M_display_module_error(KG_error_module_9158)
+;      ENDI
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head
+
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+;#if MT = &MT_36B
+;      LX
+;      ==       KG_axis_5
+;      IFT
+;        PS     KG_axis_5
+;        PS     KL_torque_limitation
+;        CM     9158
+;        M_display_module_error(KG_error_module_9158)
+;      ENDI
+;#endif
+*;EUMACH MB-5X with 0.001 deg A-axis swivel head
+;    ENDI
+;#endif
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+
+    L      ML_servo_drives_releases[X]
+    R      ML_servo_drives_releases[X]
+
+EM
+
+;----------------------------
+LBL Step_end                           ;09
+
+    L      WG_keys_inhibit
+    BCX
+    =      WG_keys_inhibit
+
+    PS     MG_marker_zero
+
+    L      KG_axes_with_c_axis_mode
+    BTX
+    IFT
+      L      WG_3D_head_activate
+      BCX
+      =      WG_3D_head_activate
+
+      L      MG_3D_head_active
+      EMT
+
+      L      WL_axes_in_C_axis_mode
+      BCX
+      =      WL_axes_in_C_axis_mode
+
+      L      WL_axes_in_C_axis_mode
+      ==     K+0
+      R      MG_spindle_C_axis_mode_active
+      IFT
+        LN     ML_S_nominal_off_status_inverse
+        S      MG_spindle_on_axes
+      ENDI
+
+      L      K+1
+      =      BG_step_axes[X]
+    ELSE
+      L      K+1
+      =      BG_step_axes[X]
+    ENDI
+
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+#if (MT = &MT_36B) or (MT = &MT_37B) or (MT = &MT_39A) or (MT = &MT_3AA) or (MT = &MT_3B) or (MT = &MT_3BA)
+    L      MG_marker_one
+    R      ML_without_torque_limitation
+#endif
+*;EUMACH TVMC-5X/UMC/EBM-2150-5X/MB-5X with 0.001 deg B-axis swivel head & MB-5X with 0.001 deg A-axis swivel head
+
+EM
+
+;----------------------------
+LBL Axes_Reset
+
+    L      K+0
+    =X
+
+    REPEAT
+#ifdef KG_Tool_magazine_axis
+      LX
+      <>     KG_Tool_magazine_axis
+      ON     MG_power_delayed_on
+      ON     I_Siemens_supply_recover_unit_operational
+      ON     I_Indramat_power_supply_ok
+      IFT
+        L      K+0
+        =      BG_step_axes[X]
+      ENDI
+#else
+      L      K+0
+      =      BG_step_axes[X]
+#endif
+
+      INCX
+
+      LX
+      >=     KG_max_number_axes
+    UNTILT
+
+EM
+
+;----------------------------
+LBL Servo_drive_releases
+
+    L      ML_X_servo_drive_release
+    =      O_servo_drive_release_X
+    L      ML_Y_servo_drive_release
+    =      O_servo_drive_release_Y
+    L      ML_Z_servo_drive_release
+    =      O_servo_drive_release_Z
+    L      ML_4_servo_drive_release
+    =      O_servo_drive_release_4
+    L      ML_5_servo_drive_release
+    =      O_servo_drive_release_5
+    L      ML_6_servo_drive_release
+    =      O_servo_drive_release_6
+    L      ML_7_servo_drive_release
+    =      O_servo_drive_release_7
+    L      ML_8_servo_drive_release
+    =      O_servo_drive_release_8
+    L      ML_9_servo_drive_release
+    =      O_servo_drive_release_9
+
+    L      MG_TNC_digital
+    IFT
+      L      O_servo_drive_release_S
+;      O      MG_spindle_C_axis_mode_active                      ;$WS *;EUMACH For CC422, position loop belongs to MC.
+;      O      MG_spindle_on_axes                                 ;$WS *;EUMACH For CC424/CC61xx, position loop belongs to CC.
+      A      MG_control_operational
+      A      MG_spindle_digital
+      IFT
+        L      WL_current_speed_loop
+        BS     KG_spindle
+        =      WL_current_speed_loop
+      ELSE
+        L      WL_current_speed_loop
+        BC     KG_spindle
+        =      WL_current_speed_loop
+      ENDI
+
+*;EUMACH For CC422, position loop belongs to MC.
+*;EUMACH For CC424/CC61xx, position loop belongs to CC.
+      L      MG_servo_drive_release_axis_groups_X150_active
+      IFT
+        L      WL_current_speed_loop
+        A      WG_release_axes_X150_X151
+        =      WL_current_speed_loop
+      ENDI
+
+      LN     I_control_operational
+      ON     I_servo_drive_release
+      IFT
+        L      WL_current_speed_loop
+        AN     WG_drives_digital
+        =      WL_current_speed_loop
+      ENDI
+
+      L      WG_servo_drives_ready
+      A      WG_drives_digital
+      <>     WL_current_speed_loop
+      AN     PN_error_drives_operational
+      IFT
+        PS     WL_current_speed_loop
+        CM     9161
+      M_display_module_error(KG_error_module_9161)
+      ENDI
+*;EUMACH For CC422, position loop belongs to MC.
+*;EUMACH For CC424/CC61xx, position loop belongs to CC.
+
+      CM     9162
+      PLW
+      O[                                                              *;EUMACH MP12
+        L      WL_current_speed_loop                                  *;EUMACH MP12
+        A      WG_MP12_simulated_axes                                 *;EUMACH MP12
+      ]                                                               *;EUMACH MP12
+      =      WG_servo_drives_ready
+      W=     MG_servo_drives_ready
+    M_display_module_error(KG_error_module_9162)
+
+      L      MG_TNC_programming_station_with_PLC
+      IFT
+        L      WL_current_speed_loop
+        =      WG_servo_drives_ready
+        W=     MG_servo_drives_ready
+      ENDI
+
+      L      WG_servo_drives_ready
+      A      WG_drives_digital
+      ==     WL_current_speed_loop
+      O      MG_pulse_CE_key
+      =      TS_servo_drives_ready
+    ENDI
+
+    L      I_drives_operational
+    IFT
+      L      WG_controlled_axes
+      AN     WG_drives_digital
+      O      WG_servo_drives_ready
+      =      WG_servo_drives_ready
+      W=     MG_servo_drives_ready
+    ELSE
+      L      WG_controlled_axes
+      AN     WG_drives_digital
+      XO     WG_controlled_axes
+      O      WG_servo_drives_ready
+      =      WG_servo_drives_ready
+      W=     MG_servo_drives_ready
+    ENDI
+
+    L      WL_axes_actual_value_released
+    >      K+0
+    IFT
+
+      PS     WL_axes_actual_value_released
+      PS     KL_actual_value_released
+      CM     9146
+    M_display_module_error(KG_error_module_9146)
+
+      L      K+0
+      =      WL_axes_actual_value_released
+    ENDI
+
+    L      WL_axes_actual_value_fixed
+    >      K+0
+    IFT
+
+      PS     WL_axes_actual_value_fixed
+      PS     KL_actual_value_fixed
+      CM     9146
+    M_display_module_error(KG_error_module_9146)
+
+      L      K+0
+      =      WL_axes_actual_value_fixed
+    ENDI
+
+EM
+
+;----------------------------
+LBL Clampings
+
+    CM     9159
+    PLW
+    O      WG_MP12_simulated_axes                                     *;EUMACH MP12
+    =      WL_standstill_CCU
+    W=     ML_standstill_from_CCU
+
+  M_display_module_error(KG_error_module_9159)
+
+#if (KG_clamping_mode_active & %0000000000000001) = %0000000000000001
+    L      ML_unclamping_X
+    A      MG_servo_drive_ready_X
+    AN     ML_X_standstill_from_CCU
+    =      O_unclamping_X
+#endif
+
+#if (KG_clamping_mode_active & %0000000000000010) = %0000000000000010
+    L      ML_unclamping_Y
+    A      MG_servo_drive_ready_Y
+    AN     ML_Y_standstill_from_CCU
+    =      O_unclamping_Y
+#endif
+
+#if (KG_clamping_mode_active & %0000000000000100) = %0000000000000100
+    L      ML_unclamping_Z
+    A      MG_servo_drive_ready_Z
+    AN     ML_Z_standstill_from_CCU
+    =      O_unclamping_Z
+#endif
+
+#if (KG_clamping_mode_active & %0000000000001000) = %0000000000001000
+#if (KG_3D_head_axis_1 = &axis_4) or (KG_3D_head_axis_2 = &axis_4)    *;EUMACH
+    L      ML_unclamping_4
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+#endif                                                                *;EUMACH
+
+    L      NP_EMG_4_axis_stop_before_clamping                         *;EUMACH
+    AN     I_control_operational                                      *;EUMACH
+    IFT                                                               *;EUMACH
+*; When emergency stop occurs, although axis brake is applied after axis stop completely, but when
+*; M64 is executed, O_unclamping_4 = 1 all the time (ML_unclamping_4 = 0 but MG_servo_drive_ready_4
+*; = 1 and BG_step_axes[3] = 6). Therefore, AXES.SRC must be modified (not so easy). Right now
+*; temporarily solution is using different PLC for with I3 and without I3.
+      L      MG_servo_drive_ready_4                                   *;EUMACH
+      AN     ML_4_standstill_from_CCU                                 *;EUMACH
+      AN     ML_last_4_standstill_from_CCU                            *;EUMACH
+      O      ML_unclamping_4                                          *;EUMACH
+      O      MG_3D_head_unclamp_4                                     *;EUMACH
+      =      O_unclamping_4                                           *;EUMACH
+
+      L      ML_4_standstill_from_CCU                                 *;EUMACH
+      =      ML_last_4_standstill_from_CCU                            *;EUMACH
+    ELSE                                                              *;EUMACH
+      L      ML_unclamping_4
+      A      MG_servo_drive_ready_4
+      AN     ML_4_standstill_from_CCU
+      O      MG_3D_head_unclamp_4
+      =      O_unclamping_4
+    ENDI                                                              *;EUMACH
+#endif
+
+#if (KG_clamping_mode_active & %0000000000010000) = %0000000000010000
+#if (KG_3D_head_axis_1 = &axis_5) or (KG_3D_head_axis_2 = &axis_5)    *;EUMACH
+    L      ML_unclamping_5
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+#endif                                                                *;EUMACH
+
+    L      NP_EMG_5_axis_stop_before_clamping                         *;EUMACH
+    AN     I_control_operational                                      *;EUMACH
+    IFT                                                               *;EUMACH
+*; When emergency stop occurs, although axis brake is applied after axis stop completely, but when
+*; M65 is executed, O_unclamping_5 = 1 all the time (ML_unclamping_5 = 0 but MG_servo_drive_ready_5
+*; = 1 and BG_step_axes[4] = 6). Therefore, AXES.SRC must be modified (not so easy). Right now
+*; temporarily solution is using different PLC for with I3 and without I3.
+      L      MG_servo_drive_ready_5                                   *;EUMACH
+      AN     ML_5_standstill_from_CCU                                 *;EUMACH
+      AN     ML_last_5_standstill_from_CCU                            *;EUMACH
+      O      ML_unclamping_5                                          *;EUMACH
+      O      MG_3D_head_unclamp_5                                     *;EUMACH
+      =      O_unclamping_5                                           *;EUMACH
+
+      L      ML_5_standstill_from_CCU                                 *;EUMACH
+      =      ML_last_5_standstill_from_CCU                            *;EUMACH
+    ELSE                                                              *;EUMACH
+      L      ML_unclamping_5
+      A      MG_servo_drive_ready_5
+      AN     ML_5_standstill_from_CCU
+      O      MG_3D_head_unclamp_5
+      =      O_unclamping_5
+    ENDI                                                              *;EUMACH
+#endif
+
+#if (KG_clamping_mode_active & %0000000000100000) = %0000000000100000
+#if (KG_3D_head_axis_1 = &axis_6) or (KG_3D_head_axis_2 = &axis_6)    *;EUMACH
+    L      ML_unclamping_6
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+#endif                                                                *;EUMACH
+
+    L      NP_EMG_6_axis_stop_before_clamping                         *;EUMACH
+    AN     I_control_operational                                      *;EUMACH
+    IFT                                                               *;EUMACH
+*; When emergency stop occurs, although axis brake is applied after axis stop completely, but when
+*; M66 is executed, O_unclamping_6 = 1 all the time (ML_unclamping_6 = 0 but MG_servo_drive_ready_6
+*; = 1 and BG_step_axes[5] = 6). Therefore, AXES.SRC must be modified (not so easy). Right now
+*; temporarily solution is using different PLC for with I3 and without I3.
+      L      MG_servo_drive_ready_6                                   *;EUMACH
+      AN     ML_6_standstill_from_CCU                                 *;EUMACH
+      AN     ML_last_6_standstill_from_CCU                            *;EUMACH
+      O      ML_unclamping_6                                          *;EUMACH
+      O      MG_3D_head_unclamp_6                                     *;EUMACH
+      =      O_unclamping_6                                           *;EUMACH
+
+      L      ML_6_standstill_from_CCU                                 *;EUMACH
+      =      ML_last_6_standstill_from_CCU                            *;EUMACH
+    ELSE                                                              *;EUMACH
+      L      ML_unclamping_6
+      A      MG_servo_drive_ready_6
+      AN     ML_6_standstill_from_CCU
+      O      MG_3D_head_unclamp_6
+      =      O_unclamping_6
+    ENDI                                                              *;EUMACH
+#endif
+
+#if (KG_clamping_mode_active & %0000000001000000) = %0000000001000000
+    L      ML_unclamping_7
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_7
+    A      MG_servo_drive_ready_7
+    AN     ML_7_standstill_from_CCU
+    O      MG_3D_head_unclamp_7
+    =      O_unclamping_7
+#endif
+
+#if (KG_clamping_mode_active & %0000000010000000) = %0000000010000000
+    L      ML_unclamping_8
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_8
+    A      MG_servo_drive_ready_8
+    AN     ML_8_standstill_from_CCU
+    O      MG_3D_head_unclamp_8
+    =      O_unclamping_8
+#endif
+
+#if (KG_clamping_mode_active & %0000000100000000) = %0000000100000000
+#if (KG_3D_head_axis_1 = &axis_9) or (KG_3D_head_axis_2 = &axis_9)    *;EUMACH
+    L      ML_unclamping_9
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+#endif                                                                *;EUMACH
+
+    L      ML_unclamping_9
+    A      MG_servo_drive_ready_9
+    AN     ML_9_standstill_from_CCU
+    O      MG_3D_head_unclamp_9
+    =      O_unclamping_9
+#endif
+
+#if (KG_clamping_mode_active & %0000001000000000) = %0000001000000000
+    L      ML_unclamping_10
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_10
+    A      MG_servo_drive_ready_10
+    AN     ML_10_standstill_from_CCU
+    O      MG_3D_head_unclamp_10
+    =      O_unclamping_10
+#endif
+
+#if (KG_clamping_mode_active & %0000010000000000) = %0000010000000000
+    L      ML_unclamping_11
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_11
+    A      MG_servo_drive_ready_11
+    AN     ML_11_standstill_from_CCU
+    O      MG_3D_head_unclamp_11
+    =      O_unclamping_11
+#endif
+
+#if (KG_clamping_mode_active & %0000100000000000) = %0000100000000000
+    L      ML_unclamping_12
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_12
+    A      MG_servo_drive_ready_12
+    AN     ML_12_standstill_from_CCU
+    O      MG_3D_head_unclamp_12
+    =      O_unclamping_12
+#endif
+
+#if (KG_clamping_mode_active & %0001000000000000) = %0001000000000000
+    L      ML_unclamping_13
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_13
+    A      MG_servo_drive_ready_13
+    AN     ML_13_standstill_from_CCU
+    O      MG_3D_head_unclamp_13
+    =      O_unclamping_13
+#endif
+
+#if (KG_clamping_mode_active & %0010000000000000) = %0010000000000000
+    L      ML_unclamping_14
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_14
+    A      MG_servo_drive_ready_14
+    AN     ML_14_standstill_from_CCU
+    O      MG_3D_head_unclamp_14
+    =      O_unclamping_14
+#endif
+
+#if (KG_clamping_mode_active & %0100000000000000) = %0100000000000000
+    L      ML_unclamping_15
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_15
+    A      MG_servo_drive_ready_15
+    AN     ML_15_standstill_from_CCU
+    O      MG_3D_head_unclamp_15
+    =      O_unclamping_15
+#endif
+
+#if (KG_clamping_mode_active & %1000000000000000) = %1000000000000000
+    L      ML_unclamping_16
+    R      MG_3D_head_axis_1_service_unclamping
+    R      MG_3D_head_axis_2_service_unclamping
+
+    L      ML_unclamping_16
+    A      MG_servo_drive_ready_16
+    AN     ML_16_standstill_from_CCU
+    O      MG_3D_head_unclamp_16
+    =      O_unclamping_16
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000000001) = %0000000000000001
+#if (KG_axes_with_signal_unclamped & %0000000000000001) = %0000000000000001
+    L      I_clamped_axis_X
+    AN     I_unclamped_axis_X
+    =      ML_clamped_axis_X
+
+    LN     I_clamped_axis_X
+    A      I_unclamped_axis_X
+    =      ML_unclamped_axis_X
+#else
+    L      I_clamped_axis_X
+    =      ML_clamped_axis_X
+    =N     ML_unclamped_axis_X
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000000001) = %0000000000000001
+    L      I_unclamped_axis_X
+    =N     ML_clamped_axis_X
+    =      ML_unclamped_axis_X
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000000010) = %0000000000000010
+#if (KG_axes_with_signal_unclamped & %0000000000000010) = %0000000000000010
+    L      I_clamped_axis_Y
+    AN     I_unclamped_axis_Y
+    =      ML_clamped_axis_Y
+
+    LN     I_clamped_axis_Y
+    A      I_unclamped_axis_Y
+    =      ML_unclamped_axis_Y
+#else
+    L      I_clamped_axis_Y
+    =      ML_clamped_axis_Y
+    =N     ML_unclamped_axis_Y
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000000010) = %0000000000000010
+    L      I_unclamped_axis_Y
+    =N     ML_clamped_axis_Y
+    =      ML_unclamped_axis_Y
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000000100) = %0000000000000100
+#if (KG_axes_with_signal_unclamped & %0000000000000100) = %0000000000000100
+    L      I_clamped_axis_Z
+    AN     I_unclamped_axis_Z
+    =      ML_clamped_axis_Z
+
+    LN     I_clamped_axis_Z
+    A      I_unclamped_axis_Z
+    =      ML_unclamped_axis_Z
+#else
+    L      I_clamped_axis_Z
+    =      ML_clamped_axis_Z
+    =N     ML_unclamped_axis_Z
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000000100) = %0000000000000100
+    L      I_unclamped_axis_Z
+    =N     ML_clamped_axis_Z
+    =      ML_unclamped_axis_Z
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000001000) = %0000000000001000
+#if (KG_axes_with_signal_unclamped & %0000000000001000) = %0000000000001000
+    L      I_clamped_axis_4
+    AN     I_unclamped_axis_4
+    =      ML_clamped_axis_4
+
+    LN     I_clamped_axis_4
+    A      I_unclamped_axis_4
+    =      ML_unclamped_axis_4
+#else
+    L      I_clamped_axis_4
+    =      ML_clamped_axis_4
+    =N     ML_unclamped_axis_4
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000001000) = %0000000000001000
+    L      I_unclamped_axis_4
+    =N     ML_clamped_axis_4
+    =      ML_unclamped_axis_4
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000010000) = %0000000000010000
+#if (KG_axes_with_signal_unclamped & %0000000000010000) = %0000000000010000
+    L      I_clamped_axis_5
+    AN     I_unclamped_axis_5
+    =      ML_clamped_axis_5
+
+    LN     I_clamped_axis_5
+    A      I_unclamped_axis_5
+    =      ML_unclamped_axis_5
+#else
+    L      I_clamped_axis_5
+    =      ML_clamped_axis_5
+    =N     ML_unclamped_axis_5
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000010000) = %0000000000010000
+    L      I_unclamped_axis_5
+    =N     ML_clamped_axis_5
+    =      ML_unclamped_axis_5
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000000100000) = %0000000000100000
+#if (KG_axes_with_signal_unclamped & %0000000000100000) = %0000000000100000
+    L      I_clamped_axis_6
+    AN     I_unclamped_axis_6
+    =      ML_clamped_axis_6
+
+    LN     I_clamped_axis_6
+    A      I_unclamped_axis_6
+    =      ML_unclamped_axis_6
+#else
+    L      I_clamped_axis_6
+    =      ML_clamped_axis_6
+    =N     ML_unclamped_axis_6
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000000100000) = %0000000000100000
+    L      I_unclamped_axis_6
+    =N     ML_clamped_axis_6
+    =      ML_unclamped_axis_6
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000001000000) = %0000000001000000
+#if (KG_axes_with_signal_unclamped & %0000000001000000) = %0000000001000000
+    L      I_clamped_axis_7
+    AN     I_unclamped_axis_7
+    =      ML_clamped_axis_7
+
+    LN     I_clamped_axis_7
+    A      I_unclamped_axis_7
+    =      ML_unclamped_axis_7
+#else
+    L      I_clamped_axis_7
+    =      ML_clamped_axis_7
+    =N     ML_unclamped_axis_7
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000001000000) = %0000000001000000
+    L      I_unclamped_axis_7
+    =N     ML_clamped_axis_7
+    =      ML_unclamped_axis_7
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000010000000) = %0000000010000000
+#if (KG_axes_with_signal_unclamped & %0000000010000000) = %0000000010000000
+    L      I_clamped_axis_8
+    AN     I_unclamped_axis_8
+    =      ML_clamped_axis_8
+
+    LN     I_clamped_axis_8
+    A      I_unclamped_axis_8
+    =      ML_unclamped_axis_8
+#else
+    L      I_clamped_axis_8
+    =      ML_clamped_axis_8
+    =N     ML_unclamped_axis_8
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000010000000) = %0000000010000000
+    L      I_unclamped_axis_8
+    =N     ML_clamped_axis_8
+    =      ML_unclamped_axis_8
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000000100000000) = %0000000100000000
+#if (KG_axes_with_signal_unclamped & %0000000100000000) = %0000000100000000
+    L      I_clamped_axis_9
+    AN     I_unclamped_axis_9
+    =      ML_clamped_axis_9
+
+    LN     I_clamped_axis_9
+    A      I_unclamped_axis_9
+    =      ML_unclamped_axis_9
+#else
+    L      I_clamped_axis_9
+    =      ML_clamped_axis_9
+    =N     ML_unclamped_axis_9
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000000100000000) = %0000000100000000
+    L      I_unclamped_axis_9
+    =N     ML_clamped_axis_9
+    =      ML_unclamped_axis_9
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000001000000000) = %0000001000000000
+#if (KG_axes_with_signal_unclamped & %0000001000000000) = %0000001000000000
+    L      I_clamped_axis_10
+    AN     I_unclamped_axis_10
+    =      ML_clamped_axis_10
+
+    LN     I_clamped_axis_10
+    A      I_unclamped_axis_10
+    =      ML_unclamped_axis_10
+#else
+    L      I_clamped_axis_10
+    =      ML_clamped_axis_10
+    =N     ML_unclamped_axis_10
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000001000000000) = %0000001000000000
+    L      I_unclamped_axis_10
+    =N     ML_clamped_axis_10
+    =      ML_unclamped_axis_10
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000010000000000) = %0000010000000000
+#if (KG_axes_with_signal_unclamped & %0000010000000000) = %0000010000000000
+    L      I_clamped_axis_11
+    AN     I_unclamped_axis_11
+    =      ML_clamped_axis_11
+
+    LN     I_clamped_axis_11
+    A      I_unclamped_axis_11
+    =      ML_unclamped_axis_11
+#else
+    L      I_clamped_axis_11
+    =      ML_clamped_axis_11
+    =N     ML_unclamped_axis_11
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000010000000000) = %0000010000000000
+    L      I_unclamped_axis_11
+    =N     ML_clamped_axis_11
+    =      ML_unclamped_axis_11
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0000100000000000) = %0000100000000000
+#if (KG_axes_with_signal_unclamped & %0000100000000000) = %0000100000000000
+    L      I_clamped_axis_12
+    AN     I_unclamped_axis_12
+    =      ML_clamped_axis_12
+
+    LN     I_clamped_axis_12
+    A      I_unclamped_axis_12
+    =      ML_unclamped_axis_12
+#else
+    L      I_clamped_axis_12
+    =      ML_clamped_axis_12
+    =N     ML_unclamped_axis_12
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0000100000000000) = %0000100000000000
+    L      I_unclamped_axis_12
+    =N     ML_clamped_axis_12
+    =      ML_unclamped_axis_12
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0001000000000000) = %0001000000000000
+#if (KG_axes_with_signal_unclamped & %0001000000000000) = %0001000000000000
+    L      I_clamped_axis_13
+    AN     I_unclamped_axis_13
+    =      ML_clamped_axis_13
+
+    LN     I_clamped_axis_13
+    A      I_unclamped_axis_13
+    =      ML_unclamped_axis_13
+#else
+    L      I_clamped_axis_13
+    =      ML_clamped_axis_13
+    =N     ML_unclamped_axis_13
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0001000000000000) = %0001000000000000
+    L      I_unclamped_axis_13
+    =N     ML_clamped_axis_13
+    =      ML_unclamped_axis_13
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0010000000000000) = %0010000000000000
+#if (KG_axes_with_signal_unclamped & %0010000000000000) = %0010000000000000
+    L      I_clamped_axis_14
+    AN     I_unclamped_axis_14
+    =      ML_clamped_axis_14
+
+    LN     I_clamped_axis_14
+    A      I_unclamped_axis_14
+    =      ML_unclamped_axis_14
+#else
+    L      I_clamped_axis_14
+    =      ML_clamped_axis_14
+    =N     ML_unclamped_axis_14
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0010000000000000) = %0010000000000000
+    L      I_unclamped_axis_14
+    =N     ML_clamped_axis_14
+    =      ML_unclamped_axis_14
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %0100000000000000) = %0100000000000000
+#if (KG_axes_with_signal_unclamped & %0100000000000000) = %0100000000000000
+    L      I_clamped_axis_15
+    AN     I_unclamped_axis_15
+    =      ML_clamped_axis_15
+
+    LN     I_clamped_axis_15
+    A      I_unclamped_axis_15
+    =      ML_unclamped_axis_15
+#else
+    L      I_clamped_axis_15
+    =      ML_clamped_axis_15
+    =N     ML_unclamped_axis_15
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %0100000000000000) = %0100000000000000
+    L      I_unclamped_axis_15
+    =N     ML_clamped_axis_15
+    =      ML_unclamped_axis_15
+#endif
+#endif
+
+#if (KG_axes_with_signal_clamped & %1000000000000000) = %1000000000000000
+#if (KG_axes_with_signal_unclamped & %1000000000000000) = %1000000000000000
+    L      I_clamped_axis_16
+    AN     I_unclamped_axis_16
+    =      ML_clamped_axis_16
+
+    LN     I_clamped_axis_16
+    A      I_unclamped_axis_16
+    =      ML_unclamped_axis_16
+#else
+    L      I_clamped_axis_16
+    =      ML_clamped_axis_16
+    =N     ML_unclamped_axis_16
+#endif
+#else
+#if (KG_axes_with_signal_unclamped & %1000000000000000) = %1000000000000000
+    L      I_unclamped_axis_16
+    =N     ML_clamped_axis_16
+    =      ML_unclamped_axis_16
+#endif
+#endif
+
+*;EUMACH MP12
+  L      WG_MP12_simulated_axes
+  ==     K+0
+  EMT
+
+  L      K+0
+  =X
+
+  REPEAT
+    L      WG_MP12_simulated_axes
+    BTX
+    IFT
+      L      ML_unclamping[X]
+      =      ML_unclamped_axes[X]
+      =N     ML_clamped_axes[X]
+    ENDI
+
+    INCX
+
+    LX
+    >=     KG_max_number_axes
+  UNTILT
+*;EUMACH MP12
+
+EM
+
+;----------------------------
+LBL Clamping_mode
+
+    L      NP_M4075_strobe_transfer_FN19
+    RN     ML_FN19_clamping_axes
+    RN     ML_FN19_unclamping_axes
+    IFT
+      L      NP_D280_FN19_1st_value
+      /      K+10000
+      ==     K+99990
+      =      ML_FN19_clamping_axes
+      IFT
+        L      NP_D284_FN19_2st_value
+        /      K+10000
+        =      WL_axes_selection_clamping_mode
+      ENDI
+
+      L      NP_D280_FN19_1st_value
+      /      K+10000
+      ==     K+99991
+      =      ML_FN19_unclamping_axes
+      IFT
+        L      NP_D284_FN19_2st_value
+        /      K+10000
+        =      WL_axes_selection_clamping_mode
+      ENDI
+    ENDI
+
+    L      MG_M11_unclamping_axes
+    O      ML_FN19_unclamping_axes
+    IFT
+      L      WL_axes_selection_clamping_mode
+      W=     ML_clamping_mode_off
+    ELSE
+      L      K+0
+      W=     ML_clamping_mode_off
+
+      L      MG_M44_unclamping_axis_4
+      O[
+        L      KG_clamping_mode_active                                *;EUMACH
+        A      KG_power_on_clamping_mode_off                          *;EUMACH
+        BT     KG_axis_4                                              *;EUMACH
+        A      MG_M401_feed_enable_axis_4                             *;EUMACH
+      ]
+      =      ML_clamping_mode_off_4
+
+      L      MG_M45_unclamping_axis_5
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+      O[                                                              *;EUMACH
+        L      KG_clamping_mode_active                                *;EUMACH
+        A      KG_power_on_clamping_mode_off                          *;EUMACH
+        BT     KG_axis_5                                              *;EUMACH
+        A      MG_M501_feed_enable_axis_5                             *;EUMACH
+      ]                                                               *;EUMACH
+#endif                                                                *;EUMACH
+      =      ML_clamping_mode_off_5
+
+      L      MG_M46_unclamping_axis_6
+      =      ML_clamping_mode_off_6
+    ENDI
+
+    L      MG_M10_clamping_axes
+    O      ML_FN19_clamping_axes
+    IFT
+      L      WL_axes_selection_clamping_mode
+      W=     ML_clamping_mode_on
+    ELSE
+      L      K+0
+      W=     ML_clamping_mode_on
+
+      L      MG_M64_clamping_axis_4
+      O      MG_M400_feed_disable_axis_4                              *;EUMACH
+      =      ML_clamping_mode_on_4
+
+      L      MG_M65_clamping_axis_5
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37B)
+      O      MG_M500_feed_disable_axis_5                              *;EUMACH
+#endif                                                                *;EUMACH
+      =      ML_clamping_mode_on_5
+
+      L      MG_M66_clamping_axis_6
+      =      ML_clamping_mode_on_6
+    ENDI
+
+    L      KG_axes_group_1_gantry_or_master_slave
+    >      K+0
+    IFT
+      LW     ML_clamping_mode_on
+      A      KG_axes_group_1_gantry_or_master_slave
+      >      K+0
+      IFT
+        L      KG_axes_group_1_gantry_or_master_slave
+        W=     ML_clamping_mode_on
+      ENDI
+
+      LW     ML_clamping_mode_off
+      A      KG_axes_group_1_gantry_or_master_slave
+      >      K+0
+      IFT
+        L      KG_axes_group_1_gantry_or_master_slave
+        W=     ML_clamping_mode_off
+      ENDI
+    ENDI
+
+    L      KG_axes_group_2_gantry_or_master_slave
+    >      K+0
+    IFT
+      LW     ML_clamping_mode_on
+      A      KG_axes_group_2_gantry_or_master_slave
+      >      K+0
+      IFT
+        L      KG_axes_group_2_gantry_or_master_slave
+        W=     ML_clamping_mode_on
+      ENDI
+
+      LW     ML_clamping_mode_off
+      A      KG_axes_group_2_gantry_or_master_slave
+      >      K+0
+      IFT
+        L      KG_axes_group_2_gantry_or_master_slave
+        W=     ML_clamping_mode_off
+      ENDI
+    ENDI
+
+    LW     ML_clamping_mode_on
+    A      WG_controlled_axes
+    A      KG_clamping_mode_active
+    W=     ML_clamping_mode_on
+    =      WL_clamping_mode_on
+
+    LW     ML_clamping_mode_off
+    A      WG_controlled_axes
+    A      KG_clamping_mode_active
+    W=     ML_clamping_mode_off
+    =      WG_clamping_mode_off
+
+    L      WL_clamping_mode_on
+    <>     K+0
+    IFT
+      LN     NP_W1024_axes_release
+      A      WL_clamping_mode_on
+      ==     WL_clamping_mode_on
+      IFT
+        L      NP_M4072_strobe_M_function
+        S      PN_M4092_quit_M_function
+
+        L      NP_M4075_strobe_transfer_FN19
+        S      PN_M4095_quit_transfer_FN19
+      ENDI
+    ENDI
+
+    L      WG_clamping_mode_off
+    <>     K+0
+    IFT
+      L      NP_W1024_axes_release
+      O      WG_MP12_simulated_axes                                   *;EUMACH MP12
+      A      WG_clamping_mode_off
+      ==     WG_clamping_mode_off
+      IFT
+        L      NP_M4072_strobe_M_function
+        S      PN_M4092_quit_M_function
+
+        L      NP_M4075_strobe_transfer_FN19
+        S      PN_M4095_quit_transfer_FN19
+      ENDI
+    ENDI
+
+    L      NP_M4072_strobe_M_function
+    O      NP_M4075_strobe_transfer_FN19
+    =      ML_auxiliary_marker_clamping_mode
+
+EM
+
+;----------------------------
+LBL Timer_unclamping
+
+    L      TS_unclamping_X[X]
+    R      TS_unclamping_X[X]
+    IFT
+      LX
+      +      K&TR_unclamping_X
+      PSW
+      PS     KL_runtime_from_MP
+      CM     9006
+      M_display_module_error(KG_error_module_9006)
+    ENDI
+
+EM
+
+;----------------------------
+LBL Timer_clamping
+
+    L      TS_clamping_X[X]
+    R      TS_clamping_X[X]
+    IFT
+      LX
+      +      K&TR_clamping_X
+      PSW
+      PS     KL_runtime_from_MP
+      CM     9006
+      M_display_module_error(KG_error_module_9006)
+    ENDI
+
+EM
+
+;----------------------------
+LBL Timer_timeout_function
+
+    L      TS_clamping_timeout_X[X]
+    R      TS_clamping_timeout_X[X]
+    IFT
+      LX
+      +      K&TR_clamping_timeout_X
+      PSW
+      PS     KL_runtime_from_MP
+      CM     9006
+      M_display_module_error(KG_error_module_9006)
+    ENDI
+
+EM
+
+;----------------------------
+LBL Timer_wait
+
+    L      TS_waiting_in_posit_X[X]
+    R      TS_waiting_in_posit_X[X]
+    IFT
+      LX
+      +      K&TR_waiting_in_posit_X
+      PSW
+      PS     KL_runtime_from_MP
+      CM     9006
+      M_display_module_error(KG_error_module_9006)
+    ENDI
+
+EM
+
+;----------------------------
+LBL Motion_from_end_position
+
+    LN     I_end_posit_axis_X
+    AN     I_end_posit_axis_Y
+    AN     I_end_posit_axis_Z
+    AN     I_end_posit_axis_4
+    AN     I_end_posit_axis_5
+#if MT = &MT_2MV                                                      *;EUMACH
+    AN     I_end_posit_axis_7                                         *;EUMACH
+#endif                                                                *;EUMACH
+    AN     O_axes_motion_from_end_position
+    EMT
+
+    L      MG_clock_1_s
+    O      O_axes_motion_from_end_position
+    =      O_lamp_axes_motion_from_end_position
+
+    L      I_key_axes_motion_from_end_position
+    S      MG_soft_key_axes_motion_from_end_pos
+
+    L      MG_soft_key_axes_motion_from_end_pos
+    S      O_axes_motion_from_end_position
+
+    L      MG_automatic_mode
+    O      NP_M4151_mode_electronic_handwheel
+    AN     NP_commissioning
+    ON     ML_axes_motion_from_end_position
+;    ON     I_emergency_button_unlocked                               *;EUMACH HI4xxx and before
+    R      MG_soft_key_axes_motion_from_end_pos
+    R      O_axes_motion_from_end_position
+    R      O_lamp_axes_motion_from_end_position
+
+    L      O_axes_motion_from_end_position
+    =      PN_error_axes_motion_from_end_position
+
+    LN     O_axes_motion_from_end_position
+    AN     ML_axes_motion_from_end_position
+    R      MG_win_end_position_Xp
+    R      MG_win_end_position_Xn
+    R      MG_win_end_position_Yp
+    R      MG_win_end_position_Yn
+    R      MG_win_end_position_Zp
+    R      MG_win_end_position_Zn
+    R      MG_win_end_position_4p
+    R      MG_win_end_position_4n
+    R      MG_win_end_position_5p
+    R      MG_win_end_position_5n
+
+    L      I_end_posit_axis_X
+    O      I_end_posit_axis_Y
+    O      I_end_posit_axis_Z
+    O      I_end_posit_axis_4
+    O      I_end_posit_axis_5
+#if MT = &MT_2MV                                                      *;EUMACH
+    O      I_end_posit_axis_7                                         *;EUMACH
+#endif                                                                *;EUMACH
+    =      ML_axes_motion_from_end_position
+
+EM
+
+*;EUMACH BASIC 53
+;Servo drive release axes group X150/X151
+
+;----------------------------
+LBL Servo_release
+
+  L      MG_servo_drive_release_axis_groups_X150_active
+  IFT
+    PS     KL_servo_drive_release_axis_coded
+    CM     9157
+    PL     WG_release_axes_X150_X151
+    M_display_module_error(KG_error_module_9157)
+
+    PS     KL_servo_drive_release_input_level
+    CM     9157
+    PL     BL_servo_drive_release_input_level
+    M_display_module_error(KG_error_module_9157)
+
+    L      BL_servo_drive_release_input_level
+    B=     MG_servo_drive_release_1st_axes_group
+
+    L      WG_release_axes_X150_X151
+    BT     KG_spindle
+    =      MG_servo_drive_release_spindle
+
+    LN     MG_guard_open
+    O      NP_guard_inactive
+#if &I_HR4x0_key_permissive_mode < 1000
+*;EUMACH CE 2008
+#if SFM = &inactive
+    O      I_HR4x0_key_permissive_mode
+#else
+    O[
+      L      I_safety_mode_2
+      AN     I_safety_mode_4
+      A      I_HR4x0_key_permissive_mode
+    ]
+    O        I_safety_mode_4
+#endif
+*;EUMACH CE 2008
+#endif
+#if Light_beam_protection = &active                                   *;EUMACH Safety confirmation
+    AN     PN_error_light_beam_blocked                                *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+#if Door_lock_safety_confirmation_panel = &active                     *;EUMACH Safety confirmation
+    AN     PN_error_power_on_safety_confirmation                      *;EUMACH Safety confirmation
+#endif                                                                *;EUMACH Safety confirmation
+    A      MG_power_delayed_on
+    =      ML_servo_drive_1_test
+
+#if Tool_magazine = &PLC_axis                                         *;EUMACH 5XT
+    L      I_TC_magazine_guard_locked_closed
+    O      NP_guard_inactive
+    A      MG_power_delayed_on
+    A[                                                                *;EUMACH
+      L      WG_controlled_axes                                       *;EUMACH
+      BT     KG_Tool_magazine_axis                                    *;EUMACH
+    ]                                                                 *;EUMACH
+    =      ML_servo_drive_2_test
+#else                                                                 *;EUMACH
+    L      MG_marker_one                                              *;EUMACH
+    S      MG_servo_drive_release_2nd_axes_group                      *;EUMACH
+#endif                                                                *;EUMACH 5XT
+
+*;EUMACH 5XT
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+    L      I_guard_1_closed_locked                                    *;Rotary table (IV axis) in machining area I
+    O      NP_guard_inactive
+    A      MG_axis_limit_1
+    O[
+      L      I_guard_1_closed_locked
+      A      I_guard_2_closed_locked
+      O      NP_guard_inactive
+      A      MG_axis_limit_3
+    ]
+    O[
+      L      I_axis_4_key_permissive_mode
+      A      MG_axis_limit_2
+    ]
+;#if SFM = &inactive
+;    O      I_axis_4_key_permissive_mode
+;#else
+;    O[
+;      L      I_safety_mode_2
+;      AN     I_safety_mode_4
+;      A      I_axis_4_key_permissive_mode
+;    ]
+;    O        I_safety_mode_4
+;#endif
+    A      MG_power_delayed_on
+    A[
+      L      WG_controlled_axes
+      BT     KG_axis_4
+    ]
+    AN     MG_enable_alternating_table
+    AN     PN_error_alternat_table_separation
+    =      ML_servo_drive_3_test
+
+    L      I_guard_2_closed_locked                                    *;Rotary table (V axis) in machining area II
+    O      NP_guard_inactive
+    A      MG_axis_limit_2
+    O[
+      L      I_guard_1_closed_locked
+      A      I_guard_2_closed_locked
+      O      NP_guard_inactive
+      A      MG_axis_limit_3
+    ]
+    O[
+      L      I_axis_5_key_permissive_mode
+      A      MG_axis_limit_1
+    ]
+;#if SFM = &inactive
+;    O      I_axis_5_key_permissive_mode
+;#else
+;    O[
+;      L      I_safety_mode_2
+;      AN     I_safety_mode_4
+;      A      I_axis_5_key_permissive_mode
+;    ]
+;    O        I_safety_mode_4
+;#endif
+    A      MG_power_delayed_on
+    A[
+      L      WG_controlled_axes
+      BT     KG_axis_5
+    ]
+    AN     MG_enable_alternating_table
+    AN     PN_error_alternat_table_separation
+    =      ML_servo_drive_4_test
+#endif
+*;EUMACH 5XT
+
+    L      ML_servo_drive_1_test
+    A      ML_servo_drive_1_has_been_off
+    O[                                                                *;EUMACH Before: rising edge of ML_servo_drive_1_test -> TS_servo_drive_releases
+      LN     ML_servo_drive_1_test                                    *;EUMACH Now: also falling edge of ML_servo_drive_1_test -> TS_servo_drive_releases
+      AN     ML_servo_drive_1_has_been_off                            *;EUMACH
+    ]                                                                 *;EUMACH
+    O[
+      L      ML_servo_drive_2_test
+      A      ML_servo_drive_2_has_been_off
+    ]
+    O[                                                                *;EUMACH Before: rising edge of ML_servo_drive_2_test -> TS_servo_drive_releases
+      LN     ML_servo_drive_2_test                                    *;EUMACH Now: also falling edge of ML_servo_drive_2_test -> TS_servo_drive_releases
+      AN     ML_servo_drive_2_has_been_off                            *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Rising edge of MG_servo_drive_release_1st_axes_group -> TS_servo_drive_releases
+      L      MG_servo_drive_release_1st_axes_group                    *;EUMACH
+      A      ML_servo_drive_release_1_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Falling edge of MG_servo_drive_release_1st_axes_group -> TS_servo_drive_releases
+      LN     MG_servo_drive_release_1st_axes_group                    *;EUMACH
+      AN     ML_servo_drive_release_1_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Rising edge of MG_servo_drive_release_2nd_axes_group -> TS_servo_drive_releases
+      L      MG_servo_drive_release_2nd_axes_group                    *;EUMACH
+      A      ML_servo_drive_release_2_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Falling edge of MG_servo_drive_release_2nd_axes_group -> TS_servo_drive_releases
+      LN     MG_servo_drive_release_2nd_axes_group                    *;EUMACH
+      AN     ML_servo_drive_release_2_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+*;EUMACH 5XT
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+    O[
+      L      ML_servo_drive_3_test
+      A      ML_servo_drive_3_has_been_off
+    ]
+    O[                                                                *;EUMACH Before: rising edge of ML_servo_drive_3_test -> TS_servo_drive_releases
+      LN     ML_servo_drive_3_test                                    *;EUMACH Now: also falling edge of ML_servo_drive_3_test -> TS_servo_drive_releases
+      AN     ML_servo_drive_3_has_been_off                            *;EUMACH
+    ]                                                                 *;EUMACH
+    O[
+      L      ML_servo_drive_4_test
+      A      ML_servo_drive_4_has_been_off
+    ]
+    O[                                                                *;EUMACH Before: rising edge of ML_servo_drive_4_test -> TS_servo_drive_releases
+      LN     ML_servo_drive_4_test                                    *;EUMACH Now: also falling edge of ML_servo_drive_4_test -> TS_servo_drive_releases
+      AN     ML_servo_drive_4_has_been_off                            *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Rising edge of MG_servo_drive_release_3rd_axes_group -> TS_servo_drive_releases
+      L      MG_servo_drive_release_3rd_axes_group                    *;EUMACH
+      A      ML_servo_drive_release_3_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Falling edge of MG_servo_drive_release_3rd_axes_group -> TS_servo_drive_releases
+      LN     MG_servo_drive_release_3rd_axes_group                    *;EUMACH
+      AN     ML_servo_drive_release_3_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Rising edge of MG_servo_drive_release_4th_axes_group -> TS_servo_drive_releases
+      L      MG_servo_drive_release_4th_axes_group                    *;EUMACH
+      A      ML_servo_drive_release_4_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+    O[                                                                *;EUMACH Falling edge of MG_servo_drive_release_4th_axes_group -> TS_servo_drive_releases
+      LN     MG_servo_drive_release_4th_axes_group                    *;EUMACH
+      AN     ML_servo_drive_release_4_has_been_off                    *;EUMACH
+    ]                                                                 *;EUMACH
+#endif
+*;EUMACH 5XT
+    O      MG_pulse_CE_key
+    =      TS_servo_drive_releases
+
+    LN     ML_servo_drive_1_test
+    =      ML_servo_drive_1_has_been_off
+
+    LN     ML_servo_drive_2_test
+    =      ML_servo_drive_2_has_been_off
+
+    LN     MG_servo_drive_release_1st_axes_group                      *;EUMACH
+    =      ML_servo_drive_release_1_has_been_off                      *;EUMACH
+
+    LN     MG_servo_drive_release_2nd_axes_group                      *;EUMACH
+    =      ML_servo_drive_release_2_has_been_off                      *;EUMACH
+*;EUMACH 5XT
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+    LN     ML_servo_drive_3_test
+    =      ML_servo_drive_3_has_been_off
+
+    LN     ML_servo_drive_4_test
+    =      ML_servo_drive_4_has_been_off
+
+    LN     MG_servo_drive_release_3rd_axes_group                      *;EUMACH
+    =      ML_servo_drive_release_3_has_been_off                      *;EUMACH
+
+    LN     MG_servo_drive_release_4th_axes_group                      *;EUMACH
+    =      ML_servo_drive_release_4_has_been_off                      *;EUMACH
+#endif
+*;EUMACH 5XT
+    LN     MG_servo_drive_release_1st_axes_group
+    A      ML_servo_drive_1_test
+    O[
+      LN     MG_servo_drive_release_2nd_axes_group
+      A      ML_servo_drive_2_test
+    ]
+*;EUMACH 5XT
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+    O[
+      LN     MG_servo_drive_release_3rd_axes_group
+      A      ML_servo_drive_3_test
+    ]
+    O[
+      LN     MG_servo_drive_release_4th_axes_group
+      A      ML_servo_drive_4_test
+    ]
+#endif
+*;EUMACH 5XT
+    AN     TS_servo_drive_releases
+    AN     TR_servo_drive_releases
+    S      PN_error_X15x_servo_drive_release
+
+    L      MG_power_delayed_on
+;    AN     I_servo_drive_release                                     *;EUMACH Original PLC
+    AN     ML_I_servo_drive_release_1_scan_delay                      *;EUMACH
+    S      PN_error_ESB_servo_drive_release
+
+    L      I_servo_drive_release                                      *;EUMACH
+    =      ML_I_servo_drive_release_1_scan_delay                      *;EUMACH
+  ELSE
+    L      MG_marker_one
+    S      MG_servo_drive_release_1st_axes_group
+    S      MG_servo_drive_release_2nd_axes_group
+    S      MG_servo_drive_release_3rd_axes_group
+    S      MG_servo_drive_release_4th_axes_group                      *;EUMACH 5XT
+    S      MG_servo_drive_release_spindle
+
+    L      MG_guard_open
+    AN     NP_guard_inactive
+#if &I_HR4x0_key_permissive_mode < 1000
+*;EUMACH CE 2008
+#if SFM = &inactive
+    AN     I_HR4x0_key_permissive_mode
+#else
+    AN[
+      L      I_safety_mode_2
+      AN     I_safety_mode_4
+      A      I_HR4x0_key_permissive_mode
+    ]
+#endif
+*;EUMACH CE 2008
+#endif
+    ON     MG_power_delayed_on
+    O      PN_error_power_on_safety_confirmation                      *;EUMACH Safety confirmation
+    =      TS_servo_drive_releases
+
+    LN     I_servo_drive_release
+    AN     TS_servo_drive_releases
+    AN     TR_servo_drive_releases
+    S      PN_error_ESB_servo_drive_release
+  ENDI
+
+EM

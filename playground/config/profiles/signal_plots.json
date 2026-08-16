@@ -1,0 +1,87 @@
+[
+    {
+      "name": "SampleSignalPlot_0",
+      "duration": 1200000,
+      "slot": 0,
+      "controlPoints": [
+        {
+          "name": "Coil On Sample",
+          "description": "Turn a sample coil ON",
+          "state": 2,
+          "type": 1,
+          "arg_0": 30,
+          "arg_1": 1,
+          "id": 1,
+          "time": 100
+        },
+        {
+          "name": "Coil Off Sample",
+          "description": "Turn a sample coil OFF",
+          "state": 2,
+          "type": 1,
+          "arg_0": 30,
+          "arg_1": 0,
+          "id": 2,
+          "time": 250
+        },
+        {
+          "name": "Another Register Sample",
+          "description": "Write another value to a sample register",
+          "state": 2,
+          "type": 2,
+          "arg_0": 102,
+          "arg_1": 456,
+          "id": 4,
+          "time": 550
+        },
+        {
+          "name": "Method Call Sample",
+          "description": "Example method call event",
+          "state": 1,
+          "type": 3,
+          "arg_0": 1,
+          "arg_1": 2,
+          "id": 5,
+          "time": 700
+        },
+        {
+          "name": "User Event Sample",
+          "description": "Custom user defined event trigger",
+          "state": 100,
+          "type": 6,
+          "arg_0": 77,
+          "arg_1": 88,
+          "arg_2": 99,
+          "id": 6,
+          "time": 850
+        }
+      ]
+    },
+    {
+      "name": "ShortPlot_70s",
+      "duration": 70000,
+      "slot": 1,
+      "controlPoints": [
+        {
+          "id": 1,
+          "name": "Valve Open",
+          "description": "Open valve at address 1",
+          "time": 250,
+          "state": 2,
+          "type": 1,
+          "arg_0": 1,
+          "arg_1": 1
+        },
+        {
+          "id": 2,
+          "name": "Valve Close",
+          "description": "Close valve at address 1",
+          "time": 750,
+          "state": 2,
+          "type": 1,
+          "arg_0": 1,
+          "arg_1": 0
+        }
+      ]
+    }
+  ]

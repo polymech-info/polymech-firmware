@@ -1,0 +1,1326 @@
+*-----------------------------------------------------------------------------
+*  Maschinen-Parameter lesen
+*-----------------------------------------------------------------------------
+*  Für jeden zu lesenden Maschinenparameter (MP) müssen 4 Einträge im
+*  Konstantenfeld "KFIELD MP_Definition" vorgenommen werden:
+*
+*    KFIELD MP_Definition
+*      K+10                    --> Nummer des MP
+*      KL_Index_0              --> Index des MP
+*      KL_Typ_Word             --> Typ des Ziel-Operators (B,W,D)
+*      K&WG_MP10_Aktive_Achse  --> Zieladresse für MP-Wert
+*      ...
+*      K-1                     --> Ende Konstantenfeld
+*    ENDK
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Index_0                               K +0
+#define /s    KL_Index_1                               K +1
+#define /s    KL_Index_2                               K +2
+#define /s    KL_Index_3                               K +3
+#define /s    KL_Index_4                               K +4
+#define /s    KL_Index_5                               K +5
+#define /s    KL_Index_6                               K +6
+#define /s    KL_Index_7                               K +7
+#define /s    KL_Index_8                               K +8
+#define /s    KL_Index_9                               K +9
+#define /s    KL_Index_10                              K +10
+#define /s    KL_Index_11                              K +11
+#define /s    KL_Index_12                              K +12
+#define /s    KL_Index_13                              K +13
+#define /s    KL_Index_14                              K +14
+#define /s    KL_Index_15                              K +15
+#define /s    KL_Index_16                              K +16
+#define /s    KL_Index_17                              K +17
+#define /s    KL_Index_18                              K +18
+#define /s    KL_Index_19                              K +19
+#define /s    KL_Index_20                              K +20
+#define /s    KL_Index_21                              K +21
+#define /s    KL_Index_22                              K +22
+#define /s    KL_Index_23                              K +23
+#define /s    KL_Index_24                              K +24
+#define /s    KL_Index_25                              K +25
+#define /s    KL_Index_26                              K +26
+#define /s    KL_Index_27                              K +27
+#define /s    KL_Index_28                              K +28
+#define /s    KL_Index_29                              K +29
+#define /s    KL_Index_30                              K +30
+#define /s    KL_Index_31                              K +31
+
+#define /s    KL_Typ_Byte                              K +0
+#define /s    KL_Typ_Word                              K +1
+#define /s    KL_Typ_DWord                             K +2
+#define /s    KL_Spindel_inaktiv                       K +0
+#define /s    KL_Spindel_mit_ROD                       K +6
+#define /s    KL_kein_Drehzahl_Messgeraet              K +0
+#define /s    KL_kein_Getriebe                         K +5
+#define /s    KL_kein_Getriebe_ROD                     K +8
+#define /s    KL_Spindel_Ref_ohne_externen_Sensor      K +0
+#define /s    KL_Spindel_Ref_EnDat                     K +4
+#define /s    KL_WZW_ohne_P_Code                       K +2
+#define /s    KL_WZ_Tabelle_inaktiv                    K +0
+#define /s    KL_WZ_Platz_Tabelle_inaktiv              K +0
+#define /s    KL_PLC_Hilfs_Achse                       K +1
+#define /s    KL_Achse_mit_Messgeraet                  K +0
+#define /s    KL_geregelte_Achse                       K +2
+#define /s    KL_Slave_Achse                           K +9
+#define /s    KL_Motor_Temperatur_max                  K +3
+#define /s    KL_Hirth_Achse                           K +4
+#define /s    KL_Hirth_Raster                          K +5
+#define /s    KL_Modulo_Wert_Achse                     K +6
+#define /s    KL_digitale_Achse                        K +8
+#define /s    KL_Funktions_Tasten_zur_PLC              K +0
+#define /s    KL_Bit_2_PGM_Stop_M_Strobe               K +2
+#define /s    KL_Auswertung_durch_NC                   K %110111
+#define /s    KL_Messgeraet_abstandscodiert            K +0
+#define /s    KL_Messgeraet_eine_Refmarke              K +1
+#define /s    KL_Nocken_kurz_abstandscodiert           K +3
+#define /s    KL_2_Marken_abstandscodiert              K +4
+#define /s    KL_Messgeraet_EnDat                      K +5
+#define /s    KL_Messgeraet_EnDat_Lage_Drehzahl        K +7
+#define /s    KL_Programmierplatz_mit_PLC              K +1
+#define /s    KL_Programmierplatz                      K +2
+#define /s    KL_Steuerungstype                        K +21
+#define /s    KL_iTNC530_PC_Programmierplatz           K +7
+#define /s    KL_unterstuetzte_HR_Typen                K +13
+#define /s    KL_Autostart_aktiv                       K +5
+#define /s    KL_Bit_5_2_Spindel_Betrieb               K +5
+#define /s    KL_Modus_String_aus_MP_Speicher_lesen    K %11
+#define /s    KL_Dateiname_ohne_Funktion               K +0
+#define /s    KL_MP100_Achs_Kennung                    K +100
+#define /s    KL_Zeile_1                               K +1
+#define /s    KL_Mode_0                                K +0
+#define /s    KL_alle_Achsen                           K -1
+#define /s    KL_Faktor_nichtlineare_Kennlinie         K +100
+#define /s    KL_Feldwinkel_Ermittlung_mit_Softkey     K +2
+#define /s    KL_Bit_5_TE_mit_Fmax_Override            K +5
+#define /s    KL_Bit_9_TE_mit_Fmax_Override            K +9
+#define /s    KL_WZM_Achse_inaktiv                     K -1
+#define /s    KL_max_Limit_Bereich                     K +3
+#define /s    KL_Bremsen_Test_inaktiv                  K +0
+#define /s    KL_Bit_14_erweiterte_Schnittstelle       K +14
+#define /s    KL_MP131_Spindel_Sn_MP_Index             K +131
+#define /s    KL_MP2202_Strichzahl_Sn_Motor            K +2202
+
+#if CFG_HSCI = "inaktiv"
+#define /s    KL_Achsgruppen_max_Anzahl                K +6
+#else
+#define /s    KL_Achsgruppen_max_Anzahl                K +8
+#endif
+#define /s    KL_0_Achsen_SOS_Spindeln_STO_O           K +0
+#define /s    KL_1_Achsen_Spindeln_STO_O               K +1
+#define /s    KL_2_Achsen_Spindeln_SOS                 K +2
+#define /s    KL_Bit_0_SOM_4_freigegeben               K +0
+
+#define /s    ML_TNC_Programmierplatz_aktiv            M
+#define /s    ML_Inbetriebnahme_aktiv                  M
+#define /s    ML_Kinematik_01_angewaehlt               M
+#define /s    ML_debug                                 M
+
+#define /s    BL_MPs_Lesen_Identfier                   B
+#define /s    BL_Typ_Operand                           B
+#define /s    BL_MP113_0_Drehzahl_Messgeraet_Spindel_1 B
+#define /s    BL_MP113_1_Drehzahl_Messgeraet_Spindel_2 B
+#define /s    BL_MP1340_Referenz_Achskennung           B
+#define /s    BL_MP3010_Spindel_Mode                   B
+#define /s    BL_MP3143_Referenz_Spindel               B
+#define /s    BL_MP7210_Programmierplatz               B
+#define /s    BL_MP7440_Ausgabe_von_M_Funktionen       B
+#define /s    BL_MP7480_WZW_Typ                        B
+#define /s    BL_MP7645_HR_Tastatur                    B
+#define /s    BL_MP7681_MSTQ_Strobe_Satzvorlauf        B
+#define /s    BL_MP7683_NC_PGM_und_Paletten_abarbeiten B
+#define /s    BL_MP13010_Spindel_Mode                  B
+#define /s    BL_MP13143_Referenz_Spindel              B
+#define /s    BL_Stack_synchronisieren                 B
+#define /s    BL_Nr_Limit                              B
+#define /s    BL_WZM_Index                             B
+#define /s    BL_WZM_Achs_Index                        B
+#define /s    BL_Achsgruppe_Index                      B
+#define /s    BL_Achsgruppe_S                          B
+#define /s    BL_MP131_Spindel_S1_MP_Index             B
+#define /s    BL_MP131_Spindel_S2_MP_Index             B
+#if CFG_FS = "aktiv"
+#define /s    BL_MP549_Achsgruppe_SS2_Reaktion         B[&KG_max_Achsgruppen_Anzahl]
+#endif
+
+#define /s    WL_Index                                 W
+#define /s    WL_MP4020_PLC_Funktionen                 W
+#define /s    WL_MP7620_TE_mit_Fmax_Override           W
+
+#define /s    DL_geregelte_Achsen_alt                  D
+#define /s    DL_MP3420_Pos_Fenster_S                  D
+#define /s    DL_MP3510_0_Nenn_Drehzahl_Stufe_0        D
+#define /s    DL_MP13420_Pos_Fenster_S                 D
+#define /s    DL_MP13510_0_Nenn_Drehzahl_Stufe_0       D
+#define /s    DL_Modulo_Achse                          D
+#define /s    DL_Referenzaufnahme_aktiv                D
+#define /s    DL_Achs_Messgeraet_abstandscodiert       D
+#define /s    DL_Achs_Messgeraet_eine_Refmarke         D
+#define /s    DL_Achs_Messgeraet_EnDat                 D
+#define /s    DL_MP2230_Bremsen_Test_aktiv             D
+#define /s    DL_MP2254_Feldwinkel_Achse_ein_PLC       D
+#define /s    DL_3D_Kopf_Achsen                        D
+#define /s    DL_sichere_Achsen                        D
+#define /s    DL_sichere_Spindeln                      D
+
+#define /s /c BL_Adresse_0                             B0
+#define /s /c WL_Adresse_0                             W0
+#define /s /c DL_Adresse_0                             D0
+
+#include Mac_Lib.inc
+
+EXTERN MP_Data_Tab_lesen
+EXTERN MP_Config_Tab_lesen
+EXTERN Kennung_Achse_x
+
+GLOBAL MP_lesen
+
+;----------------------------
+LBL MP_lesen
+;----------------------------
+
+  L      PN_Fehler_Maschinenparameter_pruefen
+  O      PN_Fehler_MP_Daten_Tabelle_pruefen
+  O      PN_Fehler_MP_Config_Tabelle_pruefen
+  EMT
+
+  RPLY   BL_MPs_Lesen_Identfier
+  <>     K+0
+  EMT
+  SUBM   MPs_Lesen_Submit
+  =      BL_MPs_Lesen_Identfier
+  ==     K+0
+  S      PN_Fehler_Submit_Spawn_Queue_voll
+
+EM
+
+;----------------------------
+LBL MPs_Lesen_Submit
+
+  L      MG_Eins_Merker
+  S      PN_Fehler_lesen_Maschinenparameter
+  R      MG_TNC_digital
+  R      PN_Fehler_Maschinenparameter_pruefen
+
+  CM     MP_Config_Tab_lesen
+  CM     MP_Data_Tab_lesen
+
+  L      I_Zusatz_Achse_montiert
+  AN     ML_Kinematik_01_angewaehlt
+  IFT
+    S      ML_Kinematik_01_angewaehlt
+
+    PS     KL_Zeile_1
+    PS     KL_Mode_0
+    CM     9097                        ;Anwahl einer Kinematiktabelle bzw. Kinematik-Konfiguration
+    PL     BL_Stack_synchronisieren
+
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      K+0
+  =X
+
+  REPEAT
+
+    PS     KF MP_Definition[X]
+    INCX
+    PS     KF MP_Definition[X]
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+
+    INCX
+
+    L      KF MP_Definition[X]
+    =      BL_Typ_Operand
+
+    INCX
+
+    LX
+    =      WL_Index
+
+    CASE   BL_Typ_Operand
+      CM     PL_Byte_Index
+      CM     PL_Word_Index
+      CM     PL_DWord_Index
+    ENDC
+
+    M_Modul_Fehler_anzeigen
+
+    L      WL_Index
+    =X
+    INCX
+
+    L      KF MP_Definition[X]
+    <      K+0
+    O      NP_M4203_Fehler_Modul_9xxx
+  UNTILT
+
+  PS     KL_alle_Achsen
+  PS     KL_geregelte_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PLW
+  =      DG_geregelte_Achsen
+  D=     MG_geregelte_Achsen
+  M_Modul_Fehler_anzeigen
+
+  L      DL_geregelte_Achsen_alt
+  AN     DG_geregelte_Achsen
+  =      DG_Reset_Achsen
+
+  L      DG_geregelte_Achsen
+  BC     KG_Spindel
+  =      DL_geregelte_Achsen_alt
+
+  PS     KL_alle_Achsen
+  PS     KL_digitale_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PL     DG_digitale_Antriebe
+
+  PS     KL_alle_Achsen
+  PS     KL_Slave_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PL     DG_Slave_Achsen
+
+  PS     KL_alle_Achsen
+  PS     KL_Hirth_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PLW
+  A      DG_geregelte_Achsen
+  =      DG_Hirth_Achsen
+
+  PS     KL_alle_Achsen
+  PS     KL_PLC_Hilfs_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PL     DG_PLC_Hilfs_Achsen
+
+  L      K+0
+  =      DL_Modulo_Achse
+  =      DL_Referenzaufnahme_aktiv
+  =      DL_Achs_Messgeraet_abstandscodiert
+  =      DL_Achs_Messgeraet_eine_Refmarke
+  =      DL_Achs_Messgeraet_abstandscodiert
+  =      DL_Achs_Messgeraet_EnDat
+  =      DL_MP2230_Bremsen_Test_aktiv
+  =      DL_MP2254_Feldwinkel_Achse_ein_PLC
+  =      DL_3D_Kopf_Achsen
+#if CFG_FS = "aktiv"
+  =      DL_sichere_Achsen             * SPLC_0006
+  =      DL_sichere_Spindeln
+#endif
+  =X
+
+  REPEAT
+
+    L      DG_geregelte_Achsen
+*$WS eventuell für alle Achsen auslesen, sonst bleiben Werte stehen wenn Achsen abgewählt werden
+    BTX
+    IFT
+
+      PSX
+      PS     KL_Hirth_Raster
+      CM     9038                      ;Lesen von Statusinformationen der Achsen
+      PL     DG_MP430_Hirth_Raster[X]
+      M_Modul_Fehler_anzeigen
+
+      PSX
+      PS     KL_Modulo_Wert_Achse
+      CM     9038                      ;Lesen von Statusinformationen der Achsen
+      PL     DG_MP810_Modulo_Wert[X]
+
+      L      DG_MP810_Modulo_Wert[X]
+      >      K+0
+      IFT
+        L      DL_Modulo_Achse
+        BSX
+        =      DL_Modulo_Achse
+      ENDI
+      M_Modul_Fehler_anzeigen
+
+      PSX
+      PS     KL_Motor_Temperatur_max
+      CM     9038                      ;Lesen von Statusinformationen der Achsen
+      PL     WG_Motor_Temp_max[X]
+      M_Modul_Fehler_anzeigen
+
+      PS     K+960
+      PSX
+      CM     9310                      ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+      PL     DG_MP960_Ref_Preset[X]
+      M_Modul_Fehler_anzeigen
+
+      PS     K+1030
+      PSX
+      CM     9310                      ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+      PL     DG_MP1030_Pos_Fenster[X]
+      M_Modul_Fehler_anzeigen
+
+      PS     K+1330
+      PSX
+      CM     9310                      ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+      PL     WG_MP1330_Vorschub_Referenz[X]
+      M_Modul_Fehler_anzeigen
+
+      PS     K+1340
+      PSX
+      CM     9310                      ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+      PLW
+      =      BL_MP1340_Referenz_Achskennung
+      >=     K+1
+      IFT
+        L      BL_MP1340_Referenz_Achskennung
+        DECW
+        =      BL_MP1340_Referenz_Achskennung
+
+        L      DL_Referenzaufnahme_aktiv
+        BS     BL_MP1340_Referenz_Achskennung
+        =      DL_Referenzaufnahme_aktiv
+      ENDI
+      M_Modul_Fehler_anzeigen
+
+      PS     K+1350
+      PSX
+      CM     9310                      ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+      PLW
+      PSW
+      ==     KL_Messgeraet_abstandscodiert
+      IFT
+        L      DL_Achs_Messgeraet_abstandscodiert
+        BSX
+        =      DL_Achs_Messgeraet_abstandscodiert
+      ENDI
+      M_Modul_Fehler_anzeigen
+
+      PLW
+      PSW
+      ==     KL_Messgeraet_eine_Refmarke
+      IFT
+        L      DL_Achs_Messgeraet_eine_Refmarke
+        BSX
+        =      DL_Achs_Messgeraet_eine_Refmarke
+      ENDI
+
+      PLW
+      PSW
+      ==     KL_Nocken_kurz_abstandscodiert
+      IFT
+        L      DL_Achs_Messgeraet_abstandscodiert
+        BSX
+        =      DL_Achs_Messgeraet_abstandscodiert
+      ENDI
+
+      PLW
+      PSW
+      ==     KL_2_Marken_abstandscodiert
+      IFT
+        L      DL_Achs_Messgeraet_abstandscodiert
+        BSX
+        =      DL_Achs_Messgeraet_abstandscodiert
+      ENDI
+
+      PLW
+      PSW
+      ==     KL_Messgeraet_EnDat
+      IFT
+        L      DL_Achs_Messgeraet_EnDat
+        BSX
+        =      DL_Achs_Messgeraet_EnDat
+      ENDI
+
+      PLW
+      ==     KL_Messgeraet_EnDat_Lage_Drehzahl
+      IFT
+        L      DL_Achs_Messgeraet_EnDat
+        BSX
+        =      DL_Achs_Messgeraet_EnDat
+      ENDI
+
+      L      DG_digitale_Antriebe
+      BTX
+      IFT
+        PS     K+2230
+        PSX
+        CM     9310                    ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+        PLW
+        <>     KL_Bremsen_Test_inaktiv
+        IFT
+          L      DL_MP2230_Bremsen_Test_aktiv
+          BSX
+          =      DL_MP2230_Bremsen_Test_aktiv
+        ENDI
+        M_Modul_Fehler_anzeigen
+
+        PS     K+2254
+        PSX
+        CM     9310                    ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+        PLW
+        ==     KL_Feldwinkel_Ermittlung_mit_Softkey
+        IFT
+          L      DL_MP2254_Feldwinkel_Achse_ein_PLC
+          BSX
+          =      DL_MP2254_Feldwinkel_Achse_ein_PLC
+        ENDI
+        M_Modul_Fehler_anzeigen
+      ENDI
+
+      LX
+      ==     KG_3D_Kopf_Achse_1
+      O[
+        LX
+        ==     KG_3D_Kopf_Achse_2
+      ]
+      IFT
+        L      DL_3D_Kopf_Achsen
+        BSX
+        =      DL_3D_Kopf_Achsen
+      ENDI
+    ENDI
+
+#if CFG_FS = "aktiv"
+    PS     K +600                      * SPLC_0006
+    PSX
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PLW
+    =      BG_MP600_Achsgruppe_FS_Achsen[X]
+    <>     K -1
+    IFT
+      L      DL_sichere_Achsen
+      BSX
+      =      DL_sichere_Achsen
+    ENDI
+    M_Modul_Fehler_anzeigen
+#endif
+
+    INCX
+
+    LX
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+#if CFG_FS = "aktiv"
+  L      K +0
+  =X
+
+  REPEAT
+    PS     K +549
+    PSX
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PLW
+    =      BL_MP549_Achsgruppe_SS2_Reaktion[X]
+    M_Modul_Fehler_anzeigen
+
+    INCX
+
+    LX
+    >=     KG_max_Achsgruppen_Anzahl
+  UNTILT
+
+  L      DG_MP560_FS_Zusatzfunktionen
+  BT     KL_Bit_0_SOM_4_freigegeben
+  =      MG_SOM_4_freigegeben
+
+
+  L      BG_MP601_Achsgruppe_FS_Spindeln[KG_S1]  * SPLC_0006
+  <>     K -1
+  IFT
+    L      DL_sichere_Spindeln
+    BS     KG_S1
+    =      DL_sichere_Spindeln
+
+    L      BG_MP601_Achsgruppe_FS_Spindeln[KG_S1]
+    =      BL_Achsgruppe_S
+
+    L      BL_MP549_Achsgruppe_SS2_Reaktion[BL_Achsgruppe_S]
+    ==     KL_2_Achsen_Spindeln_SOS
+    =      MG_MP549_Achsgruppe_SS2_Reaktion_SOS[KG_S1]
+  ENDI
+
+  L      BG_MP601_Achsgruppe_FS_Spindeln[KG_S2]
+  <>     K -1
+  IFT
+    L      DL_sichere_Spindeln
+    BS     KG_S2
+    =      DL_sichere_Spindeln
+
+    L      BG_MP601_Achsgruppe_FS_Spindeln[KG_S2]
+    =      BL_Achsgruppe_S
+
+    L      BL_MP549_Achsgruppe_SS2_Reaktion[BL_Achsgruppe_S]
+    ==     KL_2_Achsen_Spindeln_SOS
+    =      MG_MP549_Achsgruppe_SS2_Reaktion_SOS[KG_S2]
+  ENDI
+
+#endif
+
+  L      DL_Modulo_Achse
+  =      DG_Modulo_Achse
+
+  L      DL_Referenzaufnahme_aktiv
+  =      DG_Referenzaufnahme_aktiv
+
+  L      DL_Achs_Messgeraet_eine_Refmarke
+  =      DG_Achs_Messgeraet_eine_Refmarke
+
+  L      DL_Achs_Messgeraet_abstandscodiert
+  =      DG_Achs_Messgeraet_abstandscodiert
+
+  L      DL_Achs_Messgeraet_EnDat
+  =      DG_Achs_Messgeraet_EnDat
+
+  L      DL_MP2230_Bremsen_Test_aktiv
+  =      DG_MP2230_Bremsen_Test_aktiv
+
+  L      DL_MP2254_Feldwinkel_Achse_ein_PLC
+  =      DG_MP2254_Feldwinkel_Achse_ein_PLC
+
+  L      DL_sichere_Achsen
+  =      DG_sichere_Achsen
+
+  L      DL_sichere_Spindeln
+  =      DG_sichere_Spindeln
+
+  L      DL_3D_Kopf_Achsen
+  =      DG_3D_Kopf_Achsen
+
+  L      DG_geregelte_Achsen
+  AN     DG_PLC_Hilfs_Achsen
+  =      DG_geregelte_NC_Achsen
+
+  PS     KG_Spindel
+  PS     KL_Motor_Temperatur_max
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PL     WG_Motor_Temp_max_S
+  M_Modul_Fehler_anzeigen
+
+  PS     KG_Spindel
+  PS     KL_digitale_Achse
+  CM     9038                          ;Lesen von Statusinformationen der Achsen
+  PLW
+  >      K+0
+  =      MG_Spindel_digital
+  IFT
+    L      DG_digitale_Antriebe
+    BS     KG_Spindel
+    =      DG_digitale_Antriebe
+  ENDI
+  M_Modul_Fehler_anzeigen
+
+  L      K +0
+  =      BL_Nr_Limit
+
+  REPEAT
+    PS     KL_Modus_String_aus_MP_Speicher_lesen
+    PS     KL_Dateiname_ohne_Funktion
+    PS     KL_MP100_Achs_Kennung
+    PS     BL_Nr_Limit
+    L      K &SG_Kennung_Achsen_Limit1
+    +      BL_Nr_Limit
+    PSW
+    CM     9313                        ;Maschinen-Parameter lesen
+    PL     BL_Stack_synchronisieren
+    M_Modul_Fehler_anzeigen
+
+    INC    BL_Nr_Limit
+
+    L      BL_Nr_Limit
+    >=     KL_max_Limit_Bereich
+  UNTILT
+
+  CM     Kennung_Achse_x
+
+  L      DG_digitale_Antriebe
+  <>     K+0
+  S      MG_TNC_digital
+
+  L      WL_MP4020_PLC_Funktionen
+  BT     KL_Bit_5_2_Spindel_Betrieb
+  =      MG_2_Spindel_Betrieb_aktiv
+  SN     MG_Spindel_1_aktiv
+  RN     MG_Spindel_2_aktiv
+
+  LN     MG_Spindel_1_aktiv
+  AN     MG_Spindel_2_aktiv
+  S      MG_Spindel_1_aktiv
+
+  L      MG_Spindel_mit_Stern_Dreieck_Umschaltung
+  R      MG_Spindel_mit_Stern_Dreieck_Umschaltung
+
+  LN     MG_Spindel_2_aktiv
+#if CFG_Spindel_S1_mit_Stern_Dreieck_Umschaltung = "aktiv"
+  S      MG_Spindel_mit_Stern_Dreieck_Umschaltung
+#endif
+  IFT
+    PS     KL_MP131_Spindel_Sn_MP_Index
+    PS     KL_Index_0
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     BL_MP131_Spindel_S1_MP_Index
+    M_Modul_Fehler_anzeigen
+
+    PS     KL_Modus_String_aus_MP_Speicher_lesen
+    PS     KL_Dateiname_ohne_Funktion
+    PS     KL_MP2202_Strichzahl_Sn_Motor
+    PS     BL_MP131_Spindel_S1_MP_Index
+    PS     K &SG_MP_Wert
+    CM     9313                        ;Maschinen-Parameter lesen
+    PL     BL_Stack_synchronisieren
+    M_Modul_Fehler_anzeigen
+
+    L      SG_MP_Wert
+    ==     S"0"
+    A      MG_Spindel_digital
+    =      MG_Spindel_mit_Uf_Steller_Betrieb
+
+    L      BL_MP3010_Spindel_Mode
+    <>     KL_Spindel_inaktiv
+    =      MG_Spindel_aktiv
+
+    L      BL_MP3010_Spindel_Mode
+    <>     KL_kein_Getriebe
+    A[
+      L      BL_MP3010_Spindel_Mode
+      <>     KL_kein_Getriebe_ROD
+    ]
+    =      MG_Spindel_mit_Getriebe
+
+    L      BL_MP3010_Spindel_Mode
+    >=     KL_Spindel_mit_ROD
+    =      MG_Spindel_mit_Messgeraet
+
+    L      BL_MP3143_Referenz_Spindel
+    >      KL_Spindel_Ref_ohne_externen_Sensor
+    A[
+      L      BL_MP3143_Referenz_Spindel
+      <      KL_Spindel_Ref_EnDat
+    ]
+    =      MG_Spindel_Referenz_mit_Sensor
+
+    L      WG_MP3310_0_S_Override_max
+    X      KL_Faktor_nichtlineare_Kennlinie
+    =      WG_MP3310_0_S_Override_max
+
+    L      WG_MP3310_1_S_Override_min
+    X      KL_Faktor_nichtlineare_Kennlinie
+    =      WG_MP3310_1_S_Override_min
+
+    L      DL_MP3420_Pos_Fenster_S
+    +      K +100                      ;S Offset regelt auf Pos-Window
+    =      DG_Pos_Fenster_S
+
+    L      DL_MP3510_0_Nenn_Drehzahl_Stufe_0
+    ==     K +0
+    =      MG_Getriebe_Stufe_0_vorhanden
+  ELSE
+#if CFG_Spindel_S2_mit_Stern_Dreieck_Umschaltung = "aktiv"
+    LN     MG_Spindel_mit_Stern_Dreieck_Umschaltung
+    S      MG_Spindel_mit_Stern_Dreieck_Umschaltung
+#endif
+    PS     KL_MP131_Spindel_Sn_MP_Index
+    PS     KL_Index_1
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     BL_MP131_Spindel_S2_MP_Index
+    M_Modul_Fehler_anzeigen
+
+    PS     KL_Modus_String_aus_MP_Speicher_lesen
+    PS     KL_Dateiname_ohne_Funktion
+    PS     KL_MP2202_Strichzahl_Sn_Motor
+    PS     BL_MP131_Spindel_S2_MP_Index
+    PS     K &SG_MP_Wert
+    CM     9313                        ;Maschinen-Parameter lesen
+    PL     BL_Stack_synchronisieren
+    M_Modul_Fehler_anzeigen
+
+    L      SG_MP_Wert
+    ==     S"0"
+    A      MG_Spindel_digital
+    =      MG_Spindel_mit_Uf_Steller_Betrieb
+
+    L      BL_MP13010_Spindel_Mode
+    <>     KL_Spindel_inaktiv
+    =      MG_Spindel_aktiv
+
+    L      BL_MP13010_Spindel_Mode
+    <>     KL_kein_Getriebe
+    A[
+      L      BL_MP13010_Spindel_Mode
+      <>     KL_kein_Getriebe_ROD
+    ]
+    =      MG_Spindel_mit_Getriebe
+
+    L      BL_MP13010_Spindel_Mode
+    >=     KL_Spindel_mit_ROD
+    =      MG_Spindel_mit_Messgeraet
+
+    L      BL_MP13143_Referenz_Spindel
+    >      KL_Spindel_Ref_ohne_externen_Sensor
+    A[
+      L      BL_MP13143_Referenz_Spindel
+      <      KL_Spindel_Ref_EnDat
+    ]
+    =      MG_Spindel_Referenz_mit_Sensor
+
+    L      WG_MP13310_0_S_Override_max
+    X      KL_Faktor_nichtlineare_Kennlinie
+    =      WG_MP13310_0_S_Override_max
+
+    L      WG_MP13310_1_S_Override_min
+    X      KL_Faktor_nichtlineare_Kennlinie
+    =      WG_MP13310_1_S_Override_min
+
+    L      DL_MP13420_Pos_Fenster_S
+    +      K+100                       ;S Offset regelt auf Pos-Window
+    =      DG_Pos_Fenster_S
+
+    L      DL_MP13510_0_Nenn_Drehzahl_Stufe_0
+    ==     K +0
+    =      MG_Getriebe_Stufe_0_vorhanden
+  ENDI
+
+  L      MG_TNC_digital
+  IFT
+    PS     K+2040
+    PS     KL_Index_0
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_0_Achsgruppe_1
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_1
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_1_Achsgruppe_2
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_2
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_2_Achsgruppe_3
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_3
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_3_Achsgruppe_4
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_4
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_4_Achsgruppe_5
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_5
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_5_Achsgruppe_6
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_6
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_6_Achsgruppe_7
+    M_Modul_Fehler_anzeigen
+
+    PS     K+2040
+    PS     KL_Index_7
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     DG_MP2040_7_Achsgruppe_8
+    M_Modul_Fehler_anzeigen
+  ENDI
+
+  L      MG_Eins_Merker
+  R      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+
+  L      K +0
+  =      BL_Achsgruppe_Index
+  =      BG_aktive_Achsgruppen
+
+  REPEAT
+    L      DG_MP2040_0_Achsgruppe_1[BL_Achsgruppe_Index]
+    <>     K+0
+    S      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+    IFT
+      L      BG_aktive_Achsgruppen
+      BS     BL_Achsgruppe_Index
+      =      BG_aktive_Achsgruppen
+    ENDI
+
+    INC    BL_Achsgruppe_Index
+
+    L      BL_Achsgruppe_Index
+    >=     KL_Achsgruppen_max_Anzahl
+  UNTILT
+
+  L      MG_Antriebs_Freigabe_Achsgruppen_aktiv
+  IFT
+    L      MG_Spindel_aktiv
+    A      MG_Spindel_digital
+    IFT
+      L      DG_geregelte_Achsen
+      AN     DG_MP2040_0_Achsgruppe_1
+      AN     DG_MP2040_1_Achsgruppe_2
+      AN     DG_MP2040_2_Achsgruppe_3
+      AN     DG_MP2040_3_Achsgruppe_4
+      AN     DG_MP2040_4_Achsgruppe_5
+      AN     DG_MP2040_5_Achsgruppe_6
+      AN     DG_MP2040_6_Achsgruppe_7
+      AN     DG_MP2040_7_Achsgruppe_8
+      <>     K+0
+      S      PN_Fehler_Maschinenparameter_pruefen
+      =      MG_Win_Achsen_MP10_nicht_zugeordnet
+    ELSE
+      L      DG_geregelte_Achsen
+      AN     DG_MP2040_0_Achsgruppe_1
+      AN     DG_MP2040_1_Achsgruppe_2
+      AN     DG_MP2040_2_Achsgruppe_3
+      AN     DG_MP2040_3_Achsgruppe_4
+      AN     DG_MP2040_4_Achsgruppe_5
+      AN     DG_MP2040_5_Achsgruppe_6
+      AN     DG_MP2040_6_Achsgruppe_7
+      AN     DG_MP2040_7_Achsgruppe_8
+      <>     K+0
+      S      PN_Fehler_Maschinenparameter_pruefen
+      =      MG_Win_Achsen_MP10_nicht_zugeordnet
+    ENDI
+  ENDI
+
+  L      BL_MP7210_Programmierplatz
+  ==     KL_Programmierplatz_mit_PLC
+  =      MG_TNC_Programmierplatz_mit_PLC
+
+  L      BL_MP7210_Programmierplatz
+  ==     KL_Programmierplatz
+  O      MG_TNC_Programmierplatz_mit_PLC
+  AN     ML_TNC_Programmierplatz_aktiv
+  S      ML_TNC_Programmierplatz_aktiv
+  S      PN_Fehler_TNC_Programmierplatz_aktiv
+
+  L      MG_Inbetriebnahme
+  AN     ML_Inbetriebnahme_aktiv
+  S      ML_Inbetriebnahme_aktiv
+  S      PN_Fehler_Inbetriebnahme_aktiv
+
+  PS     KL_Steuerungstype
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  ==     KL_iTNC530_PC_Programmierplatz
+  =      MG_iTNC530_PC_Programmierplatz
+  M_Modul_Fehler_anzeigen
+
+  L      WG_MP7260_WZ_Anzahl_in_Tabelle
+  >      KL_WZ_Tabelle_inaktiv
+  =      MG_WZ_Tabelle_aktiv
+
+  L      MG_Eins_Merker
+  R      MG_WZW_Auto_aktiv
+
+  L      K+0
+  =      BL_WZM_Index
+  =      DG_WZM_Achsen
+  =      WG_WZM_Anzahl
+  REPEAT
+    L      BL_WZM_Index
+    =X
+
+    L      KF WZM_Achs_Indizes[X]
+    =      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+
+    PS     K+7261
+    PS     BL_WZM_Index
+    CM     9310                        ;Lesen von Maschinen-Parametern aus dem Ablaufspeicher
+    PL     STG_WZM[BL_WZM_Index].WG_MP7261_WZM_max_Platz
+    M_Modul_Fehler_anzeigen
+
+    L      BL_MP7480_WZW_Typ
+    >      KL_WZW_ohne_P_Code
+#if (CFG_WZ_Magazin_System = "Mag_type_09") or (CFG_WZ_Magazin_System = "Mag_type_10")
+    A[
+      L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+      >      KL_WZM_Achse_inaktiv
+    ]
+#endif
+    IFT
+      L      STG_WZM[BL_WZM_Index].WG_MP7261_WZM_max_Platz
+      >      KL_WZ_Platz_Tabelle_inaktiv
+      S      MG_WZW_Auto_aktiv
+      IFT
+        INC    WG_WZM_Anzahl
+      ENDI
+    ENDI
+
+#if (CFG_WZ_Magazin_System = "Mag_type_09") or (CFG_WZ_Magazin_System = "Mag_type_10")
+    L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+    =      BL_WZM_Achs_Index
+    >      KL_WZM_Achse_inaktiv
+    IFT
+      L      DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+      =      STG_WZM[BL_WZM_Index].DG_MP810_Modulo_Wert
+      /      STG_WZM[BL_WZM_Index].WG_MP7261_WZM_max_Platz
+      =      STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+    ENDI
+
+    L      DG_geregelte_Achsen
+    BT     STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+    A[
+      L      STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+      >      KL_WZM_Achse_inaktiv
+    ]
+    IFT
+      LN     DG_PLC_Hilfs_Achsen
+      BT     STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+      A      MG_WZW_Auto_aktiv
+      AN     MG_Inbetriebnahme
+      S      MG_Win_WZM_PLC_Achse
+
+      LN     DG_Hirth_Achsen
+      BT     STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+      O[
+        L      DG_MP430_Hirth_Raster[BL_WZM_Achs_Index]
+        <>     STG_WZM[BL_WZM_Index].DG_WZM_Platz_Pos_Differenz
+      ]
+      O[
+        L      DG_MP810_Modulo_Wert[BL_WZM_Achs_Index]
+        <=     K +0
+      ]
+      A      MG_WZW_Auto_aktiv
+      AN     MG_Inbetriebnahme
+      S      MG_Win_WZM_Hirth_Achse
+
+      L      MG_Win_WZM_PLC_Achse
+      O      MG_Win_WZM_Hirth_Achse
+      S      PN_Fehler_Maschinenparameter_pruefen
+      R      MG_WZW_Auto_aktiv
+      IFF
+        L      DG_WZM_Achsen
+        BS     STG_WZM[BL_WZM_Index].BG_WZM_Achs_Index
+        =      DG_WZM_Achsen
+      ENDI
+    ENDI
+#endif
+
+    INC    BL_WZM_Index
+
+    L      BL_WZM_Index
+    >=     KG_WZM_max_Anzahl
+    O      ML_debug
+  UNTILT
+
+  LN     WL_MP4020_PLC_Funktionen
+  BT     KL_Bit_14_erweiterte_Schnittstelle
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_erweiterte_Achs_Schnittstelle
+
+  L      BL_MP7440_Ausgabe_von_M_Funktionen
+  BT     KL_Bit_2_PGM_Stop_M_Strobe
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_PGM_Stop_M_Strobe
+
+#if CFG_HSCI = "aktiv"
+  L      WL_MP7620_TE_mit_Fmax_Override
+  BT     KL_Bit_9_TE_mit_Fmax_Override
+  =      MG_MP7620_TE_mit_Fmax_Override
+#else
+  L      WL_MP7620_TE_mit_Fmax_Override
+  BT     KL_Bit_5_TE_mit_Fmax_Override
+  =      MG_MP7620_TE_mit_Fmax_Override
+#endif
+
+#if CFG_Override_Eilgang_statt_Spindel = "aktiv"
+  LN     MG_MP7620_TE_mit_Fmax_Override
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_MP7620_Fmax_Override_aktivieren
+#endif
+
+  L      BG_MP7640_HR_Typ
+  >      KL_unterstuetzte_HR_Typen
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_MP7640_HR_Typ_nicht_unterstuetzt
+  IFT
+    L      K+0
+    =      BG_MP7640_HR_Typ
+  ENDI
+
+  L      BL_MP7645_HR_Tastatur
+  <>     KL_Funktions_Tasten_zur_PLC
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_HR410_MP7645
+
+  L      BL_MP7681_MSTQ_Strobe_Satzvorlauf
+  <>     KL_Auswertung_durch_NC
+  S      PN_Fehler_Maschinenparameter_pruefen
+  =      MG_Win_MSTG_Strobe_Satzvorlauf
+
+  L      BL_MP7683_NC_PGM_und_Paletten_abarbeiten
+  BT     KL_Autostart_aktiv
+  =      PN_M4586_Autostart_Freigabe
+
+  L      MG_Fehler_Modul_9xxx_Submit
+  R      MG_Fehler_Modul_9xxx_Submit
+  S      PN_Fehler_Maschinenparameter_pruefen
+
+  LN     PN_Fehler_Maschinenparameter_pruefen
+  AN     MG_MP_Daten_Tabelle_pruefen
+  AN     MG_MP_Config_Tabelle_pruefen
+  R      MG_TNC_initialisiert
+  S      MG_Maschinenparameter_gelesen
+
+  L      MG_Eins_Merker
+  S      MG_WZ_Status_lesen
+  R      PN_Fehler_lesen_Maschinenparameter
+
+  LN     MG_Inbetriebnahme
+  EMT
+
+  CM     9019                          ;Prüfen des Inhalts des Rechenstack
+  PL     BG_Bytes_auf_Stack
+  M_Modul_Fehler_anzeigen
+
+  L      BG_Bytes_auf_Stack
+  >      K+0
+  S      PN_Fehler_Stack_nicht_leer
+
+EM
+
+;----------------------------
+LBL PL_Byte_Index
+
+  L      KF MP_Definition[X]
+  =X
+  PL     BL_Adresse_0[X]
+
+EM
+
+;----------------------------
+LBL PL_Word_Index
+
+  L      KF MP_Definition[X]
+  /      K+2
+  =X
+  PL     WL_Adresse_0[X]
+
+EM
+
+;----------------------------
+LBL PL_DWord_Index
+
+  L      KF MP_Definition[X]
+  /      K+4
+  =X
+  PL     DL_Adresse_0[X]
+
+EM
+
+;----------------------------
+KFIELD MP_Definition
+
+  K +12
+  KL_Index_0
+  KL_Typ_DWord
+  K&DG_MP12_simulierte_Achsen
+
+#if CFG_FS = "aktiv"
+  K +560                               * SPLC_0007
+  KL_Index_0
+  KL_Typ_DWord
+  K&DG_MP560_FS_Zusatzfunktionen
+
+  K +601                               * SPLC_0006
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP601_Achsgruppe_FS_Spindeln + 0
+
+  K +601
+  KL_Index_1
+  KL_Typ_Byte
+  K&BG_MP601_Achsgruppe_FS_Spindeln + 1
+#endif
+
+#if CFG_Freies_Drehen = "aktiv"
+  K +1010
+  KG_Drehen_Rund_Achs_Index
+  KL_Typ_DWord
+  K&DG_MP1010_Eilgang_Drehen_Rund_Achse
+
+  K +1054
+  KG_Drehen_Rund_Achs_Index
+  KL_Typ_DWord
+  K&DG_MP1054_Weg_bei_Motor_Drehen_Rund_Achse
+#endif
+
+  K +1320
+  KL_Index_0
+  KL_Typ_DWord
+  K&DG_MP1320_Richtung_Referenzaufnahme_negativ
+
+  K +1350
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP1350_Ref_Mode_X
+
+  K +3010
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP3010_Spindel_Mode
+
+  K +3143
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP3143_Referenz_Spindel
+
+  K+3310
+  KL_Index_0
+  KL_Typ_Word
+  K&WG_MP3310_0_S_Override_max
+
+  K+3310
+  KL_Index_1
+  KL_Typ_Word
+  K&WG_MP3310_1_S_Override_min
+
+  K+3420
+  KL_Index_0
+  KL_Typ_DWord
+  K&DL_MP3420_Pos_Fenster_S
+
+  K+3510
+  KL_Index_0
+  KL_Typ_DWord
+  K&DL_MP3510_0_Nenn_Drehzahl_Stufe_0
+
+  K+3520
+  KL_Index_1
+  KL_Typ_DWord
+  K&DG_MP3520_1_Drehzahl_S_orientieren
+
+  K+4020
+  KL_Index_0
+  KL_Typ_Word
+  K&WL_MP4020_PLC_Funktionen
+
+  K+4030
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP4030_0_Zuordnung_logische_PL_1
+
+  K+4030
+  KL_Index_1
+  KL_Typ_Byte
+  K&BG_MP4030_1_Zuordnung_logische_PL_2
+
+  K+4030
+  KL_Index_2
+  KL_Typ_Byte
+  K&BG_MP4030_2_Zuordnung_logische_PL_3
+
+  K+4030
+  KL_Index_3
+  KL_Typ_Byte
+  K&BG_MP4030_3_Zuordnung_logische_PL_4
+
+  K+4031
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP4031_Anzahl_angeschlossene_PL
+
+  K+4130
+  KL_Index_0
+  KL_Typ_Word
+  K&WG_MP4130_Ixx_Ueberwachungsfunktion_aus
+
+  K+6010
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP6010_Tastsystem_Typ
+
+  K+7210
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7210_Programmierplatz
+
+  K+7260
+  KL_Index_0
+  KL_Typ_Word
+  K&WG_MP7260_WZ_Anzahl_in_Tabelle
+
+  K+7440
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7440_Ausgabe_von_M_Funktionen
+
+  K+7480
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7480_WZW_Typ
+
+  K+7620
+  KL_Index_0
+  KL_Typ_Word
+  K&WL_MP7620_TE_mit_Fmax_Override
+
+  K+7640
+  KL_Index_0
+  KL_Typ_Byte
+  K&BG_MP7640_HR_Typ
+
+  K+7645
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7645_HR_Tastatur
+
+  K+7681
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7681_MSTQ_Strobe_Satzvorlauf
+
+  K+7683
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP7683_NC_PGM_und_Paletten_abarbeiten
+
+  K+13010
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP13010_Spindel_Mode
+
+  K+13143
+  KL_Index_0
+  KL_Typ_Byte
+  K&BL_MP13143_Referenz_Spindel
+
+  K+13310
+  KL_Index_0
+  KL_Typ_Word
+  K&WG_MP13310_0_S_Override_max
+
+  K+13310
+  KL_Index_1
+  KL_Typ_Word
+  K&WG_MP13310_1_S_Override_min
+
+  K+13420
+  KL_Index_0
+  KL_Typ_DWord
+  K&DL_MP13420_Pos_Fenster_S
+
+  K+13510
+  KL_Index_0
+  KL_Typ_DWord
+  K&DL_MP13510_0_Nenn_Drehzahl_Stufe_0
+
+  K+13520
+  KL_Index_1
+  KL_Typ_DWord
+  K&DG_MP13520_1_Drehzahl_S_orientieren
+
+  K-1
+ENDK
+
+;----------------------------
+KFIELD WZM_Achs_Indizes
+  KG_WZM_1_Achs_Index
+  KG_WZM_2_Achs_Index
+  KG_WZM_3_Achs_Index
+  KG_WZM_4_Achs_Index
+  KG_WZM_5_Achs_Index
+  KG_WZM_6_Achs_Index
+  KG_WZM_7_Achs_Index
+  KG_WZM_8_Achs_Index
+ENDK

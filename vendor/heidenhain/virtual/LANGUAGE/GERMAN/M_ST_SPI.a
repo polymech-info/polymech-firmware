@@ -1,0 +1,29 @@
+/* STATUS SPINDEL
+   --------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"STATUS SPINDEL";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n                                      \n";
+CURSOR=OFF;
+"Reglerfreigabe :     %d\n",$O_Regler_Freigabe_S1$/c;
+"Antrieb bereit :     %d\n",$MG_Antrieb_bereit[31]$/c;
+"Orientieren    :     %d\n",M4130/c;
+"Regelkreis auf :     %d\n",M4012/c;
+"in Position    :     %d\n",M4000/c;
+"keine Referenz :     %d\n",M4018/c;
+"nicht in Rampe :     %d\n",M4001/c;
+"Sollwert 0     :     %d\n",M4002/c;
+"Pendeln links  :     %d\n",M4009/c;
+"Pendeln rechts :     %d\n",M4010/c;
+"Drehzahl MP3520:     %d\n",M4011/c;
+"Gewinde CYCL 2 :     %d\n",M4030/c;
+"Gewinde CYCL 17:     %d\n",M4031/c;
+"Soll-Drehzahl  : %5.0f\n",D364/n=0/c;
+"Ist-Drehzahl   : %5.0f\n",D368/n=0/c;
+"End-Drehzahl   : %5.0f\n",D372/n=0/c;
+"Programmiert   : %5.0f\n",D356/n=3/c;

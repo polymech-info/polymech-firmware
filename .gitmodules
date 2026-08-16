@@ -1,0 +1,10 @@
+[submodule "elena-rc2/lib/polymech-base"]
+	path = elena-rc2/lib/polymech-base
+	url = https://git.polymech.io/polymech/firmware-base.git
+
+[submodule "cassandra-rc2/components/espsoftwareserial"]
+	path = cassandra-rc2/components/espsoftwareserial
+	url = https://github.com/plerup/espsoftwareserial.git
+[submodule "cassandra-rc2/components/Vector"]
+	path = cassandra-rc2/components/Vector
+	url = https://github.com/janelia-arduino/Vector.git

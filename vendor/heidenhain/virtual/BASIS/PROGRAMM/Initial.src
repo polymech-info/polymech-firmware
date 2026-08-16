@@ -1,0 +1,62 @@
+*-----------------------------------------------------------------------------
+*  Initialisierung
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_minus_1_Bit_31                         K +31
+#define /s    KL_Power_Fail_aus                        K +0
+#define /s    KL_Power_Fail_ein                        K +1
+
+#include Mac_Lib.inc
+
+GLOBAL Init_nach_Reset
+
+;----------------------------
+LBL Init_nach_Reset
+;----------------------------
+
+  LN     MG_TNC_initialisiert
+  S      MG_TNC_initialisiert
+
+  LN     MG_Eins_Merker
+  S      MG_Eins_Merker
+
+  L      MG_Null_Merker
+  R      MG_Null_Merker
+
+  L      MG_Power_Fail_inaktiv_remanent
+  IFT
+    PS     KL_Power_Fail_aus
+  ELSE
+    PS     KL_Power_Fail_ein
+  ENDI
+  CM     9167                          ;Powerfail-Überwachung Aus- und Einschalten
+  PLX
+  M_Modul_Fehler_anzeigen
+
+  L      S"inaktiv"
+  =      SG_WZW_Diagnose_Zeile_1
+  =      SG_WZW_Diagnose_Zeile_2
+  =      SG_WZW_Diagnose_Zeile_3
+  =      SG_WZM_Diagnose_Zeile_1
+  =      SG_WZM_Diagnose_Zeile_2
+  =      SG_WZM_Diagnose_Zeile_3
+
+#if CFG_3D_Kopf = "aktiv"
+    L      DG_Achsen_mit_C_Achs_Betrieb
+    BS     KG_3D_Kopf_Achse_1
+    BS     KG_3D_Kopf_Achse_2
+    BC     KL_minus_1_Bit_31
+    =      DG_Achsen_mit_C_Achs_Betrieb
+#endif
+
+#if CFG_S_in_Achs_Betrieb = "aktiv"
+  L      DG_Achsen_mit_C_Achs_Betrieb
+  BS     KG_S_Achs_Index
+  =      DG_Achsen_mit_C_Achs_Betrieb
+#endif
+
+
+EM

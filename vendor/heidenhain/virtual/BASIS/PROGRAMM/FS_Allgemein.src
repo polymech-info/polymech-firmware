@@ -1,0 +1,444 @@
+*-----------------------------------------------------------------------------
+* FS_Allgemein.src
+*-----------------------------------------------------------------------------
+* Quellcode-Datei
+*-----------------------------------------------------------------------------
+* Inhalt:
+*
+* Funktionen, die an Steuerungen mit Funktionaler Sicherheit FS
+* benötigt werden.
+*-----------------------------------------------------------------------------
+
+#define /s    KL_Max_Anzahl_Achsgruppen_Typen          K +3
+#define /s    KL_Max_Anzahl_sichere_Achsgruppen        K +8
+#define /s    KL_nicht_benutzt                         K +0
+#define /s    KL_v_Limit                               K +6
+#define /s    KL_n_Limit                               K +5
+#define /s    KL_v_Limit_Toleranz                      K +5  * [%]
+#define /s    KL_v_Limit_SOM_1                         K +50 * [mm/min]
+#define /s    KL_n_Limit_SOM_1                         K +10 * [U/min]
+#define /s    KL_100_Prozent                           K +100
+#define /s    KL_3D_ROT_aktiv                          K +18
+#define /s    KL_max_Geschwindigkeit                   K $7FFFFFFF
+
+#define /s    ML_Fehler_SOS_aktiv                      M
+
+#define /s    BL_Achs_Index                            B
+#define /s    BL_Spindel_Index                         B
+#define /s    BL_Achsgruppe_FS_Index                   B
+#define /s    BL_Index_CFG_Achsgruppen_Typ             B
+#define /s    BL_Index_Achse                           B
+#define /s    BL_Zaehler                               B
+
+#define /s    DL_v_Ist_absolut                         D[&KG_max_Achs_Anzahl]
+#define /s    DL_v_Limit                               D[&KG_max_Achs_Anzahl]
+#define /s    DL_n_Limit                               D[&KG_max_Spindel_Anzahl]
+
+GLOBAL FS_Allgemein
+
+#include Mac_Lib.inc
+
+;----------------------------
+LBL FS_Allgemein
+;----------------------------
+
+*-----------------------------------------------------------------------------
+* Maschinenstatus
+*-----------------------------------------------------------------------------
+
+  PS     KL_3D_ROT_aktiv
+  CM     9035                          ;NC-Statusinformationen lesen
+  PLW
+  >      K +0
+  =      MG_3D_ROT_aktiv
+  M_Modul_Fehler_anzeigen
+
+*-----------------------------------------------------------------------------
+* Pendelbetrieb
+*-----------------------------------------------------------------------------
+
+  L      DG_Ref_Pos_Achse[KG_Achse_X]
+  =      DG_Position_Ax01_Ref
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Y]
+  =      DG_Position_Ax02_Ref
+
+  L      DG_Ref_Pos_Achse[KG_Achse_Z]
+  =      DG_Position_Ax03_Ref
+
+*-----------------------------------------------------------------------------
+* Stopp-Reaktion SS1 aus der jeweiligen Achsgruppe
+* Achsgruppenstatus für sichere Achsen
+* Achsgruppenaktivierung für sichere Achsen
+*-----------------------------------------------------------------------------
+
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      BG_MP600_Achsgruppe_FS_Achsen[BL_Achs_Index]
+    =      BL_Achsgruppe_FS_Index
+
+    L      BL_Achsgruppe_FS_Index
+    <>     K -1
+    IFT
+      L      ApiFromSafety.NN_AxGrpStop[BL_Achsgruppe_FS_Index]
+      ==     S_STOP_SS1
+      O[
+        L      ApiFromSafety.NN_AxGrpStop[BL_Achsgruppe_FS_Index]
+        ==     S_STOP_SS1F
+      ]
+      =      MG_SS1_aus_Achsgruppe[BL_Achs_Index]
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+*-----------------------------------------------------------------------------
+* Sicher begrenzte Geschwindigkeit
+*-----------------------------------------------------------------------------
+
+* Achsen
+
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      NP_D388_aktueller_Bahnvorschub
+    =      DL_v_Ist_absolut[BL_Achs_Index]
+
+    PS     KL_v_Limit
+    PS     BL_Achs_Index
+    CM     9037                        ;Lesen des sicherheitsgerichteten Status
+    PL     DL_v_Limit[BL_Achs_Index]
+    M_Modul_Fehler_anzeigen
+
+    L      ApiToSafety.PP_GenSOM
+    ==     S_MODE_SOM_1
+    A[
+      L      DL_v_Limit[BL_Achs_Index]
+      ==     K +0
+    ]
+    IFT
+      L      KL_v_Limit_SOM_1
+      =      DL_v_Limit[BL_Achs_Index]
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+* Spindeln
+
+  L      K +0
+  =      BL_Spindel_Index
+
+  REPEAT
+    PS     KL_n_Limit
+    PS     BL_Spindel_Index
+    CM     9037                        ;Lesen des sicherheitsgerichteten Status
+    PL     DL_n_Limit[BL_Spindel_Index]
+    M_Modul_Fehler_anzeigen
+
+    L      ApiToSafety.PP_GenSOM
+    ==     S_MODE_SOM_1
+    A[
+      L      DL_n_Limit[BL_Spindel_Index]
+      ==     K +0
+    ]
+    IFT
+      L      KL_n_Limit_SOM_1
+      =      DL_n_Limit[BL_Spindel_Index]
+    ENDI
+
+    INC    BL_Spindel_Index
+
+    L      BL_Spindel_Index
+    >=     KG_max_Spindel_Anzahl
+  UNTILT
+
+*-----------------------------------------------------------------------------
+
+  L      MG_Eins_Merker
+  S      MG_v_limitiert
+
+* Achsen
+
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      DG_sichere_Achsen
+    A      DG_geregelte_Achsen
+    AN     DG_MP12_simulierte_Achsen
+    BT     BL_Achs_Index
+    A[
+      L      DL_v_Limit[BL_Achs_Index]
+      <      KL_max_Geschwindigkeit
+    ]
+    IFT
+      L      DL_v_Ist_absolut[BL_Achs_Index]
+      >=[
+        L      DL_v_Limit[BL_Achs_Index]
+        X[
+          L      KL_v_Limit_Toleranz
+          +      KL_100_Prozent
+        ]
+        /      KL_100_Prozent
+      ]
+      R      MG_v_limitiert
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+* Spindeln
+
+  L      K +0
+  =      BL_Spindel_Index
+
+  REPEAT
+    L      DG_sichere_Spindeln
+    BT     BL_Spindel_Index
+    A[
+      L      DG_geregelte_Achsen
+      BT     KG_Spindel
+    ]
+    A[
+      L      DL_n_Limit[BL_Spindel_Index]
+      <      KL_max_Geschwindigkeit
+    ]
+    IFT
+      L      NP_D368_S_Ist_Drehzahl
+      >=[
+        L      DL_n_Limit[BL_Spindel_Index]
+        X[
+          L      KL_v_Limit_Toleranz
+          +      KL_100_Prozent
+        ]
+        /      KL_100_Prozent
+      ]
+      R      MG_v_limitiert
+    ENDI
+
+    INC    BL_Spindel_Index
+
+    L      BL_Spindel_Index
+    >=     KG_max_Spindel_Anzahl
+  UNTILT
+
+*-----------------------------------------------------------------------------
+* Fehlermeldung bei fehlerhafter Anwahl einer Sicherheitsbetriebsart
+*-----------------------------------------------------------------------------
+
+  L      MG_Fehler_SOM_X_Anwahl
+  A      MG_Maschinenparameter_gelesen
+  AN     PN_Fehler_SOM_X_Anwahl
+  S      PN_Fehler_SOM_X_Anwahl
+  IFT
+    PS     K &PN_Fehler_SOM_X_Anwahl - 4800
+    PS     S""
+    PS     DG_Fehler_SOM_X_Anwahl
+    PS     KL_nicht_benutzt
+    CM     9084                        ;PLC-Fehlermeldung anzeigen
+  ENDI
+
+  LN     MG_Fehler_SOM_X_Anwahl
+  R      PN_Fehler_SOM_X_Anwahl
+
+*-----------------------------------------------------------------------------
+* Sicherheitsfunktion "Safe Torque Off" (STO) aktiv
+*-----------------------------------------------------------------------------
+
+  L      MG_Eins_Merker
+  R      PN_Fehler_STO_aktiv
+
+* Achsen
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    L      BG_MP600_Achsgruppe_FS_Achsen[BL_Achs_Index]
+    =      BL_Achsgruppe_FS_Index
+
+    L      DG_sichere_Achsen
+    A      DG_geregelte_Achsen
+    BT     BL_Achs_Index
+    IFT
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      ==     S_STATE_STO
+      A      MG_Steuer_Spannung_verzoegert_ein
+      AN     NP_M4282_Start_Abschaltkanaele
+      S      PN_Fehler_STO_aktiv
+    ENDI
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+* Spindel
+  L      K +0
+  =      BL_Spindel_Index
+
+  REPEAT
+    L      BG_MP601_Achsgruppe_FS_Spindeln[BL_Spindel_Index]
+    =      BL_Achsgruppe_FS_Index
+
+    L      DG_sichere_Spindeln
+    BT     BL_Spindel_Index
+    A[
+      L      DG_geregelte_Achsen
+      BT     KG_Spindel
+    ]
+    IFT
+      L      ApiFromSafety.NN_AxGrpState[BL_Achsgruppe_FS_Index]
+      ==     S_STATE_STO
+      A      MG_Steuer_Spannung_verzoegert_ein
+      AN     NP_M4282_Start_Abschaltkanaele
+      S      PN_Fehler_STO_aktiv
+    ENDI
+
+    INC    BL_Spindel_Index
+
+    L      BL_Spindel_Index
+    >=     KG_max_Spindel_Anzahl
+  UNTILT
+
+*-----------------------------------------------------------------------------
+* Sicherheitsfunktion "Safe Operating Stop" (SOS) aktiv
+*-----------------------------------------------------------------------------
+
+  L      MG_Eins_Merker
+  R      ML_Fehler_SOS_aktiv
+
+  L      K +0
+  =      BL_Achs_Index
+
+  REPEAT
+    LN     NP_M4151_BA_Elektronisches_Handrad
+    AN     NP_M4660_HR5x0_aktiv
+    IFT
+      LN     NP_D1104_Achsen_in_Position
+      BT     BL_Achs_Index
+      PSL
+    ELSE
+      L      NP_D1108_Achsen_in_Bewegung
+      BT     BL_Achs_Index
+      O      NP_M4632_Achse_ueber_HRxxx_bewegt
+      A[
+        L      DG_Handrad_Achsen
+        BT     BL_Achs_Index
+      ]
+      PSL
+    ENDI
+    PLL
+    A[
+      L      DG_sichere_Achsen
+      A      DG_geregelte_Achsen
+      BT     BL_Achs_Index
+    ]
+    A[
+      L      ApiFromSafety.NN_AxState[BL_Achs_Index]
+      ==     S_STATE_SOS
+      ON     ApiToSafety.PP_AxFeedEnable[BL_Achs_Index]
+    ]
+    A      MG_Steuer_Spannung_verzoegert_ein
+    S      ML_Fehler_SOS_aktiv
+
+    INC    BL_Achs_Index
+
+    L      BL_Achs_Index
+    >=     KG_max_Achs_Anzahl
+  UNTILT
+
+  L      ML_Fehler_SOS_aktiv
+  =N     TS_Fehler_SOS_aktiv
+
+  LN     TS_Fehler_SOS_aktiv
+  AN     TR_Fehler_SOS_aktiv
+  =      PN_Fehler_SOS_aktiv
+
+  LN     I_Arbeitsraum_1_zu_verriegelt
+  ON     I_Arbeitsraum_2_zu_verriegelt
+  A[
+    L      ApiToSafety.PP_GenSOM
+    ==     S_MODE_SOM_1
+  ]
+  R      PN_Fehler_SOS_aktiv
+
+*-----------------------------------------------------------------------------
+* Spindel Aktivierung fehlt
+*-----------------------------------------------------------------------------
+
+  L      MG_S_Aktivierung_fehlt
+  =N     TS_Spindel_Aktivierung_fehlt
+
+  L      MG_S_Aktivierung_fehlt
+  AN     TS_Spindel_Aktivierung_fehlt
+  AN     TR_Spindel_Aktivierung_fehlt
+  =      PN_Fehler_S_Aktivierung_fehlt
+
+*-----------------------------------------------------------------------------
+* Fehler bei Aktivierung einer Achsgruppe
+*-----------------------------------------------------------------------------
+
+  L      K +0
+  =      BL_Achsgruppe_FS_Index
+
+  REPEAT
+    L      ApiToSafety.PP_AxGrpActivate[BL_Achsgruppe_FS_Index]
+    AN     MG_Fehler_Aktivierung
+    R      PN_Fehler_Aktivierung_Achsgruppe
+
+    INC    BL_Achsgruppe_FS_Index
+
+    L      BL_Achsgruppe_FS_Index
+    >=     KG_max_Achsgruppen_Anzahl
+  UNTILT
+
+  L      MG_Fehler_Aktivierung
+  S      PN_Fehler_Aktivierung_Achsgruppe
+
+*-----------------------------------------------------------------------------
+* Fehler bei Betätigung der Taste einer gesperrten Bedieneinheit
+*-----------------------------------------------------------------------------
+
+  L      MG_Fehler_Tasten_MB_gesperrt
+  =      PN_Fehler_Tasten_MB_gesperrt
+
+  L      MG_Fehler_Tasten_HR_gesperrt
+  =      PN_Fehler_Tasten_HR_gesperrt
+
+  L      MG_Fehler_Tasten_WZM_gesperrt
+  =      PN_Fehler_Tasten_WZM_gesperrt
+
+*-----------------------------------------------------------------------------
+* Pendel-Betrieb
+*-----------------------------------------------------------------------------
+
+  L      MG_Fehler_Trennwand_Schutz
+  =      PN_Fehler_Trennwand_Schutz
+
+*-----------------------------------------------------------------------------
+* Abnahmetest
+*-----------------------------------------------------------------------------
+
+#if CFG_FS_Abnahmetest = "aktiv"
+  L      MG_Eins_Merker
+  S      MG_Abnahmetest_aktiv
+#else
+  L      MG_Eins_Merker
+  R      MG_Abnahmetest_aktiv
+#endif
+
+EM

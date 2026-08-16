@@ -1,0 +1,1999 @@
+*-----------------------------------------------------------------------------
+*  PLC Window (little)
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_color_black                           K+1
+#define /s    KL_color_grey_10                         K+2
+#define /s    KL_color_grey_20                         K+3
+#define /s    KL_color_grey_40                         K+4
+#define /s    KL_color_grey_60                         K+5
+#define /s    KL_color_grey_80                         K+6
+#define /s    KL_color_light_green                     K+7
+#define /s    KL_color_yellow                          K+8
+#define /s    KL_color_red                             K+9
+#define /s    KL_color_green                           K+10
+#define /s    KL_color_dark_blue                       K+11
+#define /s    KL_color_turquoise                       K+12
+#define /s    KL_color_blue                            K+13
+#define /s    KL_color_purple                          K+14
+#define /s    KL_color_white                           K+15
+
+#define /s    KL_line_0                                K+0
+#define /s    KL_line_1                                K+1
+#define /s    KL_column_0                              K+0
+#define /s    KL_column_1                              K+1            *;EUMACH G00% override
+#define /s    KL_column_10                             K+10           *;EUMACH G00% override
+#define /s    KL_column_11                             K+11
+#define /s    KL_column_16                             K+16           *;EUMACH G00% override
+#define /s    KL_column_19                             K+19           *;EUMACH
+#define /s    KL_column_23                             K+23           *;EUMACH
+#define /s    KL_column_26                             K+26           *;EUMACH G00% override
+#define /s    KL_column_34                             K+34           *;EUMACH G00% override
+#define /s    KL_string_0                              K+0
+#define /s    KL_string_1                              K+1            *;EUMACH Dual TC
+#define /s    KL_max_bar_chart                         K+150
+#define /s    KL_display_without_sign_left             K+0
+#define /s    KL_display_no_sign_right                 K+1            *;EUMACH
+#define /s    KL_display_sign_right                    K+2
+#define /s    KL_0_digits_after_point                  K+0
+#define /s    KL_1_digits_after_point                  K+1            *;EUMACH G00% override
+#define /s    KL_2_digits_after_point                  K+2            *;EUMACH
+#define /s    KL_2_digits_before_point                 K+2            *;EUMACH
+#define /s    KL_3_digits_before_point                 K+3
+#define /s    KL_4_digits_before_point                 K+4            *;EUMACH
+#define /s    KL_5_digits_before_point                 K+5
+#define /s    KL_format_time_h_m_s                     K+13
+#define /s    KL_error_common                          K-1
+#define /s    KL_error_in_display                      K%01
+#define /s    KL_error_in_queue                        K%10
+#define /s    KL_inactive                              K+0
+#define /s    KL_magazine_1                            K+0            *;EUMACH Dual TC
+#define /s    KL_magazine_2                            K+1            *;EUMACH Dual TC
+
+#define /s    ML_message_in_PLC_win                    M
+#define /s    ML_display_L0_L1_equal                   M
+#define /s    ML_axes_in_position                      M
+#define /s    ML_spindle_M5                            M
+#define /s    ML_PLC_Preset                            M
+#define /s    ML_gear_range_display                    M              *;EUMACH
+#define /s /r ML_initialization_ok                     M
+
+#define /s    BL_identifier                            B
+#define /s    BL_line_number                           B
+#define /s    BL_not_used                              B
+#define /s    BL_axis_limit                            B
+#define /s    BL_index_old                             B
+
+
+#define /s    WL_S_act_percent                         W
+#define /s    WL_drive_utilization_S_absolute          W
+#define /s    WL_drive_utilization_absolute            W
+#define /s    WL_drive_utilization_0_old               W
+#define /s    WL_drive_utilization_1_old               W
+#define /s    WL_drive_utilization_S_old               W
+#define /s    WL_factor_feed_override                  W
+#define /s    WL_S_override_plc                        W
+
+#define /s    DL_spindle_actual_rpm                    D
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+
+GLOBAL PLC_Window
+
+;----------------------------
+LBL PLC_Window
+
+  L      MG_soft_key_mode_line_0
+  IFT
+    S      MG_clear_screen
+    INC    BG_mode_line_0
+  ENDI
+
+  L      MG_soft_key_mode_line_1
+  IFT
+    S      MG_clear_screen
+    INC    BG_mode_line_1
+  ENDI
+
+  LN     MG_pulse_250_ms
+  EMT
+
+  RPLY   BL_identifier
+  <>     K+0
+  EMT
+
+  SUBM   SubWindow
+  =      BL_identifier
+  ==     K+0
+  S      PN_error_submit_spawn_queue_full
+
+EM
+
+;----------------------------
+LBL SubWindow
+
+  L      MG_M80_workpiece_counter_reset
+  AN     NP_M4157_mode_restore_position
+  IFT
+    S      MG_clear_screen
+    S      PN_M4092_quit_M_function
+
+    L      K+0
+    =      WG_workpiece_counter
+  ENDI
+
+  L      MG_M81_workpiece_counter_plus_1
+  AN     NP_M4158_mode_block_scan
+  IFT
+    S      MG_clear_screen
+    S      PN_M4092_quit_M_function
+
+    INC    WG_workpiece_counter
+
+    L      WG_workpiece_counter
+    >      K+9999
+    IFT
+      L      K+1
+      =      WG_workpiece_counter
+    ENDI
+  ENDI
+
+  CM     Message_in_PLC_window
+
+  LX
+  <>     BL_index_old
+  O      MG_clear_screen
+  IFT
+    R      MG_clear_screen
+    CM     9080
+    M_display_module_error(KG_error_module_9080)
+
+    L      K-1
+    =      BL_axis_limit
+    =      WL_drive_utilization_0_old
+    =      WL_drive_utilization_1_old
+    =      WL_drive_utilization_S_old
+    =      WL_factor_feed_override
+    =      WL_S_override_plc
+    =      DL_spindle_actual_rpm
+  ENDI
+
+  LX
+  =      BL_index_old
+
+  L      ML_message_in_PLC_win
+  IFT
+    CM     Display_error
+  ELSE
+
+*;EUMACH
+    L      BG_mode_line_0
+    >      K+14
+    IFT
+      L      K+0
+      =      BG_mode_line_0
+    ENDI
+
+    L      BG_mode_line_1
+    >      K+14
+    IFT
+      L      K+0
+      =      BG_mode_line_1
+    ENDI
+*;EUMACH
+
+    L      BG_mode_line_0
+    ==     BG_mode_line_1
+    =      ML_display_L0_L1_equal
+
+    L      KL_line_0
+    =      BL_line_number
+
+    L      BG_mode_line_0
+;    >      K+12                                                      *;EUMACH
+    >      K+14                                                       *;EUMACH
+    IFT
+;      L      K+0                                                     *;EUMACH Original PLC
+;      =      BG_mode_line_0                                          *;EUMACH Original PLC
+
+*;EUMACH G00% override
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+      L      K-1
+      =      BL_axis_limit
+      =      WL_drive_utilization_0_old
+      =      WL_drive_utilization_1_old
+      =      WL_drive_utilization_S_old
+      =      WL_factor_feed_override
+      =      WL_S_override_plc
+      =      DL_spindle_actual_rpm
+#endif
+*;EUMACH G00% override
+    ENDI
+
+    CASE   BG_mode_line_0
+      CM     Nnominal_actual           ;00
+      CM     S_torque                  ;01
+      CM     S_override                ;02
+      CM     F_override                ;03
+      CM     Axes_utilization          ;04  X
+      CM     Axes_utilization          ;05  Y
+      CM     Axes_utilization          ;06  Z
+      CM     Axes_utilization          ;07  4
+      CM     Axes_utilization          ;08  5
+      CM     Axes_utilization          ;09  6
+      CM     Axes_utilization          ;10  7
+      CM     Axes_utilization          ;11  8
+      CM     Axes_utilization          ;12  9
+      CM     Axes_utilization          ;13  10
+      CM     Axes_utilization          ;14  11
+      CM     Axes_utilization          ;15  12
+      CM     Axes_utilization          ;16  13
+      CM     Axes_utilization          ;17  14
+    ENDC
+
+    L      KL_line_1
+    =      BL_line_number
+
+    L      BG_mode_line_1
+;    >      K+12                                                      *;EUMACH
+    >      K+14                                                       *;EUMACH
+    IFT
+;      L      K+0                                                     *;EUMACH Original PLC
+;      =      BG_mode_line_1                                          *;EUMACH Original PLC
+
+*;EUMACH G00% override
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+      L      K-1
+      =      BL_axis_limit
+      =      WL_drive_utilization_0_old
+      =      WL_drive_utilization_1_old
+      =      WL_drive_utilization_S_old
+      =      WL_factor_feed_override
+      =      WL_S_override_plc
+      =      DL_spindle_actual_rpm
+#endif
+*;EUMACH G00% override
+    ENDI
+
+    CASE   BG_mode_line_1
+      CM     Nnominal_actual           ;00
+      CM     S_torque                  ;01
+      CM     S_override                ;02
+      CM     F_override                ;03
+      CM     Axes_utilization          ;04  X
+      CM     Axes_utilization          ;05  Y
+      CM     Axes_utilization          ;06  Z
+      CM     Axes_utilization          ;07  4
+      CM     Axes_utilization          ;08  5
+      CM     Axes_utilization          ;09  6
+      CM     Axes_utilization          ;10  7
+      CM     Axes_utilization          ;11  8
+      CM     Axes_utilization          ;12  9
+      CM     Axes_utilization          ;13  10
+      CM     Axes_utilization          ;14  11
+      CM     Axes_utilization          ;15  12
+      CM     Axes_utilization          ;16  13
+      CM     Axes_utilization          ;17  14
+    ENDC
+
+    CM     Probe_Count
+    CM     AxisLimit
+
+  ENDI
+
+  L      MG_submit_CE_key
+  S      MG_clear_screen
+  CMT    Delete_error_marker
+  R      MG_submit_CE_key
+
+  LN     NP_commissioning
+  A      ML_initialization_ok
+  EMT
+
+  CM     9019
+  PL     BG_bytes_on_stack
+  M_display_module_error(KG_error_module_9019)
+
+  L      BG_bytes_on_stack
+  >      K+0
+  S      PN_error_stack_not_empty
+
+  L      ML_initialization_ok
+  EMT
+
+  LN     ML_initialization_ok
+  S      ML_initialization_ok
+
+  L      K+0
+  =      BG_mode_line_0
+
+  L      K+1
+  =      BG_mode_line_1
+
+EM
+
+;----------------------------
+LBL Message_in_PLC_window
+
+  L      K-1
+  =X
+
+  REPEAT
+    INCX
+
+    L      MG_PLC_window_begin[X]
+    =      ML_message_in_PLC_win
+
+    LX
+    >=     K &MG_PLC_window_end - &MG_PLC_window_begin
+    O      MG_PLC_window_begin[X]
+  UNTILT
+
+  PS     KL_error_common
+  CM     9087
+  PLW
+  <>     KL_error_in_display
+  A      ML_message_in_PLC_win
+  A      I_control_operational
+  S      PN_error_in_PLC_window
+  M_display_module_error(KG_error_module_9087)
+
+  LN     ML_message_in_PLC_win
+  R      PN_error_in_PLC_window
+  IFT
+    L      K-1
+    =X
+  ENDI
+
+EM
+
+;----------------------------
+LBL Display_error
+
+  LX
+  X      K+2
+  =X
+
+  L      S#E200[X]
+  =      S0
+
+  PS     KL_line_0
+  PS     KL_column_0
+  PS     KL_color_red
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+
+  INCX
+  L      S#E200[X]
+  =      S0
+
+  PS     KL_line_1
+  PS     KL_column_0
+  PS     KL_color_red
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+
+EM
+
+;----------------------------
+LBL Delete_error_marker
+
+  L      K-1
+  =X
+
+  REPEAT
+    INCX
+    LX
+    >=     K &MG_PLC_window_end - &MG_PLC_window_begin
+    O      MG_PLC_window_begin[X]
+  UNTILT
+
+  L      MG_marker_one
+  R      MG_PLC_window_begin[X]
+
+EM
+
+;----------------------------
+LBL Axes_utilization
+
+;#if Override_knobs = &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      BG_mode_line_0
+    -      K+4
+    =X
+
+    PS     WG_drive_utilization[X]
+    CM     Absolute
+    PL     WL_drive_utilization_absolute
+
+    L      WL_drive_utilization_absolute
+    ==     WL_drive_utilization_0_old
+    AN     ML_display_L0_L1_equal
+    EMT
+
+    L      WL_drive_utilization_absolute
+    =      WL_drive_utilization_0_old
+  ELSE
+    L      BG_mode_line_1
+    -      K+4
+    =X
+
+    PS     WG_drive_utilization[X]
+    CM     Absolute
+    PL     WL_drive_utilization_absolute
+
+    L      WL_drive_utilization_absolute
+    ==     WL_drive_utilization_1_old
+    AN     ML_display_L0_L1_equal
+    EMT
+
+    L      WL_drive_utilization_absolute
+    =      WL_drive_utilization_1_old
+  ENDI
+
+  PS     BL_line_number
+  PS     KL_color_light_green
+
+  L      MG_gear_change_active
+  IFT
+    L      K+0
+    =      WL_drive_utilization_absolute
+  ENDI
+
+  L      WL_drive_utilization_absolute
+  >=     K+50
+  IFT
+    PL     BL_not_used
+    PS     KL_color_yellow
+  ENDI
+
+  L      WL_drive_utilization_absolute
+  >=     K+80
+  IFT
+    PL     BL_not_used
+    PS     KL_color_red
+  ENDI
+
+  PS     KL_color_grey_20
+  PS     WL_drive_utilization_absolute
+  PS     KL_max_bar_chart
+  CM     9083
+  M_display_module_error(KG_error_module_9083)
+
+  PS     WL_drive_utilization_absolute
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S#D30[X]
+  =      S0
+
+  PS     BL_line_number
+  PS     KL_column_0
+  PS     KL_color_black
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#else                                                                 *;EUMACH G00% override
+*;EUMACH G00% override
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      BG_mode_line_0
+    -      K+4
+    =X
+
+    PS     WG_drive_utilization[X]
+    CM     Absolute
+    PL     WL_drive_utilization_absolute
+
+    L      WL_drive_utilization_absolute
+    ==     WL_drive_utilization_0_old
+    AN     ML_display_L0_L1_equal
+    EMT
+
+    L      WL_drive_utilization_absolute
+    =      WL_drive_utilization_0_old
+
+*;No bar chart, only numbers, due to displaying of G00% value
+    L      MG_gear_change_active
+    IFT
+      L      K+0
+      =      WL_drive_utilization_absolute
+    ENDI
+
+    PS     WL_drive_utilization_absolute
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S#D30[X]
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_16
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+*;No bar chart, only numbers, due to displaying of G00% value
+  ELSE
+    L      BG_mode_line_1
+    -      K+4
+    =X
+
+    PS     WG_drive_utilization[X]
+    CM     Absolute
+    PL     WL_drive_utilization_absolute
+
+    L      WL_drive_utilization_absolute
+    ==     WL_drive_utilization_1_old
+    AN     ML_display_L0_L1_equal
+    EMT
+
+    L      WL_drive_utilization_absolute
+    =      WL_drive_utilization_1_old
+
+    PS     BL_line_number
+    PS     KL_color_light_green
+
+    L      MG_gear_change_active
+    IFT
+      L      K+0
+      =      WL_drive_utilization_absolute
+    ENDI
+
+    L      WL_drive_utilization_absolute
+    >=     K+50
+    IFT
+      PL     BL_not_used
+      PS     KL_color_yellow
+    ENDI
+
+    L      WL_drive_utilization_absolute
+    >=     K+80
+    IFT
+      PL     BL_not_used
+      PS     KL_color_red
+    ENDI
+
+    PS     KL_color_grey_20
+    PS     WL_drive_utilization_absolute
+    PS     KL_max_bar_chart
+    CM     9083
+    M_display_module_error(KG_error_module_9083)
+
+    PS     WL_drive_utilization_absolute
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S#D30[X]
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_1
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI
+*;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+EM
+
+;----------------------------
+LBL S_torque
+
+  PS     WG_drive_utilization_S
+  CM     Absolute
+  PL     WL_drive_utilization_S_absolute
+
+  L      WL_drive_utilization_S_absolute
+  ==     WL_drive_utilization_S_old
+  AN     ML_display_L0_L1_equal
+  EMT
+
+  L      WL_drive_utilization_S_absolute
+  =      WL_drive_utilization_S_old
+
+;#if Override_knobs = &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+  PS     BL_line_number
+  PS     KL_color_light_green
+
+  L      MG_gear_change_active
+  IFT
+    L      K+0
+    =      WL_drive_utilization_S_absolute
+  ENDI
+
+  L      WL_drive_utilization_S_absolute
+  >=     K+50
+  IFT
+    PLX
+    PS     KL_color_yellow
+  ENDI
+
+  L      WL_drive_utilization_S_absolute
+  >=     K+80
+  IFT
+    PLX
+    PS     KL_color_red
+  ENDI
+
+  L      MG_spindle_stand_still
+  IFT
+    PLX
+    PS     KL_color_grey_10
+  ENDI
+
+  PS     KL_color_grey_20
+  PS     WL_drive_utilization_S_absolute
+  PS     KL_max_bar_chart
+  CM     9083
+  M_display_module_error(KG_error_module_9083)
+
+  PS     WL_drive_utilization_S_absolute
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"% SLOAD"
+  =      S0
+
+  PS     BL_line_number
+  PS     KL_column_0
+  L      MG_tool_torque_monitoring_active
+  IFT
+    PS     KL_color_red
+  ELSE
+    PS     KL_color_black
+  ENDI
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#else                                                                 *;EUMACH G00% override
+*;EUMACH G00% override
+*;No bar chart, only numbers, due to displaying of G00% value
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      MG_gear_change_active
+    IFT
+      L      K+0
+      =      WL_drive_utilization_S_absolute
+    ENDI
+
+    PS     WL_drive_utilization_S_absolute
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%SLOAD"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_16
+    L      MG_tool_torque_monitoring_active
+    IFT
+      PS     KL_color_red
+    ELSE
+      PS     KL_color_black
+    ENDI
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+*;No bar chart, only numbers, due to displaying of G00% value
+  ELSE
+    PS     BL_line_number
+    PS     KL_color_light_green
+
+    L      MG_gear_change_active
+    IFT
+      L      K+0
+      =      WL_drive_utilization_S_absolute
+    ENDI
+
+    L      WL_drive_utilization_S_absolute
+    >=     K+50
+    IFT
+      PLX
+      PS     KL_color_yellow
+    ENDI
+
+    L      WL_drive_utilization_S_absolute
+    >=     K+80
+    IFT
+      PLX
+      PS     KL_color_red
+    ENDI
+
+    L      MG_spindle_stand_still
+    IFT
+      PLX
+      PS     KL_color_grey_10
+    ENDI
+
+    PS     KL_color_grey_20
+    PS     WL_drive_utilization_S_absolute
+    PS     KL_max_bar_chart
+    CM     9083
+    M_display_module_error(KG_error_module_9083)
+
+    PS     WL_drive_utilization_S_absolute
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%SLOAD"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_1
+    L      MG_tool_torque_monitoring_active
+    IFT
+      PS     KL_color_red
+    ELSE
+      PS     KL_color_black
+    ENDI
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI                                                                *;EUMACH G00% override
+*;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+EM
+
+;----------------------------
+LBL Nnominal_actual
+
+  L      DG_spindle_actual_rpm
+  ==     DL_spindle_actual_rpm
+  AN     ML_display_L0_L1_equal
+  O      MG_3D_head_active
+  EMT
+
+  L      DG_spindle_actual_rpm
+  =      DL_spindle_actual_rpm
+
+  L      DG_spindle_actual_rpm
+  X      K+10000
+  +[
+    L      NP_D356_S_programmed_rpm
+    /      K+20
+  ]
+  /[
+    L      NP_D356_S_programmed_rpm
+    /      K+10
+  ]
+  =      WL_S_act_percent
+
+;#if Override_knobs = &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+  PS     BL_line_number
+  PS     KL_color_red
+
+  L      WL_S_act_percent
+  >=     K+60
+  A[
+    L      WL_S_act_percent
+    <=     K+120
+  ]
+  IFT
+    PLX
+    PS     KL_color_yellow
+  ENDI
+
+  L      WL_S_act_percent
+  >=     K+80
+  A[
+    L      WL_S_act_percent
+    <=     K+110
+  ]
+  IFT
+    PLX
+    PS     KL_color_light_green
+  ENDI
+
+  L      MG_spindle_stand_still
+  ON     PN_M4012_S_open_control_loop
+  IFT
+    PLX
+    PS     KL_color_grey_10
+  ENDI
+
+  PS     KL_color_grey_20
+
+  L      WL_S_act_percent
+  PSW
+  <      K+0
+  ON     PN_M4012_S_open_control_loop
+  O      MG_gear_change_active
+  O      PN_M4011_S_speed_from_MP3520.0
+  IFT
+    PLX
+    PS     K+0
+  ENDI
+
+  PS     KL_max_bar_chart
+  CM     9083
+  M_display_module_error(KG_error_module_9083)
+
+  L      WL_S_act_percent
+  PSW
+  >      K+150
+  IFT
+    PLX
+    PS     K+150
+  ENDI
+  PLW
+  PSW
+  <      K+0
+  ON     PN_M4012_S_open_control_loop
+  IFT
+    PLX
+    PS     K+0
+  ENDI
+
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"% S-ACT"
+  =      S0
+
+  PS     BL_line_number
+  PS     KL_column_0
+  PS     KL_color_black
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#else                                                                 *;EUMACH G00% override
+*;EUMACH G00% override
+*;No bar chart, only numbers, due to displaying of G00% value
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      WL_S_act_percent
+    PSW
+    >      K+150
+    IFT
+      PLX
+      PS     K+150
+    ENDI
+    PLW
+    PSW
+    <      K+0
+    ON     PN_M4012_S_open_control_loop
+    IFT
+      PLX
+      PS     K+0
+    ENDI
+
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%S-ACT"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_16
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+*;No bar chart, only numbers, due to displaying of G00% value
+  ELSE
+    PS     BL_line_number
+    PS     KL_color_red
+
+    L      WL_S_act_percent
+    >=     K+60
+    A[
+      L      WL_S_act_percent
+      <=     K+120
+    ]
+    IFT
+      PLX
+      PS     KL_color_yellow
+    ENDI
+
+    L      WL_S_act_percent
+    >=     K+80
+    A[
+      L      WL_S_act_percent
+      <=     K+110
+    ]
+    IFT
+      PLX
+      PS     KL_color_light_green
+    ENDI
+
+    L      MG_spindle_stand_still
+    ON     PN_M4012_S_open_control_loop
+    IFT
+      PLX
+      PS     KL_color_grey_10
+    ENDI
+
+    PS     KL_color_grey_20
+
+    L      WL_S_act_percent
+    PSW
+    <      K+0
+    ON     PN_M4012_S_open_control_loop
+    O      MG_gear_change_active
+    O      PN_M4011_S_speed_from_MP3520.0
+    IFT
+      PLX
+      PS     K+0
+    ENDI
+
+    PS     KL_max_bar_chart
+    CM     9083
+    M_display_module_error(KG_error_module_9083)
+
+    L      WL_S_act_percent
+    PSW
+    >      K+150
+    IFT
+      PLX
+      PS     K+150
+    ENDI
+    PLW
+    PSW
+    <      K+0
+    ON     PN_M4012_S_open_control_loop
+    IFT
+      PLX
+      PS     K+0
+    ENDI
+
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%S-ACT"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_1
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI
+*;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+EM
+
+;----------------------------
+LBL F_override
+
+  L      PN_W766_factor_feed_override_PLC
+  ==     WL_factor_feed_override
+  A[
+    LN     MG_axes_in_position
+    XO     ML_axes_in_position
+  ]
+  AN     ML_display_L0_L1_equal
+  EMT
+
+  L      PN_W766_factor_feed_override_PLC
+  =      WL_factor_feed_override
+
+  L      MG_axes_in_position
+  =      ML_axes_in_position
+
+;#if Override_knobs = &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+  PS     BL_line_number
+  L      PN_W766_factor_feed_override_PLC
+  <      K+5000
+  O[
+    L      PN_W766_factor_feed_override_PLC
+    >=     K+12000
+  ]
+  IFT
+    PS     KL_color_red
+  ELSE
+    L      PN_W766_factor_feed_override_PLC
+    <      K+8000
+    O[
+      L      PN_W766_factor_feed_override_PLC
+      >=     K+11000
+    ]
+    IFT
+      PS     KL_color_yellow
+    ELSE
+      PS     KL_color_light_green
+    ENDI
+  ENDI
+
+  L      MG_axes_in_position
+  IFT
+    PLX
+    PS     KL_color_grey_10
+  ENDI
+
+  PS     KL_color_grey_20
+  L      PN_W766_factor_feed_override_PLC
+  /      K+100
+  PSW
+  PS     KL_max_bar_chart
+  CM     9083
+  M_display_module_error(KG_error_module_9083)
+
+  L      PN_W766_factor_feed_override_PLC
+  /      K+100
+  PSW
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"% F-OVR"
+  =      S0
+
+  PS     BL_line_number
+  PS     KL_column_0
+  PS     KL_color_black
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#else                                                                 *;EUMACH G00% override
+*;EUMACH G00% override
+*;No bar chart, only numbers, due to displaying of G00% value
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      PN_W766_factor_feed_override_PLC
+    /      K+100
+    PSW
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%F-OVR"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_16
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+*;No bar chart, only numbers, due to displaying of G00% value
+  ELSE
+    PS     BL_line_number
+    L      PN_W766_factor_feed_override_PLC
+    <      K+5000
+    O[
+      L      PN_W766_factor_feed_override_PLC
+      >=     K+12000
+    ]
+    IFT
+      PS     KL_color_red
+    ELSE
+      L      PN_W766_factor_feed_override_PLC
+      <      K+8000
+      O[
+        L      PN_W766_factor_feed_override_PLC
+        >=     K+11000
+      ]
+      IFT
+        PS     KL_color_yellow
+      ELSE
+        PS     KL_color_light_green
+      ENDI
+    ENDI
+
+    L      MG_axes_in_position
+    IFT
+      PLX
+      PS     KL_color_grey_10
+    ENDI
+
+    PS     KL_color_grey_20
+    L      PN_W766_factor_feed_override_PLC
+    /      K+100
+    PSW
+    PS     KL_max_bar_chart
+    CM     9083
+    M_display_module_error(KG_error_module_9083)
+
+    L      PN_W766_factor_feed_override_PLC
+    /      K+100
+    PSW
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%F-OVR"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_1
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI
+*;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+EM
+
+;----------------------------
+LBL S_override
+
+  L      PN_W764_S_override_PLC
+  ==     WL_S_override_plc
+  A[
+    LN     MG_spindle_stand_still
+    A      PN_M4012_S_open_control_loop
+    XO     ML_spindle_M5
+  ]
+  AN     ML_display_L0_L1_equal
+  EMT
+
+  L      PN_W764_S_override_PLC
+  =      WL_S_override_plc
+
+;#if Override_knobs = &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive) *;EUMACH S% knob -> FMAX% knob
+  PS     BL_line_number
+
+  L      PN_W764_S_override_PLC
+  <      K+8000
+  O[
+    L      PN_W764_S_override_PLC
+    >=     K+11000
+  ]
+  IFT
+    L      PN_W764_S_override_PLC
+    <      K+6000
+    O[
+      L      PN_W764_S_override_PLC
+      >=     K+12000
+    ]
+    IFT
+      PS     KL_color_red
+    ELSE
+      PS     KL_color_yellow
+    ENDI
+  ELSE
+    L      PN_W764_S_override_PLC
+    <      K+6000
+    O[
+      L      PN_W764_S_override_PLC
+      >=     K+12000
+    ]
+    IFT
+      PS     KL_color_red
+    ELSE
+      PS     KL_color_light_green
+    ENDI
+  ENDI
+
+  L      MG_spindle_stand_still
+  ON     PN_M4012_S_open_control_loop
+  =      ML_spindle_M5
+  IFT
+    PLX
+    PS     KL_color_grey_10
+  ENDI
+
+  PS     KL_color_grey_20
+  L      PN_W764_S_override_PLC
+  /      K+100
+  PSW
+  PS     KL_max_bar_chart
+  CM     9083
+  M_display_module_error(KG_error_module_9083)
+
+  L      PN_W764_S_override_PLC
+  /      K+100
+  PSW
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"% S-OVR"
+  =      S0
+
+  PS     BL_line_number
+  PS     KL_column_0
+  PS     KL_color_black
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#else                                                                 *;EUMACH G00% override
+*;EUMACH G00% override
+*;No bar chart, only numbers, due to displaying of G00% value
+  L      BL_line_number
+  ==     KL_line_0
+  IFT
+    L      PN_W764_S_override_PLC
+    /      K+100
+    PSW
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%S-OVR"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_16
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+*;No bar chart, only numbers, due to displaying of G00% value
+  ELSE
+    PS     BL_line_number
+
+    L      PN_W764_S_override_PLC
+    <      K+8000
+    O[
+      L      PN_W764_S_override_PLC
+      >=     K+11000
+    ]
+    IFT
+      L      PN_W764_S_override_PLC
+      <      K+6000
+      O[
+        L      PN_W764_S_override_PLC
+        >=     K+12000
+      ]
+      IFT
+        PS     KL_color_red
+      ELSE
+        PS     KL_color_yellow
+      ENDI
+    ELSE
+      L      PN_W764_S_override_PLC
+      <      K+6000
+      O[
+        L      PN_W764_S_override_PLC
+        >=     K+12000
+      ]
+      IFT
+        PS     KL_color_red
+      ELSE
+        PS     KL_color_light_green
+      ENDI
+    ENDI
+
+    L      MG_spindle_stand_still
+    ON     PN_M4012_S_open_control_loop
+    =      ML_spindle_M5
+    IFT
+      PLX
+      PS     KL_color_grey_10
+    ENDI
+
+    PS     KL_color_grey_20
+    L      PN_W764_S_override_PLC
+    /      K+100
+    PSW
+    PS     KL_max_bar_chart
+    CM     9083
+    M_display_module_error(KG_error_module_9083)
+
+    L      PN_W764_S_override_PLC
+    /      K+100
+    PSW
+    PS     KL_display_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+    +      S"%S-OVR"
+    =      S0
+
+    PS     BL_line_number
+    PS     KL_column_1
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI
+*;EUMACH G00% override
+#endif                                                                *;EUMACH G00% override
+
+EM
+
+;----------------------------
+LBL AxisLimit
+
+  LB     MG_axis_limit_1
+  ==     BL_axis_limit
+
+*;EUMACH G00% override
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+;#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+;  O[
+;    L      BL_axis_limit
+;    ==     K-1
+;  ]
+;#endif
+*;EUMACH G00% override
+  EMT
+
+  L      S"???"
+  =      S0
+
+  L      MG_axis_limit_1
+  IFT
+    L      S" 1 "
+    =      S0
+  ENDI
+
+  L      MG_axis_limit_2
+  IFT
+    L      S" 2 "
+    =      S0
+  ENDI
+
+  L      MG_axis_limit_3
+  IFT
+    L      S" 3 "
+    =      S0
+  ENDI
+
+  L      MG_alternating_table_on
+  IFT
+    L      S"TABLE"
+    +      S0
+    =      S0
+  ELSE
+    L      S"LIMIT"
+    +      S0
+    =      S0
+  ENDI
+
+  PS     KL_line_1
+  PS     KL_column_11
+
+  L      MG_soft_key_working_area_monitoring_off
+  A      MG_clock_1_s
+  IFT
+    PS     KL_color_red
+  ELSE
+    PS     KL_color_yellow
+  ENDI
+
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+
+*;EUMACH
+  L      MG_spindle_with_gear
+  A      MG_spindle_active
+  AN     NP_without_gear_range_display
+  =      ML_gear_range_display
+
+  L      ML_gear_range_display
+  ON     MG_soft_key_fluid_flow_valve
+  IFT
+    L      ML_gear_range_display
+    A      MG_soft_key_fluid_flow_valve
+    IFT
+      L      I_gear_range_1
+      XO     I_gear_range_2
+      IFT
+        L      I_gear_range_1
+        AN     I_gear_range_2
+        IFT
+          L      S"GR1 "
+          =      S0
+        ELSE
+          L      S"GR2 "
+          =      S0
+        ENDI
+      ELSE
+        L      S"GR? "
+        =      S0
+      ENDI
+
+      PS     KL_line_1
+      PS     KL_column_19
+      PS     KL_color_black
+      PS     KL_string_0
+      CM     9082
+      M_display_module_error(KG_error_module_9082)
+    ELSE
+      LN     ML_gear_range_display
+      AN     MG_soft_key_fluid_flow_valve
+      IFT
+        LN     MG_clock_1_s
+        IFT
+          L      S"M09 "
+          =      S0
+
+          PS     KL_line_1
+          PS     KL_column_19
+          PS     KL_color_red
+          PS     KL_string_0
+          CM     9082
+          M_display_module_error(KG_error_module_9082)
+        ELSE
+          L      S"    "
+          =      S0
+
+          PS     KL_line_1
+          PS     KL_column_19
+          PS     KL_color_black
+          PS     KL_string_0
+          CM     9082
+          M_display_module_error(KG_error_module_9082)
+        ENDI
+      ELSE
+        L      ML_gear_range_display
+        A      MG_clock_1_s
+        IFT
+          L      I_gear_range_1
+          XO     I_gear_range_2
+          IFT
+            L      I_gear_range_1
+            AN     I_gear_range_2
+            IFT
+              L      S"GR1 "
+              =      S0
+            ELSE
+              L      S"GR2 "
+              =      S0
+            ENDI
+          ELSE
+            L      S"GR? "
+            =      S0
+          ENDI
+
+          PS     KL_line_1
+          PS     KL_column_19
+          PS     KL_color_black
+          PS     KL_string_0
+          CM     9082
+          M_display_module_error(KG_error_module_9082)
+        ENDI
+
+        LN     MG_soft_key_fluid_flow_valve
+        AN     MG_clock_1_s
+        IFT
+          L      S"M09 "
+          =      S0
+
+          PS     KL_line_1
+          PS     KL_column_19
+          PS     KL_color_red
+          PS     KL_string_0
+          CM     9082
+          M_display_module_error(KG_error_module_9082)
+        ENDI
+      ENDI
+    ENDI
+  ELSE
+    L      S"    "
+    =      S0
+
+    PS     KL_line_1
+    PS     KL_column_19
+    PS     KL_color_black
+    PS     KL_string_0
+    CM     9082
+    M_display_module_error(KG_error_module_9082)
+  ENDI
+
+#if Cycle_332 = &active
+  L      BG_tuning_mode
+  ==     K+0
+  IFT
+    L      S"L"
+    =      S0
+  ELSE
+    L      BG_tuning_mode
+    ==     K+1
+    IFT
+      L      S"M"
+      =      S0
+    ELSE
+      L      BG_tuning_mode
+      ==     K+2
+      IFT
+        L      S"H"
+        =      S0
+      ELSE
+        L      S"?"
+        =      S0
+      ENDI
+    ENDI
+  ENDI
+#else
+  L      S" "
+  =      S0
+#endif
+
+  PS     KL_line_1
+  PS     KL_column_23
+  PS     KL_color_blue
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+*;EUMACH
+
+EM
+
+;----------------------------
+LBL Probe_Count
+
+*;EUMACH G00% override (G00% & G01% value display)
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+  L      NP_W752_rapid_traverse_override_PLC
+  /      K+10
+  PSW
+  PS     KL_display_sign_right
+  PS     KL_1_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM 9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"%FMAX"
+  =      S0
+
+  PS     KL_line_0
+  PS     KL_column_0
+  PS     KL_color_purple
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+
+  L      PN_W766_factor_feed_override_PLC
+  /      K+100
+  PSW
+  PS     KL_display_sign_right
+  PS     KL_0_digits_after_point
+  PS     KL_3_digits_before_point
+  PS     KL_string_0
+  CM     9051
+  M_display_module_error(KG_error_module_9051)
+
+  L      S0
+  +      S"%F "
+  =      S0
+
+  PS     KL_line_0
+  PS     KL_column_10
+  PS     KL_color_black
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+#endif
+*;EUMACH G00% override (G00% & G01% value display)
+
+  L      MG_TC_manual
+  O      MG_TC_automatic
+  O      MG_TC_help
+  O      MG_T_select_start                                            *;EUMACH standby tool loading/unloading
+  O      MG_TC_magazine_start
+;  O      MG_soft_key_TC_mag_load_active                              *;EUMACH
+  O      MG_TM_loading_active                                         *;EUMACH
+#if (Tool_magazine_system_2 ! &inactive) or (Tool_changing_arm_2 ! &inactive) *;EUMACH Dual TC
+  O      MG_TC2_automatic                                             *;EUMACH Dual TC
+  O      MG_TC_magazine_2_start                                       *;EUMACH Dual TC
+  O      MG_TM2_loading_active                                        *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  AN     NP_display_standby_pocket_inactive
+  A      MG_TC_auto_active
+  IFT
+*;EUMACH Dual TC
+    L      MG_TC_magazine_2_active
+    IFT
+      L      MG_clock_2_s
+      IFT
+        PS     WG_TC_magazine_actual_pocket
+      ELSE
+        PS     WG_TC_magazine_2_actual_pocket
+      ENDI
+    ELSE
+*;EUMACH Dual TC
+      PS     WG_TC_magazine_actual_pocket
+    ENDI                                                              *;EUMACH Dual TC
+;    PS     KL_display_without_sign_left                              *;EUMACH Original PLC
+    PS     KL_display_no_sign_right                                   *;EUMACH
+    PS     KL_0_digits_after_point
+    PS     KL_3_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+*;EUMACH Dual TC
+    L      MG_TC_magazine_2_active
+    IFT
+      L      MG_clock_2_s
+      IFT
+        L      S"P1-"
+        +      S0
+        +      S"  "
+        =      S0
+      ELSE
+        L      S"P2-"
+        +      S0
+        +      S"  "
+        =      S0
+      ENDI
+    ELSE
+*;EUMACH Dual TC
+      L      S"P "
+      +      S0                                                       *;EUMACH
+;      +      S"        "                                             *;EUMACH Original PLC
+      +      S"   "                                                   *;EUMACH
+      =      S0
+    ENDI                                                              *;EUMACH Dual TC
+  ELSE
+    L      WG_workpiece_counter
+    >      K+0
+    IFT
+      PS     WG_workpiece_counter
+      PS     KL_display_without_sign_left
+      PS     KL_0_digits_after_point
+      PS     KL_5_digits_before_point
+      PS     KL_string_0
+      CM     9051
+      M_display_module_error(KG_error_module_9051)
+
+      L      S"WP:"
+      +      S0
+;      +      S"     "                                                *;EUMACH Original PLC
+      =      S0
+    ELSE
+      L      BG_PLC_preset_number
+      >      KL_inactive
+      IFT
+        S      ML_PLC_Preset
+        PS     BG_PLC_preset_number
+        PS     KL_display_without_sign_left
+        PS     KL_0_digits_after_point
+        PS     KL_3_digits_before_point
+        PS     KL_string_0
+        CM     9051
+          M_display_module_error(KG_error_module_9051)
+
+        L      S"DAT"
+        +      S0
+;        +      S"       "                                            *;EUMACH Original PLC
+        +      S"  "                                                  *;EUMACH
+        =      S0
+      ELSE
+*;EUMACH Standby tool number display & feed disable
+        L      MG_TC_auto_active
+        A      NP_display_standby_tool_number
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+        O      MG_feed_disable_axis_4
+        O      MG_feed_disable_axis_5
+#else
+        O      MG_feed_disable_axis_4
+#endif
+        IFT
+          L      MG_feed_disable_axis_4
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+          O      MG_feed_disable_axis_5
+#endif
+          AN     MG_clock_1_s
+          IFT
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+            L      MG_feed_disable_axis_4
+            AN     MG_feed_disable_axis_5
+            IFT
+              L      S"C1-LCK  "
+              =      S0
+            ENDI
+
+            LN     MG_feed_disable_axis_4
+            A      MG_feed_disable_axis_5
+            IFT
+              L      S"C2-LCK  "
+              =      S0
+            ENDI
+
+            L      MG_feed_disable_axis_4
+            A      MG_feed_disable_axis_5
+            IFT
+              L      S"C1C2-LCK"
+              =      S0
+            ENDI
+#else
+            L      S"C-LOCKED"
+            =      S0
+#endif
+          ELSE
+            L      S"        "
+            =      S0
+          ENDI
+
+          L      MG_feed_disable_axis_4
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+          O      MG_feed_disable_axis_5
+#endif
+          A      MG_clock_1_s
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+          O[
+            LN     MG_feed_disable_axis_4
+            AN     MG_feed_disable_axis_5
+          ]
+#else
+          ON     MG_feed_disable_axis_4
+#endif
+          A      MG_TC_auto_active
+          A      NP_display_standby_tool_number
+          IFT
+            PS     WG_TC_standby_tool_number
+            PS     KL_display_no_sign_right
+            PS     KL_0_digits_after_point
+            PS     KL_4_digits_before_point
+            PS     KL_string_0
+            CM     9051
+            M_display_module_error(KG_error_module_9051)
+
+            L      S"STDT"
+            +      S0
+            =      S0
+          ENDI
+        ELSE
+*;EUMACH Standby tool number display & feed disable
+          PS     DG_real_time
+          PS     KL_string_0
+          PS     KL_format_time_h_m_s
+          CM     9055
+          M_display_module_error(KG_error_module_9055)
+
+          L      K+5
+          =X
+
+          L      S""
+          =      S0^X
+
+          L      S0
+;          +      S"        "                                         *;EUMACH Original PLC
+          +      S"   "                                               *;EUMACH
+          =      S0
+        ENDI                                                          *;EUMACH
+      ENDI
+    ENDI
+  ENDI
+
+*;EUMACH Spindle warming-up count down display
+#if HSS ! &inactive
+  L      PN_error_spindle_during_warming_up
+  ON     MG_spindle_warmed_up
+  A      MG_spindle_active
+  IFT
+    PS     WG_spindle_warming_up_remaining_seconds
+    PS     KL_display_no_sign_right
+    PS     KL_0_digits_after_point
+    PS     KL_5_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      S0
+;    +      S" S"                                                     *;EUMACH Original PLC
+    +      S" S "                                                     *;EUMACH
+    =      S0
+  ENDI
+#endif
+*;EUMACH Spindle warming-up count down display
+
+  L      MG_touch_probe_active
+  A      MG_clock_1_s
+  IFT
+;    L      S"PROBE    "
+    L      S"PROBE   "                                                *;EUMACH Original PLC
+    =      S0
+  ENDI
+
+  L      MG_auto_power_off_after_END_PGM
+  A      NP_auto_power_off_after_END_PGM_active                       *;EUMACH
+  AN     MG_clock_1_s
+  IFT
+;    L      S"END OFF  "
+    L      S"END OFF "                                                *;EUMACH Original PLC
+    =      S0
+  ENDI
+
+*;EUMACH Tool clamping/unclamping sensor voltage display
+#if Tool_clamping_sensor_type = &Analog
+  L      MG_sensor_calibration_active
+  IFT
+;    PS     WG_voltage_input_0_on_MC                                   *;EUMACH non-HSCI
+    PS     IW_S_tool_clamp_unclamp_sensor_voltage                     *;EUMACH HSCI
+    PS     KL_display_no_sign_right
+    PS     KL_2_digits_after_point
+    PS     KL_2_digits_before_point
+    PS     KL_string_0
+    CM     9051
+    M_display_module_error(KG_error_module_9051)
+
+    L      O_tool_unclamping
+    IFT
+      L      S"UCP"
+      +      S0
+      =      S0
+    ELSE
+      L      S"CLP"
+      +      S0
+      =      S0
+    ENDI
+  ENDI
+#endif
+*;EUMACH Tool clamping/unclamping sensor voltage display
+
+  PS     KL_line_0
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+  PS     KL_column_26                                                 *;EUMACH G00% override
+#else
+  PS     KL_column_11
+#endif                                                                *;EUMACH G00% override
+
+  L      MG_touch_probe_active
+  A      MG_clock_1_s
+  O[
+    L      MG_auto_power_off_after_END_PGM
+*;EUMACH
+    A      NP_auto_power_off_after_END_PGM_active
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)
+    O      MG_feed_disable_axis_4
+    O      MG_feed_disable_axis_5
+#else
+    O     MG_feed_disable_axis_4
+#endif
+*;EUMACH
+    AN     MG_clock_1_s
+  ]
+  O      MG_sensor_calibration_active                                 *;EUMACH
+  IFT
+    PS     KL_color_red
+  ELSE
+    L      ML_PLC_Preset
+    R      ML_PLC_Preset
+    IFT
+      PS     KL_color_yellow
+    ELSE
+#if HSS ! &inactive                                                   *;EUMACH
+      L      PN_error_spindle_during_warming_up                       *;EUMACH
+      ON     MG_spindle_warmed_up                                     *;EUMACH
+      A      MG_spindle_active                                        *;EUMACH
+      A      MG_clock_1_s                                             *;EUMACH
+#else
+      L      MG_marker_zero                                           *;EUMACH
+#endif                                                                *;EUMACH
+      IFT                                                             *;EUMACH
+        PS     KL_color_red                                           *;EUMACH
+      ELSE                                                            *;EUMACH
+        PS     KL_color_black
+      ENDI                                                            *;EUMACH
+    ENDI
+  ENDI
+
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+
+*;EUMACH
+  L      MG_soft_key_F100_percent
+  A      MG_clock_1_s
+  IFT
+    L      S"F100%"
+    =      S0
+  ELSE
+#if ((Override_knobs = &2_knobs) and (Override_FMAX_instead_S = &inactive)) or (Override_knobs = &3_knobs) *;EUMACH S% knob -> FMAX% knob
+    L      MG_soft_key_S100_percent
+    AN     MG_clock_1_s
+    IFT
+      L      S"S100%"
+      =      S0
+    ELSE
+      L      S"     "
+      =      S0
+    ENDI
+#else                                                                 *;EUMACH S% knob -> FMAX% knob
+    L      S"     "                                                   *;EUMACH S% knob -> FMAX% knob
+    =      S0                                                         *;EUMACH S% knob -> FMAX% knob
+#endif                                                                *;EUMACH S% knob -> FMAX% knob
+  ENDI
+
+  PS     KL_line_0
+;#if Override_knobs ! &2_knobs                                         *;EUMACH G00% override (original PLC)
+#if (Override_knobs ! &2_knobs) or (Override_FMAX_instead_S = &active) *;EUMACH S% knob -> FMAX% knob
+  PS     KL_column_34                                                 *;EUMACH G00% override
+#else
+  PS     KL_column_19
+#endif                                                                *;EUMACH G00% override
+  PS     KL_color_red
+  PS     KL_string_0
+  CM     9082
+  M_display_module_error(KG_error_module_9082)
+*;EUMACH
+
+EM
+

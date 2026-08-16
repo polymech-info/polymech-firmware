@@ -1,0 +1,142 @@
+BEGIN TS640_HSK63.TAB 
+#STRUCTBEGIN
+   NAME = DOC
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = Comment?
+     DIA-GERMAN = Kommentar?
+     DIA-CZECH = KOMENTAR ?
+     DIA-FRENCH = Commentaire?
+     DIA-ITALIAN = Commento?
+     DIA-SPANISH = ¿Comentario?
+     DIA-PORTUGUE = Comentario?
+     DIA-SWEDISH = KOMMENTAR ?
+     DIA-DANISH = KOMMENTAR ?
+     DIA-FINNISH = TULKKI ?
+     DIA-DUTCH = Commentaar?
+     DIA-POLISH = Komentarz?
+     DIA-HUNGARIA = Megjegyzés?
+   NAME = KEY
+     TYPE = C
+     WIDTH = 8
+     DEC = 0
+     DIA-ENGLISH = Code?
+     DIA-GERMAN = Schlüssel-Wort?
+     DIA-CZECH = CISLO KLICE - HESLO?
+     DIA-FRENCH = Code?
+     DIA-ITALIAN = Numero codice?
+     DIA-SPANISH = ¿Número de código?
+     DIA-PORTUGUE = Numero de codigo?
+     DIA-SWEDISH = KODNUMMER?
+     DIA-DANISH = KODE-NUMMER?
+     DIA-FINNISH = AVAINLUKU?
+     DIA-DUTCH = Sleutelgetal?
+     DIA-POLISH = Liczba klucza?
+     DIA-HUNGARIA = Kulcsszám?
+   NAME = AXIS
+     TYPE = C
+     WIDTH = 1
+     DEC = 0
+     DIA-ENGLISH = Axis?
+     DIA-GERMAN = Achse?
+     DIA-CZECH = OSA?
+     DIA-FRENCH = Axe?
+     DIA-ITALIAN = Asse?
+     DIA-SPANISH = ¿Eje?
+     DIA-PORTUGUE = Eixo?
+     DIA-SWEDISH = AXEL?
+     DIA-DANISH = AKSE?
+     DIA-FINNISH = Akseli ?
+     DIA-DUTCH = As?
+     DIA-POLISH = Osie?
+     DIA-HUNGARIA = Tengely ?
+   NAME = COORD
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Coordinate?
+     DIA-GERMAN = Koordinate?
+     DIA-CZECH = SOURADNICE?
+     DIA-FRENCH = Coordonnée?
+     DIA-ITALIAN = Coordinate?
+     DIA-SPANISH = ¿Coordenada?
+     DIA-PORTUGUE = Coordenada?
+     DIA-SWEDISH = KOORDINAT ?
+     DIA-DANISH = KOORDINAT ?
+     DIA-FINNISH = KOORDINAATIT?
+     DIA-DUTCH = Coördinaat?
+     DIA-POLISH = Wspolrzedne?
+     DIA-HUNGARIA = Koordináta?
+   NAME = FILE
+     TYPE = C
+     WIDTH = 50
+     DEC = 0
+     DIA-ENGLISH = File name?
+     DIA-GERMAN = Dateiname?
+     DIA-CZECH = File name?
+     DIA-FRENCH = Nom fichier?
+     DIA-ITALIAN = Nome file?
+     DIA-SPANISH = File name?
+     DIA-PORTUGUE = File name?
+     DIA-SWEDISH = File name?
+     DIA-DANISH = File name?
+     DIA-FINNISH = File name?
+     DIA-DUTCH = Bestandsnaam?
+     DIA-POLISH = File name?
+     DIA-HUNGARIA = File name?
+   NAME = DONTTEST
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = Opponent?
+     DIA-GERMAN = Dateiname?
+     DIA-CZECH = File name?
+     DIA-FRENCH = Nom fichier?
+     DIA-ITALIAN = Nome file?
+     DIA-SPANISH = File name?
+     DIA-PORTUGUE = File name?
+     DIA-SWEDISH = File name?
+     DIA-DANISH = File name?
+     DIA-FINNISH = File name?
+     DIA-DUTCH = Bestandsnaam?
+     DIA-POLISH = File name?
+     DIA-HUNGARIA = File name?
+   NAME = ON/OFF
+     TYPE = N
+     WIDTH = 1
+     DEC = 0
+     DIA-ENGLISH = 0=CMO active / 1=CMO inactive
+     DIA-GERMAN = 0=CMO aktiv / 1=CMO inaktiv
+     DIA-CZECH = 0=CMO active / 1=CMO inactive
+     DIA-FRENCH = 0=CMO active / 1=CMO inactive
+     DIA-ITALIAN = 0=CMO active / 1=CMO inactive
+     DIA-SPANISH = 0=CMO active / 1=CMO inactive
+     DIA-PORTUGUE = 0=CMO active / 1=CMO inactive
+     DIA-SWEDISH = 0=CMO active / 1=CMO inactive
+     DIA-DANISH = 0=CMO active / 1=CMO inactive
+     DIA-FINNISH = 0=CMO active / 1=CMO inactive
+     DIA-DUTCH = 0=CMO active / 1=CMO inactive
+     DIA-POLISH = 0=CMO active / 1=CMO inactive
+     DIA-HUNGARIA = 0=CMO active / 1=CMO inactive
+   NAME = TEMPCOMP
+     TYPE = C
+     WIDTH = 31
+     DEC = 0
+     DIA-ENGLISH = Temperature compensation?
+     DIA-GERMAN = Temperatur-Kompensation?
+     DIA-CZECH = Temperature compensation?
+     DIA-FRENCH = Temperature compensation?
+     DIA-ITALIAN = Temperature compensation?
+     DIA-SPANISH = Temperature compensation?
+     DIA-PORTUGUE = Temperature compensation?
+     DIA-SWEDISH = Temperature compensation?
+     DIA-DANISH = Temperature compensation?
+     DIA-FINNISH = Temperature compensation?
+     DIA-DUTCH = Temperature compensation?
+     DIA-POLISH = Temperature compensation?
+     DIA-HUNGARIA = Temperature compensation?
+#STRUCTEND
+NR      DOC                             KEY      AXIS COORD        FILE                                               DONTTEST                        ON/OFF TEMPCOMP
+0       TS640 HSK 63                    CMO                        PLC:\Toolkinematics\CMO\TS640_HSK63                                                                                       
+[END]

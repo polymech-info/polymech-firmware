@@ -1,0 +1,202 @@
+*-----------------------------------------------------------------------------
+*  NC Start NC Stop
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_key_pressed                           M
+
+#include Mac_Lib.inc
+
+GLOBAL NC_start_stop
+
+;----------------------------
+LBL NC_start_stop
+;----------------------------
+
+  L      MG_key_NC_start
+  AN     ML_key_pressed
+  =      MG_key_NC_start_p_pulse
+
+  LN     MG_key_NC_start
+  A      ML_key_pressed
+  =      MG_key_NC_start_n_pulse
+
+  L      MG_key_NC_stop
+  A      PN_M4560_NC_stop_0_active
+  =      MG_key_NC_stop_p_pulse
+
+*$WS check pulse
+  L      MG_key_NC_start
+  A      ML_key_pressed
+  O      MG_NC_start_from_reference
+  O      NC_start_from_autostart
+  A      MG_power_delayed_on
+;  AN     MG_guard_open                                               *;EUMACH
+#if SFM = &inactive                                                   *;EUMACH CE 2008
+  A[                                                                  *;EUMACH
+    L      NP_permissive_mode_NC_START_key_valid                      *;EUMACH
+    ON     MG_guard_open                                              *;EUMACH
+  ]                                                                   *;EUMACH
+#else                                                                 *;EUMACH CE 2008
+  A[                                                                  *;EUMACH CE 2008
+    LN     MG_guard_open                                              *;EUMACH
+    AN     PN_error_safety_mode_2                                     *;EUMACH CE 2008
+    AN     MG_safety_mode_4                                           *;EUMACH safety mode 4
+    O[                                                                *;EUMACH CE 2008
+      L      MG_manual_mode                                           *;EUMACH CE 2008
+      ON     MG_guard_open                                            *;EUMACH CE 2008
+      A      PN_error_safety_mode_2                                   *;EUMACH CE 2008
+    ]                                                                 *;EUMACH CE 2008
+    O      MG_safety_mode_4                                           *;EUMACH safety mode 4
+  ]                                                                   *;EUMACH CE 2008
+#endif                                                                *;EUMACH CE 2008
+  AN     PN_error_anti_backlash_motion                                *;EUMACH
+  AN     MG_TC_help
+  AN     MG_PC_help
+#if (MT = &MT_2D) or (MT = &MT_37) or (MT = &MT_37A) or (MT = &MT_37B)*;EUMACH 5XT
+  AN     PN_error_guard_open                                          *;EUMACH 5XT
+#endif                                                                *;EUMACH 5XT
+  =      PN_M4564_NC_start
+
+  L      MG_start_blocked_lubrication
+  O      MG_start_blocked_nut_lubrication                             *;EUMACH
+  A      MG_automatic_mode
+  R      PN_M4564_NC_start
+
+  L      MG_key_NC_stop
+#if (Head = &S_head_type_01) or (Head = &S_head_type_02)              *;EUMACH
+  AN     MG_SHC_turning_S_orient_on                                   *;EUMACH
+  AN     MG_V_H_head_Help_H_to_V_pos                                  *;EUMACH
+  AN     MG_V_H_head_Help_V_to_H_pos                                  *;EUMACH
+  AN[                                                                 *;EUMACH
+    L      MG_V_H_head_turning_proceeding                             *;EUMACH
+    A      MG_manual_mode                                             *;EUMACH
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH
+  AN     PN_error_anti_backlash_motion                                *;EUMACH
+  =N     PN_M4560_NC_stop_0_active
+
+  L      MG_key_NC_start
+  =      ML_key_pressed
+
+  L      MG_M00_programmed_stop
+  O      MG_M01_conditional_stop
+  O      MG_M02_END_program
+  O      MG_M30_END_program
+  S      PN_M4092_quit_M_function
+
+  L      MG_M00_programmed_stop
+  AN     NP_M4158_mode_block_scan
+  S      MG_programmed_stop_active
+
+  L      MG_M01_conditional_stop
+  AN     NP_M4158_mode_block_scan
+  S      MG_conditional_stop_active
+
+;  L      MG_key_NC_start                                             *;EUMACH Original PLC
+  L      MG_key_NC_start_p_pulse                                      *;EUMACH Fixing single block no M00/M01 problem
+  AN     MG_guard_open
+  O      MG_auto_manu_mode_change
+  O      MG_pulse_internal_stop
+  O      MG_pulse_CE_key
+  ON     MG_control_operational
+  R      MG_programmed_stop_active
+  R      MG_conditional_stop_active
+
+  L      MG_programmed_stop_active
+  AN     MG_guard_open
+  =      PN_error_M00_programmed_stop
+
+  L      MG_conditional_stop_active
+  AN     MG_guard_open
+  =      PN_error_M01_conditional_stop
+
+  LN     MG_TC_interruption
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  AN     MG_TC2_interruption                                          *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  ON     MG_interrupt_alternating_table
+  A      MG_control_in_operation_on
+  O[
+    L      MG_manual_mode
+    A      MG_axes_in_motion
+  ]
+  O      MG_test_lamps
+  O      MG_key_NC_start
+  =      O_lamp_NC_start
+
+  LN     O_lamp_NC_start
+  O      MG_test_lamps
+  O      MG_key_NC_stop
+  =      O_lamp_NC_stop
+
+  L      NP_M4175_control_in_operation_flashes
+  A      MG_clock_1_s
+  A      MG_automatic_mode
+  S      O_lamp_NC_start
+
+;Auto start
+;  L      NP_M4183_time_auto_start_expired
+;  IFT
+;    LN     I_control_operational
+;    =      MG_power_on_AUTOSTART_on
+
+;    L      NP_M4178_external_emergency_stop_active
+;    A      I_control_operational
+;    IFT
+;      PS     KG_key_CE
+;      CM     9180
+;      PLX
+;      M_display_module_error(KG_error_module_9180)
+;    ENDI
+
+;    L      MG_power_delayed_on
+;    AN     MG_control_in_operation_on
+;    AN     PN_error_guard_open                                        *;EUMACH CE 2008
+;    =      NC_start_from_autostart
+
+;    L      MG_control_in_operation_on
+;    O      PN_error_guard_open                                        *;EUMACH CE 2008
+;    ON     MG_automatic_mode
+;    R      NP_M4183_time_auto_start_expired
+;  ELSE                                                                *;EUMACH
+;    L      MG_control_in_operation_on                                 *;EUMACH
+;    O      PN_error_guard_open                                        *;EUMACH
+;    ON     MG_automatic_mode                                          *;EUMACH
+;    ON     I_control_operational                                      *;EUMACH
+;    R      MG_power_on_AUTOSTART_on                                   *;EUMACH
+;    R      NC_start_from_autostart                                    *;EUMACH
+;  ENDI
+
+  LN     I_control_operational
+  A      NP_M4183_time_auto_start_expired
+  =      MG_power_on_AUTOSTART_on
+
+  L      NP_M4178_external_emergency_stop_active
+  A      I_control_operational
+  A      NP_M4183_time_auto_start_expired
+  IFT
+    PS     KG_key_CE
+    CM     9180
+    PLX
+    M_display_module_error(KG_error_module_9180)
+  ENDI
+
+  L      MG_power_delayed_on
+  A      NP_M4183_time_auto_start_expired
+  AN     MG_control_in_operation_on
+  AN     PN_error_guard_open                                          *;EUMACH CE 2008
+  =      NC_start_from_autostart
+
+  L      MG_control_in_operation_on
+  O[                                                                  *;EUMACH CE 2008
+    LN     NP_M4178_external_emergency_stop_active                    *;EUMACH CE 2008
+    A      PN_error_guard_open                                        *;EUMACH CE 2008
+  ]                                                                   *;EUMACH CE 2008
+  ON     MG_automatic_mode
+  A      NP_M4183_time_auto_start_expired
+  R      NP_M4183_time_auto_start_expired
+
+EM

@@ -1,0 +1,500 @@
+*-----------------------------------------------------------------------------
+*  PLC Basic Program for iTNC 530 and BF150
+*-----------------------------------------------------------------------------
+*  Contents
+*
+*  EUMACH
+*  VMC series with cam-driven arm (double arm) tool changer
+*-----------------------------------------------------------------------------
+*  Version / last issue
+*
+*  51     / 2003-07-26
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Definition of Compiler Assignable Memory
+*-----------------------------------------------------------------------------
+
+*Volatile marker assignment
+* --- M1000...M1089 reserved for standard M-functions (M00 - M89)
+* --- M1200...M1299 reserved for package device PLC (BLUM, RENISHAW, etc.)
+* --- M1300...M1999 reserved for additional M-functions (M300 - M999)
+* --- M2000...M2799 reserved for EUMACH
+* --- M2800...M2989 reserved for additional PLC error messages (error 800 - 989)
+* --- M4000...M4999 reserved for NC/PLC interface
+* --- M4800...M4999 reserved for standard PLC error messages (error 0 - 200)
+* --- M5000...M5999 reserved for NC/PLC interface
+
+*Non-volatile marker assignment
+* --- M0...M39 reserved for original BASIC program
+* --- M40...M99 reserved for EUMACH
+
+#define /mn   7000 9999              *Marker volatile     max. 1000 - 9999
+#define /mr   200  999               *Marker non volatile max.    0 -  999 (1)
+
+*Volatile byte/word/double-word assignment
+* --- B256...B2047 reserved for NC/PLC interface
+* --- B2048...B2299 reserved for original BASIC program
+* --- B3000...B3199 reserved for EUMACH
+
+*Non-volatile byte/word/double-word assignment
+* --- B0...B39 reserved for original BASIC program
+* --- B40...B55 reserved for EUMACH
+
+#define /bn   6000 9999              *Byte volatile       max. 2048 - 9999
+#define /br   56   255               *Byte non volatile   max.    0 -  255 (1)
+
+* Legend:
+*   (1) - can be modified in oem.cfg
+
+*-----------------------------------------------------------------------------
+*  Definition of Global Symbols
+*-----------------------------------------------------------------------------
+
+#define /g    System.Def
+#define /g    Config_31.Def                                           *;EUMACH
+#define /g    ASCIICod.Def
+#define /g    GLB_NC.Def
+#define /g    Intern.Def
+#define /g    GLB_TCMB.Def
+#define /g    NC_mig.Def
+
+#if SPG = &inactive
+#define /g    GLB_IO_31.Def                                           *;EUMACH
+#else
+#define /g    GLB_SPG.Def
+#endif
+
+#define /g    Soft_key_BMX.def
+#define /g    Profibus.Def
+
+*-----------------------------------------------------------------------------
+*  Pragma instruction
+*-----------------------------------------------------------------------------
+
+#pragma symsort
+#pragma nsc
+#pragma dl 0
+
+*#pragma srcpath c:\PLC\OemPGM\Standard
+*#pragma migtest
+*#pragma nsw
+
+*-----------------------------------------------------------------------------
+*  Definition PLC-Program-Modules
+*-----------------------------------------------------------------------------
+
+USES Initial.src
+EXTERN Init_after_Reset
+
+USES MP_file.src
+EXTERN MP_part_file
+
+USES MP_read.src
+EXTERN MP_read
+
+USES OEM_func.src
+EXTERN OEM_function_begin
+EXTERN OEM_function_end
+
+USES HRxx_Man.src
+EXTERN Manual_handwheel
+
+USES Library.src
+EXTERN Library
+EXTERN End_PLC_Cycle
+
+USES Diagnos.src
+EXTERN Diagnostic
+
+USES Hydrauli.src
+EXTERN Hydraulic
+
+USES FN19.src
+EXTERN FN19
+
+USES M_funct.src
+EXTERN M_functions
+
+*;EUMACH Original PLC
+;#ifdef T_compensation_with_table and not TNC410
+;USES Temp_Cp2.src
+;EXTERN Temperature_comp
+;#else
+;USES Temp_Cp1.src
+;EXTERN Temperature_comp
+;#endif
+*;EUMACH Original PLC
+
+*;EUMACH
+USES Temp_Cp1.src
+EXTERN Temp_comp1
+
+USES Temp_PMC.src
+EXTERN Temp_comp_PMC
+
+USES Temp_Cp2.src
+EXTERN Temp_comp2
+
+USES OPT_BLUM.src
+EXTERN BLUM_LASER
+*;EUMACH
+
+USES PLC_Pset.src
+EXTERN PLC_Preset
+
+USES Axislimi.src
+EXTERN Axis_limit
+
+USES Guard.src
+EXTERN Guard
+
+USES StartStp.src
+EXTERN NC_start_stop
+
+USES Ref_End.src
+EXTERN Ref_End_Position
+
+USES Hirth.src
+EXTERN Hirth
+
+#if 3D_head = &active
+USES 3D_head.src
+EXTERN 3D_head
+#endif
+
+*#if 3D_head_exchange = &active
+USES 3D_head_exchange.src
+EXTERN 3D_head_exchange
+*#endif
+
+USES Axes.src
+EXTERN NC_Axes
+
+USES IndexTab.src
+EXTERN Index_table
+
+#if Lubrication_axes = &active
+USES Lubricat.src
+EXTERN Lubrication
+
+USES Lubricat_2.src                                                   *;EUMACH
+EXTERN Lubrication_2                                                  *;EUMACH
+
+USES Lubricat_3.src                                                   *;EUMACH
+EXTERN Lubrication_3                                                  *;EUMACH
+
+USES Nut_lubricat.src                                                 *;EUMACH
+EXTERN Nut_lubrication                                                *;EUMACH
+#endif
+
+USES Gear.src
+EXTERN Spindle_gear
+
+USES Spin_Ref.src
+EXTERN Spindle_reference
+
+USES Spindle.src
+EXTERN Spindle
+
+USES TouchPro.src
+EXTERN Touch_probe
+
+USES S_Orient.src
+EXTERN Spindle_Orient
+
+USES Coolant.src
+EXTERN Coolant
+
+USES CTS_Tank.src                                                     *;EUMACH
+EXTERN CTS_tank                                                       *;EUMACH
+
+USES Chipconv.src
+EXTERN Chip_conveyor
+
+#if Tool_changing_arm = &Single_arm
+;USES TC_Help1.src
+;EXTERN TC_Help
+;EXTERN Output_Backup
+;EXTERN Output_Restore
+
+;USES TC_Auto1.src
+;EXTERN TC_auto
+#endif
+
+#if Tool_changing_arm = &Double_arm
+;USES TC_Help2.src
+;EXTERN TC_Help
+;EXTERN Output_Backup
+;EXTERN Output_Restore
+
+;USES TC_Auto2.src
+;EXTERN TC_auto
+#endif
+
+#if Tool_changing_arm = &Cam_driven_arm
+USES TC_Help3031.src                                                  *;EUMACH
+EXTERN TC_Help
+EXTERN Output_Backup
+EXTERN Output_Restore
+
+USES TC_Auto3031.src                                                  *;EUMACH
+USES TC_Arm.src
+EXTERN TC_auto
+#endif
+
+USES T_Select.src
+EXTERN T_selection
+*;EUMACH standby tool loading/unloading
+
+#if Tool_magazine = &PLC_axis
+USES TC_Mag1.src
+EXTERN Tool_magazine
+EXTERN Status_axis
+
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH Shifting pocket
+USES SHFT_P_TO_TC.src                                                 *;EUMACH Shifting pocket
+EXTERN Shift_P_to_TC_pos                                              *;EUMACH Shifting pocket
+                                                                      *;EUMACH Shifting pocket
+USES SHFT_P_TO_MAG.src                                                *;EUMACH Shifting pocket
+EXTERN Shift_P_to_magazine_pos                                        *;EUMACH Shifting pocket
+#endif                                                                *;EUMACH Shifting pocket
+
+#if Tool_magazine_2 = &PLC_axis                                       *;EUMACH Dual TC
+;USES TC_Mag12.src                                                    *;EUMACH Dual TC (in preparation)
+;EXTERN Tool_magazine_2                                               *;EUMACH Dual TC (in preparation)
+#endif                                                                *;EUMACH Dual TC
+
+USES TC_Load.src
+EXTERN TC_mag_loading
+
+#if Tool_magazine_2 ! &inactive                                       *;EUMACH Dual TC
+USES TC2_Load.src                                                     *;EUMACH Dual TC
+EXTERN TC_mag_2_loading                                               *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+#endif
+
+#if Tool_magazine = &Pulse
+USES TC_Mag2.src
+EXTERN Tool_magazine
+
+#if Tool_magazine_2 = &Pulse                                          *;EUMACH Dual TC
+USES TC_Mag22.src                                                     *;EUMACH Dual TC
+EXTERN Tool_magazine_2                                                *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+
+USES TC_Load.src
+EXTERN TC_mag_loading
+
+#if Tool_magazine_2 ! &inactive                                       *;EUMACH Dual TC
+USES TC2_Load.src                                                     *;EUMACH Dual TC
+EXTERN TC_mag_2_loading                                               *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+#endif
+
+USES TC_manu.src
+EXTERN TC_manual
+
+USES T_Status.src
+EXTERN Tool_status
+
+#if Pallet_changer = &Alternat_table
+USES Alt_Tab.src
+EXTERN Alternat_table
+#endif
+
+#if Pallet_changer = &2_PC_linear
+USES PC_2_linear.src
+EXTERN Pal_changer
+
+USES PC_help.src
+EXTERN PC_help
+EXTERN PC_output_backup
+EXTERN PC_output_restore
+#endif
+
+#if Pallet_changer = &3R_system
+USES PC_3R.src
+EXTERN Pal_changer
+#endif
+
+USES Feed.src
+EXTERN Feed_release
+
+USES Workarea.src
+EXTERN Work_area_monitor
+
+USES Window.src
+EXTERN PLC_Window
+
+#if Error_messages_additional = &active
+USES Error.src
+EXTERN Error
+#endif
+
+*#if LSV2_ActiveX_Control = &active
+*USES LSV2OCX0.src
+*EXTERN LSV2_OCX_Modul_0
+*#endif
+
+USES IPC_61x0.src                                                     *;EUMACH
+EXTERN IPC_61x0                                                       *;EUMACH
+
+USES Logbook.src
+EXTERN Logbook
+
+USES SPG_Simu.src
+EXTERN SPG_simulation_begin
+EXTERN SPG_simulation_end
+
+USES Auto_door.src                                                    *;EUMACH
+EXTERN Automatic_door                                                 *;EUMACH
+
+*-----------------------------------------------------------------------------
+*  Mainprogram
+*-----------------------------------------------------------------------------
+
+  CM     OEM_function_begin
+
+#if Tool_changing_arm ! &inactive
+  CM     Output_Restore
+#endif
+
+#if Pallet_changer = &2_PC_linear
+  CM     PC_output_restore
+#endif
+
+  L      NP_M4172_1st_PLC_run_after_power_on
+  O      NP_M4173_1st_PLC_run_after_compile
+  O      NP_M4174_1st_PLC_run_after_MP_edit
+  CMT    Init_after_Reset
+  CMT    MP_read
+
+  CM     SPG_simulation_begin
+  CM     MP_part_file
+
+*;EUMACH The original MP_read module is before MP_part_file module, so some of
+*;       MP statuses don't take care the MP part file setting.  Therefore, it
+*;       is necessary to call MP_read module after MP part file has been activated.
+  L      MG_MP_read_after_part_files
+  R      MG_MP_read_after_part_files
+  CMT    MP_read
+*;EUMACH
+
+#if Tool_magazine = &PLC_axis
+  CM     Status_axis
+#endif
+
+  CM     Manual_handwheel
+  CM     Library
+  CM     Hydraulic
+  CM     Diagnostic
+  CM     FN19
+  CM     M_functions
+  CM     IPC_61x0                                                     *;EUMACH
+
+;  CM     Temperature_comp                                            *;EUMACH Original PLC
+  CM     Temp_comp1
+  CM     Temp_comp_PMC
+  CM     Temp_comp2
+
+  CM     PLC_Preset
+
+  CM     Axis_limit
+  CM     Guard
+  CM     NC_start_stop
+
+#if 3D_head = &active
+  CM     3D_head
+#endif
+
+*#if 3D_head_exchange = &active
+  CM     3D_head_exchange
+*#endif
+
+  CM     Ref_End_Position
+  CM     Hirth
+  CM     NC_Axes
+  CM     Index_table
+
+#if Lubrication_axes = &active
+  CM     Lubrication
+  CM     Lubrication_2                                                *;EUMACH
+  CM     Lubrication_3                                                *;EUMACH
+  CM     Nut_lubrication                                              *;EUMACH
+#endif
+
+  CM     Spindle_gear
+  CM     Spindle_reference
+  CM     Spindle
+  CM     Touch_probe
+  CM     Spindle_Orient
+  CM     Coolant
+  CM     CTS_tank                                                     *;EUMACH
+  CM     Chip_conveyor
+  CM     TC_manual
+
+#if Tool_changing_arm ! &inactive
+  CM     TC_Help
+  CM     T_selection                                                  *;EUMACH standby tool loading/unloading
+  CM     Tool_magazine
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  CM     Tool_magazine_2                                              *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  CM     TC_mag_loading
+#if Tool_magazine_2 ! &inactive                                       *;EUMACH Dual TC
+  CM     TC_mag_2_loading                                             *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  CM     TC_auto
+#if TC_shifting_pocket_random_selection = &active                     *;EUMACH Shifting pocket
+  CM     Shift_P_to_TC_pos                                            *;EUMACH Shifting pocket
+  CM     Shift_P_to_magazine_pos                                      *;EUMACH Shifting pocket
+#endif                                                                *;EUMACH Shifting pocket
+#endif
+
+  CM     BLUM_LASER                                                   *;EUMACH
+  CM     Automatic_door                                               *;EUMACH
+
+  CM     Tool_status
+
+#if Pallet_changer = &Alternat_table
+  CM     Alternat_table
+#endif
+
+#if Pallet_changer = &2_PC_linear
+  CM     PC_help
+  CM     Pal_changer
+#endif
+
+#if Pallet_changer = &3R_system
+  CM     Pal_changer
+#endif
+
+  CM     Feed_release
+  CM     Work_area_monitor
+  CM     PLC_Window
+
+#if Error_messages_additional = &active
+  CM     Error
+#endif
+
+*#if LSV2_ActiveX_Control = &active
+*  CM     LSV2_OCX_Modul_0
+*#endif
+
+  CM     Logbook
+  CM     SPG_simulation_end
+
+#if Pallet_changer = &2_PC_linear
+  CM     PC_output_backup
+#endif
+
+#if Tool_changing_arm ! &inactive
+  CM     Output_Backup
+#endif
+
+  CM     OEM_function_end
+  CM     End_PLC_Cycle
+
+EM

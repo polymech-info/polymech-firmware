@@ -1,0 +1,1234 @@
+*-----------------------------------------------------------------------------
+*  Temperature compensation using table (Spawn)
+*-----------------------------------------------------------------------------
+*  Module Description
+*    The label TempCompensation will be called from the cyclical
+*    PLC program.
+*    The module contains the following functions:
+*    1.    Basic initializing of the module
+*    1.1   Submit start to carry out Spawn
+*    2.    Reading Pt100 values
+*    3.    Average calculating of the temperature inputs
+*    4.    Warm up cool down recognition
+*    5.    Spawn start to read data from table
+*    5.1   Neverending repeat loop for spawn
+*    6.    Submit job
+*    6.1   Table file open
+*    6.2   Table file data process
+*    6.3   Initial values read out from table after PGM start
+*    6.3.1 Temp compensation active ? (read)
+*    6.4   Current temperature write in table
+*    6.5   Current temperature search in table and send the value to CNC
+*          for the gliding compensation
+*    6.6   PLC table close
+*    7.    Compensation value read
+*    7.1   Compensation value read out from the table for the corresponding
+*          axis
+*    7.2   Linear interpolation between the compensation points
+*    8.    Initializing from the table
+*    8.1   Initial number of Pt100 interface
+*    8.2   Search for Pt100 interface in KField
+*    8.3   Scaling factor for Pt100 reading
+*    8.4   Number of PLC cycles for average calculating
+*    8.5   Recognition hysteresis for warm up or cool down
+*-----------------------------------------------------------------------------
+
+#define /s    KL_wait_for_events                       K-1
+#define /s    KL_event_gated_with_or                   K+0
+#define /s    KL_event_masks                           K%001
+#define /s    KL_file_access_read_write                K%001
+#define /s    KL_minimal_necessary_measurings          K+50
+#define /s    KL_T_difference_min                      K-100
+#define /s    KL_inactive                              K-1
+#define /s    KL_line_0                                K+0
+#define /s    KL_line_1                                K+1
+#define /s    KL_line_2                                K+2
+#define /s    KL_line_3                                K+3
+#define /s    KL_line_4                                K+4
+#define /s    KL_line_5                                K+5
+#define /s    KL_line_6                                K+6
+#define /s    KL_line_7                                K+7
+#define /s    KL_line_8                                K+8
+#define /s    KL_line_9                                K+9
+#define /s    KL_line_10                               K+10
+#define /s    KL_fitting_HSCI_resolution               K+10           *;EUMACH HSCI
+
+#define       SL_string_field_name                     S4
+
+#define /s    ML_Spawn_in_process                      M
+#define /s    ML_data_from_Spawn_in_process            M
+#define /s    ML_initial_temp_compensation             M
+#define /s    ML_Pt100_machine_assigned                M
+#define /s    ML_Pt100_spindle_assigned                M
+#define /s    ML_temperature_average_sensors           M
+#define /s    ML_key_pressed                           M
+#define /s    ML_test_has_been_active                  M
+#define /s    ML_temperature_decrement                 M
+#define /s    ML_machine_Pt100_on_PL510                M
+#define /s    ML_spindle_Pt100_on_PL510                M
+#define /s    ML_T_cmpensation_initial_state           M
+
+#define /s    BL_number_Pt100_machine                  B
+#define /s    BL_machine_slot_PL510                    B
+#define /s    BL_machine_module_PL510                  B
+#define /s    BL_number_Pt100_spindle                  B
+#define /s    BL_spindle_slot_PL510                    B
+#define /s    BL_spindle_module_PL510                  B
+#define /s    BL_factor_spindle_Pt100                  B
+#define /s    BL_factor_machine_Pt100                  B
+#define /s    BL_staus_SUBM                            B
+#define /s    BL_counter_PLC_cycles                    B
+
+#define /s    WL_temp_difference_0                     W
+#define /s    WL_temp_difference_1                     W
+#define /s    WL_compensation_value_0                  W
+#define /s    WL_compensation_value_1                  W
+#define /s    WL_table_line_number                     W
+#define /s    WL_average_counter                       W
+#define /s    WL_counter_measuring                     W
+#define /s    WL_temp_difference_old                   W
+#define /s    WL_key_code_cycle_before                 W
+
+#define /s    Compensation                             W[15]
+#define /c    WL_compensation_value_Xp                 W &Compensation + 0
+#define /c    WL_compensation_value_Yp                 W &Compensation + 2
+#define /c    WL_compensation_value_Zp                 W &Compensation + 4
+#define /c    WL_compensation_value_Xn                 W &Compensation + 6
+#define /c    WL_compensation_value_Yn                 W &Compensation + 8
+#define /c    WL_compensation_value_Zn                 W &Compensation + 10
+#define /c    WL_compensation_value_X                  W &Compensation + 12
+#define /c    WL_compensation_value_Y                  W &Compensation + 14
+#define /c    WL_compensation_value_Z                  W &Compensation + 16
+#define /c    WL_warm_up_value_X                       W &Compensation + 18
+#define /c    WL_warm_up_value_Y                       W &Compensation + 20
+#define /c    WL_warm_up_value_Z                       W &Compensation + 22
+#define /c    WL_cool_down_value_X                     W &Compensation + 24
+#define /c    WL_cool_down_value_Y                     W &Compensation + 26
+#define /c    WL_cool_down_value_Z                     W &Compensation + 28
+
+#define /s    DL_file_handle                           D
+;#define /s    DL_temperature_sum                       D			  *;EUMACH Basic 54
+#define /s    DL_temp_comp_identifier                  D
+#define /s    DL_temperature_spindle_sum               D
+#define /s    DL_temperature_machine_sum               D
+
+#include Mac_Lib.inc
+
+EXTERN Absolute
+;GLOBAL Temperature_comp                                              *;EUMACH Original PLC
+GLOBAL Temp_comp2                                                     *;EUMACH
+
+;----------------------------
+;LBL Temperature_comp                                                 *;EUMACH Original PLC
+LBL Temp_comp2                                                        *;EUMACH
+;----------------------------
+
+#if Tcmp = &T_comp_type_05
+  LN     ML_initial_temp_compensation
+  AN     ML_Spawn_in_process
+  A      MG_T_compensation_active
+  IFT
+    S      ML_initial_temp_compensation
+    R      ML_Spawn_in_process
+    R      MG_warm_up
+    R      MG_cool_down
+    R      MG_hyst_X_after_warm_up
+    R      MG_hyst_Y_after_warm_up
+    R      MG_hyst_Z_after_warm_up
+    R      MG_hyst_X_after_cool_down
+    R      MG_hyst_Y_after_cool_down
+    R      MG_hyst_Z_after_cool_down
+
+    L      K+0
+;    =      DL_temperature_sum										  *;EUMACH Basic 54
+    =      WL_average_counter
+
+    L      KL_minimal_necessary_measurings
+    =      WL_counter_measuring
+
+    LN     ML_T_cmpensation_initial_state
+    S      ML_T_cmpensation_initial_state
+    S      MG_T_compensation_X_active                                 *;EUMACH comment out? If so, /r in GLB_TCMB.DEF
+    S      MG_T_compensation_Y_active                                 *;EUMACH comment out? If so, /r in GLB_TCMB.DEF
+    S      MG_T_compensation_Z_active                                 *;EUMACH comment out? If so, /r in GLB_TCMB.DEF
+* Spawn started from Submit
+    RPLY   BL_staus_SUBM
+    ==     K+0
+    IFT
+      SUBM   Spawn_start
+      =      BL_staus_SUBM
+      ==     K+0
+      S      PN_error_submit_spawn_queue_full
+    ENDI
+  ENDI
+
+  L      PN_error_temperature_compensation
+;  ON     MG_control_operational                                      *;EUMACH
+  ON     MG_T_compensation_active
+  IFT
+    L      K+0
+    =      WG_W3000_lag_err_comp_X                                    *;EUMACH
+    =      WG_W3002_lag_err_comp_Y                                    *;EUMACH
+    =      WG_W3004_lag_err_comp_Z                                    *;EUMACH
+*;EUMACH Table clamped -> Z comp
+;#if (MT ! &MT_2D) and (MT ! &MT_31A) and (MT ! &MT_32A) and (MT ! &MT_36B) and (MT ! &MT_37B) and (MT ! &MT_39A) and (MT ! &MT_3AA) and (MT ! &MT_3B) and (MT ! &MT_3BA) *;EUMACH
+; and (MT ! &MT_31B)
+;    =      PN_W576_lag_error_compensation_X
+;    =      PN_W578_lag_error_compensation_Y
+;    =      PN_W580_lag_error_compensation_Z
+;#endif                                                                *;EUMACH
+
+    LN     ML_Spawn_in_process
+    EMT
+  ENDI
+
+* Read Pt100 values (1/10 degree)
+
+*;EUMACH HSCI PT100 resolution = 0.01 degree
+  LN     ML_initial_temp_compensation
+  AN     MG_T_compensation_test
+  IFT
+    L      IW_temperature_machine_Pt100
+    +      WG_temperature_machine_offset
+    +      K+5
+    /      KL_fitting_HSCI_resolution
+    =      WG_temperature_machine_Pt100
+
+    L      IW_temperature_spindle_Pt100
+    +      K+5
+    /      KL_fitting_HSCI_resolution
+    =      WG_temperature_spindle_Pt100
+  ENDI
+*;EUMACH HSCI PT100 resolution = 0.01 degree
+
+*;EUMACH HSCI not required
+;  LN     ML_initial_temp_compensation
+;  AN     MG_T_compensation_test
+;  A      ML_Pt100_machine_assigned
+;  A      ML_Pt100_spindle_assigned
+;  IFT
+;    L      BL_number_Pt100_machine
+;    >      K+0
+;    IFT
+;      L      ML_machine_Pt100_on_PL510
+;      IFT
+;        PS     BL_machine_module_PL510
+;        PS     BL_machine_slot_PL510
+;        PS     BL_number_Pt100_machine
+;        CM     9138
+;        PLW
+;        +      K+5
+;        /      K+10
+;        +      WG_temperature_machine_offset
+;        =      WG_temperature_machine_Pt100
+;      M_display_module_error(KG_error_module_9138)
+;      ELSE
+;        PS     BL_number_Pt100_machine
+;        CM     9003
+;        PLW
+;        X      BL_factor_machine_Pt100
+;        +      WG_temperature_machine_offset
+;        =      WG_temperature_machine_Pt100
+;      M_display_module_error(KG_error_module_9003)
+;      ENDI
+;    ENDI
+
+;    L      ML_spindle_Pt100_on_PL510
+;    IFT
+;      PS     BL_spindle_module_PL510
+;      PS     BL_spindle_slot_PL510
+;      PS     BL_number_Pt100_spindle
+;      CM     9138
+;      PLW
+;      +      K+5
+;      /      K+10
+;      =      WG_temperature_spindle_Pt100
+;      M_display_module_error(KG_error_module_9138)
+;    ELSE
+;      PS     BL_number_Pt100_spindle
+;      CM     9003
+;      PLW
+;      X      BL_factor_spindle_Pt100
+;      =      WG_temperature_spindle_Pt100
+;      M_display_module_error(KG_error_module_9003)
+;    ENDI
+;  ENDI
+*;EUMACH HSCI not required
+
+  CM     T_simulation
+
+  L      WG_temperature_spindle
+  >=[
+    L      NP_D888_S_max_temperature
+    /      K+1000
+  ]
+  A      MG_spindle_active                                            *;EUMACH
+  S      PN_error_spindle_T_max
+
+*;EUMACH Basic 54
+;* Average calculating temperature difference
+;  L      ML_temperature_average_sensors
+;  IFT
+;    L      WG_temperature_spindle
+;    +      WG_temperature_machine
+;    /      K+2
+;    +      DL_temperature_sum
+;    =      DL_temperature_sum
+;  ELSE
+;    L      WG_temperature_spindle
+;    -      WG_temperature_machine
+;    +      DL_temperature_sum
+;    =      DL_temperature_sum
+;  ENDI
+
+  L      WG_temperature_spindle_Pt100
+  +      DL_temperature_spindle_sum
+  =      DL_temperature_spindle_sum
+
+  L      WG_temperature_machine_Pt100
+  +      DL_temperature_machine_sum
+  =      DL_temperature_machine_sum
+
+  INC    WL_average_counter
+
+  L      WL_average_counter
+  >=     WL_counter_measuring
+  IFT
+    LN     ML_data_from_Spawn_in_process
+    AN     ML_initial_temp_compensation
+    IFT
+;      L      DL_temperature_sum									  *;EUMACH Basic 54
+;      /      WL_counter_measuring									  *;EUMACH Basic 54
+;      =      WG_temperature_table									  *;EUMACH Basic 54
+
+      L      DL_temperature_spindle_sum
+      /      WL_counter_measuring
+      =      WG_temperature_spindle
+
+      L      DL_temperature_machine_sum
+      /      WL_counter_measuring
+      =      WG_temperature_machine
+
+*;EUMACH Basic 54
+* Average calculating or temperature difference
+
+      L      ML_temperature_average_sensors
+      IFT
+        L      WG_temperature_spindle
+        +      WG_temperature_machine
+        /      K+2
+        =      WG_temperature_table
+      ELSE
+        L      WG_temperature_spindle
+        -      WG_temperature_machine
+        =      WG_temperature_table
+      ENDI
+*;EUMACH Basic 54
+
+      L      WG_temperature_table
+      <      K+0
+      IFT
+        L      WG_temperature_table
+        <      KL_T_difference_min
+        S      PN_error_temperature_compensation
+        S      MG_win_temperature_sensor
+
+        L      K+0
+        =      WG_temperature_table
+      ENDI
+    ENDI
+
+    L      ML_Spawn_in_process
+    IFT
+      PS     DL_temp_comp_identifier
+      PS     KL_event_masks
+      CM     9261                      ;Event send/start
+
+      M_display_module_error(KG_error_module_9261)
+    ENDI
+
+    L      K+0
+    =      WL_average_counter
+;    =      DL_temperature_sum				                          *;EUMACH Basic 54
+    =      DL_temperature_spindle_sum
+    =      DL_temperature_machine_sum
+
+    L      MG_marker_one
+    S      ML_data_from_Spawn_in_process
+
+  ENDI
+#endif
+
+EM
+
+#if Tcmp = &T_comp_type_05
+* Spawn start (Temp compensation table read/write)
+;----------------------------
+LBL Spawn_start
+
+  SPAWN  Spawn_compensation
+  =      DL_temp_comp_identifier
+  ==     K-1
+  S      PN_error_submit_spawn_queue_full
+  SN     ML_Spawn_in_process
+
+EM
+
+* Neverending loop for Spawn (wait for Event)
+;----------------------------
+LBL Spawn_compensation
+
+  REPEAT
+    PS     KL_wait_for_events
+    PS     KL_event_gated_with_or
+    PS     KL_event_masks
+    CM     9260                        ;Receive or wait for events
+    PLW
+    BT     K+0
+    CMT    Compensation
+
+    M_display_module_error(KG_error_module_9260)
+
+    LN     MG_T_compensation_active
+    O      PN_error_submit_spawn_queue_full
+  UNTILT
+
+  L      MG_marker_one
+  R      ML_Spawn_in_process
+
+EM
+
+* Table_file_open
+;----------------------------
+LBL Compensation
+
+  PS     KL_file_access_read_write
+*$WS
+*#ifdef TNC426 or TNC430
+*  PS     S">OEM.TEMP_COMPENSATION"
+*#else
+  PS     S"PLC:\CORRECT\TMP_COMP.TAB"
+*#endif
+  CM     9240                          ;File open
+  PL     DL_file_handle
+
+  M_module_error_display(KG_error_module_9240,MG_win_file_open)
+
+  CM     9262                          ;Task change permitted
+  M_display_module_error(KG_error_module_9262)
+
+* Data temperature table read/write
+  L      DL_file_handle
+  >      K-1
+  IFT
+    L      ML_initial_temp_compensation
+    CMT    Init_temp_comp
+
+    CM     9262                        ;Task change permitted
+    M_display_module_error(KG_error_module_9262)
+
+* current temperature difference write
+    PS     DL_file_handle
+    PS     KL_line_1
+    PS     S"Data"
+    PS     WG_temperature_machine
+    CM     9256                        ;Table write
+    M_module_error_display(KG_error_module_9256,MG_win_write_table)
+
+    PS     DL_file_handle
+    PS     KL_line_2
+    PS     S"Data"
+    PS     WG_temperature_spindle
+    CM     9256                        ;Table write
+    M_module_error_display(KG_error_module_9256,MG_win_write_table)
+
+    PS     DL_file_handle
+    PS     KL_line_3
+    PS     S"Data"
+    PS     WG_temperature_table
+    CM     9256                        ;Table write
+    M_module_error_display(KG_error_module_9256,MG_win_write_table)
+
+    PS     DL_file_handle
+    PS     KL_line_0
+    PS     S"Setup"
+    CM     9255                        ;Table read
+
+    M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+* Current search for temperature difference
+
+    PLW
+    ==     K+1
+    =      MG_T_compensation_on
+    IFT
+      L      MG_win_value_not_found
+      R      MG_win_value_not_found
+
+      L      K+0
+      =X
+      REPEAT
+        LX
+        =      WL_table_line_number
+
+        PS     DL_file_handle
+        PSX
+        PS     S"Temp"
+        CM     9255                    ;Table read
+        PL     WL_temp_difference_0
+        M_module_error_display(KG_error_module_9255,MG_win_value_not_found)
+
+        CM     9262                    ;Task change permitted
+        M_display_module_error(KG_error_module_9262)
+
+        INCX
+
+        PS     DL_file_handle
+        PSX
+        PS     S"Temp"
+        CM     9255                    ;Data read
+        PL     WL_temp_difference_1
+
+        M_module_error_display(KG_error_module_9255,MG_win_value_not_found)
+
+        L      MG_win_value_not_found
+        IFT
+          DEC    WL_table_line_number
+        ENDI
+
+        CM     9262                    ;Task change permitted
+        M_display_module_error(KG_error_module_9262)
+
+        L      WG_temperature_table
+        >=     WL_temp_difference_0
+        A[
+          L      WG_temperature_table
+          <=     WL_temp_difference_1
+        ]
+        O      MG_win_value_not_found
+      UNTILT
+
+* Read compensation value of the axes
+* Recognition warm up cool down or
+* system in hysteresis
+
+      L      WG_temperature_table
+      -      WL_temp_difference_old
+      >      K+0
+      S      MG_warm_up
+      IFT
+        L      MG_cool_down
+        R      MG_cool_down
+        S      MG_hyst_X_after_cool_down
+        S      MG_hyst_Y_after_cool_down
+        S      MG_hyst_Z_after_cool_down
+      ENDI
+
+      L      WG_temperature_table
+      -      WL_temp_difference_old
+      <      K+0
+      S      MG_cool_down
+      IFT
+        L      MG_warm_up
+        R      MG_warm_up
+        S      MG_hyst_X_after_warm_up
+        S      MG_hyst_Y_after_warm_up
+        S      MG_hyst_Z_after_warm_up
+      ENDI
+
+      L      WG_temperature_table
+      =      WL_temp_difference_old
+
+      L      S"Xp"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Xp
+
+      L      S"Yp"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Yp
+
+      L      S"Zp"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Zp
+
+*    CM     9262                        ;Taskwechsel erlauben
+*    M_Modul_Fehler_anzeigen(KG_Fehler_Modul_9262)
+
+      L      S"Xn"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Xn
+
+      L      S"Yn"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Yn
+
+      L      S"Zn"
+      =      SL_string_field_name
+      CM     Temp_comp_value
+      PL     WL_compensation_value_Zn
+
+*    CM     9262                        ;Taskwechsel erlauben
+*    M_Modul_Fehler_anzeigen(KG_Fehler_Modul_9262)
+
+* If no hysteresis in curve or average in table
+* chosen, average will be used
+
+      L      K+0
+      =X
+
+      REPEAT
+        L      MG_curve_without_hyst_X[X]
+        IFT
+          R      MG_hyst_X_after_cool_down[X]
+          R      MG_hyst_X_after_warm_up[X]
+
+          L      MG_T_compensation_X_active[X]
+          IFT
+            L      WL_compensation_value_Xp[X]
+            +      WL_compensation_value_Xn[X]
+            /      K+2
+            =      WL_compensation_value_X[X]
+            =      WG_W3000_lag_err_comp_X[X]                         *;EUMACH
+;#if KINEMAT_tempcomp = &inactive                                     *;EUMACH Table clamped -> Z comp
+;            =      PN_W576_lag_error_compensation_X[X]               *;EUMACH Table clamped -> Z comp
+;#endif                                                               *;EUMACH Table clamped -> Z comp
+          ELSE
+            L      K+0
+            =      WG_W3000_lag_err_comp_X[X]                         *;EUMACH
+;#if KINEMAT_tempcomp = &inactive                                     *;EUMACH Table clamped -> Z comp
+;            =      PN_W576_lag_error_compensation_X[X]               *;EUMACH Table clamped -> Z comp
+;#endif                                                               *;EUMACH Table clamped -> Z comp
+          ENDI
+        ELSE
+          L      MG_warm_up
+          IFT
+            L      WL_compensation_value_Xp[X]
+            =      WL_compensation_value_X[X]
+          ENDI
+
+          L      MG_cool_down
+          IFT
+            L      WL_compensation_value_Xn[X]
+            =      WL_compensation_value_X[X]
+          ENDI
+
+          LN     MG_hyst_X_after_warm_up[X]
+          AN     MG_hyst_X_after_cool_down[X]
+          IFT
+            L      MG_T_compensation_X_active[X]
+            IFT
+              L      WL_compensation_value_X[X]
+              =      WG_W3000_lag_err_comp_X[X]                       *;EUMACH
+;#if KINEMAT_tempcomp = &inactive                                     *;EUMACH Table clamped -> Z comp
+;              =      PN_W576_lag_error_compensation_X[X]             *;EUMACH Table clamped -> Z comp
+;#endif                                                               *;EUMACH Table clamped -> Z comp
+            ELSE
+              L      K+0
+              =      WG_W3000_lag_err_comp_X[X]                       *;EUMACH
+;#if KINEMAT_tempcomp = &inactive                                     *;EUMACH Table clamped -> Z comp
+;              =      PN_W576_lag_error_compensation_X[X]             *;EUMACH Table clamped -> Z comp
+;#endif                                                               *;EUMACH Table clamped -> Z comp
+            ENDI
+
+            PS     WL_compensation_value_X[X]
+            CM     Absolute
+            PL     WL_compensation_value_X[X]
+
+            L      MG_cool_down
+            IFT
+              L      WL_compensation_value_X[X]
+              =      WL_cool_down_value_X[X]
+            ENDI
+
+            L      MG_warm_up
+            IFT
+              L      WL_compensation_value_X[X]
+              =      WL_warm_up_value_X[X]
+            ENDI
+          ENDI
+
+          PS     WL_compensation_value_X[X]
+          CM     Absolute
+          PL     WL_compensation_value_X[X]
+
+          PS     WL_compensation_value_Xp[X]
+          CM     Absolute
+          PL     WL_compensation_value_Xp[X]
+
+          PS     WL_compensation_value_Xn[X]
+          CM     Absolute
+          PL     WL_compensation_value_Xn[X]
+
+          L      WL_compensation_value_Xn[X]
+          <      WL_compensation_value_Xp[X]
+          S      MG_curve_without_hyst_X[X]
+          IFT
+            PS     DL_file_handle
+            LX
+            +      KL_line_8
+            PSW
+            PS     S"Setup"
+            PS     K+1
+            CM     9256                ;Table write
+              M_module_error_display(KG_error_module_9256,MG_win_write_table)
+          ENDI
+
+          L      MG_cool_down
+          IFT
+            L      WL_compensation_value_X[X]
+            <=     WL_warm_up_value_X[X]
+            R      MG_hyst_X_after_warm_up[X]
+
+            L      WL_compensation_value_X[X]
+            <=     WL_cool_down_value_X[X]
+            R      MG_hyst_X_after_cool_down[X]
+          ENDI
+
+          L      MG_warm_up
+          IFT
+            L      WL_compensation_value_X[X]
+            >=     WL_cool_down_value_X[X]
+            R      MG_hyst_X_after_cool_down[X]
+
+            L      WL_compensation_value_X[X]
+            >=     WL_warm_up_value_X[X]
+            R      MG_hyst_X_after_warm_up[X]
+          ENDI
+        ENDI
+
+        INCX
+        LX
+        >      KG_axis_Z
+      UNTILT
+
+    ELSE
+      L      K+0
+      =      WG_W3000_lag_err_comp_X                                  *;EUMACH
+      =      WG_W3002_lag_err_comp_Y                                  *;EUMACH
+      =      WG_W3004_lag_err_comp_Z                                  *;EUMACH
+*;EUMACH Table clamped -> Z comp
+;#if KINEMAT_tempcomp = &inactive
+;      =      PN_W576_lag_error_compensation_X
+;      =      PN_W578_lag_error_compensation_Y
+;      =      PN_W580_lag_error_compensation_Z
+;#endif
+*;EUMACH Table clamped -> Z comp
+    ENDI
+
+    L      ML_data_from_Spawn_in_process
+    R      ML_data_from_Spawn_in_process
+
+  ENDI
+
+  L      MG_win_file_open
+  O      MG_win_read_table
+  O      MG_win_write_table
+  O      MG_win_value_not_found
+  S      PN_error_temperature_compensation
+
+  PS     DL_file_handle
+  CM     9241                          ;File close
+  M_display_module_error(KG_error_module_9241)
+
+EM
+
+* Read values from table and interpolate
+;----------------------------
+LBL Temp_comp_value
+
+  PS     DL_file_handle
+  PS     WL_table_line_number
+  PS     K &SL_string_field_name
+  CM     9255
+  PL     WL_compensation_value_0
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  PS     DL_file_handle
+  L      WL_table_line_number
+  +      K+1
+  PSW
+  PS     K &SL_string_field_name
+  CM     9255
+  PL     WL_compensation_value_1
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  CM     9262                          ;Task change permitted
+  M_display_module_error(KG_error_module_9262)
+
+* Linear interpolation between compensation points
+
+  L      WL_compensation_value_1
+  -      WL_compensation_value_0
+  X[
+    L      WG_temperature_table
+    -      WL_temp_difference_0
+  ]
+  /[
+    L      WL_temp_difference_1
+    -      WL_temp_difference_0
+  ]
+  +      WL_compensation_value_0
+  PSW
+
+EM
+
+
+* Read initializing value from temperature table
+;----------------------------
+LBL Init_temp_comp
+
+  PS     DL_file_handle
+  PS     KL_line_4
+  PS     S"Setup"
+  CM     9255
+  PLW
+  ==     K+1
+  =      ML_temperature_average_sensors
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  PS     DL_file_handle
+  PS     KL_line_5
+  PS     S"Setup"
+  CM     9255
+  PLW
+  PSW
+  >      K+69
+  =      ML_machine_Pt100_on_PL510
+  IFT
+    PLW
+    PSW
+    /      K+100
+    =      BL_number_Pt100_machine
+
+    PLW
+    MOD    K+100
+    PSW
+    /      K+10
+    =      BL_machine_slot_PL510
+
+    PLW
+    MOD    K+10
+    =      BL_machine_module_PL510
+  ELSE
+    PL     BL_number_Pt100_machine
+  ENDI
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  PS     DL_file_handle
+  PS     KL_line_6
+  PS     S"Setup"
+  CM     9255
+  PLW
+  PSW
+  >      K+69
+  =      ML_spindle_Pt100_on_PL510
+  IFT
+    PLW
+    PSW
+    /      K+100
+    =      BL_number_Pt100_spindle
+
+    PLW
+    MOD    K+100
+    PSW
+    /      K+10
+    =      BL_spindle_slot_PL510
+
+    PLW
+    MOD    K+10
+    =      BL_spindle_module_PL510
+  ELSE
+    PL     BL_number_Pt100_spindle
+  ENDI
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  CM     9262                          ;Task change permitted
+  M_display_module_error(KG_error_module_9262)
+
+* Number Pt100 interface and scaling factor from KField
+
+  L      MG_marker_one
+  R      ML_Pt100_spindle_assigned
+  R      ML_Pt100_machine_assigned
+
+  L      BL_number_Pt100_machine
+  ==     K+0
+  S      ML_Pt100_machine_assigned
+
+  L      K+0
+  =X
+  REPEAT
+    L      KF Pt100_input[X]
+    PSW
+    PSW
+
+    INCX
+
+    PLW
+    ==     BL_number_Pt100_machine
+    AN     ML_Pt100_machine_assigned
+    S      ML_Pt100_machine_assigned
+    IFT
+      L      KF Pt100_input[X]
+      =      BL_factor_machine_Pt100
+    ENDI
+
+    PLW
+    ==     BL_number_Pt100_spindle
+    AN     ML_Pt100_spindle_assigned
+    S      ML_Pt100_spindle_assigned
+    IFT
+      L      KF Pt100_input[X]
+      =      BL_factor_spindle_Pt100
+    ENDI
+
+    INCX
+
+    LN     ML_Pt100_spindle_assigned
+    ON     ML_Pt100_machine_assigned
+    A[
+      L      KF Pt100_input[X]
+      <=     K-1
+    ]
+    S      MG_win_Pt100_not_found
+
+    L      ML_Pt100_spindle_assigned
+    A      ML_Pt100_machine_assigned
+    O      MG_win_Pt100_not_found
+  UNTILT
+
+  CM     9262                          ;Task change permitted
+  M_display_module_error(KG_error_module_9262)
+
+* Number of PLC cycles for average calculating
+  PS     DL_file_handle
+  PS     KL_line_7
+  PS     S"Setup"
+  CM     9255
+  PL     WL_counter_measuring
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  L      WL_counter_measuring
+  <      KL_minimal_necessary_measurings
+  IFT
+    L      KL_minimal_necessary_measurings
+    =      WL_counter_measuring
+  ENDI
+
+  CM     9262                          ;Task change permitted
+
+  M_display_module_error(KG_error_module_9262)
+
+  PS     DL_file_handle
+  PS     KL_line_8
+  PS     S"Setup"
+  CM     9255
+  PLW
+  >      K+0
+  =      MG_curve_without_hyst_X
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  PS     DL_file_handle
+  PS     KL_line_9
+  PS     S"Setup"
+  CM     9255
+  PLW
+  >      K+0
+  =      MG_curve_without_hyst_Y
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  PS     DL_file_handle
+  PS     KL_line_10
+  PS     S"Setup"
+  CM     9255
+  PLW
+  >      K+0
+  =      MG_curve_without_hyst_Z
+
+  M_module_error_display(KG_error_module_9255,MG_win_read_table)
+
+  L      ML_initial_temp_compensation
+  R      ML_initial_temp_compensation
+
+EM
+
+;----------------------------
+LBL T_simulation
+
+  L      MG_T_compensation_test
+  IFT
+    L      MG_T_compensation_test
+    AN     ML_test_has_been_active
+    IFT
+      L      K+50
+      =      BG_PLC_cycles_T_simulation
+
+      L      K+200
+      =      WG_temperature_spindle_Pt100
+      =      WG_temperature_machine_Pt100
+      =      WG_temperature_min_spindle
+
+      L      K+300
+      =      WG_temperature_max_spindle
+    ENDI
+
+    L      MG_T_compensation_test_auto
+    IFT
+
+      DEC    BL_counter_PLC_cycles
+
+      L      BL_counter_PLC_cycles
+      <=     K+0
+      AN     ML_temperature_decrement
+      IFT
+        L      BG_PLC_cycles_T_simulation
+        =      BL_counter_PLC_cycles
+
+        L      WG_temperature_spindle_Pt100
+        +      K+1
+        =      WG_temperature_spindle_Pt100
+
+        L      WG_temperature_spindle_Pt100
+        >=     WG_temperature_max_spindle
+        S      ML_temperature_decrement
+      ENDI
+
+      L      BL_counter_PLC_cycles
+      <=     K+0
+      A      ML_temperature_decrement
+      IFT
+        L      BG_PLC_cycles_T_simulation
+        =      BL_counter_PLC_cycles
+
+        L      WG_temperature_spindle_Pt100
+        -      K+1
+        =      WG_temperature_spindle_Pt100
+
+        L      WG_temperature_spindle_Pt100
+        <=     WG_temperature_min_spindle
+        R      ML_temperature_decrement
+*       R      MG_T_compensation_test_auto
+      ENDI
+    ENDI
+  ENDI
+
+  L      MG_T_compensation_test
+  =      ML_test_has_been_active
+
+EM
+* Interface assignment and scaling factor for the
+* PT 100 inputs
+
+* Interface assignment on the first PL410
+* Interface (PA)     module value
+* X15       (X2)  == 0    analog input
+* X16       (X3)  == 1    analog input
+* X17       (X4)  == 2    analog input
+* X18       (X5)  == 3    analog input
+* X19       (X7)  == 4    Pt 100 input
+* X20       (X8)  == 5    Pt 100 input
+* X21       (X9)  == 6    Pt 100 input
+* X22       (X10) == 7    Pt 100 input
+
+* Interface assignment on the second PL410
+* Interface (PA)     module value
+* X15     (X2)  == 8    analog input
+* X16     (X3)  == 9    analog input
+* X17     (X4)  == 10   analog input
+* X18     (X5)  == 11   analog input
+* X19     (X7)  == 12   Pt 100 input
+* X20     (X8)  == 13   Pt 100 input
+* X21     (X9)  == 14   Pt 100 input
+* X22     (X10) == 15   Pt 100 input
+
+* Pt100 assignment on the first PL510
+* Interface slot     module  module value
+* X19       0        0        == 400
+* X20       0        0        == 500
+* X21       0        0        == 600
+* X22       0        0        == 700
+* X19       1        0        == 410
+* X20       1        0        == 510
+* X21       1        0        == 610
+* X22       1        0        == 710
+* X19       2        0        == 420
+* X20       2        0        == 520
+* X21       2        0        == 620
+* X22       2        0        == 720
+* X19       3        0        == 430
+* X20       3        0        == 530
+* X21       3        0        == 630
+* X22       3        0        == 730
+
+* Pt100 assignment on the second PL510
+* Interface slot     module  module value
+* X19     0          1        == 401
+* X20     0          1        == 501
+* X21     0          1        == 601
+* X22     0          1        == 701
+* X19     1          1        == 411
+* X20     1          1        == 511
+* X21     1          1        == 611
+* X22     1          1        == 711
+* X19     2          1        == 421
+* X20     2          1        == 521
+* X21     2          1        == 621
+* X22     2          1        == 721
+* X19     3          1        == 431
+* X20     3          1        == 531
+* X21     3          1        == 631
+* X22     3          1        == 731
+
+* Interface assignment on the LE
+* Interface pin    module value
+* X48     1,2,3,4    == 67    Pt 100 input
+* X48     5,6,7,8    == 68    Pt 100 input
+* X48     9,10,11,12 == 69    Pt 100 input
+* X48     14,15      == 64    analog input
+* X48     16,17      == 65    analog input
+* X48     18,19      == 66    analog input
+
+KFIELD Pt100_input
+  K+4                                  ;Pt100 input 0.5 degree resolution
+  K+5                                  ;Scaling factor 0.1 degree resolution
+
+  K+5
+  K+5
+
+  K+6
+  K+5
+
+  K+7
+  K+5
+
+  K+12
+  K+5
+
+  K+13
+  K+5
+
+  K+14
+  K+5
+
+  K+15
+  K+5
+
+  K+67                                 ;Pt100 input 0.1 degree resolution
+  K+1                                  ;Scaling factor 0.1 degree resolution
+
+  K+68
+  K+1
+
+  K+69
+  K+1
+
+  K+400
+  K+1
+
+  K+500
+  K+1
+
+  K+600
+  K+1
+
+  K+700
+  K+1
+
+  K+410
+  K+1
+
+  K+510
+  K+1
+
+  K+610
+  K+1
+
+  K+710
+  K+1
+
+  K+420
+  K+1
+
+  K+520
+  K+1
+
+  K+620
+  K+1
+
+  K+720
+  K+1
+
+  K+430
+  K+1
+
+  K+530
+  K+1
+
+  K+630
+  K+1
+
+  K+730
+  K+1
+
+  K+401
+  K+1
+
+  K+501
+  K+1
+
+  K+601
+  K+1
+
+  K+701
+  K+1
+
+  K+411
+  K+1
+
+  K+511
+  K+1
+
+  K+611
+  K+1
+
+  K+711
+  K+1
+
+  K+421
+  K+1
+
+  K+521
+  K+1
+
+  K+621
+  K+1
+
+  K+721
+  K+1
+
+  K+431
+  K+1
+
+  K+531
+  K+1
+
+  K+631
+  K+1
+
+  K+731
+  K+1
+
+  K-1                                  ; End of table
+ENDK
+#endif

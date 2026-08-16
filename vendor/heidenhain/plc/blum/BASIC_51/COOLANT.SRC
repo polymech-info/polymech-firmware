@@ -1,0 +1,506 @@
+*-----------------------------------------------------------------------------
+*  Coolant inside/outside M07/M08
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    ML_key_pressed                           M
+#define /s    ML_PN_M4041_M07_MK_status                M              *;EUMACH
+#define /s    ML_M4041_M07_MK_status_p_pulse           M              *;EUMACH
+#define /s    ML_M4041_M07_MK_status_n_pulse           M              *;EUMACH
+#define /s    ML_M17_status                            M              *;EUMACH
+#define /s    ML_M17_status_p_pulse                    M              *;EUMACH
+#define /s    ML_CTS_spindle_blow_clean_on             M              *;EUMACH
+#define /s    ML_M07_status                            M              *;EUMACH M307
+#define /s    ML_M307_status                           M              *;EUMACH M307
+#define /s    ML_M07_M307_switching_pause              M              *;EUMACH M307
+#define /s    ML_temp_M07_M307_switching_pause         M              *;EUMACH M307
+
+GLOBAL Coolant
+
+;----------------------------
+LBL Coolant
+;----------------------------
+
+*;EUMACH Original PLC
+;  L      MG_M07_coolant_inside_on
+;  O      MG_M08_coolant_on
+;  O      MG_M09_coolant_off
+;  S      PN_M4092_quit_M_function
+*;EUMACH Original PLC
+
+*;EUMACH When M09 cancels M07, M code quit signal waits for spindle blow clean.
+  L      MG_M07_coolant_inside_on
+  AN     NP_CTS_high_low_pressure_switching                           *;EUMACH M307
+  O[                                                                  *;EUMACH M307
+    L      MG_M07_coolant_inside_on                                   *;EUMACH M307
+    A      NP_CTS_high_low_pressure_switching                         *;EUMACH M307
+    AN     ML_M07_M307_switching_pause                                *;EUMACH M307
+  ]                                                                   *;EUMACH M307
+  O      MG_M307_CTS_high_pressure                                    *;EUMACH M307
+  O      MG_M08_coolant_on
+  O      MG_M17_air_inside_on
+  O[
+    L      NP_coolant_through_tool_active
+    ON     NP_S_blow_clean_after_CTS
+    ON     PN_M4041_M07_MK_status
+    A      MG_M09_coolant_off
+  ]
+  O[
+    LN     NP_coolant_through_tool_active
+    A      NP_S_blow_clean_after_CTS
+    A      PN_M4041_M07_MK_status
+    A      MG_O_CTS_blow_clean_n_pulse
+    A      MG_M09_coolant_off
+  ]
+  S      PN_M4092_quit_M_function
+
+  L      PN_M4041_M07_MK_status
+  AN     ML_PN_M4041_M07_MK_status
+  =      ML_M4041_M07_MK_status_p_pulse
+
+  LN     PN_M4041_M07_MK_status
+  A      ML_PN_M4041_M07_MK_status
+  =      ML_M4041_M07_MK_status_n_pulse
+
+  L      PN_M4041_M07_MK_status
+  =      ML_PN_M4041_M07_MK_status
+
+  L      ML_M4041_M07_MK_status_n_pulse
+  AN     MG_TC_automatic
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  AN     MG_TC2_automatic                                             *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  O      MG_p_pulse_TC_S_blow_clean_after_CTS
+  AN     NP_coolant_through_tool_active
+  A      NP_S_blow_clean_after_CTS
+  S      ML_CTS_spindle_blow_clean_on
+  R      MG_TC_S_blow_clean_after_CTS                                 *;EUMACH
+  R      MG_last_TC_S_blow_clean_after_CTS                            *;EUMACH
+  R      MG_p_pulse_TC_S_blow_clean_after_CTS                         *;EUMACH
+
+  L      ML_CTS_spindle_blow_clean_on
+  A      I_servo_drive_release
+  A      MG_servo_drive_release_1st_axes_group
+  AN     MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  A      MG_control_operational
+  AN     MG_guard_open                                                *;EUMACH
+  S      MG_S_blow_clean_after_CTS
+  =N     TS_CTS_S_blow_clean
+
+  LN     TS_CTS_S_blow_clean
+  AN     TR_CTS_S_blow_clean
+  O      O_coolant_M07_on
+  AN     NP_coolant_through_tool_active
+  A      NP_S_blow_clean_after_CTS
+  R      MG_S_blow_clean_after_CTS
+  R      ML_CTS_spindle_blow_clean_on
+
+  L      MG_S_blow_clean_after_CTS
+  =      O_coolant_drain_valve_after_CTS
+*;EUMACH
+
+*;EUMACH
+  LN     O_coolant_M07_on
+  O      I_CTS_filter_ok
+  ON     NP_CTS_filter_active
+  =      TS_CTS_filter
+
+  LN     TS_CTS_filter
+  AN     TR_CTS_filter
+  A      MG_control_operational
+  S      PN_error_CTS_filter
+
+  LN     O_coolant_M07_on
+  ON     NP_CTS_motor_pressure_sensor_active
+  =      TS_CTS_motor_outlet_pressure
+
+  LN     TS_CTS_motor_outlet_pressure
+  AN     TR_CTS_motor_outlet_pressure
+  AN     I_CTS_motor_outlet_pressure_ok
+  S      PN_error_CTS_motor_pressure
+
+#if M7TK = &CTS_tank_06
+  LN     O_coolant_M08_on
+  ON     NP_coolant_motor_pressure_sensor_active
+  =      TS_M08_motor_outlet_pressure
+
+  LN     TS_M08_motor_outlet_pressure
+  AN     TR_M08_motor_outlet_pressure
+  AN     I_coolant_motor_outlet_pressure_ok
+  S      MG_error_M08_motor_pressure
+#endif
+*;EUMACH
+
+*;EUMACH M307
+  LN     NP_CTS_high_low_pressure_switching
+  A      MG_M307_CTS_high_pressure
+  S      PN_error_M_function_not_used
+
+  LN     NP_CTS_high_low_pressure_switching
+  R      ML_M07_status
+  R      ML_M307_status
+  R      O_lamp_coolant_M307
+  R      O_coolant_M07_pressure_relief_valve
+  R      ML_M07_M307_switching_pause
+  IFT
+*;EUMACH M307
+  L      I_key_coolant_M07
+  AN     ML_key_pressed
+  XO     PN_M4041_M07_MK_status
+  =      PN_M4041_M07_MK_status
+*;EUMACH M307
+  ELSE
+    L      I_key_coolant_M07
+    AN     ML_key_pressed
+    XO     ML_M07_status
+    =      ML_M07_status
+
+    L      I_key_coolant_M307
+    AN     ML_key_pressed
+    XO     ML_M307_status
+    =      ML_M307_status
+
+    L      MG_M07_coolant_inside_on
+    S      ML_M07_status
+
+    L      MG_M307_CTS_high_pressure
+    S      ML_M307_status
+
+    L      I_key_coolant_M307
+    AN     ML_key_pressed
+    O      MG_M307_CTS_high_pressure
+    A      ML_M07_status
+    R      ML_M07_status
+
+    L      I_key_coolant_M07
+    AN     ML_key_pressed
+    O      MG_M07_coolant_inside_on
+    A      ML_M307_status
+    R      ML_M307_status
+
+    LN     ML_M07_status
+    AN     ML_M307_status
+    R      PN_M4041_M07_MK_status
+
+    L      PN_M4041_M07_MK_status
+    A      PN_M4040_M07_M08_M09_MK_status_inverse
+    A      MG_clock_1_s
+    O      O_coolant_M07_on
+    A      ML_M307_status
+    O      MG_test_lamps
+    =      O_lamp_coolant_M307
+
+    ;When CTS high pressure is switching to low pressure, the O_coolant_M07_pressure_relief_valve
+    ;cannot be turned on without turning off O_coolant_M07_on due to high pressure preventing valve
+    ;shifting.
+    L      O_coolant_M07_on
+    AN     O_coolant_M07_pressure_relief_valve
+    A      ML_M07_status
+    S      ML_M07_M307_switching_pause
+
+    L      ML_M07_M307_switching_pause
+    AN     ML_temp_M07_M307_switching_pause
+    =      TS_M07_M307_switching_pause
+
+    L      ML_M07_M307_switching_pause
+    =      ML_temp_M07_M307_switching_pause
+
+    LN     TS_M07_M307_switching_pause
+    AN     TR_M07_M307_switching_pause
+    R      ML_M07_M307_switching_pause
+
+    L      ML_M07_status
+    AN     ML_M07_M307_switching_pause
+    =      O_coolant_M07_pressure_relief_valve
+  ENDI
+*;EUMACH M307
+
+  L      I_key_coolant_M08
+  AN     ML_key_pressed
+  XO     PN_M4042_M08_MK_status
+  =      PN_M4042_M08_MK_status
+
+*;EUMACH
+  L      I_key_air_through_S_M17
+  AN     ML_key_pressed
+  XO     MG_M17_status
+  =      MG_M17_status
+*;EUMACH
+
+  L      I_key_coolant_M07
+  O      I_key_coolant_M08
+  O      I_key_coolant_M307                                           *;EUMACH M307
+  O      I_key_air_through_S_M17                                      *;EUMACH
+  =      ML_key_pressed
+
+  L      MG_M07_coolant_inside_on
+  O[                                                                  *;EUMACH M307
+    L      NP_CTS_high_low_pressure_switching                         *;EUMACH M307
+    A      MG_M307_CTS_high_pressure                                  *;EUMACH M307
+  ]                                                                   *;EUMACH M307
+  O      ML_M07_status                                                *;EUMACH M307
+  O      ML_M307_status                                               *;EUMACH M307
+  S      PN_M4041_M07_MK_status
+
+  L      MG_M08_coolant_on
+  O      MG_M13_Spindle_right_coolant_on
+  O      MG_M14_Spindle_left_coolant_on
+  S      PN_M4042_M08_MK_status
+
+  L      MG_M09_coolant_off
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_auto_manu_mode_change
+  O      MG_win_coolant_motor_overloaded                              *;EUMACH
+  ON     MG_control_operational
+  R      PN_M4041_M07_MK_status
+  R      PN_M4042_M08_MK_status
+  R      ML_M07_status                                                *;EUMACH M307
+  R      ML_M307_status                                               *;EUMACH M307
+
+*;EUMACH
+  L      PN_M4041_M07_MK_status
+  A      ML_M17_status_p_pulse
+  A      NP_air_through_spindle
+  AN     NP_coolant_through_tool_active
+*;EUMACH CE 2008
+#if SFM = &Standard
+  O[
+    L      PN_error_safety_mode_2
+    ON     MG_NC_program_operating                                    *;EUMACH CE Sep 06 2008
+    A      MG_guard_open
+  ]
+#endif
+#if SFM = &DMx
+  O      PN_error_safety_mode_2
+  O      MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  R      PN_M4041_M07_MK_status
+  R      ML_M07_status                                                *;EUMACH M307
+  R      ML_M307_status                                               *;EUMACH M307
+
+  L      PN_M4042_M08_MK_status
+  A      MG_soft_key_air_blast_p_pulse
+  A      NP_coolant_and_air_blast_in_same_nozzle
+*;EUMACH CE 2008
+#if SFM = &Standard
+  O[
+    L      PN_error_safety_mode_2
+    ON     MG_NC_program_operating                                    *;EUMACH CE Sep 06 2008
+    A      PN_error_guard_open
+  ]
+#endif
+#if M7TK = &CTS_tank_06
+#if SFM = &DMx
+  O      PN_error_safety_mode_2
+  O      MG_safety_mode_4
+#endif
+#endif
+*;EUMACH CE 2008
+  R      PN_M4042_M08_MK_status
+*;EUMACH
+
+  L      NP_M4002_S_nominal_0
+  O      PN_M4008_S_nominal_off_status_inverse
+  AN     NP_M4030_tapping_cycle_active
+  AN     NP_coolant_without_spindle_turning
+  O      NP_M4158_mode_block_scan
+  O[                                                                  *;EUMACH
+    L      MG_TC_automatic
+;    AN     MG_tool_back_to_magazine                                  *;EUMACH standby tool loading/unloading
+  ]                                                                   *;EUMACH
+  O      MG_TC_manual
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  O[                                                                  *;EUMACH
+    L      MG_TC2_automatic                                           *;EUMACH Dual TC
+;    AN     MG_tool_back_to_mag2                                      *;EUMACH standby tool loading/unloading
+  ]                                                                   *;EUMACH
+#endif                                                                *;EUMACH Dual TC
+  O      MG_3D_head_active                                            *;EUMACH
+  ON     I_servo_drive_release
+  ON     MG_servo_drive_release_1st_axes_group
+  O      MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  O      MG_enable_alternating_table
+  O      MG_guard_open_operation_hold                                 *;EUMACH CE Sep 06 2008
+  O      PN_error_coolant_level_low                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    L      PN_M4041_M07_MK_status                                     *;EUMACH
+    A      PN_error_CTS_filter                                        *;EUMACH
+    A      NP_CTS_filter_active                                       *;EUMACH
+  ]                                                                   *;EUMACH
+  O[                                                                  *;EUMACH
+    L      PN_M4041_M07_MK_status                                     *;EUMACH
+    A      PN_error_CTS_motor_pressure                                *;EUMACH
+    A      NP_CTS_motor_pressure_sensor_active                        *;EUMACH
+  ]                                                                   *;EUMACH
+#if M7TK = &CTS_tank_06
+  O[                                                                  *;EUMACH
+    L      PN_M4042_M08_MK_status                                     *;EUMACH
+    A      MG_error_M08_motor_pressure                                *;EUMACH
+    A      NP_coolant_motor_pressure_sensor_active                    *;EUMACH
+  ]                                                                   *;EUMACH
+#endif
+  O[                                                                  *;EUMACH
+    L      PN_error_CTS_tank_level                                    *;EUMACH
+    O      PN_error_CTS_tank_level_low                                *;EUMACH
+    O      PN_error_CTS_tank_overflow                                 *;EUMACH
+    O      PN_error_CTS_tank_inlet_pressure                           *;EUMACH
+    O      MG_win_paper_filter_motor_overloaded                       *;EUMACH
+#if (M7TK = &CTS_tank_06) or (M7TK = &CTS_tank_07)                    *;EUMACH
+    A[                                                                *;EUMACH
+      L      PN_M4041_M07_MK_status                                   *;EUMACH
+      O      PN_M4042_M08_MK_status                                   *;EUMACH
+    ]                                                                 *;EUMACH
+#else                                                                 *;EUMACH
+    A      PN_M4041_M07_MK_status                                     *;EUMACH
+#endif                                                                *;EUMACH
+  ]                                                                   *;EUMACH
+  =      PN_M4040_M07_M08_M09_MK_status_inverse
+
+  L      PN_M4041_M07_MK_status
+  AN     PN_M4040_M07_M08_M09_MK_status_inverse
+  A      MG_soft_key_fluid_flow_valve                                 *;EUMACH
+  AN     ML_M07_M307_switching_pause                                  *;EUMACH M307
+  =      O_coolant_M07_on
+
+  L      PN_M4042_M08_MK_status
+  AN     PN_M4040_M07_M08_M09_MK_status_inverse
+  AN     TS_coolant_air_blast_switching                               *;EUMACH
+  AN     TR_coolant_air_blast_switching                               *;EUMACH
+  A      MG_soft_key_fluid_flow_valve                                 *;EUMACH
+  =      O_coolant_M08_on
+
+  LN     PN_M4041_M07_MK_status
+  AN     PN_M4042_M08_MK_status
+  R      PN_M4040_M07_M08_M09_MK_status_inverse
+
+  L      PN_M4041_M07_MK_status
+  A      PN_M4040_M07_M08_M09_MK_status_inverse
+  A      MG_clock_1_s
+  O      O_coolant_M07_on
+  O      ML_M07_M307_switching_pause                                  *;EUMACH M307
+  A[                                                                  *;EUMACH M307
+    L      ML_M07_status                                              *;EUMACH M307
+    A      NP_CTS_high_low_pressure_switching                         *;EUMACH M307
+    ON     NP_CTS_high_low_pressure_switching                         *;EUMACH M307
+  ]                                                                   *;EUMACH M307
+  O      MG_test_lamps
+  =      O_lamp_coolant_M07
+
+  L      PN_M4042_M08_MK_status
+  A      PN_M4040_M07_M08_M09_MK_status_inverse
+  A      MG_clock_1_s
+  O      O_coolant_M08_on
+  O      MG_test_lamps
+  =      O_lamp_coolant_M08
+
+*;EUMACH
+  L      MG_M17_air_inside_on
+  S      MG_M17_status
+
+  L      MG_M09_coolant_off
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_auto_manu_mode_change
+  O[
+    L      MG_M17_status
+    A      ML_M4041_M07_MK_status_p_pulse
+  ]
+*;EUMACH CE 2008
+#if SFM = &Standard
+  O[
+    L      PN_error_safety_mode_2
+    ON     MG_NC_program_operating                                    *;EUMACH CE Sep 06 2008
+    A      MG_guard_open                                              *;EUMACH CE Sep 06 2008
+  ]
+#endif
+#if SFM = &DMx
+  O      PN_error_safety_mode_2
+  O      MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  O      NP_coolant_through_tool_active
+  ON     MG_control_operational
+  ON     NP_air_through_spindle
+  R      MG_M17_status
+
+  L      NP_M4002_S_nominal_0
+  O      PN_M4008_S_nominal_off_status_inverse
+  AN     NP_M4030_tapping_cycle_active
+  AN     NP_coolant_without_spindle_turning
+  O      NP_M4158_mode_block_scan
+  O      MG_TC_automatic
+  O      MG_TC_manual
+#if Tool_changing_arm_2 ! &inactive                                   *;EUMACH Dual TC
+  O      MG_TC2_automatic                                             *;EUMACH Dual TC
+#endif                                                                *;EUMACH Dual TC
+  O      MG_3D_head_active
+  O      MG_guard_open_operation_hold                                 *;EUMACH CE Sep 06 2008
+  ON     I_servo_drive_release
+  ON     MG_servo_drive_release_1st_axes_group
+  O      MG_both_mag_and_ATC_doors_open_protection                    *;EUMACH Protection for both magazine door open & ATC door open
+  O      MG_enable_alternating_table
+  =      MG_M17_status_inverse
+
+  L      MG_M17_status
+  AN     MG_M17_status_inverse
+  A      MG_soft_key_fluid_flow_valve                                 *;EUMACH
+  A[                                                                  *;EUMACH
+    L      NP_MP4230_48_ATS_S_rpm_limitation                          *;EUMACH MP4230.48 * 1.01 >= D372
+    /      K+10000                                                    *;EUMACH
+    X      K+101                                                      *;EUMACH
+    /      K+100                                                      *;EUMACH
+    >=     NP_D368_S_actual_rpm                                       *;EUMACH
+    O[                                                                *;EUMACH
+      L      NP_MP4230_48_ATS_S_rpm_limitation                        *;EUMACH
+      <=     K+0                                                      *;EUMACH
+    ]                                                                 *;EUMACH
+  ]                                                                   *;EUMACH
+  =      MG_air_through_S_on
+
+  L      NP_MP4230_48_ATS_S_rpm_limitation                            *;EUMACH  MP4230.48 * 1.01 < D372
+  /      K+10000                                                      *;EUMACH
+  X      K+101                                                        *;EUMACH
+  /      K+100                                                        *;EUMACH
+  <      NP_D368_S_actual_rpm                                         *;EUMACH
+  A[                                                                  *;EUMACH
+    L      NP_MP4230_48_ATS_S_rpm_limitation                          *;EUMACH
+    >      K+0                                                        *;EUMACH
+  ]                                                                   *;EUMACH
+  A      MG_M17_status                                                *;EUMACH
+  AN     MG_M17_status_inverse                                        *;EUMACH
+  A      MG_soft_key_fluid_flow_valve                                 *;EUMACH
+  S      PN_error_ATS_S_rpm_error                                     *;EUMACH
+
+  LN     MG_M17_status
+  R      MG_M17_status_inverse
+
+  L      MG_M17_status
+  AN     ML_M17_status
+  =      ML_M17_status_p_pulse
+
+  L      MG_M17_status
+  =      ML_M17_status
+
+  L      MG_M17_status
+  A      MG_M17_status_inverse
+  A      MG_clock_1_s
+  O      MG_air_through_S_on
+  O      MG_test_lamps
+  =      O_lamp_air_through_spindle
+*;EUMACH
+
+;  LN     I_coolant_level_ok                                          *;EUMACH
+;  =      PN_error_coolant_level_low                                  *;EUMACH
+
+  L      NP_MP4230_49_coolant_level_sensor                            *;EUMACH
+  <>     K+0                                                          *;EUMACH
+  O      I_coolant_level_ok                                           *;EUMACH
+  =      TS_coolant_level_detection                                   *;EUMACH
+
+  LN     TS_coolant_level_detection                                   *;EUMACH
+  AN     TR_coolant_level_detection                                   *;EUMACH
+  S      PN_error_coolant_level_low                                   *;EUMACH
+
+EM

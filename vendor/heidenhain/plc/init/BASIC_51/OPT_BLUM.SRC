@@ -1,0 +1,182 @@
+******************************************************************************
+*  File name         : OPT_BLUM.SRC (example for modular design)
+*  Version           : 2.1
+*  Machine
+*  Control           : iTNC 530 from Software status 340420 00
+*  Compiler          : PLC
+*  Date of issue     : 01.01.2006
+*  Author            : Mr. Riedter, Blum Company
+*  Description       : Tool Measurement with Blum Laser System
+******************************************************************************
+
+* Exported Functions :
+* --------------------
+GLOBAL BLUM_LASER
+
+* Imported Functions :
+* --------------------
+
+* Global Variables :
+* ------------------
+*#define       NP_M4333_BLUMLASER_MP4310.2_BIT_01            ;               EUMACH define in MP4000.30
+*#define       BG_MP7620_BIT3_OVERRIDE_POTI                  ; 01.01.00 +1   EUMACH define in GLB_TCMB.DEF
+*#define       I_CONTROL_READY                               ; 01.08.01 +1   EUMACH define in GLB_IO_xx.DEF
+
+* Local Variables / Constants :
+* -----------------------------
+#define /s    ML_NP_BLUM_ENABLE0                       M1200
+#define /s    ML_NP_BLUM_ENABLE1                       M1201 ; 01.08.01 +1
+#define /s    ML_NP_BLUM_BARRIER_AIR_OFF               M1202
+#define /s    ML_NP_BLUM_SHUTTER_OPEN                  M1203
+#define /s    ML_PN_BLUM_Mxx04_TABLE_SELECT            M1204 ; 01.01.06 +1
+#define /s    ML_NP_BLUM_TOOL_BREAKAGE                 M1205 ; 24.02.99 +1
+#define /s    ML_PN_BLUM_Mxx06_TABLE_SELECT            M1206 ; 01.01.06 +1
+#define /s    ML_PN_BLUM_CYCLE_STOP                    M1207 ; 02.08.99 +1
+#define /s    ML_NP_BLUM_AXIS_DEVIATION                M1208 ; 02.08.99 +1
+#define /s    ML_PP_BLUM_CYCLE_INTERRUPTION            M1209 ; 01.08.01 +1
+#define /s    ML_PN_BLUM_Mxx10_TABLE_SELECT            M1210 ; 01.01.06 +1
+#define /s    ML_NP_BLUM_ENABLE2                       M1211 ; 06.11.02 +1
+#define /s    ML_NP_BLUM_TOOL_CLEANING                 M1212 ; 01.08.01 +1
+#define /s    ML_PN_BLUM_UTILITY_PROGRAMM              M1213 ; 01.08.01 +1
+#define /s    ML_NP_BLUM_CRITICAL_MOVEMENT             M1214 ; 21.02.03 +1
+#define /c    ML_PN_BLUM_Mxx15_TABLE_SELECT            M1215 ; 01.01.06 +1
+#define /s    ML_PP_NO_EMERGENCY_STOP                  M1218 ; 01.08.01 +1
+*#define /s    MG_NP_BLUM_CYCLE_ACTIVE                  M1219 ; 01.08.01 +1  EUMACH define in GLB_TCMB.DEF
+
+*#define /s    ML_M4055_ENABLE_PROBE_PROCESS            M4055 ; 24.02.99 +1  EUMACH define in GLB_NC.DEF
+*#define /s    ML_M4056_PROBE_CONTROL_ACTIVE            M4056 ;              EUMACH define in GLB_NC.DEF
+*#define /s    ML_M4060_CYCLE_TOOL_MEASUREMENT          M4060 ; 24.02.99 +1  EUMACH define in GLB_NC.DEF
+*#define /s    ML_M4175_PROGRAM_INTERRUPTION            M4175 ; 01.01.00 +1  EUMACH define in GLB_NC.DEF
+*#define /s    ML_M4176_CONTROL_IN_OPERATION            M4176 ; 01.01.00 +1  EUMACH define in GLB_NC.DEF
+
+*#define /s    WS_W764_SPINDLE_OVERRIDE                 W764  ;              EUMACH define in GLB_NC.DEF
+
+*#define       O_BLUM_ENABLE0                           O??   ;              EUMACH define in GLB_IO_xx.DEF
+*#define       O_BLUM_ENABLE1                           O??   ; 01.08.01 +1  EUMACH define in GLB_IO_xx.DEF
+*#define       O_BLUM_BARRIER_AIR_OFF                   O??   ;              EUMACH define in GLB_IO_xx.DEF
+*#define       O_BLUM_SHUTTER_OPEN                      O??   ;              EUMACH define in GLB_IO_xx.DEF
+*#define       O_BLUM_ENABLE2                           O??   ; 06.11.02 +1  EUMACH define in GLB_IO_xx.DEF
+*#define       O_BLUM_TOOL_CLEANING                     O??   ; 01.08.01 +1  EUMACH define in GLB_IO_xx.DEF
+
+*#define       I_BLUM_LASER_OK                          I??   ;              EUMACH define in GLB_IO_xx.DEF
+*#define       I_BLUM_LASER_DYN_SIGNAL                  I??   ;              EUMACH define in GLB_IO_xx.DEF
+*#define       I_BLUM_LASER_STAT_SIGNAL                 I??   ; 01.08.01 +1  EUMACH define in GLB_IO_xx.DEF
+
+#define /s    K_100                                    K+100
+#define /s    K_10000                                  K+10000
+
+
+LBL BLUM_LASER
+
+#if TLM_type = &BLUM_NT                                               *;EUMACH
+******************************************************************************
+*  Switch ON/OFF Blum Laser system                                           ³
+*  Switch OFF for Emergency-STOP, switch ON for Machine ON                   ³
+******************************************************************************
+;  L      I_control_operational              ; 01.08.01 +2            *;EUMACH Sep042012
+  L      MG_control_operational                                       *;EUMACH Sep042012
+  =      ML_PP_NO_EMERGENCY_STOP
+
+  L      ML_NP_BLUM_ENABLE0
+  A      ML_PP_NO_EMERGENCY_STOP            ; 24.02.99 +1
+  =      O_BLUM_ENABLE0
+
+  L      ML_NP_BLUM_ENABLE1                 ; 01.08.01 +3
+  A      ML_PP_NO_EMERGENCY_STOP
+  =      O_BLUM_ENABLE1
+
+  L      ML_NP_BLUM_BARRIER_AIR_OFF
+  A      ML_PP_NO_EMERGENCY_STOP            ; 24.02.99 +1
+  =      O_BLUM_BARRIER_AIR_OFF
+
+  L      ML_NP_BLUM_SHUTTER_OPEN
+  A      ML_PP_NO_EMERGENCY_STOP            ; 24.02.99 +1
+  =      O_BLUM_SHUTTER_OPEN
+
+  L      ML_NP_BLUM_ENABLE2                 ; 06.11.02 +3 (only Laser NT)
+  A      ML_PP_NO_EMERGENCY_STOP
+  =      O_BLUM_ENABLE2
+
+  L      ML_NP_BLUM_TOOL_CLEANING           ; 01.08.01 +3 (only if necessary)
+  A      ML_PP_NO_EMERGENCY_STOP
+  =      O_TLM_TOOL_CLEANING
+
+******************************************************************************
+*  Set following markers/flags for cycle tool measurement M4060=1            *
+*  Enable approaching operation M4055=0, otherwise feed limitation to MP6550 *
+*  Probe control M4056=0, otherwise NC-stop at every light change            *
+******************************************************************************
+;  L      ML_M4060_CYCLE_TOOL_MEASUREMENT    ; 24.02.99 +3            *;EUMACH Original BLUM PLC
+;  R      ML_M4055_ENABLE_PROBE_PROCESS                               *;EUMACH Original BLUM PLC (already processed in TOUCHPRO.SRC)
+;  R      ML_M4056_PROBE_CONTROL_ACTIVE                               *;EUMACH Original BLUM PLC
+  L      NP_M4060_tool_measurement_active                             *;EUMACH
+  R      PN_M4056_NC_stop_stylus_deflected                            *;EUMACH
+  R      ML_PN_BLUM_Mxx04_TABLE_SELECT      ; 01.01.06 +1 (when not used)
+  R      ML_PN_BLUM_Mxx06_TABLE_SELECT      ; 01.01.06 +1 (when not used)
+  R      ML_PN_BLUM_Mxx10_TABLE_SELECT      ; 01.01.06 +1 (when not used)
+  R      ML_PN_BLUM_Mxx15_TABLE_SELECT      ; 01.01.06 +1 (when not used)
+  R      ML_PN_BLUM_CYCLE_STOP              ; 02.08.99 +1 (when not used)
+
+******************************************************************************
+*  Set MG_NP_BLUM_CYCLE_ACTIVE=1 when activating the Laser                   *
+******************************************************************************
+;  L      ML_M4060_CYCLE_TOOL_MEASUREMENT    ; 01.08.01 +3
+;  O      O_BLUM_ENABLE0
+;  =      MG_NP_BLUM_CYCLE_ACTIVE            ; (set in the cycle)
+
+******************************************************************************
+*  Set spindle override with MG_NP_BLUM_CYCLE_ACTIVE=1 to 100% !             *
+******************************************************************************
+  L      MG_NP_BLUM_CYCLE_ACTIVE
+  IFT
+    L      WG_MP7620_F_S_override          ; 01.01.00 +1            *;EUMACH
+    BT     K+3
+    IFT
+      L      K+10000
+      =      PN_W764_S_override_PLC                                   *;EUMACH
+    ELSE
+      L      K+100
+      =      PN_W764_S_override_PLC                                   *;EUMACH
+    ENDI
+  ENDI
+
+  L      MG_NP_BLUM_CYCLE_ACTIVE            ; 01.08.01 +3
+  R      ML_PN_BLUM_UTILITY_PROGRAMM        ; 01.08.01 +1 (CALL PGM 578.H/579.H inactive)
+;  S      ML_PN_BLUM_UTILITY_PROGRAMM        ; 01.08.01 +1 (CALL PGM 578.H/579.H active)
+
+******************************************************************************
+*  Reset Blum Laser system on Internal-STOP, machine OFF                     *
+******************************************************************************
+;  L      ML_M4175_PROGRAM_INTERRUPTION      ; 01.01.00 +20           *;EUMACH Original BLUM PLC
+;  A      ML_M4176_CONTROL_IN_OPERATION                               *;EUMACH Original BLUM PLC
+  L      NP_M4175_control_in_operation_flashes                        *;EUMACH
+  A      NP_M4176_control_in_operation_on_or_flashes                  *;EUMACH
+  S      ML_PP_BLUM_CYCLE_INTERRUPTION
+
+;  LN     ML_M4175_PROGRAM_INTERRUPTION                               *;EUMACH Original BLUM PLC
+;  A      ML_M4176_CONTROL_IN_OPERATION                               *;EUMACH Original BLUM PLC
+  LN     NP_M4175_control_in_operation_flashes                        *;EUMACH
+  A      NP_M4176_control_in_operation_on_or_flashes                  *;EUMACH
+  R      ML_PP_BLUM_CYCLE_INTERRUPTION
+
+  L      ML_PP_BLUM_CYCLE_INTERRUPTION
+;  AN     ML_M4175_PROGRAM_INTERRUPTION                               *;EUMACH Original BLUM PLC
+;  AN     ML_M4176_CONTROL_IN_OPERATION                               *;EUMACH Original BLUM PLC
+  AN     NP_M4175_control_in_operation_flashes                        *;EUMACH
+  AN     NP_M4176_control_in_operation_on_or_flashes                  *;EUMACH
+  IFT
+;    L      ML_PP_NO_EMERGENCY_STOP          ; MG_LOGIC_TRUE          *;EUMACH Sep042012
+    L      MG_marker_one                                              *;EUMACH Sep042012
+    R      ML_NP_BLUM_ENABLE0
+    R      ML_NP_BLUM_ENABLE1               ; 01.08.01 +1
+    R      ML_NP_BLUM_BARRIER_AIR_OFF
+    R      ML_NP_BLUM_SHUTTER_OPEN
+    R      ML_NP_BLUM_ENABLE2               ; 06.11.02 +1
+    R      ML_NP_BLUM_TOOL_CLEANING         ; 01.08.01 +1
+    R      ML_NP_BLUM_CRITICAL_MOVEMENT     ; 21.02.03 +1
+    R      ML_PP_BLUM_CYCLE_INTERRUPTION
+    R      MG_NP_BLUM_CYCLE_ACTIVE          ; 01.08.01 +1
+  ENDI
+#endif                                                                *;EUMACH
+
+EM

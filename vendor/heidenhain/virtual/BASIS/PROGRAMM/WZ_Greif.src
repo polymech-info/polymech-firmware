@@ -1,0 +1,181 @@
+*-----------------------------------------------------------------------------
+*  Positions Überwachung für Doppelarm Wechsler mit Kurvenscheiben
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*  Definitionen in glb_tcmb.def
+*
+*     Pos_WZ_Greifer                       [8]
+*  /c MG_WZ_Greifer_in_Grundstellung       &Pos_WZ_Greifer + 0
+*  /c MG_WZ_Greifer_zu_Entspannen          &Pos_WZ_Greifer + 1
+*  /c MG_WZ_Greifer_in_Entspannen          &Pos_WZ_Greifer + 2
+*  /c MG_WZ_Greifer_Wechseln               &Pos_WZ_Greifer + 3
+*  /c MG_WZ_Greifer_in_Spannen             &Pos_WZ_Greifer + 4
+*  /c MG_WZ_Greifer_zu_Grundstellung       &Pos_WZ_Greifer + 5
+*
+*
+*  Definitionen in glb_io.def
+*
+*     I_WZ_Greifer_Grundstellung
+*     I_WZ_Greifer_Spindel_Position
+*     I_WZ_Greifer_Brems_Position
+*
+*     O_WZ_Greifer_drehen_cw_rechts
+*     O_WZ_Greifer_drehen_ccw_links
+*
+*  Logik Diagramm der WZ-Greifer Position
+*
+*             Pos.   Grund       Spindel     Mitte       Spindel     Grund
+*    Sensoren
+*                    -----                                           -----
+*    Grund     -------   ---------------------------------------------   ---
+*                                -----                   -----
+*    Spindel   -------------------   ---------------------   ---------------
+*                                            -----
+*    Mitte     -------------------------------   ---------------------------
+*                   -------     -------                 -------     -------
+*    Bremse    ------     -------     -------------------     -------     --
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_max_Greifer_Position                  K +5
+
+#define /s /r BL_WZ_Greifer_Position                   B
+
+GLOBAL WZ_Greif_Position
+GLOBAL WZ_Greif_Richtung
+
+;----------------------------
+LBL WZ_Greif_Position
+;----------------------------
+
+  L      I_WZ_Greifer_Grundstellung
+  AN     I_WZ_Greifer_Spindel_Position
+  A      I_WZ_Greifer_Brems_Position
+  IFT
+    L      K+0
+    =      BL_WZ_Greifer_Position
+  ENDI
+
+  CASE   BL_WZ_Greifer_Position
+    CM     Greif_Grund                 ;00
+    CM     Greif_zu_Entspannen         ;01
+    CM     Greif_in_Entspannen         ;02
+    CM     Greif_Wechseln              ;03
+    CM     Greif_in_Spannen            ;04
+    CM     Greif_zu_Grundstellung      ;05
+  ENDC
+
+  PLL
+  IFT
+    L      MG_WZ_Greifer_drehen_cw_rechts
+    IFT
+      INC    BL_WZ_Greifer_Position
+    ELSE
+      DEC    BL_WZ_Greifer_Position
+    ENDI
+  ENDI
+
+  L      BL_WZ_Greifer_Position
+  >      KL_max_Greifer_Position
+  IFT
+    L      K+0
+    =      BL_WZ_Greifer_Position
+  ENDI
+
+  L      BL_WZ_Greifer_Position
+  <      K+0
+  IFT
+    L      KL_max_Greifer_Position
+    =      BL_WZ_Greifer_Position
+  ENDI
+
+  CM     Dekodierung
+
+EM
+
+;----------------------------
+LBL Greif_Grund                        ;00
+
+  L      I_WZ_Greifer_Spindel_Position
+  ON     I_WZ_Greifer_Brems_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL Greif_zu_Entspannen                ;01
+
+  LN     I_WZ_Greifer_Grundstellung
+  A      I_WZ_Greifer_Spindel_Position
+  A      I_WZ_Greifer_Brems_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL Greif_in_Entspannen                ;02
+
+  LN     I_WZ_Greifer_Spindel_Position
+  ON     I_WZ_Greifer_Brems_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL Greif_Wechseln                     ;03
+
+  LN     I_WZ_Greifer_Grundstellung
+  A      I_WZ_Greifer_Spindel_Position
+  A      I_WZ_Greifer_Brems_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL Greif_in_Spannen                   ;04
+
+  LN     I_WZ_Greifer_Spindel_Position
+  ON     I_WZ_Greifer_Brems_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL Greif_zu_Grundstellung             ;05
+
+  L      MG_WZ_Greifer_drehen_cw_rechts
+  IFT
+    PS     MG_Null_Merker
+  ELSE
+    LN     I_WZ_Greifer_Grundstellung
+    A      I_WZ_Greifer_Spindel_Position
+    A      I_WZ_Greifer_Brems_Position
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL WZ_Greif_Richtung
+;----------------------------
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  S      MG_WZ_Greifer_drehen_cw_rechts
+
+  L      O_WZ_Greifer_drehen_ccw_links
+  R      MG_WZ_Greifer_drehen_cw_rechts
+
+EM
+
+;----------------------------
+LBL Dekodierung
+
+  L      BL_WZ_Greifer_Position
+  =X
+
+  L      K+0
+  BSX
+  B=     MG_WZ_Greifer_in_Grundstellung
+
+EM

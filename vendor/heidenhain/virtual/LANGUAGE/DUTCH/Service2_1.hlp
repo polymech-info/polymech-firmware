@@ -1,0 +1,31 @@
+﻿************************************
+!!! OPGELET !!!
+alleen voor geoefende machineoperator
+Service Gereedschapswisselaar
+(Dubbelarm grijper hydraulisch)
+! Werkstand "Handbedrijf" actief !
+Aktivering: Toets "NC-Start"
+************************************
+#201  S naar wisselpositie
+#202  Z naar wisselpositie
+#203  Y naar wisselpositie
+#204  X naar wisselpositie
+#205  T-deur openen
+#206  T-deur sluiten
+#207  T-grijper aan spindel openen
+#208  T-grijper aan spindel sluiten
+#209  T-grijper aan magazijn openen
+#210  T-grijper aan magazijn sluiten
+#211  Gereedschap ontklemmen
+#212  Gereedschap klemmen
+#213  T-arm naar spindel
+#214  T-arm naar magazijn
+#215  T-arm naar basispositie
+#216  T-Arm uitbrengen
+#217  T-arm intrekken
+#218  T-arm draaien cw (rechts)
+#219  T-arm draaien ccw (links)
+#220  Magazijn draaien cw (rechts)
+#221  Magazijn draaien ccw (links)
+#222  Magazijn nulpunt
+#223  Spindel-register wissen (T0)

@@ -1,0 +1,34 @@
+[
+  {
+    "type": "temperature",
+    "slot": 0,
+    "name": "Default Temperature Profile",
+    "duration": 20000,
+    "max": 150,
+    "controlPoints": [
+      {
+        "x": 0,
+        "y": 200
+      },
+      {
+        "x": 500,
+        "y": 800
+      },
+      {
+        "x": 700,
+        "y": 400
+      },
+      {
+        "x": 900,
+        "y": 300
+      },
+      {
+        "x": 1000,
+        "y": 200
+      }
+    ],
+    "targetRegisters": [
+      
+    ]
+  }
+]

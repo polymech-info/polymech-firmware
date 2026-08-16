@@ -1,0 +1,49 @@
+/* Späneförderer Intervall
+   -----------------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"SPÄNE INTERVALL";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+
+CURSOR=ON;
+"\n";
+"Setup                : Zeit           \n";
+CURSOR=OFF;
+"\n";
+
+"Reset   Nein/Ja - 0/1:   ";
+COLOR= 9;
+"%d\n",
+$MG_Spaenefoerderer_Reset_Intervall$/e;
+COLOR=11;
+
+"Pause           [min]: ";
+COLOR= 9;
+"%3.0F min\n",
+$WG_Intervall_Pause_setup$/n=0/e;
+COLOR=11;
+
+"Späneförderer ein [s]: ";
+COLOR= 9;
+"%3.0F s\n\n",
+$WG_Intervall_ein_setup$/n=0/e;
+COLOR=11;
+
+CURSOR=ON;
+"\n";
+"aktuell              : %s\n",
+$O_Spaenefoerderer$?"EIN            ":"Pause          "/c;
+CURSOR=OFF;
+
+"\n";
+"Pause                : %3.0F min\n",
+$WG_Intervall_Pause$/n=0/c;
+"Späneförderer ein    : %3.0F s\n",
+$WG_Intervall_ein$/n=0/c;
+
+
+
+

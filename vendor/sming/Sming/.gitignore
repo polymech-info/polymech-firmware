@@ -1,0 +1,32 @@
+# generated binaries
+out
+
+# Python cache
+__pycache__
+
+# Eclipse
+.project
+.cproject
+language.settings.xml
+.settings
+.metadata
+
+# MS Visual Studio Code
+.vscode
+*.code-workspace
+
+# Microsoft Visual SourceSafe files
+vssver2.scc
+
+# Other dev tools, editors, etc.
+nbproject
+.*.swp
+GTAGS
+GRTAGS
+GPATH
+.DS_Store
+
+# Tag files created by build system
+.submodule
+*.built
+*.completed

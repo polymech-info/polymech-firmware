@@ -1,0 +1,32 @@
+;PALETT         = PLC:\NC_MACRO\ALT_PAL.H
+;PALETT         = PLC:\NC_MACRO\PALLET.H
+PALETT         = PLC:\NC_MACRO\TO_PALLET.H
+STARTUPCANCEL  = PLC:\NC_MACRO\BS_INIT.H
+;RESETINIT     = PLC:\NC_MACRO\BS_INIT.H
+RUNCANCEL     = PLC:\NC_MACRO\RUNCANCEL.H
+MACROCANCEL    = PLC:\NC_MACRO\MACROCANCEL.H
+TC             = PLC:\NC_MACRO\TOOLCALL.H
+;AFC            = PLC:\NC_MACRO\AFCMACRO.H
+
+TCTOOLMODE     = PLC:\NC_MACRO\TO_TOOLCALL.H
+CLAMP          = PLC:\NC_MACRO\TO_CLAMP.H
+;PALEPILOG      = PLC:\NC_MACRO\TO_PALEPILOG.H
+
+;P$OEM01       = PLC:\NC_MACRO\OEM01.H
+
+; [WG_Nummer_aktives_NC_Macro/WG_Nummer_letztes_aktives_NC_Macro]
+;   -3  -> last NC macro aborted
+;   -2  -> last NC program aborted
+;   -1  -> last NC macro finished
+;    0  -> no NC macro called
+;    1  -> NC macro M01 running
+;    2  -> NC macro M02 running
+;   ..
+; 1000  -> BS_INIT macro running
+; 1001  -> TOOLCALL macro running
+; 1002  -> Alternate operation macro running
+; 1003  -> Pallet change macro running
+; 1004  -> AFC macro running
+; 1005  -> TO_Clamp macro running
+; 1006  -> TO_TOOLCALL macro running
+; 1007  -> TO Pallet change macro running

@@ -1,0 +1,21 @@
+﻿************************************
+!!! Attention !!!
+réservé aux utilisateurs habilités
+Changeur d'outil Service
+(bras simple)
+! Mode Manuel actif !
+Activation: Touche "Start CN"
+************************************
+#101  S à position changement outil
+#102  Z à position chgt outil en haut
+#103  Z à position chgt outil en bas
+#104 Ouvrir verrou outil
+#105 Fermer verrou outil
+#106  Magasin vers broche
+#107  Magasin vers position de base
+#108  Desserrer l'outil
+#109  Serrer l'outil
+#110  Tourner magasin vers la droite
+#111  Tourner magasin vers la gauche
+#112  Référence magasin
+#113  Effacer registre broche (T0)

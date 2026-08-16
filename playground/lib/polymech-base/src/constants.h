@@ -1,0 +1,7 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define MAX_COMPONENTS 30
+#define DEFAULT_DEBUG_INTERVAL 1000
+
+#endif

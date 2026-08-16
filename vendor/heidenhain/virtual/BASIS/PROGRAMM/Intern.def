@@ -1,0 +1,227 @@
+*-----------------------------------------------------------------------------
+*  Interne Definitionen
+*-----------------------------------------------------------------------------
+*  Definition von Symbolen für bedingte Compilierung
+*    - Decodieren WZW System
+*    - Decodieren WZ Magazin System
+*    - Steuerung an SPG angeschlossen
+*
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  WZW System
+*-----------------------------------------------------------------------------
+
+#if CFG_WZW_System ! "inaktiv"
+
+#if CFG_WZW_System = "WZW_type_01"
+#define       WZ_Greifer                               &Einzelarm
+#define       WZ_Magazin_bewegt_sich_zu_Spindel        &inaktiv
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_02"
+#define       WZ_Greifer                               &Einzelarm
+#define       WZ_Magazin_bewegt_sich_zu_Spindel        &aktiv
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_03"
+#define       WZ_Greifer                               &Einzelarm
+#define       WZ_Magazin_bewegt_sich_zu_Spindel        &inaktiv
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_04"
+#define       WZ_Greifer                               &Pickup
+#define       WZ_Magazin_bewegt_sich_zu_Spindel        &inaktiv
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_05"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       Mittel_Position_Grundstellung            &inaktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_06"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       Mittel_Position_Grundstellung            &inaktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_07"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       Mittel_Position_Grundstellung            &inaktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_08"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       Mittel_Position_Grundstellung            &inaktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_09"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       Mittel_Position_Grundstellung            &aktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_10"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       Mittel_Position_Grundstellung            &aktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_11"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       Mittel_Position_Grundstellung            &aktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_12"
+#define       WZ_Greifer                               &Doppelarm
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       Mittel_Position_Grundstellung            &aktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_13"
+#define       WZ_Greifer                               &WZW_Kurvenscheibe
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_14"
+#define       WZ_Greifer                               &WZW_Kurvenscheibe
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_15"
+#define       WZ_Greifer                               &WZW_Kurvenscheibe
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_16"
+#define       WZ_Greifer                               &WZW_Kurvenscheibe
+#define       Mittel_Position_WZ_Wechsel               &aktiv
+#define       WZ_Zange                                 &aktiv
+#endif
+
+#if CFG_WZW_System = "WZW_type_OEM"
+#define       WZ_Greifer                               &Doppelarm
+#define       WZ_Magazin_bewegt_sich_zu_Spindel        &aktiv
+#define       Mittel_Position_WZ_Wechsel               &inaktiv
+#define       Mittel_Position_Grundstellung            &aktiv
+#define       WZ_Zange                                 &inaktiv
+#endif
+
+#else
+
+#define       WZ_Greifer                               &inaktiv
+
+#endif
+
+*-----------------------------------------------------------------------------
+*  WZ Magazin System
+*-----------------------------------------------------------------------------
+
+#if (CFG_WZ_Magazin_System ! "inaktiv") and (CFG_WZW_System ! "WZW_type_04")
+
+#if CFG_WZ_Magazin_System = "Mag_type_01"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#define       WZ_Magazin_Index                         &inaktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_02"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &aktiv
+#define       WZ_Magazin_Index                         &inaktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_03"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#define       WZ_Magazin_Index                         &aktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_04"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &aktiv
+#define       WZ_Magazin_Index                         &aktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_05"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &inaktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#define       WZ_Magazin_Index                         &inaktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_06"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &inaktiv
+#define       WZ_Platz_ausklappen_90_Grad              &aktiv
+#define       WZ_Magazin_Index                         &inaktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_07"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &inaktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#define       WZ_Magazin_Index                         &aktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_08"
+#define       WZ_Magazin                               &Impuls
+#define       WZ_Magazin_Referenz_Sensor               &inaktiv
+#define       WZ_Platz_ausklappen_90_Grad              &aktiv
+#define       WZ_Magazin_Index                         &aktiv
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_09"
+#define       WZ_Magazin                               &Asynchron
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#define       KG_WZM_1_Achs_Index                      K CFG_WZM_1_Index_Achse
+#define       KG_WZM_2_Achs_Index                      K CFG_WZM_2_Index_Achse
+#endif
+
+#if CFG_WZ_Magazin_System = "Mag_type_10"
+#define       WZ_Magazin                               &Asynchron
+#define       WZ_Magazin_Referenz_Sensor               &aktiv
+#define       WZ_Platz_ausklappen_90_Grad              &aktiv
+#define       KG_WZM_1_Achs_Index                      K CFG_WZM_1_Index_Achse
+#define       KG_WZM_2_Achs_Index                      K CFG_WZM_2_Index_Achse
+#endif
+#else
+#define       WZ_Magazin                               &inaktiv
+#define       WZ_Platz_ausklappen_90_Grad              &inaktiv
+#endif
+
+#ifndef KG_WZM_1_Achs_Index
+#define       KG_WZM_1_Achs_Index                      K -1
+#define       KG_WZM_2_Achs_Index                      K -1
+#endif
+
+#define       KG_WZM_3_Achs_Index                      K -1
+#define       KG_WZM_4_Achs_Index                      K -1
+#define       KG_WZM_5_Achs_Index                      K -1
+#define       KG_WZM_6_Achs_Index                      K -1
+#define       KG_WZM_7_Achs_Index                      K -1
+#define       KG_WZM_8_Achs_Index                      K -1

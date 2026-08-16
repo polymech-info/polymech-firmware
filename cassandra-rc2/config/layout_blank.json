@@ -1,0 +1,326 @@
+{
+    "pages": {
+        "dashboard-slot-after-connection": {
+            "id": "dashboard-slot-after-connection",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1760249904555-8u9wr1616",
+                    "type": "container",
+                    "columns": 2,
+                    "gap": 16,
+                    "widgets": [
+                        {
+                            "id": "widget-1760249914835-0r1hptraq",
+                            "widgetId": "profile-playback",
+                            "props": {},
+                            "order": 0
+                        },
+                        {
+                            "id": "widget-1760249933648-7y0vhqug9",
+                            "widgetId": "press-cylinder",
+                            "props": {},
+                            "order": 1
+                        }
+                    ],
+                    "children": [],
+                    "order": 0
+                },
+                {
+                    "id": "container-1763930328457-f7sq4nsnt",
+                    "type": "container",
+                    "columns": 2,
+                    "gap": 16,
+                    "widgets": [
+                        {
+                            "id": "widget-1763930362044-avhdcazlh",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1199,
+                                "selectedSource": "coil"
+                            },
+                            "order": 0
+                        },
+                        {
+                            "id": "widget-1763930441639-1tqgblf1k",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1217,
+                                "selectedSource": "coil"
+                            },
+                            "order": 1
+                        },
+                        {
+                            "id": "widget-1763977733979-2fj178n3k",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 361,
+                                "selectedSource": "register"
+                            },
+                            "order": 2
+                        },
+                        {
+                            "id": "widget-1763930511250-krer72bfp",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1253,
+                                "selectedSource": "coil"
+                            },
+                            "order": 3
+                        },
+                        {
+                            "id": "widget-1763930479450-xxl5yuhwp",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1235,
+                                "selectedSource": "coil"
+                            },
+                            "order": 4
+                        },
+                        {
+                            "id": "widget-1764670216544-rll38wxvw",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 707,
+                                "selectedSource": "register"
+                            },
+                            "order": 5
+                        },
+                        {
+                            "id": "widget-1764670230848-tckw49kq2",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 365,
+                                "selectedSource": "register"
+                            },
+                            "order": 6
+                        }
+                    ],
+                    "children": [],
+                    "order": 1
+                },
+                {
+                    "id": "container-1763931184911-6sz4ajf1t",
+                    "type": "container",
+                    "columns": 2,
+                    "gap": 16,
+                    "widgets": [
+                        {
+                            "id": "widget-1763931204625-c10j6uj9g",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1192,
+                                "selectedSource": "coil"
+                            },
+                            "order": 0
+                        },
+                        {
+                            "id": "widget-1763931234639-z6h1yr7c9",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1210,
+                                "selectedSource": "coil"
+                            },
+                            "order": 1
+                        },
+                        {
+                            "id": "widget-1763931273999-x638adq2y",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1228,
+                                "selectedSource": "coil"
+                            },
+                            "order": 2
+                        },
+                        {
+                            "id": "widget-1763931296400-bfhtce7qn",
+                            "widgetId": "address-picker",
+                            "props": {
+                                "slaveId": 0,
+                                "selectedAddress": 1246,
+                                "selectedSource": "coil"
+                            },
+                            "order": 3
+                        }
+                    ],
+                    "children": [],
+                    "order": 2
+                }
+            ],
+            "createdAt": 1760176922064,
+            "updatedAt": 1764670270714
+        },
+        "dashboard-slot-page-bottom": {
+            "id": "dashboard-slot-page-bottom",
+            "name": "Canvas",
+            "containers": [],
+            "createdAt": 1760252298033,
+            "updatedAt": 1760252529390
+        },
+        "profile-layout": {
+            "id": "profile-layout",
+            "name": "Page profile-layout",
+            "containers": [
+                {
+                    "id": "container-1760252867711-e0um6x5uu",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1760252867711,
+            "updatedAt": 1760252867711
+        },
+        "dashboard-layout": {
+            "id": "dashboard-layout",
+            "name": "Page dashboard-layout",
+            "containers": [
+                {
+                    "id": "container-1760252873294-ljnit8v9u",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1760252873294,
+            "updatedAt": 1760252873294
+        },
+        "playground-layout": {
+            "id": "playground-layout",
+            "name": "Page playground-layout",
+            "containers": [
+                {
+                    "id": "container-1760252883259-0mlxqj84v",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1760252883259,
+            "updatedAt": 1760252883259
+        },
+        "playground-slot-page-bottom": {
+            "id": "playground-slot-page-bottom",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1760253124857-5xqo95me5",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1760253124857,
+            "updatedAt": 1760253124857
+        },
+        "playground-slot-after-connection": {
+            "id": "playground-slot-after-connection",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1760253124773-4p3gvtibi",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1760253124773,
+            "updatedAt": 1760253124773
+        },
+        "profile-slot-page-bottom": {
+            "id": "profile-slot-page-bottom",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1764663700718-rubctfgo7",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1764663700718,
+            "updatedAt": 1764663700718
+        },
+        "profile-slot-after-connection": {
+            "id": "profile-slot-after-connection",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1764663700469-lhrm85l2o",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1764663700469,
+            "updatedAt": 1764663700469
+        },
+        "signals-slot-page-bottom": {
+            "id": "signals-slot-page-bottom",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1763980325281-uliyter0c",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1763980325281,
+            "updatedAt": 1763980325281
+        },
+        "signals-slot-after-connection": {
+            "id": "signals-slot-after-connection",
+            "name": "Canvas",
+            "containers": [
+                {
+                    "id": "container-1764672014515-n0sd8jgvk",
+                    "type": "container",
+                    "columns": 1,
+                    "gap": 16,
+                    "widgets": [],
+                    "children": [],
+                    "order": 0
+                }
+            ],
+            "createdAt": 1764672014515,
+            "updatedAt": 1764672014515
+        }
+    },
+    "version": "1.0.0",
+    "lastUpdated": 1764672014515
+}

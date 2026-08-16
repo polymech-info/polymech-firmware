@@ -1,0 +1,10 @@
+msgid "ERR_SUBSCRIBE__DIALOG"
+msgstr "Error on \"jh.Subscribe\""
+
+msgid "ERR_SUBSCRIBE__REASON"
+msgstr "A python script tryed to subscribe to a invalid plc symbol."
+
+msgid "ERR_SUBSCRIBE__FIX"
+msgstr "- Softkey \"Internal Info\"\n"
+"- check PLC symbol at \"Text1\""
+

@@ -1,0 +1,24 @@
+BEGIN DT_RoundTable38.TAB 
+#STRUCTBEGIN
+  NAME = DOC
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Designation of machine element?
+    DIA-GERMAN = Bezeichnung Maschinenelement?
+    DIA-CZECH = Designation of machine element?
+    DIA-FRENCH = Designation of machine element?
+    DIA-ITALIAN = Designation of machine element?
+    DIA-SPANISH = Designation of machine element?
+    DIA-PORTUGUE = Designation of machine element?
+    DIA-SWEDISH = Designation of machine element?
+    DIA-DANISH = Designation of machine element?
+    DIA-FINNISH = Designation of machine element?
+    DIA-DUTCH = Designation of machine element?
+    DIA-POLISH = Designation of machine element?
+    DIA-HUNGARIA = Designation of machine element?
+#STRUCTEND
+NR      DOC
+0       CMO_Limit_Y                     
+1       Headhousing                     
+[END]

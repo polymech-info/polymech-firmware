@@ -1,0 +1,140 @@
+msgid "DB_ID_PLCPYT_0_1"
+msgstr " "
+
+msgid "SPINDLE"
+msgstr "Spindel"
+
+msgid "AXIS"
+msgstr "Achsen"
+
+msgid "SCREEN"
+msgstr "Bildschirm"
+
+msgid "MACHINE"
+msgstr "Maschine"
+
+msgid "CONTROL"
+msgstr "Steuerung"
+
+msgid "LIGHT"
+msgstr "Licht"
+
+msgid "LIGHT_1"
+msgstr "Licht 1"
+
+msgid "LIGHT_2"
+msgstr "Licht 2"
+
+msgid "AIR_AGGREGATE"
+msgstr "Luft Aggregat"
+
+msgid "OEL_AGGREGATE"
+msgstr "Öl Aggregat"
+
+msgid "DRIVES"
+msgstr "Antriebe"
+
+msgid "MONDAY_SHORT"
+msgstr "Mo"
+
+msgid "TUESDAY_SHORT"
+msgstr "Di"
+
+msgid "WEDNESDAY_SHORT"
+msgstr "Mi"
+
+msgid "THURSDAY_SHORT"
+msgstr "Do"
+
+msgid "FRIDAY_SHORT"
+msgstr "Fr"
+
+msgid "SUTURDAY_SHORT"
+msgstr "Sa"
+
+msgid "SUNDAY_SHORT"
+msgstr "So"
+
+msgid "SETUP"
+msgstr "Einstellungen"
+
+msgid "ADVANCED"
+msgstr "Erweitert"
+
+msgid "INFO"
+msgstr "Info"
+
+msgid "WARMUP_PROGRAM"
+msgstr "Warmlaufprogramm"
+
+msgid "STANDBY"
+msgstr "Bereitschaft"
+
+msgid "SWITCH_OFF"
+msgstr "Ausschalten"
+
+msgid "TIME"
+msgstr "Zeit"
+
+msgid "AXIS_FILTER"
+msgstr "Achsfilter"
+
+msgid "SPINDLE_FILTER"
+msgstr "Spindelfilter"
+
+msgid "SWITCH_ON"
+msgstr "Einschalten"
+
+msgid "INFO_ENERGYOPTION"
+msgstr "Mit diesem Programm wird die\n"
+"Energieeffizienz dieser Werkzeug-\n"
+"maschine verbessert.\n"
+"Nicht benötigte Verbraucher können in\n"
+"Bereitschaft bzw. abgeschaltet werden.\n"
+"\n"
+"- Betätigen sie den Softkey Edit.\n"
+"- Aktivieren sie Zeilenweise eine der\n"
+"  Angegeben Funktionen und wählen\n"
+"  eine Zeit aus.\n"
+"- Beenden sie den Editiervorgang mit\n"
+"  dem Softkey Edit.\n"
+"- Mit dem Softkey PowerManagement\n"
+"  Ein/Aus werden Ihre Einstellungen\n"
+"  aktiviert."
+
+msgid "MILLISECOND"
+msgstr "Millisekunde"
+
+msgid "MILLISECONDS"
+msgstr "Millisekunden"
+
+msgid "SECOND"
+msgstr "Sekunde"
+
+msgid "SECONDS"
+msgstr "Sekunden"
+
+msgid "MINUTE"
+msgstr "Minute"
+
+msgid "MINUTES"
+msgstr "Minuten"
+
+msgid "HOUR"
+msgstr "Stunde"
+
+msgid "HOURS"
+msgstr "Stunden"
+
+msgid "DAY"
+msgstr "Tag"
+
+msgid "DAYS"
+msgstr "Tage"
+
+msgid "WEEK"
+msgstr "Woche"
+
+msgid "WEEKS"
+msgstr "Wochen"
+

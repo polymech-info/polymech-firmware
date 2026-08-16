@@ -1,0 +1,23 @@
+﻿************************************
+          !!! Achtung !!!
+   nur für eingewiesene Bediener
+
+      Service Werkzeugwechsler
+         (Einarm-Greifer)
+
+   ! manuelle Betriebsart aktiv !
+   Aktivierung: Taste "NC-Start"
+************************************
+#101  S auf WZW Position
+#102  Z auf WZW Position oben
+#103  Z auf WZW Position unten
+#104  WZ Schleuse auf
+#105  WZ Schleuse zu
+#106  Magazin zur Spindel
+#107  Magazin zur Grundstellung
+#108  Werkzeug entspannen
+#109  Werkzeug spannen
+#110  Magazin drehen rechts
+#111  Magazin drehen links
+#112  Magazin Referenz
+#113  Spindel-Register löschen (T0)

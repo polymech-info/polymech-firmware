@@ -1,0 +1,839 @@
+Sming build system
+==================
+
+.. highlight:: text
+
+Introduction
+------------
+
+This guide is provided to assist with understanding, developing and
+modifying the build system.
+
+A Sming project is built from a set of static libraries (object
+archives). Typically the application code is one library, built from the
+user's source code, whilst the other libraries are common to all
+projects and stored in a separate, shared location.
+
+.. note::
+
+   Sming applications are built as a set of discrete **Components**.
+   The concept is borrowed from Espressif's ESP-IDF build system and whilst
+   there are some similarities the two systems are completely independent.
+
+Building applications
+---------------------
+
+Setup
+~~~~~
+
+These are the main variables you need to be aware of:
+
+.. envvar:: SMING_HOME
+
+   Must be set to the full path of the ``Sming`` source directory.
+
+   For example, if the repository is cloned to ``/users/jellygirl/sming`` then
+   ``SMING_HOME`` would be set to ``/users/jellygirl/sming/Sming``.
+
+
+.. envvar:: SMING_ARCH
+
+   Defines the target architecture
+
+   -  **Esp8266** The default if not specified.
+      Requires :envvar:`ESP_HOME`.
+
+   -  **Esp32** Supports ESP32 architecture.
+      Requires :envvar:`IDF_PATH` and :envvar:`IDF_TOOLS_PATH`.
+
+   -  **Rp2040** Supports Raspberry Pi RP2040-based boards.
+      Requires :envvar:`PICO_TOOLCHAIN_PATH`.
+
+   -  **Host** builds a version of the library for native host debugging on Linux, MacOS or Windows
+
+   Exactly **one** of the following macros is defined for code use:
+
+      .. c:macro:: ARCH_ESP8266
+      .. c:macro:: ARCH_RP2040
+      .. c:macro:: ARCH_ESP32
+      .. c:macro:: ARCH_HOST
+
+
+.. envvar:: SMING_SOC
+
+   Some architectures support families of SOCs with different capabilities.
+   Set this value to the specific variant being targeted.
+
+   Will automatically set SMING_ARCH to the appropriate value.
+
+   A corresponding macro is defined for code use, such as:
+
+      .. c:macro:: SOC_ESP32S2
+
+
+.. envvar:: SMING_CPP_STD
+
+   The build standard applied for the framework.
+
+   C++17 is the minimum required standard.
+   You can override to use other standards, such as ``c++20``.
+
+
+These variables are available for application use:
+
+.. envvar:: PROJECT_DIR
+
+   Path to the project's root source directory, without
+   trailing path separator. This variable is available within makefiles,
+   but is also provided as a #defined C string to allow references to
+   source files within application code, such as with the ``IMPORT_FSTR``
+   macro.
+
+:envvar:`COMPONENT_PATH` As for PROJECT_DIR, but provides the path to the
+current component's root source directory.
+
+Converting existing projects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instead of ``Makefile-user.mk`` a project should provide a ``component.mk``. To convert to the new style:
+
+1. Copy ``Makefile`` and ``component.mk`` from the ``Basic_Blink`` sample project.
+2. Copy any customisations from ``Makefile-user.mk`` into ``component.mk``.
+   Alternatively, rename ``Makefile-user.mk`` to ``component.mk`` then edit it.
+3. Delete ``Makefile-user.mk``.
+4. If the project uses any Arduino libraries, set the :envvar:`ARDUINO_LIBRARIES` variable.
+
+Targets
+   You can add your own targets to component.mk as usual.
+   It's a good idea to add a comment for the target, like this:
+
+   .. code-block:: make
+
+      ##@Building
+
+      .PHONY: mytarget
+      mytarget: ##This is my target
+
+   When you type ``make help`` it will appear in the list.
+
+   If you need a target to be added as a dependency to the main application
+   build, add it to :envvar:`CUSTOM_TARGETS` - the :sample:`Basic_Serial` sample
+   contains a simple example of this.
+
+.. envvar:: ARDUINO_LIBRARIES
+
+   If your project uses any Arduino libraries, you must set this value appropriately.
+
+Source files
+   Use :envvar:`COMPONENT_SRCDIRS` instead of ``MODULES``.
+   Use :envvar:`COMPONENT_SRCFILES` to add individual files.
+
+Include paths
+   Use :envvar:`COMPONENT_INCDIRS` instead of :envvar:`EXTRA_INCDIR`,
+   unless the paths are only required to build this Component.
+
+See `component.mk <#component-configuration>`__ for a full list of variables.
+
+Building
+~~~~~~~~
+
+You should normally work from the project directory. Examples:
+
+-  Type ``make`` to build the project and any required Components. To
+   speed things up, use parallel building, e.g. ``make -j5`` will
+   build using a maximum of 5 concurrent jobs. The optimum value for
+   this is usually (CPU CORES + 1). Using ``make -j`` will use unlimited
+   jobs, but can cause problems in virtual environments.
+
+-  Type ``make help`` from the project directory to get a list of
+   available build targets.
+
+To switch to a different build architecture, for example:
+
+-  Type ``make SMING_ARCH=Host`` to build the project for the host emulator
+-  Type ``make flash`` to copy any SPIFFS image (if enabled) to the
+   virtual flash, and run the application.
+   Note that you don't need to set :envvar:`SMING_ARCH` again, the value is cached.
+
+To inspect the current build configuration, type ``make list-config``.
+
+
+Hardware configuration
+~~~~~~~~~~~~~~~~~~~~~~
+
+The appropriate hardware configuration should be selected in the
+project's component.mk file. Use one of the standard configurations
+or create your own. See :ref:`hardware_config`.
+
+Configuration variables
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Configuration variables should be set in the project's component.mk
+file. If appropriate, they can also be set as environment variables.
+
+During development, the easiest way to change variables is on the
+``make`` command line. These are cached so persist between make
+sessions, and will override any values set in your project's
+``component.mk`` file. For example:
+
+-  Type ``make SPIFF_BIN=test-rom`` to build the project and (if
+   enabled) create a SPIFFS image file called ``test-rom.bin``
+-  Type ``make flash COM_PORT=COM4`` to flash
+   the project and ``test-rom`` SPIFFS image using the provided flash
+   memory settings
+-  Next time you type ``make flash``, the same settings will be used, no
+   need to type them again
+
+A separate cache is maintained for each build type (arch + release/debug).
+For example, to switch to release build and display the active configuration:
+
+.. code-block:: bash
+
+      make SMING_RELEASE=1 list-config
+
+To clear all caches and revert to defaults:
+
+.. code-block:: bash
+
+      make config-clean
+
+For reference, a copy of all configuration variables are stored in a file with
+each firmware image created in the 'firmware' directory.
+
+Component repositories
+~~~~~~~~~~~~~~~~~~~~~~
+
+Placing Components in a common location allows them to be used by
+multiple projects. To set up your own Component repository, create a
+directory in a suitable location which will contain your Components and
+set :envvar:`COMPONENT_SEARCH_DIRS` to the full path of that directory.
+For example::
+
+   |_ opt/
+      |_ shared/
+         |_ Components/             The repository
+            |_ MyComponent/
+            |_ AnotherComponent/
+            |_ spiffs/              Will be used instead of Sming version
+
+User repositories are searched first, which allows replacement of any
+Component for a project. In this example, our ``spiffs`` component will
+be selected instead of the one provided with Sming.
+
+Directory layout
+----------------
+
+The main Sming repo. is laid out like this::
+
+   |_ sming/
+      |_ .github.yml                CI testing
+      |_ .clang-format.yml          Spec for clang-format tool
+      |_ .clang-tidy.yml            Spec for clang-tidy tool
+      |_ .readthedocs.yml           Documentation build
+      |_ lgtm.yml                   CI Static code analysis
+      |_ docs/                      Sming documentation
+      |_ samples/                   Samples to demonstrate specific Sming features or libraries
+      |_ Sming/
+      |  |_ Makefile                Builds documentation, performs global actions on the framework
+      |  |_ project.mk              Main makefile to build a project
+      |  |_ build.mk                Defines the build environment
+      |  |_ component.mk            Sming Component definition file
+      |  |_ component-wrapper.mk    Used to build each Component using a separate make instance
+      |  |_ Arch/                   Architecture-specific makefiles and code
+      |  |  |_ Esp8266/
+      |  |  |  |_ sming.mk          Defines architecture-specific Components and libraries
+      |  |  |  |_ app.mk            Link the project, create output binaries
+      |  |  |  |                       and perform architecture-specific actions
+      |  |  |  |_ build.mk          Architecture-specific build definitions, such as compiler paths
+      |  |  |  |_ Compiler/
+      |  |  |  |_ Components/
+      |  |  |  |_ Core/
+      |  |  |  |_ Platform/
+      |  |  |  |_ System/
+      |  |  |  |_ Tools/            Pre-compiled or scripted tools
+      |  |  |_ Esp32/
+      |  |  |  |_ ...
+      |  |  |_ Host/
+      |  |     |_ ...
+      |  |_ Components/             Framework support code, not to be used directly by applications
+      |  |_ Core/                   Main framework core
+      |  |_ Libraries/              Arduino Libraries
+      |  |  |_ .patches             Patch information applied when pulling in library submodules
+      |  |  |_ ...
+      |  |  |  |_ README.rst        Mandatory README file (can be README.md)
+      |  |  |  |_ samples/          Optional library sample applications
+      |  |  |  |_ test/             Optional CI test application
+      |  |_ out/                    All generated shared files are written here
+      |  |  |_ Esp8266/             The Arch
+      |  |  |  |_ debug/            The build type
+      |  |  |     |_ build/         Intermediate object files
+      |  |  |     |  |_ Lib/        Generated libraries
+      |  |  |     |  |_ tools/      Generated tools
+      |  |  |     |_ release/
+      |  |  |        |_ ...
+      |  |  |_ Host/
+      |  |     |_ ...
+      |  |_ Platform/               System-level classes
+      |  |  |_ ...
+      |  |_ Services/               Modules not considered as part of Core
+      |  |  |_ ...
+      |  |_ System/                 Common framework low-level system code
+      |  |  |_ include/
+      |  |_ Wiring/                 Arduino wiring framework classes (ish)
+      |     |_ ...
+      |_ tests/                     Primary integration test applications
+         |_ ...
+      |_ Tools/
+         |_ ci                      CI testing
+         |_ Docker
+         |_ ide                     IDE environment support tools
+         |_ Python                  Shared python scripts
+         |_ spelling                Framework spell-checking tools
+         |_ travis                  CI testing
+         |_ install.cmd             Windows install script
+         |_ install.sh              Linux install script
+         |_ export.sh               Configure default environment variables
+
+
+A typical Project looks like this::
+
+   |_ Basic_Blink/
+      |_ Makefile                   Just includes project.mk
+      |_ component.mk               Project-specific definitions
+       |_ app/                      Default application source directory
+       |_ include/                  Default application include directory
+       |_ out/                      All generated shared files are written here
+          |_ Esp8266/               The Architecture
+          |  |_ debug/              The build type
+          |  |  |_ build/           Intermediate object files
+          |  |  |_ firmware/        Target output files
+          |  |  |_ lib/             Generated libraries
+          |  |  |_ tools/           Generated tools
+          |  |_ release/
+          |     |_ ...
+          |_ Host
+             |_ ...
+
+
+.. _component:
+
+Component
+---------
+
+The purpose of a Component is to encapsulate related elements for
+selective inclusion in a project, for easy sharing and reuse:
+
+-  **Shared Library** with associated header files
+-  **App Code** Source files to be compiled directly into the user's
+   project
+-  **Header files** without any associated source or library
+-  **Build targets** to perform specific actions, such as flashing
+   binary data to hardware
+
+By default, a Component is built into a shared library using any source
+files found in the base or ``src`` directories. All Arduino Libraries
+are built as Components. Note that the application is also built as a
+Component library, but the source directory defaults to ``app`` instead
+of ``src``.
+
+.. envvar:: COMPONENT_SEARCH_DIRS
+
+   Components are referred to simply by name, defined by the directory in
+   which it is stored. The Component itself is located by looking in all
+   the directories listed by :envvar:`COMPONENT_SEARCH_DIRS`, which contains a
+   list of repositories. (Every sub-directory of a repository is considered
+   to be a Component.) If there are Components with the same name in
+   different search directories, the first one found will be used.
+
+Components are customised by providing an optional ``component.mk``
+file.
+
+You can see details of all Components used in a project using
+``make list-components``. Add ``V=1`` to get more details.
+
+Note that the application itself is also built as a Component, and may
+be configured in a similar way to any other Component.
+
+Library variants
+~~~~~~~~~~~~~~~~
+
+Libraries can often be built using different option settings, so a
+mechanism is required to ensure that libraries (including the
+application) are rebuilt if those settings change. This is handled using
+*variants*, which modifies the library name using a hash of the settings
+values. Each variant gets its own build sub-directory so incremental
+building works as usual.
+
+There are several types of config variable:
+
++-------------+-------------+-------------+-------------+-------------+
+| Variable    | Cached?     | Rebuild     | Rebuild     | Relink      |
+| type        |             | Component?  | application | application |
+|             |             |             | ?           |             |
++=============+=============+=============+=============+=============+
+| COMPONENT   | Y           | Y           | Y           | Y           |
++-------------+-------------+-------------+-------------+-------------+
+| CONFIG      | Y           | N           | Y           | Y           |
++-------------+-------------+-------------+-------------+-------------+
+| RELINK      | Y           | N           | N           | Y           |
++-------------+-------------+-------------+-------------+-------------+
+| CACHE       | Y           | N           | N           | N           |
++-------------+-------------+-------------+-------------+-------------+
+| BUILD       | Y           | N           | N           | N           |
++-------------+-------------+-------------+-------------+-------------+
+| DEBUG       | N           | N           | N           | N           |
++-------------+-------------+-------------+-------------+-------------+
+
+Variables are usually defined in the context of a Component, in the
+component.mk file. All Components see the full configuration during
+building, not just their own variables.
+
+The type of a configuration variable is defined by adding its *name* to
+one of the following lists:
+
+.. envvar:: CONFIG_VARS
+
+   The Application library derives its variant from these
+   variables. Use this type if the Component doesn't require a rebuild, but
+   the application does.
+
+.. envvar:: COMPONENT_VARS
+
+   A Component library derives its variant from these
+   variables. Any variable which requires a rebuild of the Component
+   library itself must be listed. For example, the ``esp-open-lwip``
+   Component defines this as ``ENABLE_LWIPDEBUG ENABLE_ESPCONN``. The
+   default values for these produces
+   ``ENABLE_LWIPDEBUG=0 ENABLE_ESPCONN=0``, which is hashed (using MD5) to
+   produce ``a46d8c208ee44b1ee06f8e69cfa06773``, which is appended to the
+   library name.
+
+   All dependent Components (which list this one in :envvar:`COMPONENT_DEPENDS`)
+   will also have a variant created.
+
+.. envvar:: COMPONENT_RELINK_VARS
+
+   Behaves just like :envvar:`COMPONENT_VARS` except dependent Components are not rebuilt.
+   This is appropriate where the public interface (header files) are not affected
+   by the variable setting, but the library implementation still requires a variant.
+
+.. envvar:: RELINK_VARS
+
+   Code isn't re-compiled, but libraries are re-linked and
+   firmware images re-generated if any of these variables are changed. For
+   example, ``make RBOOT_ROM_0=new-rom-file`` rewrites the firmware image
+   using the given filename. (Also, as the value is cached, if you then do
+   ``make flashapp`` that same image gets flashed.)
+
+.. envvar:: CACHE_VARS
+
+   These variables have no effect on building, but are
+   cached. Variables such as :envvar:`COM_SPEED_ESPTOOL` fall into this category.
+
+
+.. envvar:: DEBUG_VARS
+
+   These are generally for information only, and are not cached
+   (except for :envvar:`SMING_SOC` and :envvar:`SMING_RELEASE`).
+
+
+.. envvar:: BUILD_VARS
+
+   These are cached in ``out/build-type.mk`` and apply to all architectures.
+
+
+Note that the lists not prefixed ``COMPONENT_xx`` are global and so should only
+be appended, never assigned.
+
+
+Dependencies
+~~~~~~~~~~~~
+
+:envvar:`COMPONENT_DEPENDS` identifies a list of Components upon which this
+one depends. These are established as pre-requisites so will trigger a
+rebuild. In addition, all dependent :envvar:`COMPONENT_VARS` are (recursively)
+used in creation of the library hash.
+
+For example, the :component:`axtls-8266` Component declares :envvar:`SSL_DEBUG` as a
+:envvar:`COMPONENT_VAR`. Because :component:`Sming` depends on :component:`sming-arch`, which in
+turn depends on :component:`axtls-8266`, all of these Components get rebuilt as
+different variants when :envvar:`SSL_DEBUG` changes values. The project code
+(``App`` Component) also gets rebuilt as it implicitly depends on :component:`Sming`.
+
+.. _git_submodules:
+
+GIT Submodules
+~~~~~~~~~~~~~~
+
+Sming uses source code from other repositories. Instead of including
+local copies, these are handled using GIT submodules. Where changes are
+required, patches may be provided as a diff ``.patch`` file and/or set of
+files to be added/replaced. Only those submodules necessary for a build
+are pulled in, as follows:
+
+-  The submodule is fetched from its remote repository
+-  If a .patch file exists, it is applied
+-  Any additional files are copied into the submodule directory
+-  An empty ``.submodule`` file is created to tells the build system
+   that the submodule is present and correct.
+
+The patch file must have the same name as the submodule, with a .patch
+extension. It can be located in the submodule's parent directory::
+
+   |_ Components/
+      |_ heap/
+         |_ .component.mk             Component definition
+         |_ umm_malloc.patch          Diff patch file
+         |_ umm_malloc/               Submodule directory
+            |_ .submodule             Created after successful patching
+         ...
+
+However, if the Component is itself a submodule, then patch files must
+be placed in a ``../.patches`` directory::
+
+   |_ Libraries/
+      |_ .patches/
+      |  |_ Adafruit_SSD1306.patch    Diff patch file
+      |  |_ Adafruit_SSD1306/
+      |     |_ component.mk           This file is added to submodule
+      |_ Adafruit_SSD1306/            The submodule directory
+         |_ .submodule                Created after successful patching
+         ...
+
+This example includes additional files for the submodule. There are some
+advantages to this approach:
+
+1. Don't need to modify or create .patch
+2. Changes to the file are easier to follow than in a .patch
+3. **IMPORTANT** Adding a component.mk file in this manner allows the
+   build system to resolve dependencies before any submodules are fetched.
+
+In the above example, the ``component.mk`` file defines a dependency on
+the :library:`Adafruit_GFX` library, so that will automatically get pulled in
+as well.
+
+Component configuration
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``component.mk`` file is parsed twice, first from the top-level makefile
+and the second time from the sub-make which does the actual building. A
+number of variables are used to define behaviour.
+
+These values are for reference only and should not be modified.
+
+.. envvar:: COMPONENT_NAME
+
+   Name of the Component
+
+.. envvar:: COMPONENT_PATH
+
+   Base directory path for Component, no trailing path separator
+
+.. envvar:: COMPONENT_BUILD_DIR
+
+   The current directory.
+
+   This should be used if the Component provides any application code or targets to ensure it is
+   built in the correct directory (but not by this makefile).
+
+   This value changes depending on the build variant.
+
+.. envvar:: COMPONENT_BUILD_BASE
+
+   This value does not change with build variant.
+
+   If the Component generates source code, for example, it can be placed here (in a sub-directory).
+
+.. envvar:: COMPONENT_LIBDIR
+
+   Location to store created Component (shared) libraries
+
+.. envvar:: COMPONENT_VARIANT
+
+   Name of the library to build
+
+.. envvar:: COMPONENT_LIBPATH
+
+   Full path to the library to be built
+
+These values may be used to customise Component behaviour and may be
+changed as required.
+
+.. envvar:: COMPONENT_LIBNAME
+
+   By default, the library has the same name as the Component but can be
+   changed if required. Note that this will be used as the stem for any variants.
+
+   If the Component doesn't contain any source files then you must set
+   :envvar:`COMPONENT_LIBNAME := <COMPONENT_LIBNAME>`.
+   Otherwise, a default library will be built but will be empty.
+   Some archiver tools have a problem with this.
+
+.. envvar:: COMPONENT_TARGETS
+
+   Set this to any additional targets to be built as
+   part of the Component, prefixed with ``$(COMPONENT_RULE)``.
+
+   If targets should be built for each application, use :envvar:`CUSTOM_TARGETS` instead.
+   See :library:`Spiffs` for an example.
+
+.. envvar:: COMPONENT_PREREQUISITES
+
+   These targets will be built before anything else. If your library generates source code,
+   for example, then it should be done by setting this value to the appropriate targets.
+
+.. envvar:: COMPONENT_RULE
+
+   This is a special value used to prefix any custom targets which are to be built as
+   part of the Component. The target must be prefixed by ``$(COMPONENT_RULE)`` without
+   any space between it and the target. This ensures the rule only gets invoked during
+   a component build, and is ignored by the top-level make.
+
+.. envvar:: COMPONENT_SUBMODULES
+
+   Relative paths to dependent submodule directories for this Component.
+   These will be fetched/patched automatically before building.
+
+   Default behaviour is to initialise submodules recursively.
+   To prevent this behaviour and initialise only the top-level submodule,
+   add a file to the parent directory with the same name as the submodule
+   and a ``.no-recursive`` extension.
+
+.. envvar:: COMPONENT_SRCDIRS
+
+   Locations for source code relative to COMPONENT_PATH (defaults to ". src")
+
+.. envvar:: COMPONENT_SRCFILES
+
+   Individual source files. Useful for conditional includes.
+
+.. envvar:: COMPONENT_INCDIRS
+
+   Default: "include".
+
+   Include directories available when building ALL Components (not just this one).
+   Paths may be relative or absolute
+
+.. envvar:: EXTRA_INCDIR
+
+   Include directories for just this Component.
+   Paths may be relative or absolute
+
+.. envvar:: INCDIR
+
+   The resultant set of include directories used to build this
+   Component. Will contain include directories specified by all other
+   Components in the build. May be overridden if required.
+
+.. envvar:: COMPONENT_APPCODE
+
+   List of directories containing source code to be
+   compiled directly with the application. (Ignore in the project.mk file -
+   use :envvar:`COMPONENT_SRCDIRS` instead).
+
+.. envvar:: CUSTOM_BUILD
+
+   Set to 1 if providing an alternative build method. See
+   `Custom building <#custom-building>`__ section.
+
+.. envvar:: EXTRA_OBJ
+
+   Absolute paths to any additional binary object files to be
+   added to the Component archive library.
+
+.. envvar:: COMPONENT_DEPENDS
+
+   Set to the name(s) of any dependent Components.
+
+.. envvar:: EXTRA_LIBS
+
+   Set to names of any additional libraries to be linked.
+
+.. envvar:: EXTRA_LDFLAGS
+
+   Set to any additional flags to be used when linking.
+
+.. envvar:: COMPONENT_PYTHON_REQUIREMENTS
+
+   If the component requires uncommon Python modules (e. g. as part of a custom
+   build step), set this variable to one or more `requirements.txt <https://pip.readthedocs.io/en/latest/reference/pip_install/#requirements-file-format>`_
+   files. This allows installation of all python requirements of the project by
+   invoking::
+
+      make python-requirements [PIP_ARGS=...]
+
+   .. note::
+
+      A `requirements.txt` file in the root directory of the Component is
+      detected automatically without setting this variable. To prevent
+      autodetection (e.g. if the python requirements depend on another
+      configuration variable) you must set this variable to an empty value.
+
+
+.. envvar:: PIP_ARGS
+
+   See :envvar:`COMPONENT_PYTHON_REQUIREMENTS`.
+
+
+These values are global so must only be appended to (with ``+=``) ,
+never overwritten.
+
+.. envvar:: CUSTOM_TARGETS
+
+   Identifies targets to be built along with the
+   application. These will be invoked directly by the top-level make.
+
+.. envvar:: GLOBAL_CFLAGS
+
+   Use only if you need to provide additional compiler
+   flags to be included when building all Components (including
+   Application) and custom targets.
+
+.. envvar:: APP_CFLAGS
+
+   Used when building application and custom targets.
+
+.. envvar:: COMPONENT_CFLAGS
+
+   Will be visible **ONLY** to C code within the component.
+
+.. envvar:: COMPONENT_CXXFLAGS
+
+   Will be visible **ONLY** to C++ code within the component.
+
+.. envvar:: COMPONENT_CPPFLAGS
+
+   Will be visible to both C and C++ code within the component.
+
+.. important::
+
+   During initial parsing, many of these variables (specifically, the
+   ``COMPONENT_xxx`` ones) *do not* keep their values. For this reason it
+   is usually best to use simple variable assignment using ``:=``.
+
+   For example, in ``Esp8266/Components/gdbstub`` we define
+   ``GDB_CMDLINE``. It may be tempting to do this::
+
+      GDB_CMDLINE = trap '' INT; $(GDB) -x $(COMPONENT_PATH)/gdbcmds -b $(COM_SPEED_GDB) -ex "target remote $(COM_PORT_GDB)"
+
+   That won't work! By the time ``GDB_CMDLINE`` gets expanded,
+   :envvar:`COMPONENT_PATH` could contain anything. We need ``GDB_CMDLINE`` to be
+   expanded only when used, so the solution is to take a simple copy of
+   :envvar:`COMPONENT_PATH` and use it instead, like this::
+
+      GDBSTUB_DIR := $(COMPONENT_PATH)
+      GDB_CMDLINE = trap '' INT; $(GDB) -x $(GDBSTUB_DIR)/gdbcmds -b $(COM_SPEED_GDB) -ex "target remote $(COM_PORT_GDB)"
+
+These values are global and should be used ONLY in the ``Sming/Arch/*/build.mk`` files to tune the architecture compilation flags.
+**DO NOT** assign to these values, only append with **+=**.
+
+.. envvar:: CPPFLAGS
+
+   Used to provide both C and C++ flags that are applied globally.
+
+.. envvar:: CFLAGS
+
+   Used to provide **ONLY** C flags that are applied globally.
+
+.. envvar:: CXXFLAGS
+
+   Used to provide **ONLY** C++ flags that are applied globally.
+
+.. envvar:: SMING_C_STD
+
+   Used to provide the C language standard. The default is ``c11``.
+
+.. important::
+
+   Do **NOT** set :envvar:`CPPFLAGS`, :envvar:`CFLAGS` or :envvar:`CXXFLAGS`
+   outside of the ``Sming/Arch/*/build.mk`` files.
+
+
+Building
+~~~~~~~~
+
+For faster builds use make with the ``-j`` (jobs) feature of make. It is
+usually necessary to specify a limit for the number of jobs, especially
+on virtual machines. There is usually no point in using a figure greater
+than (CPU cores + 1). The CI builds use ``-j3``.
+
+Note that ``project.mk`` enforces sequential building to ensure
+submodules are fetched and patched correctly. This also ensures that
+only one Component is built at a time which keeps the build logs quite
+clean and easy to follow.
+
+Components can be rebuilt and cleaned individually. For example:
+
+-  ``make spiffs-build`` runs the Component 'make' for spiffs, which contains the SPIFFS library.
+-  ``make spiffs-clean`` removes all intermediate build files for the Component
+-  ``make spiffs-rebuild`` cleans and then re-builds the Component
+
+By default, a regular ``make`` performs an incremental build on the
+application, which invokes a separate (recursive) make for the ``App``
+Component. All other Components only get built if any of their targets
+don't exist (e.g. variant library not yet built). This makes application
+building faster and less 'busy', which is generally preferable for
+regular application development. For Component development this
+behaviour can be changed using the :envvar:`FULL_COMPONENT_BUILD` variable
+(which is cached). Examples:
+
+-  ``make FULL_COMPONENT_BUILD=lwip`` will perform an incremental build
+   on the ``lwip`` Component
+-  ``make FULL_COMPONENT_BUILD=1`` will incrementally build all Components
+
+Custom Building
+~~~~~~~~~~~~~~~
+
+To use an external makefile or other build system (such as CMake) to
+create the Component library, or to add additional shared libraries or
+other targets, customise the ``component.mk`` file as follows:
+
+1. Set :envvar:`CUSTOM_BUILD=1 <CUSTOM_BUILD>`
+2. Define the custom rule, prefixed with ``$(COMPONENT_RULE)``. Note
+   that Components are built using a separate make instance with the
+   current directory set to the build output directory, not the source
+   directory.
+
+It is important that the rule uses the provided values for
+:envvar:`COMPONENT_LIBNAME`, :envvar:`COMPONENT_LIBPATH` and :envvar:`COMPONENT_LIBDIR` so
+that variant building, cleaning, etc. work correctly.
+See the :component:`lwip` Component for an example.
+
+Components are built using a make instance with the current directory
+set to the build output directory, not the source directory. If any
+custom building is done then these variables must be obeyed to ensure
+variants, etc. work as expected:
+
+- :envvar:`COMPONENT_LIBNAME` as provided by component.mk, defaults to component name, e.g. ``Sming``
+- :envvar:`COMPONENT_LIBHASH` hash of the component variables used to create unique library names, e.g. ``13cd2ddef79fda79dae1644a33bf48bb``
+- :envvar:`COMPONENT_VARIANT` name of the library to be built, including hash. e.g. ``Sming-13cd2ddef79fda79dae1644a33bf48bb``
+- :envvar:`COMPONENT_LIBDIR` directory where any generated libraries must be output, e.g. ``/home/user/sming/Sming/out/Esp8266/debug/lib/``
+- :envvar:`COMPONENT_LIBPATH` full path to the library to be created, e.g. ``/home/user/sming/Sming/out/Esp8266/debug/lib/clib-Sming-13cd2ddef79fda79dae1644a33bf48bb.a``
+- :envvar:`COMPONENT_BUILDDIR` where to write intermediate object files, e.g. ``/home/user/sming/Sming/out/Esp8266/debug/build/Sming/Sming-13cd2ddef79fda79dae1644a33bf48bb``
+
+Porting existing libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See :doc:`/develop/components.rst` for a guide on creating Sming Components.
+
+
+Known Issues
+------------
+
+Cleaning
+   Components are not cleaned unless defined.
+   e.g. ``make axtls-8266-clean`` will fail unless you also specify :envvar:`ENABLE_SSL=1 <ENABLE_SSL>`.
+
+Empty libraries
+   Components without any source code produce an empty library.
+   This is because, for simplicity, we don't want to add a component.mk to every Arduino library.
+   Usually this doesn't cause any problems but the MacOS archive tool throws an error.
+   It is therefore recommended to add :envvar:`set COMPONENT_LIBNAME= <COMPONENT_LIBNAME>` to the component.mk file.
+
+Empty Component directories
+   Every sub-directory in the :envvar:`COMPONENT_SEARCH_DIRS` is interpreted as a Component.
+   For example, ``spiffs`` was moved out of Arch/Esp8266/Components but if an empty
+   directory called 'spiffs' still remains then it will be picked up
+   instead of the main one. These sorts of issues can be checked using
+   ``make list-components`` to ensure the correct Component path has been
+   selected.

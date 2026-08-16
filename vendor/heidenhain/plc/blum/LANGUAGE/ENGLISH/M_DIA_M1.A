@@ -1,0 +1,29 @@
+/* Diagnosis TC magazine
+   ---------------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAG TC MAGAZINE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %s\n",S1/c;
+CURSOR=ON;
+"CASE(%2d): %s\n",$BG_step_magazine$/c,S2/c;
+CURSOR=OFF;
+"(+1)    : %s\n\n",S3/c;
+
+"TC magazine active  : %s\n",$MG_TC_magazine_start$?"on ":"off"/c;
+"\n";
+
+"T CALL strobe M4073 :    %d\n",$NP_M4073_strobe_TOOL_CALL$/c;
+"T DEF strobe  M4074 :    %d\n\n",$NP_M4074_strobe_TOOL_DEF$/c;
+
+"TOOL pocket    W262 : %4D\n",$NP_W262_tool_pocket_number$/c;
+"TOOL number    W264 : %4D\n\n",$NP_W264_tool_number$/c;
+"TOOL magazine  W268 : %4D\n\n",$NP_W268_tool_magazine_number$/c;
+
+"Standby pocket      : %4D\n",$WG_TC_magazine_actual_pocket$/c;
+"Nominal position    : %4D\n",$DG_TC_magazine_nominal_posit$/c;
+

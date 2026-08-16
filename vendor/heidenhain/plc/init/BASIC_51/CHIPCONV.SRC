@@ -1,0 +1,165 @@
+*-----------------------------------------------------------------------------
+*  Chip Conveyor
+*-----------------------------------------------------------------------------
+*  Module Description
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_default_interval_pause                K +10
+#define /s    KL_default_interval_on                   K +20
+
+#define /s    ML_key_pressed                           M
+#define /s    ML_interval_init                         M
+
+GLOBAL Chip_conveyor
+
+;----------------------------
+LBL Chip_conveyor
+;----------------------------
+
+  L      MG_M51_chip_conveyor_on
+  O      MG_M50_chip_conveyor_off
+  S      PN_M4092_quit_M_function
+
+  L      NP_M4158_mode_block_scan
+  EMT
+
+  L      I_key_chip_conveyor
+  AN     ML_key_pressed
+  XO     MG_soft_key_chip_conveyor
+  =      MG_soft_key_chip_conveyor
+
+  L      I_key_chip_conveyor
+  =      ML_key_pressed
+
+  L      MG_M51_chip_conveyor_on
+  O[                                                                  *;EUMACH
+    L      NP_PGM_running_chip_conveyor_on                            *;EUMACH
+    A      MG_p_pulse_PGM_running_control_in_operation_on             *;EUMACH
+  ]                                                                   *;EUMACH
+  S      MG_soft_key_chip_conveyor
+
+  L      MG_M50_chip_conveyor_off
+  O      MG_pulse_END_PGM_M02_M30
+  O      MG_auto_manu_mode_change
+  O      MG_soft_key_chip_con_back
+  O      I_key_chip_conveyor_back
+  O      MG_win_chip_conveyor_motor_overloaded                        *;EUMACH
+*;EUMACH CE 2008
+#if SFM = &Standard
+  O[
+    L      PN_error_safety_mode_2
+    ON     MG_NC_program_operating                                    *;EUMACH CE Sep 06 2008
+    A      PN_error_guard_open
+  ]
+#endif
+#if SFM = &DMx
+  O      PN_error_safety_mode_2
+  O      MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  ON     MG_control_operational
+  R      MG_soft_key_chip_conveyor
+
+  L      I_key_chip_conveyor_back
+  O      MG_soft_key_chip_con_back
+  AN     O_chip_conveyor
+  AN     MG_win_chip_conveyor_motor_overloaded                        *;EUMACH
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+*;EUMACH CE 2008
+#if SFM = &DMx
+  AN     PN_error_safety_mode_2
+  AN     MG_safety_mode_4
+#endif
+*;EUMACH CE 2008
+  =      O_chip_conveyor_back
+
+  LN     NP_chip_flush_independent_with_conveyor                      *;EUMACH
+  A      O_coolant_chip_flush_on                                      *;EUMACH
+  O      MG_soft_key_chip_conveyor
+  AN     MG_chip_conveyor_pause_interval                              *;EUMACH BASIC 56
+  A      I_servo_drive_release                                        *;EUMACH
+  A      MG_servo_drive_release_1st_axes_group                        *;EUMACH
+  AN     MG_guard_open_operation_hold                                 *;EUMACH CE Sep 06 2008
+;  AN     MG_guard_open                                               *;EUMACH
+  =      O_chip_conveyor      *;Anything turned on or turned off O_chip_conveyor must also be considered for chip conveyor interval.
+
+  L      MG_soft_key_chip_conveyor
+  A      MG_clock_1_s
+  O      O_chip_conveyor
+  O      MG_test_lamps
+  =      O_lamp_chip_conveyor
+
+*;EUMACH BASIC 56 chip conveyor interval
+  L      MG_soft_key_one_level_back
+  R      MG_soft_key_setup_chip_conveyor
+
+  L      MG_chip_conveyor_reset_interval
+  R      MG_chip_conveyor_reset_interval
+  R      ML_interval_init
+
+  LN     NP_chip_flush_independent_with_conveyor
+  A      O_coolant_chip_flush_on
+  O      MG_soft_key_chip_conveyor
+  A      MG_soft_key_interval_chip_conveyor
+  =      MG_chip_conveyor_pause_interval
+  EMF
+
+  LN     ML_interval_init
+  IFT
+    S      ML_interval_init
+
+    L      WG_interval_pause_time_setup
+    =      WG_interval_pause_time
+
+    L      WG_interval_on_time_setup
+    =      WG_interval_on
+
+    L      WG_interval_pause_time_setup
+    <      K +0
+    IFT
+      R      ML_interval_init
+
+      L      KL_default_interval_pause
+      =      WG_interval_pause_time_setup
+    ENDI
+
+    L      WG_interval_on_time_setup
+    <=     K +0
+    IFT
+      R      ML_interval_init
+
+      L      KL_default_interval_on
+      =      WG_interval_on_time_setup
+    ENDI
+  ENDI
+
+  L      WG_interval_on
+  >      K +0
+  IFT
+    R      MG_chip_conveyor_pause_interval                            *;EUMACH --> O_chip_conveyor not pause
+
+    L      MG_pulse_1_s
+    A      I_servo_drive_release                                      *;EUMACH
+    A      MG_servo_drive_release_1st_axes_group                      *;EUMACH
+    AN     MG_guard_open_operation_hold                               *;EUMACH
+    IFT
+      DEC    WG_interval_on
+    ENDI
+  ELSE
+    L      WG_interval_pause_time
+    <=     K +0
+    R      ML_interval_init                                           *;EUMACH --> update set on-time & pause-time
+
+    L      MG_pulse_1_min
+    A      I_servo_drive_release                                      *;EUMACH
+    A      MG_servo_drive_release_1st_axes_group                      *;EUMACH
+    AN     MG_guard_open_operation_hold                               *;EUMACH
+    IFT
+      DEC    WG_interval_pause_time
+    ENDI
+  ENDI
+*;EUMACH BASIC 56 chip conveyor interval
+
+EM

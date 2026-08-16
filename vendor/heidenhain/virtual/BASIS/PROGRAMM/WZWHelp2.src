@@ -1,0 +1,1148 @@
+*-----------------------------------------------------------------------------
+*  WZW Help - Service
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*    Bei angewählter Help-Datei (SERVICE.HLP) lassen sich in Betriebsart
+*    Manuell mittels NC-Start-Taste einzelne Funktionen des WZW aufrufen.
+*-----------------------------------------------------------------------------
+
+#define /s    ML_T0_Vorwahl_OK                         M
+#define /s    ML_WZW_Pos_Z_ausheben                    M
+#define /s    ML_WZW_Pos_Z_einsetzen                   M
+#define /s    ML_WZW_Pos_Y                             M
+#define /s    ML_WZW_Pos_X                             M
+#define /s    ML_WZ_Greifer_war_Spindel_Position       M
+#define /s    ML_WZ_Greifer_war_Magazin_Position       M
+#define /s    ML_WZW_Help_aktiv                        M
+#define /s    ML_Stack_synchronisieren                 M
+
+#define /s /r ML_WZ_Greifer_Zangen_zu                  M
+#define /s /r ML_WZ_Greifer_Zange_1_auf                M
+#define /s /r ML_WZ_Greifer_Zange_2_auf                M
+#define /s /r ML_WZ_Greifer_einsetzen                  M
+#define /s /r ML_WZ_Greifer_ausheben                   M
+#define /s /r ML_WZ_Greifer_drehen_ccw_links           M
+#define /s /r ML_WZ_Greifer_drehen_cw_rechts           M
+#define /s /r ML_WZ_Schleuse_auf                       M
+#define /s /r ML_WZ_Schleuse_zu                        M
+
+#define /s    BL_Schritt_Help                          B
+
+#include Mac_Lib.inc
+
+EXTERN WZM_rechts_drehen
+EXTERN WZM_links_drehen
+EXTERN Start_Posit
+EXTERN In_Posit
+
+GLOBAL WZW_Help
+GLOBAL WZW_Output_Restore
+GLOBAL WZW_Output_Backup
+
+;----------------------------
+LBL WZW_Help
+;----------------------------
+
+  LN     MG_WZW_Auto_aktiv
+  EMT
+
+  CM     Grund_Stellung
+
+#if CFG_WZ_Transport_Wagen = "aktiv"
+  L      I_WZ_Greifer_Spindel_Position
+  S      ML_WZ_Greifer_war_Spindel_Position
+  R      ML_WZ_Greifer_war_Magazin_Position
+
+  L      I_WZ_Greifer_Magazin_Position
+  R      ML_WZ_Greifer_war_Spindel_Position
+  S      ML_WZ_Greifer_war_Magazin_Position
+
+  L      ML_WZ_Greifer_war_Spindel_Position
+  O      ML_WZ_Greifer_war_Magazin_Position
+  O      O_WZ_Greifer_zu_Grundstellung
+  A      I_WZ_Greifer_Grundstellung
+  R      ML_WZ_Greifer_war_Spindel_Position
+  R      ML_WZ_Greifer_war_Magazin_Position
+  R      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+  R      O_WZ_Greifer_zu_Grundstellung
+
+  L      O_WZ_Greifer_zu_Grundstellung
+  A      ML_WZ_Greifer_war_Spindel_Position
+  R      O_WZ_Greifer_zu_Spindel
+  S      O_WZ_Greifer_zu_Magazin
+
+  L      O_WZ_Greifer_zu_Grundstellung
+  A      ML_WZ_Greifer_war_Magazin_Position
+  S      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+#endif
+
+  L      PN_Fehler_Funktion_OK
+  R      PN_Fehler_Funktion_OK
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  /      K+100
+  ==     K+2
+  =      ML_WZW_Help_aktiv
+
+  L      ML_WZW_Help_aktiv
+  XO     MG_WZW_Help
+  CMT    Service_Reset
+
+  L      MG_BA_Manuell
+  AN     MG_BA_Editieren
+  O      MG_Inbetriebnahme
+  A      ML_WZW_Help_aktiv
+  =      MG_WZW_Help
+  R      PN_Fehler_WZW_Grund_Stellung
+  EMF
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  <>     BL_Schritt_Help
+  ON     MG_Steuerung_betriebsbereit
+  CMT    Service_Reset
+
+  L      NP_W270_Help_Datei_Zeilen_Nr
+  MOD    K+100
+  =      BL_Schritt_Help
+
+  LN     MG_Steuerung_betriebsbereit
+  EMT
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+
+  CASE   BL_Schritt_Help
+    CM     EndOfModul                  ;00
+    CM     S_WZW_Position              ;01
+    CM     Z_WZW_Position              ;02
+    CM     Y_WZW_Position              ;03
+    CM     X_WZW_Position              ;04
+    CM     WZ_Schleuse_auf             ;05
+    CM     WZ_Schleuse_zu              ;06
+    CM     WZ_Zange_zu                 ;07
+    CM     WZ_Zange_auf                ;08
+    CM     WZ_entspannen               ;09
+    CM     WZ_spannen                  ;10
+    CM     Greif_ausheben              ;11
+    CM     Greif_einsetzen             ;12
+    CM     Greifer_rechts              ;13
+    CM     Greifer_links               ;14
+    CM     Magazin_rechts              ;15
+    CM     Magazin_links               ;16
+    CM     Magazin_Referenz            ;17
+    CM     T0_Vorwahl                  ;18
+  ENDC
+
+#else
+
+  CASE   BL_Schritt_Help
+    CM     EndOfModul                  ;00
+    CM     S_WZW_Position              ;01
+    CM     Z_WZW_Position              ;02
+    CM     Y_WZW_Position              ;03
+    CM     X_WZW_Position              ;04
+    CM     WZ_Schleuse_auf             ;05
+    CM     WZ_Schleuse_zu              ;06
+    CM     WZ_Zange_Spi_auf            ;07
+    CM     WZ_Zange_Spi_zu             ;08
+    CM     WZ_Zange_Mag_auf            ;09
+    CM     WZ_Zange_Mag_zu             ;10
+    CM     WZ_entspannen               ;11
+    CM     WZ_spannen                  ;12
+    CM     Greif_zu_Spindel            ;13
+    CM     Greif_zu_Magazin            ;14
+    CM     Greif_zu_Grundstellung      ;15
+    CM     Greif_ausheben              ;16
+    CM     Greif_einsetzen             ;17
+    CM     Greifer_rechts              ;18
+    CM     Greifer_links               ;19
+    CM     Magazin_rechts              ;20
+    CM     Magazin_links               ;21
+    CM     Magazin_Referenz            ;22
+    CM     T0_Vorwahl                  ;23
+  ENDC
+
+#endif
+
+LBL EndOfModul
+
+EM
+
+;----------------------------
+LBL S_WZW_Position                     ;01
+
+  LN     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_I_WZ_entspannt
+  =      MG_Win_WZ_spannen
+
+#if WZ_Zange = &aktiv
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+  LN     I_WZ_Greifer_Zangen_auf
+  =      MG_Win_WZ_Zangen_auf
+#else
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     I_WZ_Greifer_ausgehoben
+  =      MG_Win_WZ_Zange_Spi_auf
+#endif
+#endif
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_WZ_spannen
+  AN     MG_Win_WZ_Zangen_auf
+  AN     MG_Win_WZ_Zange_Spi_auf
+  AN     MG_Spindel_in_WZW_Position
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  A      MG_Spindel_mit_Messgeraet
+  S      MG_WZW_Spindel_Richten_ein
+
+  L      MG_Spindel_in_WZW_Position
+  ON     MG_Spindel_mit_Messgeraet
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Z_WZW_Position                     ;02
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     Z_in_WZW_Pos
+
+  L      ML_WZW_Pos_Z_einsetzen
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Z]
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_einsetzen
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Z_in_WZW_Pos
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Z
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Z
+  PS     DG_WZW_Pos_Z_einsetzen
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Z_einsetzen
+
+EM
+
+;----------------------------
+LBL Y_WZW_Position                     ;03
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     Y_in_WZW_Pos
+
+  L      ML_WZW_Pos_Y
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      MG_PLC_Posit_aktiv[KG_Achse_Y]
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL Y_in_WZW_Pos
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_Y
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_Y
+  PS     DG_WZW_Pos_Y
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_Y
+
+EM
+
+;----------------------------
+LBL X_WZW_Position                     ;04
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  CM     X_in_WZW_Pos
+
+  L      ML_WZW_Pos_X
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start
+  O      PN_M4120_Strobe_PLC_Posit_Achse_X
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_WZW_Pos_X
+  CM     Start_Posit
+  PL     ML_Stack_synchronisieren
+
+EM
+
+;----------------------------
+LBL X_in_WZW_Pos
+
+  L      NP_D1116_Referenz_notwendig
+  BT     KG_Achse_X
+  =      PN_Fehler_Referenz_notwendig
+  EMT
+
+  PS     KG_Achse_X
+  PS     DG_WZW_Pos_X
+  CM     In_Posit
+  PLL
+  =      ML_WZW_Pos_X
+
+EM
+
+;----------------------------
+LBL WZ_Schleuse_auf                    ;05
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+
+  L      MG_Taste_NC_Start
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  S      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  L      I_WZ_Schleuse_auf
+  AN     I_WZ_Schleuse_zu
+  S      O_WZ_Schleuse_auf
+  R      O_WZ_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+#else
+
+  L      MG_Taste_NC_Start
+  S      PN_Fehler_Funktion_nicht_aktiv
+
+#endif
+
+EM
+
+;----------------------------
+LBL WZ_Schleuse_zu                     ;06
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+
+  L      I_WZ_Greifer_ausgehoben
+  ON     I_WZ_Greifer_eingesetzt
+  =      MG_Win_WZ_Greifer_einsetzen
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  =      MG_Win_WZ_Greifer_drehen
+
+  LN     MG_Win_WZ_Greifer_einsetzen
+  AN     MG_Win_WZ_Greifer_drehen
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  L      MG_Taste_NC_Start_N_Impuls
+  S      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+
+  LN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+  R      O_WZ_Schleuse_auf
+  S      O_WZ_Schleuse_zu
+  =      PN_Fehler_Funktion_OK
+
+#else
+
+  L      MG_Taste_NC_Start
+  S      PN_Fehler_Funktion_nicht_aktiv
+
+#endif
+
+EM
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+
+;----------------------------
+LBL WZ_Zange_zu                        ;07
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  =      MG_Win_WZW_Position_S
+
+  L      MG_Taste_NC_Start
+  AN     MG_Win_WZW_Position_S
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZ_Greifer_Zangen_zu
+
+  LN     I_WZ_Greifer_Zangen_auf
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_Zange_auf                       ;08
+
+  L      MG_Taste_NC_Start
+  R      O_WZ_Greifer_Zangen_zu
+
+  L      I_WZ_Greifer_Zangen_auf
+  =      PN_Fehler_Funktion_OK
+
+EM
+#else
+
+;----------------------------
+LBL WZ_Zange_Spi_auf                   ;05
+
+  L      MG_Taste_NC_Start
+  IFT
+    L      I_WZ_Greifer_cw_rechts
+    S      O_WZ_Greifer_Zange_1_auf
+
+    L      I_WZ_Greifer_ccw_links
+    S      O_WZ_Greifer_Zange_2_auf
+  ENDI
+
+  L      I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_Zange_Spi_zu                    ;06
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  A      I_WZ_Greifer_Spindel_Position
+  =      MG_Win_WZW_Position_S
+
+  LN     MG_Win_WZW_Position_S
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  IFT
+    L      I_WZ_Greifer_cw_rechts
+    R      O_WZ_Greifer_Zange_1_auf
+
+    L      I_WZ_Greifer_ccw_links
+    R      O_WZ_Greifer_Zange_2_auf
+  ENDI
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_Zange_Mag_auf                   ;07
+
+  L      MG_Taste_NC_Start
+  IFT
+    L      I_WZ_Greifer_ccw_links
+    S      O_WZ_Greifer_Zange_1_auf
+
+    L      I_WZ_Greifer_cw_rechts
+    S      O_WZ_Greifer_Zange_2_auf
+  ENDI
+
+  L      I_WZ_Greifer_ccw_links
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_Zange_Mag_zu                    ;08
+
+  L      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  IFT
+    L      I_WZ_Greifer_ccw_links
+    R      O_WZ_Greifer_Zange_1_auf
+
+    L      I_WZ_Greifer_cw_rechts
+    R      O_WZ_Greifer_Zange_2_auf
+  ENDI
+
+  L      I_WZ_Greifer_ccw_links
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greif_zu_Spindel                   ;09
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  =      MG_Win_WZ_Greifer_drehen
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     I_WZ_Greifer_ausgehoben
+  =      MG_Win_WZ_Zange_Spi_auf
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+  =      MG_Win_WZW_Position_S
+
+  LN     MG_Win_WZ_Greifer_drehen
+  AN     MG_Win_WZ_Zange_Spi_auf
+  AN     MG_Win_WZW_Position_S
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+  R      O_WZ_Greifer_zu_Grundstellung
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+
+  L      I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Magazin_Position
+  AN     I_WZ_Greifer_Grundstellung
+  S      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greif_zu_Magazin                   ;09
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  =      MG_Win_WZ_Greifer_drehen
+
+  L      I_WZ_Greifer_ccw_links
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     I_WZ_Greifer_ausgehoben
+  =      MG_Win_WZ_Zange_Mag_auf
+
+  LN     MG_Win_WZ_Greifer_drehen
+  AN     MG_Win_WZ_Zange_Mag_auf
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_WZ_Greifer_zu_Spindel
+  S      O_WZ_Greifer_zu_Magazin
+  R      O_WZ_Greifer_zu_Grundstellung
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+
+  LN     I_WZ_Greifer_Spindel_Position
+  A      I_WZ_Greifer_Magazin_Position
+  AN     I_WZ_Greifer_Grundstellung
+  R      O_WZ_Greifer_zu_Spindel
+  S      O_WZ_Greifer_zu_Magazin
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greif_zu_Grundstellung             ;09
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  =      MG_Win_WZ_Greifer_drehen
+
+  L      I_WZ_Greifer_cw_rechts
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     I_WZ_Greifer_ausgehoben
+  A      ML_WZ_Greifer_war_Spindel_Position
+  =      MG_Win_WZ_Zange_Spi_auf
+
+  L      I_WZ_Greifer_ccw_links
+  AN     I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    AN     I_WZ_Greifer_Zange_2_auf
+  ]
+  AN     I_WZ_Greifer_ausgehoben
+  A      ML_WZ_Greifer_war_Magazin_Position
+  =      MG_Win_WZ_Zange_Mag_auf
+
+  LN     MG_Win_WZ_Greifer_drehen
+  AN     MG_Win_WZ_Zange_Spi_auf
+  AN     MG_Win_WZ_Zange_Mag_auf
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZ_Greifer_zu_Grundstellung
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_zu_Grundstellung
+  R      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+
+  LN     I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Magazin_Position
+  A      I_WZ_Greifer_Grundstellung
+  R      O_WZ_Greifer_zu_Grundstellung
+  R      O_WZ_Greifer_zu_Spindel
+  R      O_WZ_Greifer_zu_Magazin
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+#endif
+
+;----------------------------
+LBL WZ_entspannen                      ;09
+
+  L      MG_Taste_NC_Start
+  S      MG_Sn_O_WZ_entspannen
+
+  LN     MG_Sn_I_WZ_gespannt
+  A      MG_Sn_I_WZ_entspannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL WZ_spannen                         ;10
+
+  L      MG_Taste_NC_Start
+  R      MG_Sn_O_WZ_entspannen
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greif_ausheben                     ;11
+
+  L      MG_Taste_NC_Start
+  R      O_WZ_Greifer_einsetzen
+  S      O_WZ_Greifer_ausheben
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+
+  LN     I_WZ_Greifer_eingesetzt
+  A      I_WZ_Greifer_ausgehoben
+  R      O_WZ_Greifer_einsetzen
+  S      O_WZ_Greifer_ausheben
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greif_einsetzen                    ;12
+
+  LN     MG_Spindel_in_WZW_Position
+  A      MG_Spindel_mit_Messgeraet
+#if CFG_WZ_Transport_Wagen = "aktiv"
+  AN     I_WZ_Greifer_Magazin_Position
+  AN     I_WZ_Greifer_Grundstellung
+#endif
+  =      MG_Win_WZW_Position_S
+
+  LN     MG_Win_WZW_Position_S
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+
+  L      I_WZ_Greifer_eingesetzt
+  AN     I_WZ_Greifer_ausgehoben
+  S      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greifer_rechts                     ;13
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  LN     I_WZ_Schleuse_auf
+  O      I_WZ_Schleuse_zu
+  =      MG_Win_WZ_Schleuse_auf
+#endif
+
+  LN     I_WZ_Greifer_ausgehoben
+  O      I_WZ_Greifer_eingesetzt
+  =      MG_Win_WZ_Greifer_ausheben
+
+  LN     MG_Win_WZ_Greifer_ausheben
+  AN     MG_Win_WZ_Schleuse_auf
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  R      O_WZ_Greifer_drehen_ccw_links
+  S      O_WZ_Greifer_drehen_cw_rechts
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_drehen_ccw_links
+  R      O_WZ_Greifer_drehen_cw_rechts
+
+  LN     I_WZ_Greifer_ccw_links
+  A      I_WZ_Greifer_cw_rechts
+  R      O_WZ_Greifer_drehen_ccw_links
+  S      O_WZ_Greifer_drehen_cw_rechts
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Greifer_links                      ;14
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  LN     I_WZ_Schleuse_auf
+  O      I_WZ_Schleuse_zu
+  =      MG_Win_WZ_Schleuse_auf
+#endif
+
+  LN     I_WZ_Greifer_ausgehoben
+  O      I_WZ_Greifer_eingesetzt
+  =      MG_Win_WZ_Greifer_ausheben
+
+  LN     MG_Win_WZ_Greifer_ausheben
+  AN     MG_Win_WZ_Schleuse_auf
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  S      O_WZ_Greifer_drehen_ccw_links
+  R      O_WZ_Greifer_drehen_cw_rechts
+
+  L      MG_Taste_NC_Start_N_Impuls
+  R      O_WZ_Greifer_drehen_ccw_links
+  R      O_WZ_Greifer_drehen_cw_rechts
+
+  L      I_WZ_Greifer_ccw_links
+  AN     I_WZ_Greifer_cw_rechts
+  S      O_WZ_Greifer_drehen_ccw_links
+  R      O_WZ_Greifer_drehen_cw_rechts
+  =      PN_Fehler_Funktion_OK
+
+EM
+
+;----------------------------
+LBL Magazin_rechts                     ;15
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+#if WZ_Zange = &aktiv
+  LN     I_WZ_Greifer_Zangen_auf
+  AN     I_WZ_Greifer_Mittelstellung
+  =      MG_Win_WZ_Zangen_auf
+#endif
+#else
+  LN     I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Grundstellung
+  =      MG_Win_WZ_Greifer_Grundstellung
+#endif
+
+  LN     I_WZM_Tuer_zu
+  =      MG_Win_Magazin_Tuer_schliessen
+
+  LN     MG_Win_Magazin_Tuer_schliessen
+  AN     MG_Win_WZ_Zangen_auf
+  AN     MG_Win_WZ_Greifer_Grundstellung
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  CMT    WZM_rechts_drehen
+
+EM
+
+;----------------------------
+LBL Magazin_links                      ;16
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+#if WZ_Zange = &aktiv
+  LN     I_WZ_Greifer_Zangen_auf
+  AN     I_WZ_Greifer_Mittelstellung
+  =      MG_Win_WZ_Zangen_auf
+#endif
+#else
+  LN     I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Grundstellung
+  =      MG_Win_WZ_Greifer_Grundstellung
+#endif
+
+  LN     I_WZM_Tuer_zu
+  =      MG_Win_Magazin_Tuer_schliessen
+
+  LN     MG_Win_Magazin_Tuer_schliessen
+  AN     MG_Win_WZ_Zangen_auf
+  AN     MG_Win_WZ_Greifer_Grundstellung
+  A      MG_Taste_NC_Start
+  O[
+    L      MG_Taste_NC_Stop
+    A      MG_Taste_NC_Start
+  ]
+  CMT    WZM_links_drehen
+
+EM
+
+;----------------------------
+LBL Magazin_Referenz                   ;17
+
+#if WZ_Magazin = &Impuls
+#if WZ_Magazin_Referenz_Sensor = &aktiv
+  LN     STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+  =      PN_Fehler_Funktion_OK
+
+  L      MG_Taste_NC_Start_P_Impuls
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+  S      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Start
+
+#else
+  L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_Platz
+  ==     K+1
+  A[
+    L      STG_WZM[BG_WZM_Index_Tool_Call].WG_WZM_Ist_2_Platz_Zaehler
+    ==     K+1
+  ]
+  =      PN_Fehler_Funktion_OK
+  R      STG_WZM[BG_WZM_Index_Tool_Call].MG_WZM_Referenz_notwendig
+
+  L      MG_Taste_NC_Start_P_Impuls
+  =      STG_WZM[BG_WZM_Index_Tool_Call].MG_I_WZM_Referenz
+
+#endif
+#endif
+
+#if WZ_Magazin = &Asynchron
+*$WS Referenzaufnahme asynchrone Achse über Modul
+#endif
+EM
+
+;----------------------------
+LBL T0_Vorwahl                         ;18
+
+  L      ML_T0_Vorwahl_OK
+  =      PN_Fehler_Funktion_OK
+
+  LN     MG_Taste_NC_Start_P_Impuls
+  EMT
+
+  L      K+0
+  =      NP_W264_Werkzeug_Nummer
+  =      WG_Werkzeug_in_Spindel
+
+  L      MG_Eins_Merker
+  S      PN_M4538_Vorwahl_Werkzeug
+  S      ML_T0_Vorwahl_OK
+  S      MG_Platz_Tabelle_pruefen
+  S      MG_WZ_Status_lesen
+
+EM
+
+;----------------------------
+LBL Grund_Stellung
+
+  L      MG_Sn_I_WZ_gespannt
+  AN     MG_Sn_I_WZ_entspannt
+  AN     I_WZ_Greifer_ausgehoben
+  A      I_WZ_Greifer_eingesetzt
+  A[
+    L      I_WZ_Greifer_cw_rechts
+    XO     I_WZ_Greifer_ccw_links
+  ]
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  AN     I_WZ_Schleuse_auf
+  A      I_WZ_Schleuse_zu
+#endif
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+#if WZ_Zange = &aktiv
+  A      I_WZ_Greifer_Zangen_auf
+#endif
+#else
+#if WZ_Zange = &aktiv
+  AN     I_WZ_Greifer_Zange_1_auf
+  AN     I_WZ_Greifer_Zange_2_auf
+#endif
+  AN     I_WZ_Greifer_Spindel_Position
+  AN     I_WZ_Greifer_Magazin_Position
+  A      I_WZ_Greifer_Grundstellung
+#endif
+  =      MG_WZW_Grund_Stellung
+
+  L      MG_WZW_automatisch
+  O      MG_WZW_manuell
+  O      MG_WZW_Help
+  O      MG_SK_WZM_Beladen_aktiv
+  EMT
+
+  LN     MG_WZW_Grund_Stellung
+  A      MG_Steuer_Spannung_verzoegert_ein
+  S      PN_Fehler_WZW_Grund_Stellung
+
+  LN     MG_Sn_I_WZ_gespannt
+  O      MG_Sn_I_WZ_entspannt
+  =      MG_Win_WZ_spannen
+
+  L      I_WZ_Greifer_ausgehoben
+  ON     I_WZ_Greifer_eingesetzt
+  =      MG_Win_WZ_Greifer_einsetzen
+
+  LN     I_WZ_Greifer_cw_rechts
+  XO     I_WZ_Greifer_ccw_links
+  =      MG_Win_WZ_Greifer_drehen
+
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      I_WZ_Schleuse_auf
+  ON     I_WZ_Schleuse_zu
+  =      MG_Win_WZ_Schleuse_zu
+#endif
+
+#if CFG_WZ_Transport_Wagen = "inaktiv"
+#if WZ_Zange = &aktiv
+  LN     I_WZ_Greifer_Zangen_auf
+  =      MG_Win_WZ_Zangen_auf
+#endif
+#else
+#if WZ_Zange = &aktiv
+  L      I_WZ_Greifer_cw_rechts
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_ccw_links
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  =      MG_Win_WZ_Zange_Spi_zu
+
+  L      I_WZ_Greifer_ccw_links
+  A      I_WZ_Greifer_Zange_1_auf
+  O[
+    L      I_WZ_Greifer_cw_rechts
+    A      I_WZ_Greifer_Zange_2_auf
+  ]
+  =      MG_Win_WZ_Zange_Mag_zu
+#endif
+
+  L      I_WZ_Greifer_Spindel_Position
+  O      I_WZ_Greifer_Magazin_Position
+  ON     I_WZ_Greifer_Grundstellung
+  =      MG_Win_WZ_Greifer_Grundstellung
+#endif
+
+EM
+
+;----------------------------
+LBL Service_Reset
+
+  L      MG_Eins_Merker
+  R      MG_PLC_Posit_aktiv[KG_Achse_X]
+  R      MG_PLC_Posit_aktiv[KG_Achse_Y]
+  R      MG_PLC_Posit_aktiv[KG_Achse_Z]
+  R      ML_T0_Vorwahl_OK
+  R      PN_Fehler_Funktion_OK
+  R      MG_Win_WZW_Pos_X
+  R      MG_Win_WZW_Pos_Y
+  R      MG_Win_WZW_Pos_Y_vor
+  R      MG_Win_WZW_Pos_Z_ausheben
+  R      MG_Win_WZW_Pos_Z_einsetzen
+  R      MG_Win_WZW_Position_S
+  R      MG_Win_WZ_spannen
+  R      MG_Win_WZ_entspannen
+  R      MG_Win_Magazin_Tuer_schliessen
+  R      MG_Win_WZ_Greifer_drehen
+  R      MG_Win_WZ_Greifer_einsetzen
+  R      MG_Win_WZ_Greifer_ausheben
+  R      MG_Win_WZ_Schleuse_auf
+  R      MG_Win_WZ_Schleuse_zu
+  R      MG_Win_WZ_Zangen_auf
+  R      MG_Win_WZ_Zange_Spi_auf
+  R      MG_Win_WZ_Zange_Mag_auf
+  R      MG_Win_WZ_Zange_Spi_zu
+  R      MG_Win_WZ_Zange_Mag_zu
+  R      MG_Win_WZ_Greifer_Grundstellung
+
+EM
+
+;----------------------------
+LBL WZW_Output_Restore
+
+#ifdef $iTNC530Prog$
+  L      NP_M4172_1_PLC_Durchlauf_nach_Netz_Ein
+  R      ML_WZ_Greifer_Zangen_zu
+  R      ML_WZ_Greifer_Zange_1_auf
+  R      ML_WZ_Greifer_Zange_2_auf
+  S      ML_WZ_Greifer_einsetzen
+  R      ML_WZ_Greifer_ausheben
+  R      ML_WZ_Schleuse_auf
+  S      ML_WZ_Schleuse_zu
+#endif
+  L      ML_WZ_Greifer_Zangen_zu
+  =      O_WZ_Greifer_Zangen_zu
+
+  L      ML_WZ_Greifer_Zange_1_auf
+  =      O_WZ_Greifer_Zange_1_auf
+
+  L      ML_WZ_Greifer_Zange_2_auf
+  =      O_WZ_Greifer_Zange_2_auf
+
+  L      ML_WZ_Greifer_einsetzen
+  =      O_WZ_Greifer_einsetzen
+
+  L      ML_WZ_Greifer_ausheben
+  =      O_WZ_Greifer_ausheben
+
+  L      ML_WZ_Greifer_drehen_ccw_links
+  =      O_WZ_Greifer_drehen_ccw_links
+
+  L      ML_WZ_Greifer_drehen_cw_rechts
+  =      O_WZ_Greifer_drehen_cw_rechts
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      ML_WZ_Schleuse_auf
+  =      O_WZ_Schleuse_auf
+
+  L      ML_WZ_Schleuse_zu
+  =      O_WZ_Schleuse_zu
+#endif
+
+EM
+
+;----------------------------
+LBL WZW_Output_Backup
+
+  LN     MG_Steuerung_betriebsbereit
+  R      O_WZ_Greifer_Zangen_zu
+  R      O_WZ_Greifer_Zange_1_auf
+  R      O_WZ_Greifer_Zange_2_auf
+  R      O_WZ_Greifer_einsetzen
+  R      O_WZ_Greifer_ausheben
+  R      O_WZ_Schleuse_zu
+  R      O_WZ_Greifer_drehen_ccw_links
+  R      O_WZ_Greifer_drehen_cw_rechts
+  EMT
+
+  L      O_WZ_Greifer_Zangen_zu
+  =      ML_WZ_Greifer_Zangen_zu
+
+  L      O_WZ_Greifer_Zange_1_auf
+  =      ML_WZ_Greifer_Zange_1_auf
+
+  L      O_WZ_Greifer_Zange_2_auf
+  =      ML_WZ_Greifer_Zange_2_auf
+
+  L      O_WZ_Greifer_einsetzen
+  =      ML_WZ_Greifer_einsetzen
+
+  L      O_WZ_Greifer_ausheben
+  =      ML_WZ_Greifer_ausheben
+
+  L      O_WZ_Greifer_drehen_ccw_links
+  =      ML_WZ_Greifer_drehen_ccw_links
+
+  L      O_WZ_Greifer_drehen_cw_rechts
+  =      ML_WZ_Greifer_drehen_cw_rechts
+
+#if CFG_WZ_Magazin_Schleuse = "aktiv"
+  L      O_WZ_Schleuse_auf
+  =      ML_WZ_Schleuse_auf
+
+  L      O_WZ_Schleuse_zu
+  =      ML_WZ_Schleuse_zu
+#endif
+
+EM

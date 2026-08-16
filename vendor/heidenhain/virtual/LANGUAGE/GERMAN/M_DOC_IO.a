@@ -1,0 +1,343 @@
+/* Dokumentation PLC Output/Input
+   ------------------------------
+*/
+KBD;
+CHARSIZE=AUTO;"\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_NC_Start            : %D - I146\n",I146/c;
+"I_Taste_NC_Stop             : %D - M8617\n",M8617/c;
+"I_Taste_Eilgang             : %D - I148\n",I148/c;
+"O_LED_NC_Start              : %D - O0\n",O0/c;
+"O_LED_NC_Stop               : %D - O1\n",O1/c;
+"I_Taste_S_M3                : %D - M8631\n",M8631/c;
+"I_Taste_S_M4                : %D - M8632\n",M8632/c;
+"I_Taste_S_M5                : %D - I144\n",I144/c;
+"O_LED_S_M3                  : %D - M8774\n",M8774/c;
+"O_LED_S_M4                  : %D - M8777\n",M8777/c;
+"O_LED_S_M5                  : %D - M8779\n",M8779/c;
+"\n";
+"O_HR410_LED_NC_Start        : %D - O110\n",O110/c;
+"O_HR410_LED_NC_Stop         : %D - O111\n",O111/c;
+"O_HR410_LED_S_M3            : %D - O109\n",O109/c;
+"O_HR410_LED_S_M4            : %D - M8703\n",M8703/c;
+"O_HR410_LED_S_M5            : %D - M8704\n",M8704/c;
+"I_HR410_Taste_NC_Start      : %D - I174\n",I174/c;
+"I_HR410_Taste_NC_Stop       : %D - I175\n",I175/c;
+"I_HR410_Taste_S_M3          : %D - I173\n",I173/c;
+"I_HR410_Taste_S_M4          : %D - M8499\n",M8499/c;
+"I_HR410_Taste_S_M5          : %D - M8501\n",M8501/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  ab    ";COLOUR=11;"      (Seite 1 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_Ax01_Plus           : %D - I133\n",I133/c;
+"I_Taste_Ax01_Minus          : %D - I128\n",I128/c;
+"O_Regler_Freigabe_X         : %D - O8\n",O8/c;
+"O_Ax01_loesen               : %D - M8681\n",M8681/c;
+"I_geklemmt_Achse_X          : %D - M8472\n",M8472/c;
+"I_geloest_Achse_X           : %D - M8494\n",M8494/c;
+"\n";
+"I_Taste_Ax02_Plus           : %D - I134\n",I134/c;
+"I_Taste_Ax02_Minus          : %D - I129\n",I129/c;
+"O_Regler_Freigabe_Y         : %D - O9\n",O9/c;
+"O_Ax02_loesen               : %D - M8682\n",M8682/c;
+"I_geklemmt_Achse_Y          : %D - M8473\n",M8473/c;
+"I_geloest_Achse_Y           : %D - M8495\n",M8495/c;
+"\n";
+"I_Taste_Ax03_Plus           : %D - I135\n",I135/c;
+"I_Taste_Ax03_Minus          : %D - I130\n",I130/c;
+"O_Regler_Freigabe_Z         : %D - O10\n",O10/c;
+"O_Ax03_loesen               : %D - O13\n",O13/c;
+"I_geklemmt_Achse_Z          : %D - M8474\n",M8474/c;
+"I_geloest_Achse_Z           : %D - M8496\n",M8496/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 2 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_Ax04_Plus           : %D - I136\n",I136/c;
+"I_Taste_Ax04_Minus          : %D - I131\n",I131/c;
+"O_Regler_Freigabe_4         : %D - O11\n",O11/c;
+"O_Ax04_loesen               : %D - O14\n",O14/c;
+"I_geklemmt_Achse_4          : %D - M8466\n",M8466/c;
+"I_geloest_Achse_4           : %D - M8488\n",M8488/c;
+"\n";
+"I_Taste_Ax05_Plus           : %D - I137\n",I137/c;
+"I_Taste_Ax05_Minus          : %D - I132\n",I132/c;
+"O_Regler_Freigabe_5         : %D - M8822\n",M8822/c;
+"O_Ax05_loesen               : %D - M8683\n",M8683/c;
+"I_geklemmt_Achse_5          : %D - M8467\n",M8467/c;
+"I_geloest_Achse_5           : %D - M8489\n",M8489/c;
+"\n";
+"I_Taste_Ax06_Plus           : %D - I29\n",I29/c;
+"I_Taste_Ax06_Minus          : %D - I30\n",I30/c;
+"O_Regler_Freigabe_6         : %D - M8823\n",M8823/c;
+"O_Ax06_loesen               : %D - M8684\n",M8684/c;
+"I_geklemmt_Achse_6          : %D - M8468\n",M8468/c;
+"I_geloest_Achse_6           : %D - M8490\n",M8490/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 3 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_Ax07_Plus           : %D - M8584\n",M8584/c;
+"I_Taste_Ax07_Minus          : %D - M8583\n",M8583/c;
+"O_Regler_Freigabe_7         : %D - M8824\n",M8824/c;
+"O_Ax07_loesen               : %D - M8685\n",M8685/c;
+"I_geklemmt_Achse_7          : %D - M8469\n",M8469/c;
+"I_geloest_Achse_7           : %D - M8491\n",M8491/c;
+"\n";
+"I_Taste_Ax08_Plus           : %D - M8586\n",M8586/c;
+"I_Taste_Ax08_Minus          : %D - M8585\n",M8585/c;
+"O_Regler_Freigabe_8         : %D - M8825\n",M8825/c;
+"O_Ax08_loesen               : %D - M8686\n",M8686/c;
+"I_geklemmt_Achse_8          : %D - M8470\n",M8470/c;
+"I_geloest_Achse_8           : %D - M8492\n",M8492/c;
+"\n";
+"I_Taste_Ax09_Plus           : %D - M8588\n",M8588/c;
+"I_Taste_Ax09_Minus          : %D - M8587\n",M8587/c;
+"O_Regler_Freigabe_9         : %D - M8826\n",M8826/c;
+"O_Ax09_loesen               : %D - M8687\n",M8687/c;
+"I_geklemmt_Achse_9          : %D - M8471\n",M8471/c;
+"I_geloest_Achse_9           : %D - M8493\n",M8493/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 4 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"O_Achsen_Freifahren         : %D - O27\n",O27/c;
+"I_ESA_Steuerung_betriebsber.: %D - I3\n",I3/c;
+"I_Not_Halt_entriegelt       : %D - I2\n",I2/c;
+"I_ESB_Antriebs_Freigabe     : %D - I32\n",I32/c;
+"I_Endlage_X_nicht_ueberfahre: %D - M7000\n",M7000/c;
+"I_Endlage_X_Y_nicht_ueberfah: %D - M7000\n",M7000/c;
+"I_Endlage_X_Y_Z_nicht_ueberf: %D - M7000\n",M7000/c;
+"I_Endlage_Achse_X           : %D - I8\n",I8/c;
+"I_Endlage_Achse_Y           : %D - I9\n",I9/c;
+"I_Endlage_Achse_Z           : %D - I10\n",I10/c;
+"I_Endlage_Achse_4           : %D - M8440\n",M8440/c;
+"I_Endlage_Achse_5           : %D - M8441\n",M8441/c;
+"\n";
+"I_keine_Ref_Endlage_X       : %D - I4\n",I4/c;
+"I_keine_Ref_Endlage_Y       : %D - I5\n",I5/c;
+"I_keine_Ref_Endlage_Z       : %D - I6\n",I6/c;
+"I_keine_Ref_Endlage_4       : %D - I7\n",I7/c;
+"I_keine_Ref_Endlage_5       : %D - M8532\n",M8532/c;
+"I_keine_Ref_Endlage_6       : %D - M8533\n",M8533/c;
+"I_keine_Ref_Endlage_7       : %D - M8534\n",M8534/c;
+"I_keine_Ref_Endlage_8       : %D - M8535\n",M8535/c;
+"I_keine_Ref_Endlage_9       : %D - M8536\n",M8536/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 5 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"O_Regler_Freigabe_S1        : %D - O12\n",O12/c;
+"O_Regler_Freigabe_S2        : %D - M8827\n",M8827/c;
+"I_S1_Spindel_betriebsbereit : %D - M7000\n",M7000/c;
+"I_S2_Spindel_betriebsbereit : %D - M7000\n",M7000/c;
+"I_S1_Spindel_Temperatur_ok  : %D - M7000\n",M7000/c;
+"I_S2_Spindel_Temperatur_ok  : %D - M7000\n",M7000/c;
+"I_S1_Spindel_I_max          : %D - M8562\n",M8562/c;
+"I_S2_Spindel_I_max          : %D - M8569\n",M8569/c;
+"I_S1_Nist_gleich_Nsoll      : %D - M8560\n",M8560/c;
+"I_S2_Nist_gleich_Nsoll      : %D - M8566\n",M8566/c;
+"I_S1_Nist_kleiner_Nmin      : %D - M8561\n",M8561/c;
+"I_S2_Nist_kleiner_Nmin      : %D - M8567\n",M8567/c;
+"I_Motor_Schutz_Schalter_ok  : %D - M7000\n",M7000/c;
+"I_Pneumatik_Druck_ok        : %D - M7000\n",M7000/c;
+"I_Temperatur_Leistungsteil_ : %D - M7000\n",M7000/c;
+"I_Antriebe_betriebsbereit   : %D - M7000\n",M7000/c;
+"O_Hydraulik_ein             : %D - M8705\n",M8705/c;
+"I_Hydraulik_Druck_ok        : %D - M7000\n",M7000/c;
+"I_Taste_Steuerspannung_ein  : %D - I31\n",I31/c;
+"O_LED_Steuerspannung_ein    : %D - O2\n",O2/c;
+"O_LED_TNC_Alarm             : %D - M8782\n",M8782/c;
+"O_LED_Programm_Ende         : %D - M8765\n",M8765/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 6 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"O_S1_Getriebe_Stufe_1       : %D - M8829\n",M8829/c;
+"O_S1_Getriebe_Stufe_2       : %D - M8830\n",M8830/c;
+"I_S1_Getriebe_Stufe_1       : %D - I13\n",I13/c;
+"I_S1_Getriebe_Stufe_2       : %D - I14\n",I14/c;
+"O_S2_Getriebe_Stufe_1       : %D - O25\n",O25/c;
+"O_S2_Getriebe_Stufe_2       : %D - O26\n",O26/c;
+"I_S2_Getriebe_Stufe_1       : %D - M8564\n",M8564/c;
+"I_S2_Getriebe_Stufe_2       : %D - M8565\n",M8565/c;
+"I_Taste_WZW_Anwahl          : %D - I138\n",I138/c;
+"O_LED_WZW_Anwahl            : %D - M8785\n",M8785/c;
+"I_Taste_WZ_entspannen       : %D - I139\n",I139/c;
+"I_Taste_WZ_entspannen_Fusssc: %D - M8636\n",M8636/c;
+"O_LED_WZ_entspannt          : %D - M8784\n",M8784/c;
+"O_S1_entspannen             : %D - O17\n",O17/c;
+"I_S1_WZ_entspannt           : %D - I15\n",I15/c;
+"O_S1_spannen                : %D - M8831\n",M8831/c;
+"I_S1_WZ_gespannt            : %D - I16\n",I16/c;
+"O_S2_entspannen             : %D - M8834\n",M8834/c;
+"I_S2_WZ_entspannt           : %D - M8570\n",M8570/c;
+"O_S2_spannen                : %D - M8835\n",M8835/c;
+"I_S2_WZ_gespannt            : %D - M8571\n",M8571/c;
+"O_S1_ausblasen              : %D - M8828\n",M8828/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 7 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_S1_WZ_ist_in_Spindel      : %D - M8563\n",M8563/c;
+"I_S2_WZ_ist_in_Spindel      : %D - M8572\n",M8572/c;
+"I_WZM_Platz_belegt          : %D - M8663\n",M8663/c;
+"O_WZ_Greifer_drehen_cw_re   : %D - M8847\n",M8847/c;
+"I_WZ_Greifer_cw_rechts      : %D - M8647\n",M8647/c;
+"O_WZ_Greifer_drehen_ccw_li  : %D - M8846\n",M8846/c;
+"I_WZ_Greifer_ccw_links      : %D - M8646\n",M8646/c;
+"O_WZ_Greifer_zu_Mittelstelng: %D - M8854\n",M8854/c;
+"I_WZ_Greifer_Mittelstellung : %D - M8651\n",M8651/c;
+"O_WZ_Greifer_zu_Spindel_Pos : %D - M8855\n",M8855/c;
+"I_WZ_Greifer_Spindel_Pos    : %D - M8652\n",M8652/c;
+"O_WZ_Greifer_zu_Grundstellg : %D - M8852\n",M8852/c;
+"I_WZ_Greifer_Grundstellung  : %D - M8649\n",M8649/c;
+"I_WZ_Greifer_Brems_Position : %D - M8645\n",M8645/c;
+"O_WZ_Greifer_ausheben       : %D - M8845\n",M8845/c;
+"I_WZ_Greifer_ausgehoben     : %D - M8644\n",M8644/c;
+"O_WZ_Greifer_einsetzen      : %D - M8848\n",M8848/c;
+"I_WZ_Greifer_eingesetzt     : %D - M8648\n",M8648/c;
+"O_WZ_Greifer_Zangen_zu      : %D - M8851\n",M8851/c;
+"I_WZ_Greifer_Zangen_auf     : %D - M8655\n",M8655/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 8 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"O_WZM_1_Index_ausheben      : %D - M8861\n",M8861/c;
+"I_WZM_1_Index_ausgehoben    : %D - M8660\n",M8660/c;
+"O_WZM_1_Index_einsetzt      : %D - M8862\n",M8862/c;
+"I_WZM_1_Index_eingesetzt    : %D - M8661\n",M8661/c;
+"O_WZM_zu_Spindel            : %D - O20\n",O20/c;
+"I_WZM_in_Spindel            : %D - M8675\n",M8675/c;
+"O_WZM_zu_Grund_Stellgung    : %D - O21\n",O21/c;
+"I_WZM_in_Grund_Stellgung    : %D - M8674\n",M8674/c;
+"O_WZM_1_Platz_ausklappen    : %D - M8863\n",M8863/c;
+"I_WZM_1_Platz_ausgekllappen : %D - M8662\n",M8662/c;
+"O_WZM_1_Platz_einklappen    : %D - M8864\n",M8864/c;
+"I_WZM_1_Platz_eingeklappt   : %D - M8664\n",M8664/c;
+"I_Taste_WZM_plus            : %D - M8639\n",M8639/c;
+"I_Taste_WZM_minus           : %D - M8637\n",M8637/c;
+"O_WZM_2_Rechtslauf          : %D - O18\n",O18/c;
+"O_WZM_2_Linkslauf           : %D - O19\n",O19/c;
+"O_WZM_2_Eilgang             : %D - M8860\n",M8860/c;
+"O_WZM_2_Schleichgang        : %D - M8865\n",M8865/c;
+"I_WZM_2_Referenz            : %D - I17\n",I17/c;
+"I_WZM_2_Genauhalt           : %D - I18\n",I18/c;
+"I_WZM_2_Zaehler             : %D - I19\n",I19/c;
+"I_WZM_Tuer_zu               : %D - I20\n",I20/c;
+"O_LED_WZ_Beladen            : %D - M8783\n",M8783/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"      (Seite 9 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_Kuehlkreis_2        : %D - I150\n",I150/c;
+"O_Kuehlmittel_M07_ein       : %D - M8706\n",M8706/c;
+"O_LED_Kuehlmittel_M07       : %D - M8759\n",M8759/c;
+"I_Taste_Kuehlkreis_1        : %D - I145\n",I145/c;
+"O_Kuehlmittel_M08_ein       : %D - M8707\n",M8707/c;
+"O_LED_Kuehlmittel_M08       : %D - M8760\n",M8760/c;
+"I_Kuehlmittel_Fuellstand_ok : %D - M7000\n",M7000/c;
+"I_PW_210_Temperatur_ok      : %D - M7000\n",M7000/c;
+"I_DA400_Druck_ok            : %D - M7000\n",M7000/c;
+"I_Taste_Spaenefoerderer     : %D - I142\n",I142/c;
+"O_Spaenefoerderer           : %D - M8839\n",M8839/c;
+"O_LED_Spaenefoerderer       : %D - O15\n",O15/c;
+"I_Taste_Spaenefoerderer_zuru: %D - I140\n",I140/c;
+"O_Spaenefoerderer_zurueck   : %D - M8840\n",M8840/c;
+"I_Taste_Schmierung_Achsen   : %D - M8633\n",M8633/c;
+"O_Schmierung_ein            : %D - M8838\n",M8838/c;
+"O_LED_Schmierung_ein        : %D - M8780\n",M8780/c;
+"I_Schmierung_Oelstand_ok    : %D - M8574\n",M8574/c;
+"I_Schmierung_Druck_ok       : %D - M8573\n",M8573/c;
+"I_Taste_Arbeitsraum_Licht   : %D - M8582\n",M8582/c;
+"O_Arbeitsraum_Licht         : %D - M8679\n",M8679/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf/ab";COLOUR=11;"     (Seite 10 von 11)";
+
+
+CHARSIZE=AUTO;"\f\n";CHARSIZE=MEDIUM;"PLC Ein-/Ausgänge";
+CHARSIZE=AUTO;"\n";
+LINEDIST=LINEDIST-1;
+CURSOR=ON;"                             Wert Adr   \n";CURSOR=OFF;
+
+"I_Taste_Arbeitsraum_entrieg : %D - I141\n",I141/c;
+"O_Arbeitsraum_1_entriegeln  : %D - O30\n",O30/c;
+"O_Arbeitsraum_2_entriegeln  : %D - M8678\n",M8678/c;
+"I_Arbeitsraum_1_zu          : %D - I11\n",I11/c;
+"I_Arbeitsraum_2_zu          : %D - I11\n",I11/c;
+"I_Arbeitsraum_1_zu_verrieg  : %D - I12\n",I12/c;
+"I_Arbeitsraum_2_zu_verrieg  : %D - I12\n",I12/c;
+"O_auto_HS_aus_nach_END_PGM  : %D - M8680\n",M8680/c;
+"O_Start_Teilapparat         : %D - M8841\n",M8841/c;
+"I_Teilapparat_in_Position   : %D - M8641\n",M8641/c;
+"I_Taste_Achsen_Plus         : %D - M8580\n",M8580/c;
+"I_Taste_Achsen_Minus        : %D - M8579\n",M8579/c;
+"I_Taste_Pendeln_Seite_1     : %D - M8622\n",M8622/c;
+"I_Taste_Pendeln_Seite_2     : %D - M8623\n",M8623/c;
+"O_LED_Pendeln_Seite_1       : %D - M8763\n",M8763/c;
+"O_LED_Pendeln_Seite_2       : %D - M8764\n",M8764/c;
+"I_Taste_Achsen_Freifahren   : %D - I149\n",I149/c;
+"O_LED_Achsen_Freifahren     : %D - M8753\n",M8753/c;
+
+LINEDIST=LINEDIST-1;
+COLOUR=15;CPOS=0,29;"blättern  auf   ";COLOUR=11;"     (Seite 11 von 11)";
+

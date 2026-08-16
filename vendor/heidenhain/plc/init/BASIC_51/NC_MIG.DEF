@@ -1,0 +1,202 @@
+*-----------------------------------------------------------------------------
+*  List of words for the migration test
+*
+*    All interface words and double words are listed here. This is to
+*    ensure that the compiler recognizes if these operands are accessed
+*    with incorrect addressing on the assumption of Little Endian.
+*    (iTNC530)
+*-----------------------------------------------------------------------------
+
+*-----------------------------------------------------------------------------
+*  Spindle
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W320_S_nominal_rpm                 W320
+/c MT_NP_W322_S_actual_rpm                  W322
+/c MT_NP_D356_S_programmed_rpm              D356
+/c MT_NP_D364_S_nominal_rpm                 D364
+/c MT_NP_D368_S_actual_rpm                  D368
+/c MT_NP_W492_S_override_NC                 W492
+/c MT_PN_W764_S_override_PLC                W764
+/c MT_PN_D592_S_position_orientation        D592
+/c MT_PN_D604_max_S_rpm_PLC                 D604
+/c MT_PN_D756_S_nominal_rpm_PLC             D756
+/c MT_NP_W1008_S_code_minimum_rpm           W1008
+/c MT_NP_W1010_S_code_step_rpm              W1010
+/c MT_NP_W1018_number_opened_files_PLC      W1018
+/c MT_NP_W1020_number_opened_files          W1020
+
+*-----------------------------------------------------------------------------
+*  Axis
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W1024_axes_release                 W1024
+/c MT_NP_W1026_axes_in_position             W1026
+/c MT_NP_W1028_axes_in_motion               W1028
+/c MT_NP_W1030_direction_negativ            W1030
+/c MT_NP_W1032_reference_nesessary          W1032
+/c MT_NP_W1034_limit_switch_plus            W1034
+/c MT_NP_W1036_limit_switch_minus           W1036
+
+/c MT_PN_W1038_activate_control_loop_open   W1038
+/c MT_PN_W1040_control_loop_open            W1040
+/c MT_PN_W1042_no_axes_monitoring           W1042
+/c MT_PN_W1044_actual_nominal_transfer      W1044
+/c MT_PN_W1046_manual_motion_plus           W1046
+/c MT_PN_W1048_manual_motion_minus          W1048
+/c MT_PN_W1054_reference_end_position       W1054
+
+/c MT_NP_W1056_lubrication_puls             W1056
+/c MT_PN_W1058_lubrication_distance_reset   W1058
+/c MT_PN_W1060_feed_release_axis_specific   W1060
+/c MT_PN_W1062_handwheel_pulse_inhibit      W1062
+
+/c MT_PN_D528_PLC_posit_datum_correct_X_Q_para D528
+/c MT_PN_D532_PLC_posit_datum_correction_Y  D532
+/c MT_PN_D536_PLC_posit_datum_correction_Z  D536
+/c MT_PN_D540_PLC_posit_datum_correction_4  D540
+/c MT_PN_D544_PLC_posit_datum_correction_5  D544
+
+/c MT_PN_W560_feed_axis_X                   W560
+/c MT_PN_W562_feed_axis_Y                   W562
+/c MT_PN_W564_feed_axis_Z                   W564
+/c MT_PN_W566_feed_axis_4                   W566
+/c MT_PN_W568_feed_axis_5                   W568
+
+/c MT_NP_W494_factor_feed_override_NC       W494
+/c MT_PN_W766_factor_feed_override_PLC      W766
+/c MT_PN_B520_feed_release_axis_specific    B520
+/c MT_NP_D596_max_feed_rate_PLC             D596
+/c MT_NP_D360_programmed_feed_rate_PLC      D360
+/c MT_NP_D388_current_path_posit_feed       D388
+
+/c MT_PN_B518_free_rotation_54xxx           B518
+/c MT_PN_B519_free_rotation_direction       B519
+/c MT_PN_W754_override_free_rotation        W754
+
+/c MT_PN_W576_lag_error_compensation_X      W576
+/c MT_PN_W578_lag_error_compensation_Y      W578
+/c MT_PN_W580_lag_error_compensation_Z      W580
+/c MT_PN_W582_lag_error_compensation_4      W582
+/c MT_PN_W584_lag_error_compensation_5      W584
+
+*-----------------------------------------------------------------------------
+*  Data Strobe Signals
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W256_G_code_spindle                W256
+/c MT_NP_W258_S_code                        W258
+/c MT_NP_W260_M_code                        W260
+/c MT_NP_W262_tool_pocket_number            W262
+/c MT_NP_W264_tool_number                   W264
+/c MT_NP_W266_tool_index                    W266
+
+*-----------------------------------------------------------------------------
+*  General Functions
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W268_tool_magazine_number          W522
+
+/c MT_PN_W522_fast_PLC_input                W272
+
+/c MT_NP_W270_help_file_line_number         W270
+
+/c MT_NP_W274_code_pushed_key               W274
+/c MT_NP_W302_number_PLC_soft_key           W302
+
+/c MT_NP_D276_code_number_entered_via_MOD   D276
+
+/c MT_NP_W1022_Modul_Fehlerstatus           W1022
+
+/c MT_PN_W516_Q_Parameter_Nummer            W516
+
+/c MT_NP_D280_FN19_1st_value                D280
+/c MT_NP_D284_FN19_2st_value                D284
+
+*-----------------------------------------------------------------------------
+*  Analog Inputs
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W480_voltage_input_0_on_LE         W480
+/c MT_NP_W482_voltage_input_1_on_LE         W482
+/c MT_NP_W484_voltage_input_2_on_LE         W484
+/c MT_NP_W486_Temperature_input_0_on_LE     W486
+/c MT_NP_W488_Temperature_input_1_on_LE     W488
+/c MT_NP_W490_Temperature_input_2_on_LE     W490
+
+*-----------------------------------------------------------------------------
+*  Input Values from Machine Parameters
+*-----------------------------------------------------------------------------
+
+/c MT_NP_W960_value_MP4220.0                W960
+/c MT_NP_W962_value_MP4220.1                W962
+/c MT_NP_W964_value_MP4220.2                W964
+/c MT_NP_W966_value_MP4220.3                W966
+/c MT_NP_W968_value_MP4220.4                W968
+/c MT_NP_W976_value_MP4310.0                W976
+/c MT_NP_W978_value_MP4310.1                W978
+/c MT_NP_W980_value_MP4310.2                W980
+/c MT_NP_W982_value_MP4310.3                W982
+/c MT_NP_W984_value_MP4310.4                W984
+/c MT_NP_W986_value_MP4310.5                W986
+/c MT_NP_W988_value_MP4310.6                W988
+
+/c MT_NP_D768_value_MP4210.0                D768
+/c MT_NP_D772_value_MP4210.1                D772
+/c MT_NP_D776_value_MP4210.2                D776
+/c MT_NP_D780_value_MP4210.3                D780
+/c MT_NP_D784_value_MP4210.4                D784
+/c MT_NP_D788_value_MP4210.5                D788
+/c MT_NP_D792_value_MP4210.6                D792
+/c MT_NP_D796_value_MP4210.7                D796
+/c MT_NP_D800_value_MP4210.8                D800
+/c MT_NP_D804_value_MP4210.9                D804
+/c MT_NP_D808_value_MP4210.10               D808
+/c MT_NP_D812_value_MP4210.11               D812
+/c MT_NP_D816_value_MP4210.12               D816
+/c MT_NP_D820_value_MP4210.13               D820
+/c MT_NP_D824_value_MP4210.14               D824
+/c MT_NP_D828_value_MP4210.15               D828
+/c MT_NP_D832_value_MP4210.16               D832
+/c MT_NP_D836_value_MP4210.17               D836
+/c MT_NP_D840_value_MP4210.18               D840
+/c MT_NP_D844_value_MP4210.19               D844
+/c MT_NP_D848_value_MP4210.20               D848
+/c MT_NP_D852_value_MP4210.21               D852
+/c MT_NP_D856_value_MP4210.22               D856
+/c MT_NP_D860_value_MP4210.23               D860
+/c MT_NP_D864_value_MP4210.24               D864
+/c MT_NP_D868_value_MP4210.25               D868
+/c MT_NP_D872_value_MP4210.26               D872
+/c MT_NP_D876_value_MP4210.27               D876
+/c MT_NP_D880_value_MP4210.28               D880
+/c MT_NP_D884_value_MP4210.29               D884
+/c MT_NP_D888_value_MP4210.30               D888
+/c MT_NP_D892_value_MP4210.31               D892
+/c MT_NP_D896_value_MP4210.32               D896
+/c MT_NP_D900_value_MP4210.33               D900
+/c MT_NP_D904_value_MP4210.34               D904
+/c MT_NP_D908_value_MP4210.35               D908
+/c MT_NP_D912_value_MP4210.36               D912
+/c MT_NP_D916_value_MP4210.37               D916
+/c MT_NP_D920_value_MP4210.38               D920
+/c MT_NP_D924_value_MP4210.39               D924
+/c MT_NP_D928_value_MP4210.40               D928
+/c MT_NP_D932_value_MP4210.41               D932
+/c MT_NP_D936_value_MP4210.42               D936
+/c MT_NP_D940_value_MP4210.43               D940
+/c MT_NP_D944_value_MP4210.44               D944
+/c MT_NP_D948_value_MP4210.45               D948
+/c MT_NP_D952_value_MP4210.46               D952
+/c MT_NP_D956_value_MP4210.47               D956
+
+
+
+*-----------------------------------------------------------------------------
+*  Additional not in glb_nc.def contained words
+*-----------------------------------------------------------------------------
+
+
+/c MT_D760_touch_probe_center_offset        D760
+/c MT_W1050_jogging_positive                W1050
+/c MT_W1052_jogging_negative                W1052

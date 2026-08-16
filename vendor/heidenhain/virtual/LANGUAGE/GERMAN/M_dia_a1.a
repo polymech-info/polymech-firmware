@@ -1,0 +1,238 @@
+/* DIAGNOSE ANTRIEBE
+   -----------------
+*/
+KBD;
+
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"DIAGNOSE ANTRIEBE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+
+"      S   1-%s  2-%s  3-%s  4-%s  5-%s  6-%s \n",
+$SG_Kennung_Achse_01$/c,$SG_Kennung_Achse_02$/c,
+$SG_Kennung_Achse_03$/c,$SG_Kennung_Achse_04$/c,
+$SG_Kennung_Achse_05$/c,$SG_Kennung_Achse_06$/c;
+
+"          7-%s  8-%s  9-%s 10-%s 11-%s 12-%s \n\n",
+$SG_Kennung_Achse_07$/c,$SG_Kennung_Achse_08$/c,
+$SG_Kennung_Achse_09$/c,$SG_Kennung_Achse_10$/c,
+$SG_Kennung_Achse_11$/c,$SG_Kennung_Achse_12$/c;
+CURSOR=OFF;
+
+"Motor Temperatur [Grad] \n";
+"   %4D %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Temperatur_S$/c,
+$WG_Motor_Temperatur[0]$/c,$WG_Motor_Temperatur[1]$/c,
+$WG_Motor_Temperatur[2]$/c,$WG_Motor_Temperatur[3]$/c,
+$WG_Motor_Temperatur[4]$/c,$WG_Motor_Temperatur[5]$/c;
+
+"        %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Temperatur[6]$/c,$WG_Motor_Temperatur[7]$/c,
+$WG_Motor_Temperatur[8]$/c,$WG_Motor_Temperatur[9]$/c,
+$WG_Motor_Temperatur[10]$/c,$WG_Motor_Temperatur[11]$/c;
+
+"Motor Auslastung [%%] \n";
+"   %4D %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Auslastung_S$/c,
+$WG_Motor_Auslastung[0]$/c,$WG_Motor_Auslastung[1]$/c,
+$WG_Motor_Auslastung[2]$/c,$WG_Motor_Auslastung[3]$/c,
+$WG_Motor_Auslastung[4]$/c,$WG_Motor_Auslastung[5]$/c;
+
+"        %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Auslastung[6]$/c,$WG_Motor_Auslastung[7]$/c,
+$WG_Motor_Auslastung[8]$/c,$WG_Motor_Auslastung[9]$/c,
+$WG_Motor_Auslastung[10]$/c,$WG_Motor_Auslastung[11]$/c;
+
+"Motor Drehzahl [1/min] \n";
+"  %+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F\n",
+$DG_Motor_Ist_Drehzahl_S$/n=3/c,
+$DG_Motor_Ist_Drehzahl[0]$/n=3/c,$DG_Motor_Ist_Drehzahl[1]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[2]$/n=3/c,$DG_Motor_Ist_Drehzahl[3]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[4]$/n=3/c,$DG_Motor_Ist_Drehzahl[5]$/n=3/c;
+
+"       %+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F\n\n",
+$DG_Motor_Ist_Drehzahl[6]$/n=3/c,$DG_Motor_Ist_Drehzahl[7]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[8]$/n=3/c,$DG_Motor_Ist_Drehzahl[9]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[10]$/n=3/c,$DG_Motor_Ist_Drehzahl[11]$/n=3/c;
+
+CURSOR=ON;
+"               1 2 3 4 5 6 7 8 9 0 1 2 \n";
+"             S %s %s %s %s %s %s %s %s %s %s %s %s \n\n",
+$SG_Kennung_Achse_01$/c,$SG_Kennung_Achse_02$/c,
+$SG_Kennung_Achse_03$/c,$SG_Kennung_Achse_04$/c,
+$SG_Kennung_Achse_05$/c,$SG_Kennung_Achse_06$/c,
+$SG_Kennung_Achse_07$/c,$SG_Kennung_Achse_08$/c,
+$SG_Kennung_Achse_09$/c,$SG_Kennung_Achse_10$/c,
+$SG_Kennung_Achse_11$/c,$SG_Kennung_Achse_12$/c;
+CURSOR=OFF;
+
+"I2T Warnung :%D %D %D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_I2t_Vorwarnung[31]$/c,
+$MG_I2t_Vorwarnung[0]$/c,$MG_I2t_Vorwarnung[1]$/c,
+$MG_I2t_Vorwarnung[2]$/c,$MG_I2t_Vorwarnung[3]$/c,
+$MG_I2t_Vorwarnung[4]$/c,$MG_I2t_Vorwarnung[5]$/c,
+$MG_I2t_Vorwarnung[6]$/c,$MG_I2t_Vorwarnung[7]$/c,
+$MG_I2t_Vorwarnung[8]$/c,$MG_I2t_Vorwarnung[9]$/c,
+$MG_I2t_Vorwarnung[10]$/c,$MG_I2t_Vorwarnung[11]$/c;
+
+"I2T Begrenz :%D %D %D %D %D %D %D %D %D %D %D %D %D \n",
+$MG_I2t_Begrenzung[31]$/c,
+$MG_I2t_Begrenzung[0]$/c,$MG_I2t_Begrenzung[1]$/c,
+$MG_I2t_Begrenzung[2]$/c,$MG_I2t_Begrenzung[3]$/c,
+$MG_I2t_Begrenzung[4]$/c,$MG_I2t_Begrenzung[5]$/c,
+$MG_I2t_Begrenzung[6]$/c,$MG_I2t_Begrenzung[7]$/c,
+$MG_I2t_Begrenzung[8]$/c,$MG_I2t_Begrenzung[9]$/c,
+$MG_I2t_Begrenzung[10]$/c,$MG_I2t_Begrenzung[11]$/c;
+
+"Regler BTB  :%D %D %D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_Antrieb_bereit[31]$/c,
+$MG_Antrieb_bereit[0]$/c,$MG_Antrieb_bereit[1]$/c,
+$MG_Antrieb_bereit[2]$/c,$MG_Antrieb_bereit[3]$/c,
+$MG_Antrieb_bereit[4]$/c,$MG_Antrieb_bereit[5]$/c,
+$MG_Antrieb_bereit[6]$/c,$MG_Antrieb_bereit[7]$/c,
+$MG_Antrieb_bereit[8]$/c,$MG_Antrieb_bereit[9]$/c,
+$MG_Antrieb_bereit[10]$/c,$MG_Antrieb_bereit[11]$/c;
+
+"keine Ref   :%D %D %D %D %D %D %D %D %D %D %D %D %D\n",
+$NP_M4018_S_keine_Referenz$/c,
+$MG_Referenz_notwendig_bit[0]$/c,$MG_Referenz_notwendig_bit[1]$/c,
+$MG_Referenz_notwendig_bit[2]$/c,$MG_Referenz_notwendig_bit[3]$/c,
+$MG_Referenz_notwendig_bit[4]$/c,$MG_Referenz_notwendig_bit[5]$/c,
+$MG_Referenz_notwendig_bit[6]$/c,$MG_Referenz_notwendig_bit[7]$/c,
+$MG_Referenz_notwendig_bit[8]$/c,$MG_Referenz_notwendig_bit[9]$/c,
+$MG_Referenz_notwendig_bit[10]$/c,$MG_Referenz_notwendig_bit[11]$/c;
+
+"Achsfreigabe:- %D %D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_Achsfreigabe_bit[0]$/c,$MG_Achsfreigabe_bit[1]$/c,
+$MG_Achsfreigabe_bit[2]$/c,$MG_Achsfreigabe_bit[3]$/c,
+$MG_Achsfreigabe_bit[4]$/c,$MG_Achsfreigabe_bit[5]$/c,
+$MG_Achsfreigabe_bit[6]$/c,$MG_Achsfreigabe_bit[7]$/c,
+$MG_Achsfreigabe_bit[8]$/c,$MG_Achsfreigabe_bit[9]$/c,
+$MG_Achsfreigabe_bit[10]$/c,$MG_Achsfreigabe_bit[11]$/c;
+
+"in Bewegung :%D %D %D %D %D %D %D %D %D %D %D %D %D\n",
+$NP_M4017_S_geregelt_in_Bewegung$/c,
+$MG_Achse_in_Bewegung_bit[0]$/c,$MG_Achse_in_Bewegung_bit[1]$/c,
+$MG_Achse_in_Bewegung_bit[2]$/c,$MG_Achse_in_Bewegung_bit[3]$/c,
+$MG_Achse_in_Bewegung_bit[4]$/c,$MG_Achse_in_Bewegung_bit[5]$/c,
+$MG_Achse_in_Bewegung_bit[6]$/c,$MG_Achse_in_Bewegung_bit[7]$/c,
+$MG_Achse_in_Bewegung_bit[8]$/c,$MG_Achse_in_Bewegung_bit[9]$/c,
+$MG_Achse_in_Bewegung_bit[10]$/c,$MG_Achse_in_Bewegung_bit[11]$/c;
+
+COLOUR=15;CPOS=0,27;"blättern  ab    ";COLOUR=11;"       (Seite 1 von 2)";
+
+CHARSIZE=AUTO;
+"\f\n";
+CHARSIZE=MEDIUM;
+"DIAGNOSE ANTRIEBE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\n";
+
+"      S  13-%s 14-%s 15-%s 16-%s 17-%s 18-%s \n",
+$SG_Kennung_Achse_13$/c,$SG_Kennung_Achse_14$/c,
+$SG_Kennung_Achse_15$/c,$SG_Kennung_Achse_16$/c,
+$SG_Kennung_Achse_17$/c,$SG_Kennung_Achse_18$/c;
+"         19-%s 20-%s 21-%s 22-%s           \n\n",
+$SG_Kennung_Achse_19$/c,$SG_Kennung_Achse_20$/c,
+$SG_Kennung_Achse_21$/c,$SG_Kennung_Achse_22$/c;
+
+CURSOR=OFF;
+
+"Motor Temperatur [Grad] \n";
+"   %4D %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Temperatur_S$/c,
+$WG_Motor_Temperatur[12]$/c,$WG_Motor_Temperatur[13]$/c,
+$WG_Motor_Temperatur[14]$/c,$WG_Motor_Temperatur[15]$/c,
+$WG_Motor_Temperatur[16]$/c,$WG_Motor_Temperatur[17]$/c;
+
+"        %4D %4D %4D %4D\n",
+$WG_Motor_Temperatur[18]$/c,$WG_Motor_Temperatur[19]$/c,
+$WG_Motor_Temperatur[20]$/c,$WG_Motor_Temperatur[21]$/c;
+
+"Motor Auslastung [%%] \n";
+"   %4D %4D %4D %4D %4D %4D %4D\n",
+$WG_Motor_Auslastung_S$/c,
+$WG_Motor_Auslastung[12]$/c,$WG_Motor_Auslastung[13]$/c,
+$WG_Motor_Auslastung[14]$/c,$WG_Motor_Auslastung[15]$/c,
+$WG_Motor_Auslastung[16]$/c,$WG_Motor_Auslastung[17]$/c;
+
+"        %4D %4D %4D %4D\n",
+$WG_Motor_Auslastung[18]$/c,$WG_Motor_Auslastung[19]$/c,
+$WG_Motor_Auslastung[20]$/c,$WG_Motor_Auslastung[21]$/c;
+
+"Motor Drehzahl [1/min] \n";
+"  %+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F%+5.0F\n",
+$DG_Motor_Ist_Drehzahl_S$/n=3/c,
+$DG_Motor_Ist_Drehzahl[12]$/n=3/c,$DG_Motor_Ist_Drehzahl[13]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[14]$/n=3/c,$DG_Motor_Ist_Drehzahl[15]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[16]$/n=3/c,$DG_Motor_Ist_Drehzahl[17]$/n=3/c;
+
+"       %+5.0F%+5.0F%+5.0F%+5.0F\n\n",
+$DG_Motor_Ist_Drehzahl[18]$/n=3/c,$DG_Motor_Ist_Drehzahl[19]$/n=3/c,
+$DG_Motor_Ist_Drehzahl[20]$/n=3/c,$DG_Motor_Ist_Drehzahl[21]$/n=3/c;
+
+CURSOR=ON;
+"               3 4 5 6 7 8 9 0 1 2     \n";
+"             S %s %s %s %s %s %s %s %s %s %s     \n\n",
+$SG_Kennung_Achse_13$/c,$SG_Kennung_Achse_14$/c,
+$SG_Kennung_Achse_15$/c,$SG_Kennung_Achse_16$/c,
+$SG_Kennung_Achse_17$/c,$SG_Kennung_Achse_18$/c,
+$SG_Kennung_Achse_19$/c,$SG_Kennung_Achse_20$/c,
+$SG_Kennung_Achse_21$/c,$SG_Kennung_Achse_22$/c;
+CURSOR=OFF;
+
+"I2T Warnung :%D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_I2t_Vorwarnung[31]$/c,
+$MG_I2t_Vorwarnung[12]$/c,$MG_I2t_Vorwarnung[13]$/c,
+$MG_I2t_Vorwarnung[14]$/c,$MG_I2t_Vorwarnung[15]$/c,
+$MG_I2t_Vorwarnung[16]$/c,$MG_I2t_Vorwarnung[17]$/c,
+$MG_I2t_Vorwarnung[18]$/c,$MG_I2t_Vorwarnung[19]$/c,
+$MG_I2t_Vorwarnung[20]$/c,$MG_I2t_Vorwarnung[21]$/c;
+
+"I2T Begrenz :%D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_I2t_Begrenzung[31]$/c,
+$MG_I2t_Begrenzung[12]$/c,$MG_I2t_Begrenzung[13]$/c,
+$MG_I2t_Begrenzung[14]$/c,$MG_I2t_Begrenzung[15]$/c,
+$MG_I2t_Begrenzung[16]$/c,$MG_I2t_Begrenzung[17]$/c,
+$MG_I2t_Begrenzung[18]$/c,$MG_I2t_Begrenzung[19]$/c,
+$MG_I2t_Begrenzung[20]$/c,$MG_I2t_Begrenzung[21]$/c;
+
+"Regler BTB  :%D %D %D %D %D %D %D %D %D %D %D\n",
+$MG_Antrieb_bereit[31]$/c,
+$MG_Antrieb_bereit[12]$/c,$MG_Antrieb_bereit[13]$/c,
+$MG_Antrieb_bereit[14]$/c,$MG_Antrieb_bereit[15]$/c,
+$MG_Antrieb_bereit[16]$/c,$MG_Antrieb_bereit[17]$/c,
+$MG_Antrieb_bereit[18]$/c,$MG_Antrieb_bereit[19]$/c,
+$MG_Antrieb_bereit[20]$/c,$MG_Antrieb_bereit[21]$/c;
+
+"keine Ref   :%D %D %D %D %D %D %D %D %D %D %D\n",
+$NP_M4018_S_keine_Referenz$/c,
+$MG_Referenz_notwendig_bit[12]$/c,$MG_Referenz_notwendig_bit[13]$/c,
+$MG_Referenz_notwendig_bit[14]$/c,$MG_Referenz_notwendig_bit[15]$/c,
+$MG_Referenz_notwendig_bit[16]$/c,$MG_Referenz_notwendig_bit[17]$/c,
+$MG_Referenz_notwendig_bit[18]$/c,$MG_Referenz_notwendig_bit[19]$/c,
+$MG_Referenz_notwendig_bit[20]$/c,$MG_Referenz_notwendig_bit[21]$/c;
+
+"Achsfreigabe:- %D %D %D %D %D %D %D %D %D %D\n",
+$MG_Achsfreigabe_bit[12]$/c,$MG_Achsfreigabe_bit[13]$/c,
+$MG_Achsfreigabe_bit[14]$/c,$MG_Achsfreigabe_bit[15]$/c,
+$MG_Achsfreigabe_bit[16]$/c,$MG_Achsfreigabe_bit[17]$/c,
+$MG_Achsfreigabe_bit[18]$/c,$MG_Achsfreigabe_bit[19]$/c,
+$MG_Achsfreigabe_bit[20]$/c,$MG_Achsfreigabe_bit[21]$/c;
+
+"in Bewegung :%D %D %D %D %D %D %D %D %D %D %D\n",
+$NP_M4017_S_geregelt_in_Bewegung$/c,
+$MG_Achse_in_Bewegung_bit[12]$/c,$MG_Achse_in_Bewegung_bit[13]$/c,
+$MG_Achse_in_Bewegung_bit[14]$/c,$MG_Achse_in_Bewegung_bit[15]$/c,
+$MG_Achse_in_Bewegung_bit[16]$/c,$MG_Achse_in_Bewegung_bit[17]$/c,
+$MG_Achse_in_Bewegung_bit[18]$/c,$MG_Achse_in_Bewegung_bit[19]$/c,
+$MG_Achse_in_Bewegung_bit[20]$/c,$MG_Achse_in_Bewegung_bit[21]$/c;
+
+COLOUR=15;CPOS=0,27;"blättern  auf   ";COLOUR=11;"       (Seite 2 von 2)";
+

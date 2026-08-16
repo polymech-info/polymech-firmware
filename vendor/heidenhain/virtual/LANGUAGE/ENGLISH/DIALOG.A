@@ -1,0 +1,2048 @@
+﻿control/programming station  0/2
+scaling factor xyz/z         0/1
+behaviour in milling cycles
+overlap factor pockets 0.1-1.414
+circle end point tolerance
+3D rotation off/on      ..0/ ..1
+lubrication axes           [min]
+handwheel off/HR410          0/6
+Screen color pallet       [0..3]
+TT1x0 position X           [REF]
+TT1x0 position Y           [REF]
+TT1x0 position Z           [REF]
+user parameter 13
+user parameter 14
+user parameter 15
+user parameter 16
+Spindle S1 time   =
+Spindle S2 time   =
+Axis time         =
+Hydraulic time    =
+Operating time 5  =
+Operating time 6  =
+Operating time 7  =
+Operating time 8  =
+Operating time 9  =
+Operating time 10 =
+Operating time 11 =
+Operating time 12 =
+Operating time 13 =
+* Title message box MP table editor <- line 30
+ MP Table Editor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+H000 Emergency stop buttons
+-> unlock
+H001 Axis on end position X+
+-> key switch -> move from end posit
+H002 Axis on end position Y+
+-> key switch -> move from end posit
+H003 Axis on end position Z+
+-> key switch -> move from end posit
+H004 Axis on end position 4+
+-> key switch -> move from end posit
+H005 Axis on end position 5+
+-> key switch -> move from end posit
+H006 Axis on end position X-
+-> key switch -> move from end posit
+H007 Axis on end position Y-
+-> key switch -> move from end posit
+H008 Axis on end position Z-
+-> key switch -> move from end posit
+H009 Axis on end position 4-
+-> key switch -> move from end posit
+H010 Axis on end position 5-
+-> key switch -> move from end posit
+H011 Axis X tool change position
+->Manual/Handwheel mode ->MOD ->Help
+H012 Axis Y tool change position
+->Manual/Handwheel mode ->MOD ->Help
+H013 Axis Y tool change preposition
+->Manual/Handwheel mode ->MOD ->Help
+H014 Axis Y tool change posit manual
+->Manual/Handwheel mode ->MOD ->Help
+H015 Axis Z tool change posit put out
+->Manual/Handwheel mode ->MOD ->Help
+H016 Axis Z tool change posit put in
+->Manual/Handwheel mode ->MOD ->Help
+H017 Axis Z tool change posit manual
+->Manual/Handwheel mode ->MOD ->Help
+H018 Axis Z tool change posit safety
+->Manual/Handwheel mode ->MOD ->Help
+H019 Spindle tool change posit (M19)
+->Manual/Handwheel mode ->MOD ->Help
+H020 Tool unclamping
+->Manual/Handwheel mode ->MOD ->Help
+H021 Tool clamping
+->Manual/Handwheel mode ->MOD ->Help
+H022 Tool change arm put out
+->Manual/Handwheel mode ->MOD ->Help
+H023 Tool change arm put in
+->Manual/Handwheel mode ->MOD ->Help
+H024 Tool change arm turn on end posit
+->Manual/Handwheel mode ->MOD ->Help
+H025 Tool change gripper close
+->Manual/Handwheel mode ->MOD ->Help
+H026 Tool change gripper open
+->Manual/Handwheel mode ->MOD ->Help
+H027 Tool change gripper spindle close
+->Manual/Handwheel mode ->MOD ->Help
+H028 Tool change gripper spindle open
+->Manual/Handwheel mode ->MOD ->Help
+H029 Tool change gripper magazine close
+->Manual/Handwheel mode ->MOD ->Help
+H030 Tool change gripper magazine open
+->Manual/Handwheel mode ->MOD ->Help
+H031 Tool change magazine position
+->Manual/Handwheel mode ->MOD ->Help
+H032 Tool change magazine close guard
+->Manual/Handwheel mode ->MOD ->Help
+H033 Toolchange according to status
+-> Internal stop -> MDI -> TOOL CALL
+H034 TC magazine to spindle
+->Manual/Handwheel mode ->MOD ->Help
+H035 TC magazine to basic position
+->Manual/Handwheel mode ->MOD ->Help
+H036 TC magazine pocket put out
+->Manual/Handwheel mode ->MOD ->Help
+H037 TC magazine pocket put in
+->Manual/Handwheel mode ->MOD ->Help
+H038 TC magazine lock pin out
+->Manual/Handwheel mode ->MOD ->Help
+H039 TC magazine lock pin in
+->Manual/Handwheel mode ->MOD ->Help
+H040 Tool change arm basic position
+->Manual/Handwheel mode ->MOD ->Help
+H041 Tool change function inhibited
+->Manual/Handwheel mode ->MOD ->Help
+H042 Tool change arm to spindle posit
+->Manual/Handwheel mode ->MOD ->Help
+H043 Tool change arm to magazine posit
+->Manual/Handwheel mode ->MOD ->Help
+H044 Tool change arm to basic position
+->Manual/Handwheel mode ->MOD ->Help
+H045 Tool change arm to middle position
+->Manual/Handwheel mode ->MOD ->Help
+H046 Handwheel HR410 evaluation keys by
+NC, FCT A-C by PLC    -> MP7645: 0
+H047 M/S/T/Q strobe to PLC during block
+scan                -> MP7681: %110111
+H048 TC magazine is a PLC axis !
+small letter              -> MP100
+H049 Handwheel type not supported
+                -> MP7640: 0..6/11..13
+H050 Block scan PLC active !
+Bit 11  MP 7680: %xxxx1xxxxxxxxxxx
+H051 PGM stop with M function necessary
+Bit 02  MP 7440: %xxxxx0xx
+H052 Error opening file
+-> module 9240
+H053 Error reading table
+-> module 9255
+H054 Error writing table
+-> module 9256
+H055 Error value not in table
+-> module 9255
+H056 Temperature sensors Pt100
+-> check X48 interface
+H057 Pt100 interface not defined
+-> table temperature compensation
+H058 Axis X PC position
+->Manual/Handwheel mode ->MOD ->Help
+H059 Axis Y PC position
+->Manual/Handwheel mode ->MOD ->Help
+H060 Axis Z PC position
+->Manual/Handwheel mode ->MOD ->Help
+H061 Activate PC automatic
+
+H062 Pallet change start
+->Manual/Handwheel mode ->MOD ->Help
+H063 Pallet change complete
+->Key NC-Start
+H064 Pallet change lock open
+->Manual/Handwheel mode ->MOD ->Help
+H065 Pallet change lock close
+->Manual/Handwheel mode ->MOD ->Help
+H066 Pallet number not allowed
+
+H067 Pallet unclamp (in machine)
+->Manual/Handwheel mode ->MOD ->Help
+H068 Pallet clamp (in machine)
+->Manual/Handwheel mode ->MOD ->Help
+H069 Controlled axes MP10 not assigned
+-> Change  MP2040.x
+H070 Pallet change halt position
+->Manual/Handwheel mode ->MOD ->Help
+H071 PC1 - Axis X position
+->Manual/Handwheel mode ->MOD ->Help
+H072 PC2 - Axis X position
+->Manual/Handwheel mode ->MOD ->Help
+H073 Pallet change basic position
+->Manual/Handwheel mode ->MOD ->Help
+H074 PC1 basic position
+->Manual/Handwheel mode ->MOD ->Help
+H075 PC2 basic position
+->Manual/Handwheel mode ->MOD ->Help
+H076 PC to load position
+->Manual/Handwheel mode ->MOD ->Help
+H077 PC to machine
+->Manual/Handwheel mode ->MOD ->Help
+H078 PC error pocket sensor
+->Manual/Handwheel mode ->MOD ->Help
+H079 Axis 4 PC position
+->Manual/Handwheel mode ->MOD ->Help
+H080 3D head gear change
+
+H081 3D head spindle orientation
+
+H082 3D head torsional moment
+->Manual mode ->soft key 3D head
+H083 Tool lock open
+->Manual/Handwheel mode ->MOD ->Help
+H084 Tool lock close
+->Manual/Handwheel mode ->MOD ->Help
+H085 TC pickup to tool change position
+->Manual/Handwheel mode ->MOD ->Help
+H086 TC pickup to basic position
+->Manual/Handwheel mode ->MOD ->Help
+H087 Axis X TC preposition
+->Manual/Handwheel mode ->MOD ->Help
+H088 Pallet changer alarm
+
+H089 Pallet changer check
+
+H090 Spindle in C axis mode
+ -> spindle position (sychronize)
+H091 Extended interface - 20 loops
+    MP4020: %1xxxxxxxxxxxxx (Bit14=1)
+H092 Standard interface - 16 loops
+    MP4020: %0xxxxxxxxxxxxx (Bit14=0)
+H093 EnergyOpt
+ -> AUTOSTART / warmup program active
+H094 Fmax Override activate
+            MP7620: set Bit05 or Bit09
+H095 TC magazine hirth-/modulo-axis
+MP420:1; MP430:=MP810/MP7261; MP810:>0
+H096 PLC message
+
+H097 PLC message
+
+H098      yes  -> NC start
+          no   -> NC stop
+H099
+-> NC start
+H100
+
+H101
+
+H102
+
+H103
+
+H104
+
+H105
+
+H106
+
+H107
+
+H108
+
+H109
+
+H110
+
+H111
+
+H112
+
+H113
+
+H114
+
+H115
+
+H116
+
+H117
+
+H118
+
+H119
+
+H120
+
+H121
+
+H122
+
+H123
+
+H124
+
+H125
+
+H126
+
+H127
+
+H128
+
+H129
+
+H130
+
+H131
+
+H132
+
+H133
+
+H134
+
+H135
+
+H136
+
+H137
+
+H138
+
+H139
+
+H140
+
+H141
+
+H142
+
+H143
+
+H144
+
+H145
+
+H146
+
+H147
+
+H148
+
+H149
+
+H150
+
+H151
+
+H152
+
+H153
+
+H154
+
+H155
+
+H156
+
+H157
+
+H158
+
+H159
+
+H160
+
+H161
+
+H162
+
+H163
+
+H164
+
+H165
+
+H166
+
+H167
+
+H168
+
+H169
+
+H170
+
+H171
+
+H172
+
+H173
+
+H174
+
+H175
+
+H176
+
+H177
+
+H178
+
+H179
+
+H180
+
+H181
+
+H182
+
+H183
+
+H184
+
+H185
+
+H186
+
+H187
+
+H188
+
+H189
+
+H190
+
+H191
+
+H192
+
+H193
+
+H194
+
+H195
+
+H196
+
+H197
+
+H198
+
+H199
+
+* TC magazine - PLC axis *
+* TC magazine - Pulse counter *
+* TC auto - Single arm *
+* TC auto - Double arm *
+* TC auto - Cam driven arm *
+* TC auto - Pickup *
+
+
+
+Magazine_start
+Magazine_end
+Tool_def_quit
+Pocket_put_in
+Pocket_pos_in
+Pocket_in_out
+Pocket_posit
+T_magazine_start
+T_mag_in_position
+Decode_P_no
+Standby_T_read
+Magazine_direct
+Lock_pin_out
+Lock_pin_pos_out
+Magazine_nom_pos
+Time_exact_stop
+Lock_pin_pos_in
+Mag_exact_stop
+TC_magazine_cw
+TC_magazine_ccw
+
+TC_auto_start
+TC_auto_end
+Tool_spindle_ok
+T_mag_start
+Magazine_in_pos
+Mag_full_empty
+Spi_full_empty
+Mag_full
+Mag_empty
+Spi_empty_full
+Tool_lock_open
+Tool_lock_opened
+Tool_lock_close
+Tool_lock_closed
+S_start
+S_in_TC_pos
+XY_start
+X_start
+X_in_pos
+X_TC_pre_pos
+X_in_pre_pos
+Y_start
+Y_in_TC_pos
+Y_TC_pre_pos
+Y_in_pre_pos
+Z_start
+Z_in_TC_pos
+Z_start_safety
+Z_in_pos_safety
+Z1_in_out_start
+Z1_posit_in_out
+Z2_in_out_start
+Z2_posit_in_out
+Z3_in_start
+Z3_posit_in
+T_pocket_put_out
+T_pocket_pos_out
+T_pocket_time
+Pickup_values_read
+Pickup_put_out
+Pickup_put_out_ok
+Pickup_put_in
+Pickup_put_in_ok
+T_arm_put_out
+T_arm_pos_out
+T_arm_put_in
+T_arm_pos_in
+T_arm_to_spindle
+T_arm_on_spindle
+T_arm_to_magazine
+T_arm_on_magazine
+T_arm_to_middle
+T_arm_in_middle
+T_arm_to_basic
+T_arm_on_basic
+T_arm_to_cw_ccw
+T_arm_in_cw_ccw
+T_arm_middle_stop
+TC_arm_delay
+Jump_TC_arm
+T_pocket_in_out
+T_pocket_pos_ok
+T_gripper_close
+T_gripper_closed
+T_gripper_open
+T_gripper_opened
+T_gri_mag_open
+T_gri_mag_opened
+T_gri_mag_close
+T_gri_mag_closed
+T_gri_spi_open
+T_gri_spi_opened
+T_gri_spi_close
+T_gri_spi_closed
+T_standby_read
+TC_auto_time
+Mag_to_spindle
+Mag_in_spindle
+Tool_unclamping
+Tool_unclamped
+Tool_clamping
+Tool_clamped
+Time_put_out
+Tnew_store
+T0_in_status
+T0_Tnew_status
+Tnew_in_status
+T_status_ok
+Tool_Call_2nd
+Tool_Call_wait
+T_status_read
+Jump_clamping
+Mag_to_basic
+Mag_on_basic
+TOOL_CALL_quit
+Jump_T0_programed
+Jump_spindle_was_empty
+AC_in_TC_position
+T_gripper_to_cw_right
+T_gripper_to_ccw_left
+Tool_in magazine unlock
+Tool_in_magazine_unlocked
+Tool_in_magazine_lock
+Tool_in_magazine_locked
+TC_manual
+TC_manual_start
+Jump_BA_manual
+X_start_manual
+X_in_pos_manual
+Y_start_manual
+Y_in_pos_manual
+Z_start_manual
+Z_in_pos_manual
+Tool_manu_unclamping
+Tool_manu_clamping
+TC_disable
+TC_quit
+Restore_necessary
+Restore_pos_ok
+Tool_Call_quit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+not defined
+DC-link voltage too high
+Heat sink temperature too high
+Short-circuit of a motor phase with Uz
+DC-link current too high
+Power supply unit not ready
+Leakage current too high
+
+
+
+0 No further error code
+1 Parameter outside value range
+2 Parameter invalid/does not exist
+3 Address outside value range
+4 block length outside value range
+5 No word or double-word address
+6 Value can/must not be changed
+7 File faulty / could not be read.
+8 Incorrect operating mode
+9 - Posit command already executed
+10 - No tool change defined
+11 impermissible characters
+12 No string end, or string incomplete
+13 No connection
+14 RS-232 busy or not assigned
+15 RS-232 send buffer not empty
+16 RS-232 receive buffer empty
+17 RS-232 baud rate not possible
+18 RS-232 transmit error
+19 No current controller found
+20 Module not called from submit job
+21 Module called without strobe
+22 Overflow of key queue
+23 Overflow of PLC error message queue
+24 Module was called in a submit job
+25 Too many elements constants field
+26 Impermissible elements Const-field
+27 Oriented S stop already active
+28 Module function is already active
+29 The opened file unexpected type
+30 Field name is not contained
+31 Query condition is incorrect
+32 No data record fits query condition
+33 Axis not jet traversed reference
+34 Reset; external device defect
+35 Editor is not active
+36 Miscellaneous error file access
+37 Not enough system memory
+38 Error during compilation
+39 Fast PLC input drive on
+40 Drive power on not possible
+41 Type check numbers tool table
+42 Powerfail can not switched off
+43 Module called, no safety package
+44 Error soft-key resources
+45 Module canceled
+46 Profibus or ASI error
+47 -
+48 -
+49 -
+50 -
+51 Function not possible, only PLC510
+52 Function not for single processor
+53 no serial interface available
+54 Function not for dual processor
+55 File could not be locked
+56 File not found
+57 Option FCL not available
+58 Function NC channel not available
+59 Process (Phyton) not permissible
+60 Analog output X8/9 blocked (HW)
+61 Module function not suported
+62 Symbole/identifier does not exist
+63 Error create structure
+64 Handle unknown/incorrect
+65 Wrong data direction
+66 Function not supported at FS
+67 -
+68 -
+69 -
+70 -
+71 -
+72 -
+73 -
+74 -
+75 -
+76 -
+77 -
+78 -
+79 -
+80 -
+81 -
+82 -
+83 -
+84 -
+85 -
+86 -
+87 -
+88 -
+89 -
+90 -
+91 -
+92 -
+93 -
+94 -
+95 -
+96 -
+97 -
+98 -
+99 -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

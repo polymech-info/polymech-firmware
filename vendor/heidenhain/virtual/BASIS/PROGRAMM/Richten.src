@@ -1,0 +1,276 @@
+*-----------------------------------------------------------------------------
+*  Spindel Richten
+*-----------------------------------------------------------------------------
+*  Modul-Beschreibung
+*
+*-----------------------------------------------------------------------------
+
+#define /s    KL_kuerzesten_Weg                        K +0
+#define /s    KL_Richtung_M03                          K +1
+#define /s    KL_Richtung_M04                          K -1
+#define /s    KL_Offset_CYCL13                         K +3
+#define /s    KL_0_Drehzahl_aus_MP3520_1               K +0
+#define /s    KL_Winkel_0_Grad                         K +0
+#define /s    KL_Spindel_360_Grad                      K +3600000
+
+#define /s    ML_WZW_Pos_Spindel_initialisiert         M
+
+#define /s    BL_Schritt_Richten                       B
+
+#define /s    DL_Offset_Modulo_Bereich                 D
+#define /s    DL_Stack_synchronisieren                 D
+
+#include Mac_Lib.inc
+
+EXTERN S_in_Posit
+
+GLOBAL Spindel_Richten
+
+;----------------------------
+LBL Spindel_Richten
+;----------------------------
+
+  PS     DG_WZW_Pos_Spindel
+  CM     S_in_Posit
+  PL     MG_Spindel_in_WZW_Position
+
+  CASE   BL_Schritt_Richten
+    CM     Richten_ein                 ;00
+    CM     Regler_ist_ein              ;01
+    CM     Richten_Start               ;02
+    CM     S_in_Position               ;03
+    CM     M_Quittung                  ;04
+  ENDC
+
+  PLL
+  IFT
+    INC    BL_Schritt_Richten
+  ENDI
+
+  LN     MG_Spindel_Richten_aus
+  AN     MG_Spindel_Richten_aktiv
+  EMT
+
+  L      PN_M4005_S_M03_Sollwert_und_Status
+  O      PN_M4006_S_M04_Sollwert_und_Status
+  AN     PN_M4008_S_Sollwert_aus_Status_invers
+  O[
+    L      PN_M4093_Quit_TOOL_CALL
+    AN     NP_M4520_TOOL_CALL_2_Strobe
+  ]
+  O[
+    L      MG_Taste_S_M5
+    A      MG_BA_Manuell
+  ]
+  O      MG_Taste_S_M3_tippen
+  O      MG_Taste_S_M4_tippen
+  O      MG_M05_Spindel_aus
+  O      MG_Spindel_Richten_aus
+  O      MG_BA_Wechsel_Auto_Manu
+  O      MG_Impuls_Internal_STOP
+  O      MG_Impuls_End_PGM_M02_M30
+  O      NP_M4158_BA_Satz_Vorlauf_aktiv
+  O      NP_M4070_Strobe_G_Code
+  O      MG_M41_Spindel_1
+  O      MG_M42_Spindel_2
+#if CFG_HSCI = "inaktiv"
+  ON     I_I32_ESB_Antriebs_Freigabe
+#endif
+  ON     MG_Antriebs_Freigabe_Spindel
+  ON     MG_Steuerung_betriebsbereit
+#if CFG_FS = "aktiv"                   * SPLC_0011
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S1_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1
+  ]
+  O[
+    L      ApiFromSafety.NN_AxStop[KG_S2_Index_FS]
+    ==     S_STOP_SS1F
+  ]
+#endif
+  S      PN_M4012_S_Regelkreis_oeffnen
+  R      MG_Spindel_Richten_aus
+  R      MG_Spindel_Richten_aktiv
+  CMT    Richten_Reset
+
+EM
+
+;----------------------------
+LBL Richten_ein                        ;00
+
+  L      MG_M19_Spindel_Richten_0_Grad
+  O      MG_M20_Spindel_Richten_CYCL_13
+  O      MG_SK_S_M19
+  O      MG_WZW_Spindel_Richten_ein
+  AN     MG_3D_Kopf_aktiv
+  AN     MG_Spindel_C_Achs_Betrieb_aktiv
+  O      MG_C_Achs_Spindel_Richten_ein
+  O      MG_3D_Kopf_Spindel_Richten_ein
+  A      MG_Spindel_mit_Messgeraet
+  A      MG_Getriebe_Stufe_ok
+  AN     PN_Fehler_Referenz_notwendig
+  PSL
+
+EM
+
+;----------------------------
+LBL Regler_ist_ein                     ;01
+
+  L      MG_Eins_Merker
+  S      MG_Spindel_Richten_aktiv
+
+  L      NP_M4018_S_keine_Referenz
+  A      MG_Spindel_Referenz_mit_Sensor
+  S      MG_Spindel_Referenz_aktiv
+
+  L      NP_M4018_S_keine_Referenz
+  AN     MG_Spindel_Referenz_mit_Sensor
+  =      PN_M4011_S_Drehzahl_aus_MP3520_0
+
+  L      MG_Spindel_digital
+  IFT
+    L      DG_Antriebe_bereit_MC
+    BT     KG_Spindel
+    AN     NP_M4018_S_keine_Referenz
+    PSL
+  ELSE
+    LN     TR_Regler_Freigabe_S
+    AN     NP_M4018_S_keine_Referenz
+    PSL
+  ENDI
+
+EM
+
+;----------------------------
+LBL Richten_Start                      ;02
+
+  L      KL_Winkel_0_Grad
+  =      PN_D760_Offset_TS_Mittenversatz_3D_ROT
+  PSW
+
+#if CFG_3D_Kopf = "aktiv"
+  L      DG_geregelte_Achsen
+  BT     KG_3D_Kopf_Achse_1
+  IFT
+    PL     DL_Stack_synchronisieren
+
+    L      K+3600000
+    -      DG_3D_Kopf_Achse_1_Position
+*$WS /     Übersetzungsverhältnis MP1054
+#if KG_3D_Kopf_Achse_2 >= 0
+    +      DG_3D_Kopf_Achse_2_Position
+#endif
+    MOD    K+3600000
+    =      PN_D760_Offset_TS_Mittenversatz_3D_ROT
+    PSW
+  ENDI
+
+  L      MG_3D_Kopf_Spindel_Richten_ein
+  IFT
+    PL     DL_Stack_synchronisieren
+
+    L      DG_3D_Kopf_S_Position
+    <      K+0
+    IFT
+      L      K+3600000
+      +      DG_3D_Kopf_S_Position
+      =      DG_3D_Kopf_S_Position
+    ENDI
+
+    PS     DG_3D_Kopf_S_Position
+  ENDI
+#endif
+
+#if CFG_S_in_Achs_Betrieb = "aktiv"
+  L      MG_C_Achs_Spindel_Richten_ein
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     DG_C_Achs_S_Position
+  ENDI
+#endif
+
+  L      MG_WZW_Spindel_Richten_ein
+  IFT
+    PL     DL_Stack_synchronisieren
+    PS     DG_WZW_Pos_Spindel
+  ENDI
+
+  PS     KL_0_Drehzahl_aus_MP3520_1
+
+  L      MG_3D_Tastsystem_aktiv
+  O      MG_3D_Kopf_Spindel_Richten_ein
+  IFT
+    PS     KL_kuerzesten_Weg
+  ELSE
+    L      MG_M04_war_aktiv
+    IFT
+      PS     KL_Richtung_M04
+    ELSE
+      PS     KL_Richtung_M03
+    ENDI
+  ENDI
+
+  L      MG_M20_Spindel_Richten_CYCL_13
+  IFT
+    PLW
+    +      KL_Offset_CYCL13
+    PSW
+  ENDI
+
+  CM     9171                          ;Spindel-Orientierung
+  M_Modul_Fehler_anzeigen
+
+  LN     NP_M4203_Fehler_Modul_9xxx
+  PSL
+
+EM
+
+;----------------------------
+LBL S_in_Position                      ;03
+
+  L      MG_Stern_ein
+  AN     MG_NC_Stop_aktiv
+  O      MG_BA_Manuell
+  A      NP_M4000_S_in_Position
+  PSL
+
+EM
+
+;----------------------------
+LBL M_Quittung                         ;04
+
+  PS     MG_Null_Merker
+
+  LN     NP_M4072_Strobe_M_Funktion
+  O      MG_3D_Kopf_Spindel_Richten_ein
+  O      MG_C_Achs_Spindel_Richten_ein
+  JPT    Richten_Reset
+
+  L      MG_M19_Spindel_Richten_0_Grad
+  O      MG_M20_Spindel_Richten_CYCL_13
+  S      PN_M4092_Quit_M_Funktion
+
+EM
+
+;----------------------------
+LBL Richten_Reset
+
+  L      MG_Eins_Merker
+  R      MG_SK_S_M19
+  R      MG_WZW_Spindel_Richten_ein
+  R      MG_3D_Kopf_Spindel_Richten_ein
+  R      MG_C_Achs_Spindel_Richten_ein
+  R      PN_M4011_S_Drehzahl_aus_MP3520_0
+
+  L      K+0
+  =      BL_Schritt_Richten
+
+EM

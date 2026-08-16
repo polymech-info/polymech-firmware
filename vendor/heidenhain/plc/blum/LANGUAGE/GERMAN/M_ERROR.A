@@ -1,0 +1,17 @@
+/* ERROR QUEUE
+   ------------
+*/
+CHARSIZE=AUTO;
+"\n";
+CHARSIZE=MEDIUM;
+"ERROR TABLE";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+CURSOR=ON;
+"\nNR STAT TEXT                          \n";
+CURSOR=OFF;
+ERRQUE=10/c/l/s;
+" STATUS - C: CE possible\n";
+"          S: Error generates NC-STOP\n";
+"          E: Error generates EMERGENCY STOP\n";
+"        0-2: Priority";

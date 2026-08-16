@@ -1,0 +1,25 @@
+﻿************************************
+          !!! Achtung !!!
+   nur für eingewiesene Bediener
+
+      Service Werkzeugwechsler
+             (Pickup)
+
+   ! manuelle Betriebsart aktiv !
+   Aktivierung: Taste "NC-Start"
+************************************
+#401  S auf WZW Position
+#402  Z auf WZW Position oben
+#403  Z auf WZW Position unten
+#404  WZ Schleuse auf
+#405  WZ Schleuse zu
+#406  Pickup ausfahren
+#407  Pickup einfahren
+#408  Werkzeug entspannen
+#409  Werkzeug spannen
+#410  X auf WZW Vor-Position 
+#411  X auf WZW Position
+#412  Y auf Pn Position Spindel WZ
+#413  Y auf Pn+1 Position
+#414  Y auf Pn-1 Position
+#415  Spindel-Register löschen (T0)

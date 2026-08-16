@@ -1,0 +1,57 @@
+NAME = BL_Q352
+CAPTION = Q352 Manuelle Vorpositionierung
+CAPTION-EN = Q352 Manual Prepositioning
+PARA-NR = 352
+TYPE = NUMBER
+RANGE = 0...1
+DEFAULT = 0
+Q-ALLOWED = YES
+GLOBAL-ALLOWED = NO
+INCH-CONVERT = NO
+FEED-PARA = NO
+
+DIA-ENGLISH = Manually positioned? 0=no/1=yes
+DIA-GERMAN = Manuell vorpositioniert? 0=nein/1=ja
+DIA-CZECH = Manually positioned? 0=no/1=yes
+DIA-FRENCH = Manually positioned? 0=no/1=yes
+DIA-ITALIAN = Manually positioned? 0=no/1=yes
+DIA-SPANISH = Manually positioned? 0=no/1=yes
+DIA-PORTUGUE = Manually positioned? 0=no/1=yes
+DIA-SWEDISH = Manually positioned? 0=no/1=yes
+DIA-DANISH = Manually positioned? 0=no/1=yes
+DIA-FINNISH = Manually positioned? 0=no/1=yes
+DIA-DUTCH = Manually positioned? 0=no/1=yes
+DIA-POLISH = Manually positioned? 0=no/1=yes
+DIA-HUNGARIA = Manually positioned? 0=no/1=yes
+DIA-RUSSIAN = Manually positioned? 0=no/1=yes
+DIA-SLOVENIAN = Manually positioned? 0=no/1=yes
+DIA-CHINESE = Manually positioned? 0=no/1=yes
+DIA-ZH_TW = Manually positioned? 0=no/1=yes
+DIA-NORWEGIAN = Manually positioned? 0=no/1=yes
+DIA-SLOVAK = Manually positioned? 0=no/1=yes
+DIA-LATVIAN = Manually positioned? 0=no/1=yes
+DIA-ESTONIA = Manually positioned? 0=no/1=yes
+DIA-ID = OEMCY3:Manually positioned? 0=no/1=yes
+
+COM-ENGLISH = MANUAL POSITIONING
+COM-GERMAN = MANUELL POSITIONIERT
+COM-CZECH = MANUAL POSITIONING
+COM-FRENCH = MANUAL POSITIONING
+COM-ITALIAN = MANUAL POSITIONING
+COM-SPANISH = MANUAL POSITIONING
+COM-PORTUGUE = MANUAL POSITIONING
+COM-SWEDISH = MANUAL POSITIONING
+COM-DANISH = MANUAL POSITIONING
+COM-FINNISH = MANUAL POSITIONING
+COM-DUTCH = MANUAL POSITIONING
+COM-POLISH = MANUAL POSITIONING
+COM-HUNGARIA = MANUAL POSITIONING
+COM-RUSSIAN = MANUAL POSITIONING
+COM-SLOVENIAN = MANUAL POSITIONING
+COM-CHINESE = MANUAL POSITIONING
+COM-ZH_TW = MANUAL POSITIONING
+COM-NORWEGIAN = MANUAL POSITIONING
+COM-SLOVAK = MANUAL POSITIONING
+COM-LATVIAN = MANUAL POSITIONING
+COM-ESTONIA = MANUAL POSITIONING
+COM-ID = OEMCY3:MANUAL POSITIONING

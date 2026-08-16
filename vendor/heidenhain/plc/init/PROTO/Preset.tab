@@ -1,0 +1,100 @@
+BEGIN Preset .tab 
+#STRUCTBEGIN
+   NAME = COMMENT
+     TYPE = C
+     WIDTH = 15
+     DEC = 0
+     DIA-ENGLISH = Comment ?
+     DIA-GERMAN = Kommentar ?
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿ NOMBRE ?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NEVE ?
+     DIA-RUSSIAN = Nazwanie ?
+   NAME = ACTIVE
+     TYPE = N
+     WIDTH = 9
+     DEC = 0
+     DIA-ENGLISH = Active preset 0/1/n (end = -1) ?
+     DIA-GERMAN = Akt Preset 0/1/n (Ende = -1)
+     DIA-CZECH = JMENO ?
+     DIA-FRENCH = NOM ?
+     DIA-ITALIAN = NOME ?
+     DIA-SPANISH = ¿ NOMBRE ?
+     DIA-PORTUGUE = NOME ?
+     DIA-SWEDISH = NAMN ?
+     DIA-DANISH = NIMI ?
+     DIA-FINNISH = NIMI ?
+     DIA-DUTCH = NAAM ?
+     DIA-POLISH = NAZWA ?
+     DIA-HUNGARIA = NEVE ?
+     DIA-RUSSIAN = Nazwanie ?
+   NAME = DATUM_X
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Datum axis X ?
+     DIA-GERMAN = Nullpunkt X-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+   NAME = DATUM_Y
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Datum axis Y ?
+     DIA-GERMAN = Nullpunkt Y-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+   NAME = DATUM_Z
+     TYPE = N
+     WIDTH = 12
+     DEC = 4
+     DIA-ENGLISH = Datum axis Z ?
+     DIA-GERMAN = Nullpunkt Z-Achse ?
+     DIA-CZECH = 
+     DIA-FRENCH = 
+     DIA-ITALIAN = 
+     DIA-SPANISH = 
+     DIA-PORTUGUE = 
+     DIA-SWEDISH = 
+     DIA-DANISH = 
+     DIA-FINNISH = 
+     DIA-DUTCH = 
+     DIA-POLISH = 
+     DIA-HUNGARIA = 
+     DIA-RUSSIAN = 
+#STRUCTEND
+NR      COMMENT         ACTIVE    DATUM_X      DATUM_Y      DATUM_Z
+0       ACTUAL DATUM    0         0            0            0            
+1       PLC PRESET 1    1         0            0            0            
+2       PLC PRESET 2    2         0            0            0            
+3       PLC PRESET 3    3         0            0            0            
+4       END (LINE 128)  -1                                               
+[END]

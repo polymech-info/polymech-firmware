@@ -1,0 +1,32 @@
+﻿************************************
+!!! POZOR !!!
+pouze pro zaškolené pracovníky
+Servis pro výmenu nástroju
+(dvouruký výmeník
+s trnasport. vozíkem)
+! Rucní režim aktivní !
+Aktivace: klávesa "NC start"
+************************************
+#201  S na pozici pro výmenu
+#202  Z na pozici pro výmenu
+#203  Y na pozici pro výmenu
+#204  X na pozici pro výmenu
+#205  Otevrít kryt zásobníku
+#206  Zavrít kryt zásobníku
+#207  Klestinu vretena otevrít
+#208  Klestinu vretena zavrít
+#209  Klestinu zásobníku otevrít
+#210  Klestinu zásobníku zavrít
+#211  Uvolnit nástroj
+#212  Upnout nástroj
+#213  Výmeník k vretenu
+#214  Výmeník k zásobníku
+#215  Výmeník do základní pozice
+#216  Výmeník vysunout
+#217  Výmeník zasunout
+#218  Výmeník otocit cw (vpravo)
+#219  Výmeník otocit ccw (vlevo)
+#220  Zásobník otocit cw (vpravo)
+#221  Zásobník otocit ccw (vlevo)
+#222  Najet referenci zásobníku
+#223  Vymazat registr vretena (T0)

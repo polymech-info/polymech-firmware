@@ -1,0 +1,29 @@
+/* Diagnosis TC magazine
+   ---------------------
+*/
+CHARSIZE= AUTO;
+"\n";
+CHARSIZE= MEDIUM;
+"DIAGNOSIS ALMACEN";
+CHARSIZE=AUTO;
+LINEDIST=LINEDIST-1;
+"\n";
+"(-1)    : %-28s\n",$SG_WZM_Diagnose_Zeile_1$/c;
+CURSOR=ON;
+"CASE(%2d): %-28s\n",$STG_WZM[0].BG_Schritt_WZM$/c,$SG_WZM_Diagnose_Zeile_2$/c;
+CURSOR=OFF;
+"(+1)    : %-28s\n\n",$SG_WZM_Diagnose_Zeile_3$/c;
+
+"TC almacen  activo  : %s\n",$STG_WZM[0].MG_WZM_Start$?"on ":"off"/c;
+"\n";
+
+"T CALL strobe M4073 :    %d\n",$NP_M4073_Strobe_TOOL_CALL$/c;
+"T DEF strobe  M4074 :    %d\n\n",$NP_M4074_Strobe_TOOL_DEF$/c;
+
+"Numero puesto  W262 : %4D\n",$NP_W262_Werkzeug_Platz_Nummer$/c;
+"Numero hta.    W264 : %4D\n\n",$NP_W264_Werkzeug_Nummer$/c;
+"Numero almacen W268 : %4D\n\n",$NP_W268_Werkzeug_Magazin_Nummer$/c;
+
+"Puesto en espera    : %4D\n",$STG_WZM[0].WG_WZM_Ist_Platz$/c;
+"Posicion nominal    : %10.3F\n",$STG_WZM[0].DG_WZM_Soll_Position$/n=4/c;
+

@@ -1,0 +1,26 @@
+﻿Touch probe not ready
+Stylus already deflected
+Battery empty
+reserved
+Faulty approach side value
+reserved
+Meas. bloc without trigger signal
+No tool loaded T-No.=0
+Tool limits exceeded
+Scattering out of tolerance
+Tolerance value exceeded
+Attention, risk of collision
+Faulty tool axis definition
+reserved
+Faulty tool data in TOOL.T
+Faulty call parameter Qxxx
+Faulty parameter table
+reserved
+reserved
+Faulty trigger position
+reserved
+SQL READ ERROR Z_PROBE_x.ZPR
+SQL WRITE ERROR Z_PROBE_x.ZPR
+SQL READ ERROR TOOL.T
+SQL WRITE ERROR TOOL.T
+

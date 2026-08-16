@@ -1,0 +1,171 @@
+*-----------------------------------------------------------------------------
+*  Temperature compensation
+*-----------------------------------------------------------------------------
+*  Module Description
+*    - axis Z
+*    - temperature in 1/10 degree
+*-----------------------------------------------------------------------------
+
+#define /s    KL_temperature_difference_max            K+500
+#define /s    KL_temperature_ranges                    K+100
+#define /s    KL_number_of_mesuring                    K+10
+#define /s    KL_MP_format                             K+10000
+#define /s    KL_Pt100_input_1                         K+67
+#define /s    KL_Pt100_input_2                         K+68
+#define /s    KL_fitting_HSCI_resolution               K+10           *;EUMACH HSCI
+
+#define /s    ML_calculate_start_value                 M
+
+#define /s    BL_average                               B
+
+#define /s    WL_sum_temperature_difference            W
+#define /s    WL_start_value_former_range              W
+
+#define /s /c start_value                              W[5]
+#define /s /c WL_start_value_10_degree_range           W &start_value + 0
+#define /s /c WL_start_value_20_degree_range           W &start_value + 2
+#define /s /c WL_start_value_30_degree_range           W &start_value + 4
+#define /s /c WL_start_value_40_degree_range           W &start_value + 6
+#define /s /c WL_start_value_50_degree_range           W &start_value + 8
+
+#include Mac_Lib.inc
+
+;GLOBAL Temperature_comp                                              *;EUMACH Original PLC
+GLOBAL Temp_comp1                                                     *;EUMACH
+
+;----------------------------
+;LBL Temperature_comp                                                 *;EUMACH Original PLC
+LBL Temp_comp1                                                        *;EUMACH
+;----------------------------
+
+#if Tcmp = &T_comp_type_00
+  LN     MG_machine_parameter_are_read
+  S      ML_calculate_start_value
+
+  LN     MG_pulse_1_s
+  ON     MG_machine_parameter_are_read
+  ON     NP_temperature_compansation_active
+  EMT
+
+  L      ML_calculate_start_value
+  JPT    Calc_start_value
+
+*;EUMACH HSCI not required
+;  PS     KL_Pt100_input_1
+;  CM     9003
+;  PL     WG_temperature_machine
+;  M_display_module_error(KG_error_module_9003)
+
+;  PS     KL_Pt100_input_2
+;  CM     9003
+;  PL     WG_temperature_spindle
+;  M_display_module_error(KG_error_module_9003)
+*;EUMACH HSCI not required
+
+*;EUMACH HSCI PT100 resolution = 0.01 degree
+  L      IW_temperature_machine_Pt100
+  /      KL_fitting_HSCI_resolution
+  =      WG_temperature_machine
+
+  L      IW_temperature_spindle_Pt100
+  /      KL_fitting_HSCI_resolution
+  =      WG_temperature_spindle
+*;EUMACH HSCI PT100 resolution = 0.01 degree
+
+  L      NP_D888_S_max_temperature
+  /      K+1000
+  <=     WG_temperature_spindle
+  A      MG_spindle_active                                            *;EUMACH
+  S      PN_error_spindle_T_max
+
+  L      WG_temperature_spindle
+  -      WG_temperature_machine
+  =      WG_temperature_difference
+
+  L      WG_temperature_difference
+  +      WL_sum_temperature_difference
+  =      WL_sum_temperature_difference
+
+  INC    BL_average
+
+  L      BL_average
+  <      KL_number_of_mesuring
+  EMT
+
+  L      K+0
+  =      BL_average
+
+  L      WL_sum_temperature_difference
+  /      KL_number_of_mesuring
+  >      KL_temperature_difference_max
+  S      PN_error_temperature_compensation
+  S      MG_win_temperature_sensor
+  CMT    Temp_comp_reset
+  EMT
+
+  L      WL_sum_temperature_difference
+  <      K+0
+  CMT    Temp_comp_reset
+
+  L      WL_sum_temperature_difference
+  /      KL_number_of_mesuring
+  /      KL_temperature_ranges
+  =X
+
+  LX
+  >      K+4
+  S      PN_error_temperature_compensation
+  S      MG_win_temperature_sensor
+  CMT    Temp_comp_reset
+  EMT
+
+  L      WL_sum_temperature_difference
+  MOD[
+    L      KL_temperature_ranges
+    X      KL_number_of_mesuring
+  ]
+  X      NP_D900_factor_10_deg_range[X]
+  /      KL_number_of_mesuring
+  /      KL_MP_format
+  +      WL_start_value_10_degree_range[X]
+  X      K-1
+  =      WG_W3004_lag_err_comp_Z                                      *;EUMACH Table clamped -> Z comp
+;  =      PN_W580_lag_error_compensation_Z                            *;EUMACH Table clamped -> Z comp
+
+LBL Temp_comp_reset
+
+  L      K+0
+  =      WL_sum_temperature_difference
+#endif
+
+EM
+
+#if Tcmp = &T_comp_type_00
+;----------------------------
+LBL Calc_start_value
+
+  L      K+0
+  =X
+  =      WL_start_value_10_degree_range
+
+  REPEAT
+    L      WL_start_value_10_degree_range[X]
+    =      WL_start_value_former_range
+
+    PS     NP_D900_factor_10_deg_range[X]
+    INCX
+    PLW
+    X      KL_temperature_ranges
+    /      K+10000
+    +      WL_start_value_former_range
+    =      WL_start_value_10_degree_range[X]
+
+    LX
+    >=     K+4
+  UNTILT
+
+  L      MG_marker_one
+  R      ML_calculate_start_value
+
+EM
+#endif

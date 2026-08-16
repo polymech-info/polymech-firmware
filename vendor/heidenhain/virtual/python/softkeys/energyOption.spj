@@ -1,0 +1,23 @@
+PLC SOFTKEY Project File - Version 1.0
+
+SKPATH PLC:\Python\SOFTKEYS\BMX
+SOFTKEY Energy_Option_On.bmx SK_EnergyOptOn
+SOFTKEY Edit.bmx SK_EnergyOptEdit
+SOFTKEY End.bmx SK_EnergyOptEnd
+
+SKMENU Menu_1 VROOT MMODE Ident:Menu_1
+CHECK SK_EnergyOptOn       Ident:EnergyOptOn    
+CHECK SK_EnergyOptEdit       Ident:EnergyOptEdit    
+BLANK
+BLANK
+BLANK
+
+#ifdef SXGA
+BLANK
+BLANK
+BLANK
+#endif
+
+ACTION SK_EnergyOptEnd       Ident:EnergyOptEnd     
+ENDSKMENU
+

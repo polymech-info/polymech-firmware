@@ -1,0 +1,22 @@
+BEGIN Fixture.TAB 
+#STRUCTBEGIN
+  NAME = FILE
+    TYPE = C
+    WIDTH = 60
+    DEC = 0
+    DIA-ENGLISH = File name?
+    DIA-GERMAN = Dateiname?
+    DIA-CZECH = File name?
+    DIA-FRENCH = Nom fichier?
+    DIA-ITALIAN = Nome file?
+    DIA-SPANISH = File name?
+    DIA-PORTUGUE = File name?
+    DIA-SWEDISH = File name?
+    DIA-DANISH = File name?
+    DIA-FINNISH = File name?
+    DIA-DUTCH = Bestandsnaam?
+    DIA-POLISH = File name?
+    DIA-HUNGARIA = File name?
+#STRUCTEND
+NR      FILE
+[END]

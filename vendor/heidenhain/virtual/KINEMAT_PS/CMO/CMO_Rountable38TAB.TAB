@@ -1,0 +1,197 @@
+BEGIN CMO_Rountable38TAB.TAB 
+#STRUCTBEGIN
+  NAME = KEY
+    TYPE = C
+    WIDTH = 8
+    DEC = 0
+    DIA-ENGLISH = Code?
+    DIA-GERMAN = Schlüssel-Wort?
+    DIA-CZECH = CISLO KLICE - HESLO?
+    DIA-FRENCH = Code?
+    DIA-ITALIAN = Numero codice?
+    DIA-SPANISH = ¿Número de código?
+    DIA-PORTUGUE = Numero de codigo?
+    DIA-SWEDISH = KODNUMMER?
+    DIA-DANISH = KODE-NUMMER?
+    DIA-FINNISH = AVAINLUKU?
+    DIA-DUTCH = Sleutelgetal?
+    DIA-POLISH = Liczba klucza?
+    DIA-HUNGARIA = Kulcsszám?
+  NAME = X
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Coordinate?
+    DIA-GERMAN = Koordinate?
+    DIA-CZECH = SOURADNICE?
+    DIA-FRENCH = Coordonnée?
+    DIA-ITALIAN = Coordinate?
+    DIA-SPANISH = ¿Coordenada?
+    DIA-PORTUGUE = Coordenada?
+    DIA-SWEDISH = KOORDINAT ?
+    DIA-DANISH = KOORDINAT ?
+    DIA-FINNISH = KOORDINAATIT?
+    DIA-DUTCH = Coördinaat?
+    DIA-POLISH = Wspolrzedne?
+    DIA-HUNGARIA = Koordináta?
+  NAME = Y
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Coordinate?
+    DIA-GERMAN = Koordinate?
+    DIA-CZECH = SOURADNICE?
+    DIA-FRENCH = Coordonnée?
+    DIA-ITALIAN = Coordinate?
+    DIA-SPANISH = ¿Coordenada?
+    DIA-PORTUGUE = Coordenada?
+    DIA-SWEDISH = KOORDINAT ?
+    DIA-DANISH = KOORDINAT ?
+    DIA-FINNISH = KOORDINAATIT?
+    DIA-DUTCH = Coördinaat?
+    DIA-POLISH = Wspolrzedne?
+    DIA-HUNGARIA = Koordináta?
+  NAME = Z
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Coordinate?
+    DIA-GERMAN = Koordinate?
+    DIA-CZECH = SOURADNICE?
+    DIA-FRENCH = Coordonnée?
+    DIA-ITALIAN = Coordinate?
+    DIA-SPANISH = ¿Coordenada?
+    DIA-PORTUGUE = Coordenada?
+    DIA-SWEDISH = KOORDINAT ?
+    DIA-DANISH = KOORDINAT ?
+    DIA-FINNISH = KOORDINAATIT?
+    DIA-DUTCH = Coördinaat?
+    DIA-POLISH = Wspolrzedne?
+    DIA-HUNGARIA = Koordináta?
+  NAME = AXIS
+    TYPE = C
+    WIDTH = 1
+    DEC = 0
+    DIA-ENGLISH = Cylinder axis?
+    DIA-GERMAN = Zylinder-Achse?
+    DIA-CZECH = Cylinder axis?
+    DIA-FRENCH = Cylinder axis?
+    DIA-ITALIAN = Cylinder axis?
+    DIA-SPANISH = Cylinder axis?
+    DIA-PORTUGUE = Cylinder axis?
+    DIA-SWEDISH = Cylinder axis?
+    DIA-DANISH = Cylinder axis?
+    DIA-FINNISH = Cylinder axis?
+    DIA-DUTCH = Cylinder axis?
+    DIA-POLISH = Cylinder axis?
+    DIA-HUNGARIA = Cylinder axis?
+  NAME = RADIUS
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Cylinder radius?
+    DIA-GERMAN = Zylinder-Radius?
+    DIA-CZECH = RADIUS VALCE ?
+    DIA-FRENCH = Rayon du cylindre?
+    DIA-ITALIAN = Raggio cilindro?
+    DIA-SPANISH = Radio del cilindro?
+    DIA-PORTUGUE = Raio do cilindro?
+    DIA-SWEDISH = CYLINDER RADIE ?
+    DIA-DANISH = CYLINDER-RADIUS ?
+    DIA-FINNISH = SYLINTERIN SADE ?
+    DIA-DUTCH = Cilinderradius?
+    DIA-POLISH = Promien cylindra ?
+    DIA-HUNGARIA = Henger sugara ?
+  NAME = HEIGHT
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Cylinder height?
+    DIA-GERMAN = Zylinder-Höhe?
+    DIA-CZECH = Cylinder height?
+    DIA-FRENCH = Cylinder height?
+    DIA-ITALIAN = Cylinder height?
+    DIA-SPANISH = Cylinder height?
+    DIA-PORTUGUE = Cylinder height?
+    DIA-SWEDISH = Cylinder height?
+    DIA-DANISH = Cylinder height?
+    DIA-FINNISH = Cylinder height?
+    DIA-DUTCH = Cylinder height?
+    DIA-POLISH = Cylinder height?
+    DIA-HUNGARIA = Cylinder height?
+  NAME = DOC
+    TYPE = C
+    WIDTH = 31
+    DEC = 0
+    DIA-ENGLISH = Designation of machine element?
+    DIA-GERMAN = Bezeichnung Maschinenelement?
+    DIA-CZECH = Designation of machine element?
+    DIA-FRENCH = Designation of machine element?
+    DIA-ITALIAN = Designation of machine element?
+    DIA-SPANISH = Designation of machine element?
+    DIA-PORTUGUE = Designation of machine element?
+    DIA-SWEDISH = Designation of machine element?
+    DIA-DANISH = Designation of machine element?
+    DIA-FINNISH = Designation of machine element?
+    DIA-DUTCH = Designation of machine element?
+    DIA-POLISH = Designation of machine element?
+    DIA-HUNGARIA = Designation of machine element?
+  NAME = COORD
+    TYPE = N
+    WIDTH = 10
+    DEC = 4
+    DIA-ENGLISH = Coordinate?
+    DIA-GERMAN = Koordinate?
+    DIA-CZECH = SOURADNICE?
+    DIA-FRENCH = Coordonnée?
+    DIA-ITALIAN = Coordinate?
+    DIA-SPANISH = ¿Coordenada?
+    DIA-PORTUGUE = Coordenada?
+    DIA-SWEDISH = KOORDINAT ?
+    DIA-DANISH = KOORDINAT ?
+    DIA-FINNISH = KOORDINAATIT?
+    DIA-DUTCH = Coördinaat?
+    DIA-POLISH = Wspolrzedne?
+    DIA-HUNGARIA = Koordináta?
+  NAME = FILE
+    TYPE = C
+    WIDTH = 60
+    DEC = 0
+    DIA-ENGLISH = File name?
+    DIA-GERMAN = Dateiname?
+    DIA-CZECH = File name?
+    DIA-FRENCH = Nom fichier?
+    DIA-ITALIAN = Nome file?
+    DIA-SPANISH = File name?
+    DIA-PORTUGUE = File name?
+    DIA-SWEDISH = File name?
+    DIA-DANISH = File name?
+    DIA-FINNISH = File name?
+    DIA-DUTCH = Bestandsnaam?
+    DIA-POLISH = File name?
+    DIA-HUNGARIA = File name?
+#STRUCTEND
+NR      KEY      X          Y          Z          AXIS RADIUS     HEIGHT     DOC                             COORD      FILE
+0       Cuboid   -300.0000  -400.0000  -100.0000                             Table                                                                                                   
+1                +300.0000  +400.0000  +0.0000                                                                                                                                       
+2       Cuboid   -500.0000  -118.0350  -100.0000                             Table                                                                                                   
+3                +500.0000  +118.0350  +0.0000                                                                                                                                       
+4       Trans                                     C                          TR1                             +26.5700                                                                
+5       Cuboid   -500.0000  -118.0350  -100.0000                             Table                                                                                                   
+6                +500.0000  +118.0350  +0.0000                                                                                                                                       
+7       Trans                                     C                          TR2                             -53.1400                                                                
+8       Cuboid   -500.0000  -118.0350  -100.0000                             Table                                                                                                   
+9                +500.0000  +118.0350  +0.0000                                                                                                                                       
+10      Trans                                     C                          TR3                             -26.5700                                                                
+11      Cuboid   +350.0000  +0.0000    -100.0000                             Table                                                                                                   
+12               +500.0000  +118.0300  +0.0000                                                                                                                                       
+13      Trans                                     C                          TR4                             +180.0000                                                               
+14      Cuboid   +350.0000  +0.0000    -100.0000                             Table                                                                                                   
+15               +500.0000  +118.0300  +0.0000                                                                                                                                       
+16      Trans                                     C                          TR5                             +106.2600                                                               
+17      Cuboid   +350.0000  -118.0300  -100.0000                             Table                                                                                                   
+18               +500.0000  +0.0000    +0.0000                                                                                                                                       
+19      Trans                                     C                          TR6                             +180.0000                                                               
+20      Cuboid   +350.0000  -118.0300  -100.0000                             Table                                                                                                   
+21               +500.0000  +0.0000    +0.0000                                                                                                                                       
+[END]
